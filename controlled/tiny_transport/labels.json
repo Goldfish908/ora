@@ -1,0 +1,44 @@
+{
+  "problem": "tiny_transport",
+  "reference_objective": 5720.0,
+  "tolerance": 1e-6,
+  "witness_semantics": "witness/<aid>.py runs the artifact's solve.py, then checks: plant outflow <= supply, each warehouse inflow equals demand converted from boxes to pieces (1 box = 10 pieces), each warehouse receives at least 20 pieces from P2, reported objective equals cost recomputed from data/costs.csv and equals the reference optimum (tolerance 1e-6).",
+  "artifacts": {
+    "correct": {
+      "path": "correct/solve.py",
+      "kind": "correct",
+      "mutation_type": null,
+      "expected_witness": "PASS",
+      "expected_objective": 5720.0,
+      "detection_keywords": [],
+      "description": "Correct LP: box-to-piece conversion applied, >=20 pieces from P2 per warehouse enforced."
+    },
+    "b_m1": {
+      "path": "mutants/b_m1/solve.py",
+      "kind": "mutant",
+      "mutation_type": "direction",
+      "expected_witness": "FAIL",
+      "expected_objective": null,
+      "detection_keywords": ["P2", "至少", "至多", "20", "方向", ">=", "<="],
+      "description": "The '>= 20 pieces from P2' rule is flipped to '<= 20'; with total supply equal to total demand this makes the model infeasible, so no valid solution is produced."
+    },
+    "b_m2": {
+      "path": "mutants/b_m2/solve.py",
+      "kind": "mutant",
+      "mutation_type": "unit",
+      "expected_witness": "FAIL",
+      "expected_objective": 560.0,
+      "detection_keywords": ["箱", "件", "单位", "换算", "10", "demand"],
+      "description": "Box-to-piece conversion is dropped: demands are read as 80/90/80 pieces instead of 800/900/800, so warehouses are under-supplied and the objective deviates from the reference."
+    },
+    "b_e1": {
+      "path": "equivalent/b_e1/solve.py",
+      "kind": "equivalent",
+      "mutation_type": null,
+      "expected_witness": "PASS",
+      "expected_objective": 5720.0,
+      "detection_keywords": [],
+      "description": "Equivalent rewrite: P2 minimum enforced as variable lower bounds, demand equality split into two inequalities; same feasible set and objective."
+    }
+  }
+}

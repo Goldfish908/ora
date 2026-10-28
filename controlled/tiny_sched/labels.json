@@ -1,0 +1,53 @@
+{
+  "problem": "tiny_sched",
+  "reference_objective": 17.0,
+  "tolerance": 1e-6,
+  "witness_semantics": "witness/<aid>.py runs the artifact's solve.py, then checks: every job scheduled exactly once on a known machine, end-start == proc == jobs.csv proc_min (setup_min must NOT be used as duration), precedence J1 end <= J3 start, no same-machine interval overlap, reported makespan equals max end and the enumeration reference optimum (tolerance 1e-6).",
+  "artifacts": {
+    "correct": {
+      "path": "correct/solve.py",
+      "kind": "correct",
+      "mutation_type": null,
+      "expected_witness": "PASS",
+      "expected_objective": 17.0,
+      "detection_keywords": [],
+      "description": "Correct big-M disjunctive MIP using proc_min, precedence J1 -> J3, no-overlap on both machines."
+    },
+    "c_m1": {
+      "path": "mutants/c_m1/solve.py",
+      "kind": "mutant",
+      "mutation_type": "precedence",
+      "expected_witness": "FAIL",
+      "expected_objective": 17.0,
+      "detection_keywords": ["J1", "J3", "先后", "时序", "precedence", "方向", "反"],
+      "description": "Precedence is reversed (J3 before J1). Optimal makespan stays 17 by time-reversal symmetry, so the error is only observable as a schedule violating J1 end <= J3 start."
+    },
+    "c_m2": {
+      "path": "mutants/c_m2/solve.py",
+      "kind": "mutant",
+      "mutation_type": "omission",
+      "expected_witness": "FAIL",
+      "expected_objective": 11.0,
+      "detection_keywords": ["M2", "机器", "不重叠", "遗漏", "no-overlap", "析取"],
+      "description": "No-overlap (disjunctive) constraints are only generated for M1; machine M2 gets overlapping jobs and the makespan drops to 11 < 17."
+    },
+    "c_m3": {
+      "path": "mutants/c_m3/solve.py",
+      "kind": "mutant",
+      "mutation_type": "data_mapping",
+      "expected_witness": "FAIL",
+      "expected_objective": 20.0,
+      "detection_keywords": ["setup_min", "proc_min", "列", "映射", "字段", "数据"],
+      "description": "Column mapping error: setup_min is used as the processing duration instead of proc_min, giving makespan 20 != 17."
+    },
+    "c_e1": {
+      "path": "equivalent/c_e1/solve.py",
+      "kind": "equivalent",
+      "mutation_type": null,
+      "expected_witness": "PASS",
+      "expected_objective": 17.0,
+      "detection_keywords": [],
+      "description": "Equivalent rewrite: combinations-based pair loops, <=-form disjunctive constraints, different variable naming; same feasible set and optimum."
+    }
+  }
+}

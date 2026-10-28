@@ -1,0 +1,44 @@
+{
+  "problem": "tiny_assign",
+  "reference_objective": 34.0,
+  "tolerance": 1e-6,
+  "witness_semantics": "witness/<aid>.py runs the artifact's solve.py, then checks: every job assigned exactly once, every worker at most one task, W2 is not assigned to J3, reported objective equals the cost recomputed from data/costs.csv and equals the brute-force reference optimum (tolerance 1e-6).",
+  "artifacts": {
+    "correct": {
+      "path": "correct/solve.py",
+      "kind": "correct",
+      "mutation_type": null,
+      "expected_witness": "PASS",
+      "expected_objective": 34.0,
+      "detection_keywords": [],
+      "description": "Correct MIP: one-to-one assignment plus the W2-J3 exclusion."
+    },
+    "a_m1": {
+      "path": "mutants/a_m1/solve.py",
+      "kind": "mutant",
+      "mutation_type": "omission",
+      "expected_witness": "FAIL",
+      "expected_objective": 27.0,
+      "detection_keywords": ["W2", "J3", "排除", "遗漏", "约束"],
+      "description": "The W2-J3 exclusion constraint is missing; the optimum uses W2->J3 with objective 27 < 34 and violates the business rule."
+    },
+    "a_m2": {
+      "path": "mutants/a_m2/solve.py",
+      "kind": "mutant",
+      "mutation_type": "index",
+      "expected_witness": "FAIL",
+      "expected_objective": 27.0,
+      "detection_keywords": ["W2", "J4", "J3", "索引", "排除"],
+      "description": "The exclusion is written for W2-J4 instead of W2-J3; the optimum still uses W2->J3 (illegal) with objective 27."
+    },
+    "a_e1": {
+      "path": "equivalent/a_e1/solve.py",
+      "kind": "equivalent",
+      "mutation_type": null,
+      "expected_witness": "PASS",
+      "expected_objective": 34.0,
+      "detection_keywords": [],
+      "description": "Equivalent rewrite: different model organization (dict-driven variables, forbidden pair fixed via upper bound), same constraint set."
+    }
+  }
+}

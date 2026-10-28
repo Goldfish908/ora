@@ -1,0 +1,40 @@
+{
+  "makespan": 17.0,
+  "jobs": [
+    {
+      "job_id": "J1",
+      "machine": "M1",
+      "start": 0.0,
+      "proc": 3.0,
+      "end": 3.0
+    },
+    {
+      "job_id": "J2",
+      "machine": "M2",
+      "start": 7.0,
+      "proc": 10.0,
+      "end": 17.0
+    },
+    {
+      "job_id": "J3",
+      "machine": "M1",
+      "start": 8.999999999993065,
+      "proc": 8.0,
+      "end": 16.999999999993065
+    },
+    {
+      "job_id": "J4",
+      "machine": "M2",
+      "start": 0.0,
+      "proc": 7.0,
+      "end": 7.0
+    },
+    {
+      "job_id": "J5",
+      "machine": "M1",
+      "start": 3.0,
+      "proc": 6.0,
+      "end": 9.0
+    }
+  ]
+}

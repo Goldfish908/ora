@@ -1,0 +1,25 @@
+{
+  "objective": 34.0,
+  "assignments": [
+    {
+      "worker": "W1",
+      "job": "J1",
+      "cost": 10.0
+    },
+    {
+      "worker": "W2",
+      "job": "J4",
+      "cost": 7.0
+    },
+    {
+      "worker": "W3",
+      "job": "J2",
+      "cost": 8.0
+    },
+    {
+      "worker": "W4",
+      "job": "J3",
+      "cost": 9.0
+    }
+  ]
+}

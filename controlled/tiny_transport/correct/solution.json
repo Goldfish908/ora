@@ -1,0 +1,30 @@
+{
+  "objective": 5720.0,
+  "flows": [
+    {
+      "plant": "P1",
+      "warehouse": "D1",
+      "qty": 780.0
+    },
+    {
+      "plant": "P1",
+      "warehouse": "D2",
+      "qty": 220.0
+    },
+    {
+      "plant": "P2",
+      "warehouse": "D1",
+      "qty": 20.0
+    },
+    {
+      "plant": "P2",
+      "warehouse": "D2",
+      "qty": 680.0
+    },
+    {
+      "plant": "P2",
+      "warehouse": "D3",
+      "qty": 800.0
+    }
+  ]
+}

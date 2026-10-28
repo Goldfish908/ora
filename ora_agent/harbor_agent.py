@@ -35,6 +35,7 @@ from .evidence import EvidenceStore
 from .loop import LoopConfig, run_loop
 from .predict import PredictionRecorder, make_predictor
 from .trajectory import TrajectoryWriter
+from .workers import WORKERS_PROMPT_ADDENDUM, WorkerManager
 
 SYSTEM_PROMPT = """\
 You are an expert operations-research agent solving one ORAgentBench task inside a Linux container.
@@ -81,6 +82,14 @@ def _coerce_float(value, default: float) -> float:
     return float(value)
 
 
+def _coerce_bool(value, default: bool) -> bool:
+    if value is None:
+        return default
+    if isinstance(value, bool):
+        return value
+    return str(value).strip().lower() in ("1", "true", "yes", "on")
+
+
 class OrAgent(BaseAgent):
     """End-to-end OR agent: Qwen LLM + single bash tool + shadow predictor."""
 
@@ -89,12 +98,17 @@ class OrAgent(BaseAgent):
     capabilities = AgentCapabilities(skills=True)
 
     def __init__(self, *args, max_steps=None, token_budget=None, temperature=None,
-                 predict_mode=None, max_tokens=None, exec_timeout_sec=None, **kwargs):
+                 predict_mode=None, max_tokens=None, exec_timeout_sec=None,
+                 enable_workers=None, worker_calls_budget=None, **kwargs):
         self._ora_max_steps = _coerce_int(max_steps, LoopConfig.max_steps)
         self._ora_token_budget = _coerce_int(token_budget, LoopConfig.token_budget)
         self._ora_temperature = _coerce_float(temperature, LoopConfig.temperature)
         self._ora_max_tokens = _coerce_int(max_tokens, LoopConfig.max_tokens)
         self._ora_exec_timeout = _coerce_int(exec_timeout_sec, LoopConfig.exec_timeout_sec)
+        self._ora_enable_workers = _coerce_bool(
+            enable_workers, LoopConfig.enable_workers)
+        self._ora_worker_calls_budget = _coerce_int(
+            worker_calls_budget, LoopConfig.worker_calls_budget)
         # Guard against YAML 1.1 parsing bare `off` as boolean False.
         if predict_mode in (None, False):
             self._ora_predict_mode = None
@@ -173,9 +187,6 @@ class OrAgent(BaseAgent):
         with TrajectoryWriter(out_dir / "trajectory.jsonl", run_id=run_id,
                               task_id=task_id, model=model) as writer, \
                 EvidenceStore(out_dir / "evidence.jsonl") as evidence_store:
-            # evidence_store is wired for the requirement-traceability schema
-            # (2.2); loop integration that emits these records comes later.
-            _ = evidence_store
             recorder = PredictionRecorder(out_dir, writer=writer,
                                           predictor=predictor, tracker=tracker)
             config = LoopConfig(
@@ -184,9 +195,20 @@ class OrAgent(BaseAgent):
                 temperature=self._ora_temperature,
                 max_tokens=self._ora_max_tokens,
                 exec_timeout_sec=self._ora_exec_timeout,
+                enable_workers=self._ora_enable_workers,
+                worker_calls_budget=self._ora_worker_calls_budget,
             )
+            worker_manager = None
+            system_prompt = SYSTEM_PROMPT
+            if config.enable_workers:
+                worker_manager = WorkerManager(
+                    llm_fn=llm_fn, exec_fn=exec_fn,
+                    evidence_store=evidence_store, writer=writer,
+                    tracker=tracker,
+                    max_tokens=config.worker_max_tokens, temperature=0.0)
+                system_prompt = SYSTEM_PROMPT + WORKERS_PROMPT_ADDENDUM
             result = await run_loop(
-                system_prompt=SYSTEM_PROMPT,
+                system_prompt=system_prompt,
                 instruction=instruction,
                 config=config,
                 llm_fn=llm_fn,
@@ -195,6 +217,7 @@ class OrAgent(BaseAgent):
                 recorder=recorder,
                 budget_tracker=tracker,
                 artifacts_probe=artifacts_probe,
+                worker_manager=worker_manager,
                 model=model,
             )
 
@@ -211,6 +234,7 @@ class OrAgent(BaseAgent):
                 "role_usage": tracker.role_totals(),
                 "predict_mode": predictor.mode,
                 "decision_integration": False,
+                "enable_workers": config.enable_workers,
                 "model": model,
                 "trajectory": str(out_dir / "trajectory.jsonl"),
                 "run_summary": str(out_dir / "run_summary.json"),

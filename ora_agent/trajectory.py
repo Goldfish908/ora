@@ -30,6 +30,7 @@ from pathlib import Path
 EVENT_TYPES = frozenset({
     "run_meta", "context_init", "msg_append", "llm_request", "llm_response",
     "action", "prediction", "outcome", "budget", "finish", "warning",
+    "worker_call", "worker_response",
 })
 
 
@@ -103,6 +104,14 @@ class TrajectoryWriter:
             p["completion_tokens"] += u.get("completion_tokens") or 0
             p["latency_s"] = round(p["latency_s"]
                                    + (meta.get("latency_s") or 0.0), 3)
+        elif ev == "worker_response" and not record.get("error"):
+            u = record.get("usage") or {}
+            w = self._summary["worker_usage"]
+            w["calls"] += 1
+            w["prompt_tokens"] += u.get("prompt_tokens") or 0
+            w["completion_tokens"] += u.get("completion_tokens") or 0
+            w["latency_s"] = round(w["latency_s"]
+                                   + (record.get("latency_s") or 0.0), 3)
         elif ev == "action" and isinstance(record.get("seq"), int):
             self._summary["n_steps"] = max(self._summary["n_steps"],
                                            record["seq"])

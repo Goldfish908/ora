@@ -41,6 +41,8 @@ import json
 import re
 from dataclasses import dataclass, field
 
+from .workers import WORKER_TOOLS
+
 ACTION_KINDS = ("recon", "model", "code", "solve", "validate", "repair", "other")
 
 # Solver self-reported time-limit signatures (SCIP prints "TIME LIMIT" as its
@@ -111,12 +113,18 @@ TOOLS = [BASH_TOOL, FINISH_TOOL]
 @dataclass
 class LoopConfig:
     max_steps: int = 40
-    token_budget: int = 1_200_000          # cumulative prompt tokens (actor)
+    token_budget: int = 1_200_000          # cumulative prompt tokens, ALL roles
+                                           # (actor+predictor+worker) when a
+                                           # BudgetTracker is attached
     exec_timeout_sec: int = 360            # default per-command timeout
     max_exec_timeout_sec: int = 600        # hard cap on per-command timeout
     max_tokens: int = 8192                 # per-LLM-call completion budget
     temperature: float = 0.6
     result_max_chars: int = 6000           # observation truncation
+    enable_workers: bool = False           # B0 when False: tools/prompt as v1
+    worker_calls_budget: int = 8           # separate sub-budget; worker calls
+                                           # do not consume max_steps
+    worker_max_tokens: int = 4096          # per worker call completion budget
 
 
 @dataclass
@@ -202,7 +210,7 @@ def _format_observation(result: dict, error: str | None, max_chars: int) -> str:
 
 async def run_loop(*, system_prompt: str, instruction: str, config: LoopConfig,
                    llm_fn, exec_fn, writer, recorder=None,
-                   budget_tracker=None, artifacts_probe=None,
+                   budget_tracker=None, artifacts_probe=None, worker_manager=None,
                    model: str = "unknown") -> LoopResult:
     result = LoopResult()
     messages = [
@@ -210,10 +218,20 @@ async def run_loop(*, system_prompt: str, instruction: str, config: LoopConfig,
         {"role": "user", "content": instruction},
     ]
     history: list[str] = []  # one short line per executed action
+    worker_calls = 0
+    # B0 purity: workers disabled -> tool list byte-identical to v1.
+    tools = TOOLS + WORKER_TOOLS if config.enable_workers else TOOLS
 
     def append_message(msg: dict) -> None:
         messages.append(msg)
         writer.emit("msg_append", index=len(messages) - 1, message=msg)
+
+    def spent_prompt_tokens() -> int:
+        # Shared-budget view: actor+predictor+worker via the tracker when
+        # attached; actor-only fallback otherwise.
+        if budget_tracker is not None:
+            return budget_tracker.combined()["prompt_tokens"]
+        return result.usage["prompt_tokens"]
 
     predictor_mode = getattr(getattr(recorder, "predictor", None), "mode", "off")
     # v1/round2: predictions are recorded but never fed back into decisions.
@@ -236,7 +254,7 @@ async def run_loop(*, system_prompt: str, instruction: str, config: LoopConfig,
     writer.emit("context_init", system_prompt=system_prompt,
                 instruction=instruction,
                 prompt_sha256=prompt_sha256(system_prompt, instruction),
-                tools=TOOLS)
+                tools=tools)
 
     def _role_usages() -> dict:
         if budget_tracker is not None:
@@ -268,7 +286,7 @@ async def run_loop(*, system_prompt: str, instruction: str, config: LoopConfig,
                 # loop so a stalled request cannot freeze sibling trials.
                 out = await asyncio.to_thread(
                     llm_fn, messages, max_tokens=config.max_tokens,
-                    temperature=config.temperature, extra={"tools": TOOLS})
+                    temperature=config.temperature, extra={"tools": tools})
             except Exception as e:
                 writer.emit("llm_response", error="llm_request_failed",
                             error_message=f"{type(e).__name__}: {e}"[:500])
@@ -291,10 +309,11 @@ async def run_loop(*, system_prompt: str, instruction: str, config: LoopConfig,
                         latency_s=out.get("latency_s"), api_model=out.get("model"),
                         truncated=(finish_reason == "length"))
 
-            # Token circuit breaker: stop before spending more.
-            if result.usage["prompt_tokens"] > config.token_budget:
+            # Token circuit breaker (combined actor+predictor+worker when a
+            # tracker is attached): stop before spending more.
+            if spent_prompt_tokens() > config.token_budget:
                 writer.emit("budget", kind="token_budget_exceeded",
-                            prompt_tokens=result.usage["prompt_tokens"],
+                            prompt_tokens=spent_prompt_tokens(),
                             token_budget=config.token_budget)
                 result.status = "token_budget_exceeded"
                 break
@@ -338,11 +357,60 @@ async def run_loop(*, system_prompt: str, instruction: str, config: LoopConfig,
                 result.finish_summary = summary
                 break
 
-            if name != "bash":
-                writer.emit("action", tool=name, error="unknown_tool")
+            if name in ("audit", "repair"):
+                if worker_manager is None:
+                    writer.emit("action", tool=name, error="workers_disabled")
+                    append_message({
+                        "role": "tool", "tool_call_id": tc.get("id"),
+                        "content": f"[error] tool {name!r} is not enabled in this run",
+                    })
+                    continue
+                if worker_calls >= config.worker_calls_budget:
+                    writer.emit("action", tool=name,
+                                error="worker_calls_budget_exceeded")
+                    append_message({
+                        "role": "tool", "tool_call_id": tc.get("id"),
+                        "content": (f"[error] worker call budget exhausted "
+                                    f"({config.worker_calls_budget} calls); "
+                                    "continue with bash or finish"),
+                    })
+                    continue
+                worker_calls += 1
+                writer.emit("action", tool=name, args={
+                    k: args.get(k) for k in ("focus", "question", "mode",
+                                             "finding_id", "guidance")
+                    if k in args})
+                try:
+                    reply = await worker_manager.handle(name, args)
+                except Exception as e:
+                    reply = json.dumps(
+                        {"error": f"worker crashed: {type(e).__name__}: {e}"[:300]})
+                reply = _truncate(reply, config.result_max_chars)
+                if n_ignored:
+                    reply += (f"\n[note] {n_ignored} additional tool call(s) in "
+                              "your last message were ignored: exactly one "
+                              "action per turn.")
                 append_message({
                     "role": "tool", "tool_call_id": tc.get("id"),
-                    "content": f"[error] unknown tool {name!r}; available: bash, finish",
+                    "content": reply,
+                })
+                # Worker tokens count toward the shared budget: re-check.
+                if spent_prompt_tokens() > config.token_budget:
+                    writer.emit("budget", kind="token_budget_exceeded",
+                                prompt_tokens=spent_prompt_tokens(),
+                                token_budget=config.token_budget,
+                                after="worker_call")
+                    result.status = "token_budget_exceeded"
+                    break
+                continue
+
+            if name != "bash":
+                writer.emit("action", tool=name, error="unknown_tool")
+                available = "bash, finish" + (", audit, repair"
+                                              if config.enable_workers else "")
+                append_message({
+                    "role": "tool", "tool_call_id": tc.get("id"),
+                    "content": f"[error] unknown tool {name!r}; available: {available}",
                 })
                 continue
 

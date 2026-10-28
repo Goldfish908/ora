@@ -30,6 +30,8 @@ from harbor.environments.base import BaseEnvironment
 from harbor.models.agent.context import AgentContext
 
 from . import __version__, llm as llm_mod
+from .budget import BudgetTracker
+from .evidence import EvidenceStore
 from .loop import LoopConfig, run_loop
 from .predict import PredictionRecorder, make_predictor
 from .trajectory import TrajectoryWriter
@@ -43,7 +45,7 @@ Tools:
 - bash(command, action_kind, rationale, timeout_sec?): run a bash command in the container (working directory /app).
   - action_kind must be one of: recon (reading problem/data), model (writing model.md), code (writing solve.py), solve (running the solver), validate (checking outputs against the required schema), repair (fixing failures), other.
   - rationale: 1-3 sentences on why this action now.
-  - timeout_sec: optional per-command timeout (default 360s, max 600s). Each solver run must internally respect a 300s time limit (ORCLAW_SOLVE_TIME_LIMIT_SECONDS).
+  - timeout_sec: optional per-command timeout (default 360s, max 600s). Each solver run must internally respect a 300s time limit (ORCLAW_SOLVE_TIME_LIMIT_SECONDS). The command timeout_sec must always be LARGER than the solver-internal time limit (300s) — never use a shortened command timeout as a substitute for the solver time limit; a killed command loses the solver's own status report.
 - finish(summary): call only when all required artifacts exist and have been validated.
 
 Workflow (the task instruction below is authoritative; this is the expected shape):
@@ -152,15 +154,30 @@ class OrAgent(BaseAgent):
         predict_mode = self._ora_predict_mode or env.get("ORA_PREDICT_MODE", "off")
         predictor = make_predictor(predict_mode, llm_fn)
 
+        # Shared budget tracker: the loop records actor usage, the recorder
+        # records predictor usage — single aggregation entry point, no double
+        # counting. A "worker" role is reserved for future sub-task workers.
+        tracker = BudgetTracker(token_budget=self._ora_token_budget)
+
         async def exec_fn(command: str, timeout_sec: int) -> dict:
             r = await environment.exec(command=command, cwd="/app",
                                        timeout_sec=timeout_sec)
             return {"stdout": r.stdout or "", "stderr": r.stderr or "",
                     "return_code": r.return_code}
 
+        async def artifacts_probe() -> str:
+            r = await environment.exec("ls -la /app/submissions/ 2>&1",
+                                       cwd="/app", timeout_sec=30)
+            return (r.stdout or "")[:2000]
+
         with TrajectoryWriter(out_dir / "trajectory.jsonl", run_id=run_id,
-                              task_id=task_id, model=model) as writer:
-            recorder = PredictionRecorder(out_dir, writer=writer, predictor=predictor)
+                              task_id=task_id, model=model) as writer, \
+                EvidenceStore(out_dir / "evidence.jsonl") as evidence_store:
+            # evidence_store is wired for the requirement-traceability schema
+            # (2.2); loop integration that emits these records comes later.
+            _ = evidence_store
+            recorder = PredictionRecorder(out_dir, writer=writer,
+                                          predictor=predictor, tracker=tracker)
             config = LoopConfig(
                 max_steps=self._ora_max_steps,
                 token_budget=self._ora_token_budget,
@@ -176,6 +193,8 @@ class OrAgent(BaseAgent):
                 exec_fn=exec_fn,
                 writer=writer,
                 recorder=recorder,
+                budget_tracker=tracker,
+                artifacts_probe=artifacts_probe,
                 model=model,
             )
 
@@ -189,8 +208,12 @@ class OrAgent(BaseAgent):
                 "n_llm_calls": result.n_llm_calls,
                 "finish_summary": result.finish_summary,
                 "usage": dict(result.usage),
+                "role_usage": tracker.role_totals(),
                 "predict_mode": predictor.mode,
+                "decision_integration": False,
                 "model": model,
                 "trajectory": str(out_dir / "trajectory.jsonl"),
+                "run_summary": str(out_dir / "run_summary.json"),
+                "evidence": str(out_dir / "evidence.jsonl"),
             }
         }

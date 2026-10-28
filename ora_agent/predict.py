@@ -173,9 +173,15 @@ class PredictionRecorder:
     and fsync'd before the action is executed; the outcome file references
     the prediction file by name and is written after execution. Neither file
     is ever modified after creation (no backfilling).
+
+    Cost accounting: predictor LLM calls are recorded exactly once, here,
+    from prediction["predictor_meta"]["usage"] — into the shared
+    BudgetTracker when one is provided, otherwise into a local cumulative
+    ``usage`` dict. Callers must NOT record predictor calls elsewhere.
     """
 
-    def __init__(self, root_dir, *, writer=None, predictor: Predictor | None = None):
+    def __init__(self, root_dir, *, writer=None, predictor: Predictor | None = None,
+                 tracker=None):
         self.root_dir = Path(root_dir)
         self.predictions_dir = self.root_dir / "predictions"
         self.outcomes_dir = self.root_dir / "outcomes"
@@ -183,6 +189,35 @@ class PredictionRecorder:
         self.outcomes_dir.mkdir(parents=True, exist_ok=True)
         self.writer = writer
         self.predictor = predictor or NullPredictor()
+        self.tracker = tracker
+        self._usage = {"n_calls": 0, "prompt_tokens": 0,
+                       "completion_tokens": 0, "latency_s": 0.0}
+
+    @property
+    def usage(self) -> dict:
+        """Cumulative predictor usage {n_calls, prompt_tokens,
+        completion_tokens, latency_s}. Reads from the shared tracker when
+        attached so there is a single aggregation entry point."""
+        if self.tracker is not None:
+            t = self.tracker.role_totals().get("predictor", {})
+            return {"n_calls": t.get("calls", 0),
+                    "prompt_tokens": t.get("prompt_tokens", 0),
+                    "completion_tokens": t.get("completion_tokens", 0),
+                    "latency_s": t.get("latency_s", 0.0)}
+        return dict(self._usage)
+
+    def _record_usage(self, prediction: dict) -> None:
+        meta = (prediction or {}).get("predictor_meta") or {}
+        u = meta.get("usage") or {}
+        latency = meta.get("latency_s")
+        if self.tracker is not None:
+            self.tracker.record("predictor", u, latency)
+        else:
+            self._usage["n_calls"] += 1
+            self._usage["prompt_tokens"] += u.get("prompt_tokens") or 0
+            self._usage["completion_tokens"] += u.get("completion_tokens") or 0
+            self._usage["latency_s"] = round(
+                self._usage["latency_s"] + (latency or 0.0), 3)
 
     def should_predict(self, action_kind: str) -> bool:
         return (self.predictor.mode != "off"
@@ -199,6 +234,7 @@ class PredictionRecorder:
             return None
         input_hash = hash_prediction_input(history_summary, action, budget_state)
         prediction = self.predictor.predict(history_summary, action, budget_state)
+        self._record_usage(prediction)
         fname = f"{seq:04d}_{action_hash}.json"
         rel = f"predictions/{fname}"
         payload = {

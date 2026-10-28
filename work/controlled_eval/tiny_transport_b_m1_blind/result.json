@@ -1,0 +1,129 @@
+{
+  "problem": "tiny_transport",
+  "aid": "b_m1",
+  "kind": "mutant",
+  "mode": "blind",
+  "sandbox": "/home/hewj13/wm/ora/work/controlled_eval/tiny_transport_b_m1_blind",
+  "prompt_versions": {
+    "audit_system": "b7c68ac3fda414f5",
+    "audit_confirm_addendum": "7010607b41090a6e",
+    "audit_verify_fix_addendum": "595c522114f21d3e",
+    "audit_blind_note": "fd8b3d30b708ae0a",
+    "repair_system": "09557700c36091b7"
+  },
+  "error": null,
+  "audit": {
+    "focus": "full semantic audit",
+    "mode": "blind",
+    "artifact_version": "770772521255afd7",
+    "findings": [
+      {
+        "finding_id": "F-001",
+        "proposed_checks": [
+          "python3 -c \"import ast; tree=ast.parse(open('/app/submissions/solve.py').read()); print('Check constraint direction in solve.py')\"",
+          "grep -n 'MIN_FROM_P2' /app/submissions/solve.py"
+        ]
+      },
+      {
+        "finding_id": "F-002",
+        "proposed_checks": [
+          "cat /app/data/demand.csv",
+          "cat /app/data/supply.csv",
+          "cat /app/data/costs.csv",
+          "grep -n 'BOX_TO_PIECES' /app/submissions/solve.py"
+        ]
+      }
+    ]
+  },
+  "checks": [
+    {
+      "command": "python3 -c \"import ast; tree=ast.parse(open('/app/submissions/solve.py').read()); print('Check constraint direction in solve.py')\"",
+      "return_code": 0,
+      "timed_out": false,
+      "stdout_tail": "Check constraint direction in solve.py\n",
+      "stderr_tail": ""
+    },
+    {
+      "command": "grep -n 'MIN_FROM_P2' /app/submissions/solve.py",
+      "return_code": 0,
+      "timed_out": false,
+      "stdout_tail": "13:MIN_FROM_P2 = 20    # each warehouse must receive at least 20 pieces from P2\n43:        model.addCons(x[\"P2\", w] <= MIN_FROM_P2)\n",
+      "stderr_tail": ""
+    },
+    {
+      "command": "cat /app/data/demand.csv",
+      "return_code": 0,
+      "timed_out": false,
+      "stdout_tail": "warehouse,demand\nD1,80\nD2,90\nD3,80\n",
+      "stderr_tail": ""
+    },
+    {
+      "command": "cat /app/data/supply.csv",
+      "return_code": 0,
+      "timed_out": false,
+      "stdout_tail": "plant,supply\nP1,1000\nP2,1500\n",
+      "stderr_tail": ""
+    },
+    {
+      "command": "cat /app/data/costs.csv",
+      "return_code": 0,
+      "timed_out": false,
+      "stdout_tail": "plant,warehouse,cost\nP1,D1,1\nP1,D2,5\nP1,D3,8\nP2,D1,4\nP2,D2,2\nP2,D3,3\n",
+      "stderr_tail": ""
+    },
+    {
+      "command": "grep -n 'BOX_TO_PIECES' /app/submissions/solve.py",
+      "return_code": 0,
+      "timed_out": false,
+      "stdout_tail": "12:BOX_TO_PIECES = 10  # demand.csv is in boxes; 1 box = 10 pieces\n20:        demand = {r[\"warehouse\"]: float(r[\"demand\"]) * BOX_TO_PIECES for r in csv.DictReader(f)}\n",
+      "stderr_tail": ""
+    }
+  ],
+  "confirm": {
+    "focus": "confirm",
+    "mode": "blind",
+    "artifact_version": "770772521255afd7",
+    "findings": [],
+    "finding_updates_applied": [
+      "F-001",
+      "F-002"
+    ],
+    "check_results_written": [
+      "chk-001",
+      "chk-002"
+    ]
+  },
+  "open_findings": [
+    {
+      "record_type": "finding",
+      "ts": "2026-10-28T08:34:44.042391+00:00",
+      "finding_id": "F-001",
+      "req_ids": [],
+      "artifact_hash": "770772521255afd7",
+      "problem_type": "implementation",
+      "evidence_level": "actual_test",
+      "detail": "The code explicitly defines `MIN_FROM_P2 = 20` with a comment stating 'at least 20 pieces', but the constraint implemented is `x['P2', w] <= MIN_FROM_P2`. This is an upper bound (maximum), which contradicts the variable name and comment indicating a lower bound (minimum). The semantic inversion is confirmed by the source code.",
+      "witness_ref": "grep -n 'MIN_FROM_P2' /app/submissions/solve.py",
+      "status": "confirmed"
+    },
+    {
+      "record_type": "finding",
+      "ts": "2026-10-28T08:34:44.084154+00:00",
+      "finding_id": "F-002",
+      "req_ids": [],
+      "artifact_hash": "770772521255afd7",
+      "problem_type": "semantic",
+      "evidence_level": "actual_test",
+      "detail": "The code multiplies demand by 10 (`BOX_TO_PIECES`) while supply and costs are used as-is. The data files do not specify units. Without the problem statement, it is impossible to determine if this conversion is required or erroneous. The asymmetry in unit handling is observed, but its correctness cannot be judged without external context.",
+      "witness_ref": "grep -n 'BOX_TO_PIECES' /app/submissions/solve.py; cat /app/data/demand.csv; cat /app/data/supply.csv",
+      "status": "unresolved"
+    }
+  ],
+  "usage": {
+    "calls": 3,
+    "prompt_tokens": 6012,
+    "completion_tokens": 1547,
+    "latency_s": 27.87
+  },
+  "wall_time_s": 28.8
+}

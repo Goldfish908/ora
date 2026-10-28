@@ -1,0 +1,138 @@
+{
+  "problem": "tiny_transport",
+  "aid": "b_m1",
+  "kind": "mutant",
+  "mode": "full",
+  "sandbox": "/home/hewj13/wm/ora/work/controlled_eval/tiny_transport_b_m1",
+  "prompt_versions": {
+    "audit_system": "b7c68ac3fda414f5",
+    "audit_confirm_addendum": "7010607b41090a6e",
+    "audit_verify_fix_addendum": "595c522114f21d3e",
+    "audit_blind_note": "fd8b3d30b708ae0a",
+    "repair_system": "09557700c36091b7"
+  },
+  "error": null,
+  "audit": {
+    "focus": "full semantic audit",
+    "mode": "full",
+    "artifact_version": "770772521255afd7",
+    "requirements_written": [
+      "R1",
+      "R2",
+      "R3",
+      "R4",
+      "R5",
+      "R6"
+    ],
+    "findings": [
+      {
+        "finding_id": "F-001",
+        "proposed_checks": [
+          "python3 -c \"import json; d=json.load(open('/app/solution.json')); p2_flows={f['warehouse']: f['qty'] for f in d['flows'] if f['plant']=='P2'}; assert all(v >= 20 for v in p2_flows.values()), f'P2 flows below 20: {p2_flows}'\"",
+          "grep -n 'MIN_FROM_P2' /app/submissions/solve.py | grep '<='"
+        ]
+      }
+    ]
+  },
+  "checks": [
+    {
+      "command": "python3 -c \"import json; d=json.load(open('/app/solution.json')); p2_flows={f['warehouse']: f['qty'] for f in d['flows'] if f['plant']=='P2'}; assert all(v >= 20 for v in p2_flows.values()), f'P2 flows below 20: {p2_flows}'\"",
+      "return_code": 1,
+      "timed_out": false,
+      "stdout_tail": "",
+      "stderr_tail": "Traceback (most recent call last):\n  File \"<string>\", line 1, in <module>\nFileNotFoundError: [Errno 2] No such file or directory: '/home/hewj13/wm/ora/work/controlled_eval/tiny_transport_b_m1/app/solution.json'\n"
+    },
+    {
+      "command": "grep -n 'MIN_FROM_P2' /app/submissions/solve.py | grep '<='",
+      "return_code": 0,
+      "timed_out": false,
+      "stdout_tail": "43:        model.addCons(x[\"P2\", w] <= MIN_FROM_P2)\n",
+      "stderr_tail": ""
+    }
+  ],
+  "confirm": {
+    "focus": "confirm",
+    "mode": "full",
+    "artifact_version": "770772521255afd7",
+    "findings": [],
+    "finding_updates_applied": [
+      "F-001"
+    ],
+    "check_results_written": [
+      "chk-001",
+      "chk-002"
+    ]
+  },
+  "open_findings": [
+    {
+      "record_type": "finding",
+      "ts": "2026-10-28T08:34:03.621545+00:00",
+      "finding_id": "F-001",
+      "req_ids": [
+        "R3"
+      ],
+      "artifact_hash": "770772521255afd7",
+      "problem_type": "implementation",
+      "evidence_level": "actual_test",
+      "detail": "The code explicitly uses `x['P2', w] <= MIN_FROM_P2` (line 43), which is an upper bound. The problem statement requires a lower bound (`>= 20`). This confirms the inequality direction is reversed.",
+      "witness_ref": "grep -n 'MIN_FROM_P2' /app/submissions/solve.py | grep '<='",
+      "status": "confirmed"
+    }
+  ],
+  "repair": {
+    "finding_id": "F-001",
+    "reply": {
+      "finding_id": "F-001",
+      "patch_commands": [
+        "cp /app/submissions/solve.py /app/submissions/solve_v1.py",
+        "sed -i 's/model.addCons(x\\[\"P2\", w\\] <= MIN_FROM_P2)/model.addCons(x[\"P2\", w] >= MIN_FROM_P2)/' /app/submissions/solve.py"
+      ],
+      "regression_plan": [
+        "cd /app/submissions && python solve.py",
+        "python -c \"import json; d=json.load(open('solution.json')); p2={f['warehouse']:f['qty'] for f in d['flows'] if f['plant']=='P2'}; assert all(v>=20-1e-6 for v in p2.values()), p2; print('OK', d['objective'])\"",
+        "grep -n 'MIN_FROM_P2' /app/submissions/solve.py | grep '>='"
+      ],
+      "rationale": "The finding confirms the inequality direction is reversed: line 43 uses `x['P2', w] <= MIN_FROM_P2` (upper bound) but requirement R3 mandates a lower bound (`>= 20`). The fix flips `<=` to `>=` on that single constraint. All other logic (supply caps, demand equality, objective, output schema) remains unchanged.",
+      "expected_resolved": [
+        "F-001"
+      ],
+      "risk_notes": "Single-character operator flip on one constraint line; no change to variable domains, objective, or output format. The model should remain feasible since P2 supply (1500) far exceeds the minimum total of 60 pieces required across three warehouses.",
+      "note": "execute patch_commands via bash, run regression_plan, then call audit(focus='verify_fix', question=<outcomes>)"
+    },
+    "patch_results": [
+      {
+        "command": "cp /app/submissions/solve.py /app/submissions/solve_v1.py",
+        "return_code": 0,
+        "stderr_tail": ""
+      },
+      {
+        "command": "sed -i 's/model.addCons(x\\[\"P2\", w\\] <= MIN_FROM_P2)/model.addCons(x[\"P2\", w] >= MIN_FROM_P2)/' /app/submissions/solve.py",
+        "return_code": 0,
+        "stderr_tail": ""
+      }
+    ],
+    "patch_applied": true,
+    "witness_after_patch": {
+      "verdict": "PASS",
+      "return_code": 0,
+      "output_tail": "OBJECTIVE 5720.0\nWITNESS PASS\n"
+    },
+    "verify_fix": {
+      "focus": "verify_fix",
+      "mode": "full",
+      "artifact_version": "ef2f81abb63b2ef8",
+      "findings": [],
+      "finding_updates_applied": [
+        "F-001"
+      ],
+      "repair_result_written": "repair-7c079c07bf"
+    }
+  },
+  "usage": {
+    "calls": 4,
+    "prompt_tokens": 10557,
+    "completion_tokens": 1754,
+    "latency_s": 30.35
+  },
+  "wall_time_s": 32.6
+}

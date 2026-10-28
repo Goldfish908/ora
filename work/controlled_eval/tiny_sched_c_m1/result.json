@@ -1,0 +1,166 @@
+{
+  "problem": "tiny_sched",
+  "aid": "c_m1",
+  "kind": "mutant",
+  "mode": "full",
+  "sandbox": "/home/hewj13/wm/ora/work/controlled_eval/tiny_sched_c_m1",
+  "prompt_versions": {
+    "audit_system": "b7c68ac3fda414f5",
+    "audit_confirm_addendum": "7010607b41090a6e",
+    "audit_verify_fix_addendum": "595c522114f21d3e",
+    "audit_blind_note": "fd8b3d30b708ae0a",
+    "repair_system": "09557700c36091b7"
+  },
+  "error": null,
+  "audit": {
+    "focus": "full semantic audit",
+    "mode": "full",
+    "artifact_version": "6713b2c1f4dba9c8",
+    "requirements_written": [
+      "R1",
+      "R2",
+      "R3",
+      "R4",
+      "R5",
+      "R6"
+    ],
+    "findings": [
+      {
+        "finding_id": "F-001",
+        "proposed_checks": [
+          "python3 -c \"import json; d=json.load(open('/app/solution.json')); j1=[j for j in d['jobs'] if j['job_id']=='J1'][0]; j3=[j for j in d['jobs'] if j['job_id']=='J3'][0]; assert j1['end'] <= j3['start'], f'Precedence violated: J1 ends at {j1[\\\"end\\\"]}, J3 starts at {j3[\\\"start\\\"]}'\"",
+          "grep -n 'start\\[u\\] >= start\\[v\\]' /app/submissions/solve.py"
+        ]
+      },
+      {
+        "finding_id": "F-002",
+        "proposed_checks": [
+          "python3 -c \"\nimport json\nwith open('/app/solution.json') as f:\n    sol = json.load(f)\njobs = {j['job_id']: j for j in sol['jobs']}\n# Check overlaps\nfor m in ['M1', 'M2']:\n    ms = [j for j in sol['jobs'] if j['machine'] == m]\n    ms.sort(key=lambda x: x['start'])\n    for k in range(len(ms)-1):\n        if ms[k]['end'] > ms[k+1]['start']:\n            print(f'Overlap on {m}: {ms[k][\\\"job_id\\\"]} and {ms[k+1][\\\"job_id\\\"]}')\nprint('Overlap check done')\n\""
+        ]
+      }
+    ]
+  },
+  "checks": [
+    {
+      "command": "python3 -c \"import json; d=json.load(open('/app/solution.json')); j1=[j for j in d['jobs'] if j['job_id']=='J1'][0]; j3=[j for j in d['jobs'] if j['job_id']=='J3'][0]; assert j1['end'] <= j3['start'], f'Precedence violated: J1 ends at {j1[\\\"end\\\"]}, J3 starts at {j3[\\\"start\\\"]}'\"",
+      "return_code": 1,
+      "timed_out": false,
+      "stdout_tail": "",
+      "stderr_tail": "Traceback (most recent call last):\n  File \"<string>\", line 1, in <module>\nFileNotFoundError: [Errno 2] No such file or directory: '/home/hewj13/wm/ora/work/controlled_eval/tiny_sched_c_m1/app/solution.json'\n"
+    },
+    {
+      "command": "grep -n 'start\\[u\\] >= start\\[v\\]' /app/submissions/solve.py",
+      "return_code": 0,
+      "timed_out": false,
+      "stdout_tail": "60:        model.addCons(start[u] >= start[v] + proc[v])\n",
+      "stderr_tail": ""
+    },
+    {
+      "command": "python3 -c \"\nimport json\nwith open('/app/solution.json') as f:\n    sol = json.load(f)\njobs = {j['job_id']: j for j in sol['jobs']}\n# Check overlaps\nfor m in ['M1', 'M2']:\n    ms = [j for j in sol['jobs'] if j['machine'] == m]\n    ms.sort(key=lambda x: x['start'])\n    for k in range(len(ms)-1):\n        if ms[k]['end'] > ms[k+1]['start']:\n            print(f'Overlap on {m}: {ms[k][\\\"job_id\\\"]} and {ms[k+1][\\\"job_id\\\"]}')\nprint('Overlap check done')\n\"",
+      "return_code": 1,
+      "timed_out": false,
+      "stdout_tail": "",
+      "stderr_tail": "Traceback (most recent call last):\n  File \"<string>\", line 3, in <module>\nFileNotFoundError: [Errno 2] No such file or directory: '/home/hewj13/wm/ora/work/controlled_eval/tiny_sched_c_m1/app/solution.json'\n"
+    }
+  ],
+  "confirm": {
+    "focus": "confirm",
+    "mode": "full",
+    "artifact_version": "6713b2c1f4dba9c8",
+    "findings": [],
+    "finding_updates_applied": [
+      "F-001",
+      "F-002"
+    ],
+    "check_results_written": [
+      "chk-001",
+      "chk-002",
+      "chk-003"
+    ]
+  },
+  "open_findings": [
+    {
+      "record_type": "finding",
+      "ts": "2026-10-28T08:26:00.231885+00:00",
+      "finding_id": "F-001",
+      "req_ids": [
+        "R3"
+      ],
+      "artifact_hash": "6713b2c1f4dba9c8",
+      "problem_type": "semantic",
+      "evidence_level": "actual_test",
+      "detail": "The code explicitly contains `model.addCons(start[u] >= start[v] + proc[v])` for the precedence pair (J1, J3). This enforces Start(J1) >= End(J3), which is the inverse of the required constraint End(J1) <= Start(J3). The runtime check failed due to missing output file, but the source code inspection confirms the logical inversion.",
+      "witness_ref": "grep -n 'start\\[u\\] >= start\\[v\\]' /app/submissions/solve.py",
+      "status": "confirmed"
+    },
+    {
+      "record_type": "finding",
+      "ts": "2026-10-28T08:26:00.257003+00:00",
+      "finding_id": "F-002",
+      "req_ids": [
+        "R2"
+      ],
+      "artifact_hash": "6713b2c1f4dba9c8",
+      "problem_type": "implementation",
+      "evidence_level": "actual_test",
+      "detail": "The proposed check to verify no-overlap constraints in the solution could not be executed because `solution.json` was not generated. While the Big-M formulation logic appears sound upon manual review, the lack of a generated solution prevents empirical confirmation of feasibility and optimality. The status remains unresolved as the specific implementation flaw suspected in the initial finding (global ordering variable) is theoretically valid but unverified against actual solver output.",
+      "witness_ref": "python3 -c \"import json...\" (FileNotFoundError)",
+      "status": "unresolved"
+    }
+  ],
+  "repair": {
+    "finding_id": "F-001",
+    "reply": {
+      "finding_id": "F-001",
+      "patch_commands": [
+        "cp /app/submissions/solve.py /app/submissions/solve_v1.py",
+        "sed -i 's/model.addCons(start\\[u\\] >= start\\[v\\] + proc\\[v\\])/model.addCons(start[v] >= start[u] + proc[u])/' /app/submissions/solve.py"
+      ],
+      "regression_plan": [
+        "cd /app/submissions && python solve.py",
+        "python -c \"import json; d=json.load(open('solution.json')); jobs={j['job_id']:j for j in d['jobs']}; assert jobs['J1']['end'] <= jobs['J3']['start'], f'precedence violated: J1 end {jobs[chr(34)+chr(34)]}'; print('OK', d['makespan'])\""
+      ],
+      "rationale": "The precedence constraint was inverted. The requirement R3 states End(J1) <= Start(J3), i.e., start[J3] >= start[J1] + proc[J1]. The code had `start[u] >= start[v] + proc[v]` which enforces the opposite (Start(J1) >= End(J3)). Fixing to `start[v] >= start[u] + proc[u]` where u=pred=J1, v=succ=J3 gives the correct direction.",
+      "expected_resolved": [
+        "F-001"
+      ],
+      "risk_notes": "Minimal one-line change. The big-M disjunctive no-overlap constraints and objective remain unchanged. The fix is purely semantic — correcting the direction of the precedence inequality.",
+      "note": "execute patch_commands via bash, run regression_plan, then call audit(focus='verify_fix', question=<outcomes>)"
+    },
+    "patch_results": [
+      {
+        "command": "cp /app/submissions/solve.py /app/submissions/solve_v1.py",
+        "return_code": 0,
+        "stderr_tail": ""
+      },
+      {
+        "command": "sed -i 's/model.addCons(start\\[u\\] >= start\\[v\\] + proc\\[v\\])/model.addCons(start[v] >= start[u] + proc[u])/' /app/submissions/solve.py",
+        "return_code": 0,
+        "stderr_tail": ""
+      }
+    ],
+    "patch_applied": true,
+    "witness_after_patch": {
+      "verdict": "PASS",
+      "return_code": 0,
+      "output_tail": "OBJECTIVE 17.0\nWITNESS PASS\n"
+    },
+    "verify_fix": {
+      "focus": "verify_fix",
+      "mode": "full",
+      "artifact_version": "9f4fb02adc30f198",
+      "findings": [],
+      "finding_updates_applied": [
+        "F-001"
+      ],
+      "repair_result_written": "repair-b3e07b41d6"
+    }
+  },
+  "usage": {
+    "calls": 5,
+    "prompt_tokens": 14420,
+    "completion_tokens": 4669,
+    "latency_s": 129.93
+  },
+  "wall_time_s": 131.9
+}

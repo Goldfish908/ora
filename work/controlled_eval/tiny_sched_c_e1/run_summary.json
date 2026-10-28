@@ -1,0 +1,29 @@
+{
+  "run_id": "tiny_sched_c_e1_full",
+  "task_id": "tiny_sched/c_e1",
+  "model": "worker",
+  "status": "running",
+  "ts_started": "2026-10-28T08:32:38.424940+00:00",
+  "n_steps": 0,
+  "last_state_id": 8,
+  "actor_usage": {
+    "calls": 0,
+    "prompt_tokens": 0,
+    "completion_tokens": 0,
+    "latency_s": 0.0
+  },
+  "predictor_usage": {
+    "calls": 0,
+    "prompt_tokens": 0,
+    "completion_tokens": 0,
+    "latency_s": 0.0
+  },
+  "worker_usage": {
+    "calls": 4,
+    "prompt_tokens": 12499,
+    "completion_tokens": 3115,
+    "latency_s": 54.413
+  },
+  "artifacts_last_observed": null,
+  "ts_updated": "2026-10-28T08:33:34.913925+00:00"
+}

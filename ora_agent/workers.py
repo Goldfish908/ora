@@ -172,7 +172,8 @@ class WorkerManager:
     """Handles audit/repair tool invocations for the master loop."""
 
     def __init__(self, *, llm_fn, exec_fn, evidence_store, writer,
-                 tracker=None, max_tokens: int = 4096, temperature: float = 0.0):
+                 tracker=None, max_tokens: int = 4096, temperature: float = 0.0,
+                 llm_extra: dict | None = None):
         self._llm_fn = llm_fn
         self._exec_fn = exec_fn
         self._store = evidence_store
@@ -180,6 +181,7 @@ class WorkerManager:
         self._tracker = tracker
         self._max_tokens = max_tokens
         self._temperature = temperature
+        self._llm_extra = llm_extra
         self.n_calls = 0
 
     # -- plumbing ---------------------------------------------------------------
@@ -219,7 +221,8 @@ class WorkerManager:
         try:
             out = await asyncio.to_thread(
                 self._llm_fn, messages, max_tokens=self._max_tokens,
-                temperature=self._temperature)
+                temperature=self._temperature,
+                **({"extra": self._llm_extra} if self._llm_extra else {}))
         except Exception as e:
             self._writer.emit("worker_response", worker=worker,
                               n_call=self.n_calls,

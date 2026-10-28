@@ -1,0 +1,170 @@
+{
+  "problem": "tiny_sched",
+  "aid": "c_m3",
+  "kind": "mutant",
+  "mode": "full",
+  "sandbox": "/home/hewj13/wm/ora/work/controlled_eval/tiny_sched_c_m3",
+  "prompt_versions": {
+    "audit_system": "b7c68ac3fda414f5",
+    "audit_confirm_addendum": "7010607b41090a6e",
+    "audit_verify_fix_addendum": "595c522114f21d3e",
+    "audit_blind_note": "fd8b3d30b708ae0a",
+    "repair_system": "09557700c36091b7"
+  },
+  "error": null,
+  "audit": {
+    "focus": "full semantic audit",
+    "mode": "full",
+    "artifact_version": "d6e21cb0e4fc2c5a",
+    "requirements_written": [
+      "R1",
+      "R2",
+      "R3",
+      "R4",
+      "R5",
+      "R6"
+    ],
+    "findings": [
+      {
+        "finding_id": "F-001",
+        "proposed_checks": [
+          "python3 -c \"import csv; f=open('/app/data/jobs.csv'); r=csv.DictReader(f); row=next(r); assert row['proc_min'] != row['setup_min'], 'Data check failed'; print('Data has distinct proc/setup')\"",
+          "grep -n 'setup_min' /app/submissions/solve.py | grep -v '#'",
+          "python3 -c \"\nimport sys\nsys.path.insert(0, '/app/submissions')\nfrom solve import load_data\nproc, machines, prec = load_data()\nexpected_proc = {'J1': 3.0, 'J2': 10.0, 'J3': 8.0, 'J4': 7.0, 'J5': 6.0}\nfor j, p in expected_proc.items():\n    if abs(proc[j] - p) > 1e-9:\n        print(f'FAIL: Job {j} has proc={proc[j]}, expected {p}')\n        sys.exit(1)\nprint('PASS: Processing times match proc_min')\n\""
+        ]
+      },
+      {
+        "finding_id": "F-002",
+        "proposed_checks": [
+          "python3 -c \"\n# Verify if the current solution (if any) or a fresh run produces the correct makespan given CORRECT proc times.\n# Correct proc: J1=3, J2=10, J3=8, J4=7, J5=6. Total work = 34. Min makespan >= ceil(34/2) = 17.\n# Precedence J1->J3. \n# Let's just check the logic of the objective definition in code.\nimport inspect\nimport solve\nsrc = inspect.getsource(solve.main)\nassert '1e-4' in src, 'Secondary term found'\nprint('Note: Secondary term exists in objective.')\n\""
+        ]
+      }
+    ]
+  },
+  "checks": [
+    {
+      "command": "python3 -c \"import csv; f=open('/app/data/jobs.csv'); r=csv.DictReader(f); row=next(r); assert row['proc_min'] != row['setup_min'], 'Data check failed'; print('Data has distinct proc/setup')\"",
+      "return_code": 0,
+      "timed_out": false,
+      "stdout_tail": "Data has distinct proc/setup\n",
+      "stderr_tail": ""
+    },
+    {
+      "command": "grep -n 'setup_min' /app/submissions/solve.py | grep -v '#'",
+      "return_code": 0,
+      "timed_out": false,
+      "stdout_tail": "16:            proc[r[\"job_id\"]] = float(r[\"setup_min\"])\n",
+      "stderr_tail": ""
+    },
+    {
+      "command": "python3 -c \"\nimport sys\nsys.path.insert(0, '/app/submissions')\nfrom solve import load_data\nproc, machines, prec = load_data()\nexpected_proc = {'J1': 3.0, 'J2': 10.0, 'J3': 8.0, 'J4': 7.0, 'J5': 6.0}\nfor j, p in expected_proc.items():\n    if abs(proc[j] - p) > 1e-9:\n        print(f'FAIL: Job {j} has proc={proc[j]}, expected {p}')\n        sys.exit(1)\nprint('PASS: Processing times match proc_min')\n\"",
+      "return_code": 1,
+      "timed_out": false,
+      "stdout_tail": "FAIL: Job J1 has proc=12.0, expected 3.0\n",
+      "stderr_tail": ""
+    },
+    {
+      "command": "python3 -c \"\n# Verify if the current solution (if any) or a fresh run produces the correct makespan given CORRECT proc times.\n# Correct proc: J1=3, J2=10, J3=8, J4=7, J5=6. Total work = 34. Min makespan >= ceil(34/2) = 17.\n# Precedence J1->J3. \n# Let's just check the logic of the objective definition in code.\nimport inspect\nimport solve\nsrc = inspect.getsource(solve.main)\nassert '1e-4' in src, 'Secondary term found'\nprint('Note: Secondary term exists in objective.')\n\"",
+      "rejected": true,
+      "reason": "blocked by command guard"
+    }
+  ],
+  "confirm": {
+    "focus": "confirm",
+    "mode": "full",
+    "artifact_version": "d6e21cb0e4fc2c5a",
+    "findings": [],
+    "finding_updates_applied": [
+      "F-001",
+      "F-002"
+    ],
+    "check_results_written": [
+      "chk-001"
+    ]
+  },
+  "open_findings": [
+    {
+      "record_type": "finding",
+      "ts": "2026-10-28T08:31:18.249110+00:00",
+      "finding_id": "F-001",
+      "req_ids": [
+        "R4"
+      ],
+      "artifact_hash": "d6e21cb0e4fc2c5a",
+      "problem_type": "implementation",
+      "evidence_level": "actual_test",
+      "detail": "The check confirmed that `load_data` returns processing times based on `setup_min` (e.g., J1=12.0) instead of `proc_min` (expected 3.0). The grep also confirmed the line `proc[r[\"job_id\"]] = float(r[\"setup_min\"])` exists in the code.",
+      "witness_ref": "check: python3 -c \"import sys; sys.path.insert(0, '/app/submissions'); from solve import load_data; ...\"",
+      "status": "confirmed"
+    },
+    {
+      "record_type": "finding",
+      "ts": "2026-10-28T08:31:18.282524+00:00",
+      "finding_id": "F-002",
+      "req_ids": [
+        "R5"
+      ],
+      "artifact_hash": "d6e21cb0e4fc2c5a",
+      "problem_type": "semantic",
+      "evidence_level": "actual_test",
+      "detail": "The proposed check to verify the secondary objective term was rejected by the guard, so no execution evidence is available. While the source code clearly contains the term `1e-4 * quicksum(start[j] for j in jobs)`, without an executed witness test confirming its impact or presence in the final model state, this remains unresolved per the strict evidence rules.",
+      "witness_ref": "check (rejected by guard): python3 -c \"... assert '1e-4' in src ...\"",
+      "status": "unresolved"
+    }
+  ],
+  "repair": {
+    "finding_id": "F-001",
+    "reply": {
+      "finding_id": "F-001",
+      "patch_commands": [
+        "cp /app/submissions/solve.py /app/submissions/solve_v1.py",
+        "sed -i 's/proc\\[r\\[\"job_id\"\\]\\] = float(r\\[\"setup_min\"\\])/proc[r[\"job_id\"]] = float(r[\"proc_min\"])/' /app/submissions/solve.py"
+      ],
+      "regression_plan": [
+        "cd /app/submissions && python3 -c \"import sys; sys.path.insert(0, '.'); from solve import load_data; p,m,pr=load_data(); assert p['J1']==3.0 and p['J2']==10.0 and p['J3']==8.0 and p['J4']==7.0 and p['J5']==6.0, p; print('OK', p)\"",
+        "cd /app/submissions && python3 solve.py && cat solution.json"
+      ],
+      "rationale": "The confirmed bug is in load_data: it reads setup_min instead of proc_min for job processing times. Per R4, proc_min is the scheduling duration and setup_min must be ignored. A single-line sed replaces the wrong column with proc_min. All other logic (assignment, disjunctive no-overlap, precedence J1->J3, makespan objective, output schema) remains unchanged.",
+      "expected_resolved": [
+        "F-001"
+      ],
+      "risk_notes": "Minimal one-line change; no impact on model structure or output format. Verify makespan recomputes correctly with true proc values (sum=34 over 2 machines, lower bound ~17).",
+      "note": "execute patch_commands via bash, run regression_plan, then call audit(focus='verify_fix', question=<outcomes>)"
+    },
+    "patch_results": [
+      {
+        "command": "cp /app/submissions/solve.py /app/submissions/solve_v1.py",
+        "return_code": 0,
+        "stderr_tail": ""
+      },
+      {
+        "command": "sed -i 's/proc\\[r\\[\"job_id\"\\]\\] = float(r\\[\"setup_min\"\\])/proc[r[\"job_id\"]] = float(r[\"proc_min\"])/' /app/submissions/solve.py",
+        "return_code": 0,
+        "stderr_tail": ""
+      }
+    ],
+    "patch_applied": true,
+    "witness_after_patch": {
+      "verdict": "PASS",
+      "return_code": 0,
+      "output_tail": "OBJECTIVE 17.0\nWITNESS PASS\n"
+    },
+    "verify_fix": {
+      "focus": "verify_fix",
+      "mode": "full",
+      "artifact_version": "9f4fb02adc30f198",
+      "findings": [],
+      "finding_updates_applied": [
+        "F-001"
+      ],
+      "repair_result_written": "repair-a3c74e1008"
+    }
+  },
+  "usage": {
+    "calls": 4,
+    "prompt_tokens": 11835,
+    "completion_tokens": 2344,
+    "latency_s": 41.95
+  },
+  "wall_time_s": 43.7
+}

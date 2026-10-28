@@ -1,0 +1,168 @@
+{
+  "problem": "tiny_transport",
+  "aid": "b_m2",
+  "kind": "mutant",
+  "mode": "full",
+  "sandbox": "/home/hewj13/wm/ora/work/controlled_eval/tiny_transport_b_m2",
+  "prompt_versions": {
+    "audit_system": "b7c68ac3fda414f5",
+    "audit_confirm_addendum": "7010607b41090a6e",
+    "audit_verify_fix_addendum": "595c522114f21d3e",
+    "audit_blind_note": "fd8b3d30b708ae0a",
+    "repair_system": "09557700c36091b7"
+  },
+  "error": null,
+  "audit": {
+    "focus": "full semantic audit",
+    "mode": "full",
+    "artifact_version": "8f153a0e246805cf",
+    "requirements_written": [
+      "R1",
+      "R2",
+      "R3",
+      "R4",
+      "R5",
+      "R6"
+    ],
+    "findings": [
+      {
+        "finding_id": "F-001",
+        "proposed_checks": [
+          "python3 -c \"import sys; sys.path.insert(0, '/app/submissions'); import solve; s,d,c = solve.load_data(); assert d['D1'] == 800, f'D1 demand should be 800 pieces, got {d[\\\"D1\\\"]}'; assert d['D2'] == 900, f'D2 demand should be 900 pieces, got {d[\\\"D2\\\"]}'; assert d['D3'] == 800, f'D3 demand should be 800 pieces, got {d[\\\"D3\\\"]}'\"",
+          "grep -n 'BOX_TO_PIECES' /app/submissions/solve.py | grep -v 'BOX_TO_PIECES = 10'"
+        ]
+      },
+      {
+        "finding_id": "F-002",
+        "proposed_checks": [
+          "python3 -c \"import sys; sys.path.insert(0, '/app/submissions'); import solve; s,d,c = solve.load_data(); total_demand = sum(d.values()); expected_total = 800+900+800; assert total_demand == expected_total, f'Total demand should be {expected_total} pieces, got {total_demand}'\""
+        ]
+      }
+    ]
+  },
+  "checks": [
+    {
+      "command": "python3 -c \"import sys; sys.path.insert(0, '/app/submissions'); import solve; s,d,c = solve.load_data(); assert d['D1'] == 800, f'D1 demand should be 800 pieces, got {d[\\\"D1\\\"]}'; assert d['D2'] == 900, f'D2 demand should be 900 pieces, got {d[\\\"D2\\\"]}'; assert d['D3'] == 800, f'D3 demand should be 800 pieces, got {d[\\\"D3\\\"]}'\"",
+      "return_code": 1,
+      "timed_out": false,
+      "stdout_tail": "",
+      "stderr_tail": "Traceback (most recent call last):\n  File \"<string>\", line 1, in <module>\nAssertionError: D1 demand should be 800 pieces, got 80.0\n"
+    },
+    {
+      "command": "grep -n 'BOX_TO_PIECES' /app/submissions/solve.py | grep -v 'BOX_TO_PIECES = 10'",
+      "return_code": 1,
+      "timed_out": false,
+      "stdout_tail": "",
+      "stderr_tail": ""
+    },
+    {
+      "command": "python3 -c \"import sys; sys.path.insert(0, '/app/submissions'); import solve; s,d,c = solve.load_data(); total_demand = sum(d.values()); expected_total = 800+900+800; assert total_demand == expected_total, f'Total demand should be {expected_total} pieces, got {total_demand}'\"",
+      "return_code": 1,
+      "timed_out": false,
+      "stdout_tail": "",
+      "stderr_tail": "Traceback (most recent call last):\n  File \"<string>\", line 1, in <module>\nAssertionError: Total demand should be 2500 pieces, got 250.0\n"
+    }
+  ],
+  "confirm": {
+    "focus": "confirm",
+    "mode": "full",
+    "artifact_version": "8f153a0e246805cf",
+    "findings": [],
+    "finding_updates_applied": [
+      "F-001",
+      "F-002"
+    ],
+    "check_results_written": [
+      "chk-001",
+      "chk-002",
+      "chk-003"
+    ]
+  },
+  "open_findings": [
+    {
+      "record_type": "finding",
+      "ts": "2026-10-28T08:35:19.600663+00:00",
+      "finding_id": "F-001",
+      "req_ids": [
+        "R4"
+      ],
+      "artifact_hash": "8f153a0e246805cf",
+      "problem_type": "implementation",
+      "evidence_level": "actual_test",
+      "detail": "Confirmed: load_data() returns demand values in boxes (80.0, 90.0, 80.0) without applying the BOX_TO_PIECES conversion factor of 10. The constant is defined but never used in the code path.",
+      "witness_ref": "python3 -c \"import sys; sys.path.insert(0, '/app/submissions'); import solve; s,d,c = solve.load_data(); assert d['D1'] == 800...\" returned AssertionError: D1 demand should be 800 pieces, got 80.0; grep for BOX_TO_PIECES usage (excluding definition) returned no matches",
+      "status": "confirmed"
+    },
+    {
+      "record_type": "finding",
+      "ts": "2026-10-28T08:35:19.634079+00:00",
+      "finding_id": "F-002",
+      "req_ids": [
+        "R2",
+        "R4"
+      ],
+      "artifact_hash": "8f153a0e246805cf",
+      "problem_type": "semantic",
+      "evidence_level": "actual_test",
+      "detail": "Confirmed: total demand in the model is 250 (boxes) instead of 2500 (pieces). The demand constraints will enforce equality to box values rather than piece values, violating R2 and R4.",
+      "witness_ref": "python3 -c \"import sys; sys.path.insert(0, '/app/submissions'); import solve; s,d,c = solve.load_data(); total_demand = sum(d.values()); expected_total = 800+900+800; assert total_demand == expected_total...\" returned AssertionError: Total demand should be 2500 pieces, got 250.0",
+      "status": "confirmed"
+    }
+  ],
+  "repair": {
+    "finding_id": "F-001",
+    "reply": {
+      "finding_id": "F-001",
+      "patch_commands": [
+        "cp /app/submissions/solve.py /app/submissions/solve_v1.py",
+        "sed -i 's/demand = {r\\[\"warehouse\"\\]: float(r\\[\"demand\"\\]) for r in csv.DictReader(f)}/demand = {r[\"warehouse\"]: float(r[\"demand\"]) * BOX_TO_PIECES for r in csv.DictReader(f)}/' /app/submissions/solve.py"
+      ],
+      "regression_plan": [
+        "cd /app/submissions && python3 -c \"import solve; s,d,c = solve.load_data(); assert d['D1'] == 800.0, f'D1={d[chr(68)+chr(49)]}'; assert d['D2'] == 900.0, f'D2={d[chr(68)+chr(50)]}'; assert d['D3'] == 800.0, f'D3={d[chr(68)+chr(51)]}'; print('demand conversion OK')\"",
+        "cd /app/submissions && python3 solve.py && cat solution.json"
+      ],
+      "rationale": "The load_data() function reads demand.csv values (in boxes) but never applies the BOX_TO_PIECES=10 conversion factor. The fix multiplies each demand value by BOX_TO_PIECES so that D1=800, D2=900, D3=800 pieces are used in the LP, matching requirement R4.",
+      "expected_resolved": [
+        "F-001"
+      ],
+      "risk_notes": "Minimal one-line change inside load_data(). Supply and costs are already in pieces and unaffected. The MIN_FROM_P2 constraint (20 pieces) is already in pieces and remains correct. Output schema unchanged.",
+      "note": "execute patch_commands via bash, run regression_plan, then call audit(focus='verify_fix', question=<outcomes>)"
+    },
+    "patch_results": [
+      {
+        "command": "cp /app/submissions/solve.py /app/submissions/solve_v1.py",
+        "return_code": 0,
+        "stderr_tail": ""
+      },
+      {
+        "command": "sed -i 's/demand = {r\\[\"warehouse\"\\]: float(r\\[\"demand\"\\]) for r in csv.DictReader(f)}/demand = {r[\"warehouse\"]: float(r[\"demand\"]) * BOX_TO_PIECES for r in csv.DictReader(f)}/' /app/submissions/solve.py",
+        "return_code": 0,
+        "stderr_tail": ""
+      }
+    ],
+    "patch_applied": true,
+    "witness_after_patch": {
+      "verdict": "PASS",
+      "return_code": 0,
+      "output_tail": "OBJECTIVE 5720.0\nWITNESS PASS\n"
+    },
+    "verify_fix": {
+      "focus": "verify_fix",
+      "mode": "full",
+      "artifact_version": "7be2c78710bc998d",
+      "findings": [],
+      "finding_updates_applied": [
+        "F-001",
+        "F-002"
+      ],
+      "repair_result_written": "repair-2001ecac5d"
+    }
+  },
+  "usage": {
+    "calls": 4,
+    "prompt_tokens": 11317,
+    "completion_tokens": 2629,
+    "latency_s": 48.42
+  },
+  "wall_time_s": 51.0
+}

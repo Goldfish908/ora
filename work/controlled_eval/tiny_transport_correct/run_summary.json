@@ -1,0 +1,29 @@
+{
+  "run_id": "tiny_transport_correct_full",
+  "task_id": "tiny_transport/correct",
+  "model": "worker",
+  "status": "running",
+  "ts_started": "2026-10-28T08:33:35.058439+00:00",
+  "n_steps": 0,
+  "last_state_id": 2,
+  "actor_usage": {
+    "calls": 0,
+    "prompt_tokens": 0,
+    "completion_tokens": 0,
+    "latency_s": 0.0
+  },
+  "predictor_usage": {
+    "calls": 0,
+    "prompt_tokens": 0,
+    "completion_tokens": 0,
+    "latency_s": 0.0
+  },
+  "worker_usage": {
+    "calls": 1,
+    "prompt_tokens": 1925,
+    "completion_tokens": 442,
+    "latency_s": 7.325
+  },
+  "artifacts_last_observed": null,
+  "ts_updated": "2026-10-28T08:33:42.547539+00:00"
+}

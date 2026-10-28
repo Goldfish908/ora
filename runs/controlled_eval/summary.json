@@ -1,0 +1,574 @@
+{
+  "n_artifacts": 13,
+  "mutants": {
+    "n": 7,
+    "detected_full": 7,
+    "detected_blind": 6,
+    "n_blind": 7
+  },
+  "negatives": {
+    "n": 6,
+    "false_positives_confirmed": 2,
+    "false_positives_suspected": 0
+  },
+  "repairs": {
+    "attempted": 7,
+    "succeeded": 6
+  },
+  "rows": [
+    {
+      "problem": "tiny_assign",
+      "aid": "a_e1",
+      "kind": "equivalent",
+      "mutation_type": null,
+      "expected_witness": "PASS",
+      "error": null,
+      "n_confirmed": 1,
+      "n_suspected": 0,
+      "false_positive_confirmed": 1,
+      "false_positive_suspected": 0,
+      "detected": null,
+      "detected_by": [],
+      "confirmed_findings_text": [
+        {
+          "finding_id": "F-002",
+          "problem_type": "semantic",
+          "detail": "The check confirmed that the CSV data contains the entry for W2,J3. Since the code creates variables for all entries in the CSV, the variable `x_W2_J3` exists, and setting its upper bound to 0 correctly enforces the hard constraint that W2 cannot do J3."
+        }
+      ],
+      "localization_correct": null,
+      "usage": {
+        "calls": 3,
+        "prompt_tokens": 6660,
+        "completion_tokens": 2465,
+        "latency_s": 84.68
+      },
+      "wall_time_s": 86.0,
+      "repair": {
+        "finding_id": "F-002",
+        "patch_applied": false,
+        "witness_after_patch": null,
+        "repair_success": false,
+        "verify_fix_repair_id": null
+      }
+    },
+    {
+      "problem": "tiny_assign",
+      "aid": "a_m1",
+      "kind": "mutant",
+      "mutation_type": "omission",
+      "expected_witness": "FAIL",
+      "error": null,
+      "n_confirmed": 1,
+      "n_suspected": 0,
+      "false_positive_confirmed": 0,
+      "false_positive_suspected": 0,
+      "detected": true,
+      "detected_by": [
+        "F-001"
+      ],
+      "confirmed_findings_text": [
+        {
+          "finding_id": "F-001",
+          "problem_type": "implementation",
+          "detail": "The code does not contain any logic to exclude the (W2, J3) pair. The absence of a constraint or variable fix for this specific pair confirms that the business rule R3 is not implemented in the solver."
+        }
+      ],
+      "localization_correct": null,
+      "usage": {
+        "calls": 3,
+        "prompt_tokens": 5738,
+        "completion_tokens": 1737,
+        "latency_s": 37.71
+      },
+      "wall_time_s": 38.5,
+      "repair": {
+        "finding_id": "F-001",
+        "patch_applied": false,
+        "witness_after_patch": null,
+        "repair_success": false,
+        "verify_fix_repair_id": null
+      }
+    },
+    {
+      "problem": "tiny_assign",
+      "aid": "a_m2",
+      "kind": "mutant",
+      "mutation_type": "index",
+      "expected_witness": "FAIL",
+      "error": null,
+      "n_confirmed": 2,
+      "n_suspected": 0,
+      "false_positive_confirmed": 0,
+      "false_positive_suspected": 0,
+      "detected": true,
+      "detected_by": [
+        "F-001",
+        "F-002"
+      ],
+      "confirmed_findings_text": [
+        {
+          "finding_id": "F-001",
+          "problem_type": "implementation",
+          "detail": "The code explicitly forbids W2 from doing J4 instead of J3. The constraint `x[\"W2\", \"J4\"] == 0` is present on line 34, and there is no corresponding constraint for `x[\"W2\", \"J3\"]`. This directly violates Business Rule 3 which states W2 cannot do J3."
+        },
+        {
+          "finding_id": "F-002",
+          "problem_type": "feasibility",
+          "detail": "With the incorrect constraint forbidding W2-J4, the solver can assign W2 to J3 (cost 1), leading to a suboptimal objective value of 27.0 compared to the true minimum under correct rules. The solution.json file was not found at the expected path, but the stdout confirms the wrong objective was computed."
+        }
+      ],
+      "localization_correct": null,
+      "usage": {
+        "calls": 4,
+        "prompt_tokens": 9662,
+        "completion_tokens": 2278,
+        "latency_s": 62.61
+      },
+      "wall_time_s": 64.6,
+      "repair": {
+        "finding_id": "F-001",
+        "patch_applied": true,
+        "witness_after_patch": "PASS",
+        "repair_success": true,
+        "verify_fix_repair_id": "repair-f1ebde075e"
+      }
+    },
+    {
+      "problem": "tiny_assign",
+      "aid": "correct",
+      "kind": "correct",
+      "mutation_type": null,
+      "expected_witness": "PASS",
+      "error": null,
+      "n_confirmed": 0,
+      "n_suspected": 0,
+      "false_positive_confirmed": 0,
+      "false_positive_suspected": 0,
+      "detected": null,
+      "detected_by": [],
+      "confirmed_findings_text": [],
+      "localization_correct": null,
+      "usage": {
+        "calls": 1,
+        "prompt_tokens": 1509,
+        "completion_tokens": 565,
+        "latency_s": 13.07
+      },
+      "wall_time_s": 13.5
+    },
+    {
+      "problem": "tiny_sched",
+      "aid": "c_e1",
+      "kind": "equivalent",
+      "mutation_type": null,
+      "expected_witness": "PASS",
+      "error": null,
+      "n_confirmed": 1,
+      "n_suspected": 0,
+      "false_positive_confirmed": 1,
+      "false_positive_suspected": 0,
+      "detected": null,
+      "detected_by": [],
+      "confirmed_findings_text": [
+        {
+          "finding_id": "F-001",
+          "problem_type": "semantic",
+          "detail": "The code explicitly includes the term `0.0001 * sum(start[j] for j in jobs)` in the objective function, which is not specified in the problem statement."
+        }
+      ],
+      "localization_correct": null,
+      "usage": {
+        "calls": 4,
+        "prompt_tokens": 12499,
+        "completion_tokens": 3115,
+        "latency_s": 54.41
+      },
+      "wall_time_s": 56.6,
+      "repair": {
+        "finding_id": "F-001",
+        "patch_applied": true,
+        "witness_after_patch": "PASS",
+        "repair_success": true,
+        "verify_fix_repair_id": "repair-ba747cf857"
+      }
+    },
+    {
+      "problem": "tiny_sched",
+      "aid": "c_m1",
+      "kind": "mutant",
+      "mutation_type": "precedence",
+      "expected_witness": "FAIL",
+      "error": null,
+      "n_confirmed": 1,
+      "n_suspected": 0,
+      "false_positive_confirmed": 0,
+      "false_positive_suspected": 0,
+      "detected": true,
+      "detected_by": [
+        "F-001"
+      ],
+      "confirmed_findings_text": [
+        {
+          "finding_id": "F-001",
+          "problem_type": "semantic",
+          "detail": "The code explicitly contains `model.addCons(start[u] >= start[v] + proc[v])` for the precedence pair (J1, J3). This enforces Start(J1) >= End(J3), which is the inverse of the required constraint End(J1) <= Start(J3). The runtime check failed due to missing output file, but the source code inspection confirms the logical inversion."
+        }
+      ],
+      "localization_correct": null,
+      "usage": {
+        "calls": 5,
+        "prompt_tokens": 14420,
+        "completion_tokens": 4669,
+        "latency_s": 129.93
+      },
+      "wall_time_s": 131.9,
+      "repair": {
+        "finding_id": "F-001",
+        "patch_applied": true,
+        "witness_after_patch": "PASS",
+        "repair_success": true,
+        "verify_fix_repair_id": "repair-b3e07b41d6"
+      }
+    },
+    {
+      "problem": "tiny_sched",
+      "aid": "c_m2",
+      "kind": "mutant",
+      "mutation_type": "omission",
+      "expected_witness": "FAIL",
+      "error": null,
+      "n_confirmed": 1,
+      "n_suspected": 0,
+      "false_positive_confirmed": 0,
+      "false_positive_suspected": 0,
+      "detected": true,
+      "detected_by": [
+        "F-001"
+      ],
+      "confirmed_findings_text": [
+        {
+          "finding_id": "F-001",
+          "problem_type": "implementation",
+          "detail": "The code explicitly restricts the no-overlap disjunctive constraints to only the first machine (M1) via `machines[:1]`. This confirms that jobs assigned to M2 are not constrained from overlapping, violating Business Rule 2."
+        }
+      ],
+      "localization_correct": null,
+      "usage": {
+        "calls": 5,
+        "prompt_tokens": 14109,
+        "completion_tokens": 5986,
+        "latency_s": 126.92
+      },
+      "wall_time_s": 129.1,
+      "repair": {
+        "finding_id": "F-001",
+        "patch_applied": true,
+        "witness_after_patch": "PASS",
+        "repair_success": true,
+        "verify_fix_repair_id": "repair-21df02d51e"
+      }
+    },
+    {
+      "problem": "tiny_sched",
+      "aid": "c_m3",
+      "kind": "mutant",
+      "mutation_type": "data_mapping",
+      "expected_witness": "FAIL",
+      "error": null,
+      "n_confirmed": 1,
+      "n_suspected": 0,
+      "false_positive_confirmed": 0,
+      "false_positive_suspected": 0,
+      "detected": true,
+      "detected_by": [
+        "F-001"
+      ],
+      "confirmed_findings_text": [
+        {
+          "finding_id": "F-001",
+          "problem_type": "implementation",
+          "detail": "The check confirmed that `load_data` returns processing times based on `setup_min` (e.g., J1=12.0) instead of `proc_min` (expected 3.0). The grep also confirmed the line `proc[r[\"job_id\"]] = float(r[\"setup_min\"])` exists in the code."
+        }
+      ],
+      "localization_correct": null,
+      "usage": {
+        "calls": 4,
+        "prompt_tokens": 11835,
+        "completion_tokens": 2344,
+        "latency_s": 41.95
+      },
+      "wall_time_s": 43.7,
+      "repair": {
+        "finding_id": "F-001",
+        "patch_applied": true,
+        "witness_after_patch": "PASS",
+        "repair_success": true,
+        "verify_fix_repair_id": "repair-a3c74e1008"
+      }
+    },
+    {
+      "problem": "tiny_sched",
+      "aid": "correct",
+      "kind": "correct",
+      "mutation_type": null,
+      "expected_witness": "PASS",
+      "error": null,
+      "n_confirmed": 0,
+      "n_suspected": 0,
+      "false_positive_confirmed": 0,
+      "false_positive_suspected": 0,
+      "detected": null,
+      "detected_by": [],
+      "confirmed_findings_text": [],
+      "localization_correct": null,
+      "usage": {
+        "calls": 1,
+        "prompt_tokens": 2073,
+        "completion_tokens": 473,
+        "latency_s": 8.34
+      },
+      "wall_time_s": 8.7
+    },
+    {
+      "problem": "tiny_transport",
+      "aid": "b_e1",
+      "kind": "equivalent",
+      "mutation_type": null,
+      "expected_witness": "PASS",
+      "error": null,
+      "n_confirmed": 0,
+      "n_suspected": 0,
+      "false_positive_confirmed": 0,
+      "false_positive_suspected": 0,
+      "detected": null,
+      "detected_by": [],
+      "confirmed_findings_text": [],
+      "localization_correct": null,
+      "usage": {
+        "calls": 1,
+        "prompt_tokens": 1940,
+        "completion_tokens": 372,
+        "latency_s": 7.85
+      },
+      "wall_time_s": 8.2
+    },
+    {
+      "problem": "tiny_transport",
+      "aid": "b_m1",
+      "kind": "mutant",
+      "mutation_type": "direction",
+      "expected_witness": "FAIL",
+      "error": null,
+      "n_confirmed": 1,
+      "n_suspected": 0,
+      "false_positive_confirmed": 0,
+      "false_positive_suspected": 0,
+      "detected": true,
+      "detected_by": [
+        "F-001"
+      ],
+      "confirmed_findings_text": [
+        {
+          "finding_id": "F-001",
+          "problem_type": "implementation",
+          "detail": "The code explicitly uses `x['P2', w] <= MIN_FROM_P2` (line 43), which is an upper bound. The problem statement requires a lower bound (`>= 20`). This confirms the inequality direction is reversed."
+        }
+      ],
+      "localization_correct": null,
+      "usage": {
+        "calls": 4,
+        "prompt_tokens": 10557,
+        "completion_tokens": 1754,
+        "latency_s": 30.35
+      },
+      "wall_time_s": 32.6,
+      "repair": {
+        "finding_id": "F-001",
+        "patch_applied": true,
+        "witness_after_patch": "PASS",
+        "repair_success": true,
+        "verify_fix_repair_id": "repair-7c079c07bf"
+      }
+    },
+    {
+      "problem": "tiny_transport",
+      "aid": "b_m2",
+      "kind": "mutant",
+      "mutation_type": "unit",
+      "expected_witness": "FAIL",
+      "error": null,
+      "n_confirmed": 2,
+      "n_suspected": 0,
+      "false_positive_confirmed": 0,
+      "false_positive_suspected": 0,
+      "detected": true,
+      "detected_by": [
+        "F-001",
+        "F-002"
+      ],
+      "confirmed_findings_text": [
+        {
+          "finding_id": "F-001",
+          "problem_type": "implementation",
+          "detail": "Confirmed: load_data() returns demand values in boxes (80.0, 90.0, 80.0) without applying the BOX_TO_PIECES conversion factor of 10. The constant is defined but never used in the code path."
+        },
+        {
+          "finding_id": "F-002",
+          "problem_type": "semantic",
+          "detail": "Confirmed: total demand in the model is 250 (boxes) instead of 2500 (pieces). The demand constraints will enforce equality to box values rather than piece values, violating R2 and R4."
+        }
+      ],
+      "localization_correct": null,
+      "usage": {
+        "calls": 4,
+        "prompt_tokens": 11317,
+        "completion_tokens": 2629,
+        "latency_s": 48.42
+      },
+      "wall_time_s": 51.0,
+      "repair": {
+        "finding_id": "F-001",
+        "patch_applied": true,
+        "witness_after_patch": "PASS",
+        "repair_success": true,
+        "verify_fix_repair_id": "repair-2001ecac5d"
+      }
+    },
+    {
+      "problem": "tiny_transport",
+      "aid": "correct",
+      "kind": "correct",
+      "mutation_type": null,
+      "expected_witness": "PASS",
+      "error": null,
+      "n_confirmed": 0,
+      "n_suspected": 0,
+      "false_positive_confirmed": 0,
+      "false_positive_suspected": 0,
+      "detected": null,
+      "detected_by": [],
+      "confirmed_findings_text": [],
+      "localization_correct": null,
+      "usage": {
+        "calls": 1,
+        "prompt_tokens": 1925,
+        "completion_tokens": 442,
+        "latency_s": 7.32
+      },
+      "wall_time_s": 7.7
+    }
+  ],
+  "blind_rows": [
+    {
+      "problem": "tiny_assign",
+      "aid": "a_m1",
+      "n_confirmed": 0,
+      "detected": false,
+      "detected_by": [],
+      "confirmed_findings_text": []
+    },
+    {
+      "problem": "tiny_assign",
+      "aid": "a_m2",
+      "n_confirmed": 1,
+      "detected": true,
+      "detected_by": [
+        "F-001"
+      ],
+      "confirmed_findings_text": [
+        {
+          "finding_id": "F-001",
+          "problem_type": "implementation",
+          "detail": "The grep output confirms the code contains `model.addCons(x[\"W2\", \"J4\"] == 0)` immediately following the comment `# W2 is not qualified for J3.`. This is a direct semantic inconsistency: the constraint forbids assignment to J4, while the comment claims qualification issues for J3. Since the problem statement is hidden and no data indicates disqualification (costs exist for all pairs), this constraint is unsupported or mislabeled."
+        }
+      ]
+    },
+    {
+      "problem": "tiny_sched",
+      "aid": "c_m1",
+      "n_confirmed": 1,
+      "detected": true,
+      "detected_by": [
+        "F-001"
+      ],
+      "confirmed_findings_text": [
+        {
+          "finding_id": "F-001",
+          "problem_type": "implementation",
+          "detail": "The code explicitly enforces `start[pred] >= start[succ] + proc[succ]`, which is the reverse of the required precedence constraint (pred must finish before succ starts). This is a confirmed implementation error."
+        }
+      ]
+    },
+    {
+      "problem": "tiny_sched",
+      "aid": "c_m2",
+      "n_confirmed": 1,
+      "detected": true,
+      "detected_by": [
+        "F-001"
+      ],
+      "confirmed_findings_text": [
+        {
+          "finding_id": "F-001",
+          "problem_type": "implementation",
+          "detail": "The code explicitly restricts the no-overlap disjunctive constraints to only the first machine (M1). Since there are two machines, M2 has no overlap constraints, allowing jobs assigned to M2 to overlap arbitrarily. This is a direct implementation bug violating R2."
+        }
+      ]
+    },
+    {
+      "problem": "tiny_sched",
+      "aid": "c_m3",
+      "n_confirmed": 1,
+      "detected": true,
+      "detected_by": [
+        "F-001"
+      ],
+      "confirmed_findings_text": [
+        {
+          "finding_id": "F-001",
+          "problem_type": "implementation",
+          "detail": "The code explicitly loads `setup_min` into the `proc` dictionary (line 16), ignoring `proc_min`. The data check confirms these columns have different values (3 vs 12 for J1). This is a confirmed implementation error where setup times are used as processing times."
+        }
+      ]
+    },
+    {
+      "problem": "tiny_transport",
+      "aid": "b_m1",
+      "n_confirmed": 1,
+      "detected": true,
+      "detected_by": [
+        "F-001"
+      ],
+      "confirmed_findings_text": [
+        {
+          "finding_id": "F-001",
+          "problem_type": "implementation",
+          "detail": "The code explicitly defines `MIN_FROM_P2 = 20` with a comment stating 'at least 20 pieces', but the constraint implemented is `x['P2', w] <= MIN_FROM_P2`. This is an upper bound (maximum), which contradicts the variable name and comment indicating a lower bound (minimum). The semantic inversion is confirmed by the source code."
+        }
+      ]
+    },
+    {
+      "problem": "tiny_transport",
+      "aid": "b_m2",
+      "n_confirmed": 2,
+      "detected": true,
+      "detected_by": [
+        "F-001",
+        "F-003"
+      ],
+      "confirmed_findings_text": [
+        {
+          "finding_id": "F-001",
+          "problem_type": "implementation",
+          "detail": "Confirmed that BOX_TO_PIECES is defined but never used in the code. The demand values are loaded directly from CSV (80, 90, 80) and used as-is in the model constraints, while the constant suggests a conversion to pieces was intended. This creates a unit mismatch if the data is indeed in boxes."
+        },
+        {
+          "finding_id": "F-003",
+          "problem_type": "quality",
+          "detail": "Confirmed that model.md is missing from the submission directory."
+        }
+      ]
+    }
+  ]
+}

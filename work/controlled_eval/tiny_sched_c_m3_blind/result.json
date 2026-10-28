@@ -1,0 +1,133 @@
+{
+  "problem": "tiny_sched",
+  "aid": "c_m3",
+  "kind": "mutant",
+  "mode": "blind",
+  "sandbox": "/home/hewj13/wm/ora/work/controlled_eval/tiny_sched_c_m3_blind",
+  "prompt_versions": {
+    "audit_system": "b7c68ac3fda414f5",
+    "audit_confirm_addendum": "7010607b41090a6e",
+    "audit_verify_fix_addendum": "595c522114f21d3e",
+    "audit_blind_note": "fd8b3d30b708ae0a",
+    "repair_system": "09557700c36091b7"
+  },
+  "error": null,
+  "audit": {
+    "focus": "full semantic audit",
+    "mode": "blind",
+    "artifact_version": "d6e21cb0e4fc2c5a",
+    "requirements_written": [
+      "R1",
+      "R2",
+      "R3",
+      "R4"
+    ],
+    "findings": [
+      {
+        "finding_id": "F-001",
+        "proposed_checks": [
+          "python3 -c \"import csv; f=open('/app/data/jobs.csv'); r=csv.DictReader(f); row=next(r); print('proc_min:', row['proc_min'], 'setup_min:', row['setup_min'])\"",
+          "grep -n 'proc\\[r\\[\"job_id\"\\]\\]' /app/submissions/solve.py"
+        ]
+      },
+      {
+        "finding_id": "F-002",
+        "proposed_checks": [
+          "python3 -c \"\nimport sys\nsys.path.insert(0, '/app/submissions')\nfrom solve import load_data\nproc, machines, prec = load_data()\njobs = sorted(proc)\n# Simulate the constraint logic for two jobs on same machine with before=0\ni, j = 'J1', 'J2'\nm = 'M1'\na_im, a_jm, b_ij = 1, 1, 0\nbig_m = sum(proc.values())\n# Constraint 1: start[j] >= start[i] + proc[i] - big_m * (3 - a_im - a_jm - b_ij)\ncoeff1 = 3 - a_im - a_jm - b_ij\nprint(f'Coeff1 (should be 0 to enforce): {coeff1}')\n# Constraint 2: start[i] >= start[j] + proc[j] - big_m * (2 - a_im - a_jm + b_ij)\ncoeff2 = 2 - a_im - a_jm + b_ij\nprint(f'Coeff2 (should be 0 to enforce): {coeff2}')\nif coeff1 > 0 and coeff2 > 0:\n    print('ERROR: Both coefficients positive, no ordering enforced.')\n\""
+        ]
+      },
+      {
+        "finding_id": "F-003",
+        "proposed_checks": [
+          "grep -n 'setObjective' /app/submissions/solve.py"
+        ]
+      }
+    ]
+  },
+  "checks": [
+    {
+      "command": "python3 -c \"import csv; f=open('/app/data/jobs.csv'); r=csv.DictReader(f); row=next(r); print('proc_min:', row['proc_min'], 'setup_min:', row['setup_min'])\"",
+      "return_code": 0,
+      "timed_out": false,
+      "stdout_tail": "proc_min: 3 setup_min: 12\n",
+      "stderr_tail": ""
+    },
+    {
+      "command": "grep -n 'proc\\[r\\[\"job_id\"\\]\\]' /app/submissions/solve.py",
+      "return_code": 0,
+      "timed_out": false,
+      "stdout_tail": "16:            proc[r[\"job_id\"]] = float(r[\"setup_min\"])\n",
+      "stderr_tail": ""
+    },
+    {
+      "command": "python3 -c \"\nimport sys\nsys.path.insert(0, '/app/submissions')\nfrom solve import load_data\nproc, machines, prec = load_data()\njobs = sorted(proc)\n# Simulate the constraint logic for two jobs on same machine with before=0\ni, j = 'J1', 'J2'\nm = 'M1'\na_im, a_jm, b_ij = 1, 1, 0\nbig_m = sum(proc.values())\n# Constraint 1: start[j] >= start[i] + proc[i] - big_m * (3 - a_im - a_jm - b_ij)\ncoeff1 = 3 - a_im - a_jm - b_ij\nprint(f'Coeff1 (should be 0 to enforce): {coeff1}')\n# Constraint 2: start[i] >= start[j] + proc[j] - big_m * (2 - a_im - a_jm + b_ij)\ncoeff2 = 2 - a_im - a_jm + b_ij\nprint(f'Coeff2 (should be 0 to enforce): {coeff2}')\nif coeff1 > 0 and coeff2 > 0:\n    print('ERROR: Both coefficients positive, no ordering enforced.')\n\"",
+      "return_code": 0,
+      "timed_out": false,
+      "stdout_tail": "Coeff1 (should be 0 to enforce): 1\nCoeff2 (should be 0 to enforce): 0\n",
+      "stderr_tail": ""
+    },
+    {
+      "command": "grep -n 'setObjective' /app/submissions/solve.py",
+      "return_code": 0,
+      "timed_out": false,
+      "stdout_tail": "63:    model.setObjective(cmax + 1e-4 * quicksum(start[j] for j in jobs), \"minimize\")\n",
+      "stderr_tail": ""
+    }
+  ],
+  "confirm": {
+    "focus": "confirm",
+    "mode": "blind",
+    "artifact_version": "d6e21cb0e4fc2c5a",
+    "findings": [],
+    "finding_updates_applied": [
+      "F-001",
+      "F-002",
+      "F-003"
+    ],
+    "check_results_written": [
+      "chk-001",
+      "chk-002",
+      "chk-003"
+    ]
+  },
+  "open_findings": [
+    {
+      "record_type": "finding",
+      "ts": "2026-10-28T08:32:38.221665+00:00",
+      "finding_id": "F-001",
+      "req_ids": [
+        "R1",
+        "R2",
+        "R3",
+        "R4"
+      ],
+      "artifact_hash": "d6e21cb0e4fc2c5a",
+      "problem_type": "implementation",
+      "evidence_level": "actual_test",
+      "detail": "The code explicitly loads `setup_min` into the `proc` dictionary (line 16), ignoring `proc_min`. The data check confirms these columns have different values (3 vs 12 for J1). This is a confirmed implementation error where setup times are used as processing times.",
+      "witness_ref": "grep -n 'proc\\[r\\[\"job_id\"\\]\\]' /app/submissions/solve.py",
+      "status": "confirmed"
+    },
+    {
+      "record_type": "finding",
+      "ts": "2026-10-28T08:32:38.288508+00:00",
+      "finding_id": "F-003",
+      "req_ids": [
+        "R4"
+      ],
+      "artifact_hash": "d6e21cb0e4fc2c5a",
+      "problem_type": "quality",
+      "evidence_level": "actual_test",
+      "detail": "The objective function does include the secondary term `1e-4 * quicksum(start[j] for j in jobs)`. However, without the problem statement to confirm if tie-breaking is required or prohibited, and given that 1e-4 is small relative to integer durations, it is unclear if this constitutes a violation or a valid design choice. It remains an unresolved quality/semantic issue depending on hidden requirements.",
+      "witness_ref": "grep -n 'setObjective' /app/submissions/solve.py",
+      "status": "unresolved"
+    }
+  ],
+  "usage": {
+    "calls": 3,
+    "prompt_tokens": 7366,
+    "completion_tokens": 3365,
+    "latency_s": 67.3
+  },
+  "wall_time_s": 68.6
+}

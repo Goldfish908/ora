@@ -1,0 +1,17 @@
+[
+  {
+    "command": "cd /app/submissions && timeout 300 python3 solve.py",
+    "action_kind": "solve",
+    "rationale": "Run the solver from scratch as written (the original action taken at this state in the pilot run)."
+  },
+  {
+    "command": "cd /app/submissions && python3 -c \"import ast; ast.parse(open('solve.py').read()); print('syntax ok')\" && grep -n 'pyscipopt' solve.py | head -20",
+    "action_kind": "validate",
+    "rationale": "Cheap static diagnostic instead of a full run: check syntax and inspect which pyscipopt API symbols the code uses."
+  },
+  {
+    "command": "cd /app/submissions && python3 - <<'EOF'\nsrc = open('solve.py').read()\nold = '''    env = pyscipopt.Env()\n    env.setoutdev(io_null())\n    model = pyscipopt.Model(\"packaging\", env=env)'''\nnew = '''    model = pyscipopt.Model(\"packaging\")\n    model.hideOutput()'''\nassert old in src, 'pattern not found'\nopen('solve.py','w').write(src.replace(old, new))\nprint('patched env->Model')\nEOF\ntimeout 300 python3 solve.py",
+    "action_kind": "repair",
+    "rationale": "Patch the known-wrong gurobipy-style pyscipopt.Env() usage to the direct Model API, then run the solver."
+  }
+]

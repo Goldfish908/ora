@@ -1,6 +1,8 @@
 """Round-2 tests: run_summary crash safety, message reconstruction,
 predictor cost accounting, active-mode warning, timeout_layer,
-BudgetTracker, EvidenceStore. Offline only (fake llm_fn/exec_fn).
+BudgetTracker, EvidenceStore, prediction v2 (2.7: evidence-context
+injection, per-kind prompt branches, prompt_version on disk).
+Offline only (fake llm_fn/exec_fn).
 """
 
 from __future__ import annotations
@@ -22,7 +24,10 @@ from ora_agent.evidence import (  # noqa: E402
 from ora_agent.loop import (  # noqa: E402
     LoopConfig, messages_sha256, run_loop,
 )
-from ora_agent.predict import PredictionRecorder, make_predictor  # noqa: E402
+from ora_agent.predict import (  # noqa: E402
+    PROMPT_VERSION, PredictionRecorder, QwenShadowPredictor,
+    hash_prediction_input, make_evidence_context_provider, make_predictor,
+)
 from ora_agent.trajectory import TrajectoryWriter  # noqa: E402
 
 
@@ -246,6 +251,144 @@ class TestPredictorAccounting(Round2Base):
                             and "NOT wired into decisions" in w.get("message", "")
                             for w in warnings))
         self.assertFalse(self.summary()["decision_integration"])
+
+
+class TestPredictionV2(Round2Base):
+    """Task book 2.7: evidence-context injection, per-kind prompt branches,
+    prompt_version=v2 on disk, input hash covering the enhanced input."""
+
+    def _make_store(self, *, empty=False):
+        store = EvidenceStore(self.tmp / "evidence.jsonl")
+        if not empty:
+            store.append(Requirement(
+                req_id="R1", statement="W2 cannot be assigned to J3",
+                source_refs=["problem.md:Rules"], scope="assignment",
+                units="pair", hardness="hard"))
+            store.append(Finding(
+                finding_id="F-001", req_ids=["R1"], artifact_hash="sha_v1",
+                problem_type="implementation", evidence_level="actual_test",
+                detail="no constraint excludes (W2,J3)", status="confirmed"))
+            store.append(CheckResult(
+                check_id="chk-001", artifact_version="sha_v1",
+                input_hash="in1", actual_result="fail",
+                evidence_source="grep W2 J3 solve.py"))
+        return store
+
+    def _action(self, kind="repair", rationale="fix F-001", command="sed x"):
+        return {"tool": "bash", "command": command, "action_kind": kind,
+                "rationale": rationale, "timeout_sec": 60}
+
+    def _recorder(self, store):
+        pred_llm = make_capturing_llm_fn([{"content": '{"will_succeed_prob": 0.6}'}])
+        recorder = PredictionRecorder(
+            self.tmp, writer=self.writer,
+            predictor=QwenShadowPredictor(pred_llm),
+            context_provider=make_evidence_context_provider(store))
+        return recorder, pred_llm
+
+    def test_context_injected_into_prediction_file(self):
+        store = self._make_store()
+        recorder, _ = self._recorder(store)
+        action = self._action()
+        rel = recorder.before_exec(seq=1, action=action, action_hash="h1",
+                                   history_summary="step 1 [recon] rc=0",
+                                   budget_state={"step": 1})
+        payload = json.loads((self.tmp / rel).read_text())
+        self.assertEqual(payload["prompt_version"], PROMPT_VERSION)
+        self.assertEqual(PROMPT_VERSION, "v2")
+        self.assertEqual(payload["prediction_target"], "independent_outcome")
+        self.assertEqual(payload["context_source"], "evidence_store")
+        ctx = payload["evidence_context"]
+        # provider raw output is in the file, with provenance fields
+        self.assertEqual(ctx["requirements"][0]["req_id"], "R1")
+        self.assertEqual(ctx["requirements"][0]["hardness"], "hard")
+        self.assertEqual(ctx["open_findings"][0]["artifact_hash"], "sha_v1")
+        self.assertEqual(ctx["recent_check_results"][0]["artifact_version"],
+                         "sha_v1")
+        # repair action referencing F-001 -> full finding record attached
+        self.assertEqual(ctx["referenced_finding"]["finding_id"], "F-001")
+        self.assertIn("no constraint excludes",
+                      ctx["referenced_finding"]["detail"])
+        # full input is reviewable: history + budget stored too
+        self.assertEqual(payload["history_summary"], "step 1 [recon] rc=0")
+        self.assertEqual(payload["budget_state"], {"step": 1})
+        # input hash covers the enhanced input: recompute from file fields
+        recomputed = hash_prediction_input(
+            payload["history_summary"], payload["action"],
+            payload["budget_state"], context=payload["evidence_context"])
+        self.assertEqual(payload["input_hash"], recomputed)
+        store.close()
+
+    def test_hash_changes_with_context(self):
+        action = self._action()
+        h_without = hash_prediction_input("hist", action, {"step": 1})
+        h_with = hash_prediction_input("hist", action, {"step": 1},
+                                       context={"context_source":
+                                                "evidence_store"})
+        self.assertNotEqual(h_without, h_with)
+
+    def test_degrade_to_history_summary(self):
+        # empty store -> provider returns None -> history_summary path
+        store = self._make_store(empty=True)
+        recorder, _ = self._recorder(store)
+        rel = recorder.before_exec(seq=1, action=self._action("solve"),
+                                   action_hash="h2", history_summary="h",
+                                   budget_state={})
+        payload = json.loads((self.tmp / rel).read_text())
+        self.assertEqual(payload["context_source"], "history_summary")
+        self.assertIsNone(payload["evidence_context"])
+        store.close()
+
+        # no provider at all -> same degrade
+        recorder2 = PredictionRecorder(
+            self.tmp / "noprov", writer=None,
+            predictor=QwenShadowPredictor(
+                make_capturing_llm_fn([{"content": '{"unknown": true}'}])))
+        rel2 = recorder2.before_exec(seq=1, action=self._action("solve"),
+                                     action_hash="h3", history_summary="h",
+                                     budget_state={})
+        payload2 = json.loads((self.tmp / "noprov" / rel2).read_text())
+        self.assertEqual(payload2["context_source"], "history_summary")
+        self.assertIsNone(payload2["evidence_context"])
+
+    def test_prompt_branches_by_action_kind(self):
+        expectations = {
+            "validate": ["expected_observations", "indistinguishable_hypotheses"],
+            "repair": ["likely_resolved", "potential_regressions",
+                       "post_state_guess"],
+            "solve": ["expected_solution_validity", "expected_quality_change",
+                      "likely_failure_modes", "resource_estimate"],
+        }
+        for kind, keywords in expectations.items():
+            pred_llm = make_capturing_llm_fn([{"content": '{"unknown": true}'}])
+            predictor = QwenShadowPredictor(pred_llm)
+            predictor.predict("hist", self._action(kind), {"step": 1})
+            system = pred_llm.captured[0][0]["content"]
+            for kw in keywords:
+                self.assertIn(kw, system, f"{kind} prompt missing {kw}")
+            # semantic separation + scope/unknown in every branch
+            self.assertIn("independent_outcome", system)
+            self.assertIn("reviewer", system)
+            self.assertIn("scope_note", system)
+            self.assertIn("unknown", system)
+            # user payload carries the prediction target
+            user = json.loads(pred_llm.captured[0][1]["content"])
+            self.assertEqual(user["prediction_target"], "independent_outcome")
+            self.assertEqual(user["context_source"], "history_summary")
+
+    def test_prompt_version_in_prediction_meta(self):
+        store = self._make_store()
+        recorder, _ = self._recorder(store)
+        rel = recorder.before_exec(seq=1, action=self._action("validate",
+                                                              rationale="check"),
+                                   action_hash="h4", history_summary="h",
+                                   budget_state={})
+        payload = json.loads((self.tmp / rel).read_text())
+        meta = payload["prediction"]["predictor_meta"]
+        self.assertEqual(meta["prompt_version"], "v2")
+        self.assertEqual(meta["prediction_target"], "independent_outcome")
+        self.assertEqual(meta["context_source"], "evidence_store")
+        store.close()
 
 
 class TestTimeoutLayer(Round2Base):

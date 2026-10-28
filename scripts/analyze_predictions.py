@@ -12,9 +12,16 @@ Pairing: predictions/<seq>_<action_hash>.json <-> outcomes/<seq>_<action_hash>.j
 by (seq, action_hash) parsed from the filename.
 
 Field reference (see ora_agent/predict.py, ora_agent/loop.py):
-- prediction payload: {seq, action_hash, predictor_mode, input_hash, action,
-  prediction: {will_succeed_prob, expected_outcome, likely_failure_modes,
-  post_state_guess, confidence, unknown?, ...}}
+- prediction payload (v2): {seq, action_hash, predictor_mode, prompt_version,
+  prediction_target, context_source, evidence_context, input_hash,
+  history_summary, budget_state, action,
+  prediction: {will_succeed_prob, expected_outcome, scope_note, confidence,
+  unknown?, + per-kind keys: expected_observations /
+  indistinguishable_hypotheses (validate), likely_resolved /
+  potential_regressions / post_state_guess (repair),
+  expected_solution_validity / expected_quality_change /
+  likely_failure_modes / resource_estimate (solve), ...}}
+  v1 files lack prompt_version/context_source — rendered as '-'.
 - outcome payload: {seq, action_hash, prediction_file, action,
   outcome: {return_code, timed_out, error, stdout_tail, stderr_tail,
   classification}}  where classification in ok|nonzero_exit|timeout|exec_error
@@ -37,6 +44,15 @@ SUCCESS_CLASS = "ok"
 ALL_CLASSES = ("ok", "nonzero_exit", "timeout", "exec_error")
 BUCKETS = ((0.0, 0.33, "0.00-0.33"), (0.34, 0.66, "0.34-0.66"),
            (0.67, 1.0, "0.67-1.00"))
+
+# v2 per-kind prediction keys (predict.py PROMPT_VERSION="v2"); copied into
+# the pair row when present.
+_V2_KIND_KEYS = (
+    "expected_observations", "indistinguishable_hypotheses",
+    "likely_resolved", "potential_regressions", "post_state_guess",
+    "expected_solution_validity", "expected_quality_change",
+    "resource_estimate", "scope_note",
+)
 
 
 def find_trial_dirs(paths: list[str]) -> list[Path]:
@@ -180,7 +196,7 @@ def analyze_trial(trial_dir: Path) -> dict:
         else:
             predicted_success = float(prob) >= 0.5
             hit = predicted_success == success
-        result["pairs"].append({
+        pair = {
             "task_id": (result["summary"] or {}).get("task_id"),
             "seq": seq,
             "action_hash": ahash,
@@ -192,9 +208,16 @@ def analyze_trial(trial_dir: Path) -> dict:
             "classification": classification,
             "failure_type": None if success else classification,
             "hit": hit,
+            "prompt_version": pred_payload.get("prompt_version"),
+            "context_source": pred_payload.get("context_source"),
+            "prediction_target": pred_payload.get("prediction_target"),
             "prediction_file": f"predictions/{preds[key][0]}",
             "outcome_file": f"outcomes/{outs[key][0]}",
-        })
+        }
+        for k in _V2_KIND_KEYS:
+            if k in prediction:
+                pair[k] = prediction[k]
+        result["pairs"].append(pair)
     return result
 
 
@@ -299,13 +322,17 @@ def render_text(trials: list[dict], agg: dict) -> str:
             prob = "unknown" if p["unknown"] else f"{p['will_succeed_prob']:.2f}"
             hit = "n/a" if p["hit"] is None else ("HIT" if p["hit"] else "MISS")
             fail = p["failure_type"] or "-"
+            pv = p.get("prompt_version") or "-"
+            ctx = p.get("context_source") or "-"
             lines.append(
                 f"{p['task_id']} seq={p['seq']:>3} kind={p['action_kind']:<8} "
                 f"p={prob:<7} actual={'OK ' if p['success'] else 'FAIL':<4} "
-                f"failure={fail:<13} {hit}")
+                f"failure={fail:<13} {hit} pv={pv} ctx={ctx}")
             if p["likely_failure_modes"]:
                 modes = "; ".join(str(m) for m in p["likely_failure_modes"][:3])
                 lines.append(f"    predicted failure modes: {modes}")
+            if p.get("scope_note"):
+                lines.append(f"    scope: {p['scope_note']}")
 
     if agg["overall"]:
         o = agg["overall"]

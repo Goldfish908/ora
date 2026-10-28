@@ -33,7 +33,9 @@ from . import __version__, llm as llm_mod
 from .budget import BudgetTracker
 from .evidence import EvidenceStore
 from .loop import LoopConfig, run_loop
-from .predict import PredictionRecorder, make_predictor
+from .predict import (
+    PredictionRecorder, make_evidence_context_provider, make_predictor,
+)
 from .trajectory import TrajectoryWriter
 from .workers import WORKERS_PROMPT_ADDENDUM, WorkerManager
 
@@ -109,6 +111,9 @@ class OrAgent(BaseAgent):
             enable_workers, LoopConfig.enable_workers)
         self._ora_worker_calls_budget = _coerce_int(
             worker_calls_budget, LoopConfig.worker_calls_budget)
+        # Extra request body for worker role calls (e.g. {"enable_thinking":
+        # false} to keep audit/repair latency bounded; actor settings unchanged).
+        self._ora_worker_llm_extra = kwargs.pop("worker_llm_extra", None)
         # Guard against YAML 1.1 parsing bare `off` as boolean False.
         if predict_mode in (None, False):
             self._ora_predict_mode = None
@@ -187,8 +192,9 @@ class OrAgent(BaseAgent):
         with TrajectoryWriter(out_dir / "trajectory.jsonl", run_id=run_id,
                               task_id=task_id, model=model) as writer, \
                 EvidenceStore(out_dir / "evidence.jsonl") as evidence_store:
-            recorder = PredictionRecorder(out_dir, writer=writer,
-                                          predictor=predictor, tracker=tracker)
+            recorder = PredictionRecorder(
+                out_dir, writer=writer, predictor=predictor, tracker=tracker,
+                context_provider=make_evidence_context_provider(evidence_store))
             config = LoopConfig(
                 max_steps=self._ora_max_steps,
                 token_budget=self._ora_token_budget,
@@ -205,7 +211,8 @@ class OrAgent(BaseAgent):
                     llm_fn=llm_fn, exec_fn=exec_fn,
                     evidence_store=evidence_store, writer=writer,
                     tracker=tracker,
-                    max_tokens=config.worker_max_tokens, temperature=0.0)
+                    max_tokens=config.worker_max_tokens, temperature=0.0,
+                    llm_extra=self._ora_worker_llm_extra)
                 system_prompt = SYSTEM_PROMPT + WORKERS_PROMPT_ADDENDUM
             result = await run_loop(
                 system_prompt=system_prompt,

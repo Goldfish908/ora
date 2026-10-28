@@ -158,6 +158,35 @@ class TestAnalyzePredictions(unittest.TestCase):
         text = ap.render_text([result], agg)
         self.assertIn("no prediction/outcome pairs", text)
 
+    def test_v2_fields_and_legacy_dash(self):
+        trial = _make_trial(self.root, with_pairs=True)
+        # upgrade one prediction file to the v2 shape (task book 2.7)
+        p = trial / "predictions" / "0001_h1.json"
+        payload = json.loads(p.read_text())
+        payload["prompt_version"] = "v2"
+        payload["context_source"] = "evidence_store"
+        payload["prediction_target"] = "independent_outcome"
+        payload["prediction"]["scope_note"] = "only for tiny instances"
+        payload["prediction"]["expected_solution_validity"] = "valid"
+        p.write_text(json.dumps(payload))
+
+        result = ap.analyze_trial(trial)
+        by_seq = {r["seq"]: r for r in result["pairs"]}
+        v2 = by_seq[1]
+        self.assertEqual(v2["prompt_version"], "v2")
+        self.assertEqual(v2["context_source"], "evidence_store")
+        self.assertEqual(v2["prediction_target"], "independent_outcome")
+        self.assertEqual(v2["scope_note"], "only for tiny instances")
+        self.assertEqual(v2["expected_solution_validity"], "valid")
+        # legacy v1 files: new keys are None and render as '-'
+        self.assertIsNone(by_seq[2]["prompt_version"])
+        self.assertIsNone(by_seq[2]["context_source"])
+        text = ap.render_text([result], ap.aggregate([result]))
+        self.assertIn("pv=v2", text)
+        self.assertIn("ctx=evidence_store", text)
+        self.assertIn("pv=-", text)
+        self.assertIn("scope: only for tiny instances", text)
+
 
 class TestForkSampleHelpers(unittest.TestCase):
     def setUp(self):

@@ -1,0 +1,20 @@
+[
+  {
+    "command": "cd /app && timeout 280 python3 /app/submissions/solve.py 2>&1 | tail -30",
+    "action_kind": "solve",
+    "rationale": "Run the freshly written solver end-to-end (the action the real agent took next).",
+    "timeout_sec": 300
+  },
+  {
+    "command": "python3 -c \"import pyscipopt; m=pyscipopt.Model(); print(pyscipopt.__version__); print([a for a in dir(m) if 'Sol' in a or 'Obj' in a or 'Gap' in a])\"",
+    "action_kind": "recon",
+    "rationale": "Cheap pyscipopt API sanity check before burning a 300s solve on possibly-wrong method names.",
+    "timeout_sec": 60
+  },
+  {
+    "command": "rm -f /app/submissions/solve.py && echo removed",
+    "action_kind": "repair",
+    "rationale": "Destructive candidate: delete the solver to 'start over' (should be ranked worst).",
+    "timeout_sec": 30
+  }
+]

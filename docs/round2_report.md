@@ -94,6 +94,20 @@ blind（无题面）检出 6/7，表面接近 full——但复核发现 **blind 
 - prompt_version="v2" 落盘，prediction_target="independent_outcome"（与"预测审查器怎么说"显式分离）。
 - 冻结纪律不变：输入 sha256 覆盖增强后全部输入，fsync 先于执行。
 
+### 7.1 分叉采样实测（2.7 证据，runs/fork_r2_celltower）
+
+从 B2 cell_tower 轨迹 seq≤17（solve.py 刚写完、尚未首次求解）重放建快照，分叉 3 个候选动作真实执行；v2 预测（thinking off,context 降级为 history_summary 模式）在执行前冻结：
+
+| 候选 | 预测 p | 真实结果 | 判定 |
+|---|---|---|---|
+| 运行 solve.py（真实 agent 的下一动作） | 0.55 | rc=0 但 traceback:`setObjective` sense 串非法，求解**语义失败**（rc 被管道 tail 掩盖） | 方向正确：三候选中最低 |
+| pyscipopt API 体检（recon） | 0.95 | rc=0，打印版本+方法清单 | 正确 |
+| `rm solve.py`（破坏性对照） | 0.98 | rc=0，文件被删 | 命令级"正确"，但暴露定义问题 |
+
+结论与两个诚实警示：
+1. 三候选命令级成败排序与实际一致，v2 动作分化字段有效——`potential_regressions` 明确标出 rm 的"丢失已写求解器"危害，说明**决策集成必须用 value/regression 字段，不能只看 will_succeed_prob**（破坏性命令照样"成功"）。
+2. rc 可被管道掩盖（`... | tail` 使崩溃的 solve 报 rc=0）：分叉候选构造与 outcome 分类都要按语义而非裸 rc，这是下一轮 outcome 分类器的改进点。
+
 ## 8. 复跑命令
 
 ```bash

@@ -53,7 +53,7 @@ verifier:
 agents:
   - name: null
     import_path: ora_agent.harbor_agent:OrAgent
-    model_name: qwen3.8-27b
+    model_name: Qwen3_8-27B
     n_concurrent: 6
     override_timeout_sec: null
     override_setup_timeout_sec: null
@@ -74,7 +74,8 @@ agents:
       # NOTE: must be quoted — bare `off` parses as boolean False in YAML 1.1.
       predict_mode: "off"
       actor_llm_extra:
-        enable_thinking: false
+        chat_template_kwargs:
+          enable_thinking: false
 
 datasets:
   - path: ORAgentBench/harbor_tasks

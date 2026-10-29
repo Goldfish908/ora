@@ -243,6 +243,9 @@ class LoopConfig:
     worker_max_tokens: int = 4096          # per worker call completion budget
     enable_triggers: bool = False          # E2: deterministic audit triggers
                                            # (no-op unless workers enabled)
+    actor_llm_extra: dict | None = None    # merged into every actor request
+                                           # body, e.g. {"enable_thinking":
+                                           # false} for the thinking screen
 
 
 @dataclass
@@ -401,12 +404,15 @@ async def run_loop(*, system_prompt: str, instruction: str, config: LoopConfig,
                         messages_sha256=messages_sha256(messages),
                         max_tokens=config.max_tokens,
                         temperature=config.temperature)
+            actor_extra = {"tools": tools}
+            if config.actor_llm_extra:
+                actor_extra.update(config.actor_llm_extra)
             try:
                 # llm_fn is synchronous (blocking HTTP); run it off the event
                 # loop so a stalled request cannot freeze sibling trials.
                 out = await asyncio.to_thread(
                     llm_fn, messages, max_tokens=config.max_tokens,
-                    temperature=config.temperature, extra={"tools": tools})
+                    temperature=config.temperature, extra=actor_extra)
             except Exception as e:
                 writer.emit("llm_response", error="llm_request_failed",
                             error_message=f"{type(e).__name__}: {e}"[:500])

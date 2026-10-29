@@ -117,6 +117,9 @@ class OrAgent(BaseAgent):
         # Extra request body for worker role calls (e.g. {"enable_thinking":
         # false} to keep audit/repair latency bounded; actor settings unchanged).
         self._ora_worker_llm_extra = kwargs.pop("worker_llm_extra", None)
+        # Same mechanism for the actor (E-B1-off thinking screen): merged into
+        # every actor request body via LoopConfig.actor_llm_extra.
+        self._ora_actor_llm_extra = kwargs.pop("actor_llm_extra", None)
         # Guard against YAML 1.1 parsing bare `off` as boolean False.
         if predict_mode in (None, False):
             self._ora_predict_mode = None
@@ -207,6 +210,7 @@ class OrAgent(BaseAgent):
                 enable_workers=self._ora_enable_workers,
                 worker_calls_budget=self._ora_worker_calls_budget,
                 enable_triggers=self._ora_enable_triggers,
+                actor_llm_extra=self._ora_actor_llm_extra,
             )
             worker_manager = None
             system_prompt = SYSTEM_PROMPT

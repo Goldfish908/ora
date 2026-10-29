@@ -32,8 +32,10 @@ Usage: python3 scripts/run_controlled_eval.py [--only tiny_assign/a_m1] [--resum
 from __future__ import annotations
 
 import argparse
+import ast
 import asyncio
 import hashlib
+import io
 import json
 import os
 import re
@@ -42,6 +44,7 @@ import subprocess
 import sys
 import tempfile
 import time
+import tokenize
 from pathlib import Path
 
 ORA_ROOT = Path(__file__).resolve().parents[1]
@@ -113,7 +116,55 @@ def discover_artifacts() -> list[dict]:
     return artifacts
 
 
-def build_sandbox(sandbox: Path, problem: str, artifact: dict) -> Path:
+def _sanitize_source(src: str) -> str:
+    """Strip comments and docstrings by line/column surgery on the ORIGINAL
+    text (no ast.unparse: its re-emitted f-strings can exceed the runtime
+    Python's grammar, e.g. PEP 701 nested quotes)."""
+    tree = ast.parse(src)  # raises SyntaxError — caller decides
+    lines = src.splitlines(keepends=True)
+    # docstring spans -> blank lines (or `pass` when it is the only statement)
+    for node in ast.walk(tree):
+        body = getattr(node, "body", None)
+        if (isinstance(body, list) and body
+                and isinstance(body[0], ast.Expr)
+                and isinstance(body[0].value, ast.Constant)
+                and isinstance(body[0].value.value, str)):
+            d = body[0]
+            if len(body) == 1:
+                lines[d.lineno - 1] = " " * d.col_offset + "pass\n"
+                for ln in range(d.lineno, d.end_lineno):
+                    lines[ln] = "\n"
+            else:
+                for ln in range(d.lineno - 1, d.end_lineno):
+                    lines[ln] = "\n"
+    # comment char-ranges -> blank (comments never span lines)
+    for tok in tokenize.generate_tokens(io.StringIO(src).readline):
+        if tok.type == tokenize.COMMENT:
+            ln, c0, c1 = tok.start[0] - 1, tok.start[1], tok.end[1]
+            lines[ln] = lines[ln][:c0] + lines[ln][c1:]
+    return "".join(lines)
+
+
+def sanitize_blind_tree(app: Path) -> int:
+    """E1.4 (taskbook 5195): de-leak blind mode. Strip comments AND docstrings
+    from every .py the blind worker can read, so spec-revealing text (e.g.
+    `# at least 20 pieces` next to a `<=` bug, or `precedence J1 -> J3` in a
+    docstring) cannot answer the audit. Original formatting and semantics are
+    preserved (line/column surgery, no re-emission). Returns file count."""
+    n = 0
+    for py in sorted(app.rglob("*.py")):
+        src = py.read_text(encoding="utf-8")
+        try:
+            out = _sanitize_source(src)
+        except (SyntaxError, tokenize.TokenError):
+            continue
+        py.write_text(out, encoding="utf-8")
+        n += 1
+    return n
+
+
+def build_sandbox(sandbox: Path, problem: str, artifact: dict,
+                  blind: bool = False) -> Path:
     """Create the worker-visible tree; returns the app dir (≡ /app).
 
     Layout:
@@ -131,6 +182,8 @@ def build_sandbox(sandbox: Path, problem: str, artifact: dict) -> Path:
     shutil.copytree(CONTROLLED / problem / "data", sandbox / "data")
     shutil.copy(CONTROLLED / problem / artifact["rel_solve"],
                 app / "submissions" / "solve.py")
+    if blind:
+        sanitize_blind_tree(app)
     return app
 
 
@@ -298,7 +351,7 @@ async def eval_one_pass(artifact: dict, mode: str, sandbox: Path,
     """One full (or blind) audit->checks->confirm(->repair->witness->verify)
     pass over one artifact sandbox."""
     problem, aid = artifact["problem"], artifact["aid"]
-    app = build_sandbox(sandbox, problem, artifact)
+    app = build_sandbox(sandbox, problem, artifact, blind=(mode == "blind"))
     exec_fn = make_local_exec_fn(app)
     store = EvidenceStore(sandbox / "evidence.jsonl")
     writer = TrajectoryWriter(sandbox / "trajectory.jsonl",

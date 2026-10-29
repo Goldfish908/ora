@@ -246,5 +246,43 @@ class TestForkSampleHelpers(unittest.TestCase):
         self.assertEqual(prefix[0]["action_kind"], "recon")
 
 
+class TestBlindSanitize(unittest.TestCase):
+    """E1.4: blind mode must not leak the spec via comments/docstrings."""
+
+    def test_sanitize_strips_comments_and_docstrings(self):
+        import ast as _ast
+        import run_controlled_eval as rce
+        src = ('"""precedence J1 -> J3, minimize makespan."""\n'
+               'import json  # stdlib\n'
+               'MIN_FROM_P2 = 20  # at least 20 pieces from P2\n'
+               'def f(x):\n'
+               '    """ Supply-stability rule."""\n'
+               '    return x + 1  # inline note\n')
+        with tempfile.TemporaryDirectory() as td:
+            app = Path(td)
+            (app / "submissions").mkdir()
+            (app / "submissions" / "solve.py").write_text(src)
+            n = rce.sanitize_blind_tree(app)
+            out = (app / "submissions" / "solve.py").read_text()
+        self.assertEqual(n, 1)
+        self.assertNotIn("#", out)
+        self.assertNotIn('"""', out)
+        self.assertNotIn("precedence", out)
+        self.assertNotIn("at least 20 pieces", out)
+        # semantics preserved: still parses, constants and code intact
+        tree = _ast.parse(out)
+        self.assertIn("MIN_FROM_P2 = 20", out)
+        self.assertIn("return x + 1", out)
+        self.assertTrue(tree)
+
+    def test_sanitize_survives_syntax_error(self):
+        import run_controlled_eval as rce
+        with tempfile.TemporaryDirectory() as td:
+            app = Path(td)
+            (app / "broken.py").write_text("def f(:\n")
+            self.assertEqual(rce.sanitize_blind_tree(app), 0)
+            self.assertEqual((app / "broken.py").read_text(), "def f(:\n")
+
+
 if __name__ == "__main__":
     unittest.main()

@@ -1,0 +1,138 @@
+{
+  "problem": "tiny_sched",
+  "aid": "c_m3",
+  "kind": "mutant",
+  "mode": "full",
+  "sandbox": "/home/hewj13/wm/ora/work/controlled_eval/tiny_sched_c_m3",
+  "prompt_versions": {
+    "audit_system": "346d887a181c873b",
+    "audit_confirm_addendum": "9a33a195b2562aa1",
+    "audit_verify_fix_addendum": "595c522114f21d3e",
+    "audit_blind_note": "fd8b3d30b708ae0a",
+    "repair_system": "09557700c36091b7"
+  },
+  "error": null,
+  "audit": {
+    "focus": "full semantic audit",
+    "mode": "full",
+    "artifact_version": "d6e21cb0e4fc2c5a",
+    "requirements_written": [
+      "R1",
+      "R2",
+      "R3",
+      "R4",
+      "R5",
+      "R6"
+    ],
+    "findings": [
+      {
+        "finding_id": "F-001",
+        "proposed_checks": [
+          "python3 -c \"import csv; f=open('/app/data/jobs.csv'); r=csv.DictReader(f); row=next(r); print('Expected proc:', row['proc_min'], 'Code uses setup:', row['setup_min'])\"",
+          "grep -n 'setup_min' /app/submissions/solve.py"
+        ]
+      }
+    ]
+  },
+  "checks": [
+    {
+      "command": "python3 -c \"import csv; f=open('/app/data/jobs.csv'); r=csv.DictReader(f); row=next(r); print('Expected proc:', row['proc_min'], 'Code uses setup:', row['setup_min'])\"",
+      "return_code": 0,
+      "timed_out": false,
+      "stdout_tail": "Expected proc: 3 Code uses setup: 12\n",
+      "stderr_tail": ""
+    },
+    {
+      "command": "grep -n 'setup_min' /app/submissions/solve.py",
+      "return_code": 0,
+      "timed_out": false,
+      "stdout_tail": "16:            proc[r[\"job_id\"]] = float(r[\"setup_min\"])\n",
+      "stderr_tail": ""
+    }
+  ],
+  "confirm": {
+    "focus": "confirm",
+    "mode": "full",
+    "artifact_version": "d6e21cb0e4fc2c5a",
+    "findings": [],
+    "finding_updates_applied": [
+      "F-001"
+    ],
+    "check_results_written": [
+      "chk-001",
+      "chk-002"
+    ]
+  },
+  "open_findings": [
+    {
+      "record_type": "finding",
+      "ts": "2026-10-29T07:16:59.488964+00:00",
+      "finding_id": "F-001",
+      "req_ids": [
+        "R4"
+      ],
+      "artifact_hash": "d6e21cb0e4fc2c5a",
+      "problem_type": "implementation",
+      "evidence_level": "actual_test",
+      "detail": "The code explicitly reads `setup_min` (line 16) instead of `proc_min` for job durations. The data check confirms J1 has proc_min=3 but setup_min=12, proving the model uses incorrect processing times, violating R4.",
+      "witness_ref": "grep -n 'setup_min' /app/submissions/solve.py; python3 -c \"import csv; f=open('/app/data/jobs.csv'); r=csv.DictReader(f); row=next(r); print('Expected proc:', row['proc_min'], 'Code uses setup:', row['setup_min'])\"",
+      "status": "confirmed"
+    }
+  ],
+  "repair": {
+    "finding_id": "F-001",
+    "reply": {
+      "finding_id": "F-001",
+      "patch_commands": [
+        "cp /app/submissions/solve.py /app/submissions/solve_v1.py",
+        "sed -i 's/proc\\[r\\[\"job_id\"\\]\\] = float(r\\[\"setup_min\"\\])/proc[r[\"job_id\"]] = float(r[\"proc_min\"])/' /app/submissions/solve.py"
+      ],
+      "regression_plan": [
+        "cd /app/submissions && python3 solve.py",
+        "python3 -c \"import json; d=json.load(open('/app/submissions/solution.json')); print('makespan:', d['makespan']); [print(j) for j in d['jobs']]\"",
+        "grep -n 'proc_min\\|setup_min' /app/submissions/solve.py"
+      ],
+      "rationale": "The bug is a single field misread: line 16 reads setup_min instead of proc_min. R4 explicitly states processing time is proc_min and setup_min is offline (does not occupy machine time). The fix replaces the column name so job durations match the data (J1=3, J2=10, J3=8, J4=7, J5=6). All other logic (assignment, disjunctive no-overlap, precedence J1->J3, makespan objective, output schema) remains unchanged.",
+      "expected_resolved": [
+        "F-001"
+      ],
+      "risk_notes": "Minimal one-line change; no impact on model structure or output format. With correct proc times the optimal makespan should be 17 (e.g., M1: J2(0-10), J4(10-17); M2: J1(0-3), J3(3-11), J5(11-17)), satisfying the J1->J3 precedence.",
+      "note": "execute patch_commands via bash, run regression_plan, then call audit(focus='verify_fix', question=<outcomes>)"
+    },
+    "patch_results": [
+      {
+        "command": "cp /app/submissions/solve.py /app/submissions/solve_v1.py",
+        "return_code": 0,
+        "stderr_tail": ""
+      },
+      {
+        "command": "sed -i 's/proc\\[r\\[\"job_id\"\\]\\] = float(r\\[\"setup_min\"\\])/proc[r[\"job_id\"]] = float(r[\"proc_min\"])/' /app/submissions/solve.py",
+        "return_code": 0,
+        "stderr_tail": ""
+      }
+    ],
+    "patch_applied": true,
+    "witness_after_patch": {
+      "verdict": "PASS",
+      "return_code": 0,
+      "output_tail": "OBJECTIVE 17.0\nWITNESS PASS\n"
+    },
+    "verify_fix": {
+      "focus": "verify_fix",
+      "mode": "full",
+      "artifact_version": "9f4fb02adc30f198",
+      "findings": [],
+      "finding_updates_applied": [
+        "F-001"
+      ],
+      "repair_result_written": "repair-06488fc023"
+    }
+  },
+  "usage": {
+    "calls": 5,
+    "prompt_tokens": 13701,
+    "completion_tokens": 2518,
+    "latency_s": 47.6
+  },
+  "wall_time_s": 49.5
+}

@@ -13,7 +13,7 @@ def load_data():
     proc = {}
     with open(DATA / "jobs.csv", newline="") as f:
         for r in csv.DictReader(f):
-            proc[r["job_id"]] = float(r["setup_min"])
+            proc[r["job_id"]] = float(r["proc_min"])
     with open(DATA / "machines.csv", newline="") as f:
         machines = [r["machine_id"] for r in csv.DictReader(f)]
     prec = []

@@ -1,25 +1,25 @@
 # Controlled eval summary (2.5b)
 
 - mutants detected (full): 7/7
-- mutants detected (blind): 6/7
-- false positives on correct/equivalent: confirmed=2, suspected=0 (n=6)
-- repairs succeeded: 6/7
+- mutants detected (blind): 5/7
+- false positives on correct/equivalent: confirmed=1, suspected=0 (n=6)
+- repairs succeeded: 4/7
 
 | artifact | kind | mutation | confirmed | suspected | detected | repair witness | wall_s |
 |---|---|---|---|---|---|---|---|
-| tiny_assign/a_e1 | equivalent | - | 1 | 0 | - | None | 86.0 |
-| tiny_assign/a_m1 | mutant | omission | 1 | 0 | True | None | 38.5 |
-| tiny_assign/a_m2 | mutant | index | 2 | 0 | True | PASS | 64.6 |
-| tiny_assign/correct | correct | - | 0 | 0 | - | - | 13.5 |
-| tiny_sched/c_e1 | equivalent | - | 1 | 0 | - | PASS | 56.6 |
-| tiny_sched/c_m1 | mutant | precedence | 1 | 0 | True | PASS | 131.9 |
-| tiny_sched/c_m2 | mutant | omission | 1 | 0 | True | PASS | 129.1 |
-| tiny_sched/c_m3 | mutant | data_mapping | 1 | 0 | True | PASS | 43.7 |
-| tiny_sched/correct | correct | - | 0 | 0 | - | - | 8.7 |
-| tiny_transport/b_e1 | equivalent | - | 0 | 0 | - | - | 8.2 |
-| tiny_transport/b_m1 | mutant | direction | 1 | 0 | True | PASS | 32.6 |
-| tiny_transport/b_m2 | mutant | unit | 2 | 0 | True | PASS | 51.0 |
-| tiny_transport/correct | correct | - | 0 | 0 | - | - | 7.7 |
+| tiny_assign/a_e1 | equivalent | - | 0 | 0 | - | - | 6.4 |
+| tiny_assign/a_m1 | mutant | omission | 1 | 0 | True | FAIL | 60.4 |
+| tiny_assign/a_m2 | mutant | index | 1 | 0 | True | None | 32.0 |
+| tiny_assign/correct | correct | - | 0 | 0 | - | - | 12.0 |
+| tiny_sched/c_e1 | equivalent | - | 1 | 0 | - | PASS | 93.3 |
+| tiny_sched/c_m1 | mutant | precedence | 1 | 0 | True | None | 42.6 |
+| tiny_sched/c_m2 | mutant | omission | 2 | 0 | True | PASS | 45.4 |
+| tiny_sched/c_m3 | mutant | data_mapping | 1 | 0 | True | PASS | 49.5 |
+| tiny_sched/correct | correct | - | 0 | 0 | - | - | 9.1 |
+| tiny_transport/b_e1 | equivalent | - | 0 | 0 | - | - | 8.9 |
+| tiny_transport/b_m1 | mutant | direction | 1 | 0 | True | PASS | 55.4 |
+| tiny_transport/b_m2 | mutant | unit | 1 | 0 | True | PASS | 46.8 |
+| tiny_transport/correct | correct | - | 0 | 0 | - | - | 10.1 |
 
 ## Blind-mode detection (input control)
 
@@ -28,29 +28,27 @@
 | tiny_assign/a_m1 | False | 0 |
 | tiny_assign/a_m2 | True | 1 |
 | tiny_sched/c_m1 | True | 1 |
-| tiny_sched/c_m2 | True | 1 |
-| tiny_sched/c_m3 | True | 1 |
+| tiny_sched/c_m2 | True | 2 |
+| tiny_sched/c_m3 | True | 2 |
 | tiny_transport/b_m1 | True | 1 |
-| tiny_transport/b_m2 | True | 2 |
+| tiny_transport/b_m2 | False | 0 |
 
 ## Confirmed finding texts (for manual review of detection and localization)
-- tiny_assign/a_e1 F-002 [semantic]: The check confirmed that the CSV data contains the entry for W2,J3. Since the code creates variables for all entries in the CSV, the variable `x_W2_J3` exists, and setting its upper bound to 0 correctly enforces the hard constraint that W2 cannot do J3.
-- tiny_assign/a_m1 F-001 [implementation]: The code does not contain any logic to exclude the (W2, J3) pair. The absence of a constraint or variable fix for this specific pair confirms that the business rule R3 is not implemented in the solver.
-- tiny_assign/a_m2 F-001 [implementation]: The code explicitly forbids W2 from doing J4 instead of J3. The constraint `x["W2", "J4"] == 0` is present on line 34, and there is no corresponding constraint for `x["W2", "J3"]`. This directly violates Business Rule 3 which states W2 cannot do J3.
-- tiny_assign/a_m2 F-002 [feasibility]: With the incorrect constraint forbidding W2-J4, the solver can assign W2 to J3 (cost 1), leading to a suboptimal objective value of 27.0 compared to the true minimum under correct rules. The solution.json file was not found at the expected path, but the stdout confirms the wrong objective was computed.
-- tiny_sched/c_e1 F-001 [semantic]: The code explicitly includes the term `0.0001 * sum(start[j] for j in jobs)` in the objective function, which is not specified in the problem statement.
-- tiny_sched/c_m1 F-001 [semantic]: The code explicitly contains `model.addCons(start[u] >= start[v] + proc[v])` for the precedence pair (J1, J3). This enforces Start(J1) >= End(J3), which is the inverse of the required constraint End(J1) <= Start(J3). The runtime check failed due to missing output file, but the source code inspection confirms the logical inversion.
-- tiny_sched/c_m2 F-001 [implementation]: The code explicitly restricts the no-overlap disjunctive constraints to only the first machine (M1) via `machines[:1]`. This confirms that jobs assigned to M2 are not constrained from overlapping, violating Business Rule 2.
-- tiny_sched/c_m3 F-001 [implementation]: The check confirmed that `load_data` returns processing times based on `setup_min` (e.g., J1=12.0) instead of `proc_min` (expected 3.0). The grep also confirmed the line `proc[r["job_id"]] = float(r["setup_min"])` exists in the code.
-- tiny_transport/b_m1 F-001 [implementation]: The code explicitly uses `x['P2', w] <= MIN_FROM_P2` (line 43), which is an upper bound. The problem statement requires a lower bound (`>= 20`). This confirms the inequality direction is reversed.
-- tiny_transport/b_m2 F-001 [implementation]: Confirmed: load_data() returns demand values in boxes (80.0, 90.0, 80.0) without applying the BOX_TO_PIECES conversion factor of 10. The constant is defined but never used in the code path.
-- tiny_transport/b_m2 F-002 [semantic]: Confirmed: total demand in the model is 250 (boxes) instead of 2500 (pieces). The demand constraints will enforce equality to box values rather than piece values, violating R2 and R4.
-- tiny_assign/a_m2 F-001 [implementation]: The grep output confirms the code contains `model.addCons(x["W2", "J4"] == 0)` immediately following the comment `# W2 is not qualified for J3.`. This is a direct semantic inconsistency: the constraint forbids assignment to J4, while the comment claims qualification issues for J3. Since the problem statement is hidden and no data indicates disqualification (costs exist for all pairs), this constraint is unsupported or mislabeled.
-- tiny_sched/c_m1 F-001 [implementation]: The code explicitly enforces `start[pred] >= start[succ] + proc[succ]`, which is the reverse of the required precedence constraint (pred must finish before succ starts). This is a confirmed implementation error.
-- tiny_sched/c_m2 F-001 [implementation]: The code explicitly restricts the no-overlap disjunctive constraints to only the first machine (M1). Since there are two machines, M2 has no overlap constraints, allowing jobs assigned to M2 to overlap arbitrarily. This is a direct implementation bug violating R2.
-- tiny_sched/c_m3 F-001 [implementation]: The code explicitly loads `setup_min` into the `proc` dictionary (line 16), ignoring `proc_min`. The data check confirms these columns have different values (3 vs 12 for J1). This is a confirmed implementation error where setup times are used as processing times.
-- tiny_transport/b_m1 F-001 [implementation]: The code explicitly defines `MIN_FROM_P2 = 20` with a comment stating 'at least 20 pieces', but the constraint implemented is `x['P2', w] <= MIN_FROM_P2`. This is an upper bound (maximum), which contradicts the variable name and comment indicating a lower bound (minimum). The semantic inversion is confirmed by the source code.
-- tiny_transport/b_m2 F-001 [implementation]: Confirmed that BOX_TO_PIECES is defined but never used in the code. The demand values are loaded directly from CSV (80, 90, 80) and used as-is in the model constraints, while the constant suggests a conversion to pieces was intended. This creates a unit mismatch if the data is indeed in boxes.
-- tiny_transport/b_m2 F-003 [quality]: Confirmed that model.md is missing from the submission directory.
+- tiny_assign/a_m1 F-001 [implementation]: The code does not enforce the constraint that Worker W2 cannot be assigned to Job J3. The variable x['W2', 'J3'] is created and included in the objective function without being fixed to 0 or constrained to be 0. Since the cost for (W2, J3) is 1 (the lowest in the matrix), the solver will likely assign this pair, violating the business rule.
+- tiny_assign/a_m2 F-001 [implementation]: Confirmed: The code sets x['W2','J4']==0 instead of x['W2','J3']==0. The AST check for a constraint involving both 'W2' and 'J3' returned FAIL, confirming no such constraint exists. The solver produced an objective of 27.0, which is only achievable if W2 is assigned to J3 (cost 1), violating requirement R3.
+- tiny_sched/c_e1 F-001 [semantic]: The objective function explicitly includes a tie-breaking term `0.0001 * sum(start[j] for j in jobs)` in addition to `cmax`. This deviates from the strict requirement to minimize makespan only.
+- tiny_sched/c_m1 F-001 [implementation]: The code explicitly contains `model.addCons(start[u] >= start[v] + proc[v])` for the precedence pair (J1, J3). This enforces that J1 starts after J3 finishes, which is the exact opposite of the required constraint (J1 finishes before J3 starts). The logic is definitively reversed.
+- tiny_sched/c_m2 F-001 [implementation]: The code explicitly restricts the no-overlap disjunctive constraints to only the first machine (M1) via `machines[:1]`. Machine M2 has no overlap-prevention constraints, allowing jobs assigned to M2 to overlap in time. This is a direct implementation defect violating R2.
+- tiny_sched/c_m2 F-002 [semantic]: The objective function includes an unsourced secondary term `1e-4 * sum(starts)` not specified in the problem statement. The problem requires minimizing makespan only. While the coefficient is small, it modifies the optimization landscape and could theoretically lead to a different optimal solution than pure makespan minimization, constituting an unsourced objective term.
+- tiny_sched/c_m3 F-001 [implementation]: The code explicitly reads `setup_min` (line 16) instead of `proc_min` for job durations. The data check confirms J1 has proc_min=3 but setup_min=12, proving the model uses incorrect processing times, violating R4.
+- tiny_transport/b_m1 F-001 [implementation]: The code explicitly uses `x["P2", w] <= MIN_FROM_P2` (line 43), which imposes an upper bound of 20 instead of the required lower bound (`>=`). This directly contradicts Business Rule 3 ('at least 20 pieces'). The first check failed due to a missing file, but the source code inspection definitively confirms the logical error in the constraint implementation.
+- tiny_transport/b_m2 F-001 [implementation]: The check confirmed that `load_data()` returns D1 demand as 80.0 instead of the required 800 pieces. The constant `BOX_TO_PIECES` is defined but never used in the code to convert the demand values from boxes to pieces, violating requirement R4.
+- tiny_assign/a_m2 F-001 [implementation]: The code explicitly contains the constraint `model.addCons(x["W2", "J4"] == 0)` at line 34. Since the problem statement is hidden and no such restriction appears in the provided data overview or standard assignment problem definitions, this is an unsourced hard constraint that artificially restricts the feasible region.
+- tiny_sched/c_m1 F-001 [semantic]: The code explicitly enforces `start[u] >= start[v] + proc[v]` for precedence pairs `(u, v)` where `u` is the predecessor. This constraint forces the predecessor to start after the successor has finished, which is the reverse of the standard precedence requirement (predecessor must finish before successor starts). The runtime check failed because the solution file was not generated in the expected path, but the static code analysis confirms the logical inversion.
+- tiny_sched/c_m2 F-001 [implementation]: The code does not reference 'setup' anywhere, confirming that the 'setup_min' column from jobs.csv is completely ignored in the model formulation.
+- tiny_sched/c_m2 F-002 [implementation]: The disjunctive constraints for machine non-overlap are explicitly limited to `machines[:1]` (only M1). Jobs assigned to M2 have no non-overlap constraints, allowing simultaneous scheduling on M2.
+- tiny_sched/c_m3 F-001 [implementation]: Confirmed: The code loads 'setup_min' (value 12 for J1) into the 'proc' dictionary instead of 'proc_min' (value 3 for J1). The loaded values are {J1: 12.0, J2: 5.0, J3: 6.0, J4: 8.0, J5: 9.0} which correspond to setup times, not processing times. This fundamentally changes the problem instance being solved.
+- tiny_sched/c_m3 F-004 [implementation]: Confirmed: model.md file does not exist at /app/submissions/model.md. The submission is missing the required mathematical model documentation.
+- tiny_transport/b_m1 F-001 [implementation]: The execution of the submitted code resulted in 'MODEL STATUS infeasible'. This confirms that the constraint `x['P2', w] <= 20` (applied per warehouse) renders the model infeasible given the demand and supply data. Since a standard transport problem with sufficient supply should be feasible, this indicates an incorrect or unsupported hard constraint implementation.
 
 localization_correct: 待人工复核填写（summary.json 各行为 null）。

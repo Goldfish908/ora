@@ -1,0 +1,38 @@
+{
+  "problem": "tiny_transport",
+  "aid": "correct",
+  "kind": "correct",
+  "mode": "full",
+  "sandbox": "/home/hewj13/wm/ora/work/controlled_eval/tiny_transport_correct",
+  "prompt_versions": {
+    "audit_system": "346d887a181c873b",
+    "audit_confirm_addendum": "9a33a195b2562aa1",
+    "audit_verify_fix_addendum": "595c522114f21d3e",
+    "audit_blind_note": "fd8b3d30b708ae0a",
+    "repair_system": "09557700c36091b7"
+  },
+  "error": null,
+  "audit": {
+    "focus": "full semantic audit",
+    "mode": "full",
+    "artifact_version": "33a9bf6a9f326fd8",
+    "requirements_written": [
+      "R1",
+      "R2",
+      "R3",
+      "R4",
+      "R5",
+      "R6"
+    ],
+    "findings": []
+  },
+  "checks": [],
+  "open_findings": [],
+  "usage": {
+    "calls": 1,
+    "prompt_tokens": 1986,
+    "completion_tokens": 615,
+    "latency_s": 9.75
+  },
+  "wall_time_s": 10.1
+}

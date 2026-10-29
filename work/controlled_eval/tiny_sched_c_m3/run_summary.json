@@ -5,7 +5,7 @@
   "status": "running",
   "ts_started": "2026-10-29T07:16:23.598978+00:00",
   "n_steps": 0,
-  "last_state_id": 3,
+  "last_state_id": 10,
   "actor_usage": {
     "calls": 0,
     "prompt_tokens": 0,
@@ -19,11 +19,11 @@
     "latency_s": 0.0
   },
   "worker_usage": {
-    "calls": 1,
-    "prompt_tokens": 2141,
-    "completion_tokens": 682,
-    "latency_s": 11.603
+    "calls": 5,
+    "prompt_tokens": 13701,
+    "completion_tokens": 2518,
+    "latency_s": 47.602
   },
   "artifacts_last_observed": null,
-  "ts_updated": "2026-10-29T07:16:35.443064+00:00"
+  "ts_updated": "2026-10-29T07:17:12.986281+00:00"
 }

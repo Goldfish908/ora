@@ -478,5 +478,90 @@ class ConfirmProtocolTest(unittest.TestCase):
         self.assertIn("Never record a positive statement", _AUDIT_SYSTEM)
 
 
+SCIP_OPTIMAL_OUT = ("SCIP Status        : problem is solved "
+                    "[optimal solution found]\n")
+
+
+def make_solve_exec_fn():
+    async def exec_fn(command, timeout_sec):
+        if "solve.py" in command and "cat " not in command:
+            return {"stdout": SCIP_OPTIMAL_OUT, "stderr": "", "return_code": 0}
+        for key, content in FILES.items():
+            if command == key:
+                return {"stdout": content, "stderr": "", "return_code": 0}
+        if command.startswith("ls -la /app/data/"):
+            return {"stdout": "flights.csv\n=== /app/data/flights.csv ===\nf1,g1\n",
+                    "stderr": "", "return_code": 0}
+        return {"stdout": "ok", "stderr": "", "return_code": 0}
+    return exec_fn
+
+
+class TestE2Triggers(WorkerTestBase):
+    """E2: deterministic audit triggers (post-first-solution, pre-finish)."""
+
+    def test_checkpoint_audit_after_first_incumbent(self):
+        script = [
+            {"tool_calls": [make_tool_call("bash", {
+                "command": "cd /app && python3 submissions/solve.py",
+                "action_kind": "solve", "rationale": "run"})],
+             "finish_reason": "tool_calls"},
+            {"tool_calls": [make_tool_call("finish", {"summary": "done"})],
+             "finish_reason": "tool_calls"},
+        ]
+        llm_fn = make_dispatch_llm_fn(script)
+        manager = self.make_manager(llm_fn, make_solve_exec_fn())
+        result = asyncio.run(run_loop(
+            system_prompt="s", instruction="i",
+            config=LoopConfig(enable_workers=True, enable_triggers=True),
+            llm_fn=llm_fn, exec_fn=make_solve_exec_fn(), writer=self.writer,
+            worker_manager=manager))
+        self.assertEqual(result.status, "finished")
+        self.assertEqual(result.n_steps, 1)
+        # framework ran one audit by itself after the first incumbent
+        self.assertEqual(len(llm_fn.state["audit_messages"]), 1)
+        trig = [e for e in self.events() if e.get("event") == "trigger"]
+        self.assertEqual([t["kind"] for t in trig],
+                         ["post_first_solution_audit"])
+        # checkpoint audit covered the artifacts -> finish was NOT bounced
+        self.assertNotIn("pre_finish_audit", [t["kind"] for t in trig])
+
+    def test_pre_finish_audit_bounces_once(self):
+        script = [
+            {"tool_calls": [make_tool_call("finish", {"summary": "try1"})],
+             "finish_reason": "tool_calls"},
+            {"tool_calls": [make_tool_call("finish", {"summary": "try2"})],
+             "finish_reason": "tool_calls"},
+        ]
+        llm_fn = make_dispatch_llm_fn(script)
+        manager = self.make_manager(llm_fn, make_exec_fn())
+        result = asyncio.run(run_loop(
+            system_prompt="s", instruction="i",
+            config=LoopConfig(enable_workers=True, enable_triggers=True),
+            llm_fn=llm_fn, exec_fn=make_exec_fn(), writer=self.writer,
+            worker_manager=manager))
+        self.assertEqual(result.status, "finished")
+        self.assertEqual(result.finish_summary, "try2")
+        self.assertEqual(len(llm_fn.state["audit_messages"]), 1)
+        trig = [e for e in self.events() if e.get("event") == "trigger"]
+        self.assertEqual([t["kind"] for t in trig], ["pre_finish_audit"])
+
+    def test_triggers_off_no_auto_audit(self):
+        script = [
+            {"tool_calls": [make_tool_call("finish", {"summary": "x"})],
+             "finish_reason": "tool_calls"},
+        ]
+        llm_fn = make_dispatch_llm_fn(script)
+        manager = self.make_manager(llm_fn, make_exec_fn())
+        result = asyncio.run(run_loop(
+            system_prompt="s", instruction="i",
+            config=LoopConfig(enable_workers=True, enable_triggers=False),
+            llm_fn=llm_fn, exec_fn=make_exec_fn(), writer=self.writer,
+            worker_manager=manager))
+        self.assertEqual(result.status, "finished")
+        self.assertEqual(len(llm_fn.state["audit_messages"]), 0)
+        self.assertFalse([e for e in self.events()
+                          if e.get("event") == "trigger"])
+
+
 if __name__ == "__main__":
     unittest.main()

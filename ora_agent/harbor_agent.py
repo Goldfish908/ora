@@ -101,7 +101,8 @@ class OrAgent(BaseAgent):
 
     def __init__(self, *args, max_steps=None, token_budget=None, temperature=None,
                  predict_mode=None, max_tokens=None, exec_timeout_sec=None,
-                 enable_workers=None, worker_calls_budget=None, **kwargs):
+                 enable_workers=None, worker_calls_budget=None,
+                 enable_triggers=None, **kwargs):
         self._ora_max_steps = _coerce_int(max_steps, LoopConfig.max_steps)
         self._ora_token_budget = _coerce_int(token_budget, LoopConfig.token_budget)
         self._ora_temperature = _coerce_float(temperature, LoopConfig.temperature)
@@ -111,6 +112,8 @@ class OrAgent(BaseAgent):
             enable_workers, LoopConfig.enable_workers)
         self._ora_worker_calls_budget = _coerce_int(
             worker_calls_budget, LoopConfig.worker_calls_budget)
+        self._ora_enable_triggers = _coerce_bool(
+            enable_triggers, LoopConfig.enable_triggers)
         # Extra request body for worker role calls (e.g. {"enable_thinking":
         # false} to keep audit/repair latency bounded; actor settings unchanged).
         self._ora_worker_llm_extra = kwargs.pop("worker_llm_extra", None)
@@ -203,6 +206,7 @@ class OrAgent(BaseAgent):
                 exec_timeout_sec=self._ora_exec_timeout,
                 enable_workers=self._ora_enable_workers,
                 worker_calls_budget=self._ora_worker_calls_budget,
+                enable_triggers=self._ora_enable_triggers,
             )
             worker_manager = None
             system_prompt = SYSTEM_PROMPT

@@ -1,0 +1,168 @@
+{
+  "problem": "tiny_sched",
+  "aid": "c_m3",
+  "kind": "mutant",
+  "mode": "blind",
+  "sandbox": "/home/hewj13/wm/ora/work/controlled_eval/tiny_sched_c_m3_blind",
+  "prompt_versions": {
+    "audit_system": "346d887a181c873b",
+    "audit_confirm_addendum": "9a33a195b2562aa1",
+    "audit_verify_fix_addendum": "595c522114f21d3e",
+    "audit_blind_note": "fd8b3d30b708ae0a",
+    "repair_system": "09557700c36091b7"
+  },
+  "error": null,
+  "audit": {
+    "focus": "full semantic audit",
+    "mode": "blind",
+    "artifact_version": "4ea184927d629751",
+    "requirements_written": [
+      "R1",
+      "R2",
+      "R3",
+      "R4"
+    ],
+    "findings": [
+      {
+        "finding_id": "F-001",
+        "proposed_checks": [
+          "python3 -c \"import csv; f=open('/app/data/jobs.csv'); r=list(csv.DictReader(f)); print('J1 proc_min:', r[0]['proc_min'], 'setup_min:', r[0]['setup_min'])\"",
+          "grep -n 'proc\\[' /app/submissions/solve.py | head -5",
+          "python3 -c \"\nimport sys\nsys.path.insert(0, '/app/submissions')\nfrom solve import load_data\nproc, machines, prec = load_data()\nprint('Loaded proc values:', proc)\nprint('Expected proc_min for J1: 3, got:', proc.get('J1'))\n\""
+        ]
+      },
+      {
+        "finding_id": "F-002",
+        "proposed_checks": [
+          "python3 -c \"\n# Test the sequencing logic with a minimal case\n# Two jobs on same machine, check if they can overlap\nimport subprocess\nresult = subprocess.run(['python3', '-c', '''\nfrom pyscipopt import Model, quicksum\nmodel = Model(\"test\")\nmodel.hideOutput()\ns1 = model.addVar(lb=0, vtype=\"C\", name=\"s1\")\ns2 = model.addVar(lb=0, vtype=\"C\", name=\"s2\")\na1 = model.addVar(vtype=\"B\", name=\"a1\")\na2 = model.addVar(vtype=\"B\", name=\"a2\")\nb = model.addVar(vtype=\"B\", name=\"b\")\nproc1, proc2 = 3, 10\nbig_m = 13\n# Both on machine M1\nmodel.addCons(a1 == 1)\nmodel.addCons(a2 == 1)\n# Constraint 1: s2 >= s1 + proc1 - big_m*(3 - a1 - a2 - b)\nmodel.addCons(s2 >= s1 + proc1 - big_m*(3 - a1 - a2 - b))\n# Constraint 2: s1 >= s2 + proc2 - big_m*(2 - a1 - a2 + b)\nmodel.addCons(s1 >= s2 + proc2 - big_m*(2 - a1 - a2 + b))\nmodel.setObjective(s2, \"minimize\")\nmodel.optimize()\nprint(\"s1:\", model.getVal(s1), \"s2:\", model.getVal(s2), \"b:\", model.getVal(b))\n'''], capture_output=True, text=True)\nprint(result.stdout)\nprint(result.stderr)\n\""
+        ]
+      },
+      {
+        "finding_id": "F-003",
+        "proposed_checks": [
+          "grep -n 'setObjective' /app/submissions/solve.py"
+        ]
+      },
+      {
+        "finding_id": "F-004",
+        "proposed_checks": [
+          "ls -la /app/submissions/model.md 2>&1 || echo 'model.md not found'"
+        ]
+      }
+    ]
+  },
+  "checks": [
+    {
+      "command": "python3 -c \"import csv; f=open('/app/data/jobs.csv'); r=list(csv.DictReader(f)); print('J1 proc_min:', r[0]['proc_min'], 'setup_min:', r[0]['setup_min'])\"",
+      "return_code": 0,
+      "timed_out": false,
+      "stdout_tail": "J1 proc_min: 3 setup_min: 12\n",
+      "stderr_tail": ""
+    },
+    {
+      "command": "grep -n 'proc\\[' /app/submissions/solve.py | head -5",
+      "return_code": 0,
+      "timed_out": false,
+      "stdout_tail": "16:            proc[r[\"job_id\"]] = float(r[\"setup_min\"])\n44:        model.addCons(cmax >= start[j] + proc[j])\n52:                        start[j] >= start[i] + proc[i] - big_m * (3 - a[i, m] - a[j, m] - before[i, j])\n55:                        start[i] >= start[j] + proc[j] - big_m * (2 - a[i, m] - a[j, m] + before[i, j])\n60:        model.addCons(start[v] >= start[u] + proc[u])\n",
+      "stderr_tail": ""
+    },
+    {
+      "command": "python3 -c \"\nimport sys\nsys.path.insert(0, '/app/submissions')\nfrom solve import load_data\nproc, machines, prec = load_data()\nprint('Loaded proc values:', proc)\nprint('Expected proc_min for J1: 3, got:', proc.get('J1'))\n\"",
+      "return_code": 0,
+      "timed_out": false,
+      "stdout_tail": "Loaded proc values: {'J1': 12.0, 'J2': 5.0, 'J3': 6.0, 'J4': 8.0, 'J5': 9.0}\nExpected proc_min for J1: 3, got: 12.0\n",
+      "stderr_tail": ""
+    },
+    {
+      "command": "python3 -c \"\n# Test the sequencing logic with a minimal case\n# Two jobs on same machine, check if they can overlap\nimport subprocess\nresult = subprocess.run(['python3', '-c', '''\nfrom pyscipopt import Model, quicksum\nmodel = Model(\"test\")\nmodel.hideOutput()\ns1 = model.addVar(lb=0, vtype=\"C\", name=\"s1\")\ns2 = model.addVar(lb=0, vtype=\"C\", name=\"s2\")\na1 = model.addVar(vtype=\"B\", name=\"a1\")\na2 = model.addVar(vtype=\"B\", name=\"a2\")\nb = model.addVar(vtype=\"B\", name=\"b\")\nproc1, proc2 = 3, 10\nbig_m = 13\n# Both on machine M1\nmodel.addCons(a1 == 1)\nmodel.addCons(a2 == 1)\n# Constraint 1: s2 >= s1 + proc1 - big_m*(3 - a1 - a2 - b)\nmodel.addCons(s2 >= s1 + proc1 - big_m*(3 - a1 - a2 - b))\n# Constraint 2: s1 >= s2 + proc2 - big_m*(2 - a1 - a2 + b)\nmodel.addCons(s1 >= s2 + proc2 - big_m*(2 - a1 - a2 + b))\nmodel.setObjective(s2, \"minimize\")\nmodel.optimize()\nprint(\"s1:\", model.getVal(s1), \"s2:\", model.getVal(s2), \"b:\", model.getVal(b))\n'''], capture_output=True, text=True)\nprint(result.stdout)\nprint(result.stderr)\n\"",
+      "rejected": true,
+      "reason": "blocked by command guard"
+    },
+    {
+      "command": "grep -n 'setObjective' /app/submissions/solve.py",
+      "return_code": 0,
+      "timed_out": false,
+      "stdout_tail": "63:    model.setObjective(cmax + 1e-4 * quicksum(start[j] for j in jobs), \"minimize\")\n",
+      "stderr_tail": ""
+    },
+    {
+      "command": "ls -la /app/submissions/model.md 2>&1 || echo 'model.md not found'",
+      "return_code": 0,
+      "timed_out": false,
+      "stdout_tail": "ls: cannot access '/home/hewj13/wm/ora/work/controlled_eval/tiny_sched_c_m3_blind/app/submissions/model.md': No such file or directory\nmodel.md not found\n",
+      "stderr_tail": ""
+    }
+  ],
+  "confirm": {
+    "focus": "confirm",
+    "mode": "blind",
+    "artifact_version": "4ea184927d629751",
+    "findings": [],
+    "finding_updates_applied": [
+      "F-001",
+      "F-002",
+      "F-003",
+      "F-004"
+    ],
+    "check_results_written": [
+      "chk-001",
+      "chk-002",
+      "chk-003",
+      "chk-004"
+    ]
+  },
+  "open_findings": [
+    {
+      "record_type": "finding",
+      "ts": "2026-10-29T07:17:59.858551+00:00",
+      "finding_id": "F-001",
+      "req_ids": [
+        "R1",
+        "R2",
+        "R3",
+        "R4"
+      ],
+      "artifact_hash": "4ea184927d629751",
+      "problem_type": "implementation",
+      "evidence_level": "actual_test",
+      "detail": "Confirmed: The code loads 'setup_min' (value 12 for J1) into the 'proc' dictionary instead of 'proc_min' (value 3 for J1). The loaded values are {J1: 12.0, J2: 5.0, J3: 6.0, J4: 8.0, J5: 9.0} which correspond to setup times, not processing times. This fundamentally changes the problem instance being solved.",
+      "witness_ref": "python3 -c \"import csv; f=open('/app/data/jobs.csv'); r=list(csv.DictReader(f)); print('J1 proc_min:', r[0]['proc_min'], 'setup_min:', r[0]['setup_min'])\" and python3 -c \"from solve import load_data; proc, machines, prec = load_data(); print('Loaded proc values:', proc)\"",
+      "status": "confirmed"
+    },
+    {
+      "record_type": "finding",
+      "ts": "2026-10-29T07:17:59.925335+00:00",
+      "finding_id": "F-003",
+      "req_ids": [
+        "R4"
+      ],
+      "artifact_hash": "4ea184927d629751",
+      "problem_type": "quality",
+      "evidence_level": "actual_test",
+      "detail": "The objective function does include a secondary term 1e-4 * sum(start[j]) as observed. However, without the problem statement, it cannot be determined whether this tie-breaker violates any requirement or is acceptable. This remains an unresolved ambiguity.",
+      "witness_ref": "grep -n 'setObjective' /app/submissions/solve.py",
+      "status": "unresolved"
+    },
+    {
+      "record_type": "finding",
+      "ts": "2026-10-29T07:17:59.958746+00:00",
+      "finding_id": "F-004",
+      "req_ids": [
+        "R1"
+      ],
+      "artifact_hash": "4ea184927d629751",
+      "problem_type": "implementation",
+      "evidence_level": "actual_test",
+      "detail": "Confirmed: model.md file does not exist at /app/submissions/model.md. The submission is missing the required mathematical model documentation.",
+      "witness_ref": "ls -la /app/submissions/model.md 2>&1 || echo 'model.md not found'",
+      "status": "confirmed"
+    }
+  ],
+  "usage": {
+    "calls": 2,
+    "prompt_tokens": 6222,
+    "completion_tokens": 2652,
+    "latency_s": 45.87
+  },
+  "wall_time_s": 47.0
+}

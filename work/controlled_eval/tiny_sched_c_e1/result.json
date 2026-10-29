@@ -1,0 +1,253 @@
+{
+  "problem": "tiny_sched",
+  "aid": "c_e1",
+  "kind": "equivalent",
+  "mode": "full",
+  "sandbox": "/home/hewj13/wm/ora/work/controlled_eval/tiny_sched_c_e1",
+  "prompt_versions": {
+    "audit_system": "346d887a181c873b",
+    "audit_confirm_addendum": "9a33a195b2562aa1",
+    "audit_verify_fix_addendum": "595c522114f21d3e",
+    "audit_blind_note": "fd8b3d30b708ae0a",
+    "repair_system": "09557700c36091b7"
+  },
+  "error": null,
+  "audit": {
+    "focus": "full semantic audit",
+    "mode": "full",
+    "artifact_version": "1d13465fb4e01a90",
+    "requirements_written": [
+      "R1",
+      "R2",
+      "R3",
+      "R4",
+      "R5",
+      "R6"
+    ],
+    "findings": [
+      {
+        "finding_id": "F-001",
+        "proposed_checks": [
+          "python3 -c \"import json; d=json.load(open('/app/solution.json')); print(d['makespan'])\"",
+          "grep -n 'setObjective' /app/submissions/solve.py"
+        ]
+      },
+      {
+        "finding_id": "F-002",
+        "proposed_checks": [
+          "python3 -c \"\nimport json\nwith open('/app/solution.json') as f:\n    sol = json.load(f)\njobs = sol['jobs']\nfor i in range(len(jobs)):\n    for j in range(i+1, len(jobs)):\n        if jobs[i]['machine'] == jobs[j]['machine']:\n            # Check overlap\n            if not (jobs[i]['end'] <= jobs[j]['start'] or jobs[j]['end'] <= jobs[i]['start']):\n                print(f'OVERLAP DETECTED: {jobs[i][\"job_id\"]} and {jobs[j][\"job_id\"]}')\nprint('Overlap check complete')\n\""
+        ]
+      },
+      {
+        "finding_id": "F-003",
+        "proposed_checks": [
+          "python3 -c \"\nimport json\nwith open('/app/solution.json') as f:\n    sol = json.load(f)\njobs = {j['job_id']: j for j in sol['jobs']}\nif 'J1' in jobs and 'J3' in jobs:\n    if jobs['J1']['end'] > jobs['J3']['start']:\n        print('PRECEDENCE VIOLATION: J1 ends after J3 starts')\n    else:\n        print('Precedence OK')\nelse:\n    print('Missing J1 or J3')\n\""
+        ]
+      },
+      {
+        "finding_id": "F-004",
+        "proposed_checks": [
+          "python3 -c \"\nimport json\nwith open('/app/solution.json') as f:\n    sol = json.load(f)\njobs = sol['jobs']\nids = [j['job_id'] for j in jobs]\nexpected = ['J1', 'J2', 'J3', 'J4', 'J5']\nif sorted(ids) != sorted(expected):\n    print(f'MISSING OR EXTRA JOBS: {ids}')\nelse:\n    print('All jobs present exactly once')\n\""
+        ]
+      },
+      {
+        "finding_id": "F-005",
+        "proposed_checks": [
+          "python3 -c \"\nimport csv, json\nwith open('/app/data/jobs.csv') as f:\n    proc_data = {r['job_id']: float(r['proc_min']) for r in csv.DictReader(f)}\nwith open('/app/solution.json') as f:\n    sol = json.load(f)\nfor j in sol['jobs']:\n    if abs(j['proc'] - proc_data[j['job_id']]) > 1e-6:\n        print(f'PROC MISMATCH for {j[\"job_id\"]}: expected {proc_data[j[\"job_id\"]]}, got {j[\"proc\"]}')\n    if abs(j['end'] - (j['start'] + j['proc'])) > 1e-6:\n        print(f'END CALC ERROR for {j[\"job_id\"]}')\nprint('Proc and End checks complete')\n\""
+        ]
+      }
+    ]
+  },
+  "checks": [
+    {
+      "command": "python3 -c \"import json; d=json.load(open('/app/solution.json')); print(d['makespan'])\"",
+      "return_code": 1,
+      "timed_out": false,
+      "stdout_tail": "",
+      "stderr_tail": "Traceback (most recent call last):\n  File \"<string>\", line 1, in <module>\nFileNotFoundError: [Errno 2] No such file or directory: '/home/hewj13/wm/ora/work/controlled_eval/tiny_sched_c_e1/app/solution.json'\n"
+    },
+    {
+      "command": "grep -n 'setObjective' /app/submissions/solve.py",
+      "return_code": 0,
+      "timed_out": false,
+      "stdout_tail": "60:    model.setObjective(cmax + 0.0001 * sum(start[j] for j in jobs), \"minimize\")\n",
+      "stderr_tail": ""
+    },
+    {
+      "command": "python3 -c \"\nimport json\nwith open('/app/solution.json') as f:\n    sol = json.load(f)\njobs = sol['jobs']\nfor i in range(len(jobs)):\n    for j in range(i+1, len(jobs)):\n        if jobs[i]['machine'] == jobs[j]['machine']:\n            # Check overlap\n            if not (jobs[i]['end'] <= jobs[j]['start'] or jobs[j]['end'] <= jobs[i]['start']):\n                print(f'OVERLAP DETECTED: {jobs[i][\"job_id\"]} and {jobs[j][\"job_id\"]}')\nprint('Overlap check complete')\n\"",
+      "return_code": 1,
+      "timed_out": false,
+      "stdout_tail": "",
+      "stderr_tail": "Traceback (most recent call last):\n  File \"<string>\", line 3, in <module>\nFileNotFoundError: [Errno 2] No such file or directory: '/home/hewj13/wm/ora/work/controlled_eval/tiny_sched_c_e1/app/solution.json'\n"
+    },
+    {
+      "command": "python3 -c \"\nimport json\nwith open('/app/solution.json') as f:\n    sol = json.load(f)\njobs = {j['job_id']: j for j in sol['jobs']}\nif 'J1' in jobs and 'J3' in jobs:\n    if jobs['J1']['end'] > jobs['J3']['start']:\n        print('PRECEDENCE VIOLATION: J1 ends after J3 starts')\n    else:\n        print('Precedence OK')\nelse:\n    print('Missing J1 or J3')\n\"",
+      "return_code": 1,
+      "timed_out": false,
+      "stdout_tail": "",
+      "stderr_tail": "Traceback (most recent call last):\n  File \"<string>\", line 3, in <module>\nFileNotFoundError: [Errno 2] No such file or directory: '/home/hewj13/wm/ora/work/controlled_eval/tiny_sched_c_e1/app/solution.json'\n"
+    },
+    {
+      "command": "python3 -c \"\nimport json\nwith open('/app/solution.json') as f:\n    sol = json.load(f)\njobs = sol['jobs']\nids = [j['job_id'] for j in jobs]\nexpected = ['J1', 'J2', 'J3', 'J4', 'J5']\nif sorted(ids) != sorted(expected):\n    print(f'MISSING OR EXTRA JOBS: {ids}')\nelse:\n    print('All jobs present exactly once')\n\"",
+      "return_code": 1,
+      "timed_out": false,
+      "stdout_tail": "",
+      "stderr_tail": "Traceback (most recent call last):\n  File \"<string>\", line 3, in <module>\nFileNotFoundError: [Errno 2] No such file or directory: '/home/hewj13/wm/ora/work/controlled_eval/tiny_sched_c_e1/app/solution.json'\n"
+    },
+    {
+      "command": "python3 -c \"\nimport csv, json\nwith open('/app/data/jobs.csv') as f:\n    proc_data = {r['job_id']: float(r['proc_min']) for r in csv.DictReader(f)}\nwith open('/app/solution.json') as f:\n    sol = json.load(f)\nfor j in sol['jobs']:\n    if abs(j['proc'] - proc_data[j['job_id']]) > 1e-6:\n        print(f'PROC MISMATCH for {j[\"job_id\"]}: expected {proc_data[j[\"job_id\"]]}, got {j[\"proc\"]}')\n    if abs(j['end'] - (j['start'] + j['proc'])) > 1e-6:\n        print(f'END CALC ERROR for {j[\"job_id\"]}')\nprint('Proc and End checks complete')\n\"",
+      "return_code": 1,
+      "timed_out": false,
+      "stdout_tail": "",
+      "stderr_tail": "Traceback (most recent call last):\n  File \"<string>\", line 5, in <module>\nFileNotFoundError: [Errno 2] No such file or directory: '/home/hewj13/wm/ora/work/controlled_eval/tiny_sched_c_e1/app/solution.json'\n"
+    }
+  ],
+  "confirm": {
+    "focus": "confirm",
+    "mode": "full",
+    "artifact_version": "1d13465fb4e01a90",
+    "findings": [],
+    "finding_updates_applied": [
+      "F-001",
+      "F-002",
+      "F-003",
+      "F-004",
+      "F-005"
+    ],
+    "check_results_written": [
+      "chk-001",
+      "chk-002",
+      "chk-003",
+      "chk-004",
+      "chk-005",
+      "chk-006"
+    ]
+  },
+  "open_findings": [
+    {
+      "record_type": "finding",
+      "ts": "2026-10-29T07:19:13.119025+00:00",
+      "finding_id": "F-001",
+      "req_ids": [
+        "R5"
+      ],
+      "artifact_hash": "1d13465fb4e01a90",
+      "problem_type": "semantic",
+      "evidence_level": "actual_test",
+      "detail": "The objective function explicitly includes a tie-breaking term `0.0001 * sum(start[j] for j in jobs)` in addition to `cmax`. This deviates from the strict requirement to minimize makespan only.",
+      "witness_ref": "grep -n 'setObjective' /app/submissions/solve.py",
+      "status": "confirmed"
+    },
+    {
+      "record_type": "finding",
+      "ts": "2026-10-29T07:19:13.152285+00:00",
+      "finding_id": "F-002",
+      "req_ids": [
+        "R2"
+      ],
+      "artifact_hash": "1d13465fb4e01a90",
+      "problem_type": "implementation",
+      "evidence_level": "actual_test",
+      "detail": "Cannot verify if the disjunctive constraints correctly prevent overlaps because the solver has not been executed and no solution.json exists to inspect.",
+      "witness_ref": "FileNotFoundError: solution.json not found",
+      "status": "unresolved"
+    },
+    {
+      "record_type": "finding",
+      "ts": "2026-10-29T07:19:13.185666+00:00",
+      "finding_id": "F-003",
+      "req_ids": [
+        "R3"
+      ],
+      "artifact_hash": "1d13465fb4e01a90",
+      "problem_type": "implementation",
+      "evidence_level": "actual_test",
+      "detail": "Cannot verify if the precedence constraint is satisfied in the output because the solver has not been executed and no solution.json exists to inspect.",
+      "witness_ref": "FileNotFoundError: solution.json not found",
+      "status": "unresolved"
+    },
+    {
+      "record_type": "finding",
+      "ts": "2026-10-29T07:19:13.219077+00:00",
+      "finding_id": "F-004",
+      "req_ids": [
+        "R1"
+      ],
+      "artifact_hash": "1d13465fb4e01a90",
+      "problem_type": "implementation",
+      "evidence_level": "actual_test",
+      "detail": "Cannot verify if all jobs are assigned exactly once in the output because the solver has not been executed and no solution.json exists to inspect.",
+      "witness_ref": "FileNotFoundError: solution.json not found",
+      "status": "unresolved"
+    },
+    {
+      "record_type": "finding",
+      "ts": "2026-10-29T07:19:13.252488+00:00",
+      "finding_id": "F-005",
+      "req_ids": [
+        "R4"
+      ],
+      "artifact_hash": "1d13465fb4e01a90",
+      "problem_type": "implementation",
+      "evidence_level": "actual_test",
+      "detail": "Cannot verify if proc times match CSV data and end=start+proc holds in the output because the solver has not been executed and no solution.json exists to inspect.",
+      "witness_ref": "FileNotFoundError: solution.json not found",
+      "status": "unresolved"
+    }
+  ],
+  "repair": {
+    "finding_id": "F-001",
+    "reply": {
+      "finding_id": "F-001",
+      "patch_commands": [
+        "cp /app/submissions/solve.py /app/submissions/solve_v1.py",
+        "sed -i 's/model.setObjective(cmax + 0.0001 \\* sum(start\\[j\\] for j in jobs), \"minimize\")/model.setObjective(cmax, \"minimize\")/' /app/submissions/solve.py"
+      ],
+      "regression_plan": [
+        "cd /app/submissions && python solve.py",
+        "python -c \"import json; d=json.load(open('solution.json')); assert abs(d['makespan']-17)<1e-6, d['makespan']; print('OK', d['makespan'])\""
+      ],
+      "rationale": "The finding flags that the objective includes a tie-breaking term `0.0001 * sum(start[j])` on top of cmax, which deviates from R5 (minimize makespan only). The minimal local fix is to set the objective to just `cmax`. This does not change the output schema or any constraints.",
+      "expected_resolved": [
+        "F-001"
+      ],
+      "risk_notes": "Removing the tie-breaker may allow multiple optimal solutions with the same makespan; the solver will pick one arbitrarily. Since the requirement is strictly to minimize makespan, this is acceptable and correct.",
+      "note": "execute patch_commands via bash, run regression_plan, then call audit(focus='verify_fix', question=<outcomes>)"
+    },
+    "patch_results": [
+      {
+        "command": "cp /app/submissions/solve.py /app/submissions/solve_v1.py",
+        "return_code": 0,
+        "stderr_tail": ""
+      },
+      {
+        "command": "sed -i 's/model.setObjective(cmax + 0.0001 \\* sum(start\\[j\\] for j in jobs), \"minimize\")/model.setObjective(cmax, \"minimize\")/' /app/submissions/solve.py",
+        "return_code": 0,
+        "stderr_tail": ""
+      }
+    ],
+    "patch_applied": true,
+    "witness_after_patch": {
+      "verdict": "PASS",
+      "return_code": 0,
+      "output_tail": "OBJECTIVE 17.0\nWITNESS PASS\n"
+    },
+    "verify_fix": {
+      "focus": "verify_fix",
+      "mode": "full",
+      "artifact_version": "a988d9b04cd1f126",
+      "findings": [],
+      "finding_updates_applied": [
+        "F-001"
+      ],
+      "repair_result_written": "repair-6ab1943f55"
+    }
+  },
+  "usage": {
+    "calls": 5,
+    "prompt_tokens": 15912,
+    "completion_tokens": 4182,
+    "latency_s": 91.18
+  },
+  "wall_time_s": 93.3
+}

@@ -114,6 +114,58 @@ _API_ESCALATION_HINT = (
     "python3 -c \"import pyscipopt; m=pyscipopt.Model(); "
     "print([a for a in dir(m) if 'sol' in a.lower() or 'obj' in a.lower()])\"")
 
+
+# ---------------------------------------------------------------------------
+# E2 (taskbook 5195 §E2): deterministic audit/repair triggers
+# ---------------------------------------------------------------------------
+
+class TriggerPolicy:
+    """Observable-event-based worker triggers. v1 rules:
+
+    A. post-first-solution: when a solve action first reports a solver status
+       that implies an incumbent (optimal/gap_limit/time_limit) and no audit
+       has run yet, the framework runs one checkpoint audit itself;
+    B. pre-finish: if the actor asks to finish while the current artifacts
+       have never been audited (or changed since the last audit), run the
+       audit first and bounce the finish ONCE — the second finish goes
+       through (the audit result is in the actor's context by then).
+
+    Triggered audits count against the same worker_calls budget as manual
+    calls. All decisions are pure functions of observed events — the actor's
+    action choice is never restricted.
+    """
+
+    def __init__(self, enabled: bool = False):
+        self.enabled = enabled
+        self.audits = 0
+        self.dirty = True            # artifacts not covered by any audit yet
+        self.finish_bounced = False
+
+    def note_action(self, action_kind: str, command: str) -> None:
+        if action_kind in ("model", "code", "repair") \
+                or "/app/submissions" in (command or ""):
+            self.dirty = True
+
+    def note_audit(self) -> None:
+        self.audits += 1
+        self.dirty = False
+
+    def should_audit_after_solve(self, signals: dict) -> bool:
+        return (self.enabled and self.audits == 0 and self.dirty
+                and (signals or {}).get("solver_status")
+                in ("optimal", "gap_limit", "time_limit"))
+
+    def should_audit_before_finish(self) -> bool:
+        return self.enabled and self.dirty and not self.finish_bounced
+
+
+_CHECKPOINT_AUDIT_QUESTION = (
+    "Checkpoint audit (auto-triggered after the first solver run produced an "
+    "incumbent). Audit model.md/solve.py/solution.csv against the problem "
+    "statement and data: constraint completeness, directions, indices, units, "
+    "data mappings, and unsourced additions. Return requirements (first audit) "
+    "and suspected findings with small executable proposed_checks.")
+
 BASH_TOOL = {
     "type": "function",
     "function": {
@@ -189,6 +241,8 @@ class LoopConfig:
     worker_calls_budget: int = 8           # separate sub-budget; worker calls
                                            # do not consume max_steps
     worker_max_tokens: int = 4096          # per worker call completion budget
+    enable_triggers: bool = False          # E2: deterministic audit triggers
+                                           # (no-op unless workers enabled)
 
 
 @dataclass
@@ -341,6 +395,7 @@ async def run_loop(*, system_prompt: str, instruction: str, config: LoopConfig,
 
     try:
         api_err_streak = 0
+        policy = TriggerPolicy(config.enable_triggers)
         for step in range(1, config.max_steps + 1):
             writer.emit("llm_request", n_messages=len(messages),
                         messages_sha256=messages_sha256(messages),
@@ -414,6 +469,32 @@ async def run_loop(*, system_prompt: str, instruction: str, config: LoopConfig,
                 continue
 
             if name == "finish":
+                # E2 trigger B: artifacts never audited (or changed since the
+                # last audit) -> run the audit first, bounce finish ONCE.
+                if (worker_manager is not None
+                        and policy.should_audit_before_finish()
+                        and worker_calls < config.worker_calls_budget):
+                    worker_calls += 1
+                    policy.finish_bounced = True
+                    writer.emit("trigger", kind="pre_finish_audit",
+                                seq=result.n_steps)
+                    try:
+                        reply = await worker_manager.handle("audit", {
+                            "focus": "general", "mode": "full",
+                            "question": _CHECKPOINT_AUDIT_QUESTION})
+                    except Exception as e:
+                        reply = json.dumps({"error": f"worker crashed: "
+                                            f"{type(e).__name__}: {e}"[:300]})
+                    policy.note_audit()
+                    append_message({
+                        "role": "tool", "tool_call_id": tc.get("id"),
+                        "content": ("[auto-audit: pre-finish check] finish "
+                                    "deferred — current artifacts were not "
+                                    "covered by any audit. Findings below; "
+                                    "address them or call finish again.\n"
+                                    + _truncate(reply, 2000)),
+                    })
+                    continue
                 summary = str(args.get("summary", ""))
                 writer.emit("action", tool="finish", summary=summary)
                 writer.emit("finish", summary=summary, n_steps=result.n_steps,
@@ -450,6 +531,12 @@ async def run_loop(*, system_prompt: str, instruction: str, config: LoopConfig,
                 except Exception as e:
                     reply = json.dumps(
                         {"error": f"worker crashed: {type(e).__name__}: {e}"[:300]})
+                if name == "audit":
+                    try:
+                        if "error" not in (json.loads(reply) or {}):
+                            policy.note_audit()
+                    except (json.JSONDecodeError, TypeError):
+                        pass
                 reply = _truncate(reply, config.result_max_chars)
                 if n_ignored:
                     reply += (f"\n[note] {n_ignored} additional tool call(s) in "
@@ -578,6 +665,35 @@ async def run_loop(*, system_prompt: str, instruction: str, config: LoopConfig,
                 api_err_streak = 0
             if api_err_streak >= 2:
                 observation += _API_ESCALATION_HINT
+            # E2 trigger A: first incumbent -> framework-run checkpoint audit.
+            policy.note_action(action_kind, command)
+            if (worker_manager is not None
+                    and policy.should_audit_after_solve(signals)
+                    and worker_calls < config.worker_calls_budget):
+                worker_calls += 1
+                writer.emit("trigger", kind="post_first_solution_audit",
+                            seq=result.n_steps)
+                try:
+                    reply = await worker_manager.handle("audit", {
+                        "focus": "general", "mode": "full",
+                        "question": _CHECKPOINT_AUDIT_QUESTION})
+                except Exception as e:
+                    reply = json.dumps({"error": f"worker crashed: "
+                                        f"{type(e).__name__}: {e}"[:300]})
+                policy.note_audit()
+                observation += ("\n[auto-audit: first-solution checkpoint]\n"
+                                + _truncate(reply, 2000))
+                if spent_prompt_tokens() > config.token_budget:
+                    append_message({
+                        "role": "tool", "tool_call_id": tc.get("id"),
+                        "content": observation,
+                    })
+                    writer.emit("budget", kind="token_budget_exceeded",
+                                prompt_tokens=spent_prompt_tokens(),
+                                token_budget=config.token_budget,
+                                after="trigger_audit")
+                    result.status = "token_budget_exceeded"
+                    break
             if n_ignored:
                 observation += (f"\n[note] {n_ignored} additional tool call(s) in your "
                                 "last message were ignored: exactly one action per turn.")

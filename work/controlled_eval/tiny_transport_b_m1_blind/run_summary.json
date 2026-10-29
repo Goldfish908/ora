@@ -1,0 +1,29 @@
+{
+  "run_id": "tiny_transport_b_m1_blind",
+  "task_id": "tiny_transport/b_m1",
+  "model": "worker",
+  "status": "running",
+  "ts_started": "2026-10-29T07:20:39.096566+00:00",
+  "n_steps": 0,
+  "last_state_id": 6,
+  "actor_usage": {
+    "calls": 0,
+    "prompt_tokens": 0,
+    "completion_tokens": 0,
+    "latency_s": 0.0
+  },
+  "predictor_usage": {
+    "calls": 0,
+    "prompt_tokens": 0,
+    "completion_tokens": 0,
+    "latency_s": 0.0
+  },
+  "worker_usage": {
+    "calls": 3,
+    "prompt_tokens": 6384,
+    "completion_tokens": 2394,
+    "latency_s": 42.384
+  },
+  "artifacts_last_observed": null,
+  "ts_updated": "2026-10-29T07:21:22.297359+00:00"
+}

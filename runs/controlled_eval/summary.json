@@ -3,17 +3,17 @@
   "mutants": {
     "n": 7,
     "detected_full": 7,
-    "detected_blind": 6,
+    "detected_blind": 5,
     "n_blind": 7
   },
   "negatives": {
     "n": 6,
-    "false_positives_confirmed": 2,
+    "false_positives_confirmed": 1,
     "false_positives_suspected": 0
   },
   "repairs": {
     "attempted": 7,
-    "succeeded": 6
+    "succeeded": 4
   },
   "rows": [
     {
@@ -23,34 +23,21 @@
       "mutation_type": null,
       "expected_witness": "PASS",
       "error": null,
-      "n_confirmed": 1,
+      "n_confirmed": 0,
       "n_suspected": 0,
-      "false_positive_confirmed": 1,
+      "false_positive_confirmed": 0,
       "false_positive_suspected": 0,
       "detected": null,
       "detected_by": [],
-      "confirmed_findings_text": [
-        {
-          "finding_id": "F-002",
-          "problem_type": "semantic",
-          "detail": "The check confirmed that the CSV data contains the entry for W2,J3. Since the code creates variables for all entries in the CSV, the variable `x_W2_J3` exists, and setting its upper bound to 0 correctly enforces the hard constraint that W2 cannot do J3."
-        }
-      ],
+      "confirmed_findings_text": [],
       "localization_correct": null,
       "usage": {
-        "calls": 3,
-        "prompt_tokens": 6660,
-        "completion_tokens": 2465,
-        "latency_s": 84.68
+        "calls": 1,
+        "prompt_tokens": 1632,
+        "completion_tokens": 373,
+        "latency_s": 6.04
       },
-      "wall_time_s": 86.0,
-      "repair": {
-        "finding_id": "F-002",
-        "patch_applied": false,
-        "witness_after_patch": null,
-        "repair_success": false,
-        "verify_fix_repair_id": null
-      }
+      "wall_time_s": 6.4
     },
     {
       "problem": "tiny_assign",
@@ -71,23 +58,23 @@
         {
           "finding_id": "F-001",
           "problem_type": "implementation",
-          "detail": "The code does not contain any logic to exclude the (W2, J3) pair. The absence of a constraint or variable fix for this specific pair confirms that the business rule R3 is not implemented in the solver."
+          "detail": "The code does not enforce the constraint that Worker W2 cannot be assigned to Job J3. The variable x['W2', 'J3'] is created and included in the objective function without being fixed to 0 or constrained to be 0. Since the cost for (W2, J3) is 1 (the lowest in the matrix), the solver will likely assign this pair, violating the business rule."
         }
       ],
       "localization_correct": null,
       "usage": {
-        "calls": 3,
-        "prompt_tokens": 5738,
-        "completion_tokens": 1737,
-        "latency_s": 37.71
+        "calls": 5,
+        "prompt_tokens": 11025,
+        "completion_tokens": 2581,
+        "latency_s": 58.8
       },
-      "wall_time_s": 38.5,
+      "wall_time_s": 60.4,
       "repair": {
         "finding_id": "F-001",
-        "patch_applied": false,
-        "witness_after_patch": null,
+        "patch_applied": true,
+        "witness_after_patch": "FAIL",
         "repair_success": false,
-        "verify_fix_repair_id": null
+        "verify_fix_repair_id": "repair-85ac5cd1fc"
       }
     },
     {
@@ -97,41 +84,35 @@
       "mutation_type": "index",
       "expected_witness": "FAIL",
       "error": null,
-      "n_confirmed": 2,
+      "n_confirmed": 1,
       "n_suspected": 0,
       "false_positive_confirmed": 0,
       "false_positive_suspected": 0,
       "detected": true,
       "detected_by": [
-        "F-001",
-        "F-002"
+        "F-001"
       ],
       "confirmed_findings_text": [
         {
           "finding_id": "F-001",
           "problem_type": "implementation",
-          "detail": "The code explicitly forbids W2 from doing J4 instead of J3. The constraint `x[\"W2\", \"J4\"] == 0` is present on line 34, and there is no corresponding constraint for `x[\"W2\", \"J3\"]`. This directly violates Business Rule 3 which states W2 cannot do J3."
-        },
-        {
-          "finding_id": "F-002",
-          "problem_type": "feasibility",
-          "detail": "With the incorrect constraint forbidding W2-J4, the solver can assign W2 to J3 (cost 1), leading to a suboptimal objective value of 27.0 compared to the true minimum under correct rules. The solution.json file was not found at the expected path, but the stdout confirms the wrong objective was computed."
+          "detail": "Confirmed: The code sets x['W2','J4']==0 instead of x['W2','J3']==0. The AST check for a constraint involving both 'W2' and 'J3' returned FAIL, confirming no such constraint exists. The solver produced an objective of 27.0, which is only achievable if W2 is assigned to J3 (cost 1), violating requirement R3."
         }
       ],
       "localization_correct": null,
       "usage": {
-        "calls": 4,
-        "prompt_tokens": 9662,
-        "completion_tokens": 2278,
-        "latency_s": 62.61
+        "calls": 3,
+        "prompt_tokens": 6151,
+        "completion_tokens": 1543,
+        "latency_s": 30.76
       },
-      "wall_time_s": 64.6,
+      "wall_time_s": 32.0,
       "repair": {
         "finding_id": "F-001",
-        "patch_applied": true,
-        "witness_after_patch": "PASS",
-        "repair_success": true,
-        "verify_fix_repair_id": "repair-f1ebde075e"
+        "patch_applied": false,
+        "witness_after_patch": null,
+        "repair_success": false,
+        "verify_fix_repair_id": null
       }
     },
     {
@@ -151,11 +132,11 @@
       "localization_correct": null,
       "usage": {
         "calls": 1,
-        "prompt_tokens": 1509,
-        "completion_tokens": 565,
-        "latency_s": 13.07
+        "prompt_tokens": 1570,
+        "completion_tokens": 563,
+        "latency_s": 11.62
       },
-      "wall_time_s": 13.5
+      "wall_time_s": 12.0
     },
     {
       "problem": "tiny_sched",
@@ -174,23 +155,23 @@
         {
           "finding_id": "F-001",
           "problem_type": "semantic",
-          "detail": "The code explicitly includes the term `0.0001 * sum(start[j] for j in jobs)` in the objective function, which is not specified in the problem statement."
+          "detail": "The objective function explicitly includes a tie-breaking term `0.0001 * sum(start[j] for j in jobs)` in addition to `cmax`. This deviates from the strict requirement to minimize makespan only."
         }
       ],
       "localization_correct": null,
       "usage": {
-        "calls": 4,
-        "prompt_tokens": 12499,
-        "completion_tokens": 3115,
-        "latency_s": 54.41
+        "calls": 5,
+        "prompt_tokens": 15912,
+        "completion_tokens": 4182,
+        "latency_s": 91.18
       },
-      "wall_time_s": 56.6,
+      "wall_time_s": 93.3,
       "repair": {
         "finding_id": "F-001",
         "patch_applied": true,
         "witness_after_patch": "PASS",
         "repair_success": true,
-        "verify_fix_repair_id": "repair-ba747cf857"
+        "verify_fix_repair_id": "repair-6ab1943f55"
       }
     },
     {
@@ -211,24 +192,24 @@
       "confirmed_findings_text": [
         {
           "finding_id": "F-001",
-          "problem_type": "semantic",
-          "detail": "The code explicitly contains `model.addCons(start[u] >= start[v] + proc[v])` for the precedence pair (J1, J3). This enforces Start(J1) >= End(J3), which is the inverse of the required constraint End(J1) <= Start(J3). The runtime check failed due to missing output file, but the source code inspection confirms the logical inversion."
+          "problem_type": "implementation",
+          "detail": "The code explicitly contains `model.addCons(start[u] >= start[v] + proc[v])` for the precedence pair (J1, J3). This enforces that J1 starts after J3 finishes, which is the exact opposite of the required constraint (J1 finishes before J3 starts). The logic is definitively reversed."
         }
       ],
       "localization_correct": null,
       "usage": {
-        "calls": 5,
-        "prompt_tokens": 14420,
-        "completion_tokens": 4669,
-        "latency_s": 129.93
+        "calls": 3,
+        "prompt_tokens": 8061,
+        "completion_tokens": 1892,
+        "latency_s": 41.66
       },
-      "wall_time_s": 131.9,
+      "wall_time_s": 42.6,
       "repair": {
         "finding_id": "F-001",
-        "patch_applied": true,
-        "witness_after_patch": "PASS",
-        "repair_success": true,
-        "verify_fix_repair_id": "repair-b3e07b41d6"
+        "patch_applied": false,
+        "witness_after_patch": null,
+        "repair_success": false,
+        "verify_fix_repair_id": null
       }
     },
     {
@@ -238,7 +219,7 @@
       "mutation_type": "omission",
       "expected_witness": "FAIL",
       "error": null,
-      "n_confirmed": 1,
+      "n_confirmed": 2,
       "n_suspected": 0,
       "false_positive_confirmed": 0,
       "false_positive_suspected": 0,
@@ -250,23 +231,28 @@
         {
           "finding_id": "F-001",
           "problem_type": "implementation",
-          "detail": "The code explicitly restricts the no-overlap disjunctive constraints to only the first machine (M1) via `machines[:1]`. This confirms that jobs assigned to M2 are not constrained from overlapping, violating Business Rule 2."
+          "detail": "The code explicitly restricts the no-overlap disjunctive constraints to only the first machine (M1) via `machines[:1]`. Machine M2 has no overlap-prevention constraints, allowing jobs assigned to M2 to overlap in time. This is a direct implementation defect violating R2."
+        },
+        {
+          "finding_id": "F-002",
+          "problem_type": "semantic",
+          "detail": "The objective function includes an unsourced secondary term `1e-4 * sum(starts)` not specified in the problem statement. The problem requires minimizing makespan only. While the coefficient is small, it modifies the optimization landscape and could theoretically lead to a different optimal solution than pure makespan minimization, constituting an unsourced objective term."
         }
       ],
       "localization_correct": null,
       "usage": {
-        "calls": 5,
-        "prompt_tokens": 14109,
-        "completion_tokens": 5986,
-        "latency_s": 126.92
+        "calls": 4,
+        "prompt_tokens": 11904,
+        "completion_tokens": 2207,
+        "latency_s": 43.64
       },
-      "wall_time_s": 129.1,
+      "wall_time_s": 45.4,
       "repair": {
         "finding_id": "F-001",
         "patch_applied": true,
         "witness_after_patch": "PASS",
         "repair_success": true,
-        "verify_fix_repair_id": "repair-21df02d51e"
+        "verify_fix_repair_id": "repair-bfc459c1d4"
       }
     },
     {
@@ -288,23 +274,23 @@
         {
           "finding_id": "F-001",
           "problem_type": "implementation",
-          "detail": "The check confirmed that `load_data` returns processing times based on `setup_min` (e.g., J1=12.0) instead of `proc_min` (expected 3.0). The grep also confirmed the line `proc[r[\"job_id\"]] = float(r[\"setup_min\"])` exists in the code."
+          "detail": "The code explicitly reads `setup_min` (line 16) instead of `proc_min` for job durations. The data check confirms J1 has proc_min=3 but setup_min=12, proving the model uses incorrect processing times, violating R4."
         }
       ],
       "localization_correct": null,
       "usage": {
-        "calls": 4,
-        "prompt_tokens": 11835,
-        "completion_tokens": 2344,
-        "latency_s": 41.95
+        "calls": 5,
+        "prompt_tokens": 13701,
+        "completion_tokens": 2518,
+        "latency_s": 47.6
       },
-      "wall_time_s": 43.7,
+      "wall_time_s": 49.5,
       "repair": {
         "finding_id": "F-001",
         "patch_applied": true,
         "witness_after_patch": "PASS",
         "repair_success": true,
-        "verify_fix_repair_id": "repair-a3c74e1008"
+        "verify_fix_repair_id": "repair-06488fc023"
       }
     },
     {
@@ -324,11 +310,11 @@
       "localization_correct": null,
       "usage": {
         "calls": 1,
-        "prompt_tokens": 2073,
-        "completion_tokens": 473,
-        "latency_s": 8.34
+        "prompt_tokens": 2134,
+        "completion_tokens": 474,
+        "latency_s": 8.7
       },
-      "wall_time_s": 8.7
+      "wall_time_s": 9.1
     },
     {
       "problem": "tiny_transport",
@@ -347,11 +333,11 @@
       "localization_correct": null,
       "usage": {
         "calls": 1,
-        "prompt_tokens": 1940,
-        "completion_tokens": 372,
-        "latency_s": 7.85
+        "prompt_tokens": 2001,
+        "completion_tokens": 529,
+        "latency_s": 8.5
       },
-      "wall_time_s": 8.2
+      "wall_time_s": 8.9
     },
     {
       "problem": "tiny_transport",
@@ -372,23 +358,23 @@
         {
           "finding_id": "F-001",
           "problem_type": "implementation",
-          "detail": "The code explicitly uses `x['P2', w] <= MIN_FROM_P2` (line 43), which is an upper bound. The problem statement requires a lower bound (`>= 20`). This confirms the inequality direction is reversed."
+          "detail": "The code explicitly uses `x[\"P2\", w] <= MIN_FROM_P2` (line 43), which imposes an upper bound of 20 instead of the required lower bound (`>=`). This directly contradicts Business Rule 3 ('at least 20 pieces'). The first check failed due to a missing file, but the source code inspection definitively confirms the logical error in the constraint implementation."
         }
       ],
       "localization_correct": null,
       "usage": {
-        "calls": 4,
-        "prompt_tokens": 10557,
-        "completion_tokens": 1754,
-        "latency_s": 30.35
+        "calls": 5,
+        "prompt_tokens": 13057,
+        "completion_tokens": 2674,
+        "latency_s": 53.18
       },
-      "wall_time_s": 32.6,
+      "wall_time_s": 55.4,
       "repair": {
         "finding_id": "F-001",
         "patch_applied": true,
         "witness_after_patch": "PASS",
         "repair_success": true,
-        "verify_fix_repair_id": "repair-7c079c07bf"
+        "verify_fix_repair_id": "repair-951f333449"
       }
     },
     {
@@ -398,41 +384,35 @@
       "mutation_type": "unit",
       "expected_witness": "FAIL",
       "error": null,
-      "n_confirmed": 2,
+      "n_confirmed": 1,
       "n_suspected": 0,
       "false_positive_confirmed": 0,
       "false_positive_suspected": 0,
       "detected": true,
       "detected_by": [
-        "F-001",
-        "F-002"
+        "F-001"
       ],
       "confirmed_findings_text": [
         {
           "finding_id": "F-001",
           "problem_type": "implementation",
-          "detail": "Confirmed: load_data() returns demand values in boxes (80.0, 90.0, 80.0) without applying the BOX_TO_PIECES conversion factor of 10. The constant is defined but never used in the code path."
-        },
-        {
-          "finding_id": "F-002",
-          "problem_type": "semantic",
-          "detail": "Confirmed: total demand in the model is 250 (boxes) instead of 2500 (pieces). The demand constraints will enforce equality to box values rather than piece values, violating R2 and R4."
+          "detail": "The check confirmed that `load_data()` returns D1 demand as 80.0 instead of the required 800 pieces. The constant `BOX_TO_PIECES` is defined but never used in the code to convert the demand values from boxes to pieces, violating requirement R4."
         }
       ],
       "localization_correct": null,
       "usage": {
-        "calls": 4,
-        "prompt_tokens": 11317,
-        "completion_tokens": 2629,
-        "latency_s": 48.42
+        "calls": 5,
+        "prompt_tokens": 12963,
+        "completion_tokens": 2441,
+        "latency_s": 44.36
       },
-      "wall_time_s": 51.0,
+      "wall_time_s": 46.8,
       "repair": {
         "finding_id": "F-001",
         "patch_applied": true,
         "witness_after_patch": "PASS",
         "repair_success": true,
-        "verify_fix_repair_id": "repair-2001ecac5d"
+        "verify_fix_repair_id": "repair-ad8610dfda"
       }
     },
     {
@@ -452,11 +432,11 @@
       "localization_correct": null,
       "usage": {
         "calls": 1,
-        "prompt_tokens": 1925,
-        "completion_tokens": 442,
-        "latency_s": 7.32
+        "prompt_tokens": 1986,
+        "completion_tokens": 615,
+        "latency_s": 9.75
       },
-      "wall_time_s": 7.7
+      "wall_time_s": 10.1
     }
   ],
   "blind_rows": [
@@ -480,7 +460,7 @@
         {
           "finding_id": "F-001",
           "problem_type": "implementation",
-          "detail": "The grep output confirms the code contains `model.addCons(x[\"W2\", \"J4\"] == 0)` immediately following the comment `# W2 is not qualified for J3.`. This is a direct semantic inconsistency: the constraint forbids assignment to J4, while the comment claims qualification issues for J3. Since the problem statement is hidden and no data indicates disqualification (costs exist for all pairs), this constraint is unsupported or mislabeled."
+          "detail": "The code explicitly contains the constraint `model.addCons(x[\"W2\", \"J4\"] == 0)` at line 34. Since the problem statement is hidden and no such restriction appears in the provided data overview or standard assignment problem definitions, this is an unsourced hard constraint that artificially restricts the feasible region."
         }
       ]
     },
@@ -495,31 +475,36 @@
       "confirmed_findings_text": [
         {
           "finding_id": "F-001",
-          "problem_type": "implementation",
-          "detail": "The code explicitly enforces `start[pred] >= start[succ] + proc[succ]`, which is the reverse of the required precedence constraint (pred must finish before succ starts). This is a confirmed implementation error."
+          "problem_type": "semantic",
+          "detail": "The code explicitly enforces `start[u] >= start[v] + proc[v]` for precedence pairs `(u, v)` where `u` is the predecessor. This constraint forces the predecessor to start after the successor has finished, which is the reverse of the standard precedence requirement (predecessor must finish before successor starts). The runtime check failed because the solution file was not generated in the expected path, but the static code analysis confirms the logical inversion."
         }
       ]
     },
     {
       "problem": "tiny_sched",
       "aid": "c_m2",
-      "n_confirmed": 1,
+      "n_confirmed": 2,
       "detected": true,
       "detected_by": [
-        "F-001"
+        "F-002"
       ],
       "confirmed_findings_text": [
         {
           "finding_id": "F-001",
           "problem_type": "implementation",
-          "detail": "The code explicitly restricts the no-overlap disjunctive constraints to only the first machine (M1). Since there are two machines, M2 has no overlap constraints, allowing jobs assigned to M2 to overlap arbitrarily. This is a direct implementation bug violating R2."
+          "detail": "The code does not reference 'setup' anywhere, confirming that the 'setup_min' column from jobs.csv is completely ignored in the model formulation."
+        },
+        {
+          "finding_id": "F-002",
+          "problem_type": "implementation",
+          "detail": "The disjunctive constraints for machine non-overlap are explicitly limited to `machines[:1]` (only M1). Jobs assigned to M2 have no non-overlap constraints, allowing simultaneous scheduling on M2."
         }
       ]
     },
     {
       "problem": "tiny_sched",
       "aid": "c_m3",
-      "n_confirmed": 1,
+      "n_confirmed": 2,
       "detected": true,
       "detected_by": [
         "F-001"
@@ -528,7 +513,12 @@
         {
           "finding_id": "F-001",
           "problem_type": "implementation",
-          "detail": "The code explicitly loads `setup_min` into the `proc` dictionary (line 16), ignoring `proc_min`. The data check confirms these columns have different values (3 vs 12 for J1). This is a confirmed implementation error where setup times are used as processing times."
+          "detail": "Confirmed: The code loads 'setup_min' (value 12 for J1) into the 'proc' dictionary instead of 'proc_min' (value 3 for J1). The loaded values are {J1: 12.0, J2: 5.0, J3: 6.0, J4: 8.0, J5: 9.0} which correspond to setup times, not processing times. This fundamentally changes the problem instance being solved."
+        },
+        {
+          "finding_id": "F-004",
+          "problem_type": "implementation",
+          "detail": "Confirmed: model.md file does not exist at /app/submissions/model.md. The submission is missing the required mathematical model documentation."
         }
       ]
     },
@@ -544,31 +534,17 @@
         {
           "finding_id": "F-001",
           "problem_type": "implementation",
-          "detail": "The code explicitly defines `MIN_FROM_P2 = 20` with a comment stating 'at least 20 pieces', but the constraint implemented is `x['P2', w] <= MIN_FROM_P2`. This is an upper bound (maximum), which contradicts the variable name and comment indicating a lower bound (minimum). The semantic inversion is confirmed by the source code."
+          "detail": "The execution of the submitted code resulted in 'MODEL STATUS infeasible'. This confirms that the constraint `x['P2', w] <= 20` (applied per warehouse) renders the model infeasible given the demand and supply data. Since a standard transport problem with sufficient supply should be feasible, this indicates an incorrect or unsupported hard constraint implementation."
         }
       ]
     },
     {
       "problem": "tiny_transport",
       "aid": "b_m2",
-      "n_confirmed": 2,
-      "detected": true,
-      "detected_by": [
-        "F-001",
-        "F-003"
-      ],
-      "confirmed_findings_text": [
-        {
-          "finding_id": "F-001",
-          "problem_type": "implementation",
-          "detail": "Confirmed that BOX_TO_PIECES is defined but never used in the code. The demand values are loaded directly from CSV (80, 90, 80) and used as-is in the model constraints, while the constant suggests a conversion to pieces was intended. This creates a unit mismatch if the data is indeed in boxes."
-        },
-        {
-          "finding_id": "F-003",
-          "problem_type": "quality",
-          "detail": "Confirmed that model.md is missing from the submission directory."
-        }
-      ]
+      "n_confirmed": 0,
+      "detected": false,
+      "detected_by": [],
+      "confirmed_findings_text": []
     }
   ]
 }

@@ -1,0 +1,28 @@
+{
+  "role_totals": {
+    "actor": {
+      "calls": 0,
+      "prompt_tokens": 0,
+      "completion_tokens": 0,
+      "latency_s": 0.0
+    },
+    "predictor": {
+      "calls": 0,
+      "prompt_tokens": 0,
+      "completion_tokens": 0,
+      "latency_s": 0.0
+    },
+    "worker": {
+      "calls": 58,
+      "prompt_tokens": 139460,
+      "completion_tokens": 33410,
+      "latency_s": 668.059
+    }
+  },
+  "combined": {
+    "calls": 58,
+    "prompt_tokens": 139460,
+    "completion_tokens": 33410,
+    "latency_s": 668.059
+  }
+}

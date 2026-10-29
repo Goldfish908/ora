@@ -1,0 +1,97 @@
+{
+  "problem": "tiny_sched",
+  "aid": "c_m2",
+  "kind": "mutant",
+  "mode": "blind",
+  "sandbox": "/home/hewj13/wm/ora/work/controlled_eval/tiny_sched_c_m2_blind",
+  "prompt_versions": {
+    "audit_system": "346d887a181c873b",
+    "audit_confirm_addendum": "9a33a195b2562aa1",
+    "audit_verify_fix_addendum": "595c522114f21d3e",
+    "audit_blind_note": "fd8b3d30b708ae0a",
+    "repair_system": "09557700c36091b7"
+  },
+  "error": null,
+  "audit": {
+    "focus": "full semantic audit",
+    "mode": "blind",
+    "artifact_version": "63b7418c15166362",
+    "findings": [
+      {
+        "finding_id": "F-001",
+        "proposed_checks": [
+          "grep -n \"setup\" /app/submissions/solve.py"
+        ]
+      },
+      {
+        "finding_id": "F-002",
+        "proposed_checks": [
+          "python3 -c \"\nimport sys\nsys.path.insert(0, '/app/submissions')\nfrom solve import load_data\nproc, machines, prec = load_data()\nprint('Machines:', machines)\n# Check if code applies constraints to all machines\nwith open('/app/submissions/solve.py') as f:\n    content = f.read()\nif 'machines[:1]' in content:\n    print('WARNING: Constraints only applied to first machine')\nelse:\n    print('OK: Constraints likely applied to all machines')\n\""
+        ]
+      }
+    ]
+  },
+  "checks": [
+    {
+      "command": "grep -n \"setup\" /app/submissions/solve.py",
+      "return_code": 1,
+      "timed_out": false,
+      "stdout_tail": "",
+      "stderr_tail": ""
+    },
+    {
+      "command": "python3 -c \"\nimport sys\nsys.path.insert(0, '/app/submissions')\nfrom solve import load_data\nproc, machines, prec = load_data()\nprint('Machines:', machines)\n# Check if code applies constraints to all machines\nwith open('/app/submissions/solve.py') as f:\n    content = f.read()\nif 'machines[:1]' in content:\n    print('WARNING: Constraints only applied to first machine')\nelse:\n    print('OK: Constraints likely applied to all machines')\n\"",
+      "return_code": 0,
+      "timed_out": false,
+      "stdout_tail": "Machines: ['M1', 'M2']\nWARNING: Constraints only applied to first machine\n",
+      "stderr_tail": ""
+    }
+  ],
+  "confirm": {
+    "focus": "confirm",
+    "mode": "blind",
+    "artifact_version": "63b7418c15166362",
+    "findings": [],
+    "finding_updates_applied": [
+      "F-001",
+      "F-002"
+    ],
+    "check_results_written": [
+      "chk-001",
+      "chk-002"
+    ]
+  },
+  "open_findings": [
+    {
+      "record_type": "finding",
+      "ts": "2026-10-29T07:16:23.487240+00:00",
+      "finding_id": "F-001",
+      "req_ids": [],
+      "artifact_hash": "63b7418c15166362",
+      "problem_type": "implementation",
+      "evidence_level": "actual_test",
+      "detail": "The code does not reference 'setup' anywhere, confirming that the 'setup_min' column from jobs.csv is completely ignored in the model formulation.",
+      "witness_ref": "grep -n \"setup\" /app/submissions/solve.py returned exit code 1 (no matches)",
+      "status": "confirmed"
+    },
+    {
+      "record_type": "finding",
+      "ts": "2026-10-29T07:16:23.520669+00:00",
+      "finding_id": "F-002",
+      "req_ids": [],
+      "artifact_hash": "63b7418c15166362",
+      "problem_type": "implementation",
+      "evidence_level": "actual_test",
+      "detail": "The disjunctive constraints for machine non-overlap are explicitly limited to `machines[:1]` (only M1). Jobs assigned to M2 have no non-overlap constraints, allowing simultaneous scheduling on M2.",
+      "witness_ref": "python3 check confirmed 'machines[:1]' is present in solve.py",
+      "status": "confirmed"
+    }
+  ],
+  "usage": {
+    "calls": 3,
+    "prompt_tokens": 6088,
+    "completion_tokens": 1413,
+    "latency_s": 29.3
+  },
+  "wall_time_s": 30.2
+}

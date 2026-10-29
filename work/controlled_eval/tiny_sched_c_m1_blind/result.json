@@ -1,0 +1,106 @@
+{
+  "problem": "tiny_sched",
+  "aid": "c_m1",
+  "kind": "mutant",
+  "mode": "blind",
+  "sandbox": "/home/hewj13/wm/ora/work/controlled_eval/tiny_sched_c_m1_blind",
+  "prompt_versions": {
+    "audit_system": "346d887a181c873b",
+    "audit_confirm_addendum": "9a33a195b2562aa1",
+    "audit_verify_fix_addendum": "595c522114f21d3e",
+    "audit_blind_note": "fd8b3d30b708ae0a",
+    "repair_system": "09557700c36091b7"
+  },
+  "error": null,
+  "audit": {
+    "focus": "full semantic audit",
+    "mode": "blind",
+    "artifact_version": "22a078b09cf43dfb",
+    "findings": [
+      {
+        "finding_id": "F-001",
+        "proposed_checks": [
+          "python3 -c \"import json; d=json.load(open('/app/submissions/solution.json')); jobs={j['job_id']:j for j in d['jobs']}; assert jobs['J1']['end'] <= jobs['J3']['start'], 'Precedence violated: J1 should finish before J3 starts'; print('OK')\"",
+          "grep -n 'start\\[u\\] >= start\\[v\\]' /app/submissions/solve.py"
+        ]
+      },
+      {
+        "finding_id": "F-002",
+        "proposed_checks": [
+          "grep -n 'setObjective' /app/submissions/solve.py"
+        ]
+      }
+    ]
+  },
+  "checks": [
+    {
+      "command": "python3 -c \"import json; d=json.load(open('/app/submissions/solution.json')); jobs={j['job_id']:j for j in d['jobs']}; assert jobs['J1']['end'] <= jobs['J3']['start'], 'Precedence violated: J1 should finish before J3 starts'; print('OK')\"",
+      "return_code": 1,
+      "timed_out": false,
+      "stdout_tail": "",
+      "stderr_tail": "Traceback (most recent call last):\n  File \"<string>\", line 1, in <module>\nFileNotFoundError: [Errno 2] No such file or directory: '/home/hewj13/wm/ora/work/controlled_eval/tiny_sched_c_m1_blind/app/submissions/solution.json'\n"
+    },
+    {
+      "command": "grep -n 'start\\[u\\] >= start\\[v\\]' /app/submissions/solve.py",
+      "return_code": 0,
+      "timed_out": false,
+      "stdout_tail": "60:        model.addCons(start[u] >= start[v] + proc[v])\n",
+      "stderr_tail": ""
+    },
+    {
+      "command": "grep -n 'setObjective' /app/submissions/solve.py",
+      "return_code": 0,
+      "timed_out": false,
+      "stdout_tail": "63:    model.setObjective(cmax + 1e-4 * quicksum(start[j] for j in jobs), \"minimize\")\n",
+      "stderr_tail": ""
+    }
+  ],
+  "confirm": {
+    "focus": "confirm",
+    "mode": "blind",
+    "artifact_version": "22a078b09cf43dfb",
+    "findings": [],
+    "finding_updates_applied": [
+      "F-001",
+      "F-002"
+    ],
+    "check_results_written": [
+      "chk-001",
+      "chk-002",
+      "chk-003"
+    ]
+  },
+  "open_findings": [
+    {
+      "record_type": "finding",
+      "ts": "2026-10-29T07:15:07.784255+00:00",
+      "finding_id": "F-001",
+      "req_ids": [],
+      "artifact_hash": "22a078b09cf43dfb",
+      "problem_type": "semantic",
+      "evidence_level": "actual_test",
+      "detail": "The code explicitly enforces `start[u] >= start[v] + proc[v]` for precedence pairs `(u, v)` where `u` is the predecessor. This constraint forces the predecessor to start after the successor has finished, which is the reverse of the standard precedence requirement (predecessor must finish before successor starts). The runtime check failed because the solution file was not generated in the expected path, but the static code analysis confirms the logical inversion.",
+      "witness_ref": "grep -n 'start\\[u\\] >= start\\[v\\]' /app/submissions/solve.py",
+      "status": "confirmed"
+    },
+    {
+      "record_type": "finding",
+      "ts": "2026-10-29T07:15:07.809300+00:00",
+      "finding_id": "F-002",
+      "req_ids": [],
+      "artifact_hash": "22a078b09cf43dfb",
+      "problem_type": "implementation",
+      "evidence_level": "actual_test",
+      "detail": "The objective function includes an unsourced term `1e-4 * quicksum(start[j] for j in jobs)`. While the presence of this term is confirmed by the grep output, its impact on optimality or correctness cannot be determined without executing the solver and comparing against a pure makespan minimization baseline. Since the problem statement is hidden and no execution trace showing suboptimality was provided, the status remains unresolved.",
+      "witness_ref": "grep -n 'setObjective' /app/submissions/solve.py",
+      "status": "unresolved"
+    }
+  ],
+  "usage": {
+    "calls": 3,
+    "prompt_tokens": 6318,
+    "completion_tokens": 1530,
+    "latency_s": 35.33
+  },
+  "wall_time_s": 36.3
+}

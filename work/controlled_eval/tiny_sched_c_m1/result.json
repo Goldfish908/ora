@@ -1,0 +1,123 @@
+{
+  "problem": "tiny_sched",
+  "aid": "c_m1",
+  "kind": "mutant",
+  "mode": "full",
+  "sandbox": "/home/hewj13/wm/ora/work/controlled_eval/tiny_sched_c_m1",
+  "prompt_versions": {
+    "audit_system": "346d887a181c873b",
+    "audit_confirm_addendum": "9a33a195b2562aa1",
+    "audit_verify_fix_addendum": "595c522114f21d3e",
+    "audit_blind_note": "fd8b3d30b708ae0a",
+    "repair_system": "09557700c36091b7"
+  },
+  "error": null,
+  "audit": {
+    "focus": "full semantic audit",
+    "mode": "full",
+    "artifact_version": "6713b2c1f4dba9c8",
+    "requirements_written": [
+      "R1",
+      "R2",
+      "R3",
+      "R4",
+      "R5",
+      "R6"
+    ],
+    "findings": [
+      {
+        "finding_id": "F-001",
+        "proposed_checks": [
+          "python3 -c \"import json, subprocess; p=subprocess.run(['python3','solve.py'],capture_output=True,text=True); d=json.load(open('solution.json')); j1=[j for j in d['jobs'] if j['job_id']=='J1'][0]; j3=[j for j in d['jobs'] if j['job_id']=='J3'][0]; assert j1['end'] <= j3['start'], f'Precedence violated: J1 end {j1[\\\"end\\\"]} > J3 start {j3[\\\"start\\\"]}'\"",
+          "grep -n 'start\\[u\\] >= start\\[v\\]' solve.py"
+        ]
+      },
+      {
+        "finding_id": "F-002",
+        "proposed_checks": [
+          "python3 -c \"\nimport json\nwith open('solution.json') as f:\n    d = json.load(f)\njobs_by_m = {}\nfor j in d['jobs']:\n    m = j['machine']\n    if m not in jobs_by_m:\n        jobs_by_m[m] = []\n    jobs_by_m[m].append(j)\nfor m, js in jobs_by_m.items():\n    js.sort(key=lambda x: x['start'])\n    for i in range(len(js)-1):\n        if js[i]['end'] > js[i+1]['start']:\n            raise AssertionError(f'Overlap on {m}: {js[i][\\\"job_id\\\"]} ends at {js[i][\\\"end\\\"]}, {js[i+1][\\\"job_id\\\"]} starts at {js[i+1][\\\"start\\\"]}')\nprint('No overlaps found')\n\""
+        ]
+      }
+    ]
+  },
+  "checks": [
+    {
+      "command": "python3 -c \"import json, subprocess; p=subprocess.run(['python3','solve.py'],capture_output=True,text=True); d=json.load(open('solution.json')); j1=[j for j in d['jobs'] if j['job_id']=='J1'][0]; j3=[j for j in d['jobs'] if j['job_id']=='J3'][0]; assert j1['end'] <= j3['start'], f'Precedence violated: J1 end {j1[\\\"end\\\"]} > J3 start {j3[\\\"start\\\"]}'\"",
+      "rejected": true,
+      "reason": "blocked by command guard"
+    },
+    {
+      "command": "grep -n 'start\\[u\\] >= start\\[v\\]' solve.py",
+      "rejected": true,
+      "reason": "blocked by command guard"
+    },
+    {
+      "command": "python3 -c \"\nimport json\nwith open('solution.json') as f:\n    d = json.load(f)\njobs_by_m = {}\nfor j in d['jobs']:\n    m = j['machine']\n    if m not in jobs_by_m:\n        jobs_by_m[m] = []\n    jobs_by_m[m].append(j)\nfor m, js in jobs_by_m.items():\n    js.sort(key=lambda x: x['start'])\n    for i in range(len(js)-1):\n        if js[i]['end'] > js[i+1]['start']:\n            raise AssertionError(f'Overlap on {m}: {js[i][\\\"job_id\\\"]} ends at {js[i][\\\"end\\\"]}, {js[i+1][\\\"job_id\\\"]} starts at {js[i+1][\\\"start\\\"]}')\nprint('No overlaps found')\n\"",
+      "rejected": true,
+      "reason": "blocked by command guard"
+    }
+  ],
+  "confirm": {
+    "focus": "confirm",
+    "mode": "full",
+    "artifact_version": "6713b2c1f4dba9c8",
+    "findings": [],
+    "finding_updates_applied": [
+      "F-001",
+      "F-002"
+    ]
+  },
+  "open_findings": [
+    {
+      "record_type": "finding",
+      "ts": "2026-10-29T07:14:23.490032+00:00",
+      "finding_id": "F-001",
+      "req_ids": [
+        "R3"
+      ],
+      "artifact_hash": "6713b2c1f4dba9c8",
+      "problem_type": "implementation",
+      "evidence_level": "actual_test",
+      "detail": "The code explicitly contains `model.addCons(start[u] >= start[v] + proc[v])` for the precedence pair (J1, J3). This enforces that J1 starts after J3 finishes, which is the exact opposite of the required constraint (J1 finishes before J3 starts). The logic is definitively reversed.",
+      "witness_ref": "code_inspection:precedence_constraint_reversed",
+      "status": "confirmed"
+    }
+  ],
+  "repair": {
+    "finding_id": "F-001",
+    "reply": {
+      "finding_id": "F-001",
+      "patch_commands": [
+        "cp solve.py solve_v1.py",
+        "sed -i 's/model.addCons(start\\[u\\] >= start\\[v\\] + proc\\[v\\])/model.addCons(start[v] >= start[u] + proc[u])/' solve.py"
+      ],
+      "regression_plan": [
+        "python3 -c \"import json; d=json.load(open('solution.json')); jobs={j['job_id']:j for j in d['jobs']}; assert jobs['J1']['end'] <= jobs['J3']['start'], 'precedence violated'; print('OK', d['makespan'])\""
+      ],
+      "rationale": "The precedence constraint was reversed: it enforced J1 starts after J3 finishes. The requirement is J1 completion <= J3 start, i.e. start[J3] >= start[J1] + proc[J1]. Swapping u/v fixes the direction while keeping all other logic (assignment, no-overlap disjunctions, objective) intact.",
+      "expected_resolved": [
+        "F-001"
+      ],
+      "risk_notes": "Single-line change to the precedence constraint only; output schema and objective unchanged. Verify makespan remains feasible/optimal after the fix.",
+      "note": "execute patch_commands via bash, run regression_plan, then call audit(focus='verify_fix', question=<outcomes>)"
+    },
+    "patch_results": [
+      {
+        "command": "cp solve.py solve_v1.py",
+        "rejected": true
+      },
+      {
+        "command": "sed -i 's/model.addCons(start\\[u\\] >= start\\[v\\] + proc\\[v\\])/model.addCons(start[v] >= start[u] + proc[u])/' solve.py",
+        "rejected": true
+      }
+    ],
+    "patch_applied": false
+  },
+  "usage": {
+    "calls": 3,
+    "prompt_tokens": 8061,
+    "completion_tokens": 1892,
+    "latency_s": 41.66
+  },
+  "wall_time_s": 42.6
+}

@@ -1,0 +1,173 @@
+{
+  "problem": "tiny_sched",
+  "aid": "c_m2",
+  "kind": "mutant",
+  "mode": "full",
+  "sandbox": "/home/hewj13/wm/ora/work/controlled_eval/tiny_sched_c_m2",
+  "prompt_versions": {
+    "audit_system": "346d887a181c873b",
+    "audit_confirm_addendum": "9a33a195b2562aa1",
+    "audit_verify_fix_addendum": "595c522114f21d3e",
+    "audit_blind_note": "fd8b3d30b708ae0a",
+    "repair_system": "09557700c36091b7"
+  },
+  "error": null,
+  "audit": {
+    "focus": "full semantic audit",
+    "mode": "full",
+    "artifact_version": "8cdd6ee6d60b646d",
+    "requirements_written": [
+      "R1",
+      "R2",
+      "R3",
+      "R4",
+      "R5",
+      "R6"
+    ],
+    "findings": [
+      {
+        "finding_id": "F-001",
+        "proposed_checks": [
+          "python3 -c \"import json; d=json.load(open('/app/solution.json')); m2=[j for j in d['jobs'] if j['machine']=='M2']; overlaps=any(m2[i]['start']<m2[j]['end'] and m2[j]['start']<m2[i]['end'] for i in range(len(m2)) for j in range(i+1,len(m2))); print('M2_OVERLAP' if overlaps else 'NO_M2_OVERLAP')\"",
+          "grep -n 'machines\\[:1\\]' /app/submissions/solve.py"
+        ]
+      },
+      {
+        "finding_id": "F-002",
+        "proposed_checks": [
+          "grep -n 'setObjective' /app/submissions/solve.py",
+          "python3 -c \"import json; d=json.load(open('/app/solution.json')); print(d['makespan'])\""
+        ]
+      }
+    ]
+  },
+  "checks": [
+    {
+      "command": "python3 -c \"import json; d=json.load(open('/app/solution.json')); m2=[j for j in d['jobs'] if j['machine']=='M2']; overlaps=any(m2[i]['start']<m2[j]['end'] and m2[j]['start']<m2[i]['end'] for i in range(len(m2)) for j in range(i+1,len(m2))); print('M2_OVERLAP' if overlaps else 'NO_M2_OVERLAP')\"",
+      "return_code": 1,
+      "timed_out": false,
+      "stdout_tail": "",
+      "stderr_tail": "Traceback (most recent call last):\n  File \"<string>\", line 1, in <module>\nFileNotFoundError: [Errno 2] No such file or directory: '/home/hewj13/wm/ora/work/controlled_eval/tiny_sched_c_m2/app/solution.json'\n"
+    },
+    {
+      "command": "grep -n 'machines\\[:1\\]' /app/submissions/solve.py",
+      "return_code": 0,
+      "timed_out": false,
+      "stdout_tail": "47:    for m in machines[:1]:\n",
+      "stderr_tail": ""
+    },
+    {
+      "command": "grep -n 'setObjective' /app/submissions/solve.py",
+      "return_code": 0,
+      "timed_out": false,
+      "stdout_tail": "63:    model.setObjective(cmax + 1e-4 * quicksum(start[j] for j in jobs), \"minimize\")\n",
+      "stderr_tail": ""
+    },
+    {
+      "command": "python3 -c \"import json; d=json.load(open('/app/solution.json')); print(d['makespan'])\"",
+      "return_code": 1,
+      "timed_out": false,
+      "stdout_tail": "",
+      "stderr_tail": "Traceback (most recent call last):\n  File \"<string>\", line 1, in <module>\nFileNotFoundError: [Errno 2] No such file or directory: '/home/hewj13/wm/ora/work/controlled_eval/tiny_sched_c_m2/app/solution.json'\n"
+    }
+  ],
+  "confirm": {
+    "focus": "confirm",
+    "mode": "full",
+    "artifact_version": "8cdd6ee6d60b646d",
+    "findings": [],
+    "finding_updates_applied": [
+      "F-001",
+      "F-002"
+    ],
+    "check_results_written": [
+      "chk-001",
+      "chk-002"
+    ]
+  },
+  "open_findings": [
+    {
+      "record_type": "finding",
+      "ts": "2026-10-29T07:15:38.299435+00:00",
+      "finding_id": "F-001",
+      "req_ids": [
+        "R2"
+      ],
+      "artifact_hash": "8cdd6ee6d60b646d",
+      "problem_type": "implementation",
+      "evidence_level": "actual_test",
+      "detail": "The code explicitly restricts the no-overlap disjunctive constraints to only the first machine (M1) via `machines[:1]`. Machine M2 has no overlap-prevention constraints, allowing jobs assigned to M2 to overlap in time. This is a direct implementation defect violating R2.",
+      "witness_ref": "grep -n 'machines\\[:1\\]' /app/submissions/solve.py -> line 47: for m in machines[:1]:",
+      "status": "confirmed"
+    },
+    {
+      "record_type": "finding",
+      "ts": "2026-10-29T07:15:38.332802+00:00",
+      "finding_id": "F-002",
+      "req_ids": [
+        "R5"
+      ],
+      "artifact_hash": "8cdd6ee6d60b646d",
+      "problem_type": "semantic",
+      "evidence_level": "actual_test",
+      "detail": "The objective function includes an unsourced secondary term `1e-4 * sum(starts)` not specified in the problem statement. The problem requires minimizing makespan only. While the coefficient is small, it modifies the optimization landscape and could theoretically lead to a different optimal solution than pure makespan minimization, constituting an unsourced objective term.",
+      "witness_ref": "grep -n 'setObjective' /app/submissions/solve.py -> line 63: model.setObjective(cmax + 1e-4 * quicksum(start[j] for j in jobs), \"minimize\")",
+      "status": "confirmed"
+    }
+  ],
+  "repair": {
+    "finding_id": "F-001",
+    "reply": {
+      "finding_id": "F-001",
+      "patch_commands": [
+        "cp /app/submissions/solve.py /app/submissions/solve_v1.py",
+        "sed -i 's/for m in machines\\[:1\\]:/for m in machines:/' /app/submissions/solve.py"
+      ],
+      "regression_plan": [
+        "cd /app/submissions && python solve.py",
+        "python -c \"import json; d=json.load(open('solution.json')); jobs={j['job_id']:j for j in d['jobs']}; ms=d['makespan']; assert abs(ms-max(j['end'] for j in d['jobs']))<1e-6, 'makespan mismatch'; from collections import defaultdict; bym=defaultdict(list); [bym[j['machine']].append((j['start'],j['end'],j['job_id'])) for j in d['jobs']];\nfor m,lst in bym.items():\n    lst.sort()\n    for a,b in zip(lst,lst[1:]):\n        assert a[1]<=b[0]+1e-6, f'overlap on {m}: {a} vs {b}'\nassert jobs['J1']['end']<=jobs['J3']['start']+1e-6, 'precedence violated'\nprint('OK', ms)\""
+      ],
+      "rationale": "The defect is that the no-overlap disjunctive constraints are only generated for machines[:1] (M1), leaving M2 unconstrained so jobs assigned to M2 can overlap. The fix changes the loop to iterate over all machines, applying the same big-M disjunctive formulation to both M1 and M2. This is a minimal one-line local change that directly enforces R2 (no overlap on the same machine) without altering the model structure, objective, or output schema.",
+      "expected_resolved": [
+        "F-001"
+      ],
+      "risk_notes": "Extending the disjunctive constraints to M2 adds more big-M constraints, which may slightly increase solver time, but with 5 jobs and 2 machines this is negligible. The big-M value (sum of proc times = 34) is valid for both machines since it bounds any start-time difference. No change to precedence, assignment, or makespan logic.",
+      "note": "execute patch_commands via bash, run regression_plan, then call audit(focus='verify_fix', question=<outcomes>)"
+    },
+    "patch_results": [
+      {
+        "command": "cp /app/submissions/solve.py /app/submissions/solve_v1.py",
+        "return_code": 0,
+        "stderr_tail": ""
+      },
+      {
+        "command": "sed -i 's/for m in machines\\[:1\\]:/for m in machines:/' /app/submissions/solve.py",
+        "return_code": 0,
+        "stderr_tail": ""
+      }
+    ],
+    "patch_applied": true,
+    "witness_after_patch": {
+      "verdict": "PASS",
+      "return_code": 0,
+      "output_tail": "OBJECTIVE 17.0\nWITNESS PASS\n"
+    },
+    "verify_fix": {
+      "focus": "verify_fix",
+      "mode": "full",
+      "artifact_version": "9f4fb02adc30f198",
+      "findings": [],
+      "finding_updates_applied": [
+        "F-001"
+      ],
+      "repair_result_written": "repair-bfc459c1d4"
+    }
+  },
+  "usage": {
+    "calls": 4,
+    "prompt_tokens": 11904,
+    "completion_tokens": 2207,
+    "latency_s": 43.64
+  },
+  "wall_time_s": 45.4
+}

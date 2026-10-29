@@ -60,6 +60,10 @@ VERIFY_FIX_RESPONSE = json.dumps({
                          "witness_ref": "outcomes/0005_y.json"}],
 })
 
+# Audit that finds nothing wrong: leaves zero open findings, so the E2.1
+# open-findings gate stays silent and tests can isolate rule A/B mechanics.
+AUDIT_CLEAN_RESPONSE = json.dumps({"requirements_new": [], "findings": []})
+
 REPAIR_RESPONSE = json.dumps({
     "patch_commands": ["cp /app/submissions/solve.py /app/submissions/solve_v2.py",
                        "python3 /tmp/patch.py"],
@@ -508,7 +512,7 @@ class TestE2Triggers(WorkerTestBase):
             {"tool_calls": [make_tool_call("finish", {"summary": "done"})],
              "finish_reason": "tool_calls"},
         ]
-        llm_fn = make_dispatch_llm_fn(script)
+        llm_fn = make_dispatch_llm_fn(script, audit_reply=AUDIT_CLEAN_RESPONSE)
         manager = self.make_manager(llm_fn, make_solve_exec_fn())
         result = asyncio.run(run_loop(
             system_prompt="s", instruction="i",
@@ -532,7 +536,7 @@ class TestE2Triggers(WorkerTestBase):
             {"tool_calls": [make_tool_call("finish", {"summary": "try2"})],
              "finish_reason": "tool_calls"},
         ]
-        llm_fn = make_dispatch_llm_fn(script)
+        llm_fn = make_dispatch_llm_fn(script, audit_reply=AUDIT_CLEAN_RESPONSE)
         manager = self.make_manager(llm_fn, make_exec_fn())
         result = asyncio.run(run_loop(
             system_prompt="s", instruction="i",
@@ -544,6 +548,56 @@ class TestE2Triggers(WorkerTestBase):
         self.assertEqual(len(llm_fn.state["audit_messages"]), 1)
         trig = [e for e in self.events() if e.get("event") == "trigger"]
         self.assertEqual([t["kind"] for t in trig], ["pre_finish_audit"])
+
+    def test_pre_finish_open_findings_bounce_once(self):
+        """E2.1: an audit ran (rule B clean) but left F-001 suspected ->
+        finish is bounced once with kind pre_finish_open_findings; the second
+        finish goes through without another worker call."""
+        script = [
+            {"tool_calls": [make_tool_call("audit", {
+                "focus": "general", "mode": "full", "question": "check"})],
+             "finish_reason": "tool_calls"},
+            {"tool_calls": [make_tool_call("finish", {"summary": "try1"})],
+             "finish_reason": "tool_calls"},
+            {"tool_calls": [make_tool_call("finish", {"summary": "try2"})],
+             "finish_reason": "tool_calls"},
+        ]
+        llm_fn = make_dispatch_llm_fn(script)
+        manager = self.make_manager(llm_fn, make_exec_fn())
+        result = asyncio.run(run_loop(
+            system_prompt="s", instruction="i",
+            config=LoopConfig(enable_workers=True, enable_triggers=True),
+            llm_fn=llm_fn, exec_fn=make_exec_fn(), writer=self.writer,
+            worker_manager=manager))
+        self.assertEqual(result.status, "finished")
+        self.assertEqual(result.finish_summary, "try2")
+        # one manual audit only — the open-findings bounce spends nothing
+        self.assertEqual(len(llm_fn.state["audit_messages"]), 1)
+        trig = [e for e in self.events() if e.get("event") == "trigger"]
+        self.assertEqual([t["kind"] for t in trig],
+                         ["pre_finish_open_findings"])
+
+    def test_open_defects_cover_repair_only_ids(self):
+        """E2.1: ids that only ever appeared inside a repair_result (never
+        became Finding records) still count as open until resolved."""
+        from ora_agent.evidence import RepairResult
+        self.store.append(Finding(finding_id="F-001", req_ids=["R1"],
+                                  artifact_hash="h1",
+                                  problem_type="implementation",
+                                  evidence_level="llm_judgment",
+                                  status="refuted"))
+        self.store.append(RepairResult(
+            patch_hash="p", target_finding="F-001", resolved=["F-001"],
+            newly_discovered=["F9"], unresolved=["F-002"]))
+        llm_fn = make_dispatch_llm_fn([])
+        manager = self.make_manager(llm_fn, make_exec_fn())
+        ids = {d["finding_id"] for d in manager.open_defects()}
+        self.assertEqual(ids, {"F9", "F-002"})
+        # a later repair resolving F9 closes it
+        self.store.append(RepairResult(
+            patch_hash="p2", target_finding="F9", resolved=["F9"]))
+        ids = {d["finding_id"] for d in manager.open_defects()}
+        self.assertEqual(ids, {"F-002"})
 
     def test_triggers_off_no_auto_audit(self):
         script = [

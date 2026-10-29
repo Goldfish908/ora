@@ -129,6 +129,12 @@ class TriggerPolicy:
        have never been audited (or changed since the last audit), run the
        audit first and bounce the finish ONCE — the second finish goes
        through (the audit result is in the actor's context by then).
+    C. pre-finish open findings (E2.1): if the actor asks to finish while
+       defect findings remain open (suspected/confirmed/unresolved, or
+       surfaced by a repair round and never resolved), bounce the finish ONCE
+       with the open list — no worker call is spent, the findings are already
+       in the evidence store. Motivated by E-B2 circular: the audit surfaced
+       F1 and the actor finished 22s later with an infeasible submission.
 
     Triggered audits count against the same worker_calls budget as manual
     calls. All decisions are pure functions of observed events — the actor's
@@ -140,6 +146,7 @@ class TriggerPolicy:
         self.audits = 0
         self.dirty = True            # artifacts not covered by any audit yet
         self.finish_bounced = False
+        self.findings_bounced = False
 
     def note_action(self, action_kind: str, command: str) -> None:
         if action_kind in ("model", "code", "repair") \
@@ -501,6 +508,32 @@ async def run_loop(*, system_prompt: str, instruction: str, config: LoopConfig,
                                     + _truncate(reply, 2000)),
                     })
                     continue
+                # E2.1 trigger C: defect findings still open -> bounce the
+                # finish ONCE (no worker call spent; findings already exist).
+                if (worker_manager is not None
+                        and policy.enabled and not policy.findings_bounced):
+                    open_defects = worker_manager.open_defects()
+                    if open_defects:
+                        policy.findings_bounced = True
+                        writer.emit("trigger",
+                                    kind="pre_finish_open_findings",
+                                    seq=result.n_steps,
+                                    n_open=len(open_defects))
+                        brief = "; ".join(
+                            f"{d.get('finding_id')}"
+                            f"({d.get('status')}: "
+                            f"{str(d.get('detail', ''))[:80]})"
+                            for d in open_defects[:10])
+                        append_message({
+                            "role": "tool", "tool_call_id": tc.get("id"),
+                            "content": (
+                                "[auto-gate: open findings] finish deferred — "
+                                f"{len(open_defects)} open finding(s): "
+                                f"{brief}. Resolve them (repair + verify_fix) "
+                                "or refute them with an executable check; "
+                                "then call finish again."),
+                        })
+                        continue
                 summary = str(args.get("summary", ""))
                 writer.emit("action", tool="finish", summary=summary)
                 writer.emit("finish", summary=summary, n_steps=result.n_steps,

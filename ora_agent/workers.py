@@ -193,6 +193,31 @@ class WorkerManager:
         self._llm_extra = llm_extra
         self.n_calls = 0
 
+    def open_defects(self) -> list[dict]:
+        """Open defect ids for the finish gate (E2.1).
+
+        Union of (a) findings whose latest status is open
+        (suspected/confirmed/unresolved) and not resolved by any
+        RepairResult, and (b) ids surfaced only inside repair rounds
+        (newly_discovered / confirmed_regressions / unresolved) that no later
+        RepairResult marks resolved — those never became Finding records, so
+        EvidenceStore.open_findings() alone misses them.
+        """
+        resolved = self._store.resolved_finding_ids()
+        out: dict[str, dict] = {
+            f["finding_id"]: f for f in self._store.open_findings()}
+        for r in self._store.records("repair_result"):
+            rid = r.get("repair_id", "?")
+            for key in ("newly_discovered", "confirmed_regressions",
+                        "unresolved"):
+                for fid in r.get(key) or []:
+                    if fid not in resolved and fid not in out:
+                        out[fid] = {
+                            "finding_id": fid, "status": "open",
+                            "problem_type": "unknown",
+                            "detail": f"surfaced by {rid} as {key}"}
+        return list(out.values())
+
     # -- plumbing ---------------------------------------------------------------
 
     async def _read(self, command: str, limit: int) -> str:

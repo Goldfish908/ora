@@ -465,5 +465,18 @@ class TestWorkerBudgets(WorkerTestBase):
         self.assertEqual(result.n_steps, 0)
 
 
+class ConfirmProtocolTest(unittest.TestCase):
+    """E1.3: positive statements must close as refuted, never confirmed."""
+
+    def test_confirm_addendum_semantics(self):
+        from ora_agent.workers import _AUDIT_CONFIRM_ADDENDUM, _AUDIT_SYSTEM
+        # confirm: correct behavior -> refuted (closed), not confirmed
+        self.assertIn('the only valid status is "refuted"', _AUDIT_CONFIRM_ADDENDUM)
+        self.assertIn("confirmed\" = the DEFECT IS REAL", _AUDIT_CONFIRM_ADDENDUM)
+        # audit: findings are defect claims only, positive statements excluded
+        self.assertIn("DEFECT CLAIM only", _AUDIT_SYSTEM)
+        self.assertIn("Never record a positive statement", _AUDIT_SYSTEM)
+
+
 if __name__ == "__main__":
     unittest.main()

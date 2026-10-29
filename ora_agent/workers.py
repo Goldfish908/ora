@@ -123,10 +123,19 @@ Respond with a single JSON object, no prose:
 {"requirements_new": [{"req_id": str, "statement": str, "source_refs": [str], "scope": str, "units": str, "hardness": "hard"|"soft", "status": "explicit"|"unresolved_ambiguity"}],
  "findings": [{"req_ids": [str], "problem_type": "implementation"|"semantic"|"feasibility"|"quality", "detail": str, "evidence_level": "llm_judgment", "status": "suspected", "proposed_checks": ["bash command", ...]}]}
 Omit "requirements_new" unless the request asks for requirement extraction. Return empty "findings" if nothing is wrong. Do not overstate: your judgments are llm_judgment/suspected until the orchestrator runs the checks.
+
+A finding is a DEFECT CLAIM only: a specific statement of something wrong (missing constraint, wrong direction, wrong index, unsourced objective term, ...). Never record a positive statement ("constraint X is correctly implemented") as a finding — correct behavior is the absence of findings, not a finding.
 """
 
 _AUDIT_CONFIRM_ADDENDUM = """\
 This is a CONFIRM call: the orchestrator executed proposed checks and reports the real observations in the question. Re-classify the affected findings based ONLY on that observed evidence.
+
+Status semantics (strict):
+- "confirmed" = the DEFECT IS REAL: the observation demonstrates the claimed violation. A confirmed finding asserts a defect exists.
+- "refuted" = the observation shows the behavior is CORRECT (the claimed violation does not occur), or the finding was a positive statement that should never have been filed. Refuted closes the finding; it never counts as a defect.
+- "unresolved" = the observation is inconclusive.
+
+If the observation says or implies that a constraint is correctly implemented, the only valid status is "refuted" — never "confirmed".
 
 Respond with a single JSON object, no prose:
 {"finding_updates": [{"finding_id": str, "status": "confirmed"|"refuted"|"unresolved", "witness_ref": str, "detail": str}],

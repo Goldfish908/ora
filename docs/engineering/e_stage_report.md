@@ -65,9 +65,33 @@ E-B2 的 4 个 0/0:**2 个墙钟、1 个流程漏洞（circular)、1 个 benchma
 
 LLM 延迟占墙钟 51–89%(round2 结论，本轮一致）:actor thinking 是成本主体。
 
-## 4. E-B1-off-big 与 M1 先导（补充节，跑完填）
+## 4. E-B1-off-big 与 M1 先导（2026-10-29 晚）
 
-（待填：off-big 六题结果、airport 是否在 120 步内收敛、circular 是否仍浅 finish;M1 pilot 前 2 实例 on/off 的执行与 grade。)
+### 4.1 E-B1-off-big(off + max_steps 120 + token 2M，墙钟 41min)
+
+| 题 | 结果 | 终止状态 |
+|---|---|---|
+| carbon | **1.0/0.45**(off 模式首个非零 quality) | finished,15 步 |
+| circular | 0/0 | finished,18 步（仍偏浅） |
+| airport | 0/0 | **llm_error**,29 步 |
+| bike_share | 0/0 | **llm_error**,59 步 |
+| cell_tower | 0/0 | **llm_error**,31 步 |
+| dynamic | 门拦 | — |
+
+**本轮被端点故障污染**:3/6 题死于 MaaS read stall → llm_error（随后端点整体转为 403 AccessDenied.Unpurchased，见 §4.3)，不是任务失败。airport 在 29 步内未超时、步数余量充足，预算修正确认有效，但质量结论仍需重跑。
+
+### 4.2 M1 pilot 首批（RetailOpt-190,f1_52_weeks_v0)
+
+- thinking on:LLM 读取超时（30 分钟，端点故障期）;
+- thinking off:94.7s 返回 12,283 字符代码，但输出被 ```python fence 包裹且 fence 未闭合（max_tokens 截断）→ 第一版 extract_code 未容错，SyntaxError。已修（未闭合 fence 回退剥离），重跑待端点恢复。
+
+### 4.3 外部阻塞：MaaS 权限中断
+
+2026-10-29 ~18:40 起，qwen3.8-27b 与 cmaas-qwen3.8-flash 均返回 `AccessDenied.Unpurchased`(403)。所有 LLM 依赖工作（M1 pilot、off-big 重跑、E-B2-off）暂停，待账号权限恢复。**期间可推进的零 LLM 工作**:M2 生成器设计、连接算子库、E 线代码改进、文档。
+
+### 4.4 附：MaaS 上下文上限实测
+
+输入硬上限 **983,616 token(960K)**，服务端 400 错误原文确认；380k 探测正常作答。原生 256K，托管开了扩展窗口。我们最大单调用 ~32k，余量 30 倍——上下文不再是需要测量的变量。
 
 ## 5. 后续动作
 

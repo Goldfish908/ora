@@ -161,13 +161,23 @@ def main() -> None:
                 if (sid, mode) in done:
                     print(f"[skip] {sid} {mode}")
                     continue
-                extra = ({"enable_thinking": False} if mode == "off"
-                         else None)
+                # Internal vLLM: thinking off ONLY works via nested
+                # chat_template_kwargs (top-level enable_thinking is silently
+                # ignored — measured 2026-10-29). Thinking on gets
+                # reasoning_effort=medium: default xhigh fills 32k reasoning
+                # tokens and truncates the answer to empty.
+                extra = ({"chat_template_kwargs": {"enable_thinking": False}}
+                         if mode == "off" else {"reasoning_effort": "medium"})
+                # thinking mode shares one completion budget between
+                # reasoning and answer on this vLLM build; 8192 truncates
+                # long reasoning and yields empty content. Off mode still
+                # needs room: a 52-period MILP script exceeds 8192 tokens.
+                max_tokens = 16384 if mode == "off" else 32768
                 t0 = time.time()
                 try:
                     resp = llm_mod.chat(
                         [{"role": "user", "content": prompt}],
-                        max_tokens=8192, temperature=0.6, extra=extra,
+                        max_tokens=max_tokens, temperature=0.6, extra=extra,
                         config=cfg)
                     text = resp.get("content") or ""
                     llm_err = None
@@ -177,6 +187,13 @@ def main() -> None:
                        "llm_latency_s": round(time.time() - t0, 1),
                        "reference_objective": row["reference_objective"],
                        "reference_status": row["reference_status"]}
+                if not llm_err:
+                    u = resp.get("usage") or {}
+                    rec["finish_reason"] = resp.get("finish_reason")
+                    rec["reasoning_tokens"] = (
+                        (u.get("completion_tokens_details") or {})
+                        .get("reasoning_tokens"))
+                    rec["completion_tokens"] = u.get("completion_tokens")
                 if llm_err:
                     rec.update(exec_status="llm_error", error=llm_err)
                 else:

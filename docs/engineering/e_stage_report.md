@@ -12,7 +12,8 @@
 | E-B1 | B0 + E1 修复，worker 关 | 3/6 | **2.0** | 49min | 2 |
 | E-B2 | E-B1 + 触发器（E2) | 2/6 | 0.0 | 49min | **8** |
 | E-B1-off | E-B1 + actor thinking 关 | 2/6 | 0.0 | **29min** | 2 |
-| E-B1-off-big | off + max_steps 120 + 2M token | （跑完填） | | | |
+| E-B1-off-big(阿里云，污染） | off + max_steps 120 + 2M token | 1/6 | 0.45 | 41min | — |
+| E-B1-off-big-v3（内网） | 同上，内网端点重跑 | 2/6 | 0.233 | 47min | — |
 
 逐题明细(feasibility/quality):
 
@@ -61,7 +62,8 @@ E-B2 的 4 个 0/0:**2 个墙钟、1 个流程漏洞（circular)、1 个 benchma
 | E-B1 | | 49min | thinking on |
 | E-B2 | | 49min | +8 worker 调用 |
 | E-B1-off | bike 单题即 1.25M(超限） | 29min | thinking off |
-| E-B1-off-big | | | （跑完填） |
+| E-B1-off-big | | 41min | 阿里云轮，3/6 题被 llm_error 污染 |
+| E-B1-off-big-v3 | | 47min | 内网端点，干净 |
 
 LLM 延迟占墙钟 51–89%(round2 结论，本轮一致）:actor thinking 是成本主体。
 
@@ -92,6 +94,33 @@ LLM 延迟占墙钟 51–89%(round2 结论，本轮一致）:actor thinking 是�
 ### 4.4 附：MaaS 上下文上限实测
 
 输入硬上限 **983,616 token(960K)**，服务端 400 错误原文确认；380k 探测正常作答。原生 256K，托管开了扩展窗口。我们最大单调用 ~32k，余量 30 倍——上下文不再是需要测量的变量。
+
+### 4.5 E-B1-off-big-v3：内网端点干净重跑（2026-10-29 夜，墙钟 47min，0 llm_error)
+
+阿里云 403 后切换到内网自托管 vLLM(`Qwen3_8-27B`,`max_model_len` 262144)。两个平台行为差异已适配：关 thinking 必须嵌套 `chat_template_kwargs: {enable_thinking: false}`（顶层写法被内网静默忽略）；内网默认 `reasoning_effort=xhigh`,on 模式需显式设 `medium` 否则单题烧满 32k reasoning token。
+
+| 题 | feas/quality | 终止状态 | 备注 |
+|---|---|---|---|
+| airport | **1.0/0.0** | finished,17 步 | 可行，score 69370 |
+| cell_tower | **1.0/0.233** | finished,26 步 | 利润距参考上界仅 ~250 元 |
+| carbon | 0/0 | finished,65 步 | **missing_solution，相对阿里云轮的 1.0/0.45 回退** |
+| bike_share | 0/0 | finished,47 步 | missing_solution，配额修正后不再撞限但仍未产出 |
+| circular | 0/0 | finished,18 步 | 又交不可行解（verifier 240 个评估错误）;**trajectory 里无任何 pre_finish 触发**——E-B1 系 worker 关闭，E2.1 规则 C 没有 findings 可查，该臂本来就无审计，不是 E2.1 失效；E2.1 的正确检验臂是 E-B2-off |
+| dynamic | 门拦 | — | initial_plan reward 0.0 < 0.3,off 模式下首轮规划拿不到分，修 gate 的优先级上升 |
+
+**结论（单轮）**：配额修正有效（无超时、无 token 耗尽、无 llm_error)，但 off 模式质量仍不稳——carbon 从阿里云轮的 1.0/0.45 退回 missing_solution，说明 off 模式在难题上的产出方差大；feas 2/6 与 on 基线持平但题面不重。平台已换，与历史臂的延迟对比失效，质量结论需 E-B1(on）内网重跑后同平台对照。
+
+### 4.6 M1 pilot v4:4 实例 × on/off（内网端点）
+
+7/8 crash，归因清晰且**都不是"推理不会"**:
+
+| 失败模式 | 频次 | 说明 |
+|---|---|---|
+| 数据誊抄错误 | 4/4(on 模式全灭） | 模型把 prompt 内嵌 JSON 抄成 Python 语法（`[800]*52`),`json.loads` 炸 |
+| pyscipopt API 误用 | 3/4(off 模式） | 如 `quicksum` 传 list；我们把 gurobipy 改写成 SCIP 引入的接口噪声 |
+| 假成功 | 1/8 | off/high_waste obj=243,884 比已证最优 378,951 好 36% → 必然漏约束；`better_than_reference` 必须触发约束审计，不能算成功 |
+
+对 M1 设计的直接修正：①主测量改用 `prompt_schema` 模式或数据文件化，剥离誊抄；②prompt 加 pyscipopt 惯用法片段；③grade 体系加约束完整性审计。誊抄错误作为独立大头失败模式坐实，写入 motivation 验证发现。
 
 ## 5. 后续动作
 

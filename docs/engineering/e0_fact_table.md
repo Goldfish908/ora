@@ -48,7 +48,7 @@ s142:48 核 CPU / 503GB RAM / **无 GPU**(`nvidia-smi` 无驱动）。路径 R �
 
 **GPU 资源（2026-10-29 用户确认）**:Model Factory 平台,s142 可直接连（现成通道 `~/mf_tools/`:mf_exec/mf_upload/mf_download)。2×A800 易申请（日常冒烟/诊断默认）,8×A800 也可申请；**单次申请最长连续占用 72h，结束可续申**。由此：所有训练按 checkpoint 可恢复设计，单 run 切分 ≤72h，跨窗口断点续训；prereg 的 576 GPUh(8×72h）设计成立，无需砍范围。
 
-**求解器许可（2026-10-29 用户确认）**：无 Gurobi/COPT。统一用开源 SCIP/HiGHS(PySCIPOpt 已在 rl 环境，HiGHS 待装）。M1 RetailOpt-190 官方 ReLoop 路径受影响 → 按任务书 v1.1 §14.5 走 SCIP 适配子集，标注适配版并独立核对语义；不阻塞 M2。本机可承担：数据生成调度、witness/编译 CPU 执行、API 推理编排、工程侧全部工作。
+**LLM 端点(2026-10-29 切换)**:原阿里云百炼端点当日起 403 AccessDenied.Unpurchased(权限被收回),弃用。现役:**内网自托管 vLLM**(`QWEN27B_BASE_URL`/`QWEN27B_API_KEY` in `~/.leagent_env`,`ORA_LLM_INSECURE=1` 自签证书),模型 id `Qwen3_8-27B`,原生 256K 上下文,60 req/s,响应秒级。平台差异实测:①关 thinking 内网必须用嵌套 `chat_template_kwargs.enable_thinking:false`(顶层写法被静默忽略),阿里云百炼相反;②内网默认 reasoning_effort=xhigh,单题可烧 32k+ reasoning token 截断正文,thinking-on 实验统一显式设 medium;③历史臂(B0/E-B1/E-B2/E-B1-off)跑在阿里云 serving,延迟数据与内网不可直接比。本机可承担：数据生成调度、witness/编译 CPU 执行、API 推理编排、工程侧全部工作。
 
 ## 6. 当前开发任务清单（数据边界登记）
 

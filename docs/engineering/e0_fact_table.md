@@ -44,7 +44,11 @@
 
 ## 5. 硬件实况（R0 前置）
 
-s142:48 核 CPU / 503GB RAM / **无 GPU**(`nvidia-smi` 无驱动）。路径 R 的训练必须依赖外部 GPU 资源（任务书提到的两张 A800 位置待用户确认）。本机可承担：数据生成调度、witness/编译 CPU 执行、API 推理编排、工程侧全部工作。
+s142:48 核 CPU / 503GB RAM / **无 GPU**(`nvidia-smi` 无驱动）。路径 R 的训练必须依赖外部 GPU 资源。
+
+**GPU 资源（2026-10-29 用户确认）**:Model Factory 平台,s142 可直接连（现成通道 `~/mf_tools/`:mf_exec/mf_upload/mf_download)。2×A800 易申请（日常冒烟/诊断默认）,8×A800 也可申请；**单次申请最长连续占用 72h，结束可续申**。由此：所有训练按 checkpoint 可恢复设计，单 run 切分 ≤72h，跨窗口断点续训；prereg 的 576 GPUh(8×72h）设计成立，无需砍范围。
+
+**求解器许可（2026-10-29 用户确认）**：无 Gurobi/COPT。统一用开源 SCIP/HiGHS(PySCIPOpt 已在 rl 环境，HiGHS 待装）。M1 RetailOpt-190 官方 ReLoop 路径受影响 → 按任务书 v1.1 §14.5 走 SCIP 适配子集，标注适配版并独立核对语义；不阻塞 M2。本机可承担：数据生成调度、witness/编译 CPU 执行、API 推理编排、工程侧全部工作。
 
 ## 6. 当前开发任务清单（数据边界登记）
 

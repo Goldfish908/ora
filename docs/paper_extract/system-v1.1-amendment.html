@@ -1,0 +1,396 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<title>系统定义 v1.1 修订包</title>
+<style>
+    /* ===== Required cover CSS ===== */
+    body { margin: 0; padding: 0; string-set: doctitle ""; }
+    @page :first { margin: 0; }
+    .cover {
+        width: 210mm; height: 297mm; margin: 0;
+        position: relative; overflow: hidden;
+        page-break-after: always;
+    }
+
+    /* ===== Page setup ===== */
+    @page {
+        size: A4;
+        margin: 2.5cm 2.2cm;
+        @top-center { content: string(doctitle); font-size: 9pt; color: #666; }
+        @bottom-center { content: counter(page); font-size: 9pt; color: #666; }
+    }
+    @page :first {
+        @top-center { content: none; }
+        @bottom-center { content: none; }
+    }
+    @page toc { @top-center { content: none; } }
+    .toc-page { page: toc; }
+
+    h1 { string-set: doctitle content(); }
+
+    /* ===== Body typography ===== */
+    body {
+        font-family: "Noto Serif SC", "Songti SC", Georgia, serif;
+        font-size: 11pt;
+        line-height: 1.6;
+        color: #333;
+        text-align: justify;
+        text-align-last: left;
+    }
+    h1 {
+        font-size: 20pt; font-weight: 700; color: #222;
+        border-bottom: 2px solid #333; padding-bottom: 0.3em;
+        margin-top: 0;
+    }
+    h2 {
+        font-size: 15pt; font-weight: 700; color: #222;
+        border-left: 4px solid #7a6f5d; padding-left: 0.5em;
+        margin-top: 1.6em; page-break-after: avoid;
+    }
+    h3 {
+        font-size: 12.5pt; font-weight: 700; color: #333;
+        margin-top: 1.3em; page-break-after: avoid;
+    }
+    blockquote {
+        margin: 1em 0; padding: 0.5em 1em;
+        border-left: 3px solid #999; background: #f7f5f2;
+        color: #555; font-size: 10.5pt;
+    }
+    code {
+        font-family: "Menlo", "Consolas", monospace;
+        font-size: 9.5pt; word-break: break-word;
+    }
+    pre {
+        background: #f5f5f5; border: 1px solid #ddd;
+        padding: 0.7em 1em; font-size: 10pt;
+        overflow-x: auto; white-space: pre-wrap; word-wrap: break-word;
+        max-width: 100%; box-sizing: border-box;
+    }
+
+    /* ===== Three-line tables ===== */
+    table {
+        border-collapse: collapse; width: 100%;
+        margin: 1em 0; font-size: 10pt;
+        max-width: 100%; box-sizing: border-box;
+    }
+    caption { font-weight: bold; text-align: left; margin-bottom: 0.4em; font-size: 10.5pt; }
+    caption::before { content: attr(data-label) "　"; }
+    thead { display: table-header-group; }
+    thead tr { border-top: 2px solid #333; border-bottom: 1px solid #333; }
+    tbody tr:last-child { border-bottom: 2px solid #333; }
+    th, td { padding: 0.35em 0.6em; text-align: left; vertical-align: top; }
+    tbody tr { border-bottom: 0.5px solid #ccc; }
+    tr { page-break-inside: avoid; }
+
+    /* ===== Swiss-style designed cover ===== */
+    .cover { background: #faf8f5; }
+    .cover-grid {
+        position: absolute; top: 0; left: 0; width: 100%; height: 100%;
+        background-image:
+            linear-gradient(to right, rgba(120,110,95,0.08) 1px, transparent 1px),
+            linear-gradient(to bottom, rgba(120,110,95,0.08) 1px, transparent 1px);
+        background-size: 42mm 42mm;
+    }
+    .cover-block-topleft {
+        position: absolute; top: 0; left: 0;
+        width: 55mm; height: 14mm; background: #6f6657;
+    }
+    .cover-block-accent {
+        position: absolute; top: 14mm; left: 0;
+        width: 18mm; height: 6mm; background: #b3a58d;
+    }
+    .cover-block-bottom {
+        position: absolute; bottom: 0; right: 0;
+        width: 70mm; height: 10mm; background: #6f6657;
+    }
+    .cover-block-bottom2 {
+        position: absolute; bottom: 10mm; right: 0;
+        width: 26mm; height: 5mm; background: #b3a58d;
+    }
+    .cover-square {
+        position: absolute; top: 60mm; right: 30mm;
+        width: 12mm; height: 12mm; border: 1.5px solid #6f6657;
+    }
+    .cover-square2 {
+        position: absolute; top: 66mm; right: 24mm;
+        width: 12mm; height: 12mm; border: 1.5px solid #b3a58d;
+    }
+    .cover-content {
+        position: absolute; top: 44%; left: 50%;
+        transform: translate(-50%, -50%);
+        width: 76%; text-align: left;
+    }
+    .cover-kicker {
+        font-size: 11pt; letter-spacing: 0.35em; color: #6f6657;
+        margin-bottom: 1.2em; font-weight: 700;
+    }
+    .cover-title {
+        font-size: 30pt; font-weight: 700; color: #2e2a24;
+        line-height: 1.35; margin: 0 0 0.6em 0;
+    }
+    .cover-subtitle {
+        font-size: 13pt; color: #6f6657; margin-bottom: 2.2em;
+    }
+    .cover-rule { width: 34mm; height: 2.5px; background: #2e2a24; margin-bottom: 2em; }
+    .cover-meta { font-size: 11pt; color: #555; line-height: 2.1; }
+    .cover-meta strong { color: #333; }
+
+    /* ===== TOC ===== */
+    .toc-page h1 { border-bottom: 2px solid #333; }
+    ul.toc { list-style: none; padding: 0; margin: 1.5em 0; }
+    ul.toc li { margin: 0.55em 0; font-size: 11.5pt; }
+    ul.toc li.lvl2 { padding-left: 1.8em; font-size: 10.5pt; color: #555; }
+    ul.toc a { color: #333; text-decoration: none; display: flex; align-items: baseline; }
+    ul.toc a .toc-dots { flex: 1; border-bottom: 1px dotted #aaa; margin: 0 0.4em; min-width: 2em; }
+    ul.toc a .toc-pg { color: #777; }
+
+    /* ===== Misc ===== */
+    .note { font-size: 10pt; color: #666; }
+    .formula-box {
+        border: 1px solid #333; background: white;
+        padding: 0.6em 1em; margin: 1em 0;
+        font-family: "Menlo", "Consolas", monospace; font-size: 10pt;
+        page-break-inside: avoid; max-width: 100%; box-sizing: border-box;
+        white-space: pre-wrap; word-wrap: break-word;
+    }
+    .formula-box::after { content: attr(data-label); float: right; color: #666; }
+    strong { color: #222; }
+</style>
+</head>
+<body>
+
+<!-- ================= Cover ================= -->
+<div class="cover">
+    <div class="cover-grid"></div>
+    <div class="cover-block-topleft"></div>
+    <div class="cover-block-accent"></div>
+    <div class="cover-block-bottom"></div>
+    <div class="cover-block-bottom2"></div>
+    <div class="cover-square"></div>
+    <div class="cover-square2"></div>
+    <div class="cover-content">
+        <div class="cover-kicker">SYSTEM SPECIFICATION</div>
+        <div class="cover-title">系统定义 v1.1 修订包</div>
+        <div class="cover-subtitle">SEM v1.1 规格 · GRPO 双轨方案 · 探针顺序重排</div>
+        <div class="cover-rule"></div>
+        <div class="cover-meta">
+            <p><strong>修订对象：</strong>系统定义 v1（2026-09-17 批准版）</p>
+            <p><strong>修订日期：</strong>2026-09-18</p>
+            <p><strong>文档性质：</strong>经决策确认的正式修订 · 先改文档再动工</p>
+        </div>
+    </div>
+</div>
+
+<!-- ================= TOC ================= -->
+<div class="toc-page">
+    <h1>目录</h1>
+    <ul class="toc">
+        <li><a href="#sec0"><span>0. 决策日志（本轮已关闭的决策点）</span><span class="toc-dots"></span><span class="toc-pg">3</span></a></li>
+        <li><a href="#sec1"><span>1. SEM v1.1 规格</span><span class="toc-dots"></span><span class="toc-pg">3</span></a></li>
+        <li class="lvl2"><a href="#sec1-1"><span>1.1 特征 schema（五层）</span><span class="toc-dots"></span><span class="toc-pg">3</span></a></li>
+        <li class="lvl2"><a href="#sec1-2"><span>1.2 标签 schema（v1.1 新增字段）</span><span class="toc-dots"></span><span class="toc-pg">4</span></a></li>
+        <li class="lvl2"><a href="#sec1-3"><span>1.3 三层数据协议</span><span class="toc-dots"></span><span class="toc-pg">4</span></a></li>
+        <li class="lvl2"><a href="#sec1-4"><span>1.4 弃权三通道</span><span class="toc-dots"></span><span class="toc-pg">4</span></a></li>
+        <li class="lvl2"><a href="#sec1-5"><span>1.5 MVP 验收门槛（预注册）</span><span class="toc-dots"></span><span class="toc-pg">5</span></a></li>
+        <li><a href="#sec2"><span>2. GRPO 双轨方案</span><span class="toc-dots"></span><span class="toc-pg">5</span></a></li>
+        <li class="lvl2"><a href="#sec2-1"><span>2.1 双轨定义</span><span class="toc-dots"></span><span class="toc-pg">5</span></a></li>
+        <li class="lvl2"><a href="#sec2-2"><span>2.2 奖励函数</span><span class="toc-dots"></span><span class="toc-pg">6</span></a></li>
+        <li class="lvl2"><a href="#sec2-3"><span>2.3 PEARL 四件套配置</span><span class="toc-dots"></span><span class="toc-pg">6</span></a></li>
+        <li class="lvl2"><a href="#sec2-4"><span>2.4 Goodhart 监控</span><span class="toc-dots"></span><span class="toc-pg">6</span></a></li>
+        <li class="lvl2"><a href="#sec2-5"><span>2.5 验收（2×2，预注册）</span><span class="toc-dots"></span><span class="toc-pg">6</span></a></li>
+        <li><a href="#sec3"><span>3. 探针顺序重排</span><span class="toc-dots"></span><span class="toc-pg">6</span></a></li>
+        <li><a href="#sec4"><span>4. 八周时间线</span><span class="toc-dots"></span><span class="toc-pg">7</span></a></li>
+        <li><a href="#sec5"><span>5. 预注册清单</span><span class="toc-dots"></span><span class="toc-pg">7</span></a></li>
+        <li><a href="#secA"><span>附：与既有文档的关系</span><span class="toc-dots"></span><span class="toc-pg">8</span></a></li>
+    </ul>
+</div>
+
+<!-- ================= Body ================= -->
+<h1>系统定义 v1.1 修订包</h1>
+
+<blockquote>
+<strong>修订对象：</strong>系统定义 v1（2026-09-17 批准版）<br>
+<strong>修订日期：</strong>2026-09-18<br>
+<strong>性质：</strong>经决策点确认后的正式修订。v1 已批准结构不变，本包仅落实三项已决策变更：A1–A3 进入 SEM v1.1、GRPO 双轨启动、探针顺序重排。按纪律执行：先改文档再动工。
+</blockquote>
+
+<h2 id="sec0">0. 决策日志（本轮已关闭的决策点）</h2>
+
+<table>
+<caption data-label="表 1">本轮决策记录</caption>
+<thead><tr><th>编号</th><th>决策点</th><th>决定</th><th>依据</th></tr></thead>
+<tbody>
+<tr><td>D1</td><td>GRPO 起点（pearl-4B 续训 vs 27B LoRA 冷启动）</td><td><strong>双轨并行</strong>：track 1 = pearl-4B 续训先行；track 2 = 27B LoRA 待交互修复达标后启动</td><td>「两套环境都准备好了」；PEARL 配方（A4）使两轨门槛均可达</td></tr>
+<tr><td>D2</td><td>A1–A3（SEM 归一化目标、反事实数据协议、弃权三通道）是否进 v1.1</td><td><strong>全部进入</strong></td><td>逻辑充分；成本均为天级；文献依据见 v0.2 §4</td></tr>
+<tr><td>D3</td><td>探针顺序</td><td><strong>MILP 优先，CoBench 提前，OptMATH 推后但保留</strong></td><td>「我们优先 milp。不是说 optmath 不行。」</td></tr>
+</tbody>
+</table>
+
+<p>关闭的 v0.2 决策点：#2（GRPO 起点）、#3（A1–A3）、#6（探针顺序）。其余决策点（目标分布、λ 初值、论文拆分）按本包第 2、4 节的默认值执行，不再单列。</p>
+
+<h2 id="sec1">1. SEM v1.1 规格</h2>
+
+<h3 id="sec1-1">1.1 特征 schema（五层）</h3>
+
+<table>
+<caption data-label="表 2">SEM 特征分层</caption>
+<thead><tr><th>层</th><th>内容</th><th>采集时机</th><th>说明</th></tr></thead>
+<tbody>
+<tr><td>L1 静态特征</td><td>变量数、约束数、非零元数、整数/二进制占比、约束类型直方图、系数统计量</td><td>读 LP 后</td><td>零成本，全部实例可采</td></tr>
+<tr><td>L2 根节点探针特征</td><td>root LP 目标值、root gap、cuts 数量、伪成本统计、早期树信号</td><td>根节点后 1–2 s</td><td>信息量最大的一层（SATzilla / Fischetti 谱系共识）</td></tr>
+<tr><td>L3 来源特征</td><td>实例家族、生成器参数族、seed 族标识</td><td>落账时</td><td>支撑 instance-level 划分与 OOD 检测</td></tr>
+<tr><td>L4 预算特征</td><td>预算档位（wall / node 上限）</td><td>路由时</td><td>与标签的删失标记联动</td></tr>
+<tr><td>L5 预算充分性/超时风险维</td><td>预算 vs 预测难度的相对位置</td><td>路由时</td><td>v1 原创维，CoBench 后证其价值</td></tr>
+</tbody>
+</table>
+
+<h3 id="sec1-2">1.2 标签 schema（v1.1 新增字段加粗）</h3>
+
+<table>
+<caption data-label="表 3">SEM 标签字段</caption>
+<thead><tr><th>字段</th><th>类型</th><th>说明</th></tr></thead>
+<tbody>
+<tr><td>solved / wall / nodes / gap</td><td>数值/布尔</td><td>v1 已有；timeout 时 wall 为下界（删失纪律不变）</td></tr>
+<tr><td><strong>log_cost_ratio_vs_B0</strong></td><td>浮点</td><td>log(cost_X / cost_B0)，路由决策真正需要的相对量（A1）</td></tr>
+<tr><td><strong>win_vs_B0</strong></td><td>布尔</td><td>该后端在该实例上是否胜 B0（A1）</td></tr>
+<tr><td><strong>pair_id</strong></td><td>字符串</td><td>反事实配对标识；同一实例跨后端的配对行共享 pair_id（A2）</td></tr>
+<tr><td><strong>source</strong></td><td>枚举</td><td>online / replay / explore，三层数据协议（A2）</td></tr>
+</tbody>
+</table>
+
+<h3 id="sec1-3">1.3 三层数据协议</h3>
+
+<table>
+<caption data-label="表 4">SEM 数据来源分层</caption>
+<thead><tr><th>source</th><th>机制</th><th>比例/频率</th><th>用途</th></tr></thead>
+<tbody>
+<tr><td>online</td><td>路由器实际决策的结果落账</td><td>~95% 流量</td><td>主训练数据</td></tr>
+<tr><td>replay</td><td>W1 A/B 重放设施对新实例批次跑双后端配对</td><td>每周一次</td><td>无偏校准集；消除 bandit 选择偏差；本系统独有数据资产</td></tr>
+<tr><td>explore</td><td>强制走非推荐后端</td><td>~5% 流量</td><td>在线反事实数据，维持边界探测</td></tr>
+</tbody>
+</table>
+
+<h3 id="sec1-4">1.4 弃权三通道（任一触发即回退 B0）</h3>
+
+<table>
+<caption data-label="表 5">弃权信号通道</caption>
+<thead><tr><th>通道</th><th>信号</th><th>阈值（初值）</th><th>文献依据</th></tr></thead>
+<tbody>
+<tr><td>ch1 特征距离</td><td>实例嵌入与训练集 kNN 距离</td><td>&gt; p99 分位</td><td>Hosny &amp; Reda 2024</td></tr>
+<tr><td>ch2 集成分歧</td><td>K=5 个 LightGBM（不同 seed/子样本）预测 std</td><td>超阈（按验证集定）</td><td>集成不确定性惯例</td></tr>
+<tr><td>ch3 校准失效</td><td>滚动 200-run 窗口上预测胜率 vs 实际胜率的 ECE</td><td>&gt; 0.05</td><td>校准文献惯例</td></tr>
+</tbody>
+</table>
+
+<p>纪律不变：<strong>弃权是正常行为，不是失败</strong>；弃权日志单独落账，进入论文数据协议贡献。</p>
+
+<h3 id="sec1-5">1.5 MVP 验收门槛（预注册）</h3>
+
+<table>
+<caption data-label="表 6">SEM MVP 验收门槛</caption>
+<thead><tr><th>指标</th><th>门槛</th></tr></thead>
+<tbody>
+<tr><td>router regret（vs 事后最优单后端）</td><td>&lt; 5%</td></tr>
+<tr><td>预测成本排序 vs 实际排序 Spearman</td><td>&gt; 0.8</td></tr>
+<tr><td>校准 ECE</td><td>&lt; 0.05</td></tr>
+<tr><td>弃权 recall（该弃权的实例被拦下比例）</td><td>&gt; 90%</td></tr>
+<tr><td>false-release（弃权后实际 B2 更优的比例）</td><td>&lt; 2%</td></tr>
+</tbody>
+</table>
+
+<h2 id="sec2">2. GRPO 双轨方案</h2>
+
+<h3 id="sec2-1">2.1 双轨定义</h3>
+
+<table>
+<caption data-label="表 7">GRPO 双轨对比</caption>
+<thead><tr><th></th><th>Track 1（先行）</th><th>Track 2（条件启动）</th></tr></thead>
+<tbody>
+<tr><td>起点</td><td>pearl-4B checkpoint（AuroraLHL/PEARL）</td><td>Qwen3.8-27B + LoRA</td></tr>
+<tr><td>前置状态</td><td>交互行为已修复（code/runtime 失败占比 66.2%→14.3%）</td><td>P5 记录的 12/12 reasoning 爆炸未修复</td></tr>
+<tr><td>成本项</td><td>可直接叠加</td><td><strong>交互修复门槛未过前禁止加成本项</strong></td></tr>
+<tr><td>解锁条件</td><td>立即可启动</td><td>code-output 率 &gt; 90%（连续两个 eval 窗口）</td></tr>
+</tbody>
+</table>
+
+<p>Track 2 的硬性顺序：先用 PEARL 四件套（见 2.3 节）修复交互行为（学会何时执行、何时修改、何时终止），过 &gt;90% code-output 门槛后才允许叠加成本整形。理由：在奖励真空区（截断轨迹）上加成本项，优化的是「尽快截断」而非「建得更好」。</p>
+
+<h3 id="sec2-2">2.2 奖励函数</h3>
+
+<div class="formula-box" data-label="(1)">r = 0.3·r_format + 1.0·r_exec + 2.0·r_correct + λ·1{r_correct}·cost_shaping
+cost_shaping = clip(log(cost_B0 / cost_this), −2, +2)</div>
+
+<ul>
+<li><strong>成本项仅在 r_correct = 1 时激活</strong>：防止「错误但快」的奖励黑客（StepORLM 记录过「错误约束恰好最优」的结局奖励黑客案例）。</li>
+<li><strong>λ 课程</strong>：0 → 0.2，随 KL 监控课程式递增；初值 0.2 为终点而非起点。</li>
+<li>cost 默认取 wall-clock；nodes 作为辅助报告指标。</li>
+</ul>
+
+<h3 id="sec2-3">2.3 PEARL 四件套配置（两轨共用）</h3>
+
+<ol>
+<li><strong>观测 token loss masking</strong>：执行栈 / solver 输出不进 policy gradient；</li>
+<li><strong>轨迹过滤</strong>：剔除截断与格式违规的负样本；adaptive sampling 保证每题至少 K_min 条到达 solver 的有效轨迹；</li>
+<li><strong>DAPO decoupled clipping</strong>：按优势符号不对称裁剪；</li>
+<li><strong>batch 内 advantage 归一化</strong>：应对求解结局的高方差。</li>
+</ol>
+
+<h3 id="sec2-4">2.4 Goodhart 监控（每 50 步）</h3>
+
+<p>监控项：KL 散度、response length 分布、cost_shaping 分布、r_correct 率、code-output 率。任一超阈 → λ 降档或早停。SEM 只作辅助整形，真实求解为锚（v1 §6.2 锚定不变）。</p>
+
+<h3 id="sec2-5">2.5 验收（2×2，预注册）</h3>
+
+<p>设计：{track 1, track 2} × {λ = 0, λ = 0.2} 四臂；配对 Wilcoxon 符号秩检验，p &lt; 0.05。接受标准：<strong>正确率不降（非劣）且求解成本显著降</strong>。阴性结果同等交付。</p>
+
+<h2 id="sec3">3. 探针顺序重排</h2>
+
+<table>
+<caption data-label="表 8">探针队列（v1.1）</caption>
+<thead><tr><th>顺序</th><th>探针</th><th>状态</th><th>说明</th></tr></thead>
+<tbody>
+<tr><td>#1</td><td>内部 MILP 分布（SCUC 类）</td><td>不变</td><td>主分布，SEM 与 GRPO 的主战场</td></tr>
+<tr><td>#2</td><td><strong>RichMILP</strong>（新增）</td><td>排队</td><td>加权目标、≥-covering 行、非 packing 结构、辅助变量；<strong>阻塞工作项：checker 泛化</strong>——mis_checker 语义层目前是 packing-specific（冲突图等价定理），需先推广到一般 MILP 语义校验，W1–W2 启动</td></tr>
+<tr><td>#3</td><td><strong>CoBench</strong>（提前）</td><td>排队</td><td>官方 Evaluator + 工具箱 {scip, cp_sat, highs, heuristic} × 预算档；vendor 数据只读；SEM 超时风险维的兑现场景</td></tr>
+<tr><td>#4</td><td>OptMATH</td><td>推后保留</td><td>不取消，待 MILP 主线出结果后回填</td></tr>
+</tbody>
+</table>
+
+<h2 id="sec4">4. 八周时间线</h2>
+
+<table>
+<caption data-label="表 9">八周执行计划</caption>
+<thead><tr><th>周</th><th>事项</th></tr></thead>
+<tbody>
+<tr><td>W1</td><td>SEM v1.1 数据协议落地（pair_id / source 字段；重放配对设施排期）；特征管道加归一化层；checker 泛化工作项启动</td></tr>
+<tr><td>W2</td><td>SEM v1.1 首训 + MVP 门槛评估（§1.5）；ch1（kNN 距离）上线</td></tr>
+<tr><td>W3</td><td>Track 1 GRPO smoke test（λ = 0，四件套全配）；ch2 / ch3 上线</td></tr>
+<tr><td>W4</td><td>Track 1 λ 课程启动（0 → 0.2）；Track 2 交互修复训练启动（λ = 0）</td></tr>
+<tr><td>W5</td><td>Track 2 code-output 门槛评估；弃权三通道全量运行</td></tr>
+<tr><td>W6</td><td>Track 1 的 2×2 验收（λ 维度）；RichMILP 探针接入</td></tr>
+<tr><td>W7</td><td>CoBench 探针接入；Track 2 成本项解锁评估</td></tr>
+<tr><td>W8</td><td>全系统联调 + 预注册结果复盘；SEM+决策层论文初稿</td></tr>
+</tbody>
+</table>
+
+<h2 id="sec5">5. 预注册清单</h2>
+
+<ol>
+<li>主指标与门槛以本文 §1.5、§2.5 为准，冻结；不接受事后解释；</li>
+<li>阴性结果同等交付；</li>
+<li>一组件一变量归因，2×2 对照不变；</li>
+<li>参考解私有不进上下文；checker 判定不作 repair 信号或奖励；</li>
+<li>弃权日志单独落账，纳入论文数据协议贡献；</li>
+<li>系统恒定，数据集是探针——探针结论不改系统不变量，只触发下一个探针。</li>
+</ol>
+
+<h2 id="secA">附：与既有文档的关系</h2>
+
+<ul>
+<li>本包是<strong>系统定义 v1</strong> 的增量修订，v1 的组件表、A/B/C 层地图、PlanB&B 五条门控、双循环节奏、验收纪律全部不变；</li>
+<li><strong>co-training-design-v0.2</strong> 中的 A1–A8 增量，本包落实 A1–A5；A6（成本感知奖励空位确认）为论文 motivation 素材；A7（L3 重设计）随 CoBench 探针（W7）进入试验；A8（对抗课程）仍为 PlanB&B 门控全满足后的 C 层协议，不在本期范围。</li>
+</ul>
+
+</body>
+</html>

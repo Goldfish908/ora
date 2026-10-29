@@ -2,3 +2,5 @@ runs/
 __pycache__/
 ORAgentBench/
 *.pycn
+.DS_Store
+docs/paper_Agent_*.zip

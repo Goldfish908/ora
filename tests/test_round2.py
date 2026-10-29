@@ -553,5 +553,52 @@ class TestEvidenceStore(unittest.TestCase):
             Requirement(req_id="R", statement="s", hardness="medium")
 
 
+class OutputSignalsTest(unittest.TestCase):
+    """E1.1/E1.2: layered outcome signals (pipe masking, solver status)."""
+
+    def test_masked_failure_pipe_traceback_rc0(self):
+        from ora_agent.loop import _output_signals
+        sig = _output_signals(
+            {"stdout": "loaded data\nTraceback (most recent call last):\nValueError: x",
+             "stderr": "", "return_code": 0},
+            "cd /app && python3 solve.py 2>&1 | tail -5")
+        self.assertTrue(sig["pipe_used"])
+        self.assertTrue(sig["traceback_seen"])
+        self.assertTrue(sig["masked_failure"])
+
+    def test_no_mask_when_rc_nonzero(self):
+        from ora_agent.loop import _output_signals
+        sig = _output_signals(
+            {"stdout": "Traceback (most recent call last):", "stderr": "",
+             "return_code": 1},
+            "python3 solve.py")
+        self.assertTrue(sig["traceback_seen"])
+        self.assertNotIn("masked_failure", sig)
+
+    def test_scip_status_parsing(self):
+        from ora_agent.loop import _output_signals
+        sig = _output_signals(
+            {"stdout": "SCIP Status        : problem is solved [optimal solution found]",
+             "stderr": "", "return_code": 0}, "python3 solve.py")
+        self.assertEqual(sig["solver_status"], "optimal")
+        sig = _output_signals(
+            {"stdout": "SCIP Status        : solving was interrupted [time limit reached]",
+             "stderr": "", "return_code": 0}, "python3 solve.py")
+        self.assertEqual(sig["solver_status"], "time_limit")
+        sig = _output_signals(
+            {"stdout": "SCIP Status        : problem is infeasible",
+             "stderr": "", "return_code": 0}, "python3 solve.py")
+        self.assertEqual(sig["solver_status"], "infeasible")
+
+    def test_no_signals_on_clean_output(self):
+        from ora_agent.loop import _output_signals
+        sig = _output_signals({"stdout": "all good", "stderr": "",
+                               "return_code": 0}, "cat model.md")
+        self.assertFalse(sig["pipe_used"])
+        self.assertFalse(sig["traceback_seen"])
+        self.assertNotIn("solver_status", sig)
+        self.assertNotIn("masked_failure", sig)
+
+
 if __name__ == "__main__":
     unittest.main()

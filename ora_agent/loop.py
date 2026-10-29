@@ -50,6 +50,48 @@ ACTION_KINDS = ("recon", "model", "code", "solve", "validate", "repair", "other"
 # solver-internal timeout from an exec-level kill.
 _SOLVER_TIME_LIMIT_RE = re.compile(r"time limit|limits/time", re.IGNORECASE)
 
+# E1.1/E1.2 (taskbook 5195): layered outcome signals. The process layer
+# (classification) keeps its old values for compatibility; the signals below
+# catch what a bare return code misses:
+# - pipe_used: the command contains a pipe, so rc reflects only the last
+#   stage (e.g. `python3 solve.py 2>&1 | tail` reports tail's rc);
+# - traceback_seen: a Python traceback appears in the output even when rc=0;
+# - solver_status: normalized SCIP status line when the solver printed one.
+_TRACEBACK_RE = re.compile(r"Traceback \(most recent call last\)")
+_SCIP_STATUS_RE = re.compile(r"SCIP Status\s*:\s*(.+)", re.IGNORECASE)
+_SCIP_STATUS_MAP = (
+    ("optimal", re.compile(r"optimal solution found", re.IGNORECASE)),
+    ("infeasible", re.compile(r"infeasible", re.IGNORECASE)),
+    ("unbounded", re.compile(r"unbounded", re.IGNORECASE)),
+    ("time_limit", re.compile(r"time limit", re.IGNORECASE)),
+    ("gap_limit", re.compile(r"gap limit", re.IGNORECASE)),
+    ("memory_limit", re.compile(r"memory limit", re.IGNORECASE)),
+    ("node_limit", re.compile(r"node limit", re.IGNORECASE)),
+)
+
+
+def _output_signals(result: dict, command: str) -> dict:
+    out = (result.get("stdout") or "") + (result.get("stderr") or "")
+    signals = {
+        "pipe_used": "|" in (command or ""),
+        "traceback_seen": bool(_TRACEBACK_RE.search(out)),
+    }
+    m = _SCIP_STATUS_RE.search(out)
+    if m:
+        raw = m.group(1).strip()
+        signals["solver_status_raw"] = raw[:200]
+        for name, pat in _SCIP_STATUS_MAP:
+            if pat.search(raw):
+                signals["solver_status"] = name
+                break
+        else:
+            signals["solver_status"] = "other"
+    # A traceback with rc=0 means the exit code was masked (typically by a
+    # pipe): the command-level "ok" must not be read as business success.
+    if signals["traceback_seen"] and result.get("return_code") == 0:
+        signals["masked_failure"] = True
+    return signals
+
 BASH_TOOL = {
     "type": "function",
     "function": {
@@ -472,6 +514,8 @@ async def run_loop(*, system_prompt: str, instruction: str, config: LoopConfig,
             exec_result = dict(exec_result)
             exec_result["classification"] = classification
             timeout_layer = _timeout_layer(exec_result, classification)
+            signals = _output_signals(exec_result, command)
+            exec_result["signals"] = signals
 
             outcome_file = None
             if recorder is not None:
@@ -483,7 +527,7 @@ async def run_loop(*, system_prompt: str, instruction: str, config: LoopConfig,
             writer.emit("outcome", seq=result.n_steps, action_hash=ahash,
                         return_code=exec_result.get("return_code"),
                         classification=classification, error=exec_error,
-                        timeout_layer=timeout_layer,
+                        timeout_layer=timeout_layer, signals=signals,
                         prediction_file=prediction_file,
                         outcome_file=outcome_file)
 
@@ -500,15 +544,21 @@ async def run_loop(*, system_prompt: str, instruction: str, config: LoopConfig,
 
             observation = _format_observation(exec_result, exec_error,
                                               config.result_max_chars)
+            if signals.get("masked_failure"):
+                observation += ("\n[warning] output contains a Python traceback "
+                                "despite exit_code=0 — the exit code was masked "
+                                "(likely by a pipe). Treat this step as FAILED; "
+                                "rerun without the pipe or with 'set -o pipefail'.")
             if n_ignored:
                 observation += (f"\n[note] {n_ignored} additional tool call(s) in your "
                                 "last message were ignored: exactly one action per turn.")
             append_message({
                 "role": "tool", "tool_call_id": tc.get("id"), "content": observation,
             })
+            marker = " MASKED_FAILURE" if signals.get("masked_failure") else ""
             history.append(
                 f"step {result.n_steps} [{action_kind}] rc={exec_result.get('return_code')} "
-                f"{classification}: {command[:120]}")
+                f"{classification}{marker}: {command[:120]}")
     except BaseException as e:
         # Includes KeyboardInterrupt / asyncio.CancelledError (harbor timeout
         # kill): mark the status, leave the trace, then re-raise.

@@ -1,4 +1,4 @@
-"""tiny_assign solver: 4 workers x 4 jobs, minimize total cost."""
+
 import csv
 import json
 from pathlib import Path
@@ -30,7 +30,7 @@ def main():
         model.addCons(quicksum(x[w, j] for j in jobs) <= 1)
     for j in jobs:
         model.addCons(quicksum(x[w, j] for w in workers) == 1)
-    # W2 is not qualified for J3.
+    
     model.addCons(x["W2", "J4"] == 0)
 
     model.setObjective(quicksum(costs[w, j] * x[w, j] for w in workers for j in jobs), "minimize")

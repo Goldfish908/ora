@@ -57,7 +57,7 @@ def main():
 
     # Precedence: pred finishes before succ starts.
     for u, v in prec:
-        model.addCons(start[v] >= start[u] + proc[u])
+        model.addCons(start[u] >= start[v] + proc[v])
 
     # Primary: makespan. Tiny secondary term only breaks ties toward early starts.
     model.setObjective(cmax + 1e-4 * quicksum(start[j] for j in jobs), "minimize")

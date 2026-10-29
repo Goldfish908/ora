@@ -1,0 +1,39 @@
+{
+  "problem": "tiny_sched",
+  "aid": "correct",
+  "kind": "correct",
+  "mode": "full",
+  "sandbox": "/home/hewj13/wm/ora/work/controlled_eval/tiny_sched_correct",
+  "prompt_versions": {
+    "audit_system": "b7c68ac3fda414f5",
+    "audit_confirm_addendum": "7010607b41090a6e",
+    "audit_verify_fix_addendum": "595c522114f21d3e",
+    "audit_blind_note": "fd8b3d30b708ae0a",
+    "repair_system": "09557700c36091b7"
+  },
+  "error": null,
+  "audit": {
+    "focus": "full semantic audit",
+    "mode": "full",
+    "artifact_version": "64e846d1f515961c",
+    "requirements_written": [
+      "R1",
+      "R2",
+      "R3",
+      "R4",
+      "R5",
+      "R6",
+      "R7"
+    ],
+    "findings": []
+  },
+  "checks": [],
+  "open_findings": [],
+  "usage": {
+    "calls": 1,
+    "prompt_tokens": 2073,
+    "completion_tokens": 473,
+    "latency_s": 8.34
+  },
+  "wall_time_s": 8.7
+}

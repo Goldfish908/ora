@@ -3,9 +3,9 @@
   "task_id": "tiny_sched/c_m1",
   "model": "worker",
   "status": "running",
-  "ts_started": "2026-10-28T08:24:10.797284+00:00",
+  "ts_started": "2026-10-29T07:13:48.907855+00:00",
   "n_steps": 0,
-  "last_state_id": 10,
+  "last_state_id": 1,
   "actor_usage": {
     "calls": 0,
     "prompt_tokens": 0,
@@ -19,11 +19,11 @@
     "latency_s": 0.0
   },
   "worker_usage": {
-    "calls": 5,
-    "prompt_tokens": 14420,
-    "completion_tokens": 4669,
-    "latency_s": 129.929
+    "calls": 0,
+    "prompt_tokens": 0,
+    "completion_tokens": 0,
+    "latency_s": 0.0
   },
   "artifacts_last_observed": null,
-  "ts_updated": "2026-10-28T08:26:22.624165+00:00"
+  "ts_updated": "2026-10-29T07:13:48.961058+00:00"
 }

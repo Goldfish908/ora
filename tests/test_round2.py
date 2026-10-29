@@ -599,6 +599,17 @@ class OutputSignalsTest(unittest.TestCase):
         self.assertNotIn("solver_status", sig)
         self.assertNotIn("masked_failure", sig)
 
+    def test_api_error_streak_detection(self):
+        from ora_agent.loop import _api_error_streak_hit
+        tb = {"stdout": "Traceback (most recent call last):\n  ...\n"
+                        "AttributeError: 'Model' object has no attribute 'getNsolns'",
+              "stderr": "", "return_code": 1}
+        self.assertTrue(_api_error_streak_hit(tb, {"traceback_seen": True}))
+        self.assertFalse(_api_error_streak_hit(tb, {"traceback_seen": False}))
+        other = {"stdout": "Traceback (most recent call last):\nValueError: bad",
+                 "stderr": "", "return_code": 1}
+        self.assertFalse(_api_error_streak_hit(other, {"traceback_seen": True}))
+
 
 if __name__ == "__main__":
     unittest.main()

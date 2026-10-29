@@ -1,4 +1,4 @@
-"""tiny_assign solver: 4 workers x 4 jobs, minimize total cost."""
+
 import csv
 import json
 from pathlib import Path

@@ -92,6 +92,28 @@ def _output_signals(result: dict, command: str) -> dict:
         signals["masked_failure"] = True
     return signals
 
+
+# E1.6 (taskbook 5195): repeated API-name errors get an explainable
+# escalation. After the same class of AttributeError appears twice in a row,
+# the observation tells the actor to introspect the real API instead of
+# blind-guessing another method name.
+_API_ATTR_RE = re.compile(r"AttributeError:.*'(Model|ModelObj|Expr)'", re.IGNORECASE)
+
+
+def _api_error_streak_hit(result: dict, signals: dict) -> bool:
+    if not signals.get("traceback_seen"):
+        return False
+    out = (result.get("stdout") or "") + (result.get("stderr") or "")
+    return bool(_API_ATTR_RE.search(out)) or \
+        ("AttributeError" in out and "pyscipopt" in out.lower())
+
+
+_API_ESCALATION_HINT = (
+    "\n[hint] This is the 2nd consecutive pyscipopt AttributeError. Stop "
+    "guessing method names — introspect the real API first, e.g.: "
+    "python3 -c \"import pyscipopt; m=pyscipopt.Model(); "
+    "print([a for a in dir(m) if 'sol' in a.lower() or 'obj' in a.lower()])\"")
+
 BASH_TOOL = {
     "type": "function",
     "function": {
@@ -318,6 +340,7 @@ async def run_loop(*, system_prompt: str, instruction: str, config: LoopConfig,
         }
 
     try:
+        api_err_streak = 0
         for step in range(1, config.max_steps + 1):
             writer.emit("llm_request", n_messages=len(messages),
                         messages_sha256=messages_sha256(messages),
@@ -549,6 +572,12 @@ async def run_loop(*, system_prompt: str, instruction: str, config: LoopConfig,
                                 "despite exit_code=0 — the exit code was masked "
                                 "(likely by a pipe). Treat this step as FAILED; "
                                 "rerun without the pipe or with 'set -o pipefail'.")
+            if _api_error_streak_hit(exec_result, signals):
+                api_err_streak += 1
+            else:
+                api_err_streak = 0
+            if api_err_streak >= 2:
+                observation += _API_ESCALATION_HINT
             if n_ignored:
                 observation += (f"\n[note] {n_ignored} additional tool call(s) in your "
                                 "last message were ignored: exactly one action per turn.")

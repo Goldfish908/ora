@@ -31,7 +31,7 @@ def main():
     for j in jobs:
         model.addCons(quicksum(x[w, j] for w in workers) == 1)
     # W2 is not qualified for J3.
-    model.addCons(x["W2", "J3"] == 0)
+    model.addCons(x["W2", "J4"] == 0)
 
     model.setObjective(quicksum(costs[w, j] * x[w, j] for w in workers for j in jobs), "minimize")
     model.optimize()

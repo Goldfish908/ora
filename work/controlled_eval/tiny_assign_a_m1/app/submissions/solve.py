@@ -24,14 +24,14 @@ def main():
 
     model = Model("tiny_assign")
     model.hideOutput()
-    x = {(w, j): model.addVar(vtype="B", name=f"x_{w}_{j}") for w in workers for j in jobs}
+    x = {(w, j): model.addVar(vtype="B", name=f"x_{w}_{j}") for w in workers for j in jobs if not (w == "W2" and j == "J3")}
 
     for w in workers:
         model.addCons(quicksum(x[w, j] for j in jobs) <= 1)
     for j in jobs:
         model.addCons(quicksum(x[w, j] for w in workers) == 1)
 
-    model.setObjective(quicksum(costs[w, j] * x[w, j] for w in workers for j in jobs), "minimize")
+    model.setObjective(quicksum(costs[w, j] * x[w, j] for (w, j) in x), "minimize")
     model.optimize()
 
     assignments = []

@@ -1,0 +1,29 @@
+{
+  "run_id": "tiny_assign_correct_full",
+  "task_id": "tiny_assign/correct",
+  "model": "worker",
+  "status": "running",
+  "ts_started": "2026-10-28T08:20:33.884065+00:00",
+  "n_steps": 0,
+  "last_state_id": 2,
+  "actor_usage": {
+    "calls": 0,
+    "prompt_tokens": 0,
+    "completion_tokens": 0,
+    "latency_s": 0.0
+  },
+  "predictor_usage": {
+    "calls": 0,
+    "prompt_tokens": 0,
+    "completion_tokens": 0,
+    "latency_s": 0.0
+  },
+  "worker_usage": {
+    "calls": 1,
+    "prompt_tokens": 1509,
+    "completion_tokens": 565,
+    "latency_s": 13.069
+  },
+  "artifacts_last_observed": null,
+  "ts_updated": "2026-10-28T08:20:47.108844+00:00"
+}

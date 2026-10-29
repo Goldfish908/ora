@@ -3,7 +3,7 @@
   "task_id": "tiny_assign/correct",
   "model": "worker",
   "status": "running",
-  "ts_started": "2026-10-28T08:20:33.884065+00:00",
+  "ts_started": "2026-10-29T07:11:15.589832+00:00",
   "n_steps": 0,
   "last_state_id": 2,
   "actor_usage": {
@@ -20,10 +20,10 @@
   },
   "worker_usage": {
     "calls": 1,
-    "prompt_tokens": 1509,
-    "completion_tokens": 565,
-    "latency_s": 13.069
+    "prompt_tokens": 1570,
+    "completion_tokens": 563,
+    "latency_s": 11.616
   },
   "artifacts_last_observed": null,
-  "ts_updated": "2026-10-28T08:20:47.108844+00:00"
+  "ts_updated": "2026-10-29T07:11:27.395876+00:00"
 }

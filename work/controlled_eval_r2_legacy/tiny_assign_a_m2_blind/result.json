@@ -1,0 +1,115 @@
+{
+  "problem": "tiny_assign",
+  "aid": "a_m2",
+  "kind": "mutant",
+  "mode": "blind",
+  "sandbox": "/home/hewj13/wm/ora/work/controlled_eval/tiny_assign_a_m2_blind",
+  "prompt_versions": {
+    "audit_system": "b7c68ac3fda414f5",
+    "audit_confirm_addendum": "7010607b41090a6e",
+    "audit_verify_fix_addendum": "595c522114f21d3e",
+    "audit_blind_note": "fd8b3d30b708ae0a",
+    "repair_system": "09557700c36091b7"
+  },
+  "error": null,
+  "audit": {
+    "focus": "full semantic audit",
+    "mode": "blind",
+    "artifact_version": "18325194debc5a56",
+    "findings": [
+      {
+        "finding_id": "F-001",
+        "proposed_checks": [
+          "python3 -c \"import json; d=json.load(open('/app/submissions/solution.json')); print(d)\"",
+          "grep -n 'W2.*J4\\|W2.*J3' /app/submissions/solve.py",
+          "python3 -c \"\nimport csv\nwith open('/home/hewj13/wm/ora/work/controlled_eval/tiny_assign_a_m2_blind/app/data/costs.csv') as f:\n    rows = list(csv.DictReader(f))\nprint([r for r in rows if r['worker']=='W2'])\n\""
+        ]
+      },
+      {
+        "finding_id": "F-002",
+        "proposed_checks": [
+          "python3 -c \"\nfrom pyscipopt import Model, quicksum\nimport csv\nfrom pathlib import Path\nDATA = Path('/home/hewj13/wm/ora/work/controlled_eval/tiny_assign_a_m2_blind/app/data')\ncosts = {}\nwith open(DATA / 'costs.csv', newline='') as f:\n    for row in csv.DictReader(f):\n        costs[(row['worker'], row['job'])] = float(row['cost'])\nworkers = sorted({w for w, _ in costs})\njobs = sorted({j for _, j in costs})\nm = Model('test')\nm.hideOutput()\nx = {(w, j): m.addVar(vtype='B', name=f'x_{w}_{j}') for w in workers for j in jobs}\nfor w in workers:\n    m.addCons(quicksum(x[w, j] for j in jobs) == 1)\nfor j in jobs:\n    m.addCons(quicksum(x[w, j] for w in workers) == 1)\nm.setObjective(quicksum(costs[w, j] * x[w, j] for w in workers for j in jobs), 'minimize')\nm.optimize()\nobj_eq = m.getObjVal()\n# Now test with <= 1 for workers\nm2 = Model('test2')\nm2.hideOutput()\nx2 = {(w, j): m2.addVar(vtype='B', name=f'x_{w}_{j}') for w in workers for j in jobs}\nfor w in workers:\n    m2.addCons(quicksum(x2[w, j] for j in jobs) <= 1)\nfor j in jobs:\n    m2.addCons(quicksum(x2[w, j] for w in workers) == 1)\nm2.setObjective(quicksum(costs[w, j] * x2[w, j] for w in workers for j in jobs), 'minimize')\nm2.optimize()\nobj_leq = m2.getObjVal()\nprint(f'Objective with ==1 for workers: {obj_eq}')\nprint(f'Objective with <=1 for workers: {obj_leq}')\nif obj_eq != obj_leq:\n    print('WARNING: Objectives differ, check if worker full utilization is required.')\nelse:\n    print('Objectives match, but check if any worker is unassigned in <=1 case.')\n\" "
+        ]
+      }
+    ]
+  },
+  "checks": [
+    {
+      "command": "python3 -c \"import json; d=json.load(open('/app/submissions/solution.json')); print(d)\"",
+      "return_code": 1,
+      "timed_out": false,
+      "stdout_tail": "",
+      "stderr_tail": "Traceback (most recent call last):\n  File \"<string>\", line 1, in <module>\nFileNotFoundError: [Errno 2] No such file or directory: '/home/hewj13/wm/ora/work/controlled_eval/tiny_assign_a_m2_blind/app/submissions/solution.json'\n"
+    },
+    {
+      "command": "grep -n 'W2.*J4\\|W2.*J3' /app/submissions/solve.py",
+      "return_code": 0,
+      "timed_out": false,
+      "stdout_tail": "33:    # W2 is not qualified for J3.\n34:    model.addCons(x[\"W2\", \"J4\"] == 0)\n",
+      "stderr_tail": ""
+    },
+    {
+      "command": "python3 -c \"\nimport csv\nwith open('/home/hewj13/wm/ora/work/controlled_eval/tiny_assign_a_m2_blind/app/data/costs.csv') as f:\n    rows = list(csv.DictReader(f))\nprint([r for r in rows if r['worker']=='W2'])\n\"",
+      "return_code": 1,
+      "timed_out": false,
+      "stdout_tail": "",
+      "stderr_tail": "Traceback (most recent call last):\n  File \"<string>\", line 3, in <module>\nFileNotFoundError: [Errno 2] No such file or directory: '/home/hewj13/wm/ora/work/controlled_eval/tiny_assign_a_m2_blind/home/hewj13/wm/ora/work/controlled_eval/tiny_assign_a_m2_blind/app/data/costs.csv'\n"
+    },
+    {
+      "command": "python3 -c \"\nfrom pyscipopt import Model, quicksum\nimport csv\nfrom pathlib import Path\nDATA = Path('/home/hewj13/wm/ora/work/controlled_eval/tiny_assign_a_m2_blind/app/data')\ncosts = {}\nwith open(DATA / 'costs.csv', newline='') as f:\n    for row in csv.DictReader(f):\n        costs[(row['worker'], row['job'])] = float(row['cost'])\nworkers = sorted({w for w, _ in costs})\njobs = sorted({j for _, j in costs})\nm = Model('test')\nm.hideOutput()\nx = {(w, j): m.addVar(vtype='B', name=f'x_{w}_{j}') for w in workers for j in jobs}\nfor w in workers:\n    m.addCons(quicksum(x[w, j] for j in jobs) == 1)\nfor j in jobs:\n    m.addCons(quicksum(x[w, j] for w in workers) == 1)\nm.setObjective(quicksum(costs[w, j] * x[w, j] for w in workers for j in jobs), 'minimize')\nm.optimize()\nobj_eq = m.getObjVal()\n# Now test with <= 1 for workers\nm2 = Model('test2')\nm2.hideOutput()\nx2 = {(w, j): m2.addVar(vtype='B', name=f'x_{w}_{j}') for w in workers for j in jobs}\nfor w in workers:\n    m2.addCons(quicksum(x2[w, j] for j in jobs) <= 1)\nfor j in jobs:\n    m2.addCons(quicksum(x2[w, j] for w in workers) == 1)\nm2.setObjective(quicksum(costs[w, j] * x2[w, j] for w in workers for j in jobs), 'minimize')\nm2.optimize()\nobj_leq = m2.getObjVal()\nprint(f'Objective with ==1 for workers: {obj_eq}')\nprint(f'Objective with <=1 for workers: {obj_leq}')\nif obj_eq != obj_leq:\n    print('WARNING: Objectives differ, check if worker full utilization is required.')\nelse:\n    print('Objectives match, but check if any worker is unassigned in <=1 case.')\n\" ",
+      "return_code": 1,
+      "timed_out": false,
+      "stdout_tail": "",
+      "stderr_tail": "Traceback (most recent call last):\n  File \"<string>\", line 7, in <module>\nFileNotFoundError: [Errno 2] No such file or directory: '/home/hewj13/wm/ora/work/controlled_eval/tiny_assign_a_m2_blind/home/hewj13/wm/ora/work/controlled_eval/tiny_assign_a_m2_blind/app/data/costs.csv'\n"
+    }
+  ],
+  "confirm": {
+    "focus": "confirm",
+    "mode": "blind",
+    "artifact_version": "18325194debc5a56",
+    "findings": [],
+    "finding_updates_applied": [
+      "F-001",
+      "F-002"
+    ],
+    "check_results_written": [
+      "chk-001",
+      "chk-002",
+      "chk-003",
+      "chk-004"
+    ]
+  },
+  "open_findings": [
+    {
+      "record_type": "finding",
+      "ts": "2026-10-28T08:22:35.861505+00:00",
+      "finding_id": "F-001",
+      "req_ids": [],
+      "artifact_hash": "18325194debc5a56",
+      "problem_type": "implementation",
+      "evidence_level": "actual_test",
+      "detail": "The grep output confirms the code contains `model.addCons(x[\"W2\", \"J4\"] == 0)` immediately following the comment `# W2 is not qualified for J3.`. This is a direct semantic inconsistency: the constraint forbids assignment to J4, while the comment claims qualification issues for J3. Since the problem statement is hidden and no data indicates disqualification (costs exist for all pairs), this constraint is unsupported or mislabeled.",
+      "witness_ref": "grep -n 'W2.*J4\\|W2.*J3' /app/submissions/solve.py",
+      "status": "confirmed"
+    },
+    {
+      "record_type": "finding",
+      "ts": "2026-10-28T08:22:35.886615+00:00",
+      "finding_id": "F-002",
+      "req_ids": [],
+      "artifact_hash": "18325194debc5a56",
+      "problem_type": "semantic",
+      "evidence_level": "actual_test",
+      "detail": "The proposed check to compare objectives between `== 1` and `<= 1` worker constraints failed due to a path resolution error in the test script (`FileNotFoundError`). Therefore, it could not be empirically verified whether the `<= 1` formulation leads to a different solution or allows idle workers in a way that violates implicit requirements. The code inspection shows `<= 1` is used, but without the problem statement or successful execution, the impact remains unresolved.",
+      "witness_ref": "python3 -c ... (failed with FileNotFoundError)",
+      "status": "unresolved"
+    }
+  ],
+  "usage": {
+    "calls": 3,
+    "prompt_tokens": 5750,
+    "completion_tokens": 2180,
+    "latency_s": 43.0
+  },
+  "wall_time_s": 44.0
+}

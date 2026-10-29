@@ -1,0 +1,40 @@
+{
+  "problem": "inv_cap",
+  "family": "controlled_m2",
+  "reference_objective": 50.0,
+  "tolerance": 1e-6,
+  "witness_semantics": "witness/<aid>.py runs the artifact's solve.py, then independently checks (rules re-implemented from problem.md, no shared code with the artifact): W1 inventory balance with THIS-period production and given init_inv; W2 per-period production capacity; W3 storage over ALL products with true volumes; W4 non-negative inventory; W5 reported objective equals recomputed cost (tol 1e-6).",
+  "connection_classes": {
+    "C1": "binding: which variable/parameter a module port reads",
+    "C4": "time/index: cross-period alignment of a port binding"
+  },
+  "artifacts": {
+    "correct": {
+      "path": "correct/solve.py",
+      "kind": "correct",
+      "mutation_type": null,
+      "expected_witness": "PASS",
+      "expected_objective": 50.0,
+      "detection_keywords": [],
+      "description": "Correct MILP: balance with same-period production; storage sums ALL products with true volumes; integer production/inventory."
+    },
+    "c1_bind": {
+      "path": "mutants/c1_bind/solve.py",
+      "kind": "mutant",
+      "mutation_type": "connection_binding",
+      "expected_witness": "FAIL",
+      "expected_objective": 48.0,
+      "detection_keywords": ["库容", "体积", "绑定", "P2", "storage", "volume"],
+      "description": "C1 binding error: the storage constraint reads P2's unit volume as 1 (P1's value) instead of 2. Type-legal, every module locally valid, feasible — but the optimum (48 < reference 50) violates true storage at t1,t2. Detected by W3 and by the suspicious objective gap."
+    },
+    "c4_time": {
+      "path": "mutants/c4_time/solve.py",
+      "kind": "mutant",
+      "mutation_type": "connection_time_index",
+      "expected_witness": "FAIL",
+      "expected_objective": 48.0,
+      "detection_keywords": ["时间", "期", "索引", "t+1", "storage"],
+      "description": "C4 time/index error: the storage constraint binds next period's inventory inv[t+1] instead of inv[t]. Type-legal, feasible, cheaper (48) — and violates true storage at t1. Detected by W3 and by the objective gap."
+    }
+  }
+}

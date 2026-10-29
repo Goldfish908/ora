@@ -1,0 +1,91 @@
+# E-B1-off-big: thinking-off screen round 2. off-mode steps are ~6x cheaper,
+# so max_steps 40->120 and token_budget 1.2M->2.0M (budgets calibrated for
+# thinking-on would be a confound). Compare against e_b1_off and e_b1.
+#
+# Run from /home/hewj13/wm/ora (paths below are relative to the cwd):
+#   source ~/.leagent_env
+#   export ORA_LLM_BASE_URL="$DISTILL_BASE_URL"
+#   export ORA_LLM_API_KEY="$DISTILL_API_KEY"
+#   export ORA_LLM_MODEL="qwen3.8-27b"
+#   PYTHONPATH=/home/hewj13/wm/ora harbor run -c configs/dev_qwen27b.yaml
+#
+# The base image oragentbench-base:py311-scip must already be built
+# (ORAgentBench/scripts/build_base_image.sh); force_build stays false so the
+# task Dockerfiles reuse the cached base image.
+
+job_name: e_b1_off_big
+jobs_dir: runs/engineering
+n_attempts: 1
+timeout_multiplier: 1.0
+debug: false
+quiet: false
+
+orchestrator:
+  type: local
+  n_concurrent_trials: 6
+
+retry:
+  max_retries: 0
+  include_exceptions: null
+  exclude_exceptions:
+    - VerifierTimeoutError
+    - AgentTimeoutError
+  wait_multiplier: 1.0
+  min_wait_sec: 1
+  max_wait_sec: 60
+
+environment:
+  type: docker
+  import_path: null
+  force_build: false
+  delete: true
+  override_cpus: null
+  override_memory_mb: null
+  override_storage_mb: null
+  override_gpus: null
+  kwargs: {}
+
+verifier:
+  override_timeout_sec: null
+  max_timeout_sec: null
+  disable: false
+
+agents:
+  - name: null
+    import_path: ora_agent.harbor_agent:OrAgent
+    model_name: qwen3.8-27b
+    n_concurrent: 6
+    override_timeout_sec: null
+    override_setup_timeout_sec: null
+    max_timeout_sec: null
+    # harbor resolves ${VAR} from the process environment; values are also
+    # readable directly from os.environ by the agent, so this block is an
+    # explicit pass-through, not the only route.
+    env:
+      ORA_LLM_BASE_URL: "${ORA_LLM_BASE_URL}"
+      ORA_LLM_API_KEY: "${ORA_LLM_API_KEY}"
+      ORA_LLM_MODEL: "${ORA_LLM_MODEL}"
+    kwargs:
+      max_steps: 120
+      token_budget: 2000000
+      temperature: 0.6
+      max_tokens: 8192
+      exec_timeout_sec: 360
+      # NOTE: must be quoted — bare `off` parses as boolean False in YAML 1.1.
+      predict_mode: "off"
+      actor_llm_extra:
+        enable_thinking: false
+
+datasets:
+  - path: ORAgentBench/harbor_tasks
+    task_names:
+      - airport_gate_assignment
+      - carbon_aware_compute_scheduling
+      - bike_share_rebalancing
+      - cell_tower_coverage_expansion
+      - circular_packaging_replenishment
+      - dynamic_supply_disruption_replanning
+    exclude_task_names: null
+
+tasks: []
+artifacts: []

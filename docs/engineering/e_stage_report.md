@@ -13,7 +13,22 @@
 | E-B2 | E-B1 + 触发器（E2) | 2/6 | 0.0 | 49min | **8** |
 | E-B1-off | E-B1 + actor thinking 关 | 2/6 | 0.0 | **29min** | 2 |
 | E-B1-off-big(阿里云，污染） | off + max_steps 120 + 2M token | 1/6 | 0.45 | 41min | — |
-| E-B1-off-big-v3（内网） | 同上，内网端点重跑 | 2/6 | 0.233 | 47min | — |
+| **内网同平台对照**（下行起） | | | | | |
+| E-B1-v2（内网） | B0 + E1,worker 关，on + reasoning_effort=medium | **3/6** | **2.0** | 43min | 2 |
+| E-B1-off-big-v3（内网） | off + max_steps 120 + 2M token | 2/6 | 0.233 | 47min | — |
+
+内网逐题明细(feasibility/quality,on = E-B1-v2,off = off-big-v3):
+
+| 题 | on | off | 说明 |
+|---|---|---|---|
+| airport | 0/0 | **1.0/0.0** | off 反而可行 |
+| carbon | **1.0/0.0** | 0/0 missing_solution | on 胜 |
+| bike_share | 0/0 | 0/0 | 都打不出 |
+| cell_tower | 1.0/0.0 | **1.0/0.233** | off 反而拿到 quality |
+| circular | **1.0/2.0** | 0/0 浅 finish | on 胜，且是唯一非零 quality 来源 |
+| dynamic | 门拦 | 门拦 | 与 thinking 无关，initial_plan 门两种模式都拦 |
+
+**同平台结论（单轮）**:on 在总分上占优（2.0 vs 0.233)，但优势全部来自 circular 一题；按题面看 on/off 各赢两题，差异方向不一致。**这与 §2.1 一致：单轮 6 题不足以冻结 thinking 默认值，v1.1 要求代表题型重复后再定。** on 模式跨平台复现性注记：E-B1 在阿里云与内网跑出完全相同的 3/6、2.0(circular 满分复现）。
 
 逐题明细(feasibility/quality):
 

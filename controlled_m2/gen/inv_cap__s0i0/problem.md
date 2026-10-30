@@ -15,7 +15,8 @@
 
 - `demand[p][t]`:产品 p 第 t 期需求(t=1..3)
 - `init_inv[p]`:期初库存
-- `prod_cap[p]`、`prod_cost[p]`、`hold_cost[p]`、`volume[p]`、`storage_cap`
+- `prod_cap[p]`、`hold_cost[p]`、`volume[p]`、`storage_cap`:常数
+- `prod_cost[p]`:**可能是常数(各期相同),也可能是长度为 3 的列表(逐期成本,下标 t-1 对应第 t 期)——两种形态都要支持,代码里需判断类型**
 
 ## 输出要求
 

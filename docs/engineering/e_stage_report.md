@@ -143,6 +143,29 @@ LLM 延迟占墙钟 51–89%(round2 结论，本轮一致）:actor thinking 是�
 
 修复：PROBLEM_STATEMENT.md 的 CSV 段补齐精确词表（本地 ORAgentBench 副本，gitignored，本报告为变更记录）。验证跑：`configs/engineering/e_b1_dynfix.yaml`（单题，thinking on)。
 
+### 4.8 dynamic 题四轮 dynfix 全记录：题面修复生效，瓶颈转移到 actor 自验证（2026-10-30)
+
+对 dynamic 单题连续四轮验证（均 thinking on，内网 27B)，失败性质逐轮转移：
+
+| 轮 | 改动 | 结果 | 失败性质 |
+|---|---|---|---|
+| dynfix1 | 补变量词表 | 0.0,verifier 正常解析但 115 条全在库存下限 | **题面欠规约第二层**:verifier 有三条硬约束（每 DC 每产品库存下限=safety+0.18×下周区域需求；常规物料×robust 折扣；最低服务率）题面未写，模型全按软约束处理 |
+| dynfix2 | 题面补"Hard Requirements"一节（三条全列，source/agent_envs 留档版同步） | 0.0,169 需求平衡不符 | 模型写对了（model_initial.md 约束 7 即需求平衡），但 CSV 与模型矛盾，agent 自验发现"两种求和矛盾"，debug 到 39/40 步预算耗尽 |
+| dynfix3 | max_steps 40→60,token 1.2M→2.4M | 0.0,60/60 步耗尽 | 第 60 步定位根因（非适格工厂-产品对变量未禁用→幻影产量），修复写进 solve_initial.py 但**没来得及重跑生成 CSV** |
+| dynfix4 | max_steps→100,token→4M | 0.0,**但只用 34 步**——agent 自认完成主动收工 | 全新 run 重新犯同一类 bug(PL_EAST 运 P_COLD 但零生产），且这轮**自验全部通过**（"All artifacts are complete and validated")，实际 32 处违规 |
+
+**结论**：题面修复彻底生效（两轮不同的违规构成都落在 verifier 真实规则上）；预算不再是约束（dynfix4 只用 1/3 步数）;**瓶颈是 27B actor 的自验证可靠性**——会重复犯同类建模 bug，且自验查不出来。这正是 E2.1 审计机制的靶心场景。
+
+### 4.9 E-B2-off 首轮（E2.1 检验臂）：触发器会发，但 worker 读错产物文件名（2026-10-30)
+
+`e_b2_off`（触发器+worker 开、thinking off、40 步/1.2M，与 E-B1 各臂同预算）首轮：1/6 feasible(cell_tower,quality 0.233),5 题 0.0。逐题解剖：
+
+- **触发器有效性确认**:cell_tower(4 次 worker 调用）和 circular(3 次）的审计 worker 给出了实质语义发现（如"目标函数漏了 critical-facility 服务分量""韧性信道规则未实现")——机制在简单题上工作正常。
+- **dynamic**:post_first_solution_audit 触发，worker 正确抽取 R1-R3 硬性要求（证明 §4.8 的题面补丁对 worker 也可见），但随后报假 finding"model.md 和 solve.py 缺失"——`workers.py` 硬编码 `cat /app/submissions/model.md`，而 benchmark 产物是步级命名（`model_initial.md`/`solve_initial.py`)。假 finding 浪费 actor 步数，trial 32 分钟后被 harbor 以 CancelledError 中止。
+- **3 题（airport/bike/carbon)40 步耗尽、0 次 worker 调用**:off 模式 actor 从未产出首个求解器 incumbent，触发器 A（首解审计）无从触发，机制在这些题上完全惰性。
+
+修复：`workers.py` 上下文采集改为 glob(`model*.md`/`solve*.py`),worker prompt 与测试同步更新（tests 65/65 绿）。重跑 `e_b2_off2` 进行中。**待回答**:worker 审计能否抓住 dynfix4 暴露的"幻影运输"类违规——若能，E2.1 的价值主张成立；若不能，需要 proposed_checks 真正被执行（当前 finding 状态止步于 llm_judgment/suspected)。
+
 ## 5. 后续动作
 
 1. thinking 默认值：待 off-big + 代表题重复后按 v1.1 质量容忍度冻结；

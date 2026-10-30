@@ -25,10 +25,12 @@ from ora_agent.workers import WorkerManager  # noqa: E402
 PROBLEM_MARKER = "PROBLEM TEXT MARKER: gate capacity rule"
 
 # Canned container content served by the fake exec_fn (context reads only).
+# Keys are matched as substrings of the command (submission file names are
+# step-specific, so workers read them via shell globs).
 FILES = {
     "cat /app/PROBLEM_STATEMENT.md": PROBLEM_MARKER,
-    "cat /app/submissions/model.md 2>/dev/null || echo MISSING": "# model v1",
-    "cat /app/submissions/solve.py 2>/dev/null || echo MISSING": "print('solve')",
+    "/app/submissions/model*.md": "# model v1",
+    "/app/submissions/solve*.py": "print('solve')",
 }
 
 AUDIT_RESPONSE = json.dumps({
@@ -127,7 +129,7 @@ def make_exec_fn():
     async def exec_fn(command, timeout_sec):
         calls.append(command)
         for key, content in FILES.items():
-            if command == key:
+            if key in command:
                 return {"stdout": content, "stderr": "", "return_code": 0}
         if command.startswith("ls -la /app/data/"):
             return {"stdout": "flights.csv\n=== /app/data/flights.csv ===\nf1,g1\n",
@@ -491,7 +493,7 @@ def make_solve_exec_fn():
         if "solve.py" in command and "cat " not in command:
             return {"stdout": SCIP_OPTIMAL_OUT, "stderr": "", "return_code": 0}
         for key, content in FILES.items():
-            if command == key:
+            if key in command:
                 return {"stdout": content, "stderr": "", "return_code": 0}
         if command.startswith("ls -la /app/data/"):
             return {"stdout": "flights.csv\n=== /app/data/flights.csv ===\nf1,g1\n",

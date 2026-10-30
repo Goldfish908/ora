@@ -39,7 +39,7 @@ AUDIT_TOOL = {
     "function": {
         "name": "audit",
         "description": (
-            "Call the evidence-review worker: audits model.md/solve.py against "
+            "Call the evidence-review worker: audits the model write-up/solve script against "
             "the problem statement and data, writes requirements/findings to "
             "the evidence store, and proposes executable witness checks. The "
             "worker never runs commands; run proposed_checks yourself via "
@@ -108,12 +108,12 @@ After your first feasible solution and before finish, run at least one audit cov
 """
 
 _AUDIT_SYSTEM = """\
-You are an evidence-based reviewer for an operations-research solution built by another agent. You receive the problem statement, a data overview, the current model.md and solve.py, and the current evidence records. You NEVER execute commands; you propose checks for the orchestrator to run.
+You are an evidence-based reviewer for an operations-research solution built by another agent. You receive the problem statement, a data overview, and the current model write-up and solve script (files model*.md / solve*.py under /app/submissions, names are step-specific), plus the current evidence records. You NEVER execute commands; you propose checks for the orchestrator to run.
 
 Audit coverage (all five, every time):
 1. Requirements in the problem statement or data that the model/code omits; variable domains and objective completeness.
 2. Direction, quantifiers, index ranges, conditions, units, and data mappings.
-3. Whether the code actually builds each constraint — read the code itself; never trust comments or model.md claims.
+3. Whether the code actually builds each constraint — read the code itself; never trust comments or write-up claims.
 4. Constraints added without a source in the problem statement, or hard requirements demoted to penalized preferences.
 5. Whether the final business solution satisfies the original constraints and whether the objective can be recomputed independently.
 
@@ -160,9 +160,9 @@ INPUT CONTROL: the problem statement is intentionally hidden in this call. Keep 
 """
 
 _REPAIR_SYSTEM = """\
-You are a repair specialist for an operations-research solution. You receive a specific finding with its evidence, the current model.md and solve.py, and the original requirement context. Propose a targeted patch; the orchestrator executes it — you never run commands.
+You are a repair specialist for an operations-research solution. You receive a specific finding with its evidence, the current model write-up and solve script (step-specific filenames under /app/submissions), and the original requirement context. Propose a targeted patch; the orchestrator executes it — you never run commands.
 
-Route by problem_type: implementation -> fix the code; semantic -> fix the formulation/model; feasibility -> fix solution construction; quality -> improve the objective path. Prefer local changes; allow a justified full rewrite only when necessary (scope of change is not evidence of correctness). NEVER change the task's judging criteria or output schema. ALWAYS back up before modifying (e.g. `cp solve.py solve_v<N>.py`), so the parent version stays recoverable.
+Route by problem_type: implementation -> fix the code; semantic -> fix the formulation/model; feasibility -> fix solution construction; quality -> improve the objective path. Prefer local changes; allow a justified full rewrite only when necessary (scope of change is not evidence of correctness). NEVER change the task's judging criteria or output schema. ALWAYS back up before modifying (e.g. `cp <solve script> <solve script>.v<N>`), so the parent version stays recoverable.
 
 Respond with a single JSON object, no prose:
 {"patch_commands": ["bash command", ...],
@@ -242,9 +242,15 @@ class WorkerManager:
             'for f in /app/data/*; do echo "=== $f ==="; head -c 1500 "$f"; '
             "echo; done", 6000)
         ctx["model_md"] = await self._read(
-            "cat /app/submissions/model.md 2>/dev/null || echo MISSING", 6000)
+            'found=0; for f in /app/submissions/model*.md; do'
+            ' [ -e "$f" ] || continue; found=1;'
+            ' echo "== $f =="; cat "$f"; done;'
+            ' [ "$found" = 0 ] && echo MISSING; true', 6000)
         ctx["solve_py"] = await self._read(
-            "cat /app/submissions/solve.py 2>/dev/null || echo MISSING", 8000)
+            'found=0; for f in /app/submissions/solve*.py; do'
+            ' [ -e "$f" ] || continue; found=1;'
+            ' echo "== $f =="; cat "$f"; done;'
+            ' [ "$found" = 0 ] && echo MISSING; true', 8000)
         return ctx
 
     async def _call_llm(self, worker: str, messages: list[dict],
@@ -406,8 +412,8 @@ class WorkerManager:
         else:
             sections.append("## Problem statement\n[hidden: blind mode]")
         sections.append("## Data overview\n" + ctx["data_overview"])
-        sections.append("## /app/submissions/model.md\n" + ctx["model_md"])
-        sections.append("## /app/submissions/solve.py\n" + ctx["solve_py"])
+        sections.append("## Model write-up (/app/submissions/model*.md)\n" + ctx["model_md"])
+        sections.append("## Solve script (/app/submissions/solve*.py)\n" + ctx["solve_py"])
         sections.append("## Current requirements\n"
                         + json.dumps(requirements, ensure_ascii=False))
         sections.append("## Open findings\n"
@@ -481,8 +487,8 @@ class WorkerManager:
             "## Related requirements\n" + json.dumps(req_context, ensure_ascii=False),
             "## Problem statement\n" + ctx["problem_statement"],
             "## Data overview\n" + ctx["data_overview"],
-            "## /app/submissions/model.md\n" + ctx["model_md"],
-            "## /app/submissions/solve.py\n" + ctx["solve_py"],
+            "## Model write-up (/app/submissions/model*.md)\n" + ctx["model_md"],
+            "## Solve script (/app/submissions/solve*.py)\n" + ctx["solve_py"],
             f"# Guidance from the orchestrator\n{guidance}",
         ])
         out = await self._call_llm(

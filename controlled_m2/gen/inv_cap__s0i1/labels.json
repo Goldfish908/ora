@@ -10,6 +10,12 @@
     "C1": "storage_binding",
     "C4": "storage_time"
   },
+  "flips": {
+    "flip_storage_time": {
+      "flip_objective": 52.0,
+      "discriminating": true
+    }
+  },
   "artifacts": {
     "correct": {
       "path": "correct/solve.py",

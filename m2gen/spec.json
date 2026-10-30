@@ -53,6 +53,12 @@
           "class": "C3",
           "slot": "LINK_CON",
           "correct": "m.addCons(x[p, t] <= d[\"prod_cap\"][p] * y[p, t])",
+          "flip_text": {
+            "correct": "某产品某期生产量 > 0 当且仅当该产品该期记为\"启动\"(启动是 0/1 决策),每启动一次支付该产品的启动费 `setup_cost[p]`。不允许不生产却计启动,也不允许生产却不计启动。",
+            "flipped": "每个产品每期都固定计入\"启动\"并支付启动费 `setup_cost[p]`,与是否生产无关(启动是常量 1,不是决策)。"
+          },
+          "flip_ref": "m.addCons(y[p, t] == 1)",
+          "flip_detect": "y\\[\\w+,?\\s*\\w*\\]\\s*==\\s*1|setup.*always|每期.*固定",
           "mutants": [
             {
               "id": "c3_no_link",
@@ -75,6 +81,26 @@
               "description": "C3 activation (cost side) error: link constraint present but setup cost term never connected to the objective. Activation rule holds; reported objective misses setup fees -> W5 mismatch."
             }
           ]
+        },
+        {
+          "id": "hold_time",
+          "class": "C4",
+          "slot": "HOLD_IDX",
+          "correct": "t",
+          "flip_text": {
+            "correct": "**本期期末**",
+            "flipped": "**上期期末**(第 1 期无上期,按本期期末计)"
+          },
+          "flip_ref": "t - 1 if t > 1 else t",
+          "flip_detect": "t\\s*-\\s*1",
+          "mutants": [
+            {
+              "id": "c4_hold",
+              "expect_rules": ["W5"],
+              "fragment": "t - 1 if t > 1 else t",
+              "description": "C4 time/index error: holding cost charged on previous period-end inventory instead of current. Constraints untouched; reported objective mismatches recomputed true cost -> W5."
+            }
+          ]
         }
       ]
     },
@@ -89,6 +115,12 @@
           "class": "C2",
           "slot": "CONSERV_H",
           "correct": "f[\"A\", \"H\"] + f[\"B\", \"H\"] == f[\"H\", \"D1\"] + f[\"H\", \"D2\"]",
+          "flip_text": {
+            "correct": "枢纽 H 的流入(A→H 与 B→H 之和)必须等于流出(H→D1 与 H→D2 之和)。H 不囤货",
+            "flipped": "枢纽 H 允许滞留:流入(A→H 与 B→H 之和)可以**大于等于**流出(H→D1 与 H→D2 之和),多出部分视为在 H 滞留废弃,不计成本也不留到以后"
+          },
+          "flip_ref": "f[\"A\", \"H\"] + f[\"B\", \"H\"] >= f[\"H\", \"D1\"] + f[\"H\", \"D2\"]",
+          "flip_detect": ">=",
           "mutants": [
             {
               "id": "c2_dir",
@@ -125,6 +157,12 @@
           "class": "C3",
           "slot": "LINK_CON",
           "correct": "m.addCons(x[w, j] <= y[w])",
+          "flip_text": {
+            "correct": "工人 w 被使用(承担了至少一项任务)当且仅当该工人记为\"启用\"(启用是 0/1 决策),启用即支付 `fixed[w]`。不允许使用了却不启用,也不允许未使用却启用",
+            "flipped": "每名工人都必须计为\"启用\"并支付启用费 `fixed[w]`,与是否承担任务无关(启用是常量 1,不是决策)"
+          },
+          "flip_ref": "(m.addCons(y[w] == 1) if j == d[\"jobs\"][0] else None)",
+          "flip_detect": "y\\[\\w+\\]\\s*==\\s*1",
           "mutants": [
             {
               "id": "c3_no_link",

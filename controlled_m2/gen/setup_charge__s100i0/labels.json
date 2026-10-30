@@ -1,0 +1,57 @@
+{
+  "problem": "setup_charge__s100i0",
+  "family": "controlled_m2_gen",
+  "structure": "setup_charge",
+  "seed": 0,
+  "reference_objective": 96.0,
+  "tolerance": 1e-06,
+  "witness_semantics": "witness/<aid>.py runs the artifact's solve.py, then independently checks: W1 inventory balance with THIS-period production; W2 per-period capacity; W3 activation: production>0 iff reported setup==1; W4 non-negative inventory; W5 reported objective equals recomputed cost with TRUE setup costs (tol 1e-6).",
+  "connection_classes": {
+    "C3": "setup_cost_term",
+    "C4": "hold_time"
+  },
+  "flips": {
+    "flip_hold_time": {
+      "flip_objective": 97.0,
+      "discriminating": true
+    },
+    "flip_setup_link": {
+      "flip_objective": 102.0,
+      "discriminating": true
+    }
+  },
+  "artifacts": {
+    "correct": {
+      "path": "correct/solve.py",
+      "kind": "correct",
+      "mutation_type": null,
+      "expected_witness": "PASS",
+      "expected_objective": 96.0,
+      "description": "Correct reference implementation."
+    },
+    "c3_no_link": {
+      "path": "mutants/c3_no_link/solve.py",
+      "kind": "mutant",
+      "mutation_type": "connection_setup_link",
+      "expected_witness": "FAIL",
+      "expected_objective": 72.0,
+      "description": "C3 activation error: big-M link dropped, setup flag never forced on; optimizer sets y=0 everywhere, pays no setup. Feasible, cheaper; violates activation rule."
+    },
+    "c3_no_cost": {
+      "path": "mutants/c3_no_cost/solve.py",
+      "kind": "mutant",
+      "mutation_type": "connection_setup_cost_term",
+      "expected_witness": "FAIL",
+      "expected_objective": 72.0,
+      "description": "C3 activation (cost side) error: link constraint present but setup cost term never connected to the objective. Activation rule holds; reported objective misses setup fees -> W5 mismatch."
+    },
+    "c4_hold": {
+      "path": "mutants/c4_hold/solve.py",
+      "kind": "mutant",
+      "mutation_type": "connection_hold_time",
+      "expected_witness": "FAIL",
+      "expected_objective": 97.0,
+      "description": "C4 time/index error: holding cost charged on previous period-end inventory instead of current. Constraints untouched; reported objective mismatches recomputed true cost -> W5."
+    }
+  }
+}

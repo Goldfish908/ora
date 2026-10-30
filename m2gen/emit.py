@@ -38,8 +38,13 @@ def main() -> int:
         for inst, ok, report in made:
             line = " ".join(
                 f"{a}={e['verdict']}({e['objective']})"
-                for a, e in report.items())
-            print(f"{inst.name}: {'OK ' if ok else 'BAD'} {line}")
+                for a, e in report.items() if not a.startswith("_"))
+            flips = report.get("_flips") or {}
+            flip_note = " ".join(
+                f"{k}{'' if v['discriminating'] else '(DEGENERATE)'}"
+                for k, v in flips.items())
+            print(f"{inst.name}: {'OK ' if ok else 'BAD'} {line} "
+                  f"flips[{flip_note}]")
             n_bad += 0 if ok else 1
         if len(made) < n:
             print(f"{sid}: only {len(made)}/{n} valid instances "

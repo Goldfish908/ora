@@ -10,6 +10,12 @@
     "C2": "hub_conservation",
     "C1": "transport_cost_binding"
   },
+  "flips": {
+    "flip_hub_conservation": {
+      "flip_objective": 30.0,
+      "discriminating": false
+    }
+  },
   "artifacts": {
     "correct": {
       "path": "correct/solve.py",

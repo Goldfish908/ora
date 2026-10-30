@@ -97,9 +97,9 @@ def emit_instance(struct_id: str, params: dict, out_dir: Path,
             tmpl, "problem.md.tmpl",
             {"PROBLEM_ID": problem_id + "__flip_" + conn["id"],
              **flipped_phrases}))
-        # the flipped text makes the (single) mutant fragment the correct
-        # reference implementation of the flipped semantics
-        flipped_ref = conn["mutants"][0]["fragment"]
+        # the flipped text makes flip_ref (default: the single mutant
+        # fragment) the correct reference implementation of flipped semantics
+        flipped_ref = conn.get("flip_ref") or conn["mutants"][0]["fragment"]
         (flip_dir / "correct" / "solve.py").write_text(_render(
             tmpl, "solve.py.tmpl",
             _slot_mapping(struct, problem_id + "__flip_" + conn["id"],
@@ -134,6 +134,36 @@ def run_witness(inst: Path, aid: str, timeout: int = 180) -> dict:
     }
 
 
+def _solve_objective(solve_py: Path, timeout: int = 180):
+    """Run a solve.py directly; return its solution.json objective."""
+    solve_py = solve_py.resolve()  # subprocess cwd rots relative paths
+    r = subprocess.run([mip_python(), str(solve_py)], cwd=solve_py.parent,
+                       capture_output=True, text=True, timeout=timeout)
+    if r.returncode != 0:
+        return None
+    sol = solve_py.parent / "solution.json"
+    return json.loads(sol.read_text())["objective"] if sol.exists() else None
+
+
+def check_flip_discrimination(inst: Path, correct_obj) -> dict:
+    """A flip pair only discriminates if the flipped-semantics reference
+    reaches a DIFFERENT objective than the base reference (flow_dir's
+    hub_conservation flip is the counterexample: slack is never useful
+    under minimization, so == and >= optima coincide)."""
+    out = {}
+    for flip_dir in sorted(inst.glob("flip_*")):
+        solve_py = flip_dir / "correct" / "solve.py"
+        if not solve_py.exists():
+            continue
+        flip_obj = _solve_objective(solve_py)
+        out[flip_dir.name] = {
+            "flip_objective": flip_obj,
+            "discriminating": (flip_obj is not None and correct_obj is not None
+                               and abs(flip_obj - correct_obj) > 1e-6),
+        }
+    return out
+
+
 def validate_instance(inst: Path, struct_id: str) -> tuple:
     """Run every artifact's witness. Acceptance: correct PASSes; every
     mutant FAILs, is not a crash, and its expected rules all fire.
@@ -160,6 +190,9 @@ def validate_instance(inst: Path, struct_id: str) -> tuple:
                     else "mutant crashed" if res["crash"]
                     else f"expected rules not fired: {missing}")
         report[aid] = entry
+    if "correct" in report:
+        report["_flips"] = check_flip_discrimination(
+            inst, report["correct"]["objective"])
     return ok, report
 
 
@@ -190,6 +223,7 @@ def write_labels(inst: Path, struct_id: str, params: dict, report: dict,
         "witness_semantics": struct["witness_semantics"],
         "connection_classes": {c["class"]: c["id"]
                                for c in struct["connections"]},
+        "flips": report.get("_flips", {}),
         "artifacts": artifacts,
     }
     (inst / "labels.json").write_text(

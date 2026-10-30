@@ -10,6 +10,12 @@
     "C3": "activation_link",
     "C1": "cost_binding"
   },
+  "flips": {
+    "flip_activation_link": {
+      "flip_objective": 33.0,
+      "discriminating": true
+    }
+  },
   "artifacts": {
     "correct": {
       "path": "correct/solve.py",

@@ -1,0 +1,68 @@
+"""${PROBLEM_ID} witness: independent semantic checker (does NOT import or
+reuse the artifact's modeling code — rules re-implemented from problem.md).
+
+Usage: python3 witness/<aid>.py   (runs the artifact's solve.py first)
+Checks on the artifact's solution.json:
+  W1 assignment uniqueness: every job assigned to exactly one worker
+  W2 worker capacity: jobs per worker <= cap[w]
+  W3 activation: worker has >=1 job iff active[w]==1
+  W5 reported objective equals recomputed cost with TRUE costs (tol 1e-6)
+Prints PASS or FAIL:<rule> lines; exit code 0 on PASS, 1 on FAIL.
+"""
+
+import json
+import os
+import subprocess
+import sys
+from pathlib import Path
+
+HERE = Path(__file__).resolve().parent
+_CAND = os.environ.get("ORA_MIP_PYTHON")
+if not _CAND:
+    for _c in ("/home/hewj13/planbb/miniforge3/envs/rl/bin/python",):
+        if os.path.exists(_c):
+            _CAND = _c
+            break
+PY = _CAND or sys.executable
+TOL = 1e-6
+
+
+def main():
+    aid = Path(__file__).stem
+    root = HERE.parent
+    art = root / ("correct" if aid == "correct" else f"mutants/{aid}")
+    d = json.loads((root / "data" / "params.json").read_text())
+    W, J = d["workers"], d["jobs"]
+
+    r = subprocess.run([PY, str(art / "solve.py")], cwd=art,
+                       capture_output=True, text=True, timeout=120)
+    if r.returncode != 0:
+        print("FAIL:crash", r.stderr[-300:])
+        sys.exit(1)
+    sol = json.loads((art / "solution.json").read_text())
+    x, y = sol["assign"], sol["active"]
+    fails = []
+
+    for j in J:
+        if abs(sum(x[w][j] for w in W) - 1) > TOL:
+            fails.append(f"W1 assign_once {j}")
+    for w in W:
+        used = sum(round(x[w][j]) for j in J)
+        if used - d["cap"][w] > TOL:
+            fails.append(f"W2 capacity {w}")
+        if (used > 0) != (y[w] > 0.5):
+            fails.append(f"W3 activation {w}")
+
+    obj = (sum(d["cost"][w][j] * x[w][j] for w in W for j in J)
+           + sum(d["fixed"][w] * round(y[w]) for w in W))
+    if abs(obj - sol["objective"]) > TOL:
+        fails.append("W5 objective_mismatch")
+
+    if fails:
+        print("FAIL:" + ";".join(fails))
+        sys.exit(1)
+    print(f"PASS objective={sol['objective']}")
+
+
+if __name__ == "__main__":
+    main()

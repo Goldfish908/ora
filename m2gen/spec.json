@@ -113,6 +113,42 @@
           ]
         }
       ]
+    },
+    "assign_fixed": {
+      "sampler": "assign_fixed",
+      "modules": ["M5_assignment_uniqueness", "M2_capacity", "M3_activation", "M8_objective"],
+      "n_instances_default": 2,
+      "witness_semantics": "witness/<aid>.py runs the artifact's solve.py, then independently checks: W1 every job assigned to exactly one worker; W2 worker capacity; W3 activation: worker has >=1 job iff active==1; W5 reported objective equals recomputed cost with TRUE costs (tol 1e-6).",
+      "connections": [
+        {
+          "id": "activation_link",
+          "class": "C3",
+          "slot": "LINK_CON",
+          "correct": "m.addCons(x[w, j] <= y[w])",
+          "mutants": [
+            {
+              "id": "c3_no_link",
+              "expect_rules": ["W3"],
+              "fragment": "pass",
+              "description": "C3 activation error: x<=y link dropped; optimizer never sets y, pays no fixed fee. Feasible, cheaper; violates the activation rule."
+            }
+          ]
+        },
+        {
+          "id": "cost_binding",
+          "class": "C1",
+          "slot": "COST_EXPR",
+          "correct": "d[\"cost\"][w][j] * x[w, j]",
+          "mutants": [
+            {
+              "id": "c1_bind",
+              "expect_rules": ["W5"],
+              "fragment": "d[\"cost\"][\"W2\" if w == \"W1\" else \"W1\" if w == \"W2\" else w][j] * x[w, j]",
+              "description": "C1 binding error: objective charges W1<->W2 swapped assignment costs. Constraints untouched; reported objective mismatches recomputed true cost -> W5."
+            }
+          ]
+        }
+      ]
     }
   }
 }

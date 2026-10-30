@@ -81,8 +81,27 @@ def sample_flow_dir(rng: random.Random) -> dict:
     }
 
 
+def sample_assign_fixed(rng: random.Random) -> dict:
+    W = ["W1", "W2", "W3"]
+    J = ["J1", "J2", "J3", "J4"]
+    fixed = {w: rng.randint(5, 10) for w in W}
+    # fixed fees must differ so a swap in the objective is observable
+    while len(set(fixed.values())) < len(W):
+        fixed = {w: rng.randint(5, 10) for w in W}
+    return {
+        "workers": W,
+        "jobs": J,
+        "cost": {w: {j: rng.randint(2, 8) for j in J} for w in W},
+        # capacities sum above |J| so every draw is feasible, but not all
+        # on one worker
+        "cap": {w: 2 for w in W},
+        "fixed": fixed,
+    }
+
+
 SAMPLERS = {
     "inv_cap": sample_inv_cap,
     "setup_charge": sample_setup_charge,
     "flow_dir": sample_flow_dir,
+    "assign_fixed": sample_assign_fixed,
 }

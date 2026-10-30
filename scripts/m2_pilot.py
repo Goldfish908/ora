@@ -54,6 +54,8 @@ CHEATSHEET = """
 - 变量:`m.addVar(name=..., vtype="I")` 整数,`vtype="B"` 0/1,`vtype="C"` 连续
 - `m.setObjective(表达式)` 默认就是最小化;**不要传 sense 参数**("min" 不是合法值,最大化才写 `sense="maximize"`)
 - `m.optimize()` 后用 `m.getVal(变量)` 取值,`m.getObjVal()` 取目标值
+- **下标纪律**:数据列表一律 0 起始,题面的第 t 期(1..T)对应数组下标 `[t-1]`。若循环用 `range(1, T+1)`,访问数据数组必须写 `[t-1]`;状态变量(库存等)的下标方案要与之一致,t==1(或 t==0)的边界单独处理。生成后请心算一遍第一期和最后一期是否越界
+- gurobipy 惯用法不可用:`quicksum` 用 Python `sum` 代替;没有 `m.getObjective().terms`、`gp.and_`、`addVars` 批量接口(用字典推导逐个 `addVar`)
 - 数据文件 `data/params.json` 已在当前工作目录,**必须用代码读取**:
   `json.loads(open("data/params.json").read())`
   **禁止把数据誊抄进代码**(禁止手写数据数组)。

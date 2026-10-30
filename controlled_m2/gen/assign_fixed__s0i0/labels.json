@@ -1,0 +1,39 @@
+{
+  "problem": "assign_fixed__s0i0",
+  "family": "controlled_m2_gen",
+  "structure": "assign_fixed",
+  "seed": 0,
+  "reference_objective": 23.0,
+  "tolerance": 1e-06,
+  "witness_semantics": "witness/<aid>.py runs the artifact's solve.py, then independently checks: W1 every job assigned to exactly one worker; W2 worker capacity; W3 activation: worker has >=1 job iff active==1; W5 reported objective equals recomputed cost with TRUE costs (tol 1e-6).",
+  "connection_classes": {
+    "C3": "activation_link",
+    "C1": "cost_binding"
+  },
+  "artifacts": {
+    "correct": {
+      "path": "correct/solve.py",
+      "kind": "correct",
+      "mutation_type": null,
+      "expected_witness": "PASS",
+      "expected_objective": 23.0,
+      "description": "Correct reference implementation."
+    },
+    "c3_no_link": {
+      "path": "mutants/c3_no_link/solve.py",
+      "kind": "mutant",
+      "mutation_type": "connection_activation_link",
+      "expected_witness": "FAIL",
+      "expected_objective": 8.0,
+      "description": "C3 activation error: x<=y link dropped; optimizer never sets y, pays no fixed fee. Feasible, cheaper; violates the activation rule."
+    },
+    "c1_bind": {
+      "path": "mutants/c1_bind/solve.py",
+      "kind": "mutant",
+      "mutation_type": "connection_cost_binding",
+      "expected_witness": "FAIL",
+      "expected_objective": 22.0,
+      "description": "C1 binding error: objective charges W1<->W2 swapped assignment costs. Constraints untouched; reported objective mismatches recomputed true cost -> W5."
+    }
+  }
+}

@@ -59,6 +59,12 @@ Write a PySCIPOpt script that:"""
 
 _OUTPUT_RE = re.compile(r"\[OUTPUT FORMAT\].*?\[TASK\]\nWrite a \w+ script that:",
                         re.DOTALL)
+# schema-mode prompts end the [TASK] header without a colon ("Write a GurobiPy
+# script that models and solves this optimization problem.") — match the whole
+# trailing line instead.
+_OUTPUT_RE_SCHEMA = re.compile(
+    r"\[OUTPUT FORMAT\].*?\[TASK\]\nWrite a \w+ script that[^\n]*",
+    re.DOTALL)
 
 
 def adapt_prompt(prompt_full: str) -> str:
@@ -67,6 +73,23 @@ def adapt_prompt(prompt_full: str) -> str:
         raise ValueError("prompt adaptation failed: OUTPUT FORMAT block "
                          f"matched {n} times")
     return new
+
+
+def adapt_prompt_schema(prompt_schema: str) -> str:
+    """Schema-mode prompt: same OUTPUT FORMAT rewrite, plus neutralize the
+    Gurobi-specific tuple note in [DATA ACCESS]."""
+    new, n = _OUTPUT_RE_SCHEMA.subn(SCIP_OUTPUT_FORMAT, prompt_schema)
+    if n != 1:
+        raise ValueError("schema prompt adaptation failed: OUTPUT FORMAT "
+                         f"block matched {n} times")
+    return new.replace("CRITICAL - Network edges require tuple conversion "
+                       "for Gurobi:",
+                       "NOTE - Network edges as dict keys need tuples "
+                       "(PySCIPOpt is fine with plain lists in expressions):")
+
+
+SCHEMA_PRELUDE = ("import json\n"
+                  "data = json.loads(open('data.json').read())\n\n")
 
 
 def extract_code(text: str) -> str:
@@ -130,6 +153,9 @@ def main() -> None:
     ap.add_argument("--modes", nargs="*", default=["on", "off"],
                     choices=["on", "off"])
     ap.add_argument("--variant", default="v0", help="which data variant")
+    ap.add_argument("--prompt-mode", default="full", choices=["full", "schema"],
+                    help="full = inline data (transcription risk); schema = "
+                         "data pre-loaded as variable, injected by harness")
     args = ap.parse_args()
 
     rows = [json.loads(l) for l in DATA.read_text().splitlines() if l.strip()]
@@ -145,7 +171,7 @@ def main() -> None:
 
     cfg = llm_mod.load_config()
     OUT_DIR.mkdir(parents=True, exist_ok=True)
-    out_path = OUT_DIR / "m1_pilot.jsonl"
+    out_path = OUT_DIR / f"m1_pilot_{args.prompt_mode}.jsonl"
     done = set()
     if out_path.exists():
         for l in out_path.read_text().splitlines():
@@ -155,7 +181,8 @@ def main() -> None:
 
     with out_path.open("a", encoding="utf-8") as fp:
         for row in rows:
-            prompt = adapt_prompt(row["prompt_full"])
+            prompt = (adapt_prompt(row["prompt_full"]) if args.prompt_mode
+                      == "full" else adapt_prompt_schema(row["prompt_schema"]))
             for mode in args.modes:
                 sid = row["scenario_id"]
                 if (sid, mode) in done:
@@ -184,6 +211,7 @@ def main() -> None:
                 except Exception as e:
                     text, llm_err = "", f"{type(e).__name__}: {e}"
                 rec = {"scenario_id": sid, "thinking": mode,
+                       "prompt_mode": args.prompt_mode,
                        "llm_latency_s": round(time.time() - t0, 1),
                        "reference_objective": row["reference_objective"],
                        "reference_status": row["reference_status"]}
@@ -199,8 +227,15 @@ def main() -> None:
                 else:
                     rec["code_chars"] = len(text)
                     sandbox = (OUT_DIR / "sandbox"
-                               / f"{sid}__{mode}")
-                    rec.update(run_code(extract_code(text), sandbox))
+                               / f"{args.prompt_mode}__{sid}__{mode}")
+                    code = extract_code(text)
+                    if args.prompt_mode == "schema":
+                        # the prompt says `data` is pre-loaded; the harness
+                        # fulfills that contract with a prelude + data.json
+                        (sandbox).mkdir(parents=True, exist_ok=True)
+                        (sandbox / "data.json").write_text(row["data"])
+                        code = SCHEMA_PRELUDE + code
+                    rec.update(run_code(code, sandbox))
                     rec["grade"] = grade(rec.get("objective"),
                                          row["reference_objective"],
                                          rec.get("solver_status"))

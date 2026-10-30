@@ -1,0 +1,118 @@
+{
+  "version": "0.1",
+  "family": "controlled_m2_gen",
+  "structures": {
+    "inv_cap": {
+      "sampler": "inv_cap",
+      "modules": ["M1_inv_balance", "M2_capacity", "M8_objective"],
+      "n_instances_default": 2,
+      "witness_semantics": "witness/<aid>.py runs the artifact's solve.py, then independently checks (rules re-implemented from problem.md, no shared code with the artifact): W1 inventory balance with THIS-period production and given init_inv; W2 per-period production capacity; W3 storage over ALL products with true volumes; W4 non-negative inventory; W5 reported objective equals recomputed cost (tol 1e-6).",
+      "connections": [
+        {
+          "id": "storage_binding",
+          "class": "C1",
+          "slot": "STORAGE_COEF",
+          "correct": "d[\"volume\"][p]",
+          "mutants": [
+            {
+              "id": "c1_bind",
+              "expect_rules": ["W3"],
+              "fragment": "(1 if p == \"P2\" else d[\"volume\"][p])",
+              "description": "C1 binding error: storage constraint reads P2's unit volume as 1 (P1's value). Type-legal, feasible, cheaper; violates true storage."
+            }
+          ]
+        },
+        {
+          "id": "storage_time",
+          "class": "C4",
+          "slot": "STORAGE_IDX",
+          "correct": "t",
+          "flip_text": {
+            "correct": "每期期末",
+            "flipped": "每期的下一期期末（即库存约束统一向前看一期，期末按 t+1 计，最后一期仍按本期计）"
+          },
+          "mutants": [
+            {
+              "id": "c4_time",
+              "expect_rules": ["W3"],
+              "fragment": "t + 1 if t < T else t",
+              "description": "C4 time/index error: storage constraint binds next period's inventory inv[t+1] instead of inv[t]. Type-legal, feasible, cheaper; violates true storage."
+            }
+          ]
+        }
+      ]
+    },
+    "setup_charge": {
+      "sampler": "setup_charge",
+      "modules": ["M1_inv_balance", "M2_capacity", "M3_activation", "M8_objective"],
+      "n_instances_default": 2,
+      "witness_semantics": "witness/<aid>.py runs the artifact's solve.py, then independently checks: W1 inventory balance with THIS-period production; W2 per-period capacity; W3 activation: production>0 iff reported setup==1; W4 non-negative inventory; W5 reported objective equals recomputed cost with TRUE setup costs (tol 1e-6).",
+      "connections": [
+        {
+          "id": "setup_link",
+          "class": "C3",
+          "slot": "LINK_CON",
+          "correct": "m.addCons(x[p, t] <= d[\"prod_cap\"][p] * y[p, t])",
+          "mutants": [
+            {
+              "id": "c3_no_link",
+              "expect_rules": ["W3"],
+              "fragment": "m.addCons(x[p, t] <= d[\"prod_cap\"][p])",
+              "description": "C3 activation error: big-M link dropped, setup flag never forced on; optimizer sets y=0 everywhere, pays no setup. Feasible, cheaper; violates activation rule."
+            }
+          ]
+        },
+        {
+          "id": "setup_cost_term",
+          "class": "C3",
+          "slot": "SETUP_OBJ_TERM",
+          "correct": "\n        + sum(d[\"setup_cost\"][p] * y[p, t] for p in P for t in range(1, T + 1))",
+          "mutants": [
+            {
+              "id": "c3_no_cost",
+              "expect_rules": ["W5"],
+              "fragment": "",
+              "description": "C3 activation (cost side) error: link constraint present but setup cost term never connected to the objective. Activation rule holds; reported objective misses setup fees -> W5 mismatch."
+            }
+          ]
+        }
+      ]
+    },
+    "flow_dir": {
+      "sampler": "flow_dir",
+      "modules": ["M4_flow_conservation", "M2_capacity", "M8_objective"],
+      "n_instances_default": 2,
+      "witness_semantics": "witness/<aid>.py runs the artifact's solve.py, then independently checks: W1 plant supply limits (outflow <= supply); W2 edge capacities; W3 TRUE flow conservation at hub H with correct edge orientation; W4 demand met exactly at D1,D2; W5 reported objective equals recomputed production+transport cost with TRUE costs (tol 1e-6).",
+      "connections": [
+        {
+          "id": "hub_conservation",
+          "class": "C2",
+          "slot": "CONSERV_H",
+          "correct": "f[\"A\", \"H\"] + f[\"B\", \"H\"] == f[\"H\", \"D1\"] + f[\"H\", \"D2\"]",
+          "mutants": [
+            {
+              "id": "c2_dir",
+              "expect_rules": ["W3"],
+              "fragment": "f[\"A\", \"H\"] + f[\"B\", \"H\"] + f[\"H\", \"D2\"] == f[\"H\", \"D1\"]",
+              "description": "C2 direction error: outflow edge H->D2 written on the inflow side of hub conservation (sign reversal). Type-legal, feasible when d1>d2; optimal supply no longer matches true total demand -> true conservation violated."
+            }
+          ]
+        },
+        {
+          "id": "transport_cost_binding",
+          "class": "C1",
+          "slot": "TRANSP_COEF",
+          "correct": "d[\"transp_cost\"][a][b]",
+          "mutants": [
+            {
+              "id": "c1_bind",
+              "expect_rules": ["W5"],
+              "fragment": "(d[\"transp_cost\"][\"A\"][\"H\"] if (a, b) == (\"B\", \"H\") else d[\"transp_cost\"][a][b])",
+              "description": "C1 binding error: objective charges edge B->H at edge A->H's unit cost. Constraints untouched; reported objective mismatches recomputed true cost -> W5."
+            }
+          ]
+        }
+      ]
+    }
+  }
+}

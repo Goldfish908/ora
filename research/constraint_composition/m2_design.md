@@ -68,12 +68,13 @@
 m2gen/
   spec.json          # 结构目录:模块组合+连接+翻转定义(人工编写,一次)
   instantiate.py     # spec → 数值实例(随机种子固定)
-  emit_problem.py    # → problem.md(题面,无答案连接 ID)
-  emit_reference.py  # → reference.py(PySCIPOpt 正确实现,从 spec 编译)
-  emit_mutants.py    # → mutants/(C1–C4 变异,标签自动)
-  emit_witness.py    # → witness/(每变异的可执行反例)
-  checker.py         # 独立语义 checker(不 import 编译器)
+  emit.py            # CLI:--structure/--all --n --seed --out [--params]
+  core.py            # 渲染(problem.md/solve.py/witness/labels)+witness 校验
+  run_regression.py  # 手工三题回归:生成输出必须与手工制品语义一致
+  templates/<结构>/  # solve.py.tmpl + problem.md.tmpl + witness.py.tmpl
 ```
+
+实现注记(v0.1，与上表对应）：发射/变异/witness 生成合在 `core.py` + `emit.py`;checker 即每题 `witness/<aid>.py`，模板与 solve 模板分离存放、不共享连接解释；**采样-求解-鉴伪闭环**:每个采样实例必须 correct PASS、每个 mutant 非 crash 且 FAIL 在预期 W 规则上，否则换种子重采(≤60 次），保证"难度旋钮在连接上"逐实例成立。已实现结构：inv_cap(C1 绑定/C4 时间索引，带翻转对）、setup_charge(C3 激活 ×2)、flow_dir(C2 方向/C1 绑定）——四算子全覆盖，位于 `controlled_m2/gen/`。
 
 现有 controlled/ 三题是手工版五件套;m2gen 把它参数化。手工三题保留为生成器的**回归测试**:生成器输出必须与手工制品语义一致。
 

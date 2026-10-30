@@ -71,6 +71,10 @@ agents:
       exec_timeout_sec: 360
       # NOTE: must be quoted — bare `off` parses as boolean False in YAML 1.1.
       predict_mode: "off"
+      # Internal vLLM defaults reasoning_effort=xhigh, which can burn the
+      # whole 32k reasoning budget on one step; pin medium for thinking-on.
+      actor_llm_extra:
+        reasoning_effort: medium
 
 datasets:
   - path: ORAgentBench/harbor_tasks

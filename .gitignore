@@ -5,3 +5,4 @@ ORAgentBench/
 .DS_Store
 docs/paper_Agent_*.zip
 data/
+!controlled_m2/**/data/

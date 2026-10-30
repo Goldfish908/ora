@@ -1,0 +1,39 @@
+{
+  "problem": "flow_dir__s0i0",
+  "family": "controlled_m2_gen",
+  "structure": "flow_dir",
+  "seed": 0,
+  "reference_objective": 30.0,
+  "tolerance": 1e-06,
+  "witness_semantics": "witness/<aid>.py runs the artifact's solve.py, then independently checks: W1 plant supply limits (outflow <= supply); W2 edge capacities; W3 TRUE flow conservation at hub H with correct edge orientation; W4 demand met exactly at D1,D2; W5 reported objective equals recomputed production+transport cost with TRUE costs (tol 1e-6).",
+  "connection_classes": {
+    "C2": "hub_conservation",
+    "C1": "transport_cost_binding"
+  },
+  "artifacts": {
+    "correct": {
+      "path": "correct/solve.py",
+      "kind": "correct",
+      "mutation_type": null,
+      "expected_witness": "PASS",
+      "expected_objective": 30.0,
+      "description": "Correct reference implementation."
+    },
+    "c2_dir": {
+      "path": "mutants/c2_dir/solve.py",
+      "kind": "mutant",
+      "mutation_type": "connection_hub_conservation",
+      "expected_witness": "FAIL",
+      "expected_objective": 12.0,
+      "description": "C2 direction error: outflow edge H->D2 written on the inflow side of hub conservation (sign reversal). Type-legal, feasible when d1>d2; optimal supply no longer matches true total demand -> true conservation violated."
+    },
+    "c1_bind": {
+      "path": "mutants/c1_bind/solve.py",
+      "kind": "mutant",
+      "mutation_type": "connection_transport_cost_binding",
+      "expected_witness": "FAIL",
+      "expected_objective": 24.0,
+      "description": "C1 binding error: objective charges edge B->H at edge A->H's unit cost. Constraints untouched; reported objective mismatches recomputed true cost -> W5."
+    }
+  }
+}

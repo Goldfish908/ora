@@ -166,6 +166,26 @@ LLM 延迟占墙钟 51–89%(round2 结论，本轮一致）:actor thinking 是�
 
 修复：`workers.py` 上下文采集改为 glob(`model*.md`/`solve*.py`),worker prompt 与测试同步更新（tests 65/65 绿）。重跑 `e_b2_off2` 进行中。**待回答**:worker 审计能否抓住 dynfix4 暴露的"幻影运输"类违规——若能，E2.1 的价值主张成立；若不能，需要 proposed_checks 真正被执行（当前 finding 状态止步于 llm_judgment/suspected)。
 
+### 4.10 E-B2-off2 与四臂同平台对照（2026-10-30，内网 27B，均 40 步/1.2M token)
+
+worker 文件名修复后重跑结果：**2/6 feasible,circular quality 2.0**(cell_tower feasible/0.0;bike 超时 error 记 0;dynamic 见下）。
+
+| 臂 | thinking | workers/triggers | feas | quality | 备注 |
+|---|---|---|---|---|---|
+| E-B1 | on | 关 | **3/6** | circular 2.0 | carbon、cell_tower 亦可行 |
+| E-B1-off | off | 关 | 2/6 | 全 0 | 同预算 off 基线 |
+| E-B2 | on | 开（旧） | 2/6 | 全 0 | worker 文件名 bug 期 |
+| E-B2-off2 | off | 开（修复后） | 2/6 | **circular 2.0** | circular 11 步收工，3 次审计调用 |
+
+逐题解剖与结论：
+
+1. **circular 满分不是 worker 的独占功劳**:E-B1(on，无 worker）同样 11 步满分（105k token);E-B2-off2 是 11 步 + 3 次审计（167k token）同分。worker 在已会做的题上是纯开销（+59% token)，价值要在"actor 会犯错"的题上衡量——本轮 6 题里没有这样的样本（off 模式错的题全是"从未产出 incumbent")。
+2. **dynamic off 模式：40 步全部耗在 pyscipopt API 搏斗**(`setParam` 参数名、`getNSols`、`setObjective` 签名，反复 sed 补丁）,**零次成功求解**,trigger A 结构性无从触发。对照 dynfix4(on 模式 100 步上限）能产出带病 CSV——on/off 的差异不只是质量，是"能否到达可审计状态"。**审计机制的有效区间 = actor 能产出 incumbent 但可能带病；对产不出 incumbent 的题，机制结构性惰性。**
+3. bike 超时被取消（agent 在做 4000 二元变量 SCIP 压力测试时撞 trial 时限）——off 模式 actor 的时间管理能力是另一个失分源。
+4. 单题单臂单 trial，样本量 1,circular 在四个臂间 0→2.0 翻转说明**单 trial 噪声极大**,6 题 × 1 trial 的设计只能做机制验证，不能下质量排名结论。要排名需同臂多 trial（或换大模型做主实验、27B 只做机制）。
+
+**E2.1 机制验证结论（本轮可锁定）**：触发器会发、worker 能正确抽取硬性要求并给出语义级发现（cell_tower/circular)、"finish 门 + 开放 finding"闭环可运行；两个已修缺陷（产物文件名硬编码、以及首轮阿里云污染）之后，机制的边界条件清晰化——它放大的是"会做题的 actor"的可靠性，救不了"做不出题的 actor"。
+
 ## 5. 后续动作
 
 1. thinking 默认值：待 off-big + 代表题重复后按 v1.1 质量容忍度冻结；

@@ -137,9 +137,15 @@ LLM 延迟占墙钟 51–89%(round2 结论，本轮一致）:actor thinking 是�
 
 对 M1 设计的直接修正：①主测量改用 `prompt_schema` 模式或数据文件化，剥离誊抄；②prompt 加 pyscipopt 惯用法片段；③grade 体系加约束完整性审计。誊抄错误作为独立大头失败模式坐实，写入 motivation 验证发现。
 
+### 4.7 dynamic 题"门拦"根因查明：benchmark 题面欠规约（2026-10-30)
+
+所有臂的 dynamic 都在 initial_plan 拿 0.0 被 min_reward=0.3 门拦。根因**不是** off 模式规划差：verifier(`steps/initial_plan/tests/evaluate_solution.py`）要求 `variable` 列精确取 9 个词表值（`produce_regular`、`ship_plant_dc` 等），但 agent 可见的环境里（PROBLEM_STATEMENT.md、solution_template.csv、skills）**任何地方都没有这个词表**——题面只用散文描述变量类型。agent 写了 `production_regular`,1146 行全部 unknown variable。**与 R 线发现 F3（受控集题面欠规约）同类，互为印证。**
+
+修复：PROBLEM_STATEMENT.md 的 CSV 段补齐精确词表（本地 ORAgentBench 副本，gitignored，本报告为变更记录）。验证跑：`configs/engineering/e_b1_dynfix.yaml`（单题，thinking on)。
+
 ## 5. 后续动作
 
 1. thinking 默认值：待 off-big + 代表题重复后按 v1.1 质量容忍度冻结；
-2. dynamic 题：修 benchmark 的 initial_plan 门（min_reward 0.3）或换题；
-3. E-B2-off（触发器 × thinking off）作为模式一致的触发器效益对照；
+2. ~~dynamic 题：修 benchmark 的 initial_plan 门~~ → 已查明为题面欠规约并补齐词表（§4.7)，验证中；
+3. E-B2-off（触发器 × thinking off）作为模式一致的触发器效益对照（配置已建：configs/engineering/e_b2_off.yaml);
 4. 路径 I 预备：M1 pilot 管线（`scripts/m1_pilot.py`）已是单次生成测量骨架，M2 受控集生成器复用同一执行/评分壳。

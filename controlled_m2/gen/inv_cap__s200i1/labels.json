@@ -1,0 +1,45 @@
+{
+  "problem": "inv_cap__s200i1",
+  "family": "controlled_m2_gen",
+  "structure": "inv_cap",
+  "seed": 200,
+  "reference_objective": 60.0,
+  "tolerance": 1e-06,
+  "witness_semantics": "witness/<aid>.py runs the artifact's solve.py, then independently checks (rules re-implemented from problem.md, no shared code with the artifact): W1 inventory balance with THIS-period production and given init_inv; W2 per-period production capacity; W3 storage over ALL products with true volumes; W4 non-negative inventory; W5 reported objective equals recomputed cost (tol 1e-6).",
+  "connection_classes": {
+    "C1": "storage_binding",
+    "C4": "storage_time"
+  },
+  "flips": {
+    "flip_storage_time": {
+      "flip_objective": 57.0,
+      "discriminating": true
+    }
+  },
+  "artifacts": {
+    "correct": {
+      "path": "correct/solve.py",
+      "kind": "correct",
+      "mutation_type": null,
+      "expected_witness": "PASS",
+      "expected_objective": 60.0,
+      "description": "Correct reference implementation."
+    },
+    "c1_bind": {
+      "path": "mutants/c1_bind/solve.py",
+      "kind": "mutant",
+      "mutation_type": "connection_storage_binding",
+      "expected_witness": "FAIL",
+      "expected_objective": 58.0,
+      "description": "C1 binding error: storage constraint reads P2's unit volume as 1 (P1's value). Type-legal, feasible, cheaper; violates true storage."
+    },
+    "c4_time": {
+      "path": "mutants/c4_time/solve.py",
+      "kind": "mutant",
+      "mutation_type": "connection_storage_time",
+      "expected_witness": "FAIL",
+      "expected_objective": 57.0,
+      "description": "C4 time/index error: storage constraint binds next period's inventory inv[t+1] instead of inv[t]. Type-legal, feasible, cheaper; violates true storage."
+    }
+  }
+}

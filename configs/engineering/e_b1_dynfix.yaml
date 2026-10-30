@@ -1,10 +1,13 @@
-# E-B1-dynfix: dynamic_supply_disruption_replanning only, thinking on.
-# Verifies the PROBLEM_STATEMENT.md variable-vocabulary patch (2026-10-30):
-# the verifier requires exact tokens (produce_regular etc.) that previously
-# appeared nowhere in the agent-visible environment, so initial_plan always
-# scored 0.0 and the min_reward=0.3 gate aborted the trial in every arm.
+# E-B1-dynfix2: dynamic_supply_disruption_replanning only, thinking on.
+# Second patch round (2026-10-30): the vocabulary fix let the verifier parse
+# submissions, but the plan came back infeasible (115x safety/reserve floor
+# violations) because the verifier's hard rules (per-DC inventory floor =
+# safety + reserve_multiplier x next-week regional demand, material robust
+# discount, min service rate) appeared nowhere in the agent-visible statement.
+# A "Hard Requirements" section was added to PROBLEM_STATEMENT.md; this run
+# verifies the initial_plan gate (min_reward=0.3) can now be passed.
 
-job_name: e_b1_dynfix
+job_name: e_b1_dynfix2
 jobs_dir: runs/engineering
 n_attempts: 1
 timeout_multiplier: 1.0

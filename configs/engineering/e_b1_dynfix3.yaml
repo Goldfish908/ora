@@ -1,0 +1,77 @@
+# E-B1-dynfix2: dynamic_supply_disruption_replanning only, thinking on.
+# Second patch round (2026-10-30): the vocabulary fix let the verifier parse
+# submissions, but the plan came back infeasible (115x safety/reserve floor
+# violations) because the verifier's hard rules (per-DC inventory floor =
+# safety + reserve_multiplier x next-week regional demand, material robust
+# discount, min service rate) appeared nowhere in the agent-visible statement.
+# A "Hard Requirements" section was added to PROBLEM_STATEMENT.md; this run
+# verifies the initial_plan gate (min_reward=0.3) can now be passed.
+
+job_name: e_b1_dynfix3
+jobs_dir: runs/engineering
+n_attempts: 1
+timeout_multiplier: 1.0
+debug: false
+quiet: false
+
+orchestrator:
+  type: local
+  n_concurrent_trials: 1
+
+retry:
+  max_retries: 0
+  include_exceptions: null
+  exclude_exceptions:
+    - VerifierTimeoutError
+    - AgentTimeoutError
+  wait_multiplier: 1.0
+  min_wait_sec: 1
+  max_wait_sec: 60
+
+environment:
+  type: docker
+  import_path: null
+  force_build: false
+  delete: true
+  override_cpus: null
+  override_memory_mb: null
+  override_storage_mb: null
+  override_gpus: null
+  kwargs: {}
+
+verifier:
+  override_timeout_sec: null
+  max_timeout_sec: null
+  disable: false
+
+agents:
+  - name: null
+    import_path: ora_agent.harbor_agent:OrAgent
+    model_name: Qwen3_8-27B
+    n_concurrent: 1
+    override_timeout_sec: null
+    override_setup_timeout_sec: null
+    max_timeout_sec: null
+    env:
+      ORA_LLM_BASE_URL: "${ORA_LLM_BASE_URL}"
+      ORA_LLM_API_KEY: "${ORA_LLM_API_KEY}"
+      ORA_LLM_MODEL: "${ORA_LLM_MODEL}"
+    kwargs:
+      max_steps: 60
+      token_budget: 2400000
+      temperature: 0.6
+      max_tokens: 8192
+      exec_timeout_sec: 360
+      predict_mode: "off"
+      # Internal vLLM defaults reasoning_effort=xhigh; pin medium (see e_b1).
+      actor_llm_extra:
+        reasoning_effort: medium
+
+datasets:
+  - path: ORAgentBench/harbor_tasks
+    task_names:
+      - dynamic_supply_disruption_replanning
+    exclude_task_names: null
+
+tasks: []
+artifacts: []

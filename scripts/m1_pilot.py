@@ -35,6 +35,7 @@ ROOT = Path(__file__).resolve().parents[1]
 sys.path.insert(0, str(ROOT))
 
 from ora_agent import llm as llm_mod  # noqa: E402
+from m1_witness import f1 as witness_f1  # noqa: E402
 
 DATA = ROOT / "data" / "m1_retailopt" / "retailopt_190.jsonl"
 OUT_DIR = ROOT / "runs" / "m1_pilot"
@@ -52,6 +53,35 @@ SCIP_OUTPUT_FORMAT = f"""[OUTPUT FORMAT]
   print(f"status: {{m.getStatus()}}")
   if m.getStatus() == "optimal":
       print(f"objective: {{m.getObjVal()}}")
+- Output ONLY executable Python code. No markdown, no explanations.
+
+[TASK]
+Write a PySCIPOpt script that:"""
+
+# schema_sol mode: the model must ALSO dump its decisions so a witness
+# checker can re-verify every constraint instead of trusting the printed
+# objective (motivation finding F2: objective-matching gives false success).
+SCIP_OUTPUT_FORMAT_SOL = f"""[OUTPUT FORMAT]
+- Import: from pyscipopt import Model; import json
+- Create the model: m = Model(); silence solver logs: m.hideOutput()
+- Set a solver time limit: m.setRealParam("limits/time", {SOLVER_TIME_LIMIT})
+- After m.optimize(), print at end:
+  print(f"status: {{m.getStatus()}}")
+  if m.getStatus() == "optimal":
+      print(f"objective: {{m.getObjVal()}}")
+- When the status is optimal, ALSO write your decisions to solution.json.
+  Sparse dict-of-dicts, ONLY nonzero entries, keys joined with "|":
+    sol = {{"objective": float(m.getObjVal()),
+           "Q": {{}}, "sales": {{}}, "I": {{}},
+           "W": {{}}, "lost": {{}}, "sub": {{}}}}
+    # Q:     "p|l|t"     order quantity, period t = 1..T
+    # sales: "p|l|t|r"   sales out of the bucket with r periods of shelf
+    #                    life remaining
+    # I:     "p|l|t|r"   inventory at START of period t, r periods left
+    # W:     "p|l|t"     expired waste
+    # lost:  "p|l|t"     lost sales
+    # sub:   "pf|pt|l|t" demand of pf served by pt (substitution)
+    json.dump(sol, open("solution.json", "w"))
 - Output ONLY executable Python code. No markdown, no explanations.
 
 [TASK]
@@ -75,10 +105,11 @@ def adapt_prompt(prompt_full: str) -> str:
     return new
 
 
-def adapt_prompt_schema(prompt_schema: str) -> str:
+def adapt_prompt_schema(prompt_schema: str,
+                        fmt: str = SCIP_OUTPUT_FORMAT) -> str:
     """Schema-mode prompt: same OUTPUT FORMAT rewrite, plus neutralize the
     Gurobi-specific tuple note in [DATA ACCESS]."""
-    new, n = _OUTPUT_RE_SCHEMA.subn(SCIP_OUTPUT_FORMAT, prompt_schema)
+    new, n = _OUTPUT_RE_SCHEMA.subn(fmt, prompt_schema)
     if n != 1:
         raise ValueError("schema prompt adaptation failed: OUTPUT FORMAT "
                          f"block matched {n} times")
@@ -129,6 +160,30 @@ def run_code(code: str, sandbox: Path) -> dict:
     }
 
 
+def run_witness(row: dict, sandbox: Path) -> dict:
+    """Re-verify the dumped solution.json instead of trusting the printed
+    objective. Witness verdicts: no_solution / parse_error / feasible /
+    infeasible(+rules). Family checkers beyond f1 are not built yet."""
+    sol_path = sandbox / "solution.json"
+    out = {"witness": "no_solution"}
+    if not sol_path.exists():
+        return out
+    try:
+        sol = json.loads(sol_path.read_text())
+    except json.JSONDecodeError as e:
+        return {"witness": "parse_error", "witness_error": str(e)[:200]}
+    sid = row["scenario_id"]
+    if "_f1_" not in sid:
+        return {"witness": "no_checker"}
+    res = witness_f1.check(json.loads(row["data"]), sol)
+    out["witness"] = "feasible" if not res["violations"] else "infeasible"
+    out["witness_rules"] = sorted({r for r, _ in res["violations"]})
+    out["witness_details"] = [f"{r}: {d}" for r, d in
+                              res["violations"][:10]]
+    out["witness_warnings"] = len(res["warnings"])
+    return out
+
+
 def grade(objective, reference, solver_status) -> str:
     if solver_status is None:
         return "no_output"
@@ -153,9 +208,12 @@ def main() -> None:
     ap.add_argument("--modes", nargs="*", default=["on", "off"],
                     choices=["on", "off"])
     ap.add_argument("--variant", default="v0", help="which data variant")
-    ap.add_argument("--prompt-mode", default="full", choices=["full", "schema"],
+    ap.add_argument("--prompt-mode", default="full",
+                    choices=["full", "schema", "schema_sol"],
                     help="full = inline data (transcription risk); schema = "
-                         "data pre-loaded as variable, injected by harness")
+                         "data pre-loaded as variable, injected by harness; "
+                         "schema_sol = schema + model must dump solution.json "
+                         "for witness re-verification (f1 only for now)")
     args = ap.parse_args()
 
     rows = [json.loads(l) for l in DATA.read_text().splitlines() if l.strip()]
@@ -181,8 +239,13 @@ def main() -> None:
 
     with out_path.open("a", encoding="utf-8") as fp:
         for row in rows:
-            prompt = (adapt_prompt(row["prompt_full"]) if args.prompt_mode
-                      == "full" else adapt_prompt_schema(row["prompt_schema"]))
+            if args.prompt_mode == "full":
+                prompt = adapt_prompt(row["prompt_full"])
+            elif args.prompt_mode == "schema":
+                prompt = adapt_prompt_schema(row["prompt_schema"])
+            else:
+                prompt = adapt_prompt_schema(row["prompt_schema"],
+                                             SCIP_OUTPUT_FORMAT_SOL)
             for mode in args.modes:
                 sid = row["scenario_id"]
                 if (sid, mode) in done:
@@ -229,7 +292,7 @@ def main() -> None:
                     sandbox = (OUT_DIR / "sandbox"
                                / f"{args.prompt_mode}__{sid}__{mode}")
                     code = extract_code(text)
-                    if args.prompt_mode == "schema":
+                    if args.prompt_mode in ("schema", "schema_sol"):
                         # the prompt says `data` is pre-loaded; the harness
                         # fulfills that contract with a prelude + data.json
                         (sandbox).mkdir(parents=True, exist_ok=True)
@@ -239,11 +302,14 @@ def main() -> None:
                     rec["grade"] = grade(rec.get("objective"),
                                          row["reference_objective"],
                                          rec.get("solver_status"))
+                    if args.prompt_mode == "schema_sol":
+                        rec.update(run_witness(row, sandbox))
                 fp.write(json.dumps(rec, ensure_ascii=False) + "\n")
                 fp.flush()
                 print(f"[{sid}][{mode}] {rec.get('exec_status')} "
                       f"solver={rec.get('solver_status')} "
                       f"grade={rec.get('grade')} "
+                      f"witness={rec.get('witness', '-')} "
                       f"llm={rec['llm_latency_s']}s")
 
 

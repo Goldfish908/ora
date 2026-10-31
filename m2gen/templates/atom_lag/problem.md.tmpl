@@ -15,6 +15,8 @@
 - `init_inv`:期初库存
 - `ship_cost[t]`、`hold_cost`
 
+**JSON 形态**:`demand` 与 `ship_cost` 是 0 起始数组(`demand[0]` 是第 1 期);`init_inv` 与 `hold_cost` 是标量。
+
 ## 输出要求
 
 把结果写入本程序所在目录的 `solution.json`:

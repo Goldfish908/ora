@@ -12,9 +12,11 @@
 
 `data/params.json`:
 
-- `demand[s][t]`:门店 s 第 t 期需求(t=1..3)
+- `demand[s]`:门店 s 第 t 期需求(t=1..3)
 - `init_inv[s]`:门店期初库存
 - `cap[w]`、`cost[w][s]`、`hold_cost[s]`
+
+**JSON 形态**(务必按此读取,不要当下标数组):`demand` 是以门店名为键、值为数组的对象——`demand["S1"][0]` 是 S1 第 1 期需求(数组 0 起始);`init_inv`、`hold_cost` 以门店名为键;`cap` 以仓库名为键;`cost` 是嵌套对象,`cost["W1"]["S1"]` 是 W1→S1 的单位运费。
 
 ## 输出要求
 

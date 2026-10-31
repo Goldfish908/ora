@@ -1,0 +1,31 @@
+{
+  "problem": "atom_link__s1i1",
+  "family": "controlled_m2_gen",
+  "structure": "atom_link",
+  "seed": 1,
+  "reference_objective": 43.0,
+  "tolerance": 1e-06,
+  "witness_semantics": "witness/<aid>.py runs the artifact's solve.py, then independently checks: W2 warehouse capacity conditioned on activation; W3 every store's demand met exactly; W4 non-negative shipments; W5 reported objective equals recomputed cost with TRUE fixed costs (tol 1e-6); W6 activation: warehouse ships >0 iff open flag==1.",
+  "connection_classes": {
+    "C3": "open_link"
+  },
+  "flips": {},
+  "artifacts": {
+    "correct": {
+      "path": "correct/solve.py",
+      "kind": "correct",
+      "mutation_type": null,
+      "expected_witness": "PASS",
+      "expected_objective": 43.0,
+      "description": "Correct reference implementation."
+    },
+    "c3_no_link": {
+      "path": "mutants/c3_no_link/solve.py",
+      "kind": "mutant",
+      "mutation_type": "connection_open_link",
+      "expected_witness": "FAIL",
+      "expected_objective": 28.0,
+      "description": "C3 activation error: ship-to-open-flag link dropped; optimizer keeps y=0 everywhere, pays no fixed fee. Feasible, cheaper; violates activation rule."
+    }
+  }
+}

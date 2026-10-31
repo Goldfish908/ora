@@ -1,0 +1,88 @@
+"""${PROBLEM_ID} witness: independent semantic checker (does NOT import or
+reuse the artifact's modeling code — rules re-implemented from problem.md).
+
+Usage: python3 witness/<aid>.py   (runs the artifact's solve.py first)
+Checks on the artifact's solution.json:
+  W1 store inventory balance with LAGGED arrivals (ship at t-1 arrives at t)
+  W2 AGGREGATE warehouse outbound capacity (sum over stores)
+  W3 non-negative inventory (demand met)
+  W4 non-negative shipments
+  W5 reported objective equals recomputed cost with TRUE route+depot costs
+  W6 activation: warehouse-period ships >0 iff depot flag==1
+Prints PASS or FAIL:<rule> lines; exit code 0 on PASS, 1 on FAIL.
+"""
+
+import json
+import os
+import subprocess
+import sys
+from pathlib import Path
+
+HERE = Path(__file__).resolve().parent
+_CAND = os.environ.get("ORA_MIP_PYTHON")
+if not _CAND:
+    for _c in ("/home/hewj13/planbb/miniforge3/envs/rl/bin/python",):
+        if os.path.exists(_c):
+            _CAND = _c
+            break
+PY = _CAND or sys.executable
+TOL = 1e-6
+
+
+def main():
+    aid = Path(__file__).stem
+    root = HERE.parent
+    art = root / ("correct" if aid == "correct" else f"mutants/{aid}")
+    d = json.loads((root / "data" / "params.json").read_text())
+    W, S, T = d["warehouses"], d["stores"], d["periods"]
+
+    r = subprocess.run([PY, str(art / "solve.py")], cwd=art,
+                       capture_output=True, text=True, timeout=120)
+    if r.returncode != 0:
+        print("FAIL:crash", r.stderr[-300:])
+        sys.exit(1)
+    sol = json.loads((art / "solution.json").read_text())
+    ship, inv, y = sol["ship"], sol["inventory"], sol["depot"]
+    fails = []
+
+    def sh(w, s, t):
+        return ship[f"{w}|{s}"][t - 1]
+
+    for s in S:
+        for t in range(1, T + 1):
+            prev = d["init_inv"][s] if t == 1 else inv[s][t - 2]
+            arr = sum(sh(w, s, t - 1) for w in W) if t > 1 else 0.0
+            if abs(inv[s][t - 1] - (prev + arr - d["demand"][s][t - 1])) > TOL:
+                fails.append(f"W1 lagged_balance {s} t{t}")
+            if inv[s][t - 1] < -TOL:
+                fails.append(f"W3 neg_inv {s} t{t}")
+    for w in W:
+        for t in range(1, T + 1):
+            tot = sum(sh(w, s, t) for s in S)
+            if tot - d["cap"][w] > TOL:
+                fails.append(f"W2 agg_capacity {w} t{t} ({tot}>{d['cap'][w]})")
+            if (tot > TOL) != (y[w][t - 1] > 0.5):
+                fails.append(f"W6 activation {w} t{t}")
+    for w in W:
+        for s in S:
+            for t in range(1, T + 1):
+                if sh(w, s, t) < -TOL:
+                    fails.append(f"W4 neg_ship {w}|{s} t{t}")
+
+    obj = (sum(d["cost"][w][s] * sh(w, s, t)
+               for w in W for s in S for t in range(1, T + 1))
+           + sum(d["depot_cost"][w] * round(y[w][t - 1])
+                 for w in W for t in range(1, T + 1))
+           + sum(d["hold_cost"][s] * inv[s][t - 1]
+                 for s in S for t in range(1, T + 1)))
+    if abs(obj - sol["objective"]) > TOL:
+        fails.append("W5 objective_mismatch")
+
+    if fails:
+        print("FAIL:" + ";".join(fails))
+        sys.exit(1)
+    print(f"PASS objective={sol['objective']}")
+
+
+if __name__ == "__main__":
+    main()

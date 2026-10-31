@@ -303,6 +303,92 @@
           ]
         }
       ]
+    },
+    "dist_setup": {
+      "sampler": "dist_setup",
+      "modules": ["M1_inv_balance", "M2_capacity", "M3_activation", "M6_transport_alloc", "M8_objective"],
+      "n_instances_default": 2,
+      "witness_semantics": "witness/<aid>.py runs the artifact's solve.py, then independently checks: W1 store inventory balance with LAGGED arrivals; W2 AGGREGATE warehouse outbound capacity conditioned on depot activation; W3 non-negative inventory; W4 non-negative shipments; W5 reported objective equals recomputed cost with TRUE route and depot costs (tol 1e-6); W6 activation: warehouse-period ships >0 iff depot flag==1.",
+      "connections": [
+        {
+          "id": "arrival_lag",
+          "class": "C7",
+          "slot": "ARRIVE_EXPR",
+          "correct": "(ship[w, s, t - 1] if t > 1 else 0)",
+          "mutants": [
+            {
+              "id": "c7_lag",
+              "expect_rules": ["W1"],
+              "fragment": "ship[w, s, t]",
+              "description": "C7 time-alignment error: arrivals credited same-period instead of next-period (transit lag dropped). Type-legal, feasible, cheaper; true lagged balance violated."
+            }
+          ]
+        },
+        {
+          "id": "cap_scope",
+          "class": "C5",
+          "slot": "CAP_CON",
+          "correct": "m.addCons(sum(ship[w, s, t] for s in S) <= d[\"cap\"][w])",
+          "mutants": [
+            {
+              "id": "c5_scope",
+              "expect_rules": ["W2"],
+              "fragment": "[m.addCons(ship[w, s, t] <= d[\"cap\"][w]) for s in S]",
+              "description": "C5 quantifier-scope error: aggregate warehouse cap written per-route. Type-legal, looser, cheaper; true aggregate capacity violated."
+            }
+          ]
+        },
+        {
+          "id": "depot_link",
+          "class": "C3",
+          "slot": "LINK_CON",
+          "correct": "m.addCons(sum(ship[w, s, t] for s in S) <= sum(d[\"demand\"][s][tt] for s in S for tt in range(T)) * y[w, t])",
+          "mutants": [
+            {
+              "id": "c3_no_link",
+              "expect_rules": ["W6"],
+              "fragment": "pass",
+              "description": "C3 activation error: ship-to-depot-flag link dropped; optimizer keeps y=0 everywhere, pays no depot cost. Feasible, cheaper; violates activation rule."
+            }
+          ]
+        },
+        {
+          "id": "route_cost_map",
+          "class": "C6",
+          "slot": "COST_EXPR",
+          "correct": "d[\"cost\"][w][s]",
+          "mutants": [
+            {
+              "id": "c6_map",
+              "expect_rules": ["W5"],
+              "fragment": "(d[\"cost\"][\"W2\" if w == \"W1\" else w][s])",
+              "description": "C6 entity-mapping error: W1's routes charged at W2's unit costs. Constraints untouched; reported objective mismatches recomputed true cost -> W5."
+            }
+          ]
+        }
+      ]
+    },
+    "atom_link": {
+      "sampler": "atom_link",
+      "modules": ["M3_activation", "M6_transport_alloc", "M8_objective"],
+      "n_instances_default": 2,
+      "witness_semantics": "witness/<aid>.py runs the artifact's solve.py, then independently checks: W2 warehouse capacity conditioned on activation; W3 every store's demand met exactly; W4 non-negative shipments; W5 reported objective equals recomputed cost with TRUE fixed costs (tol 1e-6); W6 activation: warehouse ships >0 iff open flag==1.",
+      "connections": [
+        {
+          "id": "open_link",
+          "class": "C3",
+          "slot": "LINK_CON",
+          "correct": "m.addCons(sum(ship[w, s] for s in S) <= d[\"cap\"][w] * y[w])",
+          "mutants": [
+            {
+              "id": "c3_no_link",
+              "expect_rules": ["W6"],
+              "fragment": "pass",
+              "description": "C3 activation error: ship-to-open-flag link dropped; optimizer keeps y=0 everywhere, pays no fixed fee. Feasible, cheaper; violates activation rule."
+            }
+          ]
+        }
+      ]
     }
   }
 }

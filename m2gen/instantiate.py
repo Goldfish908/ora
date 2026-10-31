@@ -173,6 +173,31 @@ def sample_atom_map(rng: random.Random) -> dict:
             "cost": cost}
 
 
+def sample_atom_link(rng: random.Random) -> dict:
+    W = ["W1", "W2"]
+    S = ["S1", "S2", "S3"]
+    demand = {s: rng.randint(2, 5) for s in S}
+    total = sum(demand.values())
+    # neither warehouse alone covers total demand -> both must open;
+    # the no-link mutant pays no fixed fees at all
+    cap = {"W1": rng.randint(max(2, total // 2), total - 1),
+           "W2": rng.randint(max(2, total // 2), total - 1)}
+    cap["W2"] = max(cap["W2"], total - cap["W1"] + rng.randint(0, 1))
+    fixed = {"W1": rng.randint(6, 10), "W2": rng.randint(6, 10)}
+    cost = {"W1": {s: rng.randint(1, 3) for s in S},
+            "W2": {s: rng.randint(1, 3) for s in S}}
+    return {"warehouses": W, "stores": S, "demand": demand,
+            "cap": cap, "fixed": fixed, "cost": cost}
+
+
+def sample_dist_setup(rng: random.Random) -> dict:
+    p = sample_dist_plan(rng)
+    # depot fixed charge per warehouse-period; clearly nonzero so a
+    # dropped activation link is observable in the objective
+    p["depot_cost"] = {"W1": rng.randint(6, 10), "W2": rng.randint(6, 10)}
+    return p
+
+
 SAMPLERS = {
     "inv_cap": sample_inv_cap,
     "setup_charge": sample_setup_charge,
@@ -182,4 +207,6 @@ SAMPLERS = {
     "atom_scope": sample_atom_scope,
     "atom_lag": sample_atom_lag,
     "atom_map": sample_atom_map,
+    "atom_link": sample_atom_link,
+    "dist_setup": sample_dist_setup,
 }

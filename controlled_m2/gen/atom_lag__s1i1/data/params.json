@@ -1,0 +1,15 @@
+{
+  "periods": 3,
+  "demand": [
+    4,
+    4,
+    2
+  ],
+  "init_inv": 4,
+  "ship_cost": [
+    6,
+    3,
+    3
+  ],
+  "hold_cost": 2
+}

@@ -1,5 +1,5 @@
 {
-  "version": "0.1",
+  "version": "0.2",
   "family": "controlled_m2_gen",
   "structures": {
     "inv_cap": {
@@ -183,6 +183,122 @@
               "expect_rules": ["W5"],
               "fragment": "d[\"cost\"][\"W2\" if w == \"W1\" else \"W1\" if w == \"W2\" else w][j] * x[w, j]",
               "description": "C1 binding error: objective charges W1<->W2 swapped assignment costs. Constraints untouched; reported objective mismatches recomputed true cost -> W5."
+            }
+          ]
+        }
+      ]
+    },
+    "dist_plan": {
+      "sampler": "dist_plan",
+      "modules": ["M1_inv_balance", "M2_capacity", "M6_transport_alloc", "M8_objective"],
+      "n_instances_default": 2,
+      "witness_semantics": "witness/<aid>.py runs the artifact's solve.py, then independently checks: W1 store inventory balance with LAGGED arrivals (ship at t-1 arrives at t); W2 AGGREGATE warehouse outbound capacity (sum over stores); W3 non-negative inventory (demand met); W4 non-negative shipments; W5 reported objective equals recomputed cost with TRUE route costs (tol 1e-6).",
+      "connections": [
+        {
+          "id": "arrival_lag",
+          "class": "C7",
+          "slot": "ARRIVE_EXPR",
+          "correct": "(ship[w, s, t - 1] if t > 1 else 0)",
+          "mutants": [
+            {
+              "id": "c7_lag",
+              "expect_rules": ["W1"],
+              "fragment": "ship[w, s, t]",
+              "description": "C7 time-alignment error: arrivals credited same-period instead of next-period (transit lag dropped). Type-legal, feasible, cheaper (JIT with zero lead time); true lagged balance violated."
+            }
+          ]
+        },
+        {
+          "id": "cap_scope",
+          "class": "C5",
+          "slot": "CAP_CON",
+          "correct": "m.addCons(sum(ship[w, s, t] for s in S) <= d[\"cap\"][w])",
+          "mutants": [
+            {
+              "id": "c5_scope",
+              "expect_rules": ["W2"],
+              "fragment": "[m.addCons(ship[w, s, t] <= d[\"cap\"][w]) for s in S]",
+              "description": "C5 quantifier-scope error: aggregate warehouse cap written per-route. Type-legal, looser, cheaper (all flow via cheap W1); true aggregate capacity violated."
+            }
+          ]
+        },
+        {
+          "id": "route_cost_map",
+          "class": "C6",
+          "slot": "COST_EXPR",
+          "correct": "d[\"cost\"][w][s]",
+          "mutants": [
+            {
+              "id": "c6_map",
+              "expect_rules": ["W5"],
+              "fragment": "(d[\"cost\"][\"W2\" if w == \"W1\" else w][s])",
+              "description": "C6 entity-mapping error: W1's routes charged at W2's unit costs. Constraints untouched; reported objective mismatches recomputed true cost -> W5."
+            }
+          ]
+        }
+      ]
+    },
+    "atom_scope": {
+      "sampler": "atom_scope",
+      "modules": ["M2_capacity", "M6_transport_alloc", "M8_objective"],
+      "n_instances_default": 2,
+      "witness_semantics": "witness/<aid>.py runs the artifact's solve.py, then independently checks: W2 AGGREGATE warehouse outbound capacity (sum over stores); W3 every store's demand met exactly; W4 non-negative shipments; W5 reported objective equals recomputed cost with TRUE route costs (tol 1e-6).",
+      "connections": [
+        {
+          "id": "cap_scope",
+          "class": "C5",
+          "slot": "CAP_CON",
+          "correct": "m.addCons(sum(ship[w, s] for s in S) <= d[\"cap\"][w])",
+          "mutants": [
+            {
+              "id": "c5_scope",
+              "expect_rules": ["W2"],
+              "fragment": "[m.addCons(ship[w, s] <= d[\"cap\"][w]) for s in S]",
+              "description": "C5 quantifier-scope error: aggregate warehouse cap written per-route. Type-legal, looser, cheaper; true aggregate capacity violated."
+            }
+          ]
+        }
+      ]
+    },
+    "atom_lag": {
+      "sampler": "atom_lag",
+      "modules": ["M1_inv_balance", "M6_transport_alloc", "M8_objective"],
+      "n_instances_default": 2,
+      "witness_semantics": "witness/<aid>.py runs the artifact's solve.py, then independently checks: W1 store inventory balance with LAGGED arrivals (ship at t-1 arrives at t); W3 non-negative inventory (demand met); W4 non-negative shipments; W5 reported objective equals recomputed cost with TRUE ship costs (tol 1e-6).",
+      "connections": [
+        {
+          "id": "arrival_lag",
+          "class": "C7",
+          "slot": "ARRIVE_EXPR",
+          "correct": "(ship[t - 1] if t > 1 else 0)",
+          "mutants": [
+            {
+              "id": "c7_lag",
+              "expect_rules": ["W1"],
+              "fragment": "ship[t]",
+              "description": "C7 time-alignment error: arrivals credited same-period instead of next-period. Type-legal, feasible, cheaper (late cheap shipping becomes usable); true lagged balance violated."
+            }
+          ]
+        }
+      ]
+    },
+    "atom_map": {
+      "sampler": "atom_map",
+      "modules": ["M6_transport_alloc", "M8_objective"],
+      "n_instances_default": 2,
+      "witness_semantics": "witness/<aid>.py runs the artifact's solve.py, then independently checks: W3 every store's demand met exactly; W4 non-negative shipments; W5 reported objective equals recomputed cost with TRUE route costs (tol 1e-6).",
+      "connections": [
+        {
+          "id": "route_cost_map",
+          "class": "C6",
+          "slot": "COST_EXPR",
+          "correct": "d[\"cost\"][w][s]",
+          "mutants": [
+            {
+              "id": "c6_map",
+              "expect_rules": ["W5"],
+              "fragment": "(d[\"cost\"][\"W2\" if w == \"W1\" else w][s])",
+              "description": "C6 entity-mapping error: W1's routes charged at W2's unit costs. Constraints untouched; reported objective mismatches recomputed true cost -> W5."
             }
           ]
         }

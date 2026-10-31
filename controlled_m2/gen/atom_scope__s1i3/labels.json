@@ -1,0 +1,31 @@
+{
+  "problem": "atom_scope__s1i3",
+  "family": "controlled_m2_gen",
+  "structure": "atom_scope",
+  "seed": 1,
+  "reference_objective": 26.0,
+  "tolerance": 1e-06,
+  "witness_semantics": "witness/<aid>.py runs the artifact's solve.py, then independently checks: W2 AGGREGATE warehouse outbound capacity (sum over stores); W3 every store's demand met exactly; W4 non-negative shipments; W5 reported objective equals recomputed cost with TRUE route costs (tol 1e-6).",
+  "connection_classes": {
+    "C5": "cap_scope"
+  },
+  "flips": {},
+  "artifacts": {
+    "correct": {
+      "path": "correct/solve.py",
+      "kind": "correct",
+      "mutation_type": null,
+      "expected_witness": "PASS",
+      "expected_objective": 26.0,
+      "description": "Correct reference implementation."
+    },
+    "c5_scope": {
+      "path": "mutants/c5_scope/solve.py",
+      "kind": "mutant",
+      "mutation_type": "connection_cap_scope",
+      "expected_witness": "FAIL",
+      "expected_objective": 13.0,
+      "description": "C5 quantifier-scope error: aggregate warehouse cap written per-route. Type-legal, looser, cheaper; true aggregate capacity violated."
+    }
+  }
+}

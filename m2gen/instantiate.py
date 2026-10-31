@@ -99,9 +99,87 @@ def sample_assign_fixed(rng: random.Random) -> dict:
     }
 
 
+def sample_dist_plan(rng: random.Random) -> dict:
+    T = 3
+    W = ["W1", "W2"]
+    S = ["S1", "S2", "S3"]
+    demand = {s: [rng.randint(2, 5) for _ in range(T)] for s in S}
+    # lag-1 transit: period-1 demand can only be met from init_inv
+    init_inv = {s: demand[s][0] + rng.randint(0, 1) for s in S}
+    need = [sum(demand[s][t] for s in S) for t in range(T)]
+    max_need = max(need[1:])  # arrivals at t>=2 must be shipped at t-1
+    # aggregate caps: sum covers peak need (feasible) but each warehouse
+    # alone does not -> scope binding and route choice both matter
+    c1 = rng.randint(max(2, max_need // 2), max_need - 1)
+    cap = {"W1": c1, "W2": max_need - c1 + rng.randint(0, 2)}
+    # W1 strictly cheaper everywhere: the C5 per-route mutant pushes all
+    # flow through W1 and breaks the true aggregate cap; W1/W2 costs must
+    # differ on every route so a C6 cost-map swap changes the objective
+    cost = {"W1": {}, "W2": {}}
+    for s in S:
+        cost["W2"][s] = rng.randint(3, 5)
+        cost["W1"][s] = rng.randint(1, 2)
+    return {
+        "warehouses": W, "stores": S, "periods": T,
+        "demand": demand, "init_inv": init_inv,
+        "cap": cap, "cost": cost,
+        "hold_cost": {s: rng.randint(1, 2) for s in S},
+    }
+
+
+def sample_atom_scope(rng: random.Random) -> dict:
+    W = ["W1", "W2"]
+    S = ["S1", "S2", "S3"]
+    demand = {s: rng.randint(2, 5) for s in S}
+    total = sum(demand.values())
+    # each cap below total (both warehouses needed), sum covers total;
+    # per-route mutant gets 3x cap on W1 -> must exceed aggregate cap
+    c1 = rng.randint(max(2, (total + 2) // 3), total - 1)
+    cap = {"W1": c1, "W2": total - c1 + rng.randint(0, 1)}
+    cost = {"W1": {}, "W2": {}}
+    for s in S:
+        cost["W2"][s] = rng.randint(3, 5)
+        cost["W1"][s] = rng.randint(1, 2)
+    return {"warehouses": W, "stores": S, "demand": demand,
+            "cap": cap, "cost": cost}
+
+
+def sample_atom_lag(rng: random.Random) -> dict:
+    T = 3
+    demand = [rng.randint(2, 5) for _ in range(T)]
+    # period-1 demand must come from init stock (lag); later periods force
+    # shipping, and decreasing ship costs make the lag decision-relevant
+    return {
+        "periods": T,
+        "demand": demand,
+        "init_inv": demand[0] + rng.randint(0, 1),
+        "ship_cost": sorted((rng.randint(3, 6) for _ in range(T)),
+                            reverse=True),
+        "hold_cost": rng.randint(1, 2),
+    }
+
+
+def sample_atom_map(rng: random.Random) -> dict:
+    W = ["W1", "W2"]
+    S = ["S1", "S2"]
+    cost = {"W1": {}, "W2": {}}
+    for s in S:
+        a, b = rng.randint(1, 4), rng.randint(1, 4)
+        while b == a:
+            b = rng.randint(1, 4)  # costs must differ so a map swap shows
+        cost["W1"][s], cost["W2"][s] = a, b
+    return {"warehouses": W, "stores": S,
+            "demand": {s: rng.randint(2, 6) for s in S},
+            "cost": cost}
+
+
 SAMPLERS = {
     "inv_cap": sample_inv_cap,
     "setup_charge": sample_setup_charge,
     "flow_dir": sample_flow_dir,
     "assign_fixed": sample_assign_fixed,
+    "dist_plan": sample_dist_plan,
+    "atom_scope": sample_atom_scope,
+    "atom_lag": sample_atom_lag,
+    "atom_map": sample_atom_map,
 }

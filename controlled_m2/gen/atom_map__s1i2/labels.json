@@ -1,0 +1,31 @@
+{
+  "problem": "atom_map__s1i2",
+  "family": "controlled_m2_gen",
+  "structure": "atom_map",
+  "seed": 1,
+  "reference_objective": 18.0,
+  "tolerance": 1e-06,
+  "witness_semantics": "witness/<aid>.py runs the artifact's solve.py, then independently checks: W3 every store's demand met exactly; W4 non-negative shipments; W5 reported objective equals recomputed cost with TRUE route costs (tol 1e-6).",
+  "connection_classes": {
+    "C6": "route_cost_map"
+  },
+  "flips": {},
+  "artifacts": {
+    "correct": {
+      "path": "correct/solve.py",
+      "kind": "correct",
+      "mutation_type": null,
+      "expected_witness": "PASS",
+      "expected_objective": 18.0,
+      "description": "Correct reference implementation."
+    },
+    "c6_map": {
+      "path": "mutants/c6_map/solve.py",
+      "kind": "mutant",
+      "mutation_type": "connection_route_cost_map",
+      "expected_witness": "FAIL",
+      "expected_objective": 18.0,
+      "description": "C6 entity-mapping error: W1's routes charged at W2's unit costs. Constraints untouched; reported objective mismatches recomputed true cost -> W5."
+    }
+  }
+}

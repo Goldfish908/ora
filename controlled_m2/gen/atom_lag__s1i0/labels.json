@@ -1,0 +1,31 @@
+{
+  "problem": "atom_lag__s1i0",
+  "family": "controlled_m2_gen",
+  "structure": "atom_lag",
+  "seed": 1,
+  "reference_objective": 35.0,
+  "tolerance": 1e-06,
+  "witness_semantics": "witness/<aid>.py runs the artifact's solve.py, then independently checks: W1 store inventory balance with LAGGED arrivals (ship at t-1 arrives at t); W3 non-negative inventory (demand met); W4 non-negative shipments; W5 reported objective equals recomputed cost with TRUE ship costs (tol 1e-6).",
+  "connection_classes": {
+    "C7": "arrival_lag"
+  },
+  "flips": {},
+  "artifacts": {
+    "correct": {
+      "path": "correct/solve.py",
+      "kind": "correct",
+      "mutation_type": null,
+      "expected_witness": "PASS",
+      "expected_objective": 35.0,
+      "description": "Correct reference implementation."
+    },
+    "c7_lag": {
+      "path": "mutants/c7_lag/solve.py",
+      "kind": "mutant",
+      "mutation_type": "connection_arrival_lag",
+      "expected_witness": "FAIL",
+      "expected_objective": 30.0,
+      "description": "C7 time-alignment error: arrivals credited same-period instead of next-period. Type-legal, feasible, cheaper (late cheap shipping becomes usable); true lagged balance violated."
+    }
+  }
+}

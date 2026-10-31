@@ -170,10 +170,16 @@ def main() -> None:
     ap.add_argument("--modes", nargs="*", default=["on", "off"],
                     choices=["on", "off"])
     ap.add_argument("--limit-instances", type=int, default=0)
+    ap.add_argument("--structures", nargs="*", default=None,
+                    help="only run instances of these structure ids")
     args = ap.parse_args()
 
     instances = sorted(p for p in GEN_DIR.iterdir()
                        if (p / "labels.json").exists())
+    if args.structures:
+        instances = [p for p in instances
+                     if json.loads((p / "labels.json").read_text())
+                     ["structure"] in args.structures]
     if args.limit_instances:
         instances = instances[: args.limit_instances]
     jobs = []

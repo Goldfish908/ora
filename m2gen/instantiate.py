@@ -198,6 +198,37 @@ def sample_dist_setup(rng: random.Random) -> dict:
     return p
 
 
+def sample_dist_setup_L(rng: random.Random) -> dict:
+    """Scale tier up from dist_setup: T=6, 3 warehouses x 5 stores. Same
+    connections; isolates SCALE as the difficulty variable (F8)."""
+    T = 6
+    W = ["W1", "W2", "W3"]
+    S = ["S1", "S2", "S3", "S4", "S5"]
+    demand = {s: [rng.randint(2, 5) for _ in range(T)] for s in S}
+    init_inv = {s: demand[s][0] + rng.randint(0, 1) for s in S}
+    need = [sum(demand[s][t] for s in S) for t in range(T)]
+    max_need = max(need[1:])
+    # no warehouse alone covers peak need; together they do
+    cap = {w: rng.randint(max(2, max_need // len(W)), max_need - 1)
+           for w in W}
+    if sum(cap.values()) < max_need:
+        cap["W3"] += max_need - sum(cap.values())
+    # strict cost gradient W1 < W2 < W3 per store: concentration pressure
+    # makes the C5 scope mutant greedy, and any W1<->W2 map swap shows
+    cost = {"W1": {}, "W2": {}, "W3": {}}
+    for s in S:
+        cost["W1"][s] = rng.randint(1, 2)
+        cost["W2"][s] = rng.randint(3, 4)
+        cost["W3"][s] = rng.randint(5, 6)
+    return {
+        "warehouses": W, "stores": S, "periods": T,
+        "demand": demand, "init_inv": init_inv,
+        "cap": cap, "cost": cost,
+        "depot_cost": {w: rng.randint(6, 10) for w in W},
+        "hold_cost": {s: rng.randint(1, 2) for s in S},
+    }
+
+
 SAMPLERS = {
     "inv_cap": sample_inv_cap,
     "setup_charge": sample_setup_charge,
@@ -209,4 +240,5 @@ SAMPLERS = {
     "atom_map": sample_atom_map,
     "atom_link": sample_atom_link,
     "dist_setup": sample_dist_setup,
+    "dist_setup_L": sample_dist_setup_L,
 }

@@ -59,7 +59,7 @@ def emit_instance(struct_id: str, params: dict, out_dir: Path,
     """Write one full five-piece instance (problem/data/correct/mutants/
     witness/labels) plus flip variants for connections with flip_text."""
     struct = SPEC["structures"][struct_id]
-    tmpl = HERE / "templates" / struct_id
+    tmpl = HERE / "templates" / struct.get("templates", struct_id)
     inst = out_dir / problem_id
     if inst.exists():
         shutil.rmtree(inst)
@@ -69,9 +69,18 @@ def emit_instance(struct_id: str, params: dict, out_dir: Path,
 
     phrase_map = {f"PHRASE_{c['id'].upper()}": c.get("flip_text", {})
                   .get("correct", "") for c in struct["connections"]}
+    # scale slots: templates may reference ${N_T}/${W_DESC}/${S_DESC} so one
+    # template family serves multiple scale tiers
+    scale_map = {
+        "N_T": str(params.get("periods", "")),
+        "W_DESC": "、".join(params.get("warehouses", [])),
+        "S_DESC": "、".join(params.get("stores", [])),
+        "N_W": str(len(params.get("warehouses", []))),
+        "N_S": str(len(params.get("stores", []))),
+    }
     (inst / "problem.md").write_text(_render(
         tmpl, "problem.md.tmpl",
-        {"PROBLEM_ID": problem_id, **phrase_map}))
+        {"PROBLEM_ID": problem_id, **scale_map, **phrase_map}))
 
     witness_src = (tmpl / "witness.py.tmpl").read_text()
     for aid, overrides, _ in artifacts_of(struct):
@@ -96,7 +105,7 @@ def emit_instance(struct_id: str, params: dict, out_dir: Path,
         (flip_dir / "problem.md").write_text(_render(
             tmpl, "problem.md.tmpl",
             {"PROBLEM_ID": problem_id + "__flip_" + conn["id"],
-             **flipped_phrases}))
+             **scale_map, **flipped_phrases}))
         # the flipped text makes flip_ref (default: the single mutant
         # fragment) the correct reference implementation of flipped semantics
         flipped_ref = conn.get("flip_ref") or conn["mutants"][0]["fragment"]

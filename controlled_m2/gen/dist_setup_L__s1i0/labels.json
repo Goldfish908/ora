@@ -1,0 +1,58 @@
+{
+  "problem": "dist_setup_L__s1i0",
+  "family": "controlled_m2_gen",
+  "structure": "dist_setup_L",
+  "seed": 1,
+  "reference_objective": 270.0,
+  "tolerance": 1e-06,
+  "witness_semantics": "witness/<aid>.py runs the artifact's solve.py, then independently checks: W1 store inventory balance with LAGGED arrivals; W2 AGGREGATE warehouse outbound capacity conditioned on depot activation; W3 non-negative inventory; W4 non-negative shipments; W5 reported objective equals recomputed cost with TRUE route and depot costs (tol 1e-6); W6 activation: warehouse-period ships >0 iff depot flag==1.",
+  "connection_classes": {
+    "C7": "arrival_lag",
+    "C5": "cap_scope",
+    "C3": "depot_link",
+    "C6": "route_cost_map"
+  },
+  "flips": {},
+  "artifacts": {
+    "correct": {
+      "path": "correct/solve.py",
+      "kind": "correct",
+      "mutation_type": null,
+      "expected_witness": "PASS",
+      "expected_objective": 270.0,
+      "description": "Correct reference implementation."
+    },
+    "c7_lag": {
+      "path": "mutants/c7_lag/solve.py",
+      "kind": "mutant",
+      "mutation_type": "connection_arrival_lag",
+      "expected_witness": "FAIL",
+      "expected_objective": 266.0,
+      "description": "C7 time-alignment error: arrivals credited same-period instead of next-period (transit lag dropped). Type-legal, feasible, cheaper; true lagged balance violated."
+    },
+    "c5_scope": {
+      "path": "mutants/c5_scope/solve.py",
+      "kind": "mutant",
+      "mutation_type": "connection_cap_scope",
+      "expected_witness": "FAIL",
+      "expected_objective": 200.0,
+      "description": "C5 quantifier-scope error: aggregate warehouse cap written per-route. Type-legal, looser, cheaper; true aggregate capacity violated."
+    },
+    "c3_no_link": {
+      "path": "mutants/c3_no_link/solve.py",
+      "kind": "mutant",
+      "mutation_type": "connection_depot_link",
+      "expected_witness": "FAIL",
+      "expected_objective": 200.0,
+      "description": "C3 activation error: ship-to-depot-flag link dropped; optimizer keeps y=0 everywhere, pays no depot cost. Feasible, cheaper; violates activation rule."
+    },
+    "c6_map": {
+      "path": "mutants/c6_map/solve.py",
+      "kind": "mutant",
+      "mutation_type": "connection_route_cost_map",
+      "expected_witness": "FAIL",
+      "expected_objective": 392.0,
+      "description": "C6 entity-mapping error: W1's routes charged at W2's unit costs. Constraints untouched; reported objective mismatches recomputed true cost -> W5."
+    }
+  }
+}

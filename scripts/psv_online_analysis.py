@@ -67,10 +67,54 @@ def summarize(states: dict, mode: str) -> dict:
     return {"n": len(sel), "success": succ, "residual": dict(resid)}
 
 
+def load_loop_records(path_glob):
+    """All loop records keyed by cell (excluding round-1 pilot)."""
+    recs = {}
+    for f in sorted(ROOT.glob(path_glob)):
+        for line in f.read_text().splitlines():
+            if not line.strip():
+                continue
+            r = json.loads(line)
+            recs.setdefault((r["scenario_id"], r["thinking"]), []).append(r)
+    for v in recs.values():
+        v.sort(key=lambda r: r["round"])
+    return recs
+
+
+def budget(recs, mode, gated_skips_solve):
+    n = 0
+    solves = llm_calls = gate_turns = 0
+    llm_t = solve_t = 0.0
+    for (sid, th), rounds in recs.items():
+        if th != mode:
+            continue
+        n += 1
+        for r in rounds:
+            llm_calls += 1  # one repair/generation call per loop round
+            llm_t += r.get("llm_latency_s", 0.0)
+            gate_turns += r.get("presolve_gate_turns", 0)
+            blocked = gated_skips_solve and r.get("presolve_final") == "block"
+            if r["exec_status"] == "ok" and not blocked:
+                solves += 1
+                solve_t += r.get("wall_s", 0.0)
+    if n == 0:
+        return {}
+    return {
+        "cells": n,
+        "llm_calls": llm_calls,
+        "gate_turns": gate_turns,
+        "solves": solves,
+        "llm_s": llm_t,
+        "solve_s": solve_t,
+    }
+
+
 def main() -> None:
     r1 = load_r1()
     armA = final_states("runs/m1_feedback/m1_feedback*.jsonl", r1)
     armB = final_states("runs/m1_presolve/m1_presolve_v*.jsonl", r1)
+    recA = load_loop_records("runs/m1_feedback/m1_feedback*.jsonl")
+    recB = load_loop_records("runs/m1_presolve/m1_presolve_v*.jsonl")
 
     lines = ["# Online controlled experiment: pre-solve gate (B) vs Route-B only (A)", ""]
     for mode in ("on",):
@@ -85,17 +129,44 @@ def main() -> None:
         lines.append("")
         lines.append(f"- A residual: {a['residual']}")
         lines.append(f"- B residual: {b['residual']}")
+        lines.append("")
 
-        # budget accounting for arm B from records
-        gate_turns = 0
-        checks = 0
-        for key, last in armB.items():
+        # paired per-cell flips
+        flips_better, flips_worse = [], []
+        for key in armA:
             if key[1] != mode:
                 continue
-            # count all loop records for this cell
+            wa = failure_type(armA[key]) is None
+            wb = failure_type(armB[key]) is None
+            if wb and not wa:
+                flips_better.append(key[0])
+            elif wa and not wb:
+                flips_worse.append(key[0])
+        lines.append(f"paired flips: B-only success {len(flips_better)}, "
+                     f"A-only success {len(flips_worse)}")
+        if flips_better:
+            lines.append(f"  B-only: {sorted(flips_better)}")
+        if flips_worse:
+            lines.append(f"  A-only: {sorted(flips_worse)}")
         lines.append("")
-        lines.append("Budget note: see per-record presolve_checks/n_solves_so_far "
-                     "fields in runs/m1_presolve/m1_presolve_v*.jsonl")
+
+        # budget (loop phase only, excludes round-1 pilot)
+        ba = budget(recA, mode, gated_skips_solve=False)
+        bb = budget(recB, mode, gated_skips_solve=True)
+        lines.append("## budget (loop phase only, on-mode)")
+        lines.append("")
+        lines.append("| arm | cells in loop | LLM repair calls | gate turns | solves | LLM s/cell | solve s/cell |")
+        lines.append("|---|---|---|---|---|---|---|")
+        for label, x in (("A", ba), ("B", bb)):
+            if not x:
+                continue
+            lines.append(
+                f"| {label} | {x['cells']} | {x['llm_calls']} | {x['gate_turns']} | "
+                f"{x['solves']} | {x['llm_s']/x['cells']:.1f} | {x['solve_s']/x['cells']:.1f} |")
+        lines.append("")
+        if ba and bb and ba["solves"] and bb["solves"]:
+            lines.append(f"solve invocations B vs A: {bb['solves']} vs {ba['solves']} "
+                         f"({(ba['solves']-bb['solves'])/ba['solves']:.1%} saved)")
     out = "\n".join(lines) + "\n"
     (PSV / "online_comparison.md").write_text(out)
     print(out)

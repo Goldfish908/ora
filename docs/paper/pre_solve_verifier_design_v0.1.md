@@ -184,6 +184,14 @@ Revised design: the requirement ledger has TWO sources.
    item 2), and gives a concrete measurable evolution demo: post-solve
    evidence at generation t becomes pre-solve prior at generation t+1.
 
+Extraction-audit datum (2026-11-01, all 190 ledgers): every ledger lists
+`inventory_init` as a requirement AND flags it under `hidden_conventions` —
+but the `source_span` citations for it are fabricated (quoted spans do not
+state zero starting inventory; an LLM cannot cite what is not in the text).
+Consequence: ledger entries whose citation does not support them are
+de-facto convention entries; the citation-support check is itself a
+deterministic signal for "this requirement came from priors, not text".
+
 This also sharpens the paper-track story: the interesting phenomenon is not
 "LLM makes modeling mistakes" but "the specification interface has a hidden
 layer, and agents need an institutional memory of conventions, not just

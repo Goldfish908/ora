@@ -69,7 +69,7 @@ def summarize(states: dict, mode: str) -> dict:
 
 def main() -> None:
     r1 = load_r1()
-    armA = final_states("runs/m1_feedback/m1_feedback_v*.jsonl", r1)
+    armA = final_states("runs/m1_feedback/m1_feedback*.jsonl", r1)
     armB = final_states("runs/m1_presolve/m1_presolve_v*.jsonl", r1)
 
     lines = ["# Online controlled experiment: pre-solve gate (B) vs Route-B only (A)", ""]

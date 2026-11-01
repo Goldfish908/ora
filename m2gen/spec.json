@@ -321,6 +321,48 @@
               "expect_rules": ["W1"],
               "fragment": "ship[w, s, t]",
               "description": "C7 time-alignment error: arrivals credited same-period instead of next-period (transit lag dropped). Type-legal, feasible, cheaper; true lagged balance violated."
+            },
+            {
+              "id": "c7_c5_compound",
+              "expect_rules": ["W1", "W2"],
+              "fragment": "ship[w, s, t]",
+              "also": {"cap_scope": "[m.addCons(ship[w, s, t] <= d[\"cap\"][w]) for s in S]"},
+              "description": "Compound injection: lag dropped AND aggregate cap written per-route. Two errors in one artifact; tests multi-error detection."
+            }
+          ],
+          "benigns": [
+            {
+              "id": "b7_rewritten",
+              "fragment": "(ship[w, s, t - 1] if t != 1 else 0)",
+              "description": "Benign rewrite: t != 1 instead of t > 1, semantically identical. Must PASS; false-alarm control."
+            }
+          ]
+        },
+        {
+          "id": "demand_sign",
+          "class": "C8",
+          "slot": "DEMAND_SIGN",
+          "correct": "-",
+          "mutants": [
+            {
+              "id": "c8_sign",
+              "expect_rules": ["W1"],
+              "fragment": "+",
+              "description": "C8 sign error: demand ADDED instead of subtracted in the inventory balance. Feasible, plausible-looking; witness balance with true sign violated."
+            }
+          ]
+        },
+        {
+          "id": "demand_index",
+          "class": "C4",
+          "slot": "DEMAND_IDX",
+          "correct": "t - 1",
+          "mutants": [
+            {
+              "id": "c4_offbyone",
+              "expect_rules": ["W1"],
+              "fragment": "(t if t < T else t - 1)",
+              "description": "C4 off-by-one: balance subtracts NEXT period's demand (last period clamped). Type-legal; witness balance with true demand violated."
             }
           ]
         },
@@ -335,6 +377,19 @@
               "expect_rules": ["W2"],
               "fragment": "[m.addCons(ship[w, s, t] <= d[\"cap\"][w]) for s in S]",
               "description": "C5 quantifier-scope error: aggregate warehouse cap written per-route. Type-legal, looser, cheaper; true aggregate capacity violated."
+            },
+            {
+              "id": "c5_drop",
+              "expect_rules": ["W2"],
+              "fragment": "pass",
+              "description": "Omission: the capacity constraint block is missing entirely (not miswritten — absent). Witness aggregate cap violated."
+            }
+          ],
+          "benigns": [
+            {
+              "id": "b5_commute",
+              "fragment": "m.addCons(d[\"cap\"][w] >= sum(ship[w, s, t] for s in S))",
+              "description": "Benign rewrite: inequality commuted (cap >= sum). Semantically identical. Must PASS; false-alarm control."
             }
           ]
         },
@@ -408,6 +463,48 @@
               "expect_rules": ["W1"],
               "fragment": "ship[w, s, t]",
               "description": "C7 time-alignment error: arrivals credited same-period instead of next-period (transit lag dropped). Type-legal, feasible, cheaper; true lagged balance violated."
+            },
+            {
+              "id": "c7_c5_compound",
+              "expect_rules": ["W1", "W2"],
+              "fragment": "ship[w, s, t]",
+              "also": {"cap_scope": "[m.addCons(ship[w, s, t] <= d[\"cap\"][w]) for s in S]"},
+              "description": "Compound injection: lag dropped AND aggregate cap written per-route. Two errors in one artifact; tests multi-error detection."
+            }
+          ],
+          "benigns": [
+            {
+              "id": "b7_rewritten",
+              "fragment": "(ship[w, s, t - 1] if t != 1 else 0)",
+              "description": "Benign rewrite: t != 1 instead of t > 1, semantically identical. Must PASS; false-alarm control."
+            }
+          ]
+        },
+        {
+          "id": "demand_sign",
+          "class": "C8",
+          "slot": "DEMAND_SIGN",
+          "correct": "-",
+          "mutants": [
+            {
+              "id": "c8_sign",
+              "expect_rules": ["W1"],
+              "fragment": "+",
+              "description": "C8 sign error: demand ADDED instead of subtracted in the inventory balance. Feasible, plausible-looking; witness balance with true sign violated."
+            }
+          ]
+        },
+        {
+          "id": "demand_index",
+          "class": "C4",
+          "slot": "DEMAND_IDX",
+          "correct": "t - 1",
+          "mutants": [
+            {
+              "id": "c4_offbyone",
+              "expect_rules": ["W1"],
+              "fragment": "(t if t < T else t - 1)",
+              "description": "C4 off-by-one: balance subtracts NEXT period's demand (last period clamped). Type-legal; witness balance with true demand violated."
             }
           ]
         },
@@ -422,6 +519,19 @@
               "expect_rules": ["W2"],
               "fragment": "[m.addCons(ship[w, s, t] <= d[\"cap\"][w]) for s in S]",
               "description": "C5 quantifier-scope error: aggregate warehouse cap written per-route. Type-legal, looser, cheaper; true aggregate capacity violated."
+            },
+            {
+              "id": "c5_drop",
+              "expect_rules": ["W2"],
+              "fragment": "pass",
+              "description": "Omission: the capacity constraint block is missing entirely (not miswritten — absent). Witness aggregate cap violated."
+            }
+          ],
+          "benigns": [
+            {
+              "id": "b5_commute",
+              "fragment": "m.addCons(d[\"cap\"][w] >= sum(ship[w, s, t] for s in S))",
+              "description": "Benign rewrite: inequality commuted (cap >= sum). Semantically identical. Must PASS; false-alarm control."
             }
           ]
         },

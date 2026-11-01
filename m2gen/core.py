@@ -45,12 +45,23 @@ def _slot_mapping(struct: dict, problem_id: str, artifact_id: str,
 
 
 def artifacts_of(struct: dict) -> list:
-    """[(artifact_id, {connection_id: fragment}), mutant_meta]"""
+    """[(artifact_id, {connection_id: fragment}), mutant_meta]
+
+    A mutant may carry "also": {other_connection: fragment} for compound
+    (multi-error) injections. A connection may carry "benigns": fragments
+    that are semantically correct but differently written — they must PASS
+    the witness and serve as false-alarm controls in audit experiments.
+    """
     out = [("correct", {}, None)]
     for conn in struct["connections"]:
         for mut in conn["mutants"]:
-            out.append((mut["id"], {conn["id"]: mut["fragment"]},
+            overrides = {conn["id"]: mut["fragment"], **mut.get("also", {})}
+            out.append((mut["id"], overrides,
                         {"connection": conn["id"], **mut}))
+        for ben in conn.get("benigns", []):
+            out.append((ben["id"], {conn["id"]: ben["fragment"]},
+                        {"connection": conn["id"], "benign": True,
+                         "expect_rules": [], **ben}))
     return out
 
 
@@ -189,6 +200,10 @@ def validate_instance(inst: Path, struct_id: str) -> tuple:
             if not res["passed"]:
                 ok = False
                 entry["violation"] = "correct artifact failed witness"
+        elif meta and meta.get("benign"):
+            if not res["passed"]:
+                ok = False
+                entry["violation"] = "benign variant failed witness"
         else:
             missing = [r for r in meta["expect_rules"]
                        if r not in res["rules"]]
@@ -211,13 +226,16 @@ def write_labels(inst: Path, struct_id: str, params: dict, report: dict,
     artifacts = {}
     for aid, _, meta in artifacts_of(struct):
         ent = report[aid]
+        benign = bool(meta and meta.get("benign"))
         artifacts[aid] = {
             "path": "correct/solve.py" if aid == "correct"
                     else f"mutants/{aid}/solve.py",
-            "kind": "correct" if aid == "correct" else "mutant",
+            "kind": ("correct" if aid == "correct"
+                     else "benign" if benign else "mutant"),
             "mutation_type": None if aid == "correct"
                              else f"connection_{meta['connection']}",
-            "expected_witness": "PASS" if aid == "correct" else "FAIL",
+            "expected_witness": "PASS" if (aid == "correct" or benign)
+                                else "FAIL",
             "expected_objective": ent["objective"],
             "description": "Correct reference implementation."
             if aid == "correct" else meta["description"],

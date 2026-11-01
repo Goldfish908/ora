@@ -80,3 +80,11 @@ Arm A = F12 Route-B feedback loop (existing results: true success 84/190
 on-mode, 3 rounds). Arm B = same loop + pre-solve gate before every solve
 (runs/m1_presolve/m1_presolve_v*.jsonl, 5 shards). Metrics: true success,
 solver invocations consumed, LLM calls, residual failure classes.
+
+## Interim online read (2026-11-02, ~26/177 cells finished; NOT final)
+
+Paired per-cell comparison on cells finished in arm B so far (on-mode):
+B flips fail->success: 7; B loses vs A: 1 (round-level stochasticity, not
+gate thrash); both succeed: 12; both fail: 6. Gate overhead is small in
+practice (most regens pass the gate on the first check; max 1 gate turn
+observed so far). Final numbers when all shards complete.

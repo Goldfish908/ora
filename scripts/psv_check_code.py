@@ -47,6 +47,14 @@ Do NOT judge mathematical elegance; only presence/correctness of enforcement.
 Citation is MANDATORY for "implemented"; without a citation the verdict is
 treated as missing.
 
+Equivalence rules (do NOT flag these as wrong):
+- Inventory initialization: only buckets with r < shelf_life must be pinned
+  (to zero) at t=1. The fresh bucket (r = shelf_life) at t=1 is legitimately
+  determined by period-1 production inflow; do not require it to be zero.
+- Demand conservation written as served + lost >= demand is ACCEPTABLE when
+  lost sales (or unmet demand) are penalized in the objective, because
+  over-satisfaction cannot be optimal under minimization.
+
 Requirement ledger:
 {ledger}
 
@@ -69,10 +77,23 @@ def load_code(scen: str, mode: str) -> str | None:
 
 
 def check_one(scen: str, mode: str, ledger: dict, code: str) -> dict:
+    # dedupe hidden conventions that merely restate an existing requirement
+    covered = {q.get("type") for q in ledger["requirements"]}
+    dup_kw = {"inventory_init": ("initial", "starting inventory",
+                                 "start of period 1"),
+              "demand_fulfillment": ("demand",),
+              "returns_flow": ("return",)}
+    hidden = []
+    for h in ledger.get("hidden_conventions") or []:
+        hl = h.lower()
+        dup = any(t in covered and any(k in hl for k in kws)
+                  for t, kws in dup_kw.items())
+        if not dup:
+            hidden.append(h)
     reqs = ledger["requirements"] + [
         {"id": f"H{i+1}", "type": "hidden_convention", "detail": h,
          "subject": "", "sense": ""}
-        for i, h in enumerate(ledger.get("hidden_conventions") or [])]
+        for i, h in enumerate(hidden)]
     ledger_txt = json.dumps(reqs, ensure_ascii=False, indent=1)
     prompt = PROMPT.replace("{ledger", "{ledger").format(
         ledger=ledger_txt, code=code)

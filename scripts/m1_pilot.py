@@ -213,6 +213,9 @@ def main() -> None:
                          "data pre-loaded as variable, injected by harness; "
                          "schema_sol = schema + model must dump solution.json "
                          "for witness re-verification (all families)")
+    ap.add_argument("--out-tag", default="",
+                    help="optional suffix for the output jsonl so parallel "
+                         "shards never share a file")
     args = ap.parse_args()
 
     rows = [json.loads(l) for l in DATA.read_text().splitlines() if l.strip()]
@@ -228,7 +231,7 @@ def main() -> None:
 
     cfg = llm_mod.load_config()
     OUT_DIR.mkdir(parents=True, exist_ok=True)
-    out_path = OUT_DIR / f"m1_pilot_{args.prompt_mode}.jsonl"
+    out_path = OUT_DIR / f"m1_pilot_{args.prompt_mode}{args.out_tag}.jsonl"
     done = set()
     if out_path.exists():
         for l in out_path.read_text().splitlines():

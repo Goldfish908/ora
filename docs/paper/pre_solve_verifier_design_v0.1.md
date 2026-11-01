@@ -146,6 +146,49 @@ Ordered by asset weight, harness-first:
   faithful transcription style), so AST attribution should cover most cells;
   measure coverage in 4.1 and fall back to LLM extraction where it fails.
 
+## 6.5 Phase A result and a design-changing discovery (2026-11-01)
+
+Phase A = zero-cost deterministic AST probes (presolve/code_probes.py): does the
+generated code even *reference* the data keys each constraint family needs?
+Scored against the program-verified witness ground truth on all 380 round-1
+cells (runs/presolve/phase_a_summary.md):
+
+- on-mode: phantom recall 2/56 (3.6%), win pass-through 13/13 (100%)
+- off-mode: phantom recall 0/48
+
+Interpretation: models almost always *read* the right data; the errors are
+**structural omissions** (a constraint that was never written), not missing
+data plumbing. Pure static probes are a high-precision but near-zero-recall
+signal — confirming that the ledger-diff (Phase B/C) must compare *constraint
+structure*, not data references.
+
+Design-changing discovery while building Phase B: **the problem text never
+states that starting inventory is zero.** No "initial", no boundary equation,
+nothing — yet the witness (encoding intended semantics, matching the reference
+solver) requires I[p,l,1,r] = 0. C-INIT (81 phantom cells, the #1 error class)
+is therefore *not extractable from the text at all*: it is a hidden convention
+of the task family. A pure text<->model ledger diff is structurally blind to
+the error class that matters most.
+
+Revised design: the requirement ledger has TWO sources.
+
+1. **Text ledger** (LLM extraction from the problem statement) — as before.
+2. **Convention ledger** (task-family prior) — canonical requirements that
+   competent modeling assumes but the text does not state ("an inventory
+   system starts empty unless initial stock is given"; "demand is either
+   served, substituted, or lost — never silently dropped"). v0.1: hand-written
+   from the witness rule set. **Target state: mined automatically from F12
+   feedback trajectories** — every witness message in rounds 1-3 is a
+   post-solve discovery of exactly such a convention; distilling them into
+   pre-solve checks is the memory layer of the self-evolution roadmap (§5
+   item 2), and gives a concrete measurable evolution demo: post-solve
+   evidence at generation t becomes pre-solve prior at generation t+1.
+
+This also sharpens the paper-track story: the interesting phenomenon is not
+"LLM makes modeling mistakes" but "the specification interface has a hidden
+layer, and agents need an institutional memory of conventions, not just
+better reading comprehension."
+
 ## 7. References
 
 - SAC-Opt: arXiv:2510.05115 (semantic anchored constraint optimization)

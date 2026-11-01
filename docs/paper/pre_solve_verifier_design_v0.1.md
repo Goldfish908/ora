@@ -197,6 +197,28 @@ This also sharpens the paper-track story: the interesting phenomenon is not
 layer, and agents need an institutional memory of conventions, not just
 better reading comprehension."
 
+## 6.6 Convention mining from F12 trajectories (2026-11-02)
+
+Mining the 695 F12 feedback rounds (runs/presolve/convention_mining_v0.json):
+post-solve witness feedback on spec-interface conventions is both expensive
+AND ineffective — when told the exact violation, the model fixed it within
+the loop only rarely:
+
+| witness rule | fired (rounds) | fixed within loop | fix rate |
+|---|---|---|---|
+| C-DEMAND | 203 | 7 | 3% |
+| C-INIT | 173 | 24 | 14% |
+| C-OBJ | 21 | 1 | 5% |
+| C-INFLOW / C-AGING / C-PRODCAP / C-AVAIL | 38 | 0 | 0% |
+
+Contrast with the pre-solve verifier's offline catch rates (C-INIT 99%,
+C-DEMAND 89%): the same conventions are far easier to ENFORCE before solving
+than to TEACH after solving. This asymmetry is the quantitative motivation
+for moving convention knowledge from post-solve feedback (F12) into
+pre-solve priors (the convention ledger) — and, in the self-evolution
+roadmap, for a memory layer that distils recurring post-solve discoveries
+into pre-solve checks automatically.
+
 ## 7. References
 
 - SAC-Opt: arXiv:2510.05115 (semantic anchored constraint optimization)

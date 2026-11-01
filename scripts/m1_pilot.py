@@ -35,7 +35,7 @@ ROOT = Path(__file__).resolve().parents[1]
 sys.path.insert(0, str(ROOT))
 
 from ora_agent import llm as llm_mod  # noqa: E402
-from m1_witness import f1 as witness_f1  # noqa: E402
+from m1_witness import retailopt as witness  # noqa: E402
 
 DATA = ROOT / "data" / "m1_retailopt" / "retailopt_190.jsonl"
 OUT_DIR = ROOT / "runs" / "m1_pilot"
@@ -73,7 +73,7 @@ SCIP_OUTPUT_FORMAT_SOL = f"""[OUTPUT FORMAT]
   Sparse dict-of-dicts, ONLY nonzero entries, keys joined with "|":
     sol = {{"objective": float(m.getObjVal()),
            "Q": {{}}, "sales": {{}}, "I": {{}},
-           "W": {{}}, "lost": {{}}, "sub": {{}}}}
+           "W": {{}}, "lost": {{}}, "sub": {{}}, "X": {{}}}}
     # Q:     "p|l|t"     order quantity, period t = 1..T
     # sales: "p|l|t|r"   sales out of the bucket with r periods of shelf
     #                    life remaining
@@ -81,6 +81,8 @@ SCIP_OUTPUT_FORMAT_SOL = f"""[OUTPUT FORMAT]
     # W:     "p|l|t"     expired waste
     # lost:  "p|l|t"     lost sales
     # sub:   "pf|pt|l|t" demand of pf served by pt (substitution)
+    # X:     "p|src|dst|t" transshipment flow on declared trans_edges
+    #                      (only for archetypes whose JSON lists trans_edges)
     json.dump(sol, open("solution.json", "w"))
 - Output ONLY executable Python code. No markdown, no explanations.
 
@@ -163,7 +165,7 @@ def run_code(code: str, sandbox: Path) -> dict:
 def run_witness(row: dict, sandbox: Path) -> dict:
     """Re-verify the dumped solution.json instead of trusting the printed
     objective. Witness verdicts: no_solution / parse_error / feasible /
-    infeasible(+rules). Family checkers beyond f1 are not built yet."""
+    infeasible(+rules). Uses the generalized all-family checker."""
     sol_path = sandbox / "solution.json"
     out = {"witness": "no_solution"}
     if not sol_path.exists():
@@ -172,10 +174,7 @@ def run_witness(row: dict, sandbox: Path) -> dict:
         sol = json.loads(sol_path.read_text())
     except json.JSONDecodeError as e:
         return {"witness": "parse_error", "witness_error": str(e)[:200]}
-    sid = row["scenario_id"]
-    if "_f1_" not in sid:
-        return {"witness": "no_checker"}
-    res = witness_f1.check(json.loads(row["data"]), sol)
+    res = witness.check(json.loads(row["data"]), sol)
     out["witness"] = "feasible" if not res["violations"] else "infeasible"
     out["witness_rules"] = sorted({r for r, _ in res["violations"]})
     out["witness_details"] = [f"{r}: {d}" for r, d in
@@ -213,7 +212,7 @@ def main() -> None:
                     help="full = inline data (transcription risk); schema = "
                          "data pre-loaded as variable, injected by harness; "
                          "schema_sol = schema + model must dump solution.json "
-                         "for witness re-verification (f1 only for now)")
+                         "for witness re-verification (all families)")
     args = ap.parse_args()
 
     rows = [json.loads(l) for l in DATA.read_text().splitlines() if l.strip()]

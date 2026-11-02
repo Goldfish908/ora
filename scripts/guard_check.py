@@ -7,7 +7,8 @@ pre-solve gate and any solver invocation.
 
 Rules:
   G1 setObjective sense must be literal "minimize"/"maximize"
-  G2 setObjective first arg must not be a list/ListComp (wrap in quicksum)
+  G2 setObjective first arg must not be a list/ListComp (wrap in quicksum);
+     v0.2: also flags names bound to a list literal that flow in as the arg
   G3 no `==` comparison on Expr/addVar results
   G4 quicksum must be called as a function, not m.quicksum
   G5 set*Param parameter names must be in the whitelist
@@ -42,6 +43,17 @@ class Guard(ast.NodeVisitor):
     def __init__(self) -> None:
         self.hits: list[dict] = []
         self._safe_cmp: set[int] = set()   # Compare nodes directly inside addCons*
+        self._list_names: set[str] = set()  # names currently bound to a list
+
+    def visit_Assign(self, node: ast.Assign) -> None:
+        is_list = isinstance(node.value, (ast.List, ast.ListComp))
+        for t in node.targets:
+            if isinstance(t, ast.Name):
+                if is_list:
+                    self._list_names.add(t.id)
+                else:
+                    self._list_names.discard(t.id)
+        self.generic_visit(node)
 
     def _hit(self, rule: str, node: ast.AST, msg: str) -> None:
         self.hits.append({"rule": rule, "line": getattr(node, "lineno", 0),
@@ -74,10 +86,13 @@ class Guard(ast.NodeVisitor):
                                       f"PySCIPOpt 只认 'minimize'/'maximize'")
                     else:
                         self._hit("G1", node, "sense 不是字符串字面量，无法静态确认")
-            # G2: first positional arg list
-            if node.args and isinstance(node.args[0], (ast.List, ast.ListComp)):
-                self._hit("G2", node, "目标参数是 list；PySCIPOpt 需要 Expr，"
-                                      "用 quicksum([...]) 包一层")
+            # G2: first positional arg list (literal or name bound to a list)
+            if node.args:
+                a0 = node.args[0]
+                if (isinstance(a0, (ast.List, ast.ListComp)) or
+                        (isinstance(a0, ast.Name) and a0.id in self._list_names)):
+                    self._hit("G2", node, "目标参数是 list；PySCIPOpt 需要 Expr，"
+                                          "用 quicksum([...]) 包一层")
             # positional sense=1 / sense=0
             if len(node.args) >= 2 and isinstance(node.args[1], ast.Constant):
                 v = node.args[1].value

@@ -82,6 +82,14 @@ def main() -> None:
     ap.add_argument("--guard-turns", type=int, default=1,
                     help="max crash-guard regenerate turns per round")
     ap.add_argument("--limit", type=int, default=0)
+    ap.add_argument("--conventions-file", default=None,
+                    help="prepend distilled-conventions text to the prompt "
+                         "(generation-side upgrade arms)")
+    ap.add_argument("--pilot-dir", default=None,
+                    help="pilot run dir supplying round-1 records/sandboxes "
+                         "(default runs/m1_pilot); round-1 offline gate "
+                         "verdicts are only reused for the default dir")
+    ap.add_argument("--pilot-glob", default="m1_pilot_schema_sol*.jsonl")
     args = ap.parse_args()
 
     ds_rows = {json.loads(l)["scenario_id"]: json.loads(l)
@@ -102,7 +110,8 @@ def main() -> None:
                 r1_checks[(r["scenario_id"], r["thinking"])] = r["checks"]
 
     r1: dict[tuple[str, str], dict] = {}
-    for f in sorted(PILOT_DIR.glob("m1_pilot_schema_sol*.jsonl")):
+    pilot_dir = Path(args.pilot_dir).resolve() if args.pilot_dir else PILOT_DIR
+    for f in sorted(pilot_dir.glob(args.pilot_glob)):
         for line in f.read_text().splitlines():
             if line.strip():
                 r = json.loads(line)
@@ -129,17 +138,24 @@ def main() -> None:
                     last_rec[key] = r
 
     cfg = llm_mod.load_config()
+    conventions = (Path(args.conventions_file).read_text().strip()
+                   if args.conventions_file else None)
     with out_path.open("a", encoding="utf-8") as fp:
         for sid, mode in cells:
             row = ds_rows[sid]
             ledger = ledgers.get(sid)
             prompt = adapt_prompt_schema(row["prompt_schema"],
                                          SCIP_OUTPUT_FORMAT_SOL)
+            if conventions:
+                prompt = conventions + "\n\n" + prompt
             prev = last_rec.get((sid, mode)) or r1[(sid, mode)]
             prev_code = None
-            # round-1 gate verdict from the offline Phase-C pass
+            # round-1 gate verdict from the offline Phase-C pass — only valid
+            # for the default pilot (verdicts refer to that code, not to a
+            # re-generated pilot like P2)
             prev_gate_bad = None
-            if (sid, mode) in r1_checks and (sid, mode) not in last_rec:
+            if (pilot_dir == PILOT_DIR
+                    and (sid, mode) in r1_checks and (sid, mode) not in last_rec):
                 b, bad = blocked(r1_checks[(sid, mode)])
                 prev_gate_bad = bad if b else None
             n_solves = 1  # round-1 solve already happened (pilot)
@@ -150,7 +166,7 @@ def main() -> None:
                 if ftype is None:
                     break
                 if prev_code is None:
-                    sb = (PILOT_DIR / "sandbox"
+                    sb = (pilot_dir / "sandbox"
                           / f"schema_sol__{sid}__{mode}" / "gen.py")
                     if rnd > 2:
                         sb = (OUT_DIR / "sandbox"

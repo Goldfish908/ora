@@ -154,7 +154,8 @@ def main() -> None:
                           / f"schema_sol__{sid}__{mode}" / "gen.py")
                     if rnd > 2:
                         sb = (OUT_DIR / "sandbox"
-                              / f"psv__{sid}__{mode}__r{rnd - 1}" / "gen.py")
+                              / f"psv{args.out_tag}__{sid}__{mode}__r{rnd - 1}"
+                              / "gen.py")
                     prev_code = (sb.read_text()
                                  .removeprefix(SCHEMA_PRELUDE) if sb.exists()
                                  else "# (code unavailable)")
@@ -263,7 +264,7 @@ def main() -> None:
                                              else "pass")
                 # ---- execute ----
                 sandbox = (OUT_DIR / "sandbox"
-                           / f"psv__{sid}__{mode}__r{rnd}")
+                           / f"psv{args.out_tag}__{sid}__{mode}__r{rnd}")
                 sandbox.mkdir(parents=True, exist_ok=True)
                 (sandbox / "data.json").write_text(row["data"])
                 rec.update(run_code(SCHEMA_PRELUDE + code, sandbox))

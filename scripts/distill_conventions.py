@@ -86,10 +86,11 @@ def sandbox_units():
                     continue
                 sid, th, rnd = parts[1], parts[2], int(parts[3][1:])
             if arm in ("B", "Bp"):
-                want = "psv__" if arm == "B" else "psv_guard"
-                if not name.startswith(want):
+                if not name.startswith("psv"):
                     continue
                 if arm == "B" and name.startswith("psv_guard"):
+                    continue
+                if arm == "Bp" and not name.startswith("psv_guard"):
                     continue
             if HOLDOUT and family_of(sid) == HOLDOUT:
                 continue
@@ -202,10 +203,10 @@ def main() -> None:
              "每份 sandbox gen.py 上重放、stderr 崩溃签名聚类、失败类逐轮"
              "粘连率（同一 cell 相邻两轮同失败类 = 点反馈未被吸收）。")
     L.append("")
-    L.append("> 注意：m1_presolve_loop 的 sandbox 目录命名不含 out-tag，"
-             "B' 臂会覆盖同名的 B 臂 gen.py。§1 的 B 列因此混入少量 B' "
-             "早期代码（≈17 cell，偏低估计 B 的违规数）；§2/§3 基于 jsonl "
-             "记录，不受影响。后续臂应在 sandbox 命名中加入 out-tag。")
+    L.append("> 注意：历史 B/B' 臂的 sandbox 目录共用 psv__ 前缀（B' 覆盖同名 "
+             "B 臂 gen.py；已于 m1_presolve_loop 修复，新臂命名含 out-tag）。"
+             "§1 的 B 列因此混入少量 B' 早期代码（偏低估计 B 的违规数）;"
+             "§2/§3 基于 jsonl 记录，不受影响。")
     L.append("")
     L.append("> 防泄题协议：蒸馏来源目前是 RetailOpt-190 自身轨迹。当前产物"
              "（G1–G8）全部是 PySCIPOpt API 用法与 harness 环境约定，不含题目"

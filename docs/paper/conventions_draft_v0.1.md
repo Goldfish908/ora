@@ -9,7 +9,7 @@
 | rule | pilot | A | B | B' | 合计 | 跨轮重复 cell 数 | 例 |
 |---|---|---|---|---|---|---|---|
 | G0 | 20 | 16 | 3 | 0 | 39 | 0 | schema_sol__retail_f1_high_waste_v3 (pilot r1) |
-| G1 | 179 | 131 | 74 | 0 | 384 | 48 | retail_f1_52_weeks_v0 (pilot r1) |
+| G1 | 179 | 131 | 73 | 0 | 383 | 48 | retail_f1_52_weeks_v0 (pilot r1) |
 | G3 | 2 | 2 | 1 | 0 | 5 | 1 | schema_sol__retail_f2_ultra_fresh_v2 (pilot r1) |
 | G4 | 3 | 2 | 2 | 0 | 7 | 0 | retail_f1_52_weeks_v0 (pilot r1) |
 | G5 | 0 | 3 | 1 | 0 | 4 | 0 | retail_f5_strict_service_trap_v1 (A r3) |
@@ -52,7 +52,7 @@
 以下文本可注入生成 prompt 作为 memory/先验；括号内为历史命中证据。
 
 - **[G0]** Code must parse as Python 3 (no syntax errors). (命中 39 份代码，跨轮重复 0 cell)
-- **[G1]** PySCIPOpt setObjective: sense must be the string "minimize" or "maximize" (never "min"/"max"); pass sense as a keyword. (命中 384 份代码，跨轮重复 48 cell)
+- **[G1]** PySCIPOpt setObjective: sense must be the string "minimize" or "maximize" (never "min"/"max"); pass sense as a keyword. (命中 383 份代码，跨轮重复 48 cell)
 - **[G3]** Build comparisons ONLY inside addCons(...); never use <=, >=, == on expressions in if/assert/bool context (it raises TypeError). (命中 5 份代码，跨轮重复 1 cell)
 - **[G4]** quicksum is a module-level function (from pyscipopt import quicksum), not a Model method (m.quicksum does not exist). (命中 7 份代码，跨轮重复 0 cell)
 - **[G5]** setParam only with real SCIP parameter names (e.g. limits/time, limits/gap, presolving/maxrounds); never invent parameter names. (命中 4 份代码，跨轮重复 0 cell)
@@ -60,5 +60,5 @@
 crash 签名中未被 guard 规则覆盖的高频项，是 guard 规则扩充的候选：
 
 - `AssertionError: ... neither Expr or number but list` 共 155 次，但 G2 重放命中 0 ——G2 只覆盖**字面量** list 参数，经变量间接传入（`obj=[...]; setObjective(obj)`）漏检。候选扩充：简单数据流（Name=List 赋值流入 setObjective 调用）。
-- `NotImplementedError`（pyscipopt）共 34 次：多为人间比较/链式比较的运行时形态，与 G3 同源但 AST 形态不同，候选扩充 G3 覆盖更多上下文。
+- `NotImplementedError`（pyscipopt）共 34 次：多为表达式比较/链式比较的运行时形态，与 G3 同源但 AST 形态不同，候选扩充 G3 覆盖更多上下文。
 

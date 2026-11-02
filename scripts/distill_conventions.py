@@ -236,7 +236,7 @@ def main() -> None:
              "setObjective(obj)`）漏检。候选扩充：简单数据流（Name=List 赋值"
              "流入 setObjective 调用）。")
     nl = sig_tot.get("NotImplementedError:  [pyscipopt:pxi\"]", 0)
-    L.append(f"- `NotImplementedError`（pyscipopt）共 {nl} 次：多为人间比较/"
+    L.append(f"- `NotImplementedError`（pyscipopt）共 {nl} 次：多为表达式比较/"
              "链式比较的运行时形态，与 G3 同源但 AST 形态不同，候选扩充 G3 "
              "覆盖更多上下文。")
     L.append("")

@@ -16,6 +16,7 @@ Output: docs/paper/conventions_draft_v0.1.md
 
 from __future__ import annotations
 
+import argparse
 import json
 import re
 import sys
@@ -57,6 +58,14 @@ PRIOR_TEXT = {
 }
 
 
+HOLDOUT: str | None = None  # e.g. "f4": exclude that family from mining
+
+
+def family_of(sid: str) -> str:
+    m = re.match(r"retail_(f\d+)_", sid)
+    return m.group(1) if m else "other"
+
+
 def sandbox_units():
     """Yield (arm, scenario, thinking, round, code) for every sandbox gen.py."""
     for arm, (d, _g) in ARMS.items():
@@ -82,6 +91,8 @@ def sandbox_units():
                     continue
                 if arm == "B" and name.startswith("psv_guard"):
                     continue
+            if HOLDOUT and family_of(sid) == HOLDOUT:
+                continue
             try:
                 code = gen.read_text()
             except UnicodeDecodeError:
@@ -95,7 +106,10 @@ def load_records():
         for f in sorted(d.glob(g)):
             for line in f.read_text().splitlines():
                 if line.strip():
-                    yield arm, json.loads(line)
+                    r = json.loads(line)
+                    if HOLDOUT and family_of(r["scenario_id"]) == HOLDOUT:
+                        continue
+                    yield arm, r
 
 
 def crash_sig(stderr: str) -> str | None:
@@ -116,6 +130,15 @@ def crash_sig(stderr: str) -> str | None:
 
 
 def main() -> None:
+    global HOLDOUT
+    ap = argparse.ArgumentParser(description=__doc__)
+    ap.add_argument("--holdout", metavar="FAMILY",
+                    help="exclude one scenario family (e.g. f4) from mining; "
+                         "rules distilled without it stay leak-free for "
+                         "held-out evaluation on that family")
+    args = ap.parse_args()
+    HOLDOUT = args.holdout
+
     units = list(sandbox_units())
     recs = list(load_records())
 
@@ -170,6 +193,10 @@ def main() -> None:
 
     # ---- emit markdown ----
     L = ["# 约定/修复模式自动蒸馏草案 v0.1", ""]
+    if HOLDOUT:
+        L.append(f"**本次挖掘已留出 `{HOLDOUT}` 族（--holdout）：所有统计均不含"
+                 "该族轨迹，蒸馏出的规则可安全用于该族的 held-out 评测。**")
+        L.append("")
     L.append("方法：对全部历史轨迹（round-1 pilot、A 反馈环、B 预求解闸门、"
              "B' crash guard）做零 LLM 成本的确定性挖掘——guard AST 规则在"
              "每份 sandbox gen.py 上重放、stderr 崩溃签名聚类、失败类逐轮"
@@ -179,6 +206,15 @@ def main() -> None:
              "B' 臂会覆盖同名的 B 臂 gen.py。§1 的 B 列因此混入少量 B' "
              "早期代码（≈17 cell，偏低估计 B 的违规数）；§2/§3 基于 jsonl "
              "记录，不受影响。后续臂应在 sandbox 命名中加入 out-tag。")
+    L.append("")
+    L.append("> 防泄题协议：蒸馏来源目前是 RetailOpt-190 自身轨迹。当前产物"
+             "（G1–G8）全部是 PySCIPOpt API 用法与 harness 环境约定，不含题目"
+             "语义/答案，属工具知识；但规则集是集内失败分布驱动选出的，严格"
+             "意义上是 dev-set fitting。协议：① memory 蒸馏只用 dev 部分"
+             "（--holdout 留出整族），冻结后只在 held-out 上主表评测；"
+             "② 语义层约定（场景建模知识）必须走该协议，reference 目标值"
+             "永不进 memory;③ 跨数据集迁移（RetailOpt 蒸馏 → IndustryOR/"
+             "NL4Opt 评测）作为更强的泛化 claim。")
     L.append("")
 
     L.append("## 1. guard 规则在全部历史代码上的重放命中")

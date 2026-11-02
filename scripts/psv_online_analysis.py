@@ -30,9 +30,9 @@ FB = ROOT / "runs" / "m1_feedback"
 PSV = ROOT / "runs" / "m1_presolve"
 
 
-def load_r1() -> dict:
+def load_r1(pilot_dir=PILOT, pattern="m1_pilot_schema_sol*.jsonl") -> dict:
     r1 = {}
-    for f in sorted(PILOT.glob("m1_pilot_schema_sol*.jsonl")):
+    for f in sorted(pilot_dir.glob(pattern)):
         for line in f.read_text().splitlines():
             if line.strip():
                 r = json.loads(line)
@@ -152,11 +152,20 @@ def main() -> None:
     for s in specs:
         label, _, rest = s.partition("=")
         glob, _, flag = rest.partition(":")
-        arms.append({"label": label, "glob": glob, "gated": flag == "gated"})
+        # optional pilot override: ...:gated;PILOT_DIR;PILOT_GLOB
+        pilot_dir, pilot_glob = None, None
+        if ";" in flag:
+            flag, pilot_dir, pilot_glob = flag.split(";")
+        arms.append({"label": label, "glob": glob, "gated": flag == "gated",
+                     "pilot_dir": pilot_dir, "pilot_glob": pilot_glob})
 
     r1 = load_r1()
     for a in arms:
-        a["states"] = final_states(a["glob"], r1)
+        if a["pilot_dir"]:
+            a["r1"] = load_r1(Path(a["pilot_dir"]), a["pilot_glob"])
+        else:
+            a["r1"] = r1
+        a["states"] = final_states(a["glob"], a["r1"])
         a["recs"] = load_loop_records(a["glob"])
 
     lines = ["# Online controlled experiment: " + " vs ".join(a["label"] for a in arms), ""]
@@ -226,11 +235,11 @@ def main() -> None:
         lines.append("| arm | pass@1 (r1) | after r2 | after r3 |")
         lines.append("|---|---|---|---|")
         for a in arms:
-            c = per_round_curve(a["recs"], r1, mode)
+            c = per_round_curve(a["recs"], a["r1"], mode)
             lines.append(f"| {a['label']} | {c[1]} ({c[1]/190:.1%}) | "
                          f"{c[2]} ({c[2]/190:.1%}) | {c[3]} ({c[3]/190:.1%}) |")
         lines.append("")
-        lines.append("pass@1 为两臂共享的 round-1 pilot；逐轮曲线记录修复环的边际贡献，"
+        lines.append("pass@1 为各臂自身 round-1 pilot 的记录；逐轮曲线记录修复环的边际贡献，"
                      "供自进化代数间对比（pass@1 不是唯一指标）。")
     out = "\n".join(lines) + "\n"
     Path(args.out).write_text(out)

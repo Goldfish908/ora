@@ -241,7 +241,7 @@ def main() -> None:
         rows = rows[: args.limit]
 
     cfg = llm_mod.load_config()
-    out_dir = Path(args.out_dir) if args.out_dir else OUT_DIR
+    out_dir = Path(args.out_dir).resolve() if args.out_dir else OUT_DIR
     out_dir.mkdir(parents=True, exist_ok=True)
     out_path = out_dir / f"m1_pilot_{args.prompt_mode}{args.out_tag}.jsonl"
     done = set()

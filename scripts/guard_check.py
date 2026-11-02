@@ -12,6 +12,7 @@ Rules:
   G3 no `==` comparison on Expr/addVar results
   G4 quicksum must be called as a function, not m.quicksum
   G5 set*Param parameter names must be in the whitelist
+  G6 never reassign `data` to None (the prelude already loads data.json)
 
 Usage:
   python3 scripts/guard_check.py FILE.py          # single file, exit 1 if hit
@@ -53,6 +54,12 @@ class Guard(ast.NodeVisitor):
                     self._list_names.add(t.id)
                 else:
                     self._list_names.discard(t.id)
+                # G6: prelude already loads `data`; shadowing it with None kills
+                # every subsequent data[...] access (NoneType subscript crash)
+                if (t.id == "data" and isinstance(node.value, ast.Constant)
+                        and node.value.value is None):
+                    self._hit("G6", node, "不要把 data 重赋为 None；prelude 已从 "
+                                          "data.json 载入数据，直接用 data[...]")
         self.generic_visit(node)
 
     def _hit(self, rule: str, node: ast.AST, msg: str) -> None:

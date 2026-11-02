@@ -48,6 +48,8 @@ PRIOR_TEXT = {
           "quicksum), not a Model method (m.quicksum does not exist).",
     "G5": "setParam only with real SCIP parameter names (e.g. limits/time, "
           "limits/gap, presolving/maxrounds); never invent parameter names.",
+    "G6": "The prelude already loads `data` from data.json; NEVER reassign "
+          "it (data = None kills every data[...] access).",
 }
 
 

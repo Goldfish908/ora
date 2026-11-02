@@ -216,7 +216,18 @@ def main() -> None:
     ap.add_argument("--out-tag", default="",
                     help="optional suffix for the output jsonl so parallel "
                          "shards never share a file")
+    ap.add_argument("--out-dir", default=None,
+                    help="override output dir (default runs/m1_pilot); use a "
+                         "separate dir for prior-injection arms so sandboxes "
+                         "and analysis globs stay uncontaminated")
+    ap.add_argument("--conventions-file", default=None,
+                    help="optional text file with distilled conventions "
+                         "(memory priors) prepended to the prompt")
     args = ap.parse_args()
+
+    conventions = None
+    if args.conventions_file:
+        conventions = Path(args.conventions_file).read_text().strip()
 
     rows = [json.loads(l) for l in DATA.read_text().splitlines() if l.strip()]
     if args.families:
@@ -230,8 +241,9 @@ def main() -> None:
         rows = rows[: args.limit]
 
     cfg = llm_mod.load_config()
-    OUT_DIR.mkdir(parents=True, exist_ok=True)
-    out_path = OUT_DIR / f"m1_pilot_{args.prompt_mode}{args.out_tag}.jsonl"
+    out_dir = Path(args.out_dir) if args.out_dir else OUT_DIR
+    out_dir.mkdir(parents=True, exist_ok=True)
+    out_path = out_dir / f"m1_pilot_{args.prompt_mode}{args.out_tag}.jsonl"
     done = set()
     if out_path.exists():
         for l in out_path.read_text().splitlines():
@@ -248,6 +260,8 @@ def main() -> None:
             else:
                 prompt = adapt_prompt_schema(row["prompt_schema"],
                                              SCIP_OUTPUT_FORMAT_SOL)
+            if conventions:
+                prompt = conventions + "\n\n" + prompt
             for mode in args.modes:
                 sid = row["scenario_id"]
                 if (sid, mode) in done:
@@ -291,7 +305,7 @@ def main() -> None:
                     rec.update(exec_status="llm_error", error=llm_err)
                 else:
                     rec["code_chars"] = len(text)
-                    sandbox = (OUT_DIR / "sandbox"
+                    sandbox = (out_dir / "sandbox"
                                / f"{args.prompt_mode}__{sid}__{mode}")
                     code = extract_code(text)
                     if args.prompt_mode in ("schema", "schema_sol"):

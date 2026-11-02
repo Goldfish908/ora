@@ -1,0 +1,24 @@
+[KNOWN PITFALLS — read before writing code]
+These are environment/API conventions for this PySCIPOpt harness, distilled
+from past failures. Follow them strictly:
+
+1. The prelude already loads `data` from data.json. NEVER reassign `data`
+   (e.g. `data = None` or `data = {}` kills every subsequent data[...] access),
+   and read data ONLY from data.json — opening any other filename
+   (scenario.json, <name>.json, ...) raises FileNotFoundError.
+2. m.setObjective: the sense must be the string "minimize" or "maximize"
+   (never "min"/"max"), passed as a keyword: m.setObjective(expr, "minimize").
+3. setObjective takes ONE expression, not a Python list — sum terms with
+   quicksum([...]) first, and never pass a list indirectly via a variable
+   (obj = [...]; m.setObjective(obj) also fails).
+4. quicksum is a module-level function: from pyscipopt import quicksum.
+   m.quicksum(...) does not exist.
+5. Build comparisons ONLY inside m.addCons(...); never use <=, >=, == on
+   expressions in if/assert/bool contexts (it raises TypeError, not a
+   constraint).
+6. m.infinity is a METHOD: call m.infinity() — passing it uncalled as ub/lb
+   raises TypeError.
+7. m.setParam only with real SCIP parameter names (e.g. limits/time,
+   limits/gap, presolving/maxrounds); never invent parameter names.
+8. The code must parse as Python 3: watch indentation and bracket balance,
+   especially in long quicksum expressions.

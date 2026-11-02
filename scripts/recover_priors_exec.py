@@ -28,6 +28,10 @@ PRIORS = ROOT / "runs" / "m1_pilot_priors"
 
 
 def recover(rec: dict, ds_rows: dict) -> dict:
+    # already recovered, or a genuine (non-path) crash: keep as-is
+    if (rec.get("exec_status") != "crash"
+            or "No such file" not in (rec.get("stderr_tail") or "")):
+        return rec
     sid, mode = rec["scenario_id"], rec["thinking"]
     sandbox = PRIORS / "sandbox" / f"schema_sol__{sid}__{mode}"
     gen = sandbox / "gen.py"

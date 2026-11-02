@@ -137,3 +137,23 @@ B'' = guard **v0.3** + 闸门,与 B' 同预算(guard 预算 1 次/轮,闸门 ≤
 
 数据:`runs/m1_presolve/m1_presolve_guard3_v{0..4}.jsonl`,对照表
 `runs/m1_presolve/online_comparison_bpp.md`。
+
+## guard v0.4:B'' 残余蒸馏(2026-11-02)
+
+自进化闭环第二圈:B'' 残余 18 例 crash 归因驱动,新增两条规则——
+
+- **G9**:`m.sum(...)`(gurobipy 习惯,B'' 残余中 10 例,最高频);
+- **G10**:gurobipy 专属属性黑名单(`.ObjVal/.Status/.X/.ub/.lb/.getLb` 等,
+  访问或调用一律拦;B'' 残余中 getLb/ub 2 例)。
+
+验证(均零 LLM 成本):
+- round-1 离线考卷(380 细胞):检出 97.0%(255/263)持平,phantom 误报
+  1.9%、win 误报 0% 不变——新规则零误报;
+- **B'' 残余重放(修正沙箱归属后):12/18 检出**(10×m.sum + getLb + ub)。
+  残余 6 例全部是已声明留给运行时的两类:5× NotImplementedError(G3 难
+  形态,变量级表达式比较)+ 1× 语义 KeyError(幻觉数据键,需数据契约层)。
+  即 **v0.4 已覆盖当前可静态覆盖的全部模式**。
+
+注意:sandbox 目录 `psv__`/`psv_guard_`/`psv_guard3_` 三臂共用前缀,重放
+时必须按 `psv_guard3_{variant}__{sid}__{mode}__r{round}` 精确匹配,否则
+会测到别臂代码(本次初测 8/18 即由此低估)。

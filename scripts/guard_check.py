@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Crash guard v0.1: deterministic pre-flight checks for known PySCIPOpt API
+"""Crash guard v0.4: deterministic pre-flight checks for known PySCIPOpt API
 misuse patterns (see docs/paper/crash_guard_mining_v0.1.md).
 
 Pure AST/regex, zero LLM cost. Runs after code generation, before the
@@ -15,6 +15,8 @@ Rules:
   G6 never reassign `data` (the prelude already loads data.json)
   G7 m.infinity is a method — call it: m.infinity()
   G8 read-mode open() of anything but data.json -> FileNotFoundError
+  G9 m.sum(...) — Model has no .sum (gurobipy habit); use quicksum
+  G10 gurobipy-only attributes (.ObjVal/.Status/.X/.ub/.lb/.getLb/...)
 
 Usage:
   python3 scripts/guard_check.py FILE.py          # single file, exit 1 if hit
@@ -39,6 +41,15 @@ PARAM_WHITELIST = {
     "display/verblevel", "display/freq", "numerics/feastol",
     "numerics/dualfeastol", "presolving/maxrounds", "separating/maxcuts",
     "heuristics/emphasis", "lp/threads",
+}
+
+# G10: gurobipy-style attributes that do not exist in PySCIPOpt. Accessing or
+# calling them raises AttributeError. Observed in B'' residual crashes:
+# m.getLb (8x family), Variable.ub, plus the classic m.Status / m.ObjVal /
+# var.X that models carry over from gurobipy habit.
+GUROBI_ONLY_ATTRS = {
+    "ObjVal", "Obj", "Status", "X", "Pi", "RC", "Start", "ub", "lb",
+    "getLb", "getUb", "setLb", "setUb", "obj", "Vars", "Constrs",
 }
 
 
@@ -88,6 +99,11 @@ class Guard(ast.NodeVisitor):
             if name.lower() == "quicksum":
                 self._hit("G4", node, "quicksum 是模块函数，不是 Model 方法；"
                                      "用 from pyscipopt import quicksum 后直接调用")
+            # G9: m.sum(...) — gurobipy habit; PySCIPOpt Model has no .sum
+            if name == "sum" and isinstance(fn.value, ast.Name) \
+                    and fn.value.id in ("m", "model"):
+                self._hit("G9", node, "Model 没有 .sum() 方法（那是 gurobipy）；"
+                                     "用 quicksum([...]) 汇总表达式")
         elif isinstance(fn, ast.Name):
             name = fn.id
             # G8: read-mode open() of anything but data.json -> FileNotFoundError
@@ -148,6 +164,13 @@ class Guard(ast.NodeVisitor):
         if node.attr == "infinity" and id(node) not in self._called_attrs:
             self._hit("G7", node, "m.infinity 是方法不是属性，要调用："
                                   "ub=m.infinity()")
+        # G10: gurobipy-only attributes (called or not) don't exist in
+        # PySCIPOpt — flag regardless of call context
+        if node.attr in GUROBI_ONLY_ATTRS:
+            self._hit("G10", node, f".{node.attr} 是 gurobipy 用法，"
+                                   "PySCIPOpt 不存在；目标值用 m.getObjVal()、"
+                                   "状态用 m.getStatus()、取值用 m.getVal(v)、"
+                                   "改界用 m.chgVarLb(v, ...)")
         self.generic_visit(node)
 
     def visit_Compare(self, node: ast.Compare) -> None:

@@ -30,8 +30,8 @@ for b, v in zip(bars, SUCCESS):
     ax.text(b.get_x() + b.get_width() / 2, v + 0.8, f"{v}/190\n({v/190:.1%})",
             ha="center", fontsize=9)
 ax.axhline(13, color="#c0392b", linestyle="--", linewidth=1.2)
-ax.text(2.42, 14.5, "no loop (pass@1)\n13/190 (6.8%)", color="#c0392b",
-        fontsize=8, ha="right")
+ax.text(-0.45, 16.5, "no loop (pass@1): 13/190 (6.8%)", color="#c0392b",
+        fontsize=8, ha="left")
 ax.set_ylim(0, 105)
 ax.set_title("(a) true success (witness + ref-objective)")
 ax.set_ylabel("cells")

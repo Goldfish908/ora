@@ -7,6 +7,7 @@
 # Usage: bash scripts/run_priors_pilot_shards.sh
 set -u
 cd "$(dirname "$0")/.."
+mkdir -p runs/m1_pilot_priors
 source ~/.leagent_env
 export ORA_LLM_BASE_URL="$QWEN27B_BASE_URL" ORA_LLM_API_KEY="$QWEN27B_API_KEY" \
        ORA_LLM_MODEL="Qwen3_8-27B" ORA_LLM_INSECURE=1

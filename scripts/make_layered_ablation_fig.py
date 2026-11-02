@@ -11,7 +11,7 @@ matplotlib.use("Agg")
 import matplotlib.pyplot as plt
 import numpy as np
 
-ARMS = ["A\nwitness only", "B\n+pre-solve gate", "B'\n+crash guard"]
+ARMS = ["A\n(witness)", "B\n(+gate)", "B'\n(+guard)"]
 SUCCESS = [84, 87, 90]
 RESIDUAL = {
     "crash": [18, 37, 19],
@@ -21,7 +21,7 @@ RESIDUAL = {
 }
 SOLVES = [249, 184, 235]
 
-fig, axes = plt.subplots(1, 3, figsize=(13.5, 4.2))
+fig, axes = plt.subplots(1, 3, figsize=(15.5, 4.6))
 
 # (a) true success
 ax = axes[0]

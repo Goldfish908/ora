@@ -55,23 +55,32 @@
 
 ## 5. 实现与离线对照结果（2026-11-02)
 
-实现：`scripts/guard_check.py`(G0–G5 六条确定性规则，AST 级）;
-集成：`scripts/m1_presolve_loop.py` 在闸门之前插入 guard 环（`--guard-turns`,
+实现：`scripts/guard_check.py`(AST 级确定性规则）;集成：
+`scripts/m1_presolve_loop.py` 在闸门之前插入 guard 环（`--guard-turns`,
 默认 1 次重写预算，预算耗尽或检出失败均放行；记录 `guard_checks/guard_turns`
 字段）。冒烟测试通过（guard 无命中时走原路径，gate→solve→witness 正常）。
 
-离线对照（380 个 round-1 gen.py,witness ground truth):
+规则由蒸馏挖掘（`scripts/distill_conventions.py`，见
+`docs/paper/conventions_draft_v0.1.md`）驱动迭代，每步均离线对照验证：
 
-| 类别 | 检出率 | 说明 |
-|---|---|---|
-| crash(263) | **73.8%**(194) | G1 sense 误用 173 + G0 语法 20 + G4 quicksum 14 |
-| phantom(104) | 1.9%(2) | 低干扰 |
-| win(13) | **0%(0)** | 零误报 |
+| 版本 | 变化 | crash 检出 | phantom 误报 | win 误报 |
+|---|---|---|---|---|
+| v0.1 | G0–G5 初版 | 73.8% (194/263) | 1.9% | 0% |
+| v0.2 | G2 数据流（变量间接传 list) | 91.6% (241/263) | 1.9% | 0% |
+| +G6 | `data=None` 遮蔽（32 次 NoneType 崩溃全归因于此） | 93.9% (247/263) | 1.9% | 0% |
+| v0.3 | G7 `m.infinity` 未调用（20 次）+G8 幻觉文件名+G4 驼峰+G6 三元形态 | **97.0% (255/263)** | 1.9% | **0%** |
 
-未覆盖的 69 个 crash：运行时数据键/维度错误（KeyError 数据字段等），静态规则
-不可检出，属于下一轮（数据契约检查）的射程。
+迭代中发现并修复的两类缺口：
 
-设计迭代记录：G3(Expr 比较）初版误报 100%（把 `addCons` 里的合法 `==` 全拦）,
-收窄为"仅非 addCons 上下文或链式比较"后 win 误报归零。
+1. **G2 只查字面量**:155 次 `AssertionError ...list` 崩溃中 G2 初版命中 0——
+   实际代码多是 `obj=[...]; setObjective(obj)` 间接传递。补简单数据流
+   (Name=List 赋值跟踪，被 quicksum 重赋值则解除）。
+2. **G6 泛化过度再收窄**:"禁止一切 data 重赋"会把 20 个 phantom cell 误伤
+   (21.2% 误报）；收窄为"None 产生式"（直接 `=None` 或 `... if C else None`)
+   后误报回落 1.9% 且检出不变。
 
-在线 B' 臂（5 分片）已启动，完成后补主表。
+残余 8 个未检出 crash:NotImplementedError 的 G3 难形态（变量级表达式比较，
+静态判定误报风险高）与语义性 KeyError（幻觉数据键，需数据契约检查）——
+静态规则性价比低，留给运行时防线。
+
+在线 B' 臂（5 分片，v0.1 guard）运行中，完成后补主表；v0.2/v0.3 留给后续臂。

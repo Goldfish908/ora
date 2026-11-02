@@ -10,9 +10,11 @@ Rules:
   G2 setObjective first arg must not be a list/ListComp (wrap in quicksum);
      v0.2: also flags names bound to a list literal that flow in as the arg
   G3 no `==` comparison on Expr/addVar results
-  G4 quicksum must be called as a function, not m.quicksum
+  G4 quicksum must be called as a function, not m.quicksum (any casing)
   G5 set*Param parameter names must be in the whitelist
-  G6 never reassign `data` to None (the prelude already loads data.json)
+  G6 never reassign `data` (the prelude already loads data.json)
+  G7 m.infinity is a method — call it: m.infinity()
+  G8 read-mode open() of anything but data.json -> FileNotFoundError
 
 Usage:
   python3 scripts/guard_check.py FILE.py          # single file, exit 1 if hit
@@ -45,6 +47,7 @@ class Guard(ast.NodeVisitor):
         self.hits: list[dict] = []
         self._safe_cmp: set[int] = set()   # Compare nodes directly inside addCons*
         self._list_names: set[str] = set()  # names currently bound to a list
+        self._called_attrs: set[int] = set()  # Attribute nodes used as call func
 
     def visit_Assign(self, node: ast.Assign) -> None:
         is_list = isinstance(node.value, (ast.List, ast.ListComp))
@@ -54,13 +57,22 @@ class Guard(ast.NodeVisitor):
                     self._list_names.add(t.id)
                 else:
                     self._list_names.discard(t.id)
-                # G6: prelude already loads `data`; shadowing it with None kills
-                # every subsequent data[...] access (NoneType subscript crash)
-                if (t.id == "data" and isinstance(node.value, ast.Constant)
-                        and node.value.value is None):
+                # G6: prelude already loads `data`; reassigning it to a
+                # None-producing value (directly or via `... if C else None`)
+                # kills every later data[...] (NoneType subscript crash)
+                if t.id == "data" and self._none_producing(node.value):
                     self._hit("G6", node, "不要把 data 重赋为 None；prelude 已从 "
                                           "data.json 载入数据，直接用 data[...]")
         self.generic_visit(node)
+
+    @staticmethod
+    def _none_producing(v: ast.AST) -> bool:
+        if isinstance(v, ast.Constant) and v.value is None:
+            return True
+        if isinstance(v, ast.IfExp):
+            return (Guard._none_producing(v.body)
+                    or Guard._none_producing(v.orelse))
+        return False
 
     def _hit(self, rule: str, node: ast.AST, msg: str) -> None:
         self.hits.append({"rule": rule, "line": getattr(node, "lineno", 0),
@@ -70,13 +82,27 @@ class Guard(ast.NodeVisitor):
         fn = node.func
         name = ""
         if isinstance(fn, ast.Attribute):
+            self._called_attrs.add(id(fn))
             name = fn.attr
-            # G4: m.quicksum(...)
-            if name == "quicksum":
+            # G4: m.quicksum(...) / m.quickSum(...)
+            if name.lower() == "quicksum":
                 self._hit("G4", node, "quicksum 是模块函数，不是 Model 方法；"
                                      "用 from pyscipopt import quicksum 后直接调用")
         elif isinstance(fn, ast.Name):
             name = fn.id
+            # G8: read-mode open() of anything but data.json -> FileNotFoundError
+            if name == "open" and node.args and isinstance(node.args[0], ast.Constant):
+                tgt = node.args[0].value
+                mode = "r"
+                if len(node.args) >= 2 and isinstance(node.args[1], ast.Constant):
+                    mode = node.args[1].value
+                for kw in node.keywords:
+                    if kw.arg == "mode" and isinstance(kw.value, ast.Constant):
+                        mode = kw.value.value
+                if (isinstance(tgt, str) and tgt != "data.json"
+                        and str(mode) in ("r", "rb")):
+                    self._hit("G8", node, f"数据只从 data.json 读；读 {tgt!r} "
+                                          "会 FileNotFoundError")
         if name.startswith("addCons"):
             for a in node.args:
                 if isinstance(a, ast.Compare):
@@ -114,6 +140,14 @@ class Guard(ast.NodeVisitor):
                 if isinstance(p, str) and p not in PARAM_WHITELIST:
                     self._hit("G5", node, f"SCIP 参数名 {p!r} 不在白名单，"
                                           f"疑似笔误（如 limits/time）")
+        self.generic_visit(node)
+
+    def visit_Attribute(self, node: ast.Attribute) -> None:
+        # G7: m.infinity is a METHOD in PySCIPOpt; passing it uncalled as
+        # ub/lb raises "must be real number, not builtin_function_or_method"
+        if node.attr == "infinity" and id(node) not in self._called_attrs:
+            self._hit("G7", node, "m.infinity 是方法不是属性，要调用："
+                                  "ub=m.infinity()")
         self.generic_visit(node)
 
     def visit_Compare(self, node: ast.Compare) -> None:

@@ -50,6 +50,10 @@ PRIOR_TEXT = {
           "limits/gap, presolving/maxrounds); never invent parameter names.",
     "G6": "The prelude already loads `data` from data.json; NEVER reassign "
           "it (data = None kills every data[...] access).",
+    "G7": "m.infinity is a METHOD: call m.infinity() — passing it uncalled "
+          "as ub/lb raises TypeError.",
+    "G8": "Read data ONLY from data.json; opening other filenames "
+          "(scenario.json, <sid>.json, ...) raises FileNotFoundError.",
 }
 
 

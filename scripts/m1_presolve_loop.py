@@ -41,6 +41,7 @@ from scripts.m1_pilot import (  # noqa: E402
 from scripts.m1_feedback import failure_type, feedback_msg  # noqa: E402
 from scripts.psv_check_code import check_one  # noqa: E402
 from scripts.psv_score import blocked  # noqa: E402
+from scripts.guard_check import guard_source  # noqa: E402
 
 PILOT_DIR = ROOT / "runs" / "m1_pilot"
 OUT_DIR = ROOT / "runs" / "m1_presolve"
@@ -60,6 +61,16 @@ def verifier_report(bad: list[dict]) -> str:
             "executable Python code.")
 
 
+def guard_report(hits: list[dict]) -> str:
+    items = "\n".join(f"- [{h['rule']}] line {h['line']}: {h['msg']}"
+                      for h in hits)
+    return ("PRE-FLIGHT CRASH GUARD FAILED (deterministic static check, code "
+            "NOT executed). Known PySCIPOpt API misuse detected:\n"
+            f"{items}\n"
+            "Fix these API issues and rewrite the COMPLETE script. Output "
+            "ONLY executable Python code.")
+
+
 def main() -> None:
     ap = argparse.ArgumentParser()
     ap.add_argument("--variant", default="v0")
@@ -68,6 +79,8 @@ def main() -> None:
     ap.add_argument("--max-rounds", type=int, default=3)
     ap.add_argument("--presolve-turns", type=int, default=2,
                     help="max BLOCK-regenerate turns per round before solving anyway")
+    ap.add_argument("--guard-turns", type=int, default=1,
+                    help="max crash-guard regenerate turns per round")
     ap.add_argument("--limit", type=int, default=0)
     args = ap.parse_args()
 
@@ -189,6 +202,29 @@ def main() -> None:
                     continue
                 code = extract_code(text)
                 rec["code_chars"] = len(text)
+                # ---- CRASH GUARD (deterministic, zero-LLM-cost check) ----
+                guard_turns = 0
+                while True:
+                    hits = guard_source(SCHEMA_PRELUDE + code)
+                    if not hits:
+                        break
+                    rec.setdefault("guard_checks", []).append(
+                        {"turn": guard_turns,
+                         "hits": [h["rule"] for h in hits]})
+                    guard_turns += 1
+                    if guard_turns > args.guard_turns:
+                        break  # budget exhausted -> proceed anyway
+                    gmsgs = [{"role": "user", "content": prompt},
+                             {"role": "assistant", "content": code},
+                             {"role": "user", "content": guard_report(hits)}]
+                    try:
+                        gresp = llm_mod.chat(
+                            gmsgs, max_tokens=max_tokens, temperature=0.6,
+                            extra=extra, config=cfg)
+                        code = extract_code(gresp.get("content") or "")
+                    except Exception:
+                        break
+                rec["guard_turns"] = guard_turns
                 # ---- PRE-SOLVE GATE on the new code ----
                 gate_turns = 0
                 gate_bad = None

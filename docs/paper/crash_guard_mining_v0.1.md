@@ -52,3 +52,26 @@
   ground truth);
 - 在线：B' 臂（闸门+guard）vs B 臂，主指标 crash 残余、真成功率、求解调用；
 - 假说检验：若 B 臂 crash 膨胀确由闸门反馈重写引入，B' 应回落至 ≤A 臂水平。
+
+## 5. 实现与离线对照结果（2026-11-02)
+
+实现：`scripts/guard_check.py`(G0–G5 六条确定性规则，AST 级）;
+集成：`scripts/m1_presolve_loop.py` 在闸门之前插入 guard 环（`--guard-turns`,
+默认 1 次重写预算，预算耗尽或检出失败均放行；记录 `guard_checks/guard_turns`
+字段）。冒烟测试通过（guard 无命中时走原路径，gate→solve→witness 正常）。
+
+离线对照（380 个 round-1 gen.py,witness ground truth):
+
+| 类别 | 检出率 | 说明 |
+|---|---|---|
+| crash(263) | **73.8%**(194) | G1 sense 误用 173 + G0 语法 20 + G4 quicksum 14 |
+| phantom(104) | 1.9%(2) | 低干扰 |
+| win(13) | **0%(0)** | 零误报 |
+
+未覆盖的 69 个 crash：运行时数据键/维度错误（KeyError 数据字段等），静态规则
+不可检出，属于下一轮（数据契约检查）的射程。
+
+设计迭代记录：G3(Expr 比较）初版误报 100%（把 `addCons` 里的合法 `==` 全拦）,
+收窄为"仅非 addCons 上下文或链式比较"后 win 误报归零。
+
+在线 B' 臂（5 分片）已启动，完成后补主表。

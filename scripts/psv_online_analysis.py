@@ -109,6 +109,24 @@ def budget(recs, mode, gated_skips_solve):
     }
 
 
+def per_round_curve(recs, r1, mode, max_round=3):
+    """Cumulative true success after each round. Round 1 = pass@1 (shared pilot)."""
+    cells = [k for k in r1 if k[1] == mode]
+    curve = {}
+    for rnd in range(1, max_round + 1):
+        n = 0
+        for key in cells:
+            if failure_type(r1[key]) is None:
+                n += 1
+                continue
+            for r in recs.get(key, []):
+                if r["round"] <= rnd and failure_type(r) is None:
+                    n += 1
+                    break
+        curve[rnd] = n
+    return curve
+
+
 def main() -> None:
     r1 = load_r1()
     armA = final_states("runs/m1_feedback/m1_feedback*.jsonl", r1)
@@ -167,6 +185,20 @@ def main() -> None:
         if ba and bb and ba["solves"] and bb["solves"]:
             lines.append(f"solve invocations B vs A: {bb['solves']} vs {ba['solves']} "
                          f"({(ba['solves']-bb['solves'])/ba['solves']:.1%} saved)")
+        lines.append("")
+
+        # pass@1 (= round-1 pilot, shared) and per-round cumulative success
+        ca = per_round_curve(recA, r1, mode)
+        cb = per_round_curve(recB, r1, mode)
+        lines.append("## pass@1 and per-round cumulative true success (on-mode, /190)")
+        lines.append("")
+        lines.append("| arm | pass@1 (r1) | after r2 | after r3 |")
+        lines.append("|---|---|---|---|")
+        lines.append(f"| A | {ca[1]} ({ca[1]/190:.1%}) | {ca[2]} ({ca[2]/190:.1%}) | {ca[3]} ({ca[3]/190:.1%}) |")
+        lines.append(f"| B | {cb[1]} ({cb[1]/190:.1%}) | {cb[2]} ({cb[2]/190:.1%}) | {cb[3]} ({cb[3]/190:.1%}) |")
+        lines.append("")
+        lines.append("pass@1 为两臂共享的 round-1 pilot；逐轮曲线记录修复环的边际贡献，"
+                     "供自进化代数间对比（pass@1 不是唯一指标）。")
     out = "\n".join(lines) + "\n"
     (PSV / "online_comparison.md").write_text(out)
     print(out)

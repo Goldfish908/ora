@@ -14,6 +14,7 @@ Usage: python3 scripts/psv_online_analysis.py
 
 from __future__ import annotations
 
+import argparse
 import json
 import sys
 from collections import Counter
@@ -84,6 +85,7 @@ def load_loop_records(path_glob):
 def budget(recs, mode, gated_skips_solve):
     n = 0
     solves = llm_calls = gate_turns = 0
+    guard_rounds = guard_rules = guard_turns = 0
     llm_t = solve_t = 0.0
     for (sid, th), rounds in recs.items():
         if th != mode:
@@ -93,6 +95,11 @@ def budget(recs, mode, gated_skips_solve):
             llm_calls += 1  # one repair/generation call per loop round
             llm_t += r.get("llm_latency_s", 0.0)
             gate_turns += r.get("presolve_gate_turns", 0)
+            gc = r.get("guard_checks")
+            if gc:
+                guard_rounds += 1
+                guard_rules += sum(len(g["hits"]) for g in gc)
+                guard_turns += r.get("guard_turns", 0)
             blocked = gated_skips_solve and r.get("presolve_final") == "block"
             if r["exec_status"] == "ok" and not blocked:
                 solves += 1
@@ -103,6 +110,9 @@ def budget(recs, mode, gated_skips_solve):
         "cells": n,
         "llm_calls": llm_calls,
         "gate_turns": gate_turns,
+        "guard_rounds": guard_rounds,
+        "guard_rules": guard_rules,
+        "guard_turns": guard_turns,
         "solves": solves,
         "llm_s": llm_t,
         "solve_s": solve_t,
@@ -128,79 +138,102 @@ def per_round_curve(recs, r1, mode, max_round=3):
 
 
 def main() -> None:
-    r1 = load_r1()
-    armA = final_states("runs/m1_feedback/m1_feedback*.jsonl", r1)
-    armB = final_states("runs/m1_presolve/m1_presolve_v*.jsonl", r1)
-    recA = load_loop_records("runs/m1_feedback/m1_feedback*.jsonl")
-    recB = load_loop_records("runs/m1_presolve/m1_presolve_v*.jsonl")
+    ap = argparse.ArgumentParser(description=__doc__)
+    ap.add_argument("--arm", action="append", metavar="LABEL=GLOB[:gated|plain]",
+                    help="repeatable; first arm is the baseline for paired flips")
+    ap.add_argument("--out", default=str(PSV / "online_comparison.md"))
+    args = ap.parse_args()
 
-    lines = ["# Online controlled experiment: pre-solve gate (B) vs Route-B only (A)", ""]
+    specs = args.arm or [
+        "A (Route-B only)=runs/m1_feedback/m1_feedback*.jsonl:plain",
+        "B (+ pre-solve gate)=runs/m1_presolve/m1_presolve_v*.jsonl:gated",
+    ]
+    arms = []
+    for s in specs:
+        label, _, rest = s.partition("=")
+        glob, _, flag = rest.partition(":")
+        arms.append({"label": label, "glob": glob, "gated": flag == "gated"})
+
+    r1 = load_r1()
+    for a in arms:
+        a["states"] = final_states(a["glob"], r1)
+        a["recs"] = load_loop_records(a["glob"])
+
+    lines = ["# Online controlled experiment: " + " vs ".join(a["label"] for a in arms), ""]
     for mode in ("on",):
-        a = summarize(armA, mode)
-        b = summarize(armB, mode)
+        for a in arms:
+            a["sum"] = summarize(a["states"], mode)
         lines.append(f"## mode={mode}")
         lines.append("")
         lines.append("| arm | n | true success | rate |")
         lines.append("|---|---|---|---|")
-        lines.append(f"| A (Route-B only) | {a['n']} | {a['success']} | {a['success']/a['n']:.1%} |")
-        lines.append(f"| B (+ pre-solve gate) | {b['n']} | {b['success']} | {b['success']/b['n']:.1%} |")
+        for a in arms:
+            s = a["sum"]
+            lines.append(f"| {a['label']} | {s['n']} | {s['success']} | {s['success']/s['n']:.1%} |")
         lines.append("")
-        lines.append(f"- A residual: {a['residual']}")
-        lines.append(f"- B residual: {b['residual']}")
+        for a in arms:
+            lines.append(f"- {a['label']} residual: {a['sum']['residual']}")
         lines.append("")
 
-        # paired per-cell flips
-        flips_better, flips_worse = [], []
-        for key in armA:
-            if key[1] != mode:
-                continue
-            wa = failure_type(armA[key]) is None
-            wb = failure_type(armB[key]) is None
-            if wb and not wa:
-                flips_better.append(key[0])
-            elif wa and not wb:
-                flips_worse.append(key[0])
-        lines.append(f"paired flips: B-only success {len(flips_better)}, "
-                     f"A-only success {len(flips_worse)}")
-        if flips_better:
-            lines.append(f"  B-only: {sorted(flips_better)}")
-        if flips_worse:
-            lines.append(f"  A-only: {sorted(flips_worse)}")
-        lines.append("")
+        # paired per-cell flips vs baseline (first arm)
+        base = arms[0]
+        for a in arms[1:]:
+            flips_better, flips_worse = [], []
+            for key in base["states"]:
+                if key[1] != mode:
+                    continue
+                w0 = failure_type(base["states"][key]) is None
+                w1 = failure_type(a["states"][key]) is None
+                if w1 and not w0:
+                    flips_better.append(key[0])
+                elif w0 and not w1:
+                    flips_worse.append(key[0])
+            lines.append(f"paired flips vs {base['label']}: {a['label']}-only success "
+                         f"{len(flips_better)}, {base['label']}-only success {len(flips_worse)}")
+            if flips_better:
+                lines.append(f"  {a['label']}-only: {sorted(flips_better)}")
+            if flips_worse:
+                lines.append(f"  {base['label']}-only: {sorted(flips_worse)}")
+            lines.append("")
 
         # budget (loop phase only, excludes round-1 pilot)
-        ba = budget(recA, mode, gated_skips_solve=False)
-        bb = budget(recB, mode, gated_skips_solve=True)
         lines.append("## budget (loop phase only, on-mode)")
         lines.append("")
-        lines.append("| arm | cells in loop | LLM repair calls | gate turns | solves | LLM s/cell | solve s/cell |")
-        lines.append("|---|---|---|---|---|---|---|")
-        for label, x in (("A", ba), ("B", bb)):
+        lines.append("| arm | cells in loop | LLM repair calls | gate turns | "
+                     "guard rounds | guard rules | solves | LLM s/cell | solve s/cell |")
+        lines.append("|---|---|---|---|---|---|---|---|---|")
+        for a in arms:
+            x = budget(a["recs"], mode, gated_skips_solve=a["gated"])
+            a["bud"] = x
             if not x:
                 continue
             lines.append(
-                f"| {label} | {x['cells']} | {x['llm_calls']} | {x['gate_turns']} | "
-                f"{x['solves']} | {x['llm_s']/x['cells']:.1f} | {x['solve_s']/x['cells']:.1f} |")
+                f"| {a['label']} | {x['cells']} | {x['llm_calls']} | {x['gate_turns']} | "
+                f"{x['guard_rounds']} | {x['guard_rules']} | {x['solves']} | "
+                f"{x['llm_s']/x['cells']:.1f} | {x['solve_s']/x['cells']:.1f} |")
         lines.append("")
-        if ba and bb and ba["solves"] and bb["solves"]:
-            lines.append(f"solve invocations B vs A: {bb['solves']} vs {ba['solves']} "
-                         f"({(ba['solves']-bb['solves'])/ba['solves']:.1%} saved)")
-        lines.append("")
+        if len(arms) >= 2:
+            b0, b1 = arms[0].get("bud"), arms[1].get("bud")
+            if b0 and b1 and b0["solves"] and b1["solves"]:
+                lines.append(f"solve invocations {arms[1]['label']} vs {arms[0]['label']}: "
+                             f"{b1['solves']} vs {b0['solves']} "
+                             f"({(b0['solves']-b1['solves'])/b0['solves']:.1%} saved)")
+                lines.append("")
 
         # pass@1 (= round-1 pilot, shared) and per-round cumulative success
-        ca = per_round_curve(recA, r1, mode)
-        cb = per_round_curve(recB, r1, mode)
         lines.append("## pass@1 and per-round cumulative true success (on-mode, /190)")
         lines.append("")
         lines.append("| arm | pass@1 (r1) | after r2 | after r3 |")
         lines.append("|---|---|---|---|")
-        lines.append(f"| A | {ca[1]} ({ca[1]/190:.1%}) | {ca[2]} ({ca[2]/190:.1%}) | {ca[3]} ({ca[3]/190:.1%}) |")
-        lines.append(f"| B | {cb[1]} ({cb[1]/190:.1%}) | {cb[2]} ({cb[2]/190:.1%}) | {cb[3]} ({cb[3]/190:.1%}) |")
+        for a in arms:
+            c = per_round_curve(a["recs"], r1, mode)
+            lines.append(f"| {a['label']} | {c[1]} ({c[1]/190:.1%}) | "
+                         f"{c[2]} ({c[2]/190:.1%}) | {c[3]} ({c[3]/190:.1%}) |")
         lines.append("")
         lines.append("pass@1 为两臂共享的 round-1 pilot；逐轮曲线记录修复环的边际贡献，"
                      "供自进化代数间对比（pass@1 不是唯一指标）。")
     out = "\n".join(lines) + "\n"
-    (PSV / "online_comparison.md").write_text(out)
+    Path(args.out).write_text(out)
     print(out)
 
 

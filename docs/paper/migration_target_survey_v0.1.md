@@ -32,3 +32,13 @@
 首选 IndustryOR(100 题、工业异质、有发表基线可对标、恰好考验
 witness 泛化)。阶段 C 三步走(零适配 → 文本通道 checker → 事后对照)
 按此目标设计。启动时机:进化生死判据落地之后。
+
+## 附:IndustryOR 接入核验(2026-11-03)
+
+- 数据实体在 HuggingFace:`CardinalOperations/IndustryOR`(split=`test`,
+  字段 `en_question`/`en_answer`),本机可直连,无需镜像、无 gating;
+- GitHub ORLM 仓库只含评测代码(`eval/generate.py` + `eval/execute.py`,
+  执行比对最优值口径与我们 grade 一致),数据文件本身不在仓库内;
+- 许可证:**CC-BY-NC-4.0**(非商用),仅可用于研究用途,引用时需标注;
+- 官方执行默认 COPT;我们用 PySCIPOpt 适配层替代,超时口径 600s/题
+  (与官方 `eval.execute --timeout 600` 对齐)。

@@ -1,0 +1,10 @@
+{
+ "gid": "g1_g0_no_init_draft",
+ "gen": 1,
+ "parents": [
+  "g0_no_init"
+ ],
+ "operator": "ledger_addition",
+ "note": "Ensure initial inventory variables are explicitly constrained to zero for all SKUs, DCs, and weeks, and verify that demand balance constraints sum only actual sales and substitutions, excluding any re",
+ "created_at": "2026-11-03 19:17:49"
+}

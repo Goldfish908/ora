@@ -1,0 +1,10 @@
+{
+ "gid": "g1_para_g0_seed",
+ "gen": 1,
+ "parents": [
+  "g0_seed"
+ ],
+ "operator": "paraphrase",
+ "note": "",
+ "created_at": "2026-11-03 19:17:56"
+}

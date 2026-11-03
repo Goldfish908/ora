@@ -1,0 +1,11 @@
+{
+ "gid": "g2_x_g1_g0_no_init_draftxg1_g0_seed_draft",
+ "gen": 2,
+ "parents": [
+  "g1_g0_no_init_draft",
+  "g1_g0_seed_draft"
+ ],
+ "operator": "crossover",
+ "note": "",
+ "created_at": "2026-11-03 21:26:48"
+}

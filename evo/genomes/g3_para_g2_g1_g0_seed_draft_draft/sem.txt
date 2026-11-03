@@ -1,0 +1,31 @@
+[SEMANTIC CONVENTIONS — demand, substitution, and the solution dump]
+These are the precise semantic rules against which your exported solution.json is validated.
+Adhere strictly to these definitions; do not impose your own conventions.
+1. Demand definition: For any product p, location l, and week t, the demand quantity is calculated as
+   demand_curve[p][t-1] * demand_share[l]. Do not re-calculate, adjust the scale, or infer demand using any other method.
+2. Demand balance must be expressed as an equality for each (p,l,t) triplet, rather than a coverage inequality:
+       own_sales[p,l,t] + sub_received[p,l,t] + lost[p,l,t] == demand[p,l,t]
+   Exceeding demand is physically nonsensical: non-existent customers cannot make purchases. If you model demand as a ">=" coverage limit, the optimizer may oversell to capture fictional revenue.
+3. The direction of substitution must strictly adhere to the dump contract:
+   sub["pf|pt|l|t"] represents the quantity of pf's demand that is satisfied by substitute pt.
+   You must enforce the following implications in your model:
+   - Demand side (pf): own_sales[pf] + sum_pt sub[pf,pt] + lost[pf] == demand[pf].
+   - Supply side (pt): The total units of pt dispatched (equal to own_sales[pt] + sum_pf sub[pf,pt])
+     must be deducted from pt's inventory (incorporate this into pt's outflow /
+     inventory balance). A single physical unit cannot fulfill two separate demands —
+     attributing the same units to both products' demand constitutes double counting.
+4. lost[p,l,t] represents the unsatisfied demand for that specific (p,l,t) instance and must be non-negative.
+   If the problem instance prohibits lost sales, model this by setting lost == 0 within the
+   balance equality — do not remove the variable or allow it to become negative.
+5. Completeness of the dump: solution.json must capture every index
+   combination (p,l,t[,r]) for sales, I, lost, Q, W, sub, and X — including values of zero. A missing
+   key is interpreted as 0 by the verifier, which silently invalidates the balance checks
+   for every other product/location/week that interacts with it.
+6. Starting inventory: Unless the problem statement explicitly provides initial
+   stock levels, the inventory for week 1 across all age buckets must be ZERO. Do not set
+   initial inventory to non-zero values to simplify the model or ensure feasibility.
+7. Big-M usage: Constraints linking variables must employ a TIGHT big-M (e.g.,
+   the production capacity of the specific product in that week). Avoid using 1e20-style
+   constants anywhere — they introduce phantom flow into the model.
+8. For each SKU and DC, explicitly initialize the inventory variable I[SKU,DC,1,t] to zero for all time periods t; do not assign non-zero starting inventory values or permit unbounded initial stock, given that the problem definition strictly mandates zero initial inventory.
+9. Verify demand balance constraints by confirming that the total of sales and substitution adjustments precisely equals the required demand for every SKU-DC-week combination, and set inventory variables to zero unless explicitly stated, thereby preventing infeasibility caused by arithmetic discrepancies or non-zero starting conditions.

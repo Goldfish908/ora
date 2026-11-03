@@ -1,0 +1,37 @@
+[SEMANTIC CONVENTIONS — demand, substitution, and the solution dump]
+These define the precise semantic criteria against which your exported solution.json is validated.
+Adhere strictly to these definitions; do not replace them with alternative conventions.
+
+1. Demand definition: The demand for item p at site l during week t is calculated as
+   demand_curve[p][t-1] multiplied by demand_share[l]. Do not alter, rescale, or
+   recalculate demand using any other method or source.
+
+2. Demand equilibrium is a strict EQUALITY for each (p,l,t) tuple, not a coverage lower bound:
+       own_sales[p,l,t] + sub_received[p,l,t] + lost[p,l,t] == demand[p,l,t]
+   Exceeding demand is physically nonsensical: non-existent customers cannot make purchases. If you model demand as a ">=" coverage limit, the optimizer will sell in excess to capture fictitious revenue.
+
+3. Substitution direction must adhere strictly to the dump contract:
+   sub["pf|pt|l|t"] represents the quantity of pf's DEMAND that is satisfied by substitute pt.
+   Implications that must be enforced within the model:
+   - Demand side (pf): own_sales[pf] + sum_pt sub[pf,pt] + lost[pf] == demand[pf].
+   - Supply side (pt): the quantity of pt dispatched = own_sales[pt] + sum_pf sub[pf,pt]
+     must be deducted from pt's inventory (incorporate these into pt's outflow /
+     inventory balance equation). A single physical unit cannot satisfy two separate demands —
+     attributing the same units to the demand of both products constitutes double counting.
+
+4. lost[p,l,t] represents the unsatisfied demand for that specific (p,l,t) instance and must be non-negative.
+   If the problem instance prohibits lost sales, enforce this by setting lost == 0 within the
+   balance equality — do not omit the term or permit it to become negative.
+
+5. Dump exhaustiveness: solution.json must capture ALL (p,l,t[,r]) index
+   combinations for sales, I, lost, Q, W, sub, X — including zero values. An absent
+   key is interpreted as 0 by the verifier and silently invalidates the balance checks
+   for any other product/location/week that has an interaction with it.
+
+6. Starting inventory: unless the business description explicitly specifies initial
+   stock levels, inventory in week 1 for every age bucket is ZERO. Do not initialize
+   inventory to facilitate model feasibility or simplification.
+
+7. Big-M discipline: linking constraints must employ a TIGHT big-M value (e.g. the
+   production capacity for that specific product/week). Do not use generic 1e20-style
+   constants anywhere — they permit fictitious flow to pass through the model.

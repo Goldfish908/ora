@@ -1,0 +1,10 @@
+{
+ "gid": "g2_g1_g0_no_init_draft_draft",
+ "gen": 2,
+ "parents": [
+  "g1_g0_no_init_draft"
+ ],
+ "operator": "ledger_addition",
+ "note": "Ensure every demand constraint explicitly sums all sales, substitution losses, and lost sales variables against the demand parameter for each SKU, DC, and period to prevent negative or insufficient ba",
+ "created_at": "2026-11-03 21:26:40"
+}

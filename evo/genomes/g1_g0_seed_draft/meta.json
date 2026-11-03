@@ -1,0 +1,10 @@
+{
+ "gid": "g1_g0_seed_draft",
+ "gen": 1,
+ "parents": [
+  "g0_seed"
+ ],
+ "operator": "ledger_addition",
+ "note": "For every SKU and DC, explicitly set the initial inventory variable I[SKU,DC,1,t] to zero for all periods t; never assign non-zero initial inventory values or allow unbounded initial stock, as the pro",
+ "created_at": "2026-11-03 19:17:47"
+}

@@ -1,0 +1,10 @@
+{
+ "gid": "g1_del_g0_seed",
+ "gen": 1,
+ "parents": [
+  "g0_seed"
+ ],
+ "operator": "deletion",
+ "note": "dropped longest clause #3",
+ "created_at": "2026-11-03 19:17:56"
+}

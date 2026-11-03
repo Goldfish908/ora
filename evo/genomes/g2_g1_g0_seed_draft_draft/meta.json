@@ -1,0 +1,10 @@
+{
+ "gid": "g2_g1_g0_seed_draft_draft",
+ "gen": 2,
+ "parents": [
+  "g1_g0_seed_draft"
+ ],
+ "operator": "ledger_addition",
+ "note": "Validate demand balance constraints by ensuring the sum of sales and substitution losses exactly matches required demand for every SKU-DC-week tuple, and initialize inventory variables to zero unless ",
+ "created_at": "2026-11-03 21:26:41"
+}

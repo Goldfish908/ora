@@ -1,0 +1,43 @@
+[KNOWN PITFALLS — read before writing code]
+These are environment/API conventions for this PySCIPOpt harness, distilled
+from past failures. Follow them strictly:
+
+1. The prelude already loads `data` from data.json. NEVER reassign `data`
+   (e.g. `data = None` or `data = {}` kills every subsequent data[...] access),
+   and read data ONLY from data.json — opening any other filename
+   (scenario.json, <name>.json, ...) raises FileNotFoundError.
+2. m.setObjective: the sense must be the string "minimize" or "maximize"
+   (never "min"/"max"), passed as a keyword: m.setObjective(expr, "minimize").
+3. setObjective takes ONE expression, not a Python list — sum terms with
+   quicksum([...]) first, and never pass a list indirectly via a variable
+   (obj = [...]; m.setObjective(obj) also fails).
+4. quicksum is a module-level function: from pyscipopt import quicksum.
+   m.quicksum(...) and m.sum(...) do not exist.
+5. Build comparisons ONLY inside m.addCons(...); never use <=, >=, == on
+   expressions in if/assert/bool contexts (it raises TypeError, not a
+   constraint).
+6. m.infinity is a METHOD: call m.infinity() — passing it uncalled as ub/lb
+   raises TypeError.
+7. m.setParam only with real SCIP parameter names (e.g. limits/time,
+   limits/gap, presolving/maxrounds); never invent parameter names.
+8. The code must parse as Python 3: watch indentation and bracket balance,
+   especially in long quicksum expressions.
+9. PySCIPOpt has NO gurobipy-style attributes: no .ObjVal/.Status/.X/.Pi/.ub/
+   .lb/.getLb()/.getUb(). Use m.getObjVal(), m.getStatus(), m.getVal(v),
+   m.chgVarLb(v, x) / m.chgVarUb(v, x) instead.
+
+[MODELING PROCEDURE — follow this order BEFORE writing code]
+1. UNDERSTAND: one short paragraph — objective and its sense; the decision
+   variables; every constraint; and which data fields activate which
+   mechanisms (check moq/pack_size/budget_per_period/waste_limit_pct/
+   sub_edges/trans_edges/return_rate/labor values in the data schema — a
+   zero/null/empty field means that mechanism is INACTIVE for this instance).
+2. FORMALIZE: list each decision variable with its domain — CONTINUOUS,
+   INTEGER, or BINARY; decide from physical meaning (units of product may be
+   continuous; counts of trucks/workers/setups are INTEGER; yes-no decisions
+   are BINARY). Then write every constraint as a one-line math statement with
+   its index sets, and the objective as a sum of ALL cost/revenue terms
+   mentioned in the problem.
+3. VERIFY against the problem text: every constraint from the text has an
+   addCons, every cost term appears in the objective, every data key you use
+   exists in the DATA SCHEMA. Fix any gap, then output the code.

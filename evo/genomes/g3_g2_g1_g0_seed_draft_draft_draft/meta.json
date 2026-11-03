@@ -1,0 +1,10 @@
+{
+ "gid": "g3_g2_g1_g0_seed_draft_draft_draft",
+ "gen": 3,
+ "parents": [
+  "g2_g1_g0_seed_draft_draft"
+ ],
+ "operator": "ledger_addition",
+ "note": "Always include a non-negative slack variable in every demand balance constraint to ensure model feasibility and prevent numerical infeasibility due to floating-point precision errors or tight bounds.",
+ "created_at": "2026-11-03 23:01:16"
+}

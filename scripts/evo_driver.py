@@ -223,7 +223,7 @@ def cmd_eval(gen: int, shards: int = 2) -> None:
     part_files = []
     for pi in range(shards):
         pf = out_dir / f"dev40_part{pi}.jsonl"
-        pf.write_text("".join(rows[pi::shards]))
+        pf.write_text("\n".join(rows[pi::shards]) + "\n")
         part_files.append(pf)
     procs = []
     for gid in gids:
@@ -384,7 +384,7 @@ def cmd_champion(gen: int, shards: int = 3) -> None:
     procs = []
     for pi in range(shards):
         pf = out_dir / f"gap60_part{pi}.jsonl"
-        pf.write_text("".join(rows[pi::shards]))
+        pf.write_text("\n".join(rows[pi::shards]) + "\n")
         out = out_dir / f"m1_pilot_schema_sol_gap60_{champ}_p{pi}.jsonl"
         if out.exists() and len(out.read_text().splitlines()) \
                 >= len(rows[pi::shards]):

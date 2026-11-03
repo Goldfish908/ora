@@ -374,7 +374,7 @@ def cmd_next(gen: int) -> None:
     print(f"gen{ng}: 6 offspring written")
 
 
-def cmd_champion(gen: int) -> None:
+def cmd_champion(gen: int, shards: int = 3) -> None:
     cands = []
     for gid in genomes_of_gen(gen):
         f = ledger_fitness(gid, gen)
@@ -382,10 +382,32 @@ def cmd_champion(gen: int) -> None:
             cands.append((f["success"], -f["phantom"], -f["tokens"], gid))
     cands.sort(reverse=True)
     champ = cands[0][3]
-    print(f"gen{gen} champion: {champ}; running gapcheck60 ...")
-    run_pilot(champ, gen, GAP60, "gap60")
-    out = ROOT / f"runs/evo/gen{gen}/m1_pilot_schema_sol_gap60_{champ}.jsonl"
-    s = score_file(out)
+    print(f"gen{gen} champion: {champ}; running gapcheck60 "
+          f"({shards} shards) ...")
+    out_dir = (ROOT / f"runs/evo/gen{gen}").resolve()
+    out_dir.mkdir(parents=True, exist_ok=True)
+    rows = [l for l in GAP60.read_text().splitlines() if l.strip()]
+    procs = []
+    for pi in range(shards):
+        pf = out_dir / f"gap60_part{pi}.jsonl"
+        pf.write_text("".join(rows[pi::shards]))
+        out = out_dir / f"m1_pilot_schema_sol_gap60_{champ}_p{pi}.jsonl"
+        if out.exists() and len(out.read_text().splitlines()) \
+                >= len(rows[pi::shards]):
+            continue
+        log = (out_dir / f"pilot_gap60_{champ}_p{pi}.log").open("w")
+        procs.append(subprocess.Popen(
+            [PY, str(ROOT / "scripts/m1_pilot.py"),
+             "--modes", "on", "--prompt-mode", "schema_sol",
+             "--scenarios-file", str(pf),
+             "--conventions-file", str(combined_file(champ)),
+             "--out-dir", str(out_dir),
+             "--out-tag", f"_gap60_{champ}_p{pi}"],
+            cwd=ROOT, stdout=log, stderr=subprocess.STDOUT))
+    for p in procs:
+        p.wait()
+    outs = sorted(out_dir.glob(f"m1_pilot_schema_sol_gap60_{champ}_p*.jsonl"))
+    s = score_files(outs)
     ledger_add({"kind": "gapcheck60", "gen": gen, "gid": champ, **s})
     fit = ledger_fitness(champ, gen)
     dev_rate = fit["success"] / fit["n"]

@@ -1,0 +1,41 @@
+[SEMANTIC CONVENTIONS — demand, substitution, and the solution dump]
+These are the EXACT semantics your dumped solution.json is verified against.
+Follow them literally; do not substitute your own conventions.
+
+1. Demand identity: the demand of product p at location l in week t is
+   demand_curve[p][t-1] * demand_share[l]. Never reinterpret, rescale, or
+   re-derive demand from anything else.
+
+2. Demand balance is an EQUALITY per (p,l,t), not a coverage inequality:
+       own_sales[p,l,t] + sub_received[p,l,t] + lost[p,l,t] == demand[p,l,t]
+   Selling MORE than demand is physically meaningless: customers who do not
+   exist cannot buy. If you write demand as a ">=" coverage constraint, the
+   optimizer will oversell to harvest phantom revenue.
+
+3. Substitution orientation follows the dump contract EXACTLY:
+   sub["pf|pt|l|t"] = units of pf's DEMAND fulfilled by substitute pt.
+   Consequences you must enforce in the model:
+   - Demand side (pf): own_sales[pf] + sum_pt sub[pf,pt] + lost[pf] == demand[pf].
+   - Supply side (pt): units of pt shipped = own_sales[pt] + sum_pf sub[pf,pt]
+     must be debited from pt's inventory (include them in pt's outflow /
+     inventory balance). One physical unit can never satisfy two demands —
+     counting the same units toward both products' demand is double counting.
+
+4. lost[p,l,t] is the unmet demand of exactly that (p,l,t), nonnegative.
+   If the instance forbids lost sales, express that as lost == 0 inside the
+   balance equality — never drop the term or let it go negative.
+
+5. Dump completeness: solution.json must record EVERY (p,l,t[,r]) index
+   combination for sales, I, lost, Q, W, sub, X — including zeros. A missing
+   key is read as 0 by the verifier and silently breaks the balance checks
+   of every other product/location/week that interacts with it.
+
+6. Initial inventory: unless the business text explicitly states starting
+   stock, inventory in week 1 at every age bucket is ZERO. Never seed
+   initial inventory to make the model easier or feasible.
+
+7. Big-M hygiene: linking constraints must use a TIGHT big-M (e.g. the
+   production capacity of that product/week). Never use 1e20-style
+   constants anywhere — they leak phantom flow through the model.
+
+Reminder: clauses 2 and 3 above are the top failure source; double-check them before outputting code.

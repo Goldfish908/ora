@@ -1,0 +1,10 @@
+{
+ "gid": "g0_no_dump",
+ "gen": 0,
+ "parents": [
+  "g0_seed"
+ ],
+ "operator": "deletion",
+ "note": "drop semantic clause 5 (dump completeness)",
+ "created_at": "2026-11-03 16:07:14"
+}

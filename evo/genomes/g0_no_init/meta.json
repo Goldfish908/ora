@@ -1,0 +1,10 @@
+{
+ "gid": "g0_no_init",
+ "gen": 0,
+ "parents": [
+  "g0_seed"
+ ],
+ "operator": "deletion",
+ "note": "drop semantic clause 6 (initial inventory)",
+ "created_at": "2026-11-03 16:07:14"
+}

@@ -1,0 +1,8 @@
+{"kind": "dev40", "gen": 0, "gid": "g0_no_dump", "n": 40, "success": 7, "phantom": 26, "tokens": 589200}
+{"kind": "dev40", "gen": 0, "gid": "g0_no_init", "n": 40, "success": 10, "phantom": 23, "tokens": 564073}
+{"kind": "dev40", "gen": 0, "gid": "g0_no_scaffold", "n": 40, "success": 8, "phantom": 25, "tokens": 612905}
+{"kind": "dev40", "gen": 0, "gid": "g0_no_subrule", "n": 40, "success": 10, "phantom": 26, "tokens": 587486}
+{"kind": "dev40", "gen": 0, "gid": "g0_seed", "n": 40, "success": 14, "phantom": 18, "tokens": 606453}
+{"kind": "dev40", "gen": 0, "gid": "g0_sem_emph", "n": 40, "success": 10, "phantom": 26, "tokens": 609299}
+{"kind": "dev40", "gen": 0, "gid": "g0_sem_first", "n": 40, "success": 7, "phantom": 25, "tokens": 581763}
+{"kind": "dev40", "gen": 0, "gid": "g0_sem_reorder", "n": 40, "success": 6, "phantom": 33, "tokens": 563912}

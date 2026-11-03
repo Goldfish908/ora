@@ -223,19 +223,27 @@ def main() -> None:
     ap.add_argument("--conventions-file", default=None,
                     help="optional text file with distilled conventions "
                          "(memory priors) prepended to the prompt")
+    ap.add_argument("--scenarios-file", default=None,
+                    help="jsonl of scenario rows; overrides the default "
+                         "dataset and skips --variant/--families filtering "
+                         "(used by the evolution driver for frozen slices)")
     args = ap.parse_args()
 
     conventions = None
     if args.conventions_file:
         conventions = Path(args.conventions_file).read_text().strip()
 
-    rows = [json.loads(l) for l in DATA.read_text().splitlines() if l.strip()]
-    if args.families:
-        fams = tuple(f"_f{''.join(f.lower().lstrip('f'))}_"
-                     for f in args.families)
-        rows = [r for r in rows if any(f in r["scenario_id"] for f in fams)]
-    rows = [r for r in rows
-            if r["scenario_id"].endswith(f"_{args.variant}")]
+    if args.scenarios_file:
+        rows = [json.loads(l) for l in
+                Path(args.scenarios_file).read_text().splitlines() if l.strip()]
+    else:
+        rows = [json.loads(l) for l in DATA.read_text().splitlines() if l.strip()]
+        if args.families:
+            fams = tuple(f"_f{''.join(f.lower().lstrip('f'))}_"
+                         for f in args.families)
+            rows = [r for r in rows if any(f in r["scenario_id"] for f in fams)]
+        rows = [r for r in rows
+                if r["scenario_id"].endswith(f"_{args.variant}")]
     rows.sort(key=lambda r: r["scenario_id"])
     if args.limit:
         rows = rows[: args.limit]

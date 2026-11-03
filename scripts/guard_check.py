@@ -255,6 +255,10 @@ def main() -> None:
     ap = argparse.ArgumentParser()
     ap.add_argument("file", nargs="?")
     ap.add_argument("--offline-eval", action="store_true")
+    ap.add_argument("--rules", default=None,
+                    help="comma whitelist (e.g. G1,G3); hits outside the "
+                         "list are dropped. Interface for the evolution "
+                         "genome's G-guard slot")
     args = ap.parse_args()
     if args.offline_eval:
         offline_eval()
@@ -262,6 +266,9 @@ def main() -> None:
     if not args.file:
         ap.error("need FILE or --offline-eval")
     hits = guard_file(args.file)
+    if args.rules:
+        allow = {x.strip() for x in args.rules.split(",") if x.strip()}
+        hits = [h for h in hits if h["rule"] in allow]
     for h in hits:
         print(f"[{h['rule']}] line {h['line']}: {h['msg']}")
     sys.exit(1 if hits else 0)

@@ -38,6 +38,9 @@ CHAINS = {
     "combo": dict(loop="runs/m1_presolve/m1_presolve_combo_v*.jsonl",
                   pilot_dir="runs/m1_pilot_priors2",
                   pilot_glob="m1_pilot_schema_sol_p2_v*.jsonl"),
+    "combo3": dict(loop="runs/m1_presolve/m1_presolve_combo3_v*.jsonl",
+                   pilot_dir="runs/m1_pilot_priors3",
+                   pilot_glob="m1_pilot_schema_sol_p3_v*.jsonl"),
 }
 
 TOL = 1e-4
@@ -56,15 +59,22 @@ def load_chain(spec: dict) -> dict:
                 if r["thinking"] == "on":
                     pilot[r["scenario_id"]] = r
     for sid, r in pilot.items():
-        cells.setdefault(sid, []).append(r)
+        cells.setdefault(sid, {})[1] = r
     for f in glob.glob(str(ROOT / spec["loop"])):
         for line in open(f):
             if line.strip():
                 r = json.loads(line)
-                if r["thinking"] == "on":
-                    cells.setdefault(r["scenario_id"], []).append(r)
-    for rs in cells.values():
-        rs.sort(key=lambda r: r.get("round", 1))
+                if r["thinking"] != "on":
+                    continue
+                key = (r["scenario_id"], r.get("round", 2))
+                # 会话断连重启会产生同一 (sid, round) 的重复记录;
+                # 只保留首次轨迹,与 57.9% 口径一致
+                seen = cells.setdefault(r["scenario_id"], {})
+                if isinstance(seen, dict):
+                    seen.setdefault(key[1], r)
+    # dict -> sorted list
+    cells = {sid: [rs[k] for k in sorted(rs)] for sid, rs in cells.items()
+             if isinstance(rs, dict)}
     return cells
 
 
@@ -113,9 +123,10 @@ def main() -> None:
         rows.append((sid, cell_true, cell_wit_ok))
 
     n = len(all_sids)
-    L = ["# 双链集成仲裁结果", "",
-         f"细胞数 n={n}(on 模式);链:B''(无先验 round-1 + guard v0.3 + 闸门)"
-         "与 combo(P2 先验+脚手架 round-1 + guard v0.4 + 闸门)。", "",
+    L = ["# 三链集成仲裁结果", "",
+         f"细胞数 n={n}(on 模式);链:B''(无先验 + guard v0.3 + 闸门)、"
+         "combo(代码惯例 v0.2 + guard v0.4 + 闸门)、"
+         "combo3(语义惯例 v0.3 + guard v0.4 + 闸门)。", "",
          "| 规则 | 成功 | 率 | 决策时是否需真值 |", "|---|---|---|---|"]
     for name, k in per_chain_success.items():
         L.append(f"| 单链 {name} | {k} | {k/n:.1%} | — |")

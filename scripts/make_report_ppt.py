@@ -256,7 +256,7 @@ bullets(s, [
 s = prs.slides.add_slide(BLANK); chrome(s, "核心问题:幻影 —— 执行信号看不见的假成功", "PART 2 · MOTIVATION")
 bullets(s, [
     (0, "实测(RetailOpt-190 全量,thinking 开):69 题出解,其中 46 题是幻影,真成功仅 13 题", True),
-    (1, ("幻影数量是真成功的 3.5 倍 —— 用\"跑通+目标值对得上\"做指标,会把成绩高估 5 倍", RED), False),
+    (1, ("目标值比对协议会报 32.1%(61/190),真实仅 6.8% —— 高估 4.7 倍;off 臂更极端:报 23%、实际 0%", RED), False),
     (0, "幻影不是随机失误:全部幻影共享同一机制(幻影初始库存),目标值系统性虚低 7%–45%", False),
     (0, "根因:题面欠规约(未声明\"期初库存为零\"),模型系统性占据规约留下的自由度", False),
     (1, "即 specification gaming under underspecification —— 是被诱导的系统性行为,不是噪声", False),

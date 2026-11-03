@@ -159,8 +159,13 @@ def main() -> None:
                 prompt=prompts[c["scenario_id"]][:6000], code=code,
                 objective=c.get("objective"), sol_head=sol_head(sol))
             try:
-                resp = llm_mod.chat([{"role": "user", "content": msg}],
-                                    max_tokens=512, temperature=0.0)
+                resp = llm_mod.chat(
+                    [{"role": "user", "content": msg}],
+                    max_tokens=64, temperature=0.0,
+                    # judge mimics JEV's fast non-reasoning form factor;
+                    # thinking would eat the tiny completion budget (shared
+                    # budget on this vLLM build) and leave content empty
+                    extra={"chat_template_kwargs": {"enable_thinking": False}})
                 text = resp if isinstance(resp, str) else resp.get("content", "")
             except Exception as e:  # noqa: BLE001
                 text = f"__ERROR__ {e}"

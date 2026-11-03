@@ -30,6 +30,9 @@ import argparse, json, os, re, subprocess, sys, time
 from pathlib import Path
 
 ROOT = Path(__file__).resolve().parent.parent
+sys.path.insert(0, str(ROOT))
+
+from ora_agent import llm as llm_mod  # noqa: E402
 EVO = ROOT / "evo"
 GENOMES = EVO / "genomes"
 LEDGER = EVO / "ledger.jsonl"
@@ -259,10 +262,6 @@ def cmd_eval(gen: int, shards: int = 2) -> None:
 
 def llm_draft_clause(fail_summaries: list[str]) -> str:
     """One LLM call: draft ONE new convention clause from failure summaries."""
-    import openai
-    client = openai.OpenAI(
-        base_url=os.environ["QWEN27B_BASE_URL"],
-        api_key=os.environ["QWEN27B_API_KEY"], timeout=300)
     prompt = (
         "You are improving a prompt-injected conventions file for an LLM that "
         "writes PySCIPOpt code for retail inventory MILPs. Below are failure "
@@ -270,12 +269,11 @@ def llm_draft_clause(fail_summaries: list[str]) -> str:
         "clause (max 5 lines, imperative voice, no instance-specific numbers) "
         "that would prevent the most common failure class. Output ONLY the "
         "clause text.\n\nFAILURES:\n" + "\n".join(fail_summaries[:12]))
-    r = client.chat.completions.create(
-        model="Qwen3_8-27B",
-        messages=[{"role": "user", "content": prompt}],
-        extra_body={"chat_template_kwargs": {"enable_thinking": False}},
-        temperature=0.7)
-    return r.choices[0].message.content.strip()
+    resp = llm_mod.chat([{"role": "user", "content": prompt}],
+                        max_tokens=1024, temperature=0.7,
+                        extra={"chat_template_kwargs":
+                               {"enable_thinking": False}})
+    return (resp.get("content") or "").strip()
 
 
 def strip_fences(text: str) -> str:
@@ -341,19 +339,15 @@ def cmd_next(gen: int) -> None:
 
     # o3: paraphrase of elite-1 semantic block (one LLM call)
     h1, cl1 = split_clauses(s1)
-    import openai
-    client = openai.OpenAI(base_url=os.environ["QWEN27B_BASE_URL"],
-                           api_key=os.environ["QWEN27B_API_KEY"], timeout=300)
-    pr = client.chat.completions.create(
-        model="Qwen3_8-27B",
-        messages=[{"role": "user", "content":
-                   "Rewrite each numbered clause below keeping EXACT semantics "
-                   "but different wording and sentence structure. Keep the "
-                   "numbering and the header line. Output only the rewritten "
-                   "file.\n\n" + s1}],
-        extra_body={"chat_template_kwargs": {"enable_thinking": False}},
-        temperature=0.9)
-    sem_para = strip_fences(pr.choices[0].message.content)
+    pr = llm_mod.chat(
+        [{"role": "user", "content":
+          "Rewrite each numbered clause below keeping EXACT semantics "
+          "but different wording and sentence structure. Keep the "
+          "numbering and the header line. Output only the rewritten "
+          "file.\n\n" + s1}],
+        max_tokens=4096, temperature=0.9,
+        extra={"chat_template_kwargs": {"enable_thinking": False}})
+    sem_para = strip_fences(pr.get("content") or "")
     if not split_clauses(sem_para)[1]:  # malformed rewrite: keep original
         sem_para, note_o3 = s1, "paraphrase fallback (malformed LLM output)"
     else:

@@ -278,6 +278,13 @@ def llm_draft_clause(fail_summaries: list[str]) -> str:
     return r.choices[0].message.content.strip()
 
 
+def strip_fences(text: str) -> str:
+    """Remove markdown code-fence lines an LLM may wrap its output in."""
+    lines = [l for l in text.strip().splitlines()
+             if not l.strip().startswith("```")]
+    return "\n".join(lines).strip()
+
+
 def failure_summaries(gid: str, gen: int) -> list[str]:
     fps = sorted((ROOT / f"runs/evo/gen{gen}").glob(
         f"m1_pilot_schema_sol_dev40_{gid}*.jsonl"))
@@ -321,7 +328,7 @@ def cmd_next(gen: int) -> None:
     # o1/o2: LLM-drafted clause addition from each elite's own failures
     for elite, (ec, es) in ((e1, (c1, s1)), (e2, (c2, s2))):
         fails = failure_summaries(elite, gen)
-        clause = llm_draft_clause(fails) if fails else ""
+        clause = strip_fences(llm_draft_clause(fails)) if fails else ""
         if clause:
             h, cl = split_clauses(es)
             clause = re.sub(r"^\d+\.\s*", "", clause.splitlines()[0]) \
@@ -346,8 +353,12 @@ def cmd_next(gen: int) -> None:
                    "file.\n\n" + s1}],
         extra_body={"chat_template_kwargs": {"enable_thinking": False}},
         temperature=0.9)
-    write_genome(f"g{ng}_para_{e1}", ng, c1, pr.choices[0].message.content,
-                 [e1], "paraphrase")
+    sem_para = strip_fences(pr.choices[0].message.content)
+    if not split_clauses(sem_para)[1]:  # malformed rewrite: keep original
+        sem_para, note_o3 = s1, "paraphrase fallback (malformed LLM output)"
+    else:
+        note_o3 = "paraphrase"
+    write_genome(f"g{ng}_para_{e1}", ng, c1, sem_para, [e1], note_o3)
 
     # o4/o5: crossover
     write_genome(f"g{ng}_x_{e1}x{e2}", ng, c1, s2, [e1, e2], "crossover")

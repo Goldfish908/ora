@@ -486,7 +486,7 @@ bullets(s, [
 ], y=1.45, size=13.5)
 
 # ---------------------------------------------------------------- S22 进化结果
-s = prs.slides.add_slide(BLANK); chrome(s, "进化进行中:gen0–gen1 已落账,过拟合警报触发", "PART 6 · 自进化")
+s = prs.slides.add_slide(BLANK); chrome(s, "进化收官:gen0–gen3 全部落账,判据 (a) 不成立 → 回退", "PART 6 · 自进化")
 picture(s, "docs/figs/evo_gen0123_v0.1.png", 0.55, 1.4, 9.2, 4.6,
         "左:各基因组 dev40 适应度(圈=该代冠军);右:冠军的 dev40 vs gapcheck60 泛化落差")
 bullets(s, [

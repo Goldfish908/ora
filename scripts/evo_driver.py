@@ -160,19 +160,30 @@ def run_pilot(gid: str, gen: int, scenarios: Path, tag: str) -> Path:
 
 
 def score_file(fp: Path) -> dict:
+    return score_files([fp])
+
+
+def score_files(fps: list[Path]) -> dict:
     n = succ = ph = toks = 0
-    for line in fp.open():
-        r = json.loads(line)
-        if r.get("thinking") != "on":
-            continue
-        n += 1
-        ts = r.get("true_success")
-        if ts is None:
-            ts = (r.get("witness") == "feasible" and r.get("grade") == "match")
-        succ += bool(ts)
-        ph += (r.get("witness") == "infeasible"
-               and r.get("grade") == "better_than_reference")
-        toks += r.get("completion_tokens") or 0
+    seen = set()
+    for fp in fps:
+        for line in fp.open():
+            r = json.loads(line)
+            if r.get("thinking") != "on":
+                continue
+            sid = r["scenario_id"]
+            if sid in seen:
+                continue
+            seen.add(sid)
+            n += 1
+            ts = r.get("true_success")
+            if ts is None:
+                ts = (r.get("witness") == "feasible"
+                      and r.get("grade") == "match")
+            succ += bool(ts)
+            ph += (r.get("witness") == "infeasible"
+                   and r.get("grade") == "better_than_reference")
+            toks += r.get("completion_tokens") or 0
     return {"n": n, "success": succ, "phantom": ph, "tokens": toks}
 
 
@@ -192,34 +203,54 @@ def ledger_fitness(gid: str, gen: int) -> dict | None:
     return None
 
 
-def cmd_eval(gen: int) -> None:
+def cmd_eval(gen: int, shards: int = 2) -> None:
+    for var in ("ORA_LLM_BASE_URL", "ORA_LLM_API_KEY"):
+        if not os.environ.get(var):
+            sys.exit(f"missing env {var}: export ORA_LLM_BASE_URL="
+                     "$QWEN27B_BASE_URL ORA_LLM_API_KEY=$QWEN27B_API_KEY "
+                     "ORA_LLM_MODEL=Qwen3_8-27B ORA_LLM_INSECURE=1 first")
     gids = [g for g in genomes_of_gen(gen)
             if ledger_fitness(g, gen) is None]
-    print(f"gen{gen}: {len(gids)} genomes to evaluate on dev40")
+    print(f"gen{gen}: {len(gids)} genomes to evaluate on dev40 "
+          f"({shards} shards each)")
+    out_dir = (ROOT / f"runs/evo/gen{gen}").resolve()
+    out_dir.mkdir(parents=True, exist_ok=True)
+    # shard slices of dev40, written once per gen
+    rows = [l for l in DEV40.read_text().splitlines() if l.strip()]
+    part_files = []
+    for pi in range(shards):
+        pf = out_dir / f"dev40_part{pi}.jsonl"
+        pf.write_text("".join(rows[pi::shards]))
+        part_files.append(pf)
     procs = []
     for gid in gids:
-        out_dir = (ROOT / f"runs/evo/gen{gen}").resolve()
-        out_dir.mkdir(parents=True, exist_ok=True)
-        out = out_dir / f"m1_pilot_schema_sol_dev40_{gid}.jsonl"
-        if out.exists() and len(out.read_text().splitlines()) >= 40:
+        need = False
+        for pi in range(shards):
+            out = out_dir / f"m1_pilot_schema_sol_dev40_{gid}_p{pi}.jsonl"
+            if not (out.exists() and len(out.read_text().splitlines())
+                    >= len(rows[pi::shards])):
+                need = True
+        if not need:
             continue
-        log = (out_dir / f"pilot_dev40_{gid}.log").open("w")
-        p = subprocess.Popen(
-            [PY, str(ROOT / "scripts/m1_pilot.py"),
-             "--modes", "on", "--prompt-mode", "schema_sol",
-             "--scenarios-file", str(DEV40),
-             "--conventions-file", str(combined_file(gid)),
-             "--out-dir", str(out_dir), "--out-tag", f"_dev40_{gid}"],
-            cwd=ROOT, stdout=log, stderr=subprocess.STDOUT)
-        procs.append((gid, p))
-        print("launched", gid, "pid", p.pid)
+        for pi in range(shards):
+            log = (out_dir / f"pilot_dev40_{gid}_p{pi}.log").open("w")
+            p = subprocess.Popen(
+                [PY, str(ROOT / "scripts/m1_pilot.py"),
+                 "--modes", "on", "--prompt-mode", "schema_sol",
+                 "--scenarios-file", str(part_files[pi]),
+                 "--conventions-file", str(combined_file(gid)),
+                 "--out-dir", str(out_dir),
+                 "--out-tag", f"_dev40_{gid}_p{pi}"],
+                cwd=ROOT, stdout=log, stderr=subprocess.STDOUT)
+            procs.append((gid, p))
+        print("launched", gid)
     for gid, p in procs:
         p.wait()
     for gid in gids:
-        out = ROOT / f"runs/evo/gen{gen}/m1_pilot_schema_sol_dev40_{gid}.jsonl"
-        if not out.exists():
+        outs = sorted(out_dir.glob(f"m1_pilot_schema_sol_dev40_{gid}_p*.jsonl"))
+        if not outs:
             print("MISSING output for", gid); continue
-        s = score_file(out)
+        s = score_files(outs)
         ledger_add({"kind": "dev40", "gen": gen, "gid": gid, **s})
         print(f"scored {gid}: {s['success']}/{s['n']} ph={s['phantom']}")
 
@@ -248,25 +279,28 @@ def llm_draft_clause(fail_summaries: list[str]) -> str:
 
 
 def failure_summaries(gid: str, gen: int) -> list[str]:
-    fp = ROOT / f"runs/evo/gen{gen}/m1_pilot_schema_sol_dev40_{gid}.jsonl"
+    fps = sorted((ROOT / f"runs/evo/gen{gen}").glob(
+        f"m1_pilot_schema_sol_dev40_{gid}*.jsonl"))
     out = []
-    if not fp.exists():
+    if not fps:
         return out
-    for line in fp.open():
-        r = json.loads(line)
-        ts = r.get("true_success")
-        if ts is None:
-            ts = (r.get("witness") == "feasible" and r.get("grade") == "match")
-        if ts:
-            continue
-        sid = r["scenario_id"]
-        if re.search(r"_f[5-8]_", sid):
-            raise RuntimeError(f"isolation breach: {sid}")
-        det = (r.get("witness_details") or [""])[0][:120]
-        err = (r.get("stderr_tail") or "").splitlines()[-1][:120] \
-            if r.get("stderr_tail") else ""
-        out.append(f"{sid}: witness={r.get('witness')} "
-                   f"{','.join(r.get('witness_rules') or [])} {det} {err}")
+    for fp in fps:
+        for line in fp.open():
+            r = json.loads(line)
+            ts = r.get("true_success")
+            if ts is None:
+                ts = (r.get("witness") == "feasible"
+                      and r.get("grade") == "match")
+            if ts:
+                continue
+            sid = r["scenario_id"]
+            if re.search(r"_f[5-8]_", sid):
+                raise RuntimeError(f"isolation breach: {sid}")
+            det = (r.get("witness_details") or [""])[0][:120]
+            err = (r.get("stderr_tail") or "").splitlines()[-1][:120] \
+                if r.get("stderr_tail") else ""
+            out.append(f"{sid}: witness={r.get('witness')} "
+                       f"{','.join(r.get('witness_rules') or [])} {det} {err}")
     return out
 
 

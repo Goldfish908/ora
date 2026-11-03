@@ -35,6 +35,9 @@ def load(arm, pattern):
                 r = json.loads(line)
                 if r.get("thinking") != "on":
                     continue
+                if "true_success" not in r:
+                    r["true_success"] = (r.get("witness") == "feasible"
+                                         and r.get("grade") == "match")
                 cells[r["scenario_id"]] = r   # one record per scenario per arm
     return cells
 

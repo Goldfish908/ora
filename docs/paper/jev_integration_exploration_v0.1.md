@@ -408,3 +408,19 @@ witness 终审权不下放的结论不变。
 走内部 `/dfs/share-groups/letrain/ckpt/` 拷贝或自写并行分片器
 (`pdl.py`,64 路 Range);NGC torch 2.8.0a0 需 `pip install --no-deps`
 + 手工补 accelerate/peft,防 pip 用 torch 2.15 顶掉 NGC 优化版。
+
+### 11.1 跨数据集复核:IndustryOR 240 细胞(2026-11-04)
+
+用阶段 C 三臂台账构造判官测试集:每题最后一轮出解细胞(240 个:
+179 正确 / 61 幻影,oracle = en_answer 1e-3 容差),同一 Noul
+instruction,同一 server。脚本 `scripts/judge_industryor_openjev_analyze.py`。
+
+- **AUC 0.662**(RetailOpt 上 0.534)——略好但仍远低于可用线;
+- t=0.5:幻影误放行 **98.4%**,真正确零误报;
+- 概率均值:幻影 0.180 vs 正确 0.132——存在微弱信号(自然 pipeline
+  错误比 RetailOpt 的 witness 标注细胞"显眼"一点),但校准完全不可用;
+- 延迟中位 1.23s(题面比 RetailOpt 短)。
+
+**结论加固**:现成 Open-Jev 判官在两个数据集、两种错误来源(人工标注
+语义违例 / pipeline 自然失败)上都不迁移。J1 否决不变;"训练于本域"是
+唯一出路,且两个数据集的基线(AUC 0.534 / 0.662)都已留存供未来对照。

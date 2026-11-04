@@ -49,3 +49,24 @@ budget a LoRA SFT would get, zero weight updates) rescue these failures?
   evolve; failure-driven card revision (a card that fails to rescue gets
   refined by its own rescue trajectories) is the non-parametric
   evolution loop.
+
+## Addendum 2026-11-04: held-out family transfer (F4) — already satisfied
+
+The phantom_inventory card was distilled from 4 verified successes in
+families F1 (x2), F2, F3 only (retail_f1_base_v0, retail_f1_high_waste_v4,
+retail_f2_circular_sub_v0, retail_f3_volumetric_constraint_v0). The 33
+rescued failures span F1-F4; family F4 was therefore a true held-out
+family with respect to the card. Per-family rescue rates:
+
+| family | rescued | total | note |
+|---|---|---|---|
+| F1 | 5 | 6 | card families |
+| F2 | 11 | 11 | card families |
+| F3 | 7 | 7 | card families |
+| F4 | **9** | **9** | **held-out; all 9 one-shot** |
+
+Overall 32/33 (97%), and 31 of the 32 were rescued in a single round.
+The held-out family shows no degradation (9/9 one-shot), i.e. the card
+captures a family-general mechanism (uninitialized bucket inventory at
+t=1), not family-specific patches. Cross-dataset transfer (IndustryOR)
+is tracked separately (N3b).

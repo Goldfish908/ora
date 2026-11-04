@@ -254,11 +254,109 @@ VIOLATION: YES/NO + CONFIDENCE)。**结果:判官路线在我们分布上不及�
    外部 API——这本身是 P0 的一个免费变体臂(改 max_tokens=1 或 logprobs
    取 YES/NO 概率)。
 
+## 10. 开源替代调研(2026-11-04,应用户要求)
+
+### 10.1 JEV 本体的部署形态
+
+JEV **只能调 API**。TypeSafe AI 未发布权重、参数量、完整架构与 RLCD
+训练配方,无 self-hosted/on-prem 选项,模型只跑在 TypeSafe 基础设施上
+(Sanity glossary / Wikipedia / RedBlink 多源一致)。当前为 early access
+waitlist 制。数据出境与第三方依赖是其对我们的两大结构性障碍。
+
+### 10.2 开源可自部署替代(三类,全部实测可查)
+
+**A 类:System One 复现**(同形态:非自回归、单次前向、类型化决策 +
+校准置信度;社区生态见 VoltAgent/typesafe-jev-ecosystem 精选表):
+- **Open-Jev-27B**(Zefan-Cai/Open-Jev,v1.1)——**基座就是
+  Qwen3.8-27B,与我们 pipeline 同基座**;TypeSafe 兼容 API,JevBench
+  审计结果公开;配套方法论文 arXiv:2610.17205 "Releasing the Inner Jev"
+- **kev**(★8.7k)——Qwen3.5/3.8 系决策模型族,可自训自跑
+- **decider**(★1.1k)——Qwen3.5 微调,单次前向类型化决策 + 校准概率
+- **laya**(★31.7k,Convai Innovations)——ModernBERT 系非自回归决策
+  引擎,Apache 2.0,100+ 语言;ollaya 可本地起 TypeSafe 兼容服务
+- **so1 / open-alternative-jev**(ikermoel)——把任意开源 LLM 一次前向
+  包装成类型化校准决策模型(HF + vLLM),带 honest benchmarks
+- AWS **Strands Decider 2B**——AWS 开源的 Jev 启发决策模型
+  (来源为二手报道,强度较弱,待直接核实)
+
+**B 类:LLM 判官**(System Two 系,生成式):
+- **CompassJudger-1/2**(上海 AI 实验室 OpenCompass;Qwen2.5-7B/32B
+  基座,Apache 2.0;第 2 代用 verifiable rewards 训练,
+  arXiv:2507.09104)
+
+**C 类:奖励模型**(打分头,可作 Score 近似):
+- **Skywork-Reward-V2**(昆仑万维;Qwen3 / Llama-3.1 基座,
+  0.6B–8B 共 8 款,Apache 2.0,ModelScope 国内可下,发布时七榜 SOTA)
+- **DeepSeek-GRM-27B**(DeepSeek;推理时扩展通用奖励模型路线)
+
+"国内二次开发可用"的准确图景:A 类的 kev/decider/Open-Jev **全部是
+Qwen(阿里)基座的二次开发**,Open-Jev-27B 干脆与我们同基座;B/C 类
+本身就是国内团队作品。无需等"国内版 JEV",开源生态已经长在 Qwen 上。
+
+### 10.3 推荐融入方案(详设)
+
+**总原则:witness 仍为唯一终审(P0 已证明为什么);System One 模型只作
+校准分流器与弱标签机,永不单独放行。**
+
+架构(在现有三层校验之外增加一层,不改动现有链路):
+
+```
+L0 确定性检查(现有): 语法/执行/求解器状态 —— 零成本
+L1 System One 分流器(新): Open-Jev-27B,一次前向 ~100ms/细胞
+     高置信违例 → 直接进修复环(跳过 witness 前的盲目重试)
+     其它         → 照常进 witness
+L2 witness 确定性审计(现有,终审,永不旁路)
+L3 参考解对题(现有,仅数据集有真值时)
+```
+
+L1 的真实价值不在域内(witness 是零成本 python,域内无替代必要),而在:
+
+1. **J1 跨数据集冷启动判官**:换数据集(如 IndustryOR)时 witness 规则
+   为空,L1 是唯一的语义初筛;其幻影 false-clear 率决定它在冷启动期
+   能承担什么角色。
+2. **J2 轨迹弱标签批量生产**:RQ2 反例监督训练需要远超 316 的标注轨迹;
+   witness 只能标已枚举规则覆盖的部分,L1 给其余细胞打弱标签蒸馏进
+   训练集。
+3. **校准自主权**:RLCD 是 TypeSafe 的秘方,但我们有 witness 真值标签
+   (316 细胞且随跑批增长)——对开源模型原始概率做 Platt/isotonic
+   校准,得到的是**我们分布上**的校准置信度;JEV API 的校准分布在
+   通用域,这一点官方 API 反而给不了。
+
+**为什么选 Open-Jev-27B 而非其它**:与我们 pipeline 同基座
+(Qwen3.8-27B),消除"模型能力差异"这一混杂变量——若它也抓不住幻影,
+结论是"System One 形态"的失败而非"模型太小/太弱";这正补在 P0
+(Qwen 直球判官 45.3% false-clear)与 witness(误报 1.9%/0%)之间的
+证据链缺口上。
+
+**评估协议(沿用 P0/P2,不变更口径)**:同一批 316 个 witness 标注细胞、
+同一杀手指标(幻影子集 false-clear 率),按 §6 P2 决策矩阵裁决:
+<5% → J1 成立可冷启动;5–30% → 仅作高置信分流器;>30% → System One
+路线在 OR 语义审计判死,写入论文("System One 抓不住 System Two 幻影"
+本身即是发现:幻影主导机制=跨期守恒推理,是模式匹配形态的结构性盲区)。
+
+**成本与资源**:2 卡 A800(27B bf16 ≈54GB,vLLM)即可自部署;316 细胞
+每细胞一次前向,秒级完成,成本主要是部署调试;零数据外发、零 API 费用。
+JEV 官方 API 降级为可选对照项(若用户拍板数据外发 + 拿到 early access),
+不再是依赖。
+
+**行动序列**:
+1. 克隆 Open-Jev / kev 仓库,核实部署需求与许可证,写 316 细胞适配脚本
+   (复用 judge_calibration_p0.py 的细胞装载与分析器,只换判定后端)
+2. 申请 2 卡 A800,部署 Open-Jev-27B,冒烟 3 细胞
+3. 全量 316 细胞 → 三方对比表(Qwen 判官 vs Open-Jev vs witness)
+4. witness 标签 Platt/isotonic 校准,出校准曲线
+5. 按 P2 矩阵裁决 J1;结果回填本文档与 novelty_audit 候选 C
+
 ---
 
 来源:
 - TypeSafe 官方发布博客(2026-09-15):https://typesafe.ai/blog/introducing-system-one-models-and-jev
 - LangChain 实测(Jev-as-a-Judge,2026-09-20):https://www.langchain.com/blog/jev-agent-evals-langsmith
+- Jev 无自部署形态(Sanity glossary,2026-10):https://www.sanity.io/glossary/jev-typesafe-ai-model
+- 开源生态精选表(VoltAgent,2026-10-10):https://github.com/VoltAgent/typesafe-jev-ecosystem
+- Open-Jev-27B(Zefan-Cai,2026-09):https://github.com/Zefan-Cai/Open-Jev;方法论文 arXiv:2610.17205
+- CompassJudger-2(上海AI Lab,2025-07):arXiv:2507.09104
+- Skywork-Reward-V2(昆仑万维,2025-07):ModelScope Skywork/Skywork-Reward-V2 系列页
 - explainx 独立复核(2026-09-27):https://explainx.ai/blog/jev-speed-cost-claims-fact-check-2026
 - 判官校准研究(BargLabs,2026-09;plain LLM 判官 false-clear 率):见
   `docs/paper/novelty_audit_v0.1.md` 候选 C 节引注

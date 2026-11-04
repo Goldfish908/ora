@@ -112,7 +112,8 @@ def feedback_msg(rec: dict) -> str | None:
 
 def main() -> None:
     ap = argparse.ArgumentParser()
-    ap.add_argument("--arm", required=True, choices=["z0", "z1", "z2"])
+    ap.add_argument("--arm", required=True,
+                    choices=["z0", "z1", "z2", "z0b", "z0c"])
     ap.add_argument("--shard", default="0/1", help="k/K zero-based")
     ap.add_argument("--limit", type=int, default=0)
     args = ap.parse_args()
@@ -147,7 +148,7 @@ def main() -> None:
             msgs: list[dict] = []
             prev: dict = last.get(pid) or {}
             prev_text = ""
-            for rnd in range(1, (MAX_ROUNDS if args.arm != "z0" else 1) + 1):
+            for rnd in range(1, (MAX_ROUNDS if not args.arm.startswith("z0") else 1) + 1):
                 if (pid, rnd) in done:
                     continue
                 if rnd == 1:

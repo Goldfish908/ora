@@ -72,9 +72,17 @@ def rule_class(rule_code: str) -> str:
 
 
 def main() -> None:
+    import argparse
+    ap = argparse.ArgumentParser()
+    ap.add_argument("--rules-dir", default=str(RULES))
+    ap.add_argument("--glob", default="rules_*.json")
+    ap.add_argument("--out", default=str(OUT))
+    args = ap.parse_args()
+    rules_dir, out_path = Path(args.rules_dir), Path(args.out)
+
     cells = [json.loads(l) for l in CELLS.open() if l.strip()]
     rules_by_id = {}
-    for f in sorted(RULES.glob("rules_*.json")):
+    for f in sorted(rules_dir.glob(args.glob)):
         r = json.loads(f.read_text())
         rules_by_id[r["id"]] = r
 
@@ -96,12 +104,12 @@ def main() -> None:
         for rule in rr["rules"]:
             res = run_rule(rule["code"], c["code"], c["objective"],
                            rr.get("params") or {})
-            rule_stats[(c["id"], rule["name"], res["status"])] += 1
+            rule_stats[(c["id"], rule.get("name") or rule.get("template"), res["status"])] += 1
             if res["status"] == "ok" and res.get("violation"):
                 flagged = True
                 cls_flagged[rule_class(rule["code"])] = True
                 details.append({"key": c["key"], "wrong": c["wrong"],
-                                "rule": rule["name"],
+                                "rule": rule.get("name") or rule.get("template"),
                                 "class": rule_class(rule["code"]),
                                 "violation": res["violation"][:160]})
         for cls, f in cls_flagged.items():
@@ -134,7 +142,7 @@ def main() -> None:
         "n_rules_total": sum(len(r.get("rules") or [])
                              for r in rules_by_id.values()),
     }
-    OUT.write_text(json.dumps({"summary": summary, "details": details},
+    out_path.write_text(json.dumps({"summary": summary, "details": details},
                               ensure_ascii=False, indent=1))
     print(json.dumps(summary, ensure_ascii=False, indent=1))
 

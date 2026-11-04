@@ -349,13 +349,18 @@ def removed_lines_summary(correct: str, broken: str, max_lines: int = 4
 
 # ---------------------------------------------------------------- main pipeline
 
+def seed_tag_safe(seed_tag: str) -> str:
+    return seed_tag
+
+
 def process_pair(cfg, row: dict, mutant_type: str, code: str, code_src: str,
                  problem_text: str, max_repair_rounds: int,
-                 inject_retries: int) -> dict:
+                 inject_retries: int, seed_note: str | None = None,
+                 seed_tag: str = "") -> dict:
     sid = row["scenario_id"]
     data = json.loads(row["data"])
     gold = row["reference_objective"]
-    sb_root = OUT_DIR / "sandbox" / f"{sid}__{mutant_type}"
+    sb_root = OUT_DIR / "sandbox" / f"{sid}__{mutant_type}{seed_tag_safe(seed_tag)}"
     sample = {
         "scenario_id": sid, "mutant_type": mutant_type,
         "problem_text": problem_text,
@@ -369,7 +374,7 @@ def process_pair(cfg, row: dict, mutant_type: str, code: str, code_src: str,
     }
 
     # ---- injection (with retries gated by the witness)
-    feedback = None
+    feedback = seed_note
     tried: list[str] = []
     for attempt in range(1, inject_retries + 1):
         attempt_feedback = feedback or ""
@@ -500,21 +505,28 @@ def main() -> None:
                     choices=MUTANTS)
     ap.add_argument("--max-repair-rounds", type=int, default=3)
     ap.add_argument("--inject-retries", type=int, default=2)
+    ap.add_argument("--data", default=str(DEV40),
+                    help="input jsonl (default: dev40); use f1f4_all100 for "
+                         "the scale-out run")
+    ap.add_argument("--seeds", type=int, default=1,
+                    help="injection seeds per (scenario, mutant); seed 0 "
+                         "keeps the legacy output name so existing samples "
+                         "are reused")
     args = ap.parse_args()
 
-    rows = [json.loads(l) for l in DEV40.read_text().splitlines()
+    data_path = Path(args.data)
+    rows = [json.loads(l) for l in data_path.read_text().splitlines()
             if l.strip()]
     sids = sorted({r["scenario_id"] for r in rows})
     by_sid = {r["scenario_id"]: r for r in rows}
-    # hard leakage guard: only dev40 ids may appear here
-    assert all(s in by_sid for s in sids)
     if args.scenarios:
         unknown = [s for s in args.scenarios if s not in by_sid]
         if unknown:
-            sys.exit(f"not in dev40: {unknown}")
+            sys.exit(f"not in {data_path.name}: {unknown}")
         sids = [s for s in sids if s in set(args.scenarios)]
 
-    pairs = [(s, m) for s in sids for m in args.mutants]
+    pairs = [(s, m, sd) for s in sids for m in args.mutants
+             for sd in range(args.seeds)]
     k, kk = (int(x) for x in args.shard.split("/"))
     pairs = [p for i, p in enumerate(pairs) if i % kk == k]
     if args.limit:
@@ -525,10 +537,11 @@ def main() -> None:
     prompt_cache: dict[str, str] = {}
 
     stats = {"done": 0, "skip": 0, "no_code": 0, "invalid": 0}
-    for sid, mtype in pairs:
-        out_path = OUT_DIR / f"samples_{sid}__{mtype}.json"
+    for sid, mtype, seed in pairs:
+        seed_tag = f"__s{seed}" if seed > 0 else ""
+        out_path = OUT_DIR / f"samples_{sid}__{mtype}{seed_tag}.json"
         if out_path.exists():
-            print(f"[skip] {sid} {mtype} (sample exists)", flush=True)
+            print(f"[skip] {sid} {mtype}{seed_tag} (sample exists)", flush=True)
             stats["skip"] += 1
             continue
         row = by_sid[sid]
@@ -540,23 +553,31 @@ def main() -> None:
                    "invalid_reason": "no_correct_code"}
             out_path.write_text(json.dumps(rec, ensure_ascii=False,
                                            indent=2))
-            print(f"[no-code] {sid} {mtype}", flush=True)
+            print(f"[no-code] {sid} {mtype}{seed_tag}", flush=True)
             stats["no_code"] += 1
             continue
         code, code_src = found
         if sid not in prompt_cache:
             prompt_cache[sid] = adapt_prompt_schema(row["prompt_schema"],
                                                     SCIP_OUTPUT_FORMAT_SOL)
+        seed_note = None
+        if seed > 0:
+            seed_note = (f"This is injection seed #{seed}: the same problem "
+                         f"has already been mutated {seed} time(s) at OTHER "
+                         f"locations. You MUST pick a different constant, "
+                         f"constraint, or injection point than the obvious "
+                         f"first choice.")
         t0 = time.time()
         sample = process_pair(cfg, row, mtype, code, code_src,
                               prompt_cache[sid], args.max_repair_rounds,
-                              args.inject_retries)
+                              args.inject_retries, seed_note=seed_note,
+                              seed_tag=seed_tag)
         sample["wall_s_total"] = round(time.time() - t0, 1)
         out_path.write_text(json.dumps(sample, ensure_ascii=False,
                                        indent=2))
         stats["done" if sample["mutant_valid"] else "invalid"] += 1
         wv = sample.get("witness_verdict") or {}
-        print(f"[{sid}][{mtype}] valid={sample['mutant_valid']} "
+        print(f"[{sid}][{mtype}{seed_tag}] valid={sample['mutant_valid']} "
               f"rules={sample.get('violation_rules')} "
               f"obj {sample.get('objective_before')} -> "
               f"{sample.get('objective_after')} (gold={sample['gold_objective']}) "

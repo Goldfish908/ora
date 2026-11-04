@@ -78,7 +78,7 @@ def parse_json(text: str) -> dict | None:
     if i < 0 or j <= i:
         return None
     try:
-        return json.loads(text[i:j + 1])
+        return json.loads(text[i:j + 1], strict=False)
     except json.JSONDecodeError:
         return None
 
@@ -106,6 +106,14 @@ def main() -> None:
                 [{"role": "user", "content": PROMPT % d["en_question"]}],
                 max_tokens=16384, temperature=0.3,
                 extra={"chat_template_kwargs": {"enable_thinking": False}})
+            if resp.get("finish_reason") == "length":
+                resp = llm_mod.chat(
+                    [{"role": "user", "content":
+                      (PROMPT % d["en_question"]) +
+                      "\nIMPORTANT: reply with COMPACT single-line JSON, "
+                      "at most 3 rules, short code bodies."}],
+                    max_tokens=32768, temperature=0.3,
+                    extra={"chat_template_kwargs": {"enable_thinking": False}})
             parsed = parse_json(resp["content"])
         except Exception as e:
             parsed = None

@@ -55,6 +55,22 @@ def run_rule(rule_code: str, code: str, objective, params) -> dict:
         return {"status": "rule_error", "err": f"{type(e).__name__}: {e}"}
 
 
+def rule_class(rule_code: str) -> str:
+    """numeric: the rule body actually reads params and/or objective;
+    code_only: the rule only greps the code text (keyword heuristics).
+    Uses AST so the def-signature argument names don't count."""
+    import ast
+    try:
+        tree = ast.parse(rule_code)
+    except SyntaxError:
+        return "code_only"
+    for node in ast.walk(tree):
+        if isinstance(node, ast.Name) and node.id in ("params", "objective") \
+                and isinstance(node.ctx, ast.Load):
+            return "numeric"
+    return "code_only"
+
+
 def main() -> None:
     cells = [json.loads(l) for l in CELLS.open() if l.strip()]
     rules_by_id = {}
@@ -63,6 +79,8 @@ def main() -> None:
         rules_by_id[r["id"]] = r
 
     n_flag_phantom = n_phantom = n_flag_correct = n_correct = 0
+    cls_stats = {"numeric": [0, 0, 0, 0], "code_only": [0, 0, 0, 0]}
+    # per class: [phantom_flagged, phantom_total, correct_flagged, correct_total]
     rule_stats = Counter()
     missing_rule = 0
     details = []
@@ -74,26 +92,43 @@ def main() -> None:
         n_phantom += c["wrong"]
         n_correct += (not c["wrong"])
         flagged = False
+        cls_flagged = {"numeric": False, "code_only": False}
         for rule in rr["rules"]:
             res = run_rule(rule["code"], c["code"], c["objective"],
                            rr.get("params") or {})
             rule_stats[(c["id"], rule["name"], res["status"])] += 1
             if res["status"] == "ok" and res.get("violation"):
                 flagged = True
+                cls_flagged[rule_class(rule["code"])] = True
                 details.append({"key": c["key"], "wrong": c["wrong"],
                                 "rule": rule["name"],
+                                "class": rule_class(rule["code"]),
                                 "violation": res["violation"][:160]})
+        for cls, f in cls_flagged.items():
+            if c["wrong"]:
+                cls_stats[cls][0] += f
+                cls_stats[cls][1] += 1
+            else:
+                cls_stats[cls][2] += f
+                cls_stats[cls][3] += 1
         if c["wrong"]:
             n_flag_phantom += flagged
         else:
             n_flag_correct += flagged
 
+    def _rate(a, b):
+        return a / b if b else None
+
     summary = {
         "cells": len(cells), "cells_with_rules": n_phantom + n_correct,
         "cells_missing_rules": missing_rule,
         "phantom": n_phantom, "correct": n_correct,
-        "detection_rate": n_flag_phantom / n_phantom if n_phantom else None,
-        "false_positive_rate": n_flag_correct / n_correct if n_correct else None,
+        "detection_rate": _rate(n_flag_phantom, n_phantom),
+        "false_positive_rate": _rate(n_flag_correct, n_correct),
+        "by_class": {cls: {"detection_rate": _rate(v[0], v[1]),
+                           "false_positive_rate": _rate(v[2], v[3]),
+                           "phantom": v[1], "correct": v[3]}
+                     for cls, v in cls_stats.items()},
         "status_counts": {s: sum(v for k, v in rule_stats.items() if k[2] == s)
                           for s in ("ok", "rule_error", "no_check")},
         "n_rules_total": sum(len(r.get("rules") or [])

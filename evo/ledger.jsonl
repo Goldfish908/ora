@@ -28,3 +28,4 @@
 {"kind": "dev40", "gen": 3, "gid": "g3_x_g2_g1_g0_seed_draft_draftxg2_x_g1_g0_no_init_draftxg1_g0_seed_draft", "n": 40, "success": 11, "phantom": 15, "tokens": 618121}
 {"kind": "dev40", "gen": 3, "gid": "g3_x_g2_x_g1_g0_no_init_draftxg1_g0_seed_draftxg2_g1_g0_seed_draft_draft", "n": 40, "success": 13, "phantom": 16, "tokens": 631977}
 {"kind": "gapcheck60", "gen": 3, "gid": "g3_x_g2_x_g1_g0_no_init_draftxg1_g0_seed_draftxg2_g1_g0_seed_draft_draft", "n": 60, "success": 15, "phantom": 27, "tokens": 901046}
+{"kind": "full190", "gen": 3, "gid": "g3_x_g2_x_g1_g0_no_init_draftxg1_g0_seed_draftxg2_g1_g0_seed_draft_draft", "n": 190, "success": 42, "phantom": 60, "tokens": 2914205}

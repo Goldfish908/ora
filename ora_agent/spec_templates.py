@@ -162,6 +162,27 @@ _OBJECTIVE_RANGE_CODE = r'''def check(code, objective, params):
         return None
 '''
 
+_ANCHOR_BOUND_CODE = r'''def check(code, objective, params):
+    """anchor_bound: flag a printed objective on the wrong side of a TIGHT
+    anchor (__DIRECTION__=__VALUE__) justified by a binding text clause or
+    a trivial-policy reference. anchor_type=__ANCHOR_TYPE_JSON__."""
+    try:
+        if objective is None:
+            return None
+        obj = float(objective)
+        val = __VALUE__
+        tol = 1e-6 * max(1.0, abs(obj))
+        if "__DIRECTION__" == "lower" and obj < val - tol:
+            return ("objective %.6g is below the anchor lower bound %.6g "
+                    "(binding clause / trivial-policy reference)" % (obj, val))
+        if "__DIRECTION__" == "upper" and obj > val + tol:
+            return ("objective %.6g exceeds the anchor upper bound %.6g "
+                    "(binding clause / trivial-policy reference)" % (obj, val))
+        return None
+    except Exception:
+        return None
+'''
+
 _SENSE_CODE = r'''def check(code, objective, params):
     """sense_direction: problem asks to __EXPECTED__; flag only when the
     opposite sense appears in the code and the expected sense is absent."""
@@ -366,8 +387,34 @@ def _render_conditional_moq(slots, params):
             .replace("__REQUIRE_BINARY__", repr(require_binary)))
 
 
+def _render_anchor_bound(slots, params):
+    direction = str(slots.get("direction", "")).strip().lower()
+    if direction not in ("lower", "upper"):
+        raise TemplateError(
+            f"anchor_bound slot 'direction' must be lower|upper, "
+            f"got {slots.get('direction')!r}")
+    value = _num(slots.get("value"), params, "value")
+    if value is None:
+        raise TemplateError("anchor_bound needs slot 'value'")
+    anchor_type = str(slots.get("anchor_type", "")).strip().lower()
+    if anchor_type not in ("binding_clause", "trivial_policy"):
+        raise TemplateError(
+            f"anchor_bound slot 'anchor_type' must be "
+            f"binding_clause|trivial_policy, got {slots.get('anchor_type')!r}"
+            " — loose physical-range guesses are rejected by design (D2.1)")
+    evidence = str(slots.get("evidence") or "").strip()
+    if len(evidence) < 10:
+        raise TemplateError(
+            "anchor_bound needs slot 'evidence': the verbatim text span "
+            "justifying the bound (>=10 chars)")
+    return (_ANCHOR_BOUND_CODE
+            .replace("__DIRECTION__", direction)
+            .replace("__VALUE__", repr(value))
+            .replace("__ANCHOR_TYPE_JSON__", json.dumps(anchor_type)))
+
+
 TEMPLATES = ("objective_range", "phantom_resource", "sense_direction",
-             "constant_fidelity", "conditional_moq")
+             "constant_fidelity", "conditional_moq", "anchor_bound")
 
 _RENDERERS = {
     "objective_range": _render_objective_range,
@@ -375,6 +422,7 @@ _RENDERERS = {
     "sense_direction": _render_sense_direction,
     "constant_fidelity": _render_constant_fidelity,
     "conditional_moq": _render_conditional_moq,
+    "anchor_bound": _render_anchor_bound,
 }
 
 
@@ -440,6 +488,20 @@ FIXTURES = [
                             "y = model.addVar(vtype='B')\n"
                             "model.addConstr(q >= 100 * y)"),
                    "objective": None}},
+    {"template": "anchor_bound",
+     "slots": {"direction": "lower", "value": "moq * price",
+               "anchor_type": "binding_clause",
+               "evidence": "the store must order at least 100 chairs"},
+     "params": {"moq": 100, "price": 40},
+     "must_fire": {"code": "", "objective": 365},
+     "must_pass": {"code": "", "objective": 4000}},
+    {"template": "anchor_bound",
+     "slots": {"direction": "upper", "value": "stages * new_cost",
+               "anchor_type": "trivial_policy",
+               "evidence": "buying new tools every stage costs 70/stage"},
+     "params": {"stages": 5, "new_cost": 70},
+     "must_fire": {"code": "", "objective": 431},
+     "must_pass": {"code": "", "objective": 350}},
 ]
 
 

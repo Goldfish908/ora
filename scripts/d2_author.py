@@ -64,6 +64,25 @@ Step 2 - "rules": template instances. Available templates:
    Cases: must_fire = {"code": "", "objective": <out-of-range value>};
           must_pass = {"code": "", "objective": <in-range value>}.
 
+1b) anchor_bound - PREFERRED over objective_range whenever the text has a
+   binding clause or an obvious trivial-policy reference. A tight anchor
+   catches silent errors that loose physical ranges miss.
+   slots: {"direction": "lower"|"upper", "value": number/expr,
+           "anchor_type": "binding_clause"|"trivial_policy",
+           "evidence": "<verbatim span>"}.
+   - binding_clause: "at least 100 chairs" at a known unit price => minimum
+     spend lower = 100*price; "at most 5 trucks" with per-trip revenue =>
+     revenue upper; capacity caps; mandatory minimums.
+   - trivial_policy: cost of an obvious feasible naive plan, e.g. "buy
+     everything new every stage" => a minimization objective must NOT
+     exceed it; "meet all demand by purchasing at the max listed price"
+     => another valid upper anchor.
+   - wrong side = silent error: minimization cost BELOW a binding lower
+     anchor, or ABOVE a trivial-policy upper anchor, both mean the model
+     is wrong.
+   Cases: must_fire = objective just across the anchor;
+          must_pass = objective exactly at / safely inside the anchor.
+
 2) sense_direction - flags the wrong optimization direction.
    slots: {"expected": "maximize" or "minimize"}.
    Declare ONLY when the text unambiguously says maximize or minimize.
@@ -102,6 +121,11 @@ Rules of engagement:
 - EVIDENCE: every slot value must cite a verbatim span of the problem text
   ("evidence": {"<slot>": "<exact quote from the problem>"}). If you cannot
   quote it, drop the rule - hallucinated bounds are the known failure mode.
+- MANDATORY ATTEMPT: you MUST try to instantiate anchor_bound (both
+  directions) and phantom_resource on EVERY problem. If you decline, you
+  MUST state in "not_used" which required ingredient the text lacks
+  (e.g. "no binding quantity clause", "no resource notion at all").
+  "I did not think of it" is not an acceptable reason.
 - CONSERVATIVE: instantiate a template only with clear textual evidence.
   2-4 solid rules beat 5 shaky ones. Never invent numbers.
 - SELF-TEST: must_fire MUST trigger your rule, must_pass MUST NOT. Both
@@ -145,6 +169,9 @@ Reminder of slot schemas:
   lacks the literal, must_pass contains it as a literal.
 - phantom_resource: {"resource": str, "keywords": [str], "granted": num};
   must_fire assigns the resource above granted, must_pass does not.
+- anchor_bound: {"direction": "lower"|"upper", "value": num/expr,
+  "anchor_type": "binding_clause"|"trivial_policy", "evidence": str}; cases
+  vary only "objective" (code can be "").
 - conditional_moq: {"m": num/expr|null, "require_binary": bool}; must_fire
   has no binary variable, must_pass has one plus the threshold m.
 Expressions may reference only the params names listed above.

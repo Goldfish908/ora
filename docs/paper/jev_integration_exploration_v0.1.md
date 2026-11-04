@@ -362,3 +362,49 @@ JEV 官方 API 降级为可选对照项(若用户拍板数据外发 + 拿到 ear
   `docs/paper/novelty_audit_v0.1.md` 候选 C 节引注
 - 我们内部的 witness 必要性证据:F10/E2(`motivation_findings_v0.1.md`)、
   G1 生态效度组(同上 §G1)
+
+## 11. P1′ 实测:Open-Jev-27B 判官 vs P0 Qwen 判官(2026-11-04)
+
+**设置**:Open-Jev-27B-v1.1 自部署于 2×A800-80G(workspace
+app-workspace-1178-1789462142492)。基座 = 与我们 pipeline **完全相同**的
+Qwen/Qwen3.8-27B @ `1d4bf0f2`(权重来自内部 `/dfs/share-groups/letrain/ckpt/`,
+按 HF cache 布局放置,`HF_HUB_OFFLINE=1`);LoRA rank-8 + 标量决策头 +
+校准温度 2.534 来自官方 checkpoint(HF `ZefanCai/Open-Jev-27B-v1.1`)。
+双卡 `JEV_DEVICE_MAP=auto`、`JEV_MAX_MEMORY=0=36GiB,1=40GiB`(与合租的
+vLLM/PEARL 作业共存)。服务 `python -m jev.server --port 8791`。
+
+**协议**:与 P0 完全同口径——同 316 个 witness 标注细胞(240 infeasible
+/ 76 feasible),witness 裁决为 oracle;判官输入 = 题面+代码截断+解摘要,
+Noul 原语返回"存在语义违例"的校准概率。脚本
+`scripts/judge_calibration_openjev.py`,分析 `scripts/judge_calibration_compare.py`。
+
+**结果(负结果,但信息量大)**:
+
+| 判官 | 幻影误放行率(240) | 真成功误报率(76) | 备注 |
+|---|---|---|---|
+| P0 Qwen27B 生成式判官 | 43.8% | 43.4% | 弱但有信号 |
+| **Open-Jev-27B @0.5** | **99.6%** | 1.3% | **几乎全放行** |
+| Open-Jev AUC | **0.534** | — | ≈ 随机 |
+
+- 概率分布:f=不可行细胞均值 0.1261,可行细胞均值 0.1276——两组无区分;
+  p_violation 全部挤在 0.05–0.15 区间(infeasible 最大 0.71)。
+- 延迟:中位 3.6s/判定(单次前向,不生成),比生成式判官快 10–20 倍——
+  **速度优势真实存在,但判别力为零时无意义**。
+
+**解读**:Open-Jev v1.1 的训练分布(doom/phone/community/wanli 等自有
+任务)不覆盖"解与题面的语义一致性"这一判定形态,我们构造的 Noul
+instruction 属于完全 OOD,决策头退化为输出无信息先验。这直接验证了
+§10 调研时的担忧:**JEV 路线的价值在"用本域轨迹训练决策头"的配方,
+而不在现成的通用 checkpoint**。
+
+**对 P2 矩阵的裁决(J1)**:Open-Jev 现成 checkpoint 作即插即用判官 =
+**否决**。若要走 JEV 路线,必须进入"用我们 witness 标注数据微调决策头"
+的训练实验(316 细胞太少,需配合合成注入扩样;仓库自带训练入口
+`jev.train`)。该训练实验暂列候选,优先级低于 checker-authoring。
+witness 终审权不下放的结论不变。
+
+**部署经验沉淀**(复用价值):MF workspace 终端 websocket 会被断连杀
+前台进程,长任务须 nohup+DFS 日志;外网经代理限流 44–158KB/s,大文件
+走内部 `/dfs/share-groups/letrain/ckpt/` 拷贝或自写并行分片器
+(`pdl.py`,64 路 Range);NGC torch 2.8.0a0 需 `pip install --no-deps`
++ 手工补 accelerate/peft,防 pip 用 torch 2.15 顶掉 NGC 优化版。

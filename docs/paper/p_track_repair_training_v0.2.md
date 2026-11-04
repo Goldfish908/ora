@@ -58,6 +58,30 @@ sha256 校验):
 3. 以上两条满足才启动 LoRA 训练与四臂消融
    (规则库冻结/进化 × 修复模型冻结/训练)。
 
+## 5.5 附录:A800 环境冒烟实测(2026-11-04)
+
+- **训练环境**:系统 python 3.12(torch 2.8.0a0 NVIDIA + transformers
+  5.10.2 + peft 0.19.1 + accelerate 1.13.0 + flash_attn 2.7.3);
+  serving 用隔离 venv(`/dfs/data/hewj13/lora_smoke/venv_vllm/`,
+  vllm 0.29.0,离线装自本地 wheelhouse;与训练 env 的 torch 版本
+  互斥,绝不能混装);
+- **LoRA SFT 冒烟通过**:27B 基座 BF16,r=16/α=32/all-linear(可训
+  参数 0.43%),双卡峰值显存 24.9/29.5 GB,4.53s/step,loss
+  3.32→0.024,adapter 保存/重载/生成全通,全程 202s;
+- **基座是 Mamba/attention 混合架构**:vLLM 默认 max_num_seqs=1024
+  超 Mamba cache blocks 上限,须显式 `--max-num-seqs 64` +
+  `--gpu-memory-utilization 0.40`;serve 启动 ~8.5min;
+- **共卡约束**:与 way2m 的 vllm serve 共卡,每卡常余 ~42–46G——
+  LoRA 可行,大 batch/全参数不可行(与 §7 判断一致);
+- **Stage 3 风险升级**:基座 Mamba 混合架构 × LoRA × DAPO 在 verl
+  里的支持度须先验证,P3 前加一道"verl 加载本基座跑 10 step
+  GRPO 冒烟"的门;
+- pip 坑:NGC 容器全局 PIP_CONSTRAINT 须前置清空;外网 ~100kB/s,
+  优先本地 wheelhouse。
+
+产物:`/dfs/data/hewj13/lora_smoke/`(README.txt、训练/重载脚本、
+adapter、venv_vllm、全部日志)。
+
 ## 6. 与 D2 的接口
 
 D2 的模板规则自标定产物(模板实例、触发记录、must-fire/must-pass

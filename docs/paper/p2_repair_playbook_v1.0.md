@@ -70,3 +70,25 @@ The held-out family shows no degradation (9/9 one-shot), i.e. the card
 captures a family-general mechanism (uninitialized bucket inventory at
 t=1), not family-specific patches. Cross-dataset transfer (IndustryOR)
 is tracked separately (N3b).
+
+## Addendum 2026-11-05: 扩产后三类变异全量营救 —— 整体修复率 50.3% → 90.5%
+
+工厂扩产到 600 对(F1-F4 × 100 题 × 3 变异 × 2 注入种子,507 有效)后,
+按 N3b 的教训**按变异类型分别蒸馏卡片**(幻影/错常数/删约束各一张,
+蒸馏例子里不含 F4 族以保持 held-out),对全部基线失败样本重跑营救:
+
+| 变异类型 | 基线修复 | 卡片营救失败样本 | 合计 |
+|---|---|---|---|
+| phantom_inventory | 49/200 (24.5%) | 142/150 (94.7%) | **191/200 (95.5%)** |
+| wrong_constant | 103/140 (73.6%) | **33/33 (100%)** | **136/140 (97.1%)** |
+| drop_constraint | 103/167 (61.7%) | 29/62 (46.8%) | **132/167 (79.0%)** |
+| **合计** | **255/507 (50.3%)** | **204** | **459/507 (90.5%)** |
+
+要点:
+1. 错常数卡片 33/33 全救回 —— "按类配卡"在非幻影类上同样成立。
+2. 删约束类营救率 46.8% 明显偏低:删掉的约束族不同(库存平衡/产能/可用性
+   混杂),一张卡片仍盖不住 → 进一步印证"失败聚类同构"是剧本生效前提;
+   下一步可对删约束按违例规则(C-BALANCE/C-PRODCAP/C-AVAIL)再细分卡。
+3. 营救全部经 witness 零违例 + gold 目标值匹配验证;gold 不进提示词。
+4. 数据产出:SFT/DPO 各 459 条(scripts/p3_build_sft.py,90/10 按题划分
+   train/dev,F5-F8 零接触;卡片内容不进 prompt,知识由参数内化)。

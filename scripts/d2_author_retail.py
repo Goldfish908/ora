@@ -77,8 +77,16 @@ def main() -> None:
     ap.add_argument("--limit", type=int, default=0)
     ap.add_argument("--shard", default="0/1")
     ap.add_argument("--skip-fixtures", action="store_true")
+    ap.add_argument("--data", default=str(DATA),
+                    help="scenario jsonl (default: gapcheck60 slice)")
+    ap.add_argument("--out", default=str(OUT_DIR),
+                    help="output dir (default: runs/d2_authoring_gap)")
+    ap.add_argument("--tag", default="gap",
+                    help="output filename tag (default: gap)")
     args = ap.parse_args()
     k, K = (int(x) for x in args.shard.split("/"))
+    data_path = Path(args.data)
+    out_dir = Path(args.out)
 
     if not args.skip_fixtures:
         fx = st.run_fixtures()
@@ -87,14 +95,14 @@ def main() -> None:
                   json.dumps(fx, ensure_ascii=False))
             sys.exit(1)
 
-    data = [json.loads(l) for l in DATA.read_text().splitlines() if l.strip()]
+    data = [json.loads(l) for l in data_path.read_text().splitlines() if l.strip()]
     data = [d for i, d in enumerate(data) if i % K == k]
     if args.limit:
         data = data[: args.limit]
-    OUT_DIR.mkdir(parents=True, exist_ok=True)
+    out_dir.mkdir(parents=True, exist_ok=True)
 
     for d in data:
-        out = OUT_DIR / f"d2rules_gap_{d['scenario_id']}.json"
+        out = out_dir / f"d2rules_{args.tag}_{d['scenario_id']}.json"
         if out.exists():
             print(f"[{d['scenario_id']}] exists, skip", flush=True)
             continue

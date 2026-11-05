@@ -52,7 +52,7 @@ from scripts.p1_inject_factory import (  # noqa: E402
 
 FACTORY = ROOT / "runs" / "p1_factory"
 OUT_DIR = ROOT / "runs" / "p2_hints"
-DEV40 = ROOT / "data" / "m1_retailopt" / "dev40_f1f4.jsonl"
+ALL100 = ROOT / "data" / "m1_retailopt" / "f1f4_all100.jsonl"
 
 CARD_TASK = (
     "You are distilling a REPAIR PLAYBOOK for a class of semantic modeling "
@@ -78,11 +78,13 @@ PLAYBOOK_HEADER = (
 
 def load_samples(mutant: str) -> list[dict]:
     out = []
-    for p in sorted(FACTORY.glob(f"samples_*__{mutant}.json")):
+    for p in sorted(FACTORY.glob(f"samples_*__{mutant}*.json")):
         try:
-            out.append(json.loads(p.read_text()))
+            s = json.loads(p.read_text())
         except Exception:
             continue
+        s["_seed_tag"] = p.stem.split(f"__{mutant}", 1)[1]  # "" or "__sN"
+        out.append(s)
     return out
 
 
@@ -123,7 +125,8 @@ def rescue_sample(cfg, row: dict, sample: dict, card: str,
                   max_rounds: int) -> dict:
     sid = sample["scenario_id"]
     problem = sample["problem_text"]
-    sb_root = OUT_DIR / "sandbox" / f"{sid}__{sample['mutant_type']}"
+    sb_root = OUT_DIR / "sandbox" / \
+        f"{sid}__{sample['mutant_type']}{sample.get('_seed_tag', '')}"
     sb_root.mkdir(parents=True, exist_ok=True)
     data = json.loads(row["data"])
 
@@ -183,13 +186,16 @@ def main() -> None:
     ap.add_argument("--n-card-examples", type=int, default=4)
     args = ap.parse_args()
 
-    rows = [json.loads(l) for l in DEV40.read_text().splitlines()
+    rows = [json.loads(l) for l in ALL100.read_text().splitlines()
             if l.strip()]
     by_sid = {r["scenario_id"]: r for r in rows}
 
     samples = [s for s in load_samples(args.mutant)
                if s.get("mutant_valid")]
-    successes = [s for s in samples if is_fixed(s)]
+    # hold F4 out of card authoring so it stays a transfer probe
+    successes = sorted((s for s in samples if is_fixed(s)),
+                       key=lambda s: (s["scenario_id"].startswith("retail_f4"),
+                                      s["scenario_id"]))
     failures = [s for s in samples if not is_fixed(s)]
     print(f"mutant={args.mutant} valid={len(samples)} "
           f"fixed={len(successes)} failed={len(failures)}", flush=True)
@@ -216,7 +222,7 @@ def main() -> None:
     n_rescued = 0
     for s in todo:
         sid = s["scenario_id"]
-        out = OUT_DIR / f"rescue_{sid}__{args.mutant}.json"
+        out = OUT_DIR / f"rescue_{sid}__{args.mutant}{s['_seed_tag']}.json"
         if out.exists():
             print(f"[skip] {sid}", flush=True)
             continue

@@ -75,6 +75,26 @@ def main() -> None:
         for r in out_rows:
             f.write(json.dumps(r, ensure_ascii=False) + "\n")
 
+    # dev-split eval file: same user format, labels kept, no targets
+    eval_rows = []
+    for key, rec in records.items():
+        if rec["split"] != "dev":
+            continue
+        user = JUDGE_PROMPT.format(
+            prompt=prompts.get(rec["scenario_id"], "")[:4000],
+            data_digest=json.dumps(rec["data_digest"], ensure_ascii=False),
+            code=rec["code"][:4000],
+            solution_digest=json.dumps(rec["solution_digest"], ensure_ascii=False))
+        eval_rows.append({
+            "key": "|".join(str(x) for x in key),
+            "wrong": rec["label"] == "wrong",
+            "system": "",
+            "user": user,
+        })
+    with open(OUT_DIR / "eval_v3.jsonl", "w") as f:
+        for r in eval_rows:
+            f.write(json.dumps(r, ensure_ascii=False) + "\n")
+
     per_class = Counter()
     unmatched = Counter()
     for key, rec in records.items():
@@ -85,6 +105,7 @@ def main() -> None:
             unmatched[cls] += 1
     stats = {
         "sft_rows": len(out_rows),
+        "eval_rows_dev": len(eval_rows),
         "records_with_traces": {str(k): v for k, v in sorted(per_class.items())},
         "train_records_unmatched": {str(k): v for k, v in sorted(unmatched.items())},
         "target_len_chars_mean": (sum(len(r["target"]) for r in out_rows)

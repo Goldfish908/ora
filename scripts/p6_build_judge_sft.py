@@ -39,7 +39,9 @@ def main() -> None:
     ap.add_argument("--keep-per-record", type=int, default=2)
     args = ap.parse_args()
 
-    records = {(r["scenario_id"], r.get("mutant"), r.get("seed_tag")): r
+    # key must include label: the wrong inject record and its correct
+    # repair-pass counterpart share (scenario, mutant, seed_tag)
+    records = {(r["scenario_id"], r.get("mutant"), r.get("seed_tag"), r["label"]): r
                for r in map(json.loads, JUDGE_DATA.read_text().splitlines())}
     prompts = {json.loads(l)["scenario_id"]: json.loads(l).get("prompt_full") or ""
                for l in SCENARIOS.read_text().splitlines()}
@@ -48,7 +50,8 @@ def main() -> None:
     matched = defaultdict(list)
     for t in traces:
         if t.get("verdict_match") and t.get("finish_reason") == "stop" and t.get("content"):
-            matched[(t["scenario_id"], t.get("mutant"), t.get("seed_tag"))].append(t)
+            matched[(t["scenario_id"], t.get("mutant"), t.get("seed_tag"),
+                      t["label"])].append(t)
 
     out_rows = []
     for key, ts in matched.items():

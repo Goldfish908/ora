@@ -25,7 +25,7 @@ ap.add_argument("--prompts", required=True)
 ap.add_argument("--out", required=True)
 ap.add_argument("--batch", type=int, default=4)
 ap.add_argument("--max-new-planner", type=int, default=6000)
-ap.add_argument("--max-new-decider", type=int, default=4000)
+ap.add_argument("--max-new-decider", type=int, default=6144)
 ap.add_argument("--limit", type=int, default=0)
 args = ap.parse_args()
 
@@ -160,8 +160,9 @@ for (c, cdir), p_out in zip(metas, planner_outs):
             script, repaired = fixed, True
             output = run_check(script, cdir)
     rec.update({"script": script, "repaired": repaired, "check_output": output})
+    # script echo capped at 8000 chars to match p15 SFT decider inputs
     decider_prompts.append(PROMPTS["decider"].format(
-        context=c["user"], script=script, output=output))
+        context=c["user"], script=script[:8000], output=output[:2500]))
     rec["_di"] = len(decider_prompts) - 1
     results.append(rec)
 

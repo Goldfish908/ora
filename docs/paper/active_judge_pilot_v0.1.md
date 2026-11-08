@@ -286,3 +286,40 @@ F5–F8 上的误报率应 ≤ 零样本主动判官的 7.1%——待 v4 评测�
 
 无论哪档,F5–F8 上的架构有效性结论(44.1% vs 14.7%/20.6%)不受影响——
 它已在零样本提示词层面成立;IndustryOR 检验的是参数化后的迁移保持度。
+
+## 15. 附录:主动判官工作机制的两个完整实例(F5–F8,零样本 v4 提示词)
+
+**例 1:retail_f5_storage_overflow_v0(真实标签:错)→ 判官检出 ✓**
+
+判官规划器一次性写出 11 项检查(脚本 11.7K 字符),沙箱确定性执行结果:
+
+```
+CHECK initial_inventory: FAIL init_nonfresh_total=2.500000, init_nonfresh_count=5
+CHECK storage_capacity: PASS   CHECK production_capacity: PASS
+CHECK sales_availability: PASS CHECK waste_equation: PASS
+CHECK aging_equation: PASS     CHECK fresh_inflow: PASS
+CHECK moq: PASS                CHECK non_negativity: PASS
+CHECK lost_sales_nonneg: PASS
+CHECK objective_consistency: PASS reported=1428605.00, computed=1428130.00
+```
+
+判决器推理(节选):"inventory appearing from nowhere in the non-fresh
+buckets at period 1 … violates the zero-initial-inventory convention"→
+VERDICT: INVALID。注意幻影库存量仅 2.5 单位——目标值几乎无扰动,
+纯执行信号(目标值对账)结构性看不见,只有语义检查能抓到。
+
+**例 2:retail_f7_transshipment_v2(真实标签:错)→ 判官检出 ✓,且展示判决三分法**
+
+沙箱执行报出两个 FAIL:
+
+```
+CHECK init_nonfresh_inv: FAIL 48 entries with total 7053.00 non-fresh inventory at t=1
+CHECK objective: FAIL computed=269720.00 vs reported=319382.00 (缺 holding 成本项)
+```
+
+判决器对两个 FAIL 做了不同处置:对 objective FAIL,它识别出"脚本未计入
+holding 成本,比较无效"——归为**脚本故障**,不予采信;对 init_nonfresh_inv
+FAIL,它引用题面("期初零库存 + 零提前期,t=1 订单只能产生新鲜库存")
+判定为**真实违例** → VERDICT: INVALID。一次判决中同时演示了"驳回脚本
+bug"与"采信真实违例",这正是判决三分法(故障/前提错配/真实违例)
+设计的意图:检查脚本可以有 bug,但 bug 不自动等于被审解有罪。

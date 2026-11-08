@@ -53,3 +53,11 @@ v3 的机制级证据:判官自主写出 `demand_balance` / `lost_sales` 检查,
 
 脚本:`scripts/p10_active_judge.py`(RetailOpt)/ `scripts/p11_active_judge_ior.py`(IndustryOR)。
 数据:`work/judge_data/active_f5f8_v{1,2,3,4}.jsonl`、`work/judge_data/active_industryor.jsonl`(在途)。
+
+## 5. v4 残留失败的结构分析(指导判官 v4 训练数据设计)
+
+19 个漏检细胞的归因:
+- **13 个:检查脚本已写出 FAIL,但判决器驳回**——多数是"前提错配"类驳回:判官写的需求检查是朴素的"sales == demand",而 RetailOpt 允许销售损失(带罚),同一检查在正确解上也会 FAIL,判决器因此学会驳回它。**真正的业务物理更微妙:"有库存却丢了销售"才是违例**——这正是蒸馏训练(路径③)该教的东西:不是"查需求",而是"查有库存下的丢单"。
+- 6 个:规划器压根没写需求类检查(覆盖缺口)——蒸馏时应加入"枚举题面每条声明要求"的程序化行为。
+
+纪律声明:v4 之后不再在 F5–F8 上迭代提示词(已过拟合风险边界),IndustryOR 是唯一未触碰的终验集合。

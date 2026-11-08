@@ -55,8 +55,13 @@
 | 层 | 集合 | 检验什么 | 状态 |
 |---|---|---|---|
 | L1 分布内 | dev70(F1–F4 留出细胞) | 学会了吗 | ✅ AUC 0.810,幻影 100% |
-| L2 跨族 | eval_f5f8(48 细胞:34 错/14 对,真实轨迹) | 学到业务物理还是记住模板 | 在途(脚本 `scripts/p7_build_judge_eval_f5f8.py`) |
-| L3 跨数据集 | eval_industryor(240 细胞:61 错/179 对,z0/z1/z2 三臂) | 换数据域还能用吗 | 细胞已冻结(脚本 `scripts/p8_build_judge_eval_industryor.py`),待 GPU 恢复 |
+| L2 跨族 | eval_f5f8(48 细胞:34 错/14 对,真实轨迹) | 学到业务物理还是记住模板 | ✅ **检出 14.7%(5/34),误报 0%——跨族迁移未自动发生**;根因:漏检 83% 为 C-DEMAND 类,其证据不在静态摘要通道内 |
+| L3 跨数据集 | eval_industryor(240 细胞:61 错/179 对,z0/z1/z2 三臂) | 换数据域还能用吗 | 在途(GPU 跑批) |
+
+### L2 跨族的延伸实验(零样本对照 + 主动感知架构)
+
+- 零样本 Qwen27B(thinking on)同细胞:检出 20.6%(7/34),误报 0%,但 56% 细胞推理截断无判决;多抓的 2 个恰为 C-DEMAND 类——**训练只买了格式纪律,没买跨族检出**。
+- 主动感知判官(judge-writes-checks,零样本驱动):检出 **44.1%(15/34)**,误报 7.1%——跨族瓶颈被证实为"观察通道"而非"模型容量"。详见 `active_judge_pilot_v0.1.md`。
 
 L3 对照臂:Open-Jev-27B 已有零样本成绩(`runs/industryor/industryor_judge_openjev.jsonl`,p_violation 分数);计划补 Qwen27B 零样本臂(同 JUDGE_PROMPT,隔离"训练"这一变量),形成三方公平对决。
 

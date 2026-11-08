@@ -52,6 +52,9 @@ def main() -> None:
     p = ROOT / "work/judge_data/gen_eval_industryor.jsonl"
     if p.exists():  # fetched from remote; key format: industryor_<arm>_<id>|...
         arms["trained_v3"] = [json.loads(l) for l in p.read_text().splitlines()]
+    p = ROOT / "work/judge_data/v4_eval_ior.jsonl"
+    if p.exists():  # distilled active judge v4, best epoch (fetched from remote)
+        arms["trained_v4_active"] = [json.loads(l) for l in p.read_text().splitlines()]
 
     for name, rows in arms.items():
         m = metrics(rows)
@@ -63,5 +66,25 @@ def main() -> None:
                   f"fp {mm['fpr']:.1%}")
 
 
+def f5f8_recap() -> None:
+    """F5-F8 (48-cell) recap incl. distilled v4 epochs, if fetched."""
+    p = ROOT / "work/judge_data/v4_eval_f5f8_ep{}.jsonl"
+    found = False
+    for ep in (1, 2, 3):
+        f = Path(str(p).format(ep))
+        if not f.exists():
+            continue
+        found = True
+        rows = [json.loads(l) for l in f.read_text().splitlines()]
+        m = metrics(rows)
+        print(f"\n== F5-F8 v4 ep{ep} ==  n={m['n']} unparsed={m['unparsed']}")
+        print(f"   detection {m['tp']}/{m['tp']+m['fn']} = {m['detection']:.1%}   "
+              f"FP {m['fp']}/{m['fp']+m['tn']} = {m['fpr']:.1%}   acc {m['acc']:.1%}")
+    if found:
+        print("   (reference: zero-shot active judge v4 prompt = 44.1% det / 7.1% FP; "
+              "static-summary trained v3 = 14.7% / 0%; zero-shot direct = 20.6% / 0%)")
+
+
 if __name__ == "__main__":
     main()
+    f5f8_recap()

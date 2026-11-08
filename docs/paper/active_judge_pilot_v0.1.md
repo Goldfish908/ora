@@ -169,3 +169,21 @@ judge-writes-checks 管"解的物理合法性"(解↔题面),witness 管终审�
 错误),探针在该域**无害(误报≈0)但无覆盖**——它管 RetailOpt 的
 wrong_constant,IndustryOR 的病要靠 judge-writes-checks 通道。
 各感知通道的适用域由此划清,且常数探针可以默认常开(误报代价≈0)。
+
+## 10. 检查词汇表分析:跨域时判官"查什么"的塌缩
+
+对三类集合中成功检出(TP)细胞,统计判官写出的检查名频次:
+
+- **F1–F4(训练分布内)**:业务语义检查为主——moq / sales_availability /
+  init_nonfresh_inv / demand_fulfillment / aging_balance……
+- **F5–F8(RetailOpt 宇宙内跨族)**:同一词汇表成功迁移——语义检查仍在
+  唱主角(这正是族内迭代后 44.1% 的来源)。
+- **IndustryOR(未见域)**:检查词汇塌缩为**通用求解器健全性**——
+  status_optimal / objective_match / integrality / non_negativity。
+  抓到的错误几乎都靠 objective_match/integrality,业务语义检查缺席。
+
+这把"规划覆盖缺口"从计数层面落到机制层面:**零样本面对新域时,判官的
+规划器退化为通用代码审查,不再构造业务谓词。** v4 蒸馏的目标因此更精确:
+不是教" RetailOpt 的 moq 检查",而是教"从题面枚举业务声明→落成可执行
+谓词"的程序。训练信号是否足以教会这一程序,由 v4 在 IndustryOR 上的
+终验回答。

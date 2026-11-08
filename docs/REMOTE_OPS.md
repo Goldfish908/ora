@@ -34,3 +34,14 @@ train_j1_v4.py(每 epoch 存 adapter_v4_ep{1,2,3},结束打印 `"event": "done"`
 → eval_chain_v4b.sh(守 done 标记;F5-F8 三 epoch 评测 → best_ep.txt 选优
 → IndustryOR 终验 v4_eval_ior.jsonl;全程记 logs/eval_chain.log)
 → 本地 `scripts/p20_finalize_v4.sh` 一键收尾。
+
+## 终端通道冲突(2026-11-08 补)
+
+mf_exec 的 MF_TERM 对应 workspace jupyter 的持久终端,多人/多会话共用同一
+TERM 会互相串输入(曾在 TERM=2 看到他人探测 j3_judge 的命令混入我的输出)。
+- 独占通道:用 jupyter API 新建终端:
+  `POST /app-workspace-1178-1789462142492/api/terminals {"name":"3"}`
+  (带 aimaster-token-header cookie + token 参数),然后 MF_TERM=3。
+- 查看现有终端:GET 同路径。
+- 工作区重启后 pearl 的 vLLM(39664/39671,~35GB/卡)与 gpu_keepalive.py
+  会自启,与训练共存时显存 ~80GB/卡偏紧;eval 链启动前若 OOM 再按上文处置。

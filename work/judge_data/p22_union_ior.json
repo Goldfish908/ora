@@ -1,0 +1,2162 @@
+[
+ {
+  "key": "industryor_z0_30|real|Easy|correct",
+  "wrong": false,
+  "B_probe": false,
+  "D_direct": false,
+  "R_rederive": false,
+  "I_instr": false,
+  "n_prob_nums": 33
+ },
+ {
+  "key": "industryor_z0_34|real|Hard|correct",
+  "wrong": false,
+  "B_probe": false,
+  "D_direct": false,
+  "R_rederive": false,
+  "I_instr": false,
+  "n_prob_nums": 14
+ },
+ {
+  "key": "industryor_z0_38|real|Easy|correct",
+  "wrong": false,
+  "B_probe": false,
+  "D_direct": false,
+  "R_rederive": false,
+  "I_instr": false,
+  "n_prob_nums": 18
+ },
+ {
+  "key": "industryor_z0_58|real|Easy|correct",
+  "wrong": false,
+  "B_probe": false,
+  "D_direct": false,
+  "R_rederive": false,
+  "I_instr": false,
+  "n_prob_nums": 5
+ },
+ {
+  "key": "industryor_z0_62|real|Easy|correct",
+  "wrong": false,
+  "B_probe": false,
+  "D_direct": false,
+  "R_rederive": false,
+  "I_instr": false,
+  "n_prob_nums": 9
+ },
+ {
+  "key": "industryor_z0_66|real|Medium|correct",
+  "wrong": false,
+  "B_probe": false,
+  "D_direct": false,
+  "R_rederive": false,
+  "I_instr": false,
+  "n_prob_nums": 14
+ },
+ {
+  "key": "industryor_z0_70|real|Easy|correct",
+  "wrong": false,
+  "B_probe": false,
+  "D_direct": false,
+  "R_rederive": false,
+  "I_instr": false,
+  "n_prob_nums": 24
+ },
+ {
+  "key": "industryor_z0_74|real|Medium|correct",
+  "wrong": false,
+  "B_probe": false,
+  "D_direct": false,
+  "R_rederive": false,
+  "I_instr": false,
+  "n_prob_nums": 10
+ },
+ {
+  "key": "industryor_z0_78|real|Medium|correct",
+  "wrong": false,
+  "B_probe": false,
+  "D_direct": false,
+  "R_rederive": false,
+  "I_instr": false,
+  "n_prob_nums": 17
+ },
+ {
+  "key": "industryor_z0_94|real|Medium|correct",
+  "wrong": false,
+  "B_probe": false,
+  "D_direct": false,
+  "R_rederive": false,
+  "I_instr": false,
+  "n_prob_nums": 14
+ },
+ {
+  "key": "industryor_z0_98|real|Medium|correct",
+  "wrong": false,
+  "B_probe": false,
+  "D_direct": false,
+  "R_rederive": false,
+  "I_instr": false,
+  "n_prob_nums": 12
+ },
+ {
+  "key": "industryor_z0_11|real|Medium|wrong",
+  "wrong": true,
+  "B_probe": false,
+  "D_direct": false,
+  "R_rederive": false,
+  "I_instr": false,
+  "n_prob_nums": 23
+ },
+ {
+  "key": "industryor_z0_15|real|Medium|wrong",
+  "wrong": true,
+  "B_probe": false,
+  "D_direct": false,
+  "R_rederive": true,
+  "I_instr": true,
+  "n_prob_nums": 17
+ },
+ {
+  "key": "industryor_z0_19|real|Easy|wrong",
+  "wrong": true,
+  "B_probe": false,
+  "D_direct": true,
+  "R_rederive": true,
+  "I_instr": true,
+  "n_prob_nums": 10
+ },
+ {
+  "key": "industryor_z0_35|real|Medium|correct",
+  "wrong": false,
+  "B_probe": false,
+  "D_direct": false,
+  "R_rederive": false,
+  "I_instr": false,
+  "n_prob_nums": 16
+ },
+ {
+  "key": "industryor_z0_39|real|Easy|correct",
+  "wrong": false,
+  "B_probe": false,
+  "D_direct": true,
+  "R_rederive": false,
+  "I_instr": false,
+  "n_prob_nums": 9
+ },
+ {
+  "key": "industryor_z0_43|real|Medium|correct",
+  "wrong": false,
+  "B_probe": false,
+  "D_direct": false,
+  "R_rederive": false,
+  "I_instr": false,
+  "n_prob_nums": 11
+ },
+ {
+  "key": "industryor_z0_47|real|Hard|correct",
+  "wrong": false,
+  "B_probe": false,
+  "D_direct": false,
+  "R_rederive": false,
+  "I_instr": false,
+  "n_prob_nums": 30
+ },
+ {
+  "key": "industryor_z0_51|real|Medium|correct",
+  "wrong": false,
+  "B_probe": false,
+  "D_direct": false,
+  "R_rederive": false,
+  "I_instr": false,
+  "n_prob_nums": 47
+ },
+ {
+  "key": "industryor_z0_55|real|Hard|correct",
+  "wrong": false,
+  "B_probe": false,
+  "D_direct": false,
+  "R_rederive": false,
+  "I_instr": false,
+  "n_prob_nums": 0
+ },
+ {
+  "key": "industryor_z0_71|real|Medium|wrong",
+  "wrong": true,
+  "B_probe": false,
+  "D_direct": false,
+  "R_rederive": false,
+  "I_instr": false,
+  "n_prob_nums": 16
+ },
+ {
+  "key": "industryor_z0_75|real|Easy|correct",
+  "wrong": false,
+  "B_probe": false,
+  "D_direct": false,
+  "R_rederive": false,
+  "I_instr": false,
+  "n_prob_nums": 12
+ },
+ {
+  "key": "industryor_z0_79|real|Easy|correct",
+  "wrong": false,
+  "B_probe": false,
+  "D_direct": false,
+  "R_rederive": false,
+  "I_instr": false,
+  "n_prob_nums": 13
+ },
+ {
+  "key": "industryor_z0_83|real|Hard|correct",
+  "wrong": false,
+  "B_probe": false,
+  "D_direct": false,
+  "R_rederive": false,
+  "I_instr": false,
+  "n_prob_nums": 22
+ },
+ {
+  "key": "industryor_z0_87|real|Medium|correct",
+  "wrong": false,
+  "B_probe": false,
+  "D_direct": false,
+  "R_rederive": false,
+  "I_instr": false,
+  "n_prob_nums": 6
+ },
+ {
+  "key": "industryor_z0_91|real|Easy|wrong",
+  "wrong": true,
+  "B_probe": false,
+  "D_direct": false,
+  "R_rederive": false,
+  "I_instr": false,
+  "n_prob_nums": 5
+ },
+ {
+  "key": "industryor_z0_95|real|Medium|correct",
+  "wrong": false,
+  "B_probe": false,
+  "D_direct": false,
+  "R_rederive": false,
+  "I_instr": false,
+  "n_prob_nums": 27
+ },
+ {
+  "key": "industryor_z0_1|real|Medium|wrong",
+  "wrong": true,
+  "B_probe": false,
+  "D_direct": false,
+  "R_rederive": true,
+  "I_instr": false,
+  "n_prob_nums": 41
+ },
+ {
+  "key": "industryor_z0_5|real|Easy|wrong",
+  "wrong": true,
+  "B_probe": false,
+  "D_direct": true,
+  "R_rederive": false,
+  "I_instr": false,
+  "n_prob_nums": 24
+ },
+ {
+  "key": "industryor_z0_9|real|Hard|correct",
+  "wrong": false,
+  "B_probe": false,
+  "D_direct": false,
+  "R_rederive": false,
+  "I_instr": false,
+  "n_prob_nums": 14
+ },
+ {
+  "key": "industryor_z0_21|real|Easy|wrong",
+  "wrong": true,
+  "B_probe": false,
+  "D_direct": true,
+  "R_rederive": false,
+  "I_instr": false,
+  "n_prob_nums": 10
+ },
+ {
+  "key": "industryor_z0_25|real|Easy|wrong",
+  "wrong": true,
+  "B_probe": false,
+  "D_direct": true,
+  "R_rederive": false,
+  "I_instr": false,
+  "n_prob_nums": 5
+ },
+ {
+  "key": "industryor_z0_57|real|Easy|wrong",
+  "wrong": true,
+  "B_probe": false,
+  "D_direct": false,
+  "R_rederive": false,
+  "I_instr": false,
+  "n_prob_nums": 13
+ },
+ {
+  "key": "industryor_z0_77|real|Easy|correct",
+  "wrong": false,
+  "B_probe": false,
+  "D_direct": false,
+  "R_rederive": false,
+  "I_instr": false,
+  "n_prob_nums": 61
+ },
+ {
+  "key": "industryor_z0_81|real|Hard|correct",
+  "wrong": false,
+  "B_probe": false,
+  "D_direct": false,
+  "R_rederive": false,
+  "I_instr": false,
+  "n_prob_nums": 34
+ },
+ {
+  "key": "industryor_z0_4|real|Easy|correct",
+  "wrong": false,
+  "B_probe": false,
+  "D_direct": false,
+  "R_rederive": false,
+  "I_instr": false,
+  "n_prob_nums": 14
+ },
+ {
+  "key": "industryor_z0_8|real|Medium|correct",
+  "wrong": false,
+  "B_probe": false,
+  "D_direct": false,
+  "R_rederive": false,
+  "I_instr": false,
+  "n_prob_nums": 26
+ },
+ {
+  "key": "industryor_z0_20|real|Easy|wrong",
+  "wrong": true,
+  "B_probe": false,
+  "D_direct": true,
+  "R_rederive": false,
+  "I_instr": true,
+  "n_prob_nums": 14
+ },
+ {
+  "key": "industryor_z0_24|real|Easy|correct",
+  "wrong": false,
+  "B_probe": false,
+  "D_direct": false,
+  "R_rederive": false,
+  "I_instr": false,
+  "n_prob_nums": 12
+ },
+ {
+  "key": "industryor_z0_32|real|Easy|correct",
+  "wrong": false,
+  "B_probe": false,
+  "D_direct": false,
+  "R_rederive": false,
+  "I_instr": false,
+  "n_prob_nums": 21
+ },
+ {
+  "key": "industryor_z0_36|real|Hard|correct",
+  "wrong": false,
+  "B_probe": false,
+  "D_direct": false,
+  "R_rederive": false,
+  "I_instr": false,
+  "n_prob_nums": 7
+ },
+ {
+  "key": "industryor_z0_44|real|Medium|correct",
+  "wrong": false,
+  "B_probe": false,
+  "D_direct": false,
+  "R_rederive": false,
+  "I_instr": false,
+  "n_prob_nums": 40
+ },
+ {
+  "key": "industryor_z0_48|real|Medium|wrong",
+  "wrong": true,
+  "B_probe": false,
+  "D_direct": false,
+  "R_rederive": true,
+  "I_instr": false,
+  "n_prob_nums": 21
+ },
+ {
+  "key": "industryor_z0_56|real|Medium|correct",
+  "wrong": false,
+  "B_probe": false,
+  "D_direct": false,
+  "R_rederive": true,
+  "I_instr": false,
+  "n_prob_nums": 18
+ },
+ {
+  "key": "industryor_z0_60|real|Hard|correct",
+  "wrong": false,
+  "B_probe": false,
+  "D_direct": false,
+  "R_rederive": false,
+  "I_instr": false,
+  "n_prob_nums": 37
+ },
+ {
+  "key": "industryor_z0_68|real|Easy|correct",
+  "wrong": false,
+  "B_probe": false,
+  "D_direct": false,
+  "R_rederive": false,
+  "I_instr": false,
+  "n_prob_nums": 11
+ },
+ {
+  "key": "industryor_z0_72|real|Easy|correct",
+  "wrong": false,
+  "B_probe": false,
+  "D_direct": false,
+  "R_rederive": false,
+  "I_instr": false,
+  "n_prob_nums": 19
+ },
+ {
+  "key": "industryor_z0_84|real|Easy|correct",
+  "wrong": false,
+  "B_probe": false,
+  "D_direct": false,
+  "R_rederive": false,
+  "I_instr": false,
+  "n_prob_nums": 14
+ },
+ {
+  "key": "industryor_z0_96|real|Medium|correct",
+  "wrong": false,
+  "B_probe": false,
+  "D_direct": false,
+  "R_rederive": true,
+  "I_instr": false,
+  "n_prob_nums": 17
+ },
+ {
+  "key": "industryor_z1_3|real|Hard|wrong",
+  "wrong": true,
+  "B_probe": false,
+  "D_direct": true,
+  "R_rederive": true,
+  "I_instr": true,
+  "n_prob_nums": 24
+ },
+ {
+  "key": "industryor_z1_7|real|Medium|correct",
+  "wrong": false,
+  "B_probe": false,
+  "D_direct": true,
+  "R_rederive": false,
+  "I_instr": false,
+  "n_prob_nums": 44
+ },
+ {
+  "key": "industryor_z1_11|real|Medium|wrong",
+  "wrong": true,
+  "B_probe": false,
+  "D_direct": false,
+  "R_rederive": false,
+  "I_instr": false,
+  "n_prob_nums": 23
+ },
+ {
+  "key": "industryor_z1_15|real|Medium|wrong",
+  "wrong": true,
+  "B_probe": false,
+  "D_direct": false,
+  "R_rederive": true,
+  "I_instr": true,
+  "n_prob_nums": 17
+ },
+ {
+  "key": "industryor_z1_19|real|Easy|wrong",
+  "wrong": true,
+  "B_probe": false,
+  "D_direct": true,
+  "R_rederive": true,
+  "I_instr": false,
+  "n_prob_nums": 10
+ },
+ {
+  "key": "industryor_z1_23|real|Easy|wrong",
+  "wrong": true,
+  "B_probe": false,
+  "D_direct": false,
+  "R_rederive": false,
+  "I_instr": false,
+  "n_prob_nums": 21
+ },
+ {
+  "key": "industryor_z1_27|real|Hard|correct",
+  "wrong": false,
+  "B_probe": false,
+  "D_direct": false,
+  "R_rederive": false,
+  "I_instr": false,
+  "n_prob_nums": 43
+ },
+ {
+  "key": "industryor_z1_31|real|Hard|wrong",
+  "wrong": true,
+  "B_probe": false,
+  "D_direct": false,
+  "R_rederive": false,
+  "I_instr": false,
+  "n_prob_nums": 46
+ },
+ {
+  "key": "industryor_z1_35|real|Medium|correct",
+  "wrong": false,
+  "B_probe": false,
+  "D_direct": false,
+  "R_rederive": false,
+  "I_instr": false,
+  "n_prob_nums": 16
+ },
+ {
+  "key": "industryor_z1_39|real|Easy|correct",
+  "wrong": false,
+  "B_probe": false,
+  "D_direct": true,
+  "R_rederive": false,
+  "I_instr": false,
+  "n_prob_nums": 9
+ },
+ {
+  "key": "industryor_z1_43|real|Medium|correct",
+  "wrong": false,
+  "B_probe": false,
+  "D_direct": false,
+  "R_rederive": false,
+  "I_instr": false,
+  "n_prob_nums": 11
+ },
+ {
+  "key": "industryor_z1_47|real|Hard|correct",
+  "wrong": false,
+  "B_probe": false,
+  "D_direct": false,
+  "R_rederive": false,
+  "I_instr": false,
+  "n_prob_nums": 30
+ },
+ {
+  "key": "industryor_z1_51|real|Medium|correct",
+  "wrong": false,
+  "B_probe": false,
+  "D_direct": false,
+  "R_rederive": false,
+  "I_instr": false,
+  "n_prob_nums": 47
+ },
+ {
+  "key": "industryor_z1_55|real|Hard|correct",
+  "wrong": false,
+  "B_probe": false,
+  "D_direct": false,
+  "R_rederive": false,
+  "I_instr": false,
+  "n_prob_nums": 0
+ },
+ {
+  "key": "industryor_z1_59|real|Medium|correct",
+  "wrong": false,
+  "B_probe": false,
+  "D_direct": false,
+  "R_rederive": false,
+  "I_instr": false,
+  "n_prob_nums": 21
+ },
+ {
+  "key": "industryor_z1_63|real|Easy|correct",
+  "wrong": false,
+  "B_probe": false,
+  "D_direct": false,
+  "R_rederive": false,
+  "I_instr": false,
+  "n_prob_nums": 10
+ },
+ {
+  "key": "industryor_z1_67|real|Medium|correct",
+  "wrong": false,
+  "B_probe": false,
+  "D_direct": false,
+  "R_rederive": false,
+  "I_instr": false,
+  "n_prob_nums": 15
+ },
+ {
+  "key": "industryor_z1_71|real|Medium|wrong",
+  "wrong": true,
+  "B_probe": false,
+  "D_direct": false,
+  "R_rederive": false,
+  "I_instr": false,
+  "n_prob_nums": 16
+ },
+ {
+  "key": "industryor_z1_75|real|Easy|correct",
+  "wrong": false,
+  "B_probe": false,
+  "D_direct": false,
+  "R_rederive": false,
+  "I_instr": false,
+  "n_prob_nums": 12
+ },
+ {
+  "key": "industryor_z1_79|real|Easy|correct",
+  "wrong": false,
+  "B_probe": false,
+  "D_direct": false,
+  "R_rederive": false,
+  "I_instr": false,
+  "n_prob_nums": 13
+ },
+ {
+  "key": "industryor_z1_83|real|Hard|correct",
+  "wrong": false,
+  "B_probe": false,
+  "D_direct": false,
+  "R_rederive": false,
+  "I_instr": false,
+  "n_prob_nums": 22
+ },
+ {
+  "key": "industryor_z1_87|real|Medium|correct",
+  "wrong": false,
+  "B_probe": false,
+  "D_direct": false,
+  "R_rederive": false,
+  "I_instr": false,
+  "n_prob_nums": 6
+ },
+ {
+  "key": "industryor_z1_91|real|Easy|wrong",
+  "wrong": true,
+  "B_probe": false,
+  "D_direct": false,
+  "R_rederive": false,
+  "I_instr": false,
+  "n_prob_nums": 5
+ },
+ {
+  "key": "industryor_z1_95|real|Medium|correct",
+  "wrong": false,
+  "B_probe": false,
+  "D_direct": false,
+  "R_rederive": false,
+  "I_instr": false,
+  "n_prob_nums": 27
+ },
+ {
+  "key": "industryor_z1_99|real|Hard|correct",
+  "wrong": false,
+  "B_probe": false,
+  "D_direct": false,
+  "R_rederive": false,
+  "I_instr": false,
+  "n_prob_nums": 39
+ },
+ {
+  "key": "industryor_z1_4|real|Easy|correct",
+  "wrong": false,
+  "B_probe": false,
+  "D_direct": false,
+  "R_rederive": false,
+  "I_instr": false,
+  "n_prob_nums": 14
+ },
+ {
+  "key": "industryor_z1_8|real|Medium|correct",
+  "wrong": false,
+  "B_probe": false,
+  "D_direct": false,
+  "R_rederive": false,
+  "I_instr": false,
+  "n_prob_nums": 26
+ },
+ {
+  "key": "industryor_z1_12|real|Hard|wrong",
+  "wrong": true,
+  "B_probe": false,
+  "D_direct": false,
+  "R_rederive": false,
+  "I_instr": true,
+  "n_prob_nums": 38
+ },
+ {
+  "key": "industryor_z1_16|real|Easy|correct",
+  "wrong": false,
+  "B_probe": false,
+  "D_direct": false,
+  "R_rederive": false,
+  "I_instr": false,
+  "n_prob_nums": 13
+ },
+ {
+  "key": "industryor_z1_20|real|Easy|wrong",
+  "wrong": true,
+  "B_probe": false,
+  "D_direct": true,
+  "R_rederive": false,
+  "I_instr": true,
+  "n_prob_nums": 14
+ },
+ {
+  "key": "industryor_z1_24|real|Easy|correct",
+  "wrong": false,
+  "B_probe": false,
+  "D_direct": false,
+  "R_rederive": false,
+  "I_instr": false,
+  "n_prob_nums": 12
+ },
+ {
+  "key": "industryor_z1_28|real|Medium|wrong",
+  "wrong": true,
+  "B_probe": false,
+  "D_direct": false,
+  "R_rederive": false,
+  "I_instr": false,
+  "n_prob_nums": 12
+ },
+ {
+  "key": "industryor_z1_32|real|Easy|correct",
+  "wrong": false,
+  "B_probe": false,
+  "D_direct": false,
+  "R_rederive": false,
+  "I_instr": false,
+  "n_prob_nums": 21
+ },
+ {
+  "key": "industryor_z1_36|real|Hard|correct",
+  "wrong": false,
+  "B_probe": false,
+  "D_direct": false,
+  "R_rederive": true,
+  "I_instr": false,
+  "n_prob_nums": 7
+ },
+ {
+  "key": "industryor_z1_44|real|Medium|correct",
+  "wrong": false,
+  "B_probe": false,
+  "D_direct": false,
+  "R_rederive": false,
+  "I_instr": false,
+  "n_prob_nums": 40
+ },
+ {
+  "key": "industryor_z1_48|real|Medium|wrong",
+  "wrong": true,
+  "B_probe": false,
+  "D_direct": false,
+  "R_rederive": false,
+  "I_instr": false,
+  "n_prob_nums": 21
+ },
+ {
+  "key": "industryor_z1_52|real|Easy|correct",
+  "wrong": false,
+  "B_probe": false,
+  "D_direct": false,
+  "R_rederive": false,
+  "I_instr": false,
+  "n_prob_nums": 42
+ },
+ {
+  "key": "industryor_z1_56|real|Medium|correct",
+  "wrong": false,
+  "B_probe": false,
+  "D_direct": false,
+  "R_rederive": true,
+  "I_instr": false,
+  "n_prob_nums": 18
+ },
+ {
+  "key": "industryor_z1_60|real|Hard|correct",
+  "wrong": false,
+  "B_probe": false,
+  "D_direct": false,
+  "R_rederive": false,
+  "I_instr": false,
+  "n_prob_nums": 37
+ },
+ {
+  "key": "industryor_z1_64|real|Easy|correct",
+  "wrong": false,
+  "B_probe": false,
+  "D_direct": false,
+  "R_rederive": false,
+  "I_instr": false,
+  "n_prob_nums": 19
+ },
+ {
+  "key": "industryor_z1_68|real|Easy|correct",
+  "wrong": false,
+  "B_probe": false,
+  "D_direct": false,
+  "R_rederive": false,
+  "I_instr": false,
+  "n_prob_nums": 11
+ },
+ {
+  "key": "industryor_z1_80|real|Medium|correct",
+  "wrong": false,
+  "B_probe": false,
+  "D_direct": false,
+  "R_rederive": false,
+  "I_instr": false,
+  "n_prob_nums": 22
+ },
+ {
+  "key": "industryor_z1_84|real|Easy|correct",
+  "wrong": false,
+  "B_probe": false,
+  "D_direct": false,
+  "R_rederive": false,
+  "I_instr": false,
+  "n_prob_nums": 14
+ },
+ {
+  "key": "industryor_z1_88|real|Medium|correct",
+  "wrong": false,
+  "B_probe": false,
+  "D_direct": false,
+  "R_rederive": false,
+  "I_instr": false,
+  "n_prob_nums": 18
+ },
+ {
+  "key": "industryor_z1_92|real|Easy|correct",
+  "wrong": false,
+  "B_probe": false,
+  "D_direct": false,
+  "R_rederive": false,
+  "I_instr": false,
+  "n_prob_nums": 8
+ },
+ {
+  "key": "industryor_z1_96|real|Medium|wrong",
+  "wrong": true,
+  "B_probe": false,
+  "D_direct": false,
+  "R_rederive": false,
+  "I_instr": false,
+  "n_prob_nums": 17
+ },
+ {
+  "key": "industryor_z1_100|real|Hard|correct",
+  "wrong": false,
+  "B_probe": false,
+  "D_direct": false,
+  "R_rederive": false,
+  "I_instr": false,
+  "n_prob_nums": 26
+ },
+ {
+  "key": "industryor_z1_1|real|Medium|wrong",
+  "wrong": true,
+  "B_probe": false,
+  "D_direct": false,
+  "R_rederive": false,
+  "I_instr": true,
+  "n_prob_nums": 41
+ },
+ {
+  "key": "industryor_z1_5|real|Easy|wrong",
+  "wrong": true,
+  "B_probe": false,
+  "D_direct": false,
+  "R_rederive": false,
+  "I_instr": false,
+  "n_prob_nums": 24
+ },
+ {
+  "key": "industryor_z1_9|real|Hard|correct",
+  "wrong": false,
+  "B_probe": false,
+  "D_direct": false,
+  "R_rederive": false,
+  "I_instr": false,
+  "n_prob_nums": 14
+ },
+ {
+  "key": "industryor_z1_13|real|Medium|correct",
+  "wrong": false,
+  "B_probe": false,
+  "D_direct": false,
+  "R_rederive": false,
+  "I_instr": false,
+  "n_prob_nums": 5
+ },
+ {
+  "key": "industryor_z1_21|real|Easy|wrong",
+  "wrong": true,
+  "B_probe": false,
+  "D_direct": true,
+  "R_rederive": false,
+  "I_instr": false,
+  "n_prob_nums": 10
+ },
+ {
+  "key": "industryor_z1_25|real|Easy|correct",
+  "wrong": false,
+  "B_probe": false,
+  "D_direct": false,
+  "R_rederive": false,
+  "I_instr": false,
+  "n_prob_nums": 5
+ },
+ {
+  "key": "industryor_z1_29|real|Medium|wrong",
+  "wrong": true,
+  "B_probe": false,
+  "D_direct": false,
+  "R_rederive": false,
+  "I_instr": false,
+  "n_prob_nums": 51
+ },
+ {
+  "key": "industryor_z1_33|real|Medium|correct",
+  "wrong": false,
+  "B_probe": false,
+  "D_direct": false,
+  "R_rederive": false,
+  "I_instr": false,
+  "n_prob_nums": 13
+ },
+ {
+  "key": "industryor_z1_37|real|Medium|correct",
+  "wrong": false,
+  "B_probe": false,
+  "D_direct": false,
+  "R_rederive": false,
+  "I_instr": false,
+  "n_prob_nums": 17
+ },
+ {
+  "key": "industryor_z1_41|real|Medium|wrong",
+  "wrong": true,
+  "B_probe": false,
+  "D_direct": false,
+  "R_rederive": true,
+  "I_instr": false,
+  "n_prob_nums": 28
+ },
+ {
+  "key": "industryor_z1_45|real|Easy|wrong",
+  "wrong": true,
+  "B_probe": false,
+  "D_direct": false,
+  "R_rederive": false,
+  "I_instr": false,
+  "n_prob_nums": 40
+ },
+ {
+  "key": "industryor_z1_53|real|Easy|correct",
+  "wrong": false,
+  "B_probe": false,
+  "D_direct": false,
+  "R_rederive": false,
+  "I_instr": false,
+  "n_prob_nums": 7
+ },
+ {
+  "key": "industryor_z1_57|real|Easy|wrong",
+  "wrong": true,
+  "B_probe": false,
+  "D_direct": false,
+  "R_rederive": false,
+  "I_instr": false,
+  "n_prob_nums": 13
+ },
+ {
+  "key": "industryor_z1_61|real|Easy|correct",
+  "wrong": false,
+  "B_probe": false,
+  "D_direct": false,
+  "R_rederive": false,
+  "I_instr": false,
+  "n_prob_nums": 17
+ },
+ {
+  "key": "industryor_z1_65|real|Medium|correct",
+  "wrong": false,
+  "B_probe": false,
+  "D_direct": false,
+  "R_rederive": false,
+  "I_instr": false,
+  "n_prob_nums": 21
+ },
+ {
+  "key": "industryor_z1_69|real|Easy|wrong",
+  "wrong": true,
+  "B_probe": false,
+  "D_direct": true,
+  "R_rederive": false,
+  "I_instr": true,
+  "n_prob_nums": 5
+ },
+ {
+  "key": "industryor_z1_73|real|Easy|correct",
+  "wrong": false,
+  "B_probe": false,
+  "D_direct": false,
+  "R_rederive": false,
+  "I_instr": false,
+  "n_prob_nums": 7
+ },
+ {
+  "key": "industryor_z1_77|real|Easy|correct",
+  "wrong": false,
+  "B_probe": false,
+  "D_direct": false,
+  "R_rederive": false,
+  "I_instr": false,
+  "n_prob_nums": 61
+ },
+ {
+  "key": "industryor_z1_81|real|Hard|correct",
+  "wrong": false,
+  "B_probe": false,
+  "D_direct": false,
+  "R_rederive": false,
+  "I_instr": false,
+  "n_prob_nums": 34
+ },
+ {
+  "key": "industryor_z1_85|real|Hard|correct",
+  "wrong": false,
+  "B_probe": false,
+  "D_direct": false,
+  "R_rederive": false,
+  "I_instr": false,
+  "n_prob_nums": 11
+ },
+ {
+  "key": "industryor_z1_89|real|Medium|wrong",
+  "wrong": true,
+  "B_probe": false,
+  "D_direct": false,
+  "R_rederive": false,
+  "I_instr": false,
+  "n_prob_nums": 5
+ },
+ {
+  "key": "industryor_z1_93|real|Easy|correct",
+  "wrong": false,
+  "B_probe": false,
+  "D_direct": false,
+  "R_rederive": false,
+  "I_instr": false,
+  "n_prob_nums": 18
+ },
+ {
+  "key": "industryor_z1_97|real|Medium|wrong",
+  "wrong": true,
+  "B_probe": false,
+  "D_direct": true,
+  "R_rederive": true,
+  "I_instr": false,
+  "n_prob_nums": 14
+ },
+ {
+  "key": "industryor_z1_2|real|Medium|wrong",
+  "wrong": true,
+  "B_probe": false,
+  "D_direct": true,
+  "R_rederive": true,
+  "I_instr": true,
+  "n_prob_nums": 9
+ },
+ {
+  "key": "industryor_z1_6|real|Hard|correct",
+  "wrong": false,
+  "B_probe": false,
+  "D_direct": false,
+  "R_rederive": false,
+  "I_instr": false,
+  "n_prob_nums": 28
+ },
+ {
+  "key": "industryor_z1_14|real|Hard|correct",
+  "wrong": false,
+  "B_probe": false,
+  "D_direct": false,
+  "R_rederive": false,
+  "I_instr": false,
+  "n_prob_nums": 29
+ },
+ {
+  "key": "industryor_z1_18|real|Medium|wrong",
+  "wrong": true,
+  "B_probe": false,
+  "D_direct": true,
+  "R_rederive": false,
+  "I_instr": false,
+  "n_prob_nums": 14
+ },
+ {
+  "key": "industryor_z1_26|real|Hard|correct",
+  "wrong": false,
+  "B_probe": false,
+  "D_direct": false,
+  "R_rederive": false,
+  "I_instr": false,
+  "n_prob_nums": 44
+ },
+ {
+  "key": "industryor_z1_30|real|Easy|wrong",
+  "wrong": true,
+  "B_probe": false,
+  "D_direct": true,
+  "R_rederive": false,
+  "I_instr": false,
+  "n_prob_nums": 33
+ },
+ {
+  "key": "industryor_z1_34|real|Hard|correct",
+  "wrong": false,
+  "B_probe": false,
+  "D_direct": false,
+  "R_rederive": false,
+  "I_instr": false,
+  "n_prob_nums": 14
+ },
+ {
+  "key": "industryor_z1_38|real|Easy|correct",
+  "wrong": false,
+  "B_probe": false,
+  "D_direct": false,
+  "R_rederive": false,
+  "I_instr": false,
+  "n_prob_nums": 18
+ },
+ {
+  "key": "industryor_z1_42|real|Easy|correct",
+  "wrong": false,
+  "B_probe": false,
+  "D_direct": false,
+  "R_rederive": false,
+  "I_instr": false,
+  "n_prob_nums": 7
+ },
+ {
+  "key": "industryor_z1_46|real|Medium|correct",
+  "wrong": false,
+  "B_probe": false,
+  "D_direct": false,
+  "R_rederive": false,
+  "I_instr": false,
+  "n_prob_nums": 62
+ },
+ {
+  "key": "industryor_z1_54|real|Easy|correct",
+  "wrong": false,
+  "B_probe": false,
+  "D_direct": false,
+  "R_rederive": false,
+  "I_instr": false,
+  "n_prob_nums": 19
+ },
+ {
+  "key": "industryor_z1_58|real|Easy|correct",
+  "wrong": false,
+  "B_probe": false,
+  "D_direct": false,
+  "R_rederive": false,
+  "I_instr": false,
+  "n_prob_nums": 5
+ },
+ {
+  "key": "industryor_z1_62|real|Easy|wrong",
+  "wrong": true,
+  "B_probe": false,
+  "D_direct": true,
+  "R_rederive": true,
+  "I_instr": false,
+  "n_prob_nums": 9
+ },
+ {
+  "key": "industryor_z1_66|real|Medium|correct",
+  "wrong": false,
+  "B_probe": false,
+  "D_direct": false,
+  "R_rederive": false,
+  "I_instr": false,
+  "n_prob_nums": 14
+ },
+ {
+  "key": "industryor_z1_70|real|Easy|correct",
+  "wrong": false,
+  "B_probe": false,
+  "D_direct": false,
+  "R_rederive": false,
+  "I_instr": false,
+  "n_prob_nums": 24
+ },
+ {
+  "key": "industryor_z1_74|real|Medium|correct",
+  "wrong": false,
+  "B_probe": false,
+  "D_direct": false,
+  "R_rederive": true,
+  "I_instr": false,
+  "n_prob_nums": 10
+ },
+ {
+  "key": "industryor_z1_78|real|Medium|correct",
+  "wrong": false,
+  "B_probe": false,
+  "D_direct": false,
+  "R_rederive": false,
+  "I_instr": false,
+  "n_prob_nums": 17
+ },
+ {
+  "key": "industryor_z1_82|real|Easy|correct",
+  "wrong": false,
+  "B_probe": false,
+  "D_direct": false,
+  "R_rederive": false,
+  "I_instr": false,
+  "n_prob_nums": 41
+ },
+ {
+  "key": "industryor_z1_86|real|Hard|correct",
+  "wrong": false,
+  "B_probe": false,
+  "D_direct": false,
+  "R_rederive": false,
+  "I_instr": false,
+  "n_prob_nums": 26
+ },
+ {
+  "key": "industryor_z1_90|real|Medium|correct",
+  "wrong": false,
+  "B_probe": false,
+  "D_direct": false,
+  "R_rederive": false,
+  "I_instr": false,
+  "n_prob_nums": 6
+ },
+ {
+  "key": "industryor_z1_94|real|Medium|correct",
+  "wrong": false,
+  "B_probe": false,
+  "D_direct": false,
+  "R_rederive": false,
+  "I_instr": false,
+  "n_prob_nums": 14
+ },
+ {
+  "key": "industryor_z1_98|real|Medium|wrong",
+  "wrong": true,
+  "B_probe": false,
+  "D_direct": false,
+  "R_rederive": false,
+  "I_instr": false,
+  "n_prob_nums": 12
+ },
+ {
+  "key": "industryor_z2_3|real|Hard|correct",
+  "wrong": false,
+  "B_probe": false,
+  "D_direct": false,
+  "R_rederive": false,
+  "I_instr": false,
+  "n_prob_nums": 24
+ },
+ {
+  "key": "industryor_z2_7|real|Medium|wrong",
+  "wrong": true,
+  "B_probe": false,
+  "D_direct": false,
+  "R_rederive": false,
+  "I_instr": false,
+  "n_prob_nums": 44
+ },
+ {
+  "key": "industryor_z2_11|real|Medium|wrong",
+  "wrong": true,
+  "B_probe": false,
+  "D_direct": false,
+  "R_rederive": false,
+  "I_instr": false,
+  "n_prob_nums": 23
+ },
+ {
+  "key": "industryor_z2_15|real|Medium|wrong",
+  "wrong": true,
+  "B_probe": false,
+  "D_direct": false,
+  "R_rederive": false,
+  "I_instr": false,
+  "n_prob_nums": 17
+ },
+ {
+  "key": "industryor_z2_19|real|Easy|correct",
+  "wrong": false,
+  "B_probe": false,
+  "D_direct": false,
+  "R_rederive": false,
+  "I_instr": false,
+  "n_prob_nums": 10
+ },
+ {
+  "key": "industryor_z2_23|real|Easy|wrong",
+  "wrong": true,
+  "B_probe": false,
+  "D_direct": false,
+  "R_rederive": false,
+  "I_instr": false,
+  "n_prob_nums": 21
+ },
+ {
+  "key": "industryor_z2_27|real|Hard|correct",
+  "wrong": false,
+  "B_probe": false,
+  "D_direct": false,
+  "R_rederive": false,
+  "I_instr": false,
+  "n_prob_nums": 43
+ },
+ {
+  "key": "industryor_z2_31|real|Hard|correct",
+  "wrong": false,
+  "B_probe": false,
+  "D_direct": false,
+  "R_rederive": false,
+  "I_instr": false,
+  "n_prob_nums": 46
+ },
+ {
+  "key": "industryor_z2_35|real|Medium|correct",
+  "wrong": false,
+  "B_probe": false,
+  "D_direct": false,
+  "R_rederive": false,
+  "I_instr": false,
+  "n_prob_nums": 16
+ },
+ {
+  "key": "industryor_z2_39|real|Easy|correct",
+  "wrong": false,
+  "B_probe": false,
+  "D_direct": true,
+  "R_rederive": false,
+  "I_instr": false,
+  "n_prob_nums": 9
+ },
+ {
+  "key": "industryor_z2_43|real|Medium|correct",
+  "wrong": false,
+  "B_probe": false,
+  "D_direct": false,
+  "R_rederive": false,
+  "I_instr": false,
+  "n_prob_nums": 11
+ },
+ {
+  "key": "industryor_z2_47|real|Hard|correct",
+  "wrong": false,
+  "B_probe": false,
+  "D_direct": false,
+  "R_rederive": false,
+  "I_instr": false,
+  "n_prob_nums": 30
+ },
+ {
+  "key": "industryor_z2_51|real|Medium|correct",
+  "wrong": false,
+  "B_probe": false,
+  "D_direct": false,
+  "R_rederive": false,
+  "I_instr": false,
+  "n_prob_nums": 47
+ },
+ {
+  "key": "industryor_z2_55|real|Hard|correct",
+  "wrong": false,
+  "B_probe": false,
+  "D_direct": false,
+  "R_rederive": false,
+  "I_instr": false,
+  "n_prob_nums": 0
+ },
+ {
+  "key": "industryor_z2_59|real|Medium|wrong",
+  "wrong": true,
+  "B_probe": false,
+  "D_direct": false,
+  "R_rederive": true,
+  "I_instr": false,
+  "n_prob_nums": 21
+ },
+ {
+  "key": "industryor_z2_63|real|Easy|correct",
+  "wrong": false,
+  "B_probe": false,
+  "D_direct": false,
+  "R_rederive": false,
+  "I_instr": false,
+  "n_prob_nums": 10
+ },
+ {
+  "key": "industryor_z2_67|real|Medium|correct",
+  "wrong": false,
+  "B_probe": false,
+  "D_direct": false,
+  "R_rederive": false,
+  "I_instr": false,
+  "n_prob_nums": 15
+ },
+ {
+  "key": "industryor_z2_71|real|Medium|wrong",
+  "wrong": true,
+  "B_probe": false,
+  "D_direct": false,
+  "R_rederive": false,
+  "I_instr": false,
+  "n_prob_nums": 16
+ },
+ {
+  "key": "industryor_z2_75|real|Easy|correct",
+  "wrong": false,
+  "B_probe": false,
+  "D_direct": false,
+  "R_rederive": false,
+  "I_instr": false,
+  "n_prob_nums": 12
+ },
+ {
+  "key": "industryor_z2_79|real|Easy|correct",
+  "wrong": false,
+  "B_probe": false,
+  "D_direct": false,
+  "R_rederive": false,
+  "I_instr": false,
+  "n_prob_nums": 13
+ },
+ {
+  "key": "industryor_z2_83|real|Hard|correct",
+  "wrong": false,
+  "B_probe": false,
+  "D_direct": false,
+  "R_rederive": false,
+  "I_instr": false,
+  "n_prob_nums": 22
+ },
+ {
+  "key": "industryor_z2_87|real|Medium|correct",
+  "wrong": false,
+  "B_probe": false,
+  "D_direct": false,
+  "R_rederive": false,
+  "I_instr": false,
+  "n_prob_nums": 6
+ },
+ {
+  "key": "industryor_z2_91|real|Easy|correct",
+  "wrong": false,
+  "B_probe": false,
+  "D_direct": false,
+  "R_rederive": false,
+  "I_instr": false,
+  "n_prob_nums": 5
+ },
+ {
+  "key": "industryor_z2_95|real|Medium|correct",
+  "wrong": false,
+  "B_probe": false,
+  "D_direct": false,
+  "R_rederive": false,
+  "I_instr": false,
+  "n_prob_nums": 27
+ },
+ {
+  "key": "industryor_z2_99|real|Hard|correct",
+  "wrong": false,
+  "B_probe": false,
+  "D_direct": false,
+  "R_rederive": false,
+  "I_instr": false,
+  "n_prob_nums": 39
+ },
+ {
+  "key": "industryor_z2_4|real|Easy|correct",
+  "wrong": false,
+  "B_probe": false,
+  "D_direct": false,
+  "R_rederive": false,
+  "I_instr": false,
+  "n_prob_nums": 14
+ },
+ {
+  "key": "industryor_z2_8|real|Medium|correct",
+  "wrong": false,
+  "B_probe": false,
+  "D_direct": false,
+  "R_rederive": false,
+  "I_instr": false,
+  "n_prob_nums": 26
+ },
+ {
+  "key": "industryor_z2_12|real|Hard|correct",
+  "wrong": false,
+  "B_probe": false,
+  "D_direct": false,
+  "R_rederive": false,
+  "I_instr": false,
+  "n_prob_nums": 38
+ },
+ {
+  "key": "industryor_z2_20|real|Easy|correct",
+  "wrong": false,
+  "B_probe": false,
+  "D_direct": false,
+  "R_rederive": false,
+  "I_instr": false,
+  "n_prob_nums": 14
+ },
+ {
+  "key": "industryor_z2_24|real|Easy|correct",
+  "wrong": false,
+  "B_probe": false,
+  "D_direct": false,
+  "R_rederive": false,
+  "I_instr": false,
+  "n_prob_nums": 12
+ },
+ {
+  "key": "industryor_z2_28|real|Medium|correct",
+  "wrong": false,
+  "B_probe": false,
+  "D_direct": false,
+  "R_rederive": false,
+  "I_instr": false,
+  "n_prob_nums": 12
+ },
+ {
+  "key": "industryor_z2_32|real|Easy|correct",
+  "wrong": false,
+  "B_probe": false,
+  "D_direct": false,
+  "R_rederive": false,
+  "I_instr": false,
+  "n_prob_nums": 21
+ },
+ {
+  "key": "industryor_z2_36|real|Hard|correct",
+  "wrong": false,
+  "B_probe": false,
+  "D_direct": false,
+  "R_rederive": false,
+  "I_instr": false,
+  "n_prob_nums": 7
+ },
+ {
+  "key": "industryor_z2_40|real|Medium|wrong",
+  "wrong": true,
+  "B_probe": false,
+  "D_direct": false,
+  "R_rederive": true,
+  "I_instr": false,
+  "n_prob_nums": 28
+ },
+ {
+  "key": "industryor_z2_44|real|Medium|correct",
+  "wrong": false,
+  "B_probe": false,
+  "D_direct": false,
+  "R_rederive": false,
+  "I_instr": false,
+  "n_prob_nums": 40
+ },
+ {
+  "key": "industryor_z2_48|real|Medium|wrong",
+  "wrong": true,
+  "B_probe": false,
+  "D_direct": true,
+  "R_rederive": false,
+  "I_instr": false,
+  "n_prob_nums": 21
+ },
+ {
+  "key": "industryor_z2_52|real|Easy|correct",
+  "wrong": false,
+  "B_probe": false,
+  "D_direct": false,
+  "R_rederive": false,
+  "I_instr": false,
+  "n_prob_nums": 42
+ },
+ {
+  "key": "industryor_z2_56|real|Medium|correct",
+  "wrong": false,
+  "B_probe": false,
+  "D_direct": false,
+  "R_rederive": false,
+  "I_instr": false,
+  "n_prob_nums": 18
+ },
+ {
+  "key": "industryor_z2_60|real|Hard|correct",
+  "wrong": false,
+  "B_probe": false,
+  "D_direct": false,
+  "R_rederive": false,
+  "I_instr": false,
+  "n_prob_nums": 37
+ },
+ {
+  "key": "industryor_z2_64|real|Easy|correct",
+  "wrong": false,
+  "B_probe": false,
+  "D_direct": false,
+  "R_rederive": false,
+  "I_instr": false,
+  "n_prob_nums": 19
+ },
+ {
+  "key": "industryor_z2_68|real|Easy|correct",
+  "wrong": false,
+  "B_probe": false,
+  "D_direct": false,
+  "R_rederive": false,
+  "I_instr": false,
+  "n_prob_nums": 11
+ },
+ {
+  "key": "industryor_z2_72|real|Easy|correct",
+  "wrong": false,
+  "B_probe": false,
+  "D_direct": false,
+  "R_rederive": false,
+  "I_instr": false,
+  "n_prob_nums": 19
+ },
+ {
+  "key": "industryor_z2_76|real|Medium|correct",
+  "wrong": false,
+  "B_probe": false,
+  "D_direct": false,
+  "R_rederive": false,
+  "I_instr": false,
+  "n_prob_nums": 24
+ },
+ {
+  "key": "industryor_z2_80|real|Medium|correct",
+  "wrong": false,
+  "B_probe": false,
+  "D_direct": false,
+  "R_rederive": false,
+  "I_instr": false,
+  "n_prob_nums": 22
+ },
+ {
+  "key": "industryor_z2_84|real|Easy|correct",
+  "wrong": false,
+  "B_probe": false,
+  "D_direct": false,
+  "R_rederive": false,
+  "I_instr": false,
+  "n_prob_nums": 14
+ },
+ {
+  "key": "industryor_z2_88|real|Medium|correct",
+  "wrong": false,
+  "B_probe": false,
+  "D_direct": false,
+  "R_rederive": false,
+  "I_instr": false,
+  "n_prob_nums": 18
+ },
+ {
+  "key": "industryor_z2_92|real|Easy|correct",
+  "wrong": false,
+  "B_probe": false,
+  "D_direct": false,
+  "R_rederive": false,
+  "I_instr": false,
+  "n_prob_nums": 8
+ },
+ {
+  "key": "industryor_z2_96|real|Medium|correct",
+  "wrong": false,
+  "B_probe": false,
+  "D_direct": false,
+  "R_rederive": false,
+  "I_instr": false,
+  "n_prob_nums": 17
+ },
+ {
+  "key": "industryor_z2_100|real|Hard|correct",
+  "wrong": false,
+  "B_probe": false,
+  "D_direct": false,
+  "R_rederive": false,
+  "I_instr": false,
+  "n_prob_nums": 26
+ },
+ {
+  "key": "industryor_z2_1|real|Medium|wrong",
+  "wrong": true,
+  "B_probe": false,
+  "D_direct": false,
+  "R_rederive": false,
+  "I_instr": false,
+  "n_prob_nums": 41
+ },
+ {
+  "key": "industryor_z2_5|real|Easy|wrong",
+  "wrong": true,
+  "B_probe": false,
+  "D_direct": true,
+  "R_rederive": false,
+  "I_instr": false,
+  "n_prob_nums": 24
+ },
+ {
+  "key": "industryor_z2_9|real|Hard|correct",
+  "wrong": false,
+  "B_probe": false,
+  "D_direct": false,
+  "R_rederive": false,
+  "I_instr": false,
+  "n_prob_nums": 14
+ },
+ {
+  "key": "industryor_z2_13|real|Medium|correct",
+  "wrong": false,
+  "B_probe": false,
+  "D_direct": false,
+  "R_rederive": false,
+  "I_instr": false,
+  "n_prob_nums": 5
+ },
+ {
+  "key": "industryor_z2_17|real|Hard|correct",
+  "wrong": false,
+  "B_probe": false,
+  "D_direct": false,
+  "R_rederive": false,
+  "I_instr": false,
+  "n_prob_nums": 25
+ },
+ {
+  "key": "industryor_z2_21|real|Easy|correct",
+  "wrong": false,
+  "B_probe": false,
+  "D_direct": false,
+  "R_rederive": false,
+  "I_instr": false,
+  "n_prob_nums": 10
+ },
+ {
+  "key": "industryor_z2_25|real|Easy|correct",
+  "wrong": false,
+  "B_probe": false,
+  "D_direct": false,
+  "R_rederive": false,
+  "I_instr": false,
+  "n_prob_nums": 5
+ },
+ {
+  "key": "industryor_z2_29|real|Medium|wrong",
+  "wrong": true,
+  "B_probe": false,
+  "D_direct": false,
+  "R_rederive": true,
+  "I_instr": true,
+  "n_prob_nums": 51
+ },
+ {
+  "key": "industryor_z2_33|real|Medium|correct",
+  "wrong": false,
+  "B_probe": false,
+  "D_direct": false,
+  "R_rederive": false,
+  "I_instr": false,
+  "n_prob_nums": 13
+ },
+ {
+  "key": "industryor_z2_37|real|Medium|wrong",
+  "wrong": true,
+  "B_probe": false,
+  "D_direct": false,
+  "R_rederive": false,
+  "I_instr": false,
+  "n_prob_nums": 17
+ },
+ {
+  "key": "industryor_z2_41|real|Medium|wrong",
+  "wrong": true,
+  "B_probe": false,
+  "D_direct": false,
+  "R_rederive": false,
+  "I_instr": false,
+  "n_prob_nums": 28
+ },
+ {
+  "key": "industryor_z2_45|real|Easy|wrong",
+  "wrong": true,
+  "B_probe": false,
+  "D_direct": false,
+  "R_rederive": false,
+  "I_instr": false,
+  "n_prob_nums": 40
+ },
+ {
+  "key": "industryor_z2_49|real|Medium|correct",
+  "wrong": false,
+  "B_probe": false,
+  "D_direct": false,
+  "R_rederive": false,
+  "I_instr": false,
+  "n_prob_nums": 42
+ },
+ {
+  "key": "industryor_z2_53|real|Easy|correct",
+  "wrong": false,
+  "B_probe": false,
+  "D_direct": false,
+  "R_rederive": false,
+  "I_instr": false,
+  "n_prob_nums": 7
+ },
+ {
+  "key": "industryor_z2_57|real|Easy|wrong",
+  "wrong": true,
+  "B_probe": false,
+  "D_direct": false,
+  "R_rederive": false,
+  "I_instr": false,
+  "n_prob_nums": 13
+ },
+ {
+  "key": "industryor_z2_61|real|Easy|correct",
+  "wrong": false,
+  "B_probe": false,
+  "D_direct": false,
+  "R_rederive": false,
+  "I_instr": false,
+  "n_prob_nums": 17
+ },
+ {
+  "key": "industryor_z2_65|real|Medium|wrong",
+  "wrong": true,
+  "B_probe": false,
+  "D_direct": true,
+  "R_rederive": false,
+  "I_instr": true,
+  "n_prob_nums": 21
+ },
+ {
+  "key": "industryor_z2_69|real|Easy|wrong",
+  "wrong": true,
+  "B_probe": false,
+  "D_direct": false,
+  "R_rederive": false,
+  "I_instr": false,
+  "n_prob_nums": 5
+ },
+ {
+  "key": "industryor_z2_73|real|Easy|correct",
+  "wrong": false,
+  "B_probe": false,
+  "D_direct": false,
+  "R_rederive": false,
+  "I_instr": false,
+  "n_prob_nums": 7
+ },
+ {
+  "key": "industryor_z2_77|real|Easy|correct",
+  "wrong": false,
+  "B_probe": false,
+  "D_direct": false,
+  "R_rederive": false,
+  "I_instr": false,
+  "n_prob_nums": 61
+ },
+ {
+  "key": "industryor_z2_81|real|Hard|correct",
+  "wrong": false,
+  "B_probe": false,
+  "D_direct": false,
+  "R_rederive": false,
+  "I_instr": false,
+  "n_prob_nums": 34
+ },
+ {
+  "key": "industryor_z2_85|real|Hard|correct",
+  "wrong": false,
+  "B_probe": false,
+  "D_direct": false,
+  "R_rederive": false,
+  "I_instr": false,
+  "n_prob_nums": 11
+ },
+ {
+  "key": "industryor_z2_89|real|Medium|correct",
+  "wrong": false,
+  "B_probe": false,
+  "D_direct": false,
+  "R_rederive": false,
+  "I_instr": false,
+  "n_prob_nums": 5
+ },
+ {
+  "key": "industryor_z2_93|real|Easy|correct",
+  "wrong": false,
+  "B_probe": false,
+  "D_direct": false,
+  "R_rederive": false,
+  "I_instr": false,
+  "n_prob_nums": 18
+ },
+ {
+  "key": "industryor_z2_97|real|Medium|wrong",
+  "wrong": true,
+  "B_probe": false,
+  "D_direct": false,
+  "R_rederive": false,
+  "I_instr": false,
+  "n_prob_nums": 14
+ },
+ {
+  "key": "industryor_z2_2|real|Medium|correct",
+  "wrong": false,
+  "B_probe": false,
+  "D_direct": false,
+  "R_rederive": false,
+  "I_instr": false,
+  "n_prob_nums": 9
+ },
+ {
+  "key": "industryor_z2_6|real|Hard|correct",
+  "wrong": false,
+  "B_probe": false,
+  "D_direct": false,
+  "R_rederive": true,
+  "I_instr": false,
+  "n_prob_nums": 28
+ },
+ {
+  "key": "industryor_z2_10|real|Easy|correct",
+  "wrong": false,
+  "B_probe": false,
+  "D_direct": false,
+  "R_rederive": false,
+  "I_instr": false,
+  "n_prob_nums": 5
+ },
+ {
+  "key": "industryor_z2_14|real|Hard|correct",
+  "wrong": false,
+  "B_probe": false,
+  "D_direct": false,
+  "R_rederive": false,
+  "I_instr": false,
+  "n_prob_nums": 29
+ },
+ {
+  "key": "industryor_z2_18|real|Medium|wrong",
+  "wrong": true,
+  "B_probe": false,
+  "D_direct": true,
+  "R_rederive": false,
+  "I_instr": false,
+  "n_prob_nums": 14
+ },
+ {
+  "key": "industryor_z2_22|real|Medium|correct",
+  "wrong": false,
+  "B_probe": false,
+  "D_direct": false,
+  "R_rederive": false,
+  "I_instr": false,
+  "n_prob_nums": 36
+ },
+ {
+  "key": "industryor_z2_26|real|Hard|correct",
+  "wrong": false,
+  "B_probe": false,
+  "D_direct": false,
+  "R_rederive": false,
+  "I_instr": false,
+  "n_prob_nums": 44
+ },
+ {
+  "key": "industryor_z2_30|real|Easy|correct",
+  "wrong": false,
+  "B_probe": false,
+  "D_direct": false,
+  "R_rederive": false,
+  "I_instr": false,
+  "n_prob_nums": 33
+ },
+ {
+  "key": "industryor_z2_34|real|Hard|correct",
+  "wrong": false,
+  "B_probe": false,
+  "D_direct": false,
+  "R_rederive": false,
+  "I_instr": false,
+  "n_prob_nums": 14
+ },
+ {
+  "key": "industryor_z2_38|real|Easy|correct",
+  "wrong": false,
+  "B_probe": false,
+  "D_direct": false,
+  "R_rederive": false,
+  "I_instr": false,
+  "n_prob_nums": 18
+ },
+ {
+  "key": "industryor_z2_42|real|Easy|correct",
+  "wrong": false,
+  "B_probe": false,
+  "D_direct": false,
+  "R_rederive": false,
+  "I_instr": false,
+  "n_prob_nums": 7
+ },
+ {
+  "key": "industryor_z2_46|real|Medium|correct",
+  "wrong": false,
+  "B_probe": false,
+  "D_direct": false,
+  "R_rederive": false,
+  "I_instr": false,
+  "n_prob_nums": 62
+ },
+ {
+  "key": "industryor_z2_50|real|Easy|wrong",
+  "wrong": true,
+  "B_probe": false,
+  "D_direct": false,
+  "R_rederive": false,
+  "I_instr": false,
+  "n_prob_nums": 24
+ },
+ {
+  "key": "industryor_z2_54|real|Easy|correct",
+  "wrong": false,
+  "B_probe": false,
+  "D_direct": false,
+  "R_rederive": false,
+  "I_instr": false,
+  "n_prob_nums": 19
+ },
+ {
+  "key": "industryor_z2_58|real|Easy|correct",
+  "wrong": false,
+  "B_probe": false,
+  "D_direct": false,
+  "R_rederive": false,
+  "I_instr": false,
+  "n_prob_nums": 5
+ },
+ {
+  "key": "industryor_z2_62|real|Easy|correct",
+  "wrong": false,
+  "B_probe": false,
+  "D_direct": false,
+  "R_rederive": false,
+  "I_instr": false,
+  "n_prob_nums": 9
+ },
+ {
+  "key": "industryor_z2_66|real|Medium|correct",
+  "wrong": false,
+  "B_probe": false,
+  "D_direct": false,
+  "R_rederive": false,
+  "I_instr": false,
+  "n_prob_nums": 14
+ },
+ {
+  "key": "industryor_z2_70|real|Easy|correct",
+  "wrong": false,
+  "B_probe": false,
+  "D_direct": false,
+  "R_rederive": false,
+  "I_instr": false,
+  "n_prob_nums": 24
+ },
+ {
+  "key": "industryor_z2_74|real|Medium|correct",
+  "wrong": false,
+  "B_probe": false,
+  "D_direct": false,
+  "R_rederive": true,
+  "I_instr": false,
+  "n_prob_nums": 10
+ },
+ {
+  "key": "industryor_z2_78|real|Medium|correct",
+  "wrong": false,
+  "B_probe": false,
+  "D_direct": false,
+  "R_rederive": false,
+  "I_instr": false,
+  "n_prob_nums": 17
+ },
+ {
+  "key": "industryor_z2_82|real|Easy|correct",
+  "wrong": false,
+  "B_probe": false,
+  "D_direct": false,
+  "R_rederive": false,
+  "I_instr": false,
+  "n_prob_nums": 41
+ },
+ {
+  "key": "industryor_z2_86|real|Hard|correct",
+  "wrong": false,
+  "B_probe": false,
+  "D_direct": false,
+  "R_rederive": false,
+  "I_instr": false,
+  "n_prob_nums": 26
+ },
+ {
+  "key": "industryor_z2_90|real|Medium|correct",
+  "wrong": false,
+  "B_probe": false,
+  "D_direct": false,
+  "R_rederive": false,
+  "I_instr": false,
+  "n_prob_nums": 6
+ },
+ {
+  "key": "industryor_z2_94|real|Medium|correct",
+  "wrong": false,
+  "B_probe": false,
+  "D_direct": false,
+  "R_rederive": false,
+  "I_instr": false,
+  "n_prob_nums": 14
+ },
+ {
+  "key": "industryor_z2_98|real|Medium|wrong",
+  "wrong": true,
+  "B_probe": false,
+  "D_direct": false,
+  "R_rederive": false,
+  "I_instr": false,
+  "n_prob_nums": 12
+ }
+]

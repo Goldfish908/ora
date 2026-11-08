@@ -45,3 +45,16 @@ TERM 会互相串输入(曾在 TERM=2 看到他人探测 j3_judge 的命令混�
 - 查看现有终端:GET 同路径。
 - 工作区重启后 pearl 的 vLLM(39664/39671,~35GB/卡)与 gpu_keepalive.py
   会自启,与训练共存时显存 ~80GB/卡偏紧;eval 链启动前若 OOM 再按上文处置。
+
+## vLLM 重复世代与共存训练(2026-11-08 深夜)
+
+1. **复活者的真身**:不是 pearl_watchdog(其 pid 文件已死),而是
+   协作方 agent 的监控循环(经 jupyter 终端 nohup 拉起,PPID 1,无
+   常驻进程可见)。**杀服务会被 2-3 分钟内重建,且可能叠加世代**——
+   曾出现每卡 2 个 EngineCore(pearl4b 38.8GB×2 + fancc3 34.7GB×2)。
+2. **共存是可行的**:训练 MAXLEN 12288→9216(丢 49/946 条截断样本)
+   + bf16 CE(去掉 .float() 上转)+ OOM 跳步容错,峰值 ~40GB/卡,
+   与单世代 vLLM(38.8+34.7GB)相安无事。训练脚本支持
+   MAXLEN/EPOCHS/LIMIT 环境变量。
+3. **mf_exec 输出污染**:共享终端回滚缓冲会混入旧输出。取证一律走
+   "远端写文件 + mf_download 读回",不要信终端回显。

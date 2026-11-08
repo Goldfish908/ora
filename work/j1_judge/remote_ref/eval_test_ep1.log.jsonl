@@ -1,0 +1,73 @@
+{"event": "model_loaded", "seconds": 18.2, "attn": "flash_attention_2", "adapter": "adapter_ep1", "mem_mb": {"gpu0": 24138, "gpu1": 28070}, "t": 19.0}
+{"event": "data_ready", "n": 240, "data": "test.jsonl", "t": 19.0}
+{"event": "batch", "done": 8, "of": 240, "mem_mb": {"gpu0": 31720, "gpu1": 33240}, "t": 48.2}
+{"event": "batch", "done": 16, "of": 240, "mem_mb": {"gpu0": 32969, "gpu1": 33240}, "t": 75.5}
+{"event": "batch", "done": 24, "of": 240, "mem_mb": {"gpu0": 33474, "gpu1": 33759}, "t": 110.1}
+{"event": "batch", "done": 32, "of": 240, "mem_mb": {"gpu0": 40182, "gpu1": 38615}, "t": 159.6}
+{"event": "model_loaded", "seconds": 19.4, "attn": "flash_attention_2", "adapter": "adapter_ep1", "mem_mb": {"gpu0": 24138, "gpu1": 28070}, "t": 20.0}
+{"event": "data_ready", "n": 240, "data": "test.jsonl", "t": 20.0}
+{"event": "batch", "done": 4, "of": 240, "mem_mb": {"gpu0": 25505, "gpu1": 29889}, "t": 39.0}
+{"event": "batch", "done": 8, "of": 240, "mem_mb": {"gpu0": 25505, "gpu1": 29889}, "t": 54.8}
+{"event": "batch", "done": 12, "of": 240, "mem_mb": {"gpu0": 25505, "gpu1": 29889}, "t": 71.8}
+{"event": "model_loaded", "seconds": 30.3, "attn": "flash_attention_2", "adapter": "adapter_ep1", "mem_mb": {"gpu0": 11674, "gpu1": 13940}, "t": 31.1}
+{"event": "data_ready", "n": 240, "data": "test.jsonl", "t": 31.1}
+{"event": "batch", "done": 16, "of": 240, "mem_mb": {"gpu0": 25505, "gpu1": 29889}, "t": 89.3}
+{"event": "model_loaded", "seconds": 15.7, "attn": "flash_attention_2", "adapter": "adapter_ep1", "mem_mb": {"gpu0": 454, "gpu1": 0}, "t": 16.7}
+{"event": "data_ready", "n": 240, "data": "test.jsonl", "t": 16.7}
+{"event": "batch", "done": 20, "of": 240, "mem_mb": {"gpu0": 25679, "gpu1": 30059}, "t": 114.5}
+{"event": "batch", "done": 24, "of": 240, "mem_mb": {"gpu0": 25679, "gpu1": 30059}, "t": 133.9}
+{"event": "batch", "done": 28, "of": 240, "mem_mb": {"gpu0": 27284, "gpu1": 31635}, "t": 164.3}
+{"event": "batch", "done": 32, "of": 240, "mem_mb": {"gpu0": 27284, "gpu1": 31635}, "t": 183.0}
+{"event": "batch", "done": 36, "of": 240, "mem_mb": {"gpu0": 27284, "gpu1": 31635}, "t": 204.2}
+{"event": "batch", "done": 40, "of": 240, "mem_mb": {"gpu0": 27284, "gpu1": 31635}, "t": 222.3}
+{"event": "batch", "done": 44, "of": 240, "mem_mb": {"gpu0": 28798, "gpu1": 33125}, "t": 259.3}
+{"event": "batch", "done": 48, "of": 240, "mem_mb": {"gpu0": 28798, "gpu1": 33125}, "t": 276.2}
+{"event": "batch", "done": 52, "of": 240, "mem_mb": {"gpu0": 28798, "gpu1": 33125}, "t": 300.4}
+{"event": "batch", "done": 56, "of": 240, "mem_mb": {"gpu0": 28798, "gpu1": 33125}, "t": 322.9}
+{"event": "batch", "done": 60, "of": 240, "mem_mb": {"gpu0": 28798, "gpu1": 33125}, "t": 346.3}
+{"event": "batch", "done": 64, "of": 240, "mem_mb": {"gpu0": 28798, "gpu1": 33125}, "t": 372.4}
+{"event": "batch", "done": 68, "of": 240, "mem_mb": {"gpu0": 28798, "gpu1": 33125}, "t": 394.5}
+{"event": "batch", "done": 72, "of": 240, "mem_mb": {"gpu0": 28798, "gpu1": 33125}, "t": 412.7}
+{"event": "batch", "done": 76, "of": 240, "mem_mb": {"gpu0": 28798, "gpu1": 33125}, "t": 435.0}
+{"event": "batch", "done": 80, "of": 240, "mem_mb": {"gpu0": 28798, "gpu1": 33125}, "t": 453.1}
+{"event": "batch", "done": 84, "of": 240, "mem_mb": {"gpu0": 29046, "gpu1": 33368}, "t": 491.3}
+{"event": "batch", "done": 88, "of": 240, "mem_mb": {"gpu0": 29046, "gpu1": 33368}, "t": 516.1}
+{"event": "batch", "done": 92, "of": 240, "mem_mb": {"gpu0": 29046, "gpu1": 33368}, "t": 535.8}
+{"event": "batch", "done": 96, "of": 240, "mem_mb": {"gpu0": 29046, "gpu1": 33368}, "t": 582.1}
+{"event": "batch", "done": 100, "of": 240, "mem_mb": {"gpu0": 29046, "gpu1": 33368}, "t": 606.6}
+{"event": "batch", "done": 104, "of": 240, "mem_mb": {"gpu0": 29046, "gpu1": 33368}, "t": 631.3}
+{"event": "batch", "done": 108, "of": 240, "mem_mb": {"gpu0": 29046, "gpu1": 33368}, "t": 651.9}
+{"event": "batch", "done": 112, "of": 240, "mem_mb": {"gpu0": 29046, "gpu1": 33368}, "t": 671.0}
+{"event": "batch", "done": 116, "of": 240, "mem_mb": {"gpu0": 29046, "gpu1": 33368}, "t": 693.9}
+{"event": "batch", "done": 120, "of": 240, "mem_mb": {"gpu0": 29046, "gpu1": 33368}, "t": 710.7}
+{"event": "batch", "done": 124, "of": 240, "mem_mb": {"gpu0": 29046, "gpu1": 33368}, "t": 732.2}
+{"event": "batch", "done": 128, "of": 240, "mem_mb": {"gpu0": 29046, "gpu1": 33368}, "t": 748.8}
+{"event": "batch", "done": 132, "of": 240, "mem_mb": {"gpu0": 29046, "gpu1": 33368}, "t": 768.8}
+{"event": "batch", "done": 136, "of": 240, "mem_mb": {"gpu0": 29046, "gpu1": 33368}, "t": 785.6}
+{"event": "batch", "done": 140, "of": 240, "mem_mb": {"gpu0": 29046, "gpu1": 33368}, "t": 804.4}
+{"event": "batch", "done": 144, "of": 240, "mem_mb": {"gpu0": 29046, "gpu1": 33368}, "t": 829.0}
+{"event": "batch", "done": 148, "of": 240, "mem_mb": {"gpu0": 29046, "gpu1": 33368}, "t": 853.0}
+{"event": "batch", "done": 152, "of": 240, "mem_mb": {"gpu0": 29046, "gpu1": 33368}, "t": 875.6}
+{"event": "batch", "done": 156, "of": 240, "mem_mb": {"gpu0": 29046, "gpu1": 33368}, "t": 899.6}
+{"event": "batch", "done": 160, "of": 240, "mem_mb": {"gpu0": 29046, "gpu1": 33368}, "t": 922.5}
+{"event": "batch", "done": 164, "of": 240, "mem_mb": {"gpu0": 29046, "gpu1": 33368}, "t": 938.7}
+{"event": "batch", "done": 168, "of": 240, "mem_mb": {"gpu0": 29046, "gpu1": 33368}, "t": 960.0}
+{"event": "batch", "done": 172, "of": 240, "mem_mb": {"gpu0": 29046, "gpu1": 33368}, "t": 979.1}
+{"event": "batch", "done": 176, "of": 240, "mem_mb": {"gpu0": 29150, "gpu1": 33471}, "t": 1021.2}
+{"event": "batch", "done": 180, "of": 240, "mem_mb": {"gpu0": 29150, "gpu1": 33471}, "t": 1047.6}
+{"event": "batch", "done": 184, "of": 240, "mem_mb": {"gpu0": 29150, "gpu1": 33471}, "t": 1065.5}
+{"event": "batch", "done": 188, "of": 240, "mem_mb": {"gpu0": 29150, "gpu1": 33471}, "t": 1091.2}
+{"event": "batch", "done": 192, "of": 240, "mem_mb": {"gpu0": 29150, "gpu1": 33471}, "t": 1117.3}
+{"event": "batch", "done": 196, "of": 240, "mem_mb": {"gpu0": 29150, "gpu1": 33471}, "t": 1139.9}
+{"event": "batch", "done": 200, "of": 240, "mem_mb": {"gpu0": 29150, "gpu1": 33471}, "t": 1164.0}
+{"event": "batch", "done": 204, "of": 240, "mem_mb": {"gpu0": 29150, "gpu1": 33471}, "t": 1186.0}
+{"event": "batch", "done": 208, "of": 240, "mem_mb": {"gpu0": 29150, "gpu1": 33471}, "t": 1204.9}
+{"event": "batch", "done": 212, "of": 240, "mem_mb": {"gpu0": 29150, "gpu1": 33471}, "t": 1225.9}
+{"event": "batch", "done": 216, "of": 240, "mem_mb": {"gpu0": 29150, "gpu1": 33471}, "t": 1242.9}
+{"event": "batch", "done": 220, "of": 240, "mem_mb": {"gpu0": 29150, "gpu1": 33471}, "t": 1266.9}
+{"event": "batch", "done": 224, "of": 240, "mem_mb": {"gpu0": 29150, "gpu1": 33471}, "t": 1286.6}
+{"event": "batch", "done": 228, "of": 240, "mem_mb": {"gpu0": 29150, "gpu1": 33471}, "t": 1308.9}
+{"event": "batch", "done": 232, "of": 240, "mem_mb": {"gpu0": 29150, "gpu1": 33471}, "t": 1325.5}
+{"event": "batch", "done": 236, "of": 240, "mem_mb": {"gpu0": 29150, "gpu1": 33471}, "t": 1345.0}
+{"event": "batch", "done": 240, "of": 240, "mem_mb": {"gpu0": 29150, "gpu1": 33471}, "t": 1364.6}
+{"event": "done", "total_s": 1364.6, "metrics": {"adapter": "adapter_ep1", "data": "test.jsonl", "n": 240, "n_wrong": 61, "n_pass": 179, "auc_pfail": 0.6779, "t05_score": {"det": 0.1967, "fp": 9, "tp": 12, "n_pos": 61, "n_neg": 179}, "gen_verdict": {"det": 0.0, "fp": 0, "tp": 0, "n_pos": 61, "n_neg": 179}, "unparsed": 0, "per_arm": {"z0": {"n": 49, "n_wrong": 12, "det": 0.0833, "fp": 0.0541, "auc": 0.6453}, "z1": {"n": 92, "n_wrong": 28, "det": 0.25, "fp": 0.0312, "auc": 0.7436}, "z2": {"n": 99, "n_wrong": 21, "det": 0.1905, "fp": 0.0641, "auc": 0.6178}}}, "t": 1364.6}

@@ -1,0 +1,6 @@
+2026-11-05 02:02:29 auto_eval_v2 started
+2026-11-05 09:33:37 train done detected
+2026-11-05 09:33:37 picked adapter_v2_ep2
+2026-11-05 10:03:43 test eval rc=0
+2026-11-05 10:27:26 train eval rc=0
+2026-11-05 10:27:26 ALL_DONE adapter=adapter_v2_ep2

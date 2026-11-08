@@ -1,0 +1,6 @@
+{'phase': 'A', 'ep1_saved': 'tail: option used in invalid context -- 1', 'procs': '?', 'last': '', 'elapsed_min': 0.0}
+{'phase': 'A', 'action': 'killed', 'chk': ["ls: cannot access '/dfs/data/hewj13/j1_judge/adapter_ep1/': No such file or directory", "ls: cannot access '}': No such file or directory"], 'elapsed_min': 0.1}
+{'phase': 'A', 'ep1_saved': 'tail: option used in invalid context -- 1', 'procs': '?', 'last': '', 'elapsed_min': 6.1}
+{'phase': 'A', 'action': 'killed', 'chk': ["ls: cannot access '/dfs/data/hewj13/j1_judge/adapter_ep1/': No such file or directory", "ls: cannot access '}': No such file or directory"], 'elapsed_min': 6.2}
+{'phase': 'B', 'metrics': 0, 'eval_procs': '?', 'tail': 'tail: option used in invalid context -- 1', 'elapsed_min': 0.6}
+{'phase': 'B', 'metrics': 0, 'eval_procs': '?', 'tail': 'tail: option used in invalid context -- 1', 'elapsed_min': 6.7}

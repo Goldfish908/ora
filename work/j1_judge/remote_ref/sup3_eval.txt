@@ -1,0 +1,4 @@
+ls: cannot access '/dfs/data/hewj13/j1_judge/logs/eval_test_ep1.metrics.json': No such file or directory
+ls: cannot access '/dfs/data/hewj13/j1_judge/logs/eval_train_ep1.metrics.json': No such file or directory
+0
+torch.OutOfMemoryError: CUDA out of memory. Tried to allocate 5.81 GiB. GPU 0 has a total capacity of 79.25 GiB of which 5.02 GiB is free. Process 24131 has 528.00 MiB memory in use. Process 25169 has 37.89 GiB memory in use. Including non-PyTorch memory, this process has 35.81 GiB memory in use. Of the allocated memory 32.85 GiB is allocated by PyTorch, and 2.46 GiB is reserved by PyTorch but unallocated. If reserved but unallocated memory is large try setting PYTORCH_CUDA_ALLOC_CONF=expandable_segments:True to avoid fragmentation.  See documentation for Memory Management  (https://pytorch.org/docs/stable/notes/cuda.html#environment-variables)

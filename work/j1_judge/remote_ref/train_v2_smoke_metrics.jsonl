@@ -1,0 +1,12 @@
+{"event": "start", "snap": "/dfs/data/hewj13/.cache/huggingface/hub/models--Qwen--Qwen3.8-27B/snapshots/1d4bf0f2ff6012fd82039f2fa52739d0dd7c60c0/", "data": "/dfs/data/hewj13/j1_judge/train_v2.jsonl", "maxlen": 6656, "lr": 0.0001, "epochs": 1, "min_epochs": 2, "auc_stop": 0.985, "vtok_w": 40.0, "selfeval_n": 128, "t": 0.0}
+{"event": "model_loaded", "seconds": 16.0, "attn": "flash_attention_2", "mem_mb": {"gpu0": 23478, "gpu1": 27822}, "t": 16.0}
+{"event": "lora_wrapped", "trainable_params": 116727808, "mem_mb": {"gpu0": 23680, "gpu1": 28066}, "t": 18.7}
+{"event": "data_ready", "n": 381, "n_with_trunc": 0, "tok_len_min": 2597, "tok_len_max": 3540, "tok_len_mean": 3163, "sup_len_mean": 45, "vpos_found": 381, "vpos_missed": 0, "vpos_in_sup_min": 8, "vpos_in_sup_max": 8, "sample_tail": "reason\": \"C-INIT: I[SKU_Basic,DC1,1,4]=86.0 != 0\"}<|im_end|>\n", "t": 21.9}
+{"event": "smoke_selfeval", "n": 8, "auc": 0.14285714285714285, "seconds": 27.4, "mem_mb": {"gpu0": 27825, "gpu1": 32080}, "t": 49.2}
+{"event": "step", "step": 1, "epoch": 0, "loss": 1.0888, "loss_ma10": 1.0888, "step_s": 21.94, "ltk": true, "mem_mb": {"gpu0": 27825, "gpu1": 32188}, "t": 71.2}
+{"event": "step", "step": 2, "epoch": 0, "loss": 1.4166, "loss_ma10": 1.2527, "step_s": 26.79, "ltk": true, "mem_mb": {"gpu0": 28680, "gpu1": 33253}, "t": 98.0}
+{"event": "step", "step": 3, "epoch": 0, "loss": 1.2096, "loss_ma10": 1.2383, "step_s": 23.63, "ltk": true, "mem_mb": {"gpu0": 28680, "gpu1": 33253}, "t": 121.6}
+{"event": "step", "step": 4, "epoch": 0, "loss": 0.9289, "loss_ma10": 1.161, "step_s": 28.41, "ltk": true, "mem_mb": {"gpu0": 28903, "gpu1": 33482}, "t": 150.0}
+{"event": "step", "step": 5, "epoch": 0, "loss": 0.8253, "loss_ma10": 1.0938, "step_s": 25.61, "ltk": true, "mem_mb": {"gpu0": 28903, "gpu1": 33482}, "t": 175.7}
+{"event": "step", "step": 6, "epoch": 0, "loss": 0.7133, "loss_ma10": 1.0304, "step_s": 27.57, "ltk": true, "t": 203.2}
+{"event": "step", "step": 7, "epoch": 0, "loss": 1.0411, "loss_ma10": 1.0319, "step_s": 28.18, "ltk": true, "t": 231.4}

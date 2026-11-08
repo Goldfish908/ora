@@ -1,0 +1,46 @@
+{
+ "adapter": "adapter_ep1",
+ "data": "test.jsonl",
+ "n": 240,
+ "n_wrong": 61,
+ "n_pass": 179,
+ "auc_pfail": 0.6779,
+ "t05_score": {
+  "det": 0.1967,
+  "fp": 9,
+  "tp": 12,
+  "n_pos": 61,
+  "n_neg": 179
+ },
+ "gen_verdict": {
+  "det": 0.0,
+  "fp": 0,
+  "tp": 0,
+  "n_pos": 61,
+  "n_neg": 179
+ },
+ "unparsed": 0,
+ "per_arm": {
+  "z0": {
+   "n": 49,
+   "n_wrong": 12,
+   "det": 0.0833,
+   "fp": 0.0541,
+   "auc": 0.6453
+  },
+  "z1": {
+   "n": 92,
+   "n_wrong": 28,
+   "det": 0.25,
+   "fp": 0.0312,
+   "auc": 0.7436
+  },
+  "z2": {
+   "n": 99,
+   "n_wrong": 21,
+   "det": 0.1905,
+   "fp": 0.0641,
+   "auc": 0.6178
+  }
+ }
+}

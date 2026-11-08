@@ -1,0 +1,197 @@
+{
+ "experiment": "J1 cross-dataset semantic judge (RetailOpt-316 LoRA -> IndustryOR-240)",
+ "date": "2026-11-04",
+ "adapter": "adapter_ep1",
+ "base": "Qwen3.8-27B",
+ "industryor_test": {
+  "adapter": "adapter_ep1",
+  "data": "test.jsonl",
+  "n": 240,
+  "n_wrong": 61,
+  "n_pass": 179,
+  "auc_pfail": 0.6779,
+  "t05_score": {
+   "fp": 9,
+   "tp": 12,
+   "n_pos": 61,
+   "n_neg": 179,
+   "fp_rate": 0.0503,
+   "det_rate": 0.1967
+  },
+  "gen_verdict": {
+   "fp": 0,
+   "tp": 0,
+   "n_pos": 61,
+   "n_neg": 179,
+   "fp_rate": 0.0,
+   "det_rate": 0.0
+  },
+  "unparsed": 0,
+  "per_arm": {
+   "z0": {
+    "n": 49,
+    "n_wrong": 12,
+    "det": 0.0833,
+    "fp": 0.0541,
+    "auc": 0.6453
+   },
+   "z1": {
+    "n": 92,
+    "n_wrong": 28,
+    "det": 0.25,
+    "fp": 0.0312,
+    "auc": 0.7436
+   },
+   "z2": {
+    "n": 99,
+    "n_wrong": 21,
+    "det": 0.1905,
+    "fp": 0.0641,
+    "auc": 0.6178
+   }
+  }
+ },
+ "retailopt_train_sanity": {
+  "adapter": "adapter_ep1",
+  "data": "train_eval.jsonl",
+  "n": 316,
+  "n_wrong": 240,
+  "n_pass": 76,
+  "auc_pfail": 0.5693,
+  "t05_score": {
+   "fp": 5,
+   "tp": 35,
+   "n_pos": 240,
+   "n_neg": 76,
+   "fp_rate": 0.0658,
+   "det_rate": 0.1458
+  },
+  "gen_verdict": {
+   "fp": 0,
+   "tp": 0,
+   "n_pos": 240,
+   "n_neg": 76,
+   "fp_rate": 0.0,
+   "det_rate": 0.0
+  },
+  "unparsed": 316,
+  "per_arm": {
+   "retailopt": {
+    "n": 316,
+    "n_wrong": 240,
+    "det": 0.1458,
+    "fp": 0.0658,
+    "auc": 0.5693
+   }
+  }
+ },
+ "baselines_industryor": {
+  "openjev_offtheshelf": {
+   "auc": 0.6619,
+   "det@0.5": "1/61=1.6%",
+   "fp@0.5": "0/179=0.0%"
+  },
+  "d2_rule_gate": {
+   "det": "6/61=9.8%",
+   "fp": "10/177=5.6%"
+  },
+  "self_consistency": {
+   "det": "10/61=16.4%",
+   "fp": "9/179=5.0%"
+  }
+ },
+ "note": "p_fail = softmax over fail/pass tokens at forced prefix; gen-mode greedy decode always outputs pass (verdict token collapsed); train AUC < test AUC => 1-epoch signal weak/unstable",
+ "j11_v2": {
+  "fixes": [
+   "3 epochs (no early stop; AUC_STOP=0.985 never reached)",
+   "verdict-token loss weight x40 (vpos verified 381/381)",
+   "train set 316->381 cells (294 wrong/87 pass)",
+   "pass reason: 8 templates by key-hash + objective embedded"
+  ],
+  "adapter": "adapter_v2_ep2 (picked by best 128-cell in-dist self-eval AUC: ep1 0.591 / ep2 0.680 / ep3 0.577)",
+  "industryor_test": {
+   "adapter": "adapter_v2_ep2",
+   "data": "test.jsonl",
+   "n": 240,
+   "n_wrong": 61,
+   "n_pass": 179,
+   "auc_pfail": 0.7166,
+   "t05_score": {
+    "fp": 0,
+    "tp": 1,
+    "n_pos": 61,
+    "n_neg": 179,
+    "fp_rate": 0.0,
+    "det_rate": 0.0164
+   },
+   "gen_verdict": {
+    "fp": 0,
+    "tp": 0,
+    "n_pos": 61,
+    "n_neg": 179,
+    "fp_rate": 0.0,
+    "det_rate": 0.0
+   },
+   "unparsed": 0,
+   "per_arm": {
+    "z0": {
+     "n": 49,
+     "n_wrong": 12,
+     "det": 0.0,
+     "fp": 0.0,
+     "auc": 0.6408
+    },
+    "z1": {
+     "n": 92,
+     "n_wrong": 28,
+     "det": 0.0357,
+     "fp": 0.0,
+     "auc": 0.7695
+    },
+    "z2": {
+     "n": 99,
+     "n_wrong": 21,
+     "det": 0.0,
+     "fp": 0.0,
+     "auc": 0.6841
+    }
+   }
+  },
+  "retailopt_train_sanity": {
+   "adapter": "adapter_v2_ep2",
+   "data": "train_eval_v2.jsonl",
+   "n": 381,
+   "n_wrong": 294,
+   "n_pass": 87,
+   "auc_pfail": 0.6428,
+   "t05_score": {
+    "fp": 0,
+    "tp": 0,
+    "n_pos": 294,
+    "n_neg": 87,
+    "fp_rate": 0.0,
+    "det_rate": 0.0
+   },
+   "gen_verdict": {
+    "fp": 0,
+    "tp": 0,
+    "n_pos": 294,
+    "n_neg": 87,
+    "fp_rate": 0.0,
+    "det_rate": 0.0
+   },
+   "unparsed": 381,
+   "per_arm": {
+    "retailopt": {
+     "n": 381,
+     "n_wrong": 294,
+     "det": 0.0,
+     "fp": 0.0,
+     "auc": 0.6428
+    }
+   }
+  },
+  "verdict_collapse": "persists: 240/240 gen verdicts = pass; reason now input-dependent (objective copied)",
+  "conclusion": "AUC 0.678->0.717 (above Open-Jev 0.662 twice) but in-dist AUC 0.643 << 1: verdict mapping not learned; do not trust the test advantage"
+ }
+}

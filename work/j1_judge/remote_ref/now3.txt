@@ -1,0 +1,11 @@
+Wed Nov  4 22:47:31 CST 2026
+procs_train:
+48087 python3 train_j1.py
+procs_eval:
+adapter_dir:
+ls: cannot access '/dfs/data/hewj13/j1_judge/adapter_ep1/': No such file or directory
+last_log:
+{"event": "step", "step": 285, "epoch": 0, "loss": 0.2555, "loss_ma10": 0.2227, "step_s": 27.86, "ltk": true, "t": 7967.8}
+{"event": "step", "step": 286, "epoch": 0, "loss": 0.2137, "loss_ma10": 0.2044, "step_s": 28.14, "ltk": true, "t": 7996.0}
+eval_out:
+tail: cannot open '/dfs/data/hewj13/j1_judge/logs/eval_run.out' for reading: No such file or directory

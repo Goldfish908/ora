@@ -1,0 +1,32 @@
+{
+ "adapter": "adapter_v2_ep2",
+ "data": "train_eval_v2.jsonl",
+ "n": 381,
+ "n_wrong": 294,
+ "n_pass": 87,
+ "auc_pfail": 0.6428,
+ "t05_score": {
+  "det": 0.0,
+  "fp": 0,
+  "tp": 0,
+  "n_pos": 294,
+  "n_neg": 87
+ },
+ "gen_verdict": {
+  "det": 0.0,
+  "fp": 0,
+  "tp": 0,
+  "n_pos": 294,
+  "n_neg": 87
+ },
+ "unparsed": 381,
+ "per_arm": {
+  "retailopt": {
+   "n": 381,
+   "n_wrong": 294,
+   "det": 0.0,
+   "fp": 0.0,
+   "auc": 0.6428
+  }
+ }
+}

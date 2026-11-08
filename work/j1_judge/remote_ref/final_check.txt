@@ -1,0 +1,68 @@
+pgrep eval_j1: 0
+pgrep train_j1: 0
+0, 39343 MiB
+1, 35285 MiB
+/dfs/data/hewj13/j1_judge/:
+total 13336
+drwxr-xr-x  4 root root    4096 Nov  4 23:54 .
+drwxr-xr-x 10 root root    8192 Nov  4 22:09 ..
+drwxr-xr-x  2 root root    4096 Nov  4 23:01 adapter_ep1
+-rw-r--r--  1 root root    7128 Nov  4 23:09 eval_j1.py
+-rw-r--r--  1 root root     366 Nov  4 23:54 final_check.sh
+drwxr-xr-x  2 root root    4096 Nov  4 23:54 logs
+-rw-r--r--  1 root root     285 Nov  4 23:10 run_eval.sh
+-rw-r--r--  1 root root     398 Nov  4 20:29 stats.json
+-rw-r--r--  1 root root  815802 Nov  4 20:29 test.jsonl
+-rw-r--r--  1 root root 3504791 Nov  4 20:29 train.jsonl
+-rw-r--r--  1 root root 5743232 Nov  4 20:29 train_cells.jsonl
+-rw-r--r--  1 root root 3466646 Nov  4 20:29 train_eval.jsonl
+-rw-r--r--  1 root root    5536 Nov  4 20:29 train_j1.py
+
+/dfs/data/hewj13/j1_judge/adapter_ep1/:
+total 477548
+drwxr-xr-x 2 root root      4096 Nov  4 23:01 .
+drwxr-xr-x 4 root root      4096 Nov  4 23:54 ..
+-rw-r--r-- 1 root root      5388 Nov  4 23:01 README.md
+-rw-r--r-- 1 root root      1281 Nov  4 23:01 adapter_config.json
+-rw-r--r-- 1 root root 467047680 Nov  4 23:01 adapter_model.safetensors
+-rw-r--r-- 1 root root      8952 Nov  4 23:01 chat_template.jinja
+-rw-r--r-- 1 root root  19989325 Nov  4 23:01 tokenizer.json
+-rw-r--r-- 1 root root      1123 Nov  4 23:01 tokenizer_config.json
+
+/dfs/data/hewj13/j1_judge/logs/:
+total 356
+drwxr-xr-x 2 root root  4096 Nov  4 23:54 .
+drwxr-xr-x 4 root root  4096 Nov  4 23:54 ..
+-rw-r--r-- 1 root root   127 Nov  4 21:50 ep1_status.txt
+-rw-r--r-- 1 root root 30699 Nov  4 23:51 eval_run.out
+-rw-r--r-- 1 root root     2 Nov  4 21:50 eval_status.txt
+-rw-r--r-- 1 root root  7630 Nov  4 23:32 eval_test_ep1.log.jsonl
+-rw-r--r-- 1 root root   617 Nov  4 23:32 eval_test_ep1.metrics.json
+-rw-r--r-- 1 root root 58154 Nov  4 23:32 eval_test_ep1.predictions.jsonl
+-rw-r--r-- 1 root root  4990 Nov  4 23:51 eval_train_ep1.log.jsonl
+-rw-r--r-- 1 root root   442 Nov  4 23:51 eval_train_ep1.metrics.json
+-rw-r--r-- 1 root root 35410 Nov  4 23:51 eval_train_ep1.predictions.jsonl
+-rw-r--r-- 1 root root    61 Nov  4 23:54 final_check.txt
+-rw-r--r-- 1 root root    28 Nov  4 23:09 gpu_now.txt
+-rw-r--r-- 1 root root   156 Nov  4 22:38 now.txt
+-rw-r--r-- 1 root root   548 Nov  4 22:47 now3.txt
+-rw-r--r-- 1 root root   362 Nov  4 22:52 now4.txt
+-rw-r--r-- 1 root root     3 Nov  4 22:43 p1.txt
+-rw-r--r-- 1 root root     8 Nov  4 22:43 p2.txt
+-rw-r--r-- 1 root root   125 Nov  4 22:00 probe.txt
+-rw-r--r-- 1 root root   125 Nov  4 22:04 probe5.txt
+-rw-r--r-- 1 root root     9 Nov  4 23:10 run_eval_flag.txt
+-rw-r--r-- 1 root root     7 Nov  4 23:09 simple.txt
+-rw-r--r-- 1 root root 11814 Nov  4 20:19 smoke.out
+-rw-r--r-- 1 root root 12052 Nov  4 20:28 smoke2.out
+-rw-r--r-- 1 root root 11141 Nov  4 20:32 smoke3.out
+-rw-r--r-- 1 root root   167 Nov  4 21:45 status.txt
+-rw-r--r-- 1 root root   181 Nov  4 23:03 sup3.txt
+-rw-r--r-- 1 root root   866 Nov  4 23:09 sup3_eval.txt
+-rw-r--r-- 1 root root   115 Nov  4 23:03 sup3_kill.txt
+-rw-r--r-- 1 root root    42 Nov  4 22:44 sup_eval.txt
+-rw-r--r-- 1 root root   135 Nov  4 22:44 sup_kill.txt
+-rw-r--r-- 1 root root    42 Nov  4 22:44 sup_status.txt
+-rw-r--r-- 1 root root     4 Nov  4 22:42 t7probe.txt
+-rw-r--r-- 1 root root 51143 Nov  4 23:03 train_full.out
+-rw-r--r-- 1 root root 41679 Nov  4 23:03 train_metrics.jsonl

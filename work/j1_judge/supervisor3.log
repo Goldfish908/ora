@@ -1,0 +1,12 @@
+{'ph': 'A', 'adapter': False, 'procs': '1', 'last': '{"event": "step", "step": 298, "epoch": 0, "loss": 0.2506, "loss_ma10": 0.2757, "step_s": 28.26, "ltk": true, "t": 8331.9}', 'elapsed_min': 0.0}
+{'ph': 'A', 'adapter': False, 'procs': '1', 'last': '{"event": "step", "step": 302, "epoch": 0, "loss": 0.3753, "loss_ma10": 0.282, "step_s": 22.7, "ltk": true, "t": 8438.5}', 'elapsed_min': 2.0}
+{'ph': 'A', 'adapter': False, 'procs': '1', 'last': '{"event": "step", "step": 307, "epoch": 0, "loss": 0.4037, "loss_ma10": 0.3027, "step_s": 27.88, "ltk": true, "t": 8578.6}', 'elapsed_min': 4.1}
+{'ph': 'A', 'adapter': False, 'procs': '1', 'last': '{"event": "step", "step": 311, "epoch": 0, "loss": 0.0267, "loss_ma10": 0.2991, "step_s": 27.98, "ltk": true, "t": 8690.5}', 'elapsed_min': 6.1}
+{'ph': 'A', 'adapter': False, 'procs': '1', 'last': '{"event": "step", "step": 315, "epoch": 0, "loss": 0.2295, "loss_ma10": 0.2415, "step_s": 29.06, "ltk": true, "t": 8805.7}', 'elapsed_min': 8.1}
+{'ph': 'A', 'adapter': True, 'procs': '1', 'last': '{"event": "step", "step": 319, "epoch": 1, "loss": 0.1707, "loss_ma10": 0.1879, "step_s": 28.94, "ltk": true, "t": 8920.1}', 'elapsed_min': 10.1}
+{'ph': 'A', 'adapter': True, 'procs': '1', 'last': '{"event": "step", "step": 320, "epoch": 1, "loss": 0.2272, "loss_ma10": 0.2084, "step_s": 28.52, "ltk": true, "mem_mb": {"gpu0": 29401, "gpu1": 33989}, "t": 8948.6}', 'elapsed_min': 10.7}
+{'ph': 'A', 'action': 'kill', 'chk': ['0', 'README.md', 'adapter_config.json', 'adapter_model.safetensors', 'chat_template.jinja', 'tokenizer.json', 'tokenizer_config.json'], 'elapsed_min': 10.8}
+{'ph': 'B', 'test': False, 'train': False, 'procs': '2', 'tail': '{"event": "data_ready", "n": 240, "data": "test.jsonl", "t": 19.0}', 'elapsed_min': 11.3}
+{'ph': 'B', 'test': False, 'train': False, 'procs': '2', 'tail': 'torch.OutOfMemoryError: CUDA out of memory. Tried to allocate 5.81 GiB. GPU 0 has a total capacity of 79.25 GiB of which 5.02 GiB is free. Process 24131 has 528.00 MiB memory in use. Process 25169 has', 'elapsed_min': 13.9}
+{'ph': 'B', 'test': False, 'train': False, 'procs': '0', 'tail': 'torch.OutOfMemoryError: CUDA out of memory. Tried to allocate 5.81 GiB. GPU 0 has a total capacity of 79.25 GiB of which 5.02 GiB is free. Process 24131 has 528.00 MiB memory in use. Process 25169 has', 'elapsed_min': 16.4}
+{'err': 'EVAL_DIED', 'elapsed_min': 16.4}

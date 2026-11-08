@@ -1,0 +1,21 @@
+== training == 
+steps total: 321, epochs completed: 1
+epoch 1: n=316, mean loss by segment: steps 1-40=0.687, steps 41-80=0.373, steps 81-120=0.263, steps 121-160=0.273, steps 161-200=0.258, steps 201-240=0.22, steps 241-280=0.231, steps 281-316=0.246
+epoch 2: n=5, mean loss by segment: steps 1-5=0.184
+step_s mean 27.9
+
+== IndustryOR 240 (61 phantom / 179 correct) ==
+J1 judge (test_ep1): AUC 0.6779 | t=0.5 det 19.7% (12/61) FP 5.0% (9/179) | gen-parse det 0.0% FP 0.0% unparsed 0
+    arm z0: n=49 det=0.0833 fp=0.0541 auc=0.6453
+    arm z1: n=92 det=0.25 fp=0.0312 auc=0.7436
+    arm z2: n=99 det=0.1905 fp=0.0641 auc=0.6178
+J1 judge (train_ep1): AUC 0.5693 | t=0.5 det 14.6% (35/240) FP 6.6% (5/76) | gen-parse det 0.0% FP 0.0% unparsed 316
+    arm retailopt: n=316 det=0.1458 fp=0.0658 auc=0.5693
+
+== comparison table (det/FP at t=0.5) ==
+method                             AUC     det            FP            
+J1 judge (test_ep1)                0.6779  19.7%          5.0%           
+J1 judge (train_ep1)               0.5693  14.6%          6.6%           
+Open-Jev off-the-shelf (P1')       0.662   1.6% (1/61)    0.0% (0/179)   AUC recomputed from runs/industryor/industryor_judge_openjev.jsonl
+D2 rule gate                       —       9.8% (6/61)    5.6% (10/177*) runs/d2_authoring/matrix.json; *2 cells had no rule (177 denom)
+A1 self-consistency                —       16.4% (10/61)  5.0% (9/179)   runs/d1_authoring/selfconsistency.json; 55/100 problems no-vote

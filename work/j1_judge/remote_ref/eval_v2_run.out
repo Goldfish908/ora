@@ -1,0 +1,143 @@
+[transformers] The fast path is not available because one of the required library is not installed. Falling back to torch implementation. To install follow https://github.com/fla-org/flash-linear-attention#installation and https://github.com/Dao-AILab/causal-conv1d
+Loading weights:   0%|                                 | 0/851 [00:00<?, ?it/s]Loading weights:   0%|                         | 1/851 [00:00<05:07,  2.76it/s]Loading weights:   2%|▎                       | 13/851 [00:00<00:24, 33.78it/s]Loading weights:   3%|▋                       | 23/851 [00:00<00:17, 47.21it/s]Loading weights:   4%|▊                       | 30/851 [00:00<00:17, 46.10it/s]Loading weights:   5%|█▏                      | 41/851 [00:00<00:13, 59.76it/s]Loading weights:   6%|█▍                      | 49/851 [00:01<00:16, 49.68it/s]Loading weights:   8%|█▊                      | 65/851 [00:01<00:11, 71.16it/s]Loading weights:   9%|██                      | 74/851 [00:01<00:11, 68.51it/s]Loading weights:  10%|██▎                     | 82/851 [00:01<00:13, 58.03it/s]Loading weights:  11%|██▋                     | 95/851 [00:01<00:11, 67.73it/s]Loading weights:  12%|██▊                    | 103/851 [00:01<00:12, 60.47it/s]Loading weights:  14%|███▏                   | 118/851 [00:02<00:09, 77.00it/s]Loading weights:  15%|███▍                   | 127/851 [00:02<00:10, 70.52it/s]Loading weights:  16%|███▋                   | 135/851 [00:02<00:11, 63.53it/s]Loading weights:  17%|███▉                   | 147/851 [00:02<00:09, 75.44it/s]Loading weights:  18%|████▏                  | 156/851 [00:02<00:11, 62.97it/s]Loading weights:  20%|████▌                  | 169/851 [00:02<00:09, 75.52it/s]Loading weights:  21%|████▊                  | 178/851 [00:02<00:08, 75.56it/s]Loading weights:  22%|█████                  | 187/851 [00:02<00:09, 73.15it/s]Loading weights:  23%|█████▍                 | 199/851 [00:03<00:07, 81.98it/s]Loading weights:  24%|█████▌                 | 208/851 [00:03<00:10, 61.16it/s]Loading weights:  26%|██████                 | 223/851 [00:03<00:08, 77.76it/s]Loading weights:  27%|██████▎                | 233/851 [00:03<00:08, 72.80it/s]Loading weights:  28%|██████▌                | 242/851 [00:03<00:08, 70.06it/s]Loading weights:  30%|██████▊                | 254/851 [00:03<00:08, 69.69it/s]Loading weights:  31%|███████                | 262/851 [00:04<00:08, 68.96it/s]Loading weights:  33%|███████▍               | 277/851 [00:04<00:07, 80.49it/s]Loading weights:  34%|███████▊               | 288/851 [00:04<00:06, 85.19it/s]Loading weights:  35%|████████               | 297/851 [00:04<00:07, 74.49it/s]Loading weights:  36%|████████▎              | 307/851 [00:04<00:07, 73.80it/s]Loading weights:  37%|████████▌              | 315/851 [00:04<00:08, 65.44it/s]Loading weights:  38%|████████▊              | 327/851 [00:04<00:06, 76.60it/s]Loading weights:  39%|█████████              | 336/851 [00:05<00:07, 71.74it/s]Loading weights:  41%|█████████▎             | 345/851 [00:05<00:06, 74.47it/s]Loading weights:  42%|█████████▌             | 355/851 [00:05<00:06, 77.42it/s]Loading weights:  43%|█████████▊             | 363/851 [00:05<00:07, 67.01it/s]Loading weights:  44%|██████████             | 371/851 [00:05<00:07, 64.29it/s]Loading weights:  45%|██████████▍            | 384/851 [00:05<00:06, 72.29it/s]Loading weights:  47%|██████████▊            | 399/851 [00:05<00:05, 82.68it/s]Loading weights:  48%|███████████▏           | 412/851 [00:05<00:05, 85.30it/s]Loading weights:  49%|███████████▍           | 421/851 [00:06<00:06, 67.56it/s]Loading weights:  51%|███████████▋           | 433/851 [00:06<00:05, 75.49it/s]Loading weights:  52%|███████████▉           | 442/851 [00:06<00:05, 70.81it/s]Loading weights:  53%|████████████▏          | 451/851 [00:06<00:05, 74.56it/s]Loading weights:  54%|████████████▍          | 460/851 [00:06<00:05, 75.91it/s]Loading weights:  55%|████████████▋          | 468/851 [00:06<00:05, 67.14it/s]Loading weights:  56%|████████████▊          | 476/851 [00:06<00:05, 64.22it/s]Loading weights:  58%|█████████████▏         | 490/851 [00:07<00:04, 75.80it/s]Loading weights:  59%|█████████████▌         | 500/851 [00:07<00:04, 80.00it/s]Loading weights:  60%|█████████████▊         | 509/851 [00:07<00:04, 71.55it/s]Loading weights:  61%|██████████████         | 519/851 [00:07<00:04, 70.64it/s]Loading weights:  62%|██████████████▏        | 527/851 [00:07<00:05, 61.00it/s]Loading weights:  63%|██████████████▌        | 540/851 [00:07<00:04, 75.04it/s]Loading weights:  65%|██████████████▊        | 549/851 [00:07<00:04, 69.72it/s]Loading weights:  65%|███████████████        | 557/851 [00:08<00:04, 71.35it/s]Loading weights:  67%|███████████████▎       | 567/851 [00:08<00:03, 75.98it/s]Loading weights:  68%|███████████████▌       | 575/851 [00:08<00:04, 66.80it/s]Loading weights:  69%|███████████████▊       | 583/851 [00:08<00:04, 62.98it/s]Loading weights:  70%|████████████████       | 596/851 [00:08<00:03, 75.68it/s]Loading weights:  71%|████████████████▍      | 606/851 [00:08<00:03, 79.92it/s]Loading weights:  72%|████████████████▌      | 615/851 [00:08<00:03, 70.83it/s]Loading weights:  73%|████████████████▊      | 624/851 [00:09<00:03, 74.20it/s]Loading weights:  74%|█████████████████      | 632/851 [00:09<00:03, 59.65it/s]Loading weights:  76%|█████████████████▍     | 645/851 [00:09<00:03, 66.12it/s]Loading weights:  78%|█████████████████▊     | 660/851 [00:09<00:02, 81.12it/s]Loading weights:  79%|██████████████████     | 669/851 [00:09<00:02, 75.07it/s]Loading weights:  80%|██████████████████▎    | 678/851 [00:09<00:02, 71.77it/s]Loading weights:  81%|██████████████████▌    | 686/851 [00:09<00:02, 63.53it/s]Loading weights:  82%|██████████████████▉    | 701/851 [00:10<00:01, 80.69it/s]Loading weights:  83%|███████████████████▏   | 710/851 [00:10<00:01, 77.58it/s]Loading weights:  84%|███████████████████▍   | 719/851 [00:10<00:02, 65.68it/s]Loading weights:  86%|███████████████████▊   | 731/851 [00:10<00:01, 66.80it/s]Loading weights:  87%|███████████████████▉   | 739/851 [00:10<00:01, 66.67it/s]Loading weights:  89%|████████████████████▍  | 754/851 [00:10<00:01, 82.64it/s]Loading weights:  90%|████████████████████▌  | 763/851 [00:10<00:01, 80.18it/s]Loading weights:  91%|████████████████████▊  | 772/851 [00:11<00:01, 66.92it/s]Loading weights:  92%|█████████████████████▏ | 784/851 [00:11<00:00, 72.45it/s]Loading weights:  93%|█████████████████████▍ | 792/851 [00:11<00:00, 62.82it/s]Loading weights:  95%|█████████████████████▊ | 807/851 [00:11<00:00, 79.79it/s]Loading weights:  96%|██████████████████████ | 816/851 [00:11<00:00, 77.45it/s]Loading weights:  97%|██████████████████████▎| 825/851 [00:11<00:00, 65.96it/s]Loading weights:  98%|██████████████████████▌| 836/851 [00:11<00:00, 74.45it/s]Loading weights:  99%|██████████████████████▊| 845/851 [00:12<00:00, 61.94it/s]Loading weights: 100%|███████████████████████| 851/851 [00:12<00:00, 69.52it/s]
+{"event": "model_loaded", "seconds": 19.4, "attn": "flash_attention_2", "adapter": "adapter_v2_ep2", "mem_mb": {"gpu0": 24138, "gpu1": 28070}, "t": 20.2}
+{"event": "data_ready", "n": 240, "data": "test.jsonl", "t": 20.2}
+{"event": "batch", "done": 4, "of": 240, "mem_mb": {"gpu0": 25505, "gpu1": 29889}, "t": 43.6}
+{"event": "batch", "done": 8, "of": 240, "mem_mb": {"gpu0": 25505, "gpu1": 29889}, "t": 61.2}
+{"event": "batch", "done": 12, "of": 240, "mem_mb": {"gpu0": 25505, "gpu1": 29889}, "t": 82.1}
+{"event": "batch", "done": 16, "of": 240, "mem_mb": {"gpu0": 25505, "gpu1": 29889}, "t": 108.1}
+{"event": "batch", "done": 20, "of": 240, "mem_mb": {"gpu0": 25679, "gpu1": 30058}, "t": 129.9}
+{"event": "batch", "done": 24, "of": 240, "mem_mb": {"gpu0": 25679, "gpu1": 30058}, "t": 147.8}
+{"event": "batch", "done": 28, "of": 240, "mem_mb": {"gpu0": 27284, "gpu1": 31633}, "t": 180.7}
+{"event": "batch", "done": 32, "of": 240, "mem_mb": {"gpu0": 27284, "gpu1": 31633}, "t": 208.7}
+{"event": "batch", "done": 36, "of": 240, "mem_mb": {"gpu0": 27284, "gpu1": 31633}, "t": 240.6}
+{"event": "batch", "done": 40, "of": 240, "mem_mb": {"gpu0": 27284, "gpu1": 31633}, "t": 269.0}
+{"event": "batch", "done": 44, "of": 240, "mem_mb": {"gpu0": 28798, "gpu1": 33124}, "t": 318.1}
+{"event": "batch", "done": 48, "of": 240, "mem_mb": {"gpu0": 28798, "gpu1": 33124}, "t": 346.3}
+{"event": "batch", "done": 52, "of": 240, "mem_mb": {"gpu0": 28798, "gpu1": 33124}, "t": 380.5}
+{"event": "batch", "done": 56, "of": 240, "mem_mb": {"gpu0": 28798, "gpu1": 33124}, "t": 412.0}
+{"event": "batch", "done": 60, "of": 240, "mem_mb": {"gpu0": 28798, "gpu1": 33124}, "t": 442.9}
+{"event": "batch", "done": 64, "of": 240, "mem_mb": {"gpu0": 28798, "gpu1": 33124}, "t": 473.8}
+{"event": "batch", "done": 68, "of": 240, "mem_mb": {"gpu0": 28798, "gpu1": 33124}, "t": 500.1}
+{"event": "batch", "done": 72, "of": 240, "mem_mb": {"gpu0": 28798, "gpu1": 33124}, "t": 520.5}
+{"event": "batch", "done": 76, "of": 240, "mem_mb": {"gpu0": 28798, "gpu1": 33124}, "t": 548.1}
+{"event": "batch", "done": 80, "of": 240, "mem_mb": {"gpu0": 28798, "gpu1": 33124}, "t": 571.6}
+{"event": "batch", "done": 84, "of": 240, "mem_mb": {"gpu0": 29046, "gpu1": 33367}, "t": 621.8}
+{"event": "batch", "done": 88, "of": 240, "mem_mb": {"gpu0": 29046, "gpu1": 33367}, "t": 649.0}
+{"event": "batch", "done": 92, "of": 240, "mem_mb": {"gpu0": 29046, "gpu1": 33367}, "t": 678.2}
+{"event": "batch", "done": 96, "of": 240, "mem_mb": {"gpu0": 29046, "gpu1": 33367}, "t": 703.8}
+{"event": "batch", "done": 100, "of": 240, "mem_mb": {"gpu0": 29046, "gpu1": 33367}, "t": 738.6}
+{"event": "batch", "done": 104, "of": 240, "mem_mb": {"gpu0": 29046, "gpu1": 33367}, "t": 770.1}
+{"event": "batch", "done": 108, "of": 240, "mem_mb": {"gpu0": 29046, "gpu1": 33367}, "t": 800.8}
+{"event": "batch", "done": 112, "of": 240, "mem_mb": {"gpu0": 29046, "gpu1": 33367}, "t": 825.0}
+{"event": "batch", "done": 116, "of": 240, "mem_mb": {"gpu0": 29046, "gpu1": 33367}, "t": 855.9}
+{"event": "batch", "done": 120, "of": 240, "mem_mb": {"gpu0": 29046, "gpu1": 33367}, "t": 883.0}
+{"event": "batch", "done": 124, "of": 240, "mem_mb": {"gpu0": 29046, "gpu1": 33367}, "t": 909.0}
+{"event": "batch", "done": 128, "of": 240, "mem_mb": {"gpu0": 29046, "gpu1": 33367}, "t": 936.7}
+{"event": "batch", "done": 132, "of": 240, "mem_mb": {"gpu0": 29046, "gpu1": 33367}, "t": 967.0}
+{"event": "batch", "done": 136, "of": 240, "mem_mb": {"gpu0": 29046, "gpu1": 33367}, "t": 991.0}
+{"event": "batch", "done": 140, "of": 240, "mem_mb": {"gpu0": 29046, "gpu1": 33367}, "t": 1020.4}
+{"event": "batch", "done": 144, "of": 240, "mem_mb": {"gpu0": 29046, "gpu1": 33367}, "t": 1053.6}
+{"event": "batch", "done": 148, "of": 240, "mem_mb": {"gpu0": 29046, "gpu1": 33367}, "t": 1086.5}
+{"event": "batch", "done": 152, "of": 240, "mem_mb": {"gpu0": 29046, "gpu1": 33367}, "t": 1120.8}
+{"event": "batch", "done": 156, "of": 240, "mem_mb": {"gpu0": 29046, "gpu1": 33367}, "t": 1153.1}
+{"event": "batch", "done": 160, "of": 240, "mem_mb": {"gpu0": 29046, "gpu1": 33367}, "t": 1179.9}
+{"event": "batch", "done": 164, "of": 240, "mem_mb": {"gpu0": 29046, "gpu1": 33367}, "t": 1204.5}
+{"event": "batch", "done": 168, "of": 240, "mem_mb": {"gpu0": 29046, "gpu1": 33367}, "t": 1233.1}
+{"event": "batch", "done": 172, "of": 240, "mem_mb": {"gpu0": 29046, "gpu1": 33367}, "t": 1259.5}
+{"event": "batch", "done": 176, "of": 240, "mem_mb": {"gpu0": 29150, "gpu1": 33469}, "t": 1311.6}
+{"event": "batch", "done": 180, "of": 240, "mem_mb": {"gpu0": 29150, "gpu1": 33469}, "t": 1341.6}
+{"event": "batch", "done": 184, "of": 240, "mem_mb": {"gpu0": 29150, "gpu1": 33469}, "t": 1366.7}
+{"event": "batch", "done": 188, "of": 240, "mem_mb": {"gpu0": 29150, "gpu1": 33469}, "t": 1401.0}
+{"event": "batch", "done": 192, "of": 240, "mem_mb": {"gpu0": 29150, "gpu1": 33469}, "t": 1437.5}
+{"event": "batch", "done": 196, "of": 240, "mem_mb": {"gpu0": 29150, "gpu1": 33469}, "t": 1470.9}
+{"event": "batch", "done": 200, "of": 240, "mem_mb": {"gpu0": 29150, "gpu1": 33469}, "t": 1505.5}
+{"event": "batch", "done": 204, "of": 240, "mem_mb": {"gpu0": 29150, "gpu1": 33469}, "t": 1538.0}
+{"event": "batch", "done": 208, "of": 240, "mem_mb": {"gpu0": 29150, "gpu1": 33469}, "t": 1567.1}
+{"event": "batch", "done": 212, "of": 240, "mem_mb": {"gpu0": 29150, "gpu1": 33469}, "t": 1598.5}
+{"event": "batch", "done": 216, "of": 240, "mem_mb": {"gpu0": 29150, "gpu1": 33469}, "t": 1625.6}
+{"event": "batch", "done": 220, "of": 240, "mem_mb": {"gpu0": 29150, "gpu1": 33469}, "t": 1653.8}
+{"event": "batch", "done": 224, "of": 240, "mem_mb": {"gpu0": 29150, "gpu1": 33469}, "t": 1682.8}
+{"event": "batch", "done": 228, "of": 240, "mem_mb": {"gpu0": 29150, "gpu1": 33469}, "t": 1710.2}
+{"event": "batch", "done": 232, "of": 240, "mem_mb": {"gpu0": 29150, "gpu1": 33469}, "t": 1737.2}
+{"event": "batch", "done": 236, "of": 240, "mem_mb": {"gpu0": 29150, "gpu1": 33469}, "t": 1764.6}
+{"event": "batch", "done": 240, "of": 240, "mem_mb": {"gpu0": 29150, "gpu1": 33469}, "t": 1794.9}
+{"event": "done", "total_s": 1794.9, "metrics": {"adapter": "adapter_v2_ep2", "data": "test.jsonl", "n": 240, "n_wrong": 61, "n_pass": 179, "auc_pfail": 0.7166, "t05_score": {"det": 0.0164, "fp": 0, "tp": 1, "n_pos": 61, "n_neg": 179}, "gen_verdict": {"det": 0.0, "fp": 0, "tp": 0, "n_pos": 61, "n_neg": 179}, "unparsed": 0, "per_arm": {"z0": {"n": 49, "n_wrong": 12, "det": 0.0, "fp": 0.0, "auc": 0.6408}, "z1": {"n": 92, "n_wrong": 28, "det": 0.0357, "fp": 0.0, "auc": 0.7695}, "z2": {"n": 99, "n_wrong": 21, "det": 0.0, "fp": 0.0, "auc": 0.6841}}}, "t": 1794.9}
+[transformers] The fast path is not available because one of the required library is not installed. Falling back to torch implementation. To install follow https://github.com/fla-org/flash-linear-attention#installation and https://github.com/Dao-AILab/causal-conv1d
+Loading weights:   0%|                                 | 0/851 [00:00<?, ?it/s]Loading weights:   0%|                         | 1/851 [00:00<06:34,  2.16it/s]Loading weights:   2%|▍                       | 14/851 [00:00<00:27, 30.84it/s]Loading weights:   3%|▋                       | 24/851 [00:00<00:18, 45.89it/s]Loading weights:   4%|▉                       | 32/851 [00:00<00:16, 49.51it/s]Loading weights:   5%|█▏                      | 41/851 [00:00<00:13, 59.06it/s]Loading weights:   6%|█▍                      | 49/851 [00:01<00:16, 49.46it/s]Loading weights:   8%|█▊                      | 64/851 [00:01<00:11, 69.04it/s]Loading weights:   9%|██                      | 73/851 [00:01<00:11, 67.70it/s]Loading weights:  10%|██▎                     | 81/851 [00:01<00:12, 62.94it/s]Loading weights:  11%|██▌                     | 93/851 [00:01<00:10, 73.52it/s]Loading weights:  12%|██▊                    | 102/851 [00:01<00:13, 56.59it/s]Loading weights:  14%|███▏                   | 116/851 [00:02<00:10, 72.91it/s]Loading weights:  15%|███▍                   | 125/851 [00:02<00:10, 68.99it/s]Loading weights:  16%|███▌                   | 134/851 [00:02<00:10, 67.88it/s]Loading weights:  17%|███▉                   | 144/851 [00:02<00:10, 69.34it/s]Loading weights:  18%|████                   | 152/851 [00:02<00:10, 68.93it/s]Loading weights:  19%|████▎                  | 160/851 [00:02<00:10, 66.41it/s]Loading weights:  20%|████▌                  | 169/851 [00:02<00:10, 67.87it/s]Loading weights:  22%|█████                  | 185/851 [00:02<00:07, 88.93it/s]Loading weights:  23%|█████▎                 | 195/851 [00:03<00:07, 85.50it/s]Loading weights:  24%|█████▌                 | 204/851 [00:03<00:10, 62.29it/s]Loading weights:  26%|█████▉                 | 221/851 [00:03<00:08, 77.35it/s]Loading weights:  27%|██████▏                | 230/851 [00:03<00:08, 72.98it/s]Loading weights:  28%|██████▍                | 239/851 [00:03<00:08, 76.19it/s]Loading weights:  29%|██████▋                | 248/851 [00:03<00:07, 77.61it/s]Loading weights:  30%|██████▉                | 257/851 [00:03<00:08, 71.91it/s]Loading weights:  31%|███████▏               | 265/851 [00:04<00:08, 68.55it/s]Loading weights:  33%|███████▌               | 278/851 [00:04<00:07, 80.72it/s]Loading weights:  34%|███████▊               | 288/851 [00:04<00:07, 79.47it/s]Loading weights:  35%|████████               | 297/851 [00:04<00:07, 72.63it/s]Loading weights:  36%|████████▎              | 307/851 [00:04<00:07, 72.04it/s]Loading weights:  37%|████████▌              | 315/851 [00:04<00:08, 64.16it/s]Loading weights:  38%|████████▊              | 324/851 [00:04<00:07, 68.87it/s]Loading weights:  39%|████████▉              | 332/851 [00:05<00:07, 65.92it/s]Loading weights:  41%|█████████▎             | 345/851 [00:05<00:06, 79.42it/s]Loading weights:  42%|█████████▌             | 354/851 [00:05<00:06, 80.12it/s]Loading weights:  43%|█████████▊             | 363/851 [00:05<00:06, 71.51it/s]Loading weights:  44%|██████████             | 371/851 [00:05<00:07, 67.79it/s]Loading weights:  45%|██████████▎            | 383/851 [00:05<00:06, 76.03it/s]Loading weights:  47%|██████████▊            | 399/851 [00:05<00:05, 87.76it/s]Loading weights:  48%|███████████            | 411/851 [00:05<00:04, 93.44it/s]Loading weights:  49%|███████████▍           | 421/851 [00:06<00:06, 65.72it/s]Loading weights:  51%|███████████▊           | 436/851 [00:06<00:05, 81.00it/s]Loading weights:  52%|████████████           | 446/851 [00:06<00:05, 79.11it/s]Loading weights:  53%|████████████▎          | 455/851 [00:06<00:05, 67.62it/s]Loading weights:  55%|████████████▌          | 465/851 [00:06<00:05, 73.68it/s]Loading weights:  56%|████████████▊          | 474/851 [00:06<00:06, 62.65it/s]Loading weights:  57%|█████████████▏         | 489/851 [00:07<00:04, 78.69it/s]Loading weights:  59%|█████████████▍         | 498/851 [00:07<00:04, 75.95it/s]Loading weights:  60%|█████████████▋         | 507/851 [00:07<00:05, 66.85it/s]Loading weights:  61%|██████████████         | 519/851 [00:07<00:04, 72.26it/s]Loading weights:  62%|██████████████▏        | 527/851 [00:07<00:05, 62.63it/s]Loading weights:  63%|██████████████▌        | 540/851 [00:07<00:04, 75.59it/s]Loading weights:  65%|██████████████▊        | 549/851 [00:07<00:04, 70.70it/s]Loading weights:  66%|███████████████        | 558/851 [00:08<00:04, 69.62it/s]Loading weights:  67%|███████████████▍       | 570/851 [00:08<00:03, 81.26it/s]Loading weights:  68%|███████████████▋       | 579/851 [00:08<00:04, 60.86it/s]Loading weights:  70%|████████████████       | 593/851 [00:08<00:03, 71.21it/s]Loading weights:  71%|████████████████▍      | 606/851 [00:08<00:03, 78.87it/s]Loading weights:  72%|████████████████▌      | 615/851 [00:08<00:03, 72.74it/s]Loading weights:  73%|████████████████▊      | 624/851 [00:08<00:02, 76.49it/s]Loading weights:  74%|█████████████████      | 633/851 [00:09<00:03, 62.26it/s]Loading weights:  76%|█████████████████▌     | 649/851 [00:09<00:02, 76.53it/s]Loading weights:  77%|█████████████████▊     | 659/851 [00:09<00:02, 69.69it/s]Loading weights:  79%|██████████████████▏    | 672/851 [00:09<00:02, 79.64it/s]Loading weights:  80%|██████████████████▍    | 681/851 [00:09<00:02, 72.84it/s]Loading weights:  81%|██████████████████▌    | 689/851 [00:09<00:02, 68.37it/s]Loading weights:  82%|██████████████████▉    | 702/851 [00:10<00:01, 76.14it/s]Loading weights:  84%|███████████████████▏   | 712/851 [00:10<00:01, 76.94it/s]Loading weights:  85%|███████████████████▍   | 720/851 [00:10<00:01, 68.48it/s]Loading weights:  86%|███████████████████▊   | 731/851 [00:10<00:01, 72.71it/s]Loading weights:  87%|███████████████████▉   | 739/851 [00:10<00:01, 64.50it/s]Loading weights:  89%|████████████████████▍  | 754/851 [00:10<00:01, 80.96it/s]Loading weights:  90%|████████████████████▌  | 763/851 [00:10<00:01, 78.14it/s]Loading weights:  91%|████████████████████▊  | 772/851 [00:11<00:01, 67.06it/s]Loading weights:  92%|█████████████████████▏ | 784/851 [00:11<00:00, 72.05it/s]Loading weights:  93%|█████████████████████▍ | 792/851 [00:11<00:00, 63.60it/s]Loading weights:  95%|█████████████████████▊ | 807/851 [00:11<00:00, 81.04it/s]Loading weights:  96%|██████████████████████ | 816/851 [00:11<00:00, 77.49it/s]Loading weights:  97%|██████████████████████▎| 825/851 [00:11<00:00, 66.24it/s]Loading weights:  98%|██████████████████████▌| 836/851 [00:11<00:00, 74.12it/s]Loading weights:  99%|██████████████████████▊| 845/851 [00:12<00:00, 62.33it/s]Loading weights: 100%|███████████████████████| 851/851 [00:12<00:00, 69.85it/s]
+{"event": "model_loaded", "seconds": 17.9, "attn": "flash_attention_2", "adapter": "adapter_v2_ep2", "mem_mb": {"gpu0": 24138, "gpu1": 28070}, "t": 18.5}
+{"event": "data_ready", "n": 381, "data": "train_eval_v2.jsonl", "t": 18.5}
+{"event": "batch", "done": 4, "of": 381, "t": 33.8}
+{"event": "batch", "done": 8, "of": 381, "t": 48.0}
+{"event": "batch", "done": 12, "of": 381, "t": 62.0}
+{"event": "batch", "done": 16, "of": 381, "t": 75.6}
+{"event": "batch", "done": 20, "of": 381, "t": 89.9}
+{"event": "batch", "done": 24, "of": 381, "t": 104.2}
+{"event": "batch", "done": 28, "of": 381, "t": 119.0}
+{"event": "batch", "done": 32, "of": 381, "t": 133.8}
+{"event": "batch", "done": 36, "of": 381, "t": 148.3}
+{"event": "batch", "done": 40, "of": 381, "t": 162.8}
+{"event": "batch", "done": 44, "of": 381, "t": 177.7}
+{"event": "batch", "done": 48, "of": 381, "t": 192.2}
+{"event": "batch", "done": 52, "of": 381, "t": 206.6}
+{"event": "batch", "done": 56, "of": 381, "t": 221.6}
+{"event": "batch", "done": 60, "of": 381, "t": 236.2}
+{"event": "batch", "done": 64, "of": 381, "t": 251.3}
+{"event": "batch", "done": 68, "of": 381, "t": 265.5}
+{"event": "batch", "done": 72, "of": 381, "t": 279.9}
+{"event": "batch", "done": 76, "of": 381, "t": 294.0}
+{"event": "batch", "done": 80, "of": 381, "t": 308.3}
+{"event": "batch", "done": 84, "of": 381, "t": 321.8}
+{"event": "batch", "done": 88, "of": 381, "t": 336.7}
+{"event": "batch", "done": 92, "of": 381, "t": 348.5}
+{"event": "batch", "done": 96, "of": 381, "t": 361.3}
+{"event": "batch", "done": 100, "of": 381, "t": 374.1}
+{"event": "batch", "done": 104, "of": 381, "t": 389.0}
+{"event": "batch", "done": 108, "of": 381, "t": 403.9}
+{"event": "batch", "done": 112, "of": 381, "t": 418.7}
+{"event": "batch", "done": 116, "of": 381, "t": 433.4}
+{"event": "batch", "done": 120, "of": 381, "t": 448.1}
+{"event": "batch", "done": 124, "of": 381, "t": 462.4}
+{"event": "batch", "done": 128, "of": 381, "t": 476.6}
+{"event": "batch", "done": 132, "of": 381, "t": 492.0}
+{"event": "batch", "done": 136, "of": 381, "t": 506.2}
+{"event": "batch", "done": 140, "of": 381, "t": 520.9}
+{"event": "batch", "done": 144, "of": 381, "t": 535.1}
+{"event": "batch", "done": 148, "of": 381, "t": 549.7}
+{"event": "batch", "done": 152, "of": 381, "t": 563.8}
+{"event": "batch", "done": 156, "of": 381, "t": 579.8}
+{"event": "batch", "done": 160, "of": 381, "t": 594.0}
+{"event": "batch", "done": 164, "of": 381, "t": 609.1}
+{"event": "batch", "done": 168, "of": 381, "t": 624.2}
+{"event": "batch", "done": 172, "of": 381, "t": 639.2}
+{"event": "batch", "done": 176, "of": 381, "t": 653.9}
+{"event": "batch", "done": 180, "of": 381, "t": 668.9}
+{"event": "batch", "done": 184, "of": 381, "t": 683.3}
+{"event": "batch", "done": 188, "of": 381, "t": 698.0}
+{"event": "batch", "done": 192, "of": 381, "t": 711.6}
+{"event": "batch", "done": 196, "of": 381, "t": 726.3}
+{"event": "batch", "done": 200, "of": 381, "t": 740.3}
+{"event": "batch", "done": 204, "of": 381, "t": 754.9}
+{"event": "batch", "done": 208, "of": 381, "t": 769.1}
+{"event": "batch", "done": 212, "of": 381, "t": 783.9}
+{"event": "batch", "done": 216, "of": 381, "t": 798.6}
+{"event": "batch", "done": 220, "of": 381, "t": 813.6}
+{"event": "batch", "done": 224, "of": 381, "t": 828.2}
+{"event": "batch", "done": 228, "of": 381, "t": 843.0}
+{"event": "batch", "done": 232, "of": 381, "t": 857.3}
+{"event": "batch", "done": 236, "of": 381, "t": 872.3}
+{"event": "batch", "done": 240, "of": 381, "t": 886.6}
+{"event": "batch", "done": 244, "of": 381, "t": 901.6}
+{"event": "batch", "done": 248, "of": 381, "t": 916.0}
+{"event": "batch", "done": 252, "of": 381, "t": 932.6}
+{"event": "batch", "done": 256, "of": 381, "t": 946.8}
+{"event": "batch", "done": 260, "of": 381, "t": 961.6}
+{"event": "batch", "done": 264, "of": 381, "t": 975.8}
+{"event": "batch", "done": 268, "of": 381, "t": 990.5}
+{"event": "batch", "done": 272, "of": 381, "t": 1005.0}
+{"event": "batch", "done": 276, "of": 381, "t": 1019.8}
+{"event": "batch", "done": 280, "of": 381, "t": 1034.6}
+{"event": "batch", "done": 284, "of": 381, "t": 1049.4}
+{"event": "batch", "done": 288, "of": 381, "t": 1064.1}
+{"event": "batch", "done": 292, "of": 381, "t": 1078.9}
+{"event": "batch", "done": 296, "of": 381, "t": 1093.8}

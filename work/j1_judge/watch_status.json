@@ -1,0 +1,1 @@
+{"elapsed_min": 75.1, "last": "{\"event\": \"step\", \"step\": 150, \"epoch\": 0, \"loss\": 0.0126, \"loss_ma10\": 0.2139, \"step_s\": 28.32, \"ltk\": true, \"mem_mb\": {\"gpu0\": 29294, \"gpu1\": 33880}, \"t\": 4241.7}", "train_procs": "1", "adapters": ""}

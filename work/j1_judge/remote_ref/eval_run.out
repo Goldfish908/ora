@@ -1,0 +1,258 @@
+[transformers] The fast path is not available because one of the required library is not installed. Falling back to torch implementation. To install follow https://github.com/fla-org/flash-linear-attention#installation and https://github.com/Dao-AILab/causal-conv1d
+[transformers] Current model requires 256 bytes of buffer for offloaded layers, which seems does not fit any GPU's remaining memory. If you are experiencing a OOM later, please consider using offload_buffers=True.
+Loading weights:   0%|                                 | 0/851 [00:00<?, ?it/s]Loading weights:  71%|██████████████▉      | 607/851 [00:00<00:00, 6052.20it/s]Loading weights: 100%|█████████████████████| 851/851 [00:00<00:00, 5183.33it/s]
+{"event": "model_loaded", "seconds": 15.7, "attn": "flash_attention_2", "adapter": "adapter_ep1", "mem_mb": {"gpu0": 454, "gpu1": 0}, "t": 16.7}
+{"event": "data_ready", "n": 240, "data": "test.jsonl", "t": 16.7}
+Traceback (most recent call last):
+  File "/dfs/data/hewj13/j1_judge/eval_j1.py", line 103, in <module>
+    logits = model(**enc, logits_to_keep=1).logits[:, -1, :]
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.12/dist-packages/torch/nn/modules/module.py", line 1751, in _wrapped_call_impl
+    return self._call_impl(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.12/dist-packages/torch/nn/modules/module.py", line 1762, in _call_impl
+    return forward_call(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.12/dist-packages/peft/peft_model.py", line 1993, in forward
+    return self.base_model(
+           ^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.12/dist-packages/torch/nn/modules/module.py", line 1751, in _wrapped_call_impl
+    return self._call_impl(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.12/dist-packages/torch/nn/modules/module.py", line 1762, in _call_impl
+    return forward_call(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.12/dist-packages/peft/tuners/tuners_utils.py", line 330, in forward
+    return self.model.forward(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.12/dist-packages/transformers/utils/generic.py", line 903, in wrapper
+    output = func(self, *args, **kwargs)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.12/dist-packages/transformers/models/qwen3_5/modeling_qwen3_5.py", line 1667, in forward
+    outputs: BaseModelOutputWithPast = self.model(
+                                       ^^^^^^^^^^^
+  File "/usr/local/lib/python3.12/dist-packages/torch/nn/modules/module.py", line 1751, in _wrapped_call_impl
+    return self._call_impl(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.12/dist-packages/torch/nn/modules/module.py", line 1762, in _call_impl
+    return forward_call(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.12/dist-packages/transformers/utils/generic.py", line 1032, in wrapper
+    output = func(self, *args, **kwargs)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.12/dist-packages/transformers/utils/output_capturing.py", line 252, in wrapper
+    outputs = func(self, *args, **kwargs)
+              ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.12/dist-packages/transformers/models/qwen3_5/modeling_qwen3_5.py", line 1204, in forward
+    hidden_states = decoder_layer(
+                    ^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.12/dist-packages/transformers/modeling_layers.py", line 93, in __call__
+    return super().__call__(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.12/dist-packages/torch/nn/modules/module.py", line 1751, in _wrapped_call_impl
+    return self._call_impl(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.12/dist-packages/torch/nn/modules/module.py", line 1762, in _call_impl
+    return forward_call(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.12/dist-packages/transformers/models/qwen3_5/modeling_qwen3_5.py", line 793, in forward
+    hidden_states, _ = self.self_attn(
+                       ^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.12/dist-packages/torch/nn/modules/module.py", line 1751, in _wrapped_call_impl
+    return self._call_impl(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.12/dist-packages/torch/nn/modules/module.py", line 1762, in _call_impl
+    return forward_call(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.12/dist-packages/transformers/models/qwen3_5/modeling_qwen3_5.py", line 703, in forward
+    attn_output, attn_weights = attention_interface(
+                                ^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.12/dist-packages/transformers/integrations/flash_attention.py", line 70, in flash_attention_forward
+    attn_output = _flash_attention_forward(
+                  ^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.12/dist-packages/transformers/modeling_flash_attention_utils.py", line 766, in _flash_attention_forward
+    out_unpad = flash_varlen_fn(
+                ^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.12/dist-packages/flash_attn/flash_attn_interface.py", line 1448, in flash_attn_varlen_func
+    return FlashAttnVarlenFunc.apply(
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.12/dist-packages/torch/autograd/function.py", line 575, in apply
+    return super().apply(*args, **kwargs)  # type: ignore[misc]
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.12/dist-packages/flash_attn/flash_attn_interface.py", line 930, in forward
+    out_padded, softmax_lse, S_dmask, rng_state = _wrapped_flash_attn_varlen_forward(
+                                                  ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.12/dist-packages/torch/_ops.py", line 1158, in __call__
+    return self._op(*args, **(kwargs or {}))
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.12/dist-packages/torch/_library/autograd.py", line 111, in autograd_impl
+    result = forward_no_grad(*args, Metadata(keyset, keyword_only_args))
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.12/dist-packages/torch/_library/autograd.py", line 40, in forward_no_grad
+    result = op.redispatch(keyset & _C._after_autograd_keyset, *args, **kwargs)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.12/dist-packages/torch/_ops.py", line 761, in redispatch
+    return self._handle.redispatch_boxed(keyset, *args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+NotImplementedError: Could not run 'flash_attn::_flash_attn_varlen_forward' with arguments from the 'CPU' backend. This could be because the operator doesn't exist for this backend, or was omitted during the selective/custom build process (if using custom build). If you are a Facebook employee using PyTorch on mobile, please visit https://fburl.com/ptmfixes for possible resolutions. 'flash_attn::_flash_attn_varlen_forward' is only available for these backends: [CUDA, Meta, BackendSelect, Python, FuncTorchDynamicLayerBackMode, Functionalize, Named, Conjugate, Negative, ZeroTensor, ADInplaceOrView, AutogradOther, AutogradCPU, AutogradCUDA, AutogradHIP, AutogradXLA, AutogradMPS, AutogradIPU, AutogradXPU, AutogradHPU, AutogradVE, AutogradLazy, AutogradMTIA, AutogradMAIA, AutogradPrivateUse1, AutogradPrivateUse2, AutogradPrivateUse3, AutogradMeta, AutogradNestedTensor, Tracer, AutocastCPU, AutocastMTIA, AutocastMAIA, AutocastXPU, AutocastMPS, AutocastCUDA, FuncTorchBatched, BatchedNestedTensor, FuncTorchVmapMode, Batched, VmapMode, FuncTorchGradWrapper, PythonTLSSnapshot, FuncTorchDynamicLayerFrontMode, PreDispatch, PythonDispatcher].
+
+CUDA: registered at /dev/null:212 [kernel]
+Meta: registered at /dev/null:214 [kernel]
+BackendSelect: fallthrough registered at /opt/pytorch/pytorch/aten/src/ATen/core/BackendSelectFallbackKernel.cpp:3 [backend fallback]
+Python: registered at /opt/pytorch/pytorch/aten/src/ATen/core/PythonFallbackKernel.cpp:194 [backend fallback]
+FuncTorchDynamicLayerBackMode: registered at /opt/pytorch/pytorch/aten/src/ATen/functorch/DynamicLayer.cpp:479 [backend fallback]
+Functionalize: registered at /opt/pytorch/pytorch/aten/src/ATen/FunctionalizeFallbackKernel.cpp:349 [backend fallback]
+Named: registered at /opt/pytorch/pytorch/aten/src/ATen/core/NamedRegistrations.cpp:7 [backend fallback]
+Conjugate: registered at /opt/pytorch/pytorch/aten/src/ATen/ConjugateFallback.cpp:17 [backend fallback]
+Negative: registered at /opt/pytorch/pytorch/aten/src/ATen/native/NegateFallback.cpp:18 [backend fallback]
+ZeroTensor: registered at /opt/pytorch/pytorch/aten/src/ATen/ZeroTensorFallback.cpp:86 [backend fallback]
+ADInplaceOrView: fallthrough registered at /opt/pytorch/pytorch/aten/src/ATen/core/VariableFallbackKernel.cpp:104 [backend fallback]
+AutogradOther: registered at /dev/null:212 [autograd kernel]
+AutogradCPU: registered at /dev/null:212 [autograd kernel]
+AutogradCUDA: registered at /dev/null:212 [autograd kernel]
+AutogradHIP: registered at /dev/null:212 [autograd kernel]
+AutogradXLA: registered at /dev/null:212 [autograd kernel]
+AutogradMPS: registered at /dev/null:212 [autograd kernel]
+AutogradIPU: registered at /dev/null:212 [autograd kernel]
+AutogradXPU: registered at /dev/null:212 [autograd kernel]
+AutogradHPU: registered at /dev/null:212 [autograd kernel]
+AutogradVE: registered at /dev/null:21{"event": "batch", "done": 24, "of": 240, "mem_mb": {"gpu0": 25679, "gpu1": 30059}, "t": 133.9}
+{"event": "batch", "done": 28, "of": 240, "mem_mb": {"gpu0": 27284, "gpu1": 31635}, "t": 164.3}
+{"event": "batch", "done": 32, "of": 240, "mem_mb": {"gpu0": 27284, "gpu1": 31635}, "t": 183.0}
+{"event": "batch", "done": 36, "of": 240, "mem_mb": {"gpu0": 27284, "gpu1": 31635}, "t": 204.2}
+{"event": "batch", "done": 40, "of": 240, "mem_mb": {"gpu0": 27284, "gpu1": 31635}, "t": 222.3}
+{"event": "batch", "done": 44, "of": 240, "mem_mb": {"gpu0": 28798, "gpu1": 33125}, "t": 259.3}
+{"event": "batch", "done": 48, "of": 240, "mem_mb": {"gpu0": 28798, "gpu1": 33125}, "t": 276.2}
+{"event": "batch", "done": 52, "of": 240, "mem_mb": {"gpu0": 28798, "gpu1": 33125}, "t": 300.4}
+{"event": "batch", "done": 56, "of": 240, "mem_mb": {"gpu0": 28798, "gpu1": 33125}, "t": 322.9}
+{"event": "batch", "done": 60, "of": 240, "mem_mb": {"gpu0": 28798, "gpu1": 33125}, "t": 346.3}
+{"event": "batch", "done": 64, "of": 240, "mem_mb": {"gpu0": 28798, "gpu1": 33125}, "t": 372.4}
+{"event": "batch", "done": 68, "of": 240, "mem_mb": {"gpu0": 28798, "gpu1": 33125}, "t": 394.5}
+{"event": "batch", "done": 72, "of": 240, "mem_mb": {"gpu0": 28798, "gpu1": 33125}, "t": 412.7}
+{"event": "batch", "done": 76, "of": 240, "mem_mb": {"gpu0": 28798, "gpu1": 33125}, "t": 435.0}
+{"event": "batch", "done": 80, "of": 240, "mem_mb": {"gpu0": 28798, "gpu1": 33125}, "t": 453.1}
+{"event": "batch", "done": 84, "of": 240, "mem_mb": {"gpu0": 29046, "gpu1": 33368}, "t": 491.3}
+{"event": "batch", "done": 88, "of": 240, "mem_mb": {"gpu0": 29046, "gpu1": 33368}, "t": 516.1}
+{"event": "batch", "done": 92, "of": 240, "mem_mb": {"gpu0": 29046, "gpu1": 33368}, "t": 535.8}
+{"event": "batch", "done": 96, "of": 240, "mem_mb": {"gpu0": 29046, "gpu1": 33368}, "t": 582.1}
+{"event": "batch", "done": 100, "of": 240, "mem_mb": {"gpu0": 29046, "gpu1": 33368}, "t": 606.6}
+{"event": "batch", "done": 104, "of": 240, "mem_mb": {"gpu0": 29046, "gpu1": 33368}, "t": 631.3}
+{"event": "batch", "done": 108, "of": 240, "mem_mb": {"gpu0": 29046, "gpu1": 33368}, "t": 651.9}
+{"event": "batch", "done": 112, "of": 240, "mem_mb": {"gpu0": 29046, "gpu1": 33368}, "t": 671.0}
+{"event": "batch", "done": 116, "of": 240, "mem_mb": {"gpu0": 29046, "gpu1": 33368}, "t": 693.9}
+{"event": "batch", "done": 120, "of": 240, "mem_mb": {"gpu0": 29046, "gpu1": 33368}, "t": 710.7}
+{"event": "batch", "done": 124, "of": 240, "mem_mb": {"gpu0": 29046, "gpu1": 33368}, "t": 732.2}
+{"event": "batch", "done": 128, "of": 240, "mem_mb": {"gpu0": 29046, "gpu1": 33368}, "t": 748.8}
+{"event": "batch", "done": 132, "of": 240, "mem_mb": {"gpu0": 29046, "gpu1": 33368}, "t": 768.8}
+{"event": "batch", "done": 136, "of": 240, "mem_mb": {"gpu0": 29046, "gpu1": 33368}, "t": 785.6}
+{"event": "batch", "done": 140, "of": 240, "mem_mb": {"gpu0": 29046, "gpu1": 33368}, "t": 804.4}
+{"event": "batch", "done": 144, "of": 240, "mem_mb": {"gpu0": 29046, "gpu1": 33368}, "t": 829.0}
+{"event": "batch", "done": 148, "of": 240, "mem_mb": {"gpu0": 29046, "gpu1": 33368}, "t": 853.0}
+{"event": "batch", "done": 152, "of": 240, "mem_mb": {"gpu0": 29046, "gpu1": 33368}, "t": 875.6}
+{"event": "batch", "done": 156, "of": 240, "mem_mb": {"gpu0": 29046, "gpu1": 33368}, "t": 899.6}
+{"event": "batch", "done": 160, "of": 240, "mem_mb": {"gpu0": 29046, "gpu1": 33368}, "t": 922.5}
+{"event": "batch", "done": 164, "of": 240, "mem_mb": {"gpu0": 29046, "gpu1": 33368}, "t": 938.7}
+{"event": "batch", "done": 168, "of": 240, "mem_mb": {"gpu0": 29046, "gpu1": 33368}, "t": 960.0}
+{"event": "batch", "done": 172, "of": 240, "mem_mb": {"gpu0": 29046, "gpu1": 33368}, "t": 979.1}
+{"event": "batch", "done": 176, "of": 240, "mem_mb": {"gpu0": 29150, "gpu1": 33471}, "t": 1021.2}
+{"event": "batch", "done": 180, "of": 240, "mem_mb": {"gpu0": 29150, "gpu1": 33471}, "t": 1047.6}
+{"event": "batch", "done": 184, "of": 240, "mem_mb": {"gpu0": 29150, "gpu1": 33471}, "t": 1065.5}
+{"event": "batch", "done": 188, "of": 240, "mem_mb": {"gpu0": 29150, "gpu1": 33471}, "t": 1091.2}
+{"event": "batch", "done": 192, "of": 240, "mem_mb": {"gpu0": 29150, "gpu1": 33471}, "t": 1117.3}
+{"event": "batch", "done": 196, "of": 240, "mem_mb": {"gpu0": 29150, "gpu1": 33471}, "t": 1139.9}
+{"event": "batch", "done": 200, "of": 240, "mem_mb": {"gpu0": 29150, "gpu1": 33471}, "t": 1164.0}
+{"event": "batch", "done": 204, "of": 240, "mem_mb": {"gpu0": 29150, "gpu1": 33471}, "t": 1186.0}
+{"event": "batch", "done": 208, "of": 240, "mem_mb": {"gpu0": 29150, "gpu1": 33471}, "t": 1204.9}
+{"event": "batch", "done": 212, "of": 240, "mem_mb": {"gpu0": 29150, "gpu1": 33471}, "t": 1225.9}
+{"event": "batch", "done": 216, "of": 240, "mem_mb": {"gpu0": 29150, "gpu1": 33471}, "t": 1242.9}
+{"event": "batch", "done": 220, "of": 240, "mem_mb": {"gpu0": 29150, "gpu1": 33471}, "t": 1266.9}
+{"event": "batch", "done": 224, "of": 240, "mem_mb": {"gpu0": 29150, "gpu1": 33471}, "t": 1286.6}
+{"event": "batch", "done": 228, "of": 240, "mem_mb": {"gpu0": 29150, "gpu1": 33471}, "t": 1308.9}
+{"event": "batch", "done": 232, "of": 240, "mem_mb": {"gpu0": 29150, "gpu1": 33471}, "t": 1325.5}
+{"event": "batch", "done": 236, "of": 240, "mem_mb": {"gpu0": 29150, "gpu1": 33471}, "t": 1345.0}
+{"event": "batch", "done": 240, "of": 240, "mem_mb": {"gpu0": 29150, "gpu1": 33471}, "t": 1364.6}
+{"event": "done", "total_s": 1364.6, "metrics": {"adapter": "adapter_ep1", "data": "test.jsonl", "n": 240, "n_wrong": 61, "n_pass": 179, "auc_pfail": 0.6779, "t05_score": {"det": 0.1967, "fp": 9, "tp": 12, "n_pos": 61, "n_neg": 179}, "gen_verdict": {"det": 0.0, "fp": 0, "tp": 0, "n_pos": 61, "n_neg": 179}, "unparsed": 0, "per_arm": {"z0": {"n": 49, "n_wrong": 12, "det": 0.0833, "fp": 0.0541, "auc": 0.6453}, "z1": {"n": 92, "n_wrong": 28, "det": 0.25, "fp": 0.0312, "auc": 0.7436}, "z2": {"n": 99, "n_wrong": 21, "det": 0.1905, "fp": 0.0641, "auc": 0.6178}}}, "t": 1364.6}
+[transformers] The fast path is not available because one of the required library is not installed. Falling back to torch implementation. To install follow https://github.com/fla-org/flash-linear-attention#installation and https://github.com/Dao-AILab/causal-conv1d
+Loading weights:   0%|                                 | 0/851 [00:00<?, ?it/s]Loading weights:   0%|                         | 1/851 [00:00<06:29,  2.18it/s]Loading weights:   2%|▍                       | 14/851 [00:00<00:26, 31.49it/s]Loading weights:   3%|▋                       | 24/851 [00:00<00:17, 47.16it/s]Loading weights:   4%|▉                       | 32/851 [00:00<00:17, 46.41it/s]Loading weights:   5%|█▏                      | 41/851 [00:00<00:14, 55.26it/s]Loading weights:   6%|█▍                      | 49/851 [00:01<00:17, 44.91it/s]Loading weights:   8%|█▊                      | 64/851 [00:01<00:11, 66.37it/s]Loading weights:   9%|██                      | 73/851 [00:01<00:13, 56.61it/s]Loading weights:  10%|██▎                     | 81/851 [00:01<00:14, 53.34it/s]Loading weights:  11%|██▌                     | 90/851 [00:01<00:12, 59.98it/s]Loading weights:  12%|██▊                     | 98/851 [00:02<00:14, 50.81it/s]Loading weights:  12%|██▊                    | 105/851 [00:02<00:15, 47.03it/s]Loading weights:  14%|███▏                   | 118/851 [00:02<00:11, 61.71it/s]Loading weights:  15%|███▍                   | 126/851 [00:02<00:12, 57.29it/s]Loading weights:  16%|███▌                   | 133/851 [00:02<00:14, 50.60it/s]Loading weights:  17%|███▊                   | 143/851 [00:02<00:11, 59.44it/s]Loading weights:  18%|████                   | 150/851 [00:02<00:12, 54.05it/s]Loading weights:  18%|████▏                  | 156/851 [00:03<00:14, 48.78it/s]Loading weights:  20%|████▌                  | 169/851 [00:03<00:10, 63.04it/s]Loading weights:  21%|████▊                  | 176/851 [00:03<00:11, 57.08it/s]Loading weights:  22%|█████                  | 186/851 [00:03<00:10, 64.90it/s]Loading weights:  23%|█████▏                 | 193/851 [00:03<00:10, 65.33it/s]Loading weights:  24%|█████▍                 | 200/851 [00:03<00:10, 63.18it/s]Loading weights:  24%|█████▌                 | 207/851 [00:04<00:14, 44.03it/s]Loading weights:  26%|██████                 | 222/851 [00:04<00:10, 61.58it/s]Loading weights:  27%|██████▏                | 230/851 [00:04<00:10, 57.73it/s]Loading weights:  28%|██████▍                | 239/851 [00:04<00:09, 63.66it/s]Loading weights:  29%|██████▋                | 247/851 [00:04<00:09, 63.77it/s]Loading weights:  30%|██████▊                | 254/851 [00:04<00:10, 58.32it/s]Loading weights:  31%|███████                | 261/851 [00:04<00:12, 49.07it/s]Loading weights:  32%|███████▍               | 275/851 [00:05<00:08, 67.60it/s]Loading weights:  33%|███████▋               | 283/851 [00:05<00:09, 59.45it/s]Loading weights:  34%|███████▉               | 292/851 [00:05<00:09, 61.93it/s]Loading weights:  35%|████████               | 299/851 [00:05<00:08, 61.60it/s]Loading weights:  36%|████████▎              | 306/851 [00:05<00:09, 59.32it/s]Loading weights:  37%|████████▍              | 313/851 [00:05<00:12, 43.39it/s]Loading weights:  38%|████████▊              | 324/851 [00:05<00:09, 53.98it/s]Loading weights:  39%|████████▉              | 332/851 [00:06<00:09, 56.72it/s]Loading weights:  40%|█████████▏             | 342/851 [00:06<00:07, 64.04it/s]Loading weights:  41%|█████████▍             | 350/851 [00:06<00:09, 53.95it/s]Loading weights:  42%|█████████▋             | 359/851 [00:06<00:08, 56.70it/s]Loading weights:  43%|█████████▉             | 366/851 [00:06<00:11, 43.09it/s]Loading weights:  45%|██████████▎            | 381/851 [00:06<00:07, 62.34it/s]Loading weights:  46%|██████████▌            | 389/851 [00:07<00:07, 59.73it/s]Loading weights:  47%|██████████▊            | 402/851 [00:07<00:06, 74.49it/s]Loading weights:  49%|███████████▏           | 413/851 [00:07<00:05, 74.83it/s]Loading weights:  50%|███████████▍           | 422/851 [00:07<00:06, 63.83it/s]Loading weights:  51%|███████████▋           | 434/851 [00:07<00:05, 70.72it/s]Loading weights:  52%|███████████▉           | 442/851 [00:07<00:06, 67.91it/s]Loading weights:  53%|████████████▏          | 451/851 [00:07<00:05, 70.83it/s]Loading weights:  54%|████████████▍          | 461/851 [00:08<00:05, 68.44it/s]Loading weights:  55%|████████████▋          | 469/851 [00:08<00:05, 66.41it/s]Loading weights:  56%|████████████▊          | 476/851 [00:08<00:06, 62.18it/s]Loading weights:  57%|█████████████▏         | 488/851 [00:08<00:05, 70.90it/s]Loading weights:  59%|█████████████▌         | 500/851 [00:08<00:04, 77.09it/s]Loading weights:  60%|█████████████▋         | 508/851 [00:08<00:04, 69.13it/s]Loading weights:  61%|██████████████         | 519/851 [00:08<00:04, 71.43it/s]Loading weights:  62%|██████████████▏        | 527/851 [00:09<00:05, 61.55it/s]Loading weights:  63%|██████████████▌        | 539/851 [00:09<00:04, 73.77it/s]Loading weights:  64%|██████████████▊        | 547/851 [00:09<00:04, 68.41it/s]Loading weights:  65%|███████████████        | 557/851 [00:09<00:03, 74.25it/s]Loading weights:  66%|███████████████▎       | 565/851 [00:09<00:04, 70.34it/s]Loading weights:  67%|███████████████▍       | 573/851 [00:09<00:04, 66.16it/s]Loading weights:  68%|███████████████▋       | 580/851 [00:09<00:04, 61.47it/s]Loading weights:  70%|████████████████       | 595/851 [00:09<00:03, 78.93it/s]Loading weights:  71%|████████████████▎      | 604/851 [00:10<00:03, 78.26it/s]Loading weights:  72%|████████████████▌      | 612/851 [00:10<00:03, 65.10it/s]Loading weights:  73%|████████████████▊      | 624/851 [00:10<00:02, 77.71it/s]Loading weights:  74%|█████████████████      | 633/851 [00:10<00:03, 65.11it/s]Loading weights:  76%|█████████████████▌     | 648/851 [00:10<00:02, 80.72it/s]Loading weights:  77%|█████████████████▊     | 657/851 [00:10<00:02, 77.21it/s]Loading weights:  78%|██████████████████     | 666/851 [00:10<00:02, 69.87it/s]Loading weights:  80%|██████████████████▎    | 678/851 [00:11<00:02, 74.98it/s]Loading weights:  81%|██████████████████▌    | 686/851 [00:11<00:02, 65.29it/s]Loading weights:  82%|██████████████████▉    | 699/851 [00:11<00:01, 79.52it/s]Loading weights:  83%|███████████████████▏   | 708/851 [00:11<00:01, 74.15it/s]Loading weights:  84%|███████████████████▍   | 717/851 [00:11<00:01, 70.59it/s]Loading weights:  85%|███████████████████▌   | 726/851 [00:11<00:01, 73.04it/s]Loading weights:  86%|███████████████████▊   | 734/851 [00:11<00:01, 71.57it/s]Loading weights:  87%|████████████████████   | 742/851 [00:12<00:01, 68.88it/s]Loading weights:  88%|████████████████████▎  | 753/851 [00:12<00:01, 73.89it/s]Loading weights:  90%|████████████████████▋  | 765/851 [00:12<00:01, 75.68it/s]Loading weights:  91%|████████████████████▉  | 773/851 [00:12<00:01, 69.47it/s]Loading weights:  92%|█████████████████████▏ | 784/851 [00:12<00:00, 71.58it/s]Loading weights:  93%|█████████████████████▍ | 792/851 [00:12<00:00, 59.60it/s]Loading weights:  95%|█████████████████████▊ | 805/851 [00:12<00:00, 71.48it/s]Loading weights:  96%|█████████████████████▉ | 813/851 [00:13<00:00, 61.30it/s]Loading weights:  97%|██████████████████████▏| 822/851 [00:13<00:00, 66.87it/s]Loading weights:  98%|██████████████████████▍| 832/851 [00:13<00:00, 70.52it/s]Loading weights:  99%|██████████████████████▋| 840/851 [00:13<00:00, 61.74it/s]Loading weights: 100%|██████████████████████▉| 847/851 [00:13<00:00, 53.84it/s]Loading weights: 100%|███████████████████████| 851/851 [00:13<00:00, 61.99it/s]
+{"event": "model_loaded", "seconds": 20.5, "attn": "flash_attention_2", "adapter": "adapter_ep1", "mem_mb": {"gpu0": 24138, "gpu1": 28070}, "t": 21.5}
+{"event": "data_ready", "n": 316, "data": "train_eval.jsonl", "t": 21.5}
+{"event": "batch", "done": 4, "of": 316, "t": 36.1}
+{"event": "batch", "done": 8, "of": 316, "t": 50.0}
+{"event": "batch", "done": 12, "of": 316, "t": 64.0}
+{"event": "batch", "done": 16, "of": 316, "t": 77.4}
+{"event": "batch", "done": 20, "of": 316, "t": 90.8}
+{"event": "batch", "done": 24, "of": 316, "t": 104.9}
+{"event": "batch", "done": 28, "of": 316, "t": 117.9}
+{"event": "batch", "done": 32, "of": 316, "t": 131.7}
+{"event": "batch", "done": 36, "of": 316, "t": 145.3}
+{"event": "batch", "done": 40, "of": 316, "t": 160.1}
+{"event": "batch", "done": 44, "of": 316, "t": 174.2}
+{"event": "batch", "done": 48, "of": 316, "t": 189.4}
+{"event": "batch", "done": 52, "of": 316, "t": 203.7}
+{"event": "batch", "done": 56, "of": 316, "t": 217.9}
+{"event": "batch", "done": 60, "of": 316, "t": 230.8}
+{"event": "batch", "done": 64, "of": 316, "t": 244.7}
+{"event": "batch", "done": 68, "of": 316, "t": 259.1}
+{"event": "batch", "done": 72, "of": 316, "t": 270.4}
+{"event": "batch", "done": 76, "of": 316, "t": 282.4}
+{"event": "batch", "done": 80, "of": 316, "t": 294.3}
+{"event": "batch", "done": 84, "of": 316, "t": 308.9}
+{"event": "batch", "done": 88, "of": 316, "t": 322.7}
+{"event": "batch", "done": 92, "of": 316, "t": 336.9}
+{"event": "batch", "done": 96, "of": 316, "t": 350.1}
+{"event": "batch", "done": 100, "of": 316, "t": 364.2}
+{"event": "batch", "done": 104, "of": 316, "t": 379.2}
+{"event": "batch", "done": 108, "of": 316, "t": 392.8}
+{"event": "batch", "done": 112, "of": 316, "t": 406.8}
+{"event": "batch", "done": 116, "of": 316, "t": 419.9}
+{"event": "batch", "done": 120, "of": 316, "t": 434.0}
+{"event": "batch", "done": 124, "of": 316, "t": 446.7}
+{"event": "batch", "done": 128, "of": 316, "t": 460.2}
+{"event": "batch", "done": 132, "of": 316, "t": 474.9}
+{"event": "batch", "done": 136, "of": 316, "t": 488.9}
+{"event": "batch", "done": 140, "of": 316, "t": 502.8}
+{"event": "batch", "done": 144, "of": 316, "t": 517.0}
+{"event": "batch", "done": 148, "of": 316, "t": 531.0}
+{"event": "batch", "done": 152, "of": 316, "t": 545.6}
+{"event": "batch", "done": 156, "of": 316, "t": 560.1}
+{"event": "batch", "done": 160, "of": 316, "t": 574.9}
+{"event": "batch", "done": 164, "of": 316, "t": 588.8}
+{"event": "batch", "done": 168, "of": 316, "t": 603.1}
+{"event": "batch", "done": 172, "of": 316, "t": 617.4}
+{"event": "batch", "done": 176, "of": 316, "t": 631.0}
+{"event": "batch", "done": 180, "of": 316, "t": 644.9}
+{"event": "batch", "done": 184, "of": 316, "t": 658.6}
+{"event": "batch", "done": 188, "of": 316, "t": 672.8}
+{"event": "batch", "done": 192, "of": 316, "t": 686.5}
+{"event": "batch", "done": 196, "of": 316, "t": 700.8}
+{"event": "batch", "done": 200, "of": 316, "t": 714.4}
+{"event": "batch", "done": 204, "of": 316, "t": 728.5}
+{"event": "batch", "done": 208, "of": 316, "t": 742.2}
+{"event": "batch", "done": 212, "of": 316, "t": 756.0}
+{"event": "batch", "done": 216, "of": 316, "t": 770.1}
+{"event": "batch", "done": 220, "of": 316, "t": 784.7}
+{"event": "batch", "done": 224, "of": 316, "t": 798.7}
+{"event": "batch", "done": 228, "of": 316, "t": 812.3}
+{"event": "batch", "done": 232, "of": 316, "t": 826.5}
+{"event": "batch", "done": 236, "of": 316, "t": 840.3}
+{"event": "batch", "done": 240, "of": 316, "t": 855.1}
+{"event": "batch", "done": 244, "of": 316, "t": 869.1}
+{"event": "batch", "done": 248, "of": 316, "t": 882.9}
+{"event": "batch", "done": 252, "of": 316, "t": 897.7}
+{"event": "batch", "done": 256, "of": 316, "t": 911.4}
+{"event": "batch", "done": 260, "of": 316, "t": 925.9}
+{"event": "batch", "done": 264, "of": 316, "t": 940.8}
+{"event": "batch", "done": 268, "of": 316, "t": 955.1}
+{"event": "batch", "done": 272, "of": 316, "t": 969.1}
+{"event": "batch", "done": 276, "of": 316, "t": 982.4}
+{"event": "batch", "done": 280, "of": 316, "t": 997.2}
+{"event": "batch", "done": 284, "of": 316, "t": 1010.9}
+{"event": "batch", "done": 288, "of": 316, "t": 1025.0}
+{"event": "batch", "done": 292, "of": 316, "t": 1039.3}
+{"event": "batch", "done": 296, "of": 316, "t": 1053.1}
+{"event": "batch", "done": 300, "of": 316, "t": 1067.3}
+{"event": "batch", "done": 304, "of": 316, "t": 1081.2}
+{"event": "batch", "done": 308, "of": 316, "t": 1095.8}
+{"event": "batch", "done": 312, "of": 316, "t": 1109.8}
+{"event": "batch", "done": 316, "of": 316, "t": 1124.1}
+{"event": "done", "total_s": 1124.1, "metrics": {"adapter": "adapter_ep1", "data": "train_eval.jsonl", "n": 316, "n_wrong": 240, "n_pass": 76, "auc_pfail": 0.5693, "t05_score": {"det": 0.1458, "fp": 5, "tp": 35, "n_pos": 240, "n_neg": 76}, "gen_verdict": {"det": 0.0, "fp": 0, "tp": 0, "n_pos": 240, "n_neg": 76}, "unparsed": 316, "per_arm": {"retailopt": {"n": 316, "n_wrong": 240, "det": 0.1458, "fp": 0.0658, "auc": 0.5693}}}, "t": 1124.1}

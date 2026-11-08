@@ -1,0 +1,2 @@
+1
+{"event": "step", "step": 192, "epoch": 0, "loss": 0.0424, "loss_ma10": 0.2031, "step_s": 27.09, "ltk": true, "t": 5410.2}

@@ -1,0 +1,20 @@
+{
+ "snap": "/dfs/data/hewj13/.cache/huggingface/hub/models--Qwen--Qwen3.8-27B/snapshots/1d4bf0f2ff6012fd82039f2fa52739d0dd7c60c0/",
+ "has_chat_template": true,
+ "prompt_text": "<|im_start|>system\nReasoning effort is set to xhigh. Please think carefully through the task, validate key assumptions, consider plausible alternatives, and prioritize correctness, consistency, and clarity in the final answer.\n\nS<|im_end|>\n<|im_start|>user\nU<|im_end|>\n<|im_start|>assistant\n<think>\n",
+ "full_text": "<|im_start|>system\nReasoning effort is set to xhigh. Please think carefully through the task, validate key assumptions, consider plausible alternatives, and prioritize correctness, consistency, and clarity in the final answer.\n\nS<|im_end|>\n<|im_start|>user\nU<|im_end|>\n<|im_start|>assistant\n<think>\n\n</think>\n\nA<|im_end|>\n",
+ "eos": "<|im_end|>",
+ "id_fail": [
+  17854
+ ],
+ "id_pass": [
+  6184
+ ],
+ "id_verdict_prefix": [
+  4754,
+  415,
+  8217,
+  763,
+  328
+ ]
+}

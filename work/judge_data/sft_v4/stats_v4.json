@@ -1,0 +1,21 @@
+{
+ "traces": 762,
+ "train": 946,
+ "eval": 98,
+ "train_by_stage": {
+  "planner": 473,
+  "decider": 473
+ },
+ "train_by_label": {
+  "false": 436,
+  "true": 510
+ },
+ "eval_by_stage": {
+  "planner": 49,
+  "decider": 49
+ },
+ "skipped": {
+  "verdict_mismatch": 240
+ },
+ "verdict_acc_on_harvest": 0.685
+}

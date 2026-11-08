@@ -1,0 +1,5 @@
+Wed Nov  4 22:52:53 CST 2026
+1
+ls: cannot access '/dfs/data/hewj13/j1_judge/adapter_ep1/': No such file or directory
+{"event": "step", "step": 296, "epoch": 0, "loss": 0.2122, "loss_ma10": 0.2927, "step_s": 28.4, "ltk": true, "t": 8276.0}
+{"event": "step", "step": 297, "epoch": 0, "loss": 0.2269, "loss_ma10": 0.2877, "step_s": 27.71, "ltk": true, "t": 8303.7}

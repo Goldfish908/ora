@@ -29,6 +29,10 @@ ROOT = Path(__file__).resolve().parent.parent
 HARVEST = ROOT / "work" / "judge_data" / "harvest_v4.jsonl"
 OUT_DIR = ROOT / "work" / "judge_data" / "sft_v4"
 
+import sys
+sys.path.insert(0, str(ROOT))
+from scripts.p10_active_judge import DECIDER_TEMPLATE  # noqa: E402
+
 
 def verdict_correct(r) -> bool:
     v = r.get("verdict")
@@ -70,8 +74,14 @@ def main() -> None:
                          "target": f"```python\n{r['script']}\n```", **base})
         else:
             skipped["planner_reject"] += 1
-        if decider_ok(r) and r.get("decider_user"):
-            sink.append({"key": f"decider|{r['key']}", "user": r["decider_user"],
+        if decider_ok(r) and r.get("script"):
+            # rebuild decider input with bounded script/output echo: the saved
+            # decider_user can reach 44K chars (~12K tokens); the verdict lands
+            # at the END of the target, so prompt overflow would truncate it.
+            dec_user = DECIDER_TEMPLATE.format(
+                context=r["user"], script=r["script"][:8000],
+                output=(r["check_output"] or "")[:2500])
+            sink.append({"key": f"decider|{r['key']}", "user": dec_user,
                          "target": r["decider_full"], **base})
         else:
             skipped["decider_reject"] += 1

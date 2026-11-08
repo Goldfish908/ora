@@ -95,3 +95,31 @@ IndustryOR 是从未参与任何提示词迭代的终验集合(240 细胞:61 错
 
 脚本:`scripts/p13_active_judge_ior2.py`(插桩)、`scripts/p12_compare_judges_ior.py`(对照)。
 数据:`work/judge_data/active_ior2.jsonl`、`work/judge_data/ior_sandbox/`(逐细胞导出的变量级解)。
+
+## 7. 判官 v4:把"检查构造"参数化(蒸馏管线)
+
+IndustryOR 终验表明:主动架构的瓶颈在**检查规划**(面对新域不知该查什么),
+而规划能力来自 F5-F8 上的提示词迭代——这不可迁移。v4 的对策:把迭代
+获得的程序性技能蒸馏进参数。
+
+**数据管线**(scripts/p14, p15):
+- 在 F1-F4 工厂细胞(judge_v2.jsonl, 762 条,v3 同分布)上用 v4 版提示词
+  重跑主动判官,保存**完整轨迹**(规划器提示词/输出、检查脚本、沙箱输出、
+  判决器全文)。
+- 拒绝采样:只保留最终判决与 witness 标签一致的细胞;每个合格细胞产出
+  两类样本——planner(题面→检查脚本)与 decider(上下文+脚本+执行结果→
+  分类推理+VERDICT)。
+- 卫生:只用 F1-F4(训练分布);F5-F8 与 IndustryOR 保持零接触,留作终验。
+
+**训练**(work/j1_judge/remote/train_j1_v4.py):Qwen3.8-27B + LoRA r16,
+相对 v3 训练器两处改动:①去掉判决 token 加权(v4 技能分布在长目标上);
+②去掉 AUC 早停(检查点选择走生成式评测)。
+
+**评测**:远端 eval_v4.py / eval_v4_ior.py 在 GPU workspace 上跑完整
+"规划→沙箱→判决"三环(HF 生成代替 API),F5-F8 48 细胞与 IndustryOR 237
+细胞制品已就位。
+
+**中期质量信号**(前 140 细胞):零错误;沙箱修复轮 5%;判决准确率 70.7%;
+按变异类型 phantom_inventory 91% / drop_constraint 77% / wrong_constant 48%
+(错常数最弱——需要逐项数字对账,v4.1 可考虑对该类过采样)。
+种子样本质量人工抽检合格:检查带具体违例数字,判决推理引用题面条文。

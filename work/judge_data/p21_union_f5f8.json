@@ -1,0 +1,482 @@
+[
+ {
+  "key": "retail_f5_impossible_demand_v0|real_traj||correct",
+  "wrong": false,
+  "judge_flag": false,
+  "audit_flag": false,
+  "near_miss": [],
+  "factors": [],
+  "code_chars": 4012,
+  "has_data": true
+ },
+ {
+  "key": "retail_f5_storage_overflow_v0|real_traj||wrong",
+  "wrong": true,
+  "judge_flag": true,
+  "audit_flag": false,
+  "near_miss": [],
+  "factors": [],
+  "code_chars": 3998,
+  "has_data": true
+ },
+ {
+  "key": "retail_f5_strict_service_trap_v0|real_traj||wrong",
+  "wrong": true,
+  "judge_flag": false,
+  "audit_flag": false,
+  "near_miss": [],
+  "factors": [],
+  "code_chars": 4006,
+  "has_data": true
+ },
+ {
+  "key": "retail_f5_ultimate_stress_v0|real_traj||correct",
+  "wrong": false,
+  "judge_flag": false,
+  "audit_flag": false,
+  "near_miss": [],
+  "factors": [],
+  "code_chars": 4012,
+  "has_data": true
+ },
+ {
+  "key": "retail_f7_multiechelon_chain_v0|real_traj||wrong",
+  "wrong": true,
+  "judge_flag": true,
+  "audit_flag": false,
+  "near_miss": [],
+  "factors": [],
+  "code_chars": 3997,
+  "has_data": true
+ },
+ {
+  "key": "retail_f7_transshipment_v0|real_traj||wrong",
+  "wrong": true,
+  "judge_flag": false,
+  "audit_flag": false,
+  "near_miss": [],
+  "factors": [],
+  "code_chars": 4012,
+  "has_data": true
+ },
+ {
+  "key": "retail_f8_labor_constraint_v0|real_traj||correct",
+  "wrong": false,
+  "judge_flag": false,
+  "audit_flag": false,
+  "near_miss": [],
+  "factors": [],
+  "code_chars": 4002,
+  "has_data": true
+ },
+ {
+  "key": "retail_f8_ship_from_store_v0|real_traj||wrong",
+  "wrong": true,
+  "judge_flag": false,
+  "audit_flag": false,
+  "near_miss": [],
+  "factors": [],
+  "code_chars": 4012,
+  "has_data": true
+ },
+ {
+  "key": "retail_f8_sustainability_v0|real_traj||wrong",
+  "wrong": true,
+  "judge_flag": false,
+  "audit_flag": false,
+  "near_miss": [],
+  "factors": [],
+  "code_chars": 4012,
+  "has_data": true
+ },
+ {
+  "key": "retail_f5_impossible_demand_v1|real_traj||wrong",
+  "wrong": true,
+  "judge_flag": false,
+  "audit_flag": false,
+  "near_miss": [],
+  "factors": [],
+  "code_chars": 4012,
+  "has_data": true
+ },
+ {
+  "key": "retail_f5_storage_overflow_v1|real_traj||correct",
+  "wrong": false,
+  "judge_flag": false,
+  "audit_flag": false,
+  "near_miss": [],
+  "factors": [],
+  "code_chars": 4012,
+  "has_data": true
+ },
+ {
+  "key": "retail_f6_lead_time_v1|real_traj||correct",
+  "wrong": false,
+  "judge_flag": false,
+  "audit_flag": false,
+  "near_miss": [],
+  "factors": [],
+  "code_chars": 4006,
+  "has_data": true
+ },
+ {
+  "key": "retail_f6_moq_binary_v1|real_traj||wrong",
+  "wrong": true,
+  "judge_flag": false,
+  "audit_flag": false,
+  "near_miss": [],
+  "factors": [],
+  "code_chars": 4012,
+  "has_data": true
+ },
+ {
+  "key": "retail_f7_budget_limit_v1|real_traj||wrong",
+  "wrong": true,
+  "judge_flag": true,
+  "audit_flag": false,
+  "near_miss": [],
+  "factors": [],
+  "code_chars": 3991,
+  "has_data": true
+ },
+ {
+  "key": "retail_f7_hub_and_spoke_v1|real_traj||wrong",
+  "wrong": true,
+  "judge_flag": true,
+  "audit_flag": false,
+  "near_miss": [],
+  "factors": [],
+  "code_chars": 4008,
+  "has_data": true
+ },
+ {
+  "key": "retail_f7_ring_routing_v1|real_traj||correct",
+  "wrong": false,
+  "judge_flag": false,
+  "audit_flag": false,
+  "near_miss": [],
+  "factors": [],
+  "code_chars": 4003,
+  "has_data": true
+ },
+ {
+  "key": "retail_f8_ship_from_store_v1|real_traj||wrong",
+  "wrong": true,
+  "judge_flag": false,
+  "audit_flag": false,
+  "near_miss": [],
+  "factors": [],
+  "code_chars": 4012,
+  "has_data": true
+ },
+ {
+  "key": "retail_f8_sustainability_v1|real_traj||wrong",
+  "wrong": true,
+  "judge_flag": true,
+  "audit_flag": false,
+  "near_miss": [],
+  "factors": [],
+  "code_chars": 4012,
+  "has_data": true
+ },
+ {
+  "key": "retail_f5_impossible_demand_v2|real_traj||wrong",
+  "wrong": true,
+  "judge_flag": false,
+  "audit_flag": false,
+  "near_miss": [],
+  "factors": [],
+  "code_chars": 4012,
+  "has_data": true
+ },
+ {
+  "key": "retail_f5_storage_overflow_v2|real_traj||wrong",
+  "wrong": true,
+  "judge_flag": true,
+  "audit_flag": false,
+  "near_miss": [],
+  "factors": [],
+  "code_chars": 4012,
+  "has_data": true
+ },
+ {
+  "key": "retail_f5_strict_service_trap_v2|real_traj||correct",
+  "wrong": false,
+  "judge_flag": false,
+  "audit_flag": false,
+  "near_miss": [],
+  "factors": [],
+  "code_chars": 4012,
+  "has_data": true
+ },
+ {
+  "key": "retail_f7_hub_and_spoke_v2|real_traj||correct",
+  "wrong": false,
+  "judge_flag": false,
+  "audit_flag": false,
+  "near_miss": [],
+  "factors": [],
+  "code_chars": 4012,
+  "has_data": true
+ },
+ {
+  "key": "retail_f7_multi_sourcing_v2|real_traj||wrong",
+  "wrong": true,
+  "judge_flag": true,
+  "audit_flag": false,
+  "near_miss": [],
+  "factors": [],
+  "code_chars": 4008,
+  "has_data": true
+ },
+ {
+  "key": "retail_f7_multiechelon_chain_v2|real_traj||wrong",
+  "wrong": true,
+  "judge_flag": true,
+  "audit_flag": false,
+  "near_miss": [],
+  "factors": [],
+  "code_chars": 4011,
+  "has_data": true
+ },
+ {
+  "key": "retail_f7_transshipment_v2|real_traj||wrong",
+  "wrong": true,
+  "judge_flag": true,
+  "audit_flag": false,
+  "near_miss": [],
+  "factors": [],
+  "code_chars": 4011,
+  "has_data": true
+ },
+ {
+  "key": "retail_f8_labor_constraint_v2|real_traj||wrong",
+  "wrong": true,
+  "judge_flag": false,
+  "audit_flag": false,
+  "near_miss": [],
+  "factors": [],
+  "code_chars": 4011,
+  "has_data": true
+ },
+ {
+  "key": "retail_f8_reverse_logistics_v2|real_traj||wrong",
+  "wrong": true,
+  "judge_flag": false,
+  "audit_flag": false,
+  "near_miss": [],
+  "factors": [],
+  "code_chars": 4011,
+  "has_data": true
+ },
+ {
+  "key": "retail_f8_ship_from_store_v2|real_traj||wrong",
+  "wrong": true,
+  "judge_flag": false,
+  "audit_flag": false,
+  "near_miss": [],
+  "factors": [],
+  "code_chars": 4011,
+  "has_data": true
+ },
+ {
+  "key": "retail_f5_storage_overflow_v3|real_traj||correct",
+  "wrong": false,
+  "judge_flag": true,
+  "audit_flag": false,
+  "near_miss": [],
+  "factors": [],
+  "code_chars": 4012,
+  "has_data": true
+ },
+ {
+  "key": "retail_f5_strict_service_trap_v3|real_traj||wrong",
+  "wrong": true,
+  "judge_flag": false,
+  "audit_flag": false,
+  "near_miss": [],
+  "factors": [],
+  "code_chars": 4012,
+  "has_data": true
+ },
+ {
+  "key": "retail_f7_hub_and_spoke_v3|real_traj||wrong",
+  "wrong": true,
+  "judge_flag": false,
+  "audit_flag": false,
+  "near_miss": [],
+  "factors": [],
+  "code_chars": 4012,
+  "has_data": true
+ },
+ {
+  "key": "retail_f7_multi_sourcing_v3|real_traj||wrong",
+  "wrong": true,
+  "judge_flag": true,
+  "audit_flag": false,
+  "near_miss": [],
+  "factors": [],
+  "code_chars": 4010,
+  "has_data": true
+ },
+ {
+  "key": "retail_f7_multiechelon_chain_v3|real_traj||wrong",
+  "wrong": true,
+  "judge_flag": false,
+  "audit_flag": false,
+  "near_miss": [],
+  "factors": [],
+  "code_chars": 4009,
+  "has_data": true
+ },
+ {
+  "key": "retail_f7_ring_routing_v3|real_traj||wrong",
+  "wrong": true,
+  "judge_flag": true,
+  "audit_flag": false,
+  "near_miss": [],
+  "factors": [],
+  "code_chars": 4012,
+  "has_data": true
+ },
+ {
+  "key": "retail_f8_labor_constraint_v3|real_traj||correct",
+  "wrong": false,
+  "judge_flag": false,
+  "audit_flag": false,
+  "near_miss": [],
+  "factors": [],
+  "code_chars": 4012,
+  "has_data": true
+ },
+ {
+  "key": "retail_f8_reverse_logistics_v3|real_traj||wrong",
+  "wrong": true,
+  "judge_flag": true,
+  "audit_flag": false,
+  "near_miss": [],
+  "factors": [],
+  "code_chars": 4012,
+  "has_data": true
+ },
+ {
+  "key": "retail_f8_ship_from_store_v3|real_traj||wrong",
+  "wrong": true,
+  "judge_flag": true,
+  "audit_flag": false,
+  "near_miss": [],
+  "factors": [],
+  "code_chars": 4012,
+  "has_data": true
+ },
+ {
+  "key": "retail_f8_sustainability_v3|real_traj||correct",
+  "wrong": false,
+  "judge_flag": false,
+  "audit_flag": false,
+  "near_miss": [],
+  "factors": [],
+  "code_chars": 4012,
+  "has_data": true
+ },
+ {
+  "key": "retail_f5_impossible_demand_v4|real_traj||wrong",
+  "wrong": true,
+  "judge_flag": false,
+  "audit_flag": false,
+  "near_miss": [],
+  "factors": [],
+  "code_chars": 4012,
+  "has_data": true
+ },
+ {
+  "key": "retail_f5_storage_overflow_v4|real_traj||correct",
+  "wrong": false,
+  "judge_flag": false,
+  "audit_flag": false,
+  "near_miss": [],
+  "factors": [],
+  "code_chars": 4010,
+  "has_data": true
+ },
+ {
+  "key": "retail_f5_strict_service_trap_v4|real_traj||wrong",
+  "wrong": true,
+  "judge_flag": false,
+  "audit_flag": false,
+  "near_miss": [],
+  "factors": [],
+  "code_chars": 4012,
+  "has_data": true
+ },
+ {
+  "key": "retail_f7_hub_and_spoke_v4|real_traj||correct",
+  "wrong": false,
+  "judge_flag": false,
+  "audit_flag": false,
+  "near_miss": [],
+  "factors": [],
+  "code_chars": 4012,
+  "has_data": true
+ },
+ {
+  "key": "retail_f7_multi_sourcing_v4|real_traj||wrong",
+  "wrong": true,
+  "judge_flag": true,
+  "audit_flag": false,
+  "near_miss": [],
+  "factors": [],
+  "code_chars": 4012,
+  "has_data": true
+ },
+ {
+  "key": "retail_f7_ring_routing_v4|real_traj||wrong",
+  "wrong": true,
+  "judge_flag": false,
+  "audit_flag": false,
+  "near_miss": [],
+  "factors": [],
+  "code_chars": 4012,
+  "has_data": true
+ },
+ {
+  "key": "retail_f7_transshipment_v4|real_traj||wrong",
+  "wrong": true,
+  "judge_flag": true,
+  "audit_flag": false,
+  "near_miss": [],
+  "factors": [],
+  "code_chars": 4012,
+  "has_data": true
+ },
+ {
+  "key": "retail_f8_labor_constraint_v4|real_traj||wrong",
+  "wrong": true,
+  "judge_flag": false,
+  "audit_flag": false,
+  "near_miss": [],
+  "factors": [],
+  "code_chars": 4004,
+  "has_data": true
+ },
+ {
+  "key": "retail_f8_reverse_logistics_v4|real_traj||wrong",
+  "wrong": true,
+  "judge_flag": false,
+  "audit_flag": false,
+  "near_miss": [],
+  "factors": [],
+  "code_chars": 3998,
+  "has_data": true
+ },
+ {
+  "key": "retail_f8_ship_from_store_v4|real_traj||correct",
+  "wrong": false,
+  "judge_flag": false,
+  "audit_flag": false,
+  "near_miss": [],
+  "factors": [],
+  "code_chars": 4012,
+  "has_data": true
+ }
+]

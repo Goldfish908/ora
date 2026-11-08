@@ -90,6 +90,15 @@ def main() -> None:
                          "(default runs/m1_pilot); round-1 offline gate "
                          "verdicts are only reused for the default dir")
     ap.add_argument("--pilot-glob", default="m1_pilot_schema_sol*.jsonl")
+    ap.add_argument("--guard-rules", default=None,
+                    help="comma whitelist of guard rule ids applied after "
+                         "guard_source (e.g. G0,G1,...,G8 replicates guard "
+                         "v0.3); default = all rules in guard_check")
+    ap.add_argument("--r1-checks", default=None,
+                    help="code_checks.jsonl path supplying round-1 gate "
+                         "verdicts; also enables verdict reuse with a custom "
+                         "--pilot-dir (e.g. verdicts computed over the P3 "
+                         "pilot code)")
     args = ap.parse_args()
 
     ds_rows = {json.loads(l)["scenario_id"]: json.loads(l)
@@ -102,7 +111,7 @@ def main() -> None:
             ledgers[r["scenario_id"]] = r["ledger"]
 
     r1_checks = {}
-    cc = PSV_DIR / "code_checks.jsonl"
+    cc = Path(args.r1_checks) if args.r1_checks else PSV_DIR / "code_checks.jsonl"
     if cc.exists():
         for line in open(cc):
             r = json.loads(line)
@@ -140,6 +149,8 @@ def main() -> None:
     cfg = llm_mod.load_config()
     conventions = (Path(args.conventions_file).read_text().strip()
                    if args.conventions_file else None)
+    guard_rules = (set(args.guard_rules.split(","))
+                   if args.guard_rules else None)
     with out_path.open("a", encoding="utf-8") as fp:
         for sid, mode in cells:
             row = ds_rows[sid]
@@ -154,7 +165,7 @@ def main() -> None:
             # for the default pilot (verdicts refer to that code, not to a
             # re-generated pilot like P2)
             prev_gate_bad = None
-            if (pilot_dir == PILOT_DIR
+            if ((pilot_dir == PILOT_DIR or args.r1_checks)
                     and (sid, mode) in r1_checks and (sid, mode) not in last_rec):
                 b, bad = blocked(r1_checks[(sid, mode)])
                 prev_gate_bad = bad if b else None
@@ -223,6 +234,8 @@ def main() -> None:
                 guard_turns = 0
                 while True:
                     hits = guard_source(SCHEMA_PRELUDE + code)
+                    if guard_rules is not None:
+                        hits = [h for h in hits if h["rule"] in guard_rules]
                     if not hits:
                         break
                     rec.setdefault("guard_checks", []).append(

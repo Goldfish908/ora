@@ -159,6 +159,68 @@ def cmd_status() -> None:
               f"fixed={len(s['fixed'])} broken={len(s['broken_wins'])}")
 
 
+# ---------- counterfactual replay (LLM + sandbox cost) ----------
+
+def write_replay_inputs(unit: dict, base_conventions: Path | None,
+                        target_cells: list[str], win_cells: list[str],
+                        tag: str) -> dict:
+    """Compose the conventions file (base + candidate unit) and the
+    per-variant scenario lists; returns paths for the pilot shards."""
+    rd = EVO_DIR / f"replay_{unit['unit_id']}_{tag}"
+    rd.mkdir(parents=True, exist_ok=True)
+    conv = ""
+    if base_conventions:
+        conv = base_conventions.read_text().strip() + "\n\n"
+    conv += f"# candidate unit {unit['unit_id']} (trigger: {unit['trigger']})\n"
+    conv += unit["text"].strip() + "\n"
+    (rd / "conventions.txt").write_text(conv)
+    by_variant = defaultdict(list)
+    for sid in target_cells + win_cells:
+        by_variant[sid.rsplit("_", 1)[-1]].append(sid)
+    for v, sids in by_variant.items():
+        (rd / f"cells_{v}.txt").write_text("\n".join(sorted(sids)) + "\n")
+    (rd / "replay_meta.json").write_text(json.dumps(
+        {"unit_id": unit["unit_id"], "target_cells": target_cells,
+         "win_cells": win_cells}, ensure_ascii=False, indent=1))
+    return {"dir": str(rd), "variants": sorted(by_variant)}
+
+
+def replay_cmd(unit: dict, base_conventions: Path | None,
+               target_cells: list[str], win_cells: list[str],
+               tag: str) -> list[str]:
+    """Shell commands (one per variant shard) for counterfactual replay:
+    generation with base+candidate conventions on exactly the targeted
+    failing cells (fix test) and a sample of passing cells (win-FP test)."""
+    info = write_replay_inputs(unit, base_conventions, target_cells,
+                               win_cells, tag)
+    rd = Path(info["dir"])
+    cmds = []
+    for v in info["variants"]:
+        cmds.append(
+            f"python3 scripts/m1_pilot.py --variant {v} --modes on "
+            f"--prompt-mode schema_sol "
+            f"--scenarios-file {rd}/cells_{v}.txt "
+            f"--conventions-file {rd}/conventions.txt "
+            f"--out-dir {rd} --out-tag _{v}")
+    return cmds
+
+
+def cmd_replay(unit_id: str, base: str | None, tag: str,
+               n_wins: int = 10) -> None:
+    reg = {u["unit_id"]: u for u in load_registry()}
+    unit = reg[unit_id]
+    cl = json.loads(CLUSTERS.read_text())
+    target = cl["clusters"][unit["origin"]["cluster_id"]]
+    # win cells: passing cells from the same run's final states
+    # (caller supplies the run via clusters meta; here: sample from dev slice)
+    wins = unit["origin"].get("win_cells", [])[:n_wins]
+    cmds = replay_cmd(unit, Path(base) if base else None, target, wins, tag)
+    print(f"# {len(cmds)} shard commands (run with LLM env sourced):")
+    for c in cmds:
+        print(c + " &")
+    print("wait")
+
+
 def main() -> None:
     ap = argparse.ArgumentParser()
     sub = ap.add_subparsers(dest="cmd", required=True)
@@ -172,6 +234,11 @@ def main() -> None:
     r.add_argument("--trigger", default="")
     r.add_argument("--cluster", default="")
     sub.add_parser("status")
+    rp = sub.add_parser("replay")
+    rp.add_argument("--unit", required=True)
+    rp.add_argument("--base", default=None,
+                    help="base conventions file the candidate is appended to")
+    rp.add_argument("--tag", default="r1")
     args = ap.parse_args()
 
     if args.cmd == "cluster":
@@ -180,6 +247,8 @@ def main() -> None:
         u = register_unit(args.asset, args.text, args.trigger,
                           {"cluster_id": args.cluster})
         print(f"registered {u['unit_id']}")
+    elif args.cmd == "replay":
+        cmd_replay(args.unit, args.base, args.tag)
     elif args.cmd == "status":
         cmd_status()
 

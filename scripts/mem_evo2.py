@@ -12,6 +12,12 @@ Lifecycle per unit: candidate -> dev-passed -> promoted | rejected | retired
 Promotion discipline (inherited from crash-guard mining):
   - counterfactual replay: fix >= MIN_FIX of targeted failing cells
   - win-FP = 0: zero previously-passing cells broken
+  - MULTI-SAMPLE (learned gen1, 2026-11-09): single-sample replay is
+    dominated by resampling noise — marginally-passing cells flip ~75%
+    of the time under a FRESH SAMPLE OF THE SAME conventions (6/8 wins
+    flipped in gen1's v0.3 control). Replay must run n_seeds >= 3 per
+    cell per arm, treatment AND control (base conventions), and compare
+    per-cell mean pass rates, not single draws.
   - two-tier: dev40 pass -> gapcheck60 confirm -> promote
   - F5-F8 / IndustryOR NEVER participate in evolution (final eval only)
 

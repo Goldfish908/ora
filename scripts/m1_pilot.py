@@ -127,13 +127,33 @@ SCHEMA_PRELUDE = ("import json\n"
 
 def extract_code(text: str) -> str:
     """The prompt demands raw code; tolerate fenced blocks anyway, including
-    an opening fence whose closing fence was cut off by max_tokens."""
+    an opening fence whose closing fence was cut off by max_tokens.
+    Fallback for models that emit prose + bare code without fences (e.g.
+    pearl-4b): locate the first import/from line, then trim trailing prose
+    until the remainder parses."""
     m = re.search(r"```(?:python)?\s*\n(.*?)```", text, re.DOTALL)
     if m:
         return m.group(1).strip()
     stripped = text.strip()
     if stripped.startswith("```"):          # opening fence, no closing one
         stripped = stripped.split("\n", 1)[1] if "\n" in stripped else ""
+    if re.search(r"^(import |from )", stripped, re.M) and \
+            not stripped.startswith(("import ", "from ")):
+        lines = stripped.split("\n")
+        start = next(i for i, ln in enumerate(lines)
+                     if ln.startswith(("import ", "from ")))
+        cand = "\n".join(lines[start:])
+        import ast as _ast
+        for _ in range(60):
+            try:
+                _ast.parse(cand)
+                stripped = cand
+                break
+            except SyntaxError:
+                cl = cand.rstrip().split("\n")
+                if len(cl) <= 1:
+                    break
+                cand = "\n".join(cl[:-1])
     return stripped.strip()
 
 

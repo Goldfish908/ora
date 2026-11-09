@@ -42,6 +42,29 @@ from scripts.m1_feedback import failure_type, feedback_msg  # noqa: E402
 from scripts.psv_check_code import check_one  # noqa: E402
 from scripts.psv_score import blocked  # noqa: E402
 from scripts.guard_check import guard_source  # noqa: E402
+from scripts.sac_opt import (  # noqa: E402
+    ANCHOR_EXTRACT, ANCHOR_RECONSTRUCT)
+
+# Feedback-swap ablation: on semantic failures, replace the deterministic
+# witness violation report with a SAC-Opt-style LLM self-assessed anchor
+# mismatch list. Everything else (round-1 pilot, guard, gate, execution,
+# budgets) is identical, so the feedback signal is the only variable.
+ANCHOR_COMPARE = """Original semantic anchors (from the problem text):
+<original>
+{anchors}
+</original>
+
+Reconstructed anchors (from the candidate code):
+<reconstructed>
+{recon}
+</reconstructed>
+
+Compare the two lists component by component. If they FULLY agree,
+reply with exactly: ALIGNED
+Otherwise output ONLY the mismatch list — one line per mismatch:
+"- [component] the problem requires X but the code does Y"."""
+
+SEMANTIC_FTYPES = {"witness_infeasible", "suboptimal", "declared_infeasible"}
 
 PILOT_DIR = ROOT / "runs" / "m1_pilot"
 OUT_DIR = ROOT / "runs" / "m1_presolve"
@@ -99,6 +122,13 @@ def main() -> None:
                          "verdicts; also enables verdict reuse with a custom "
                          "--pilot-dir (e.g. verdicts computed over the P3 "
                          "pilot code)")
+    ap.add_argument("--feedback-mode", default="route_b",
+                    choices=["route_b", "anchor"],
+                    help="anchor = feedback-swap ablation: on semantic "
+                         "failures feed a SAC-Opt-style LLM anchor-mismatch "
+                         "list instead of the deterministic witness report")
+    ap.add_argument("--scenarios-only", default=None,
+                    help="jsonl file; restrict cells to its scenario_ids")
     args = ap.parse_args()
 
     ds_rows = {json.loads(l)["scenario_id"]: json.loads(l)
@@ -130,6 +160,11 @@ def main() -> None:
         (sid, mode) for (sid, mode), r in r1.items()
         if sid.endswith(f"_{args.variant}") and mode in args.modes
         and failure_type(r) is not None)
+    if args.scenarios_only:
+        only = {json.loads(l)["scenario_id"]
+                for l in Path(args.scenarios_only).read_text().splitlines()
+                if l.strip()}
+        cells = [c for c in cells if c[0] in only]
     if args.limit:
         cells = cells[: args.limit]
 
@@ -151,6 +186,7 @@ def main() -> None:
                    if args.conventions_file else None)
     guard_rules = (set(args.guard_rules.split(","))
                    if args.guard_rules else None)
+    anchor_cache: dict[str, str] = {}
     with out_path.open("a", encoding="utf-8") as fp:
         for sid, mode in cells:
             row = ds_rows[sid]
@@ -191,6 +227,56 @@ def main() -> None:
                 if prev_gate_bad:
                     fb = verifier_report(prev_gate_bad)
                     fb_kind = "presolve"
+                elif (args.feedback_mode == "anchor"
+                      and ftype in SEMANTIC_FTYPES):
+                    # feedback-swap ablation: LLM self-assessed anchor
+                    # mismatch list instead of the deterministic witness
+                    # report (SAC-Opt-style signal inside OUR loop)
+                    if sid not in anchor_cache:
+                        a_resp = llm_mod.chat(
+                            [{"role": "user", "content":
+                              ANCHOR_EXTRACT + "\n\n" + prompt}],
+                            max_tokens=32768, temperature=0.6,
+                            extra={"reasoning_effort": "medium"}, config=cfg)
+                        anchor_cache[sid] = a_resp.get("content") or ""
+                    r_resp = llm_mod.chat(
+                        [{"role": "user", "content":
+                          ANCHOR_RECONSTRUCT.format(code=prev_code)}],
+                        max_tokens=32768, temperature=0.6,
+                        extra={"reasoning_effort": "medium"}, config=cfg)
+                    recon = r_resp.get("content") or ""
+                    c_resp = llm_mod.chat(
+                        [{"role": "user", "content":
+                          ANCHOR_COMPARE.format(anchors=anchor_cache[sid],
+                                                recon=recon)}],
+                        max_tokens=32768, temperature=0.6,
+                        extra={"reasoning_effort": "medium"}, config=cfg)
+                    cmp_text = (c_resp.get("content") or "").strip()
+                    if cmp_text.startswith("ALIGNED"):
+                        # SAC-Opt convergence criterion met: anchors aligned,
+                        # stop the loop (record the converged-but-failed cell)
+                        rec_conv = {"scenario_id": sid, "thinking": mode,
+                                    "round": rnd,
+                                    "failure_in": "anchor_converged",
+                                    "reference_objective":
+                                        row["reference_objective"],
+                                    "reference_status":
+                                        row["reference_status"],
+                                    "n_solves_so_far": n_solves,
+                                    "true_success": False}
+                        fp.write(json.dumps(rec_conv, ensure_ascii=False)
+                                 + "\n")
+                        fp.flush()
+                        print(f"[{sid}][{mode}][r{rnd}] anchor-converged "
+                              f"(SAC-Opt stop) but still failing", flush=True)
+                        break
+                    fb = ("An independent semantic reviewer compared your "
+                          "code against the problem's requirements and found "
+                          "these mismatches:\n"
+                          f"{cmp_text[:2000]}\n"
+                          "Fix ONLY these mismatches and rewrite the COMPLETE "
+                          "script. Output ONLY executable Python code.")
+                    fb_kind = f"anchor_{ftype}"
                 else:
                     fb = feedback_msg(ftype, prev)
                     fb_kind = ftype

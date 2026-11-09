@@ -122,3 +122,32 @@ big-M 紧致性。全部不含任何实例数值/族名/答案,是数据集级�
 - 第 1 代 memory:`priors_pilot_v0.1.md` / `priors2_pilot_v0.1.md`
 - 单链结果:`crash_guard_online_v0.1.md`(B'')、`combo_arm_v0.1.md`(combo)
 - 仲裁:`ensemble_dualchain_v0.1.md`
+
+---
+
+## 7. 外环第 1 代:条款 #8 的完整生命周期(含 gapcheck 拦截)
+
+**这是两级晋升机制的首次实战拦截——负结果,机制有效性的直接证据。**
+
+| 阶段 | 结果 | 判定 |
+|---|---|---|
+| 聚类 | C 臂残余 59 个 C-DEMAND witness_infeasible 簇(53/59 幻影库存) | — |
+| 诊断+提议 | sub 出流未计入库存递推 → 条款 #8(条件化:含 sub/转运边时出流必须入递推) | 候选 |
+| dev40 多样本重放 | 靶 13/48 vs 8/48(**+10.4pp**),win 25% vs 16%(无害) | ✅ 过 dev 关 |
+| **gapcheck60 复验** | 靶 23.8% vs 23.8%(**+0.0pp**);win 25.0% vs 37.5%(**-12.5pp**) | ❌ **拒绝晋升** |
+
+gapcheck 逐题细节:win 受损集中在 f2 替代/转运结构变体(circular_sub_v3
+t=1/3 vs c=3/3;no_substitution_v3、price_band_tight_v1 各 -1 题)——
+条款 #8 的"sub 出流"措辞在这些变体上被错误套用,诱导新的 witness 违规;
+而 dev40 的 +10.4pp 增益完全没复现(v0/v4 变体特有)。
+
+**结论:条款 #8 拒绝入库,memory 停留 v0.3。** dev 上的显著增益在
+同族异变体上消失且伤 win——教科书式过拟合,被两级晋升按纪律拦截。
+若只看 dev40,这条有害条款会直接进入 production memory。
+
+教训(进 gen2 设计):条款的适用条件必须绑定**数据结构触发器**
+(如"存在 substitution edges 且 demand_split 字段激活")而非业务名词;
+win 误伤检查必须按变体分层(v0/v4 过不代表 v1-v3 过)。
+
+数据:`work/mem_evo/replay_gap_[tc][123]/`;名单:gap 靶 14(C-DEMAND)+
+win 8(f2),3 种子 × 2 臂(v0.4 vs v0.3)。

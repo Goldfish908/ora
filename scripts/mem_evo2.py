@@ -227,6 +227,130 @@ def cmd_replay(unit_id: str, base: str | None, tag: str,
     print("wait")
 
 
+# ---------- RSI: LLM propose + automatic promotion judgement ----------
+
+PROPOSE_PROMPT = """You are the PROPOSER in a self-evolving OR-modeling system.
+A cluster of modeling failures has been mined from run records. Your job:
+diagnose the SHARED mechanism and draft ONE conditional memory clause that
+would prevent it.
+
+Cluster signature: {sig}  ({n} failing cells)
+
+Example failures (problem excerpt + the violation evidence):
+{examples}
+
+Hard requirements for the clause (learned from rejected generations):
+1. CONDITIONAL: it must fire only when a SPECIFIC data structure is present
+   (name the exact data field / edge type / parameter that activates it) —
+   never phrase the trigger as a business noun ("substitution", "transfer");
+   always bind to the data ("when data['sub_edges'] is non-empty ...").
+2. WIN-SAFE: the clause must NOT change behavior on cells where the trigger
+   is absent. State explicitly why previously-passing cells are unaffected.
+3. SMALL: one mechanism per clause, <= 4 sentences.
+4. Do NOT mention reference objectives or ground truth.
+
+Reply with ONLY a JSON object:
+{{"asset": "memory_clause", "trigger": "<exact data-field condition>",
+  "text": "<the clause>", "rationale": "<mechanism diagnosis, 1-2 sentences>",
+  "win_safety": "<why passing cells are unaffected>"}}"""
+
+
+def cmd_propose(cluster_id: str, n_examples: int = 3) -> None:
+    """LLM diagnoses a failure cluster and drafts a candidate unit."""
+    from ora_agent import llm as llm_mod
+    from scripts.m1_pilot import DATA
+    cl = json.loads(CLUSTERS.read_text())
+    cells = cl["clusters"][cluster_id][:n_examples]
+    ds = {json.loads(l)["scenario_id"]: json.loads(l)
+          for l in DATA.read_text().splitlines() if l.strip()}
+    # pull violation evidence from the clustered run records
+    examples = []
+    run_globs = cl.get("runs", [])
+    for sid in cells:
+        ev = ""
+        for g in run_globs:
+            for f in sorted(ROOT.glob(g)):
+                for line in f.read_text().splitlines():
+                    if not line.strip():
+                        continue
+                    r = json.loads(line)
+                    if r["scenario_id"] == sid and r.get("witness_details"):
+                        ev = "\n".join(r["witness_details"][:3])
+        row = ds.get(sid)
+        excerpt = (row["prompt_schema"][:1200] if row else "(prompt n/a)")
+        examples.append(f"--- {sid} ---\n{excerpt}\nVIOLATION:\n{ev[:800]}")
+    prompt = PROPOSE_PROMPT.format(sig=cluster_id,
+                                   n=len(cl["clusters"][cluster_id]),
+                                   examples="\n\n".join(examples))
+    cfg = llm_mod.load_config()
+    resp = llm_mod.chat([{"role": "user", "content": prompt}],
+                        max_tokens=8192, temperature=0.6,
+                        extra={"reasoning_effort": "medium"}, config=cfg)
+    text = (resp.get("content") or "").strip()
+    m = re.search(r"\{.*\}", text, re.S)
+    if not m:
+        print("propose failed: no JSON in output")
+        print(text[:500])
+        return
+    spec = json.loads(m.group(0))
+    unit = register_unit(spec.get("asset", "memory_clause"), spec["text"],
+                         spec.get("trigger", ""),
+                         {"cluster_id": cluster_id, "proposer": "llm",
+                          "rationale": spec.get("rationale", ""),
+                          "win_safety": spec.get("win_safety", "")})
+    print(f"proposed {unit['unit_id']}: trigger={unit['trigger']}")
+    print(f"  text: {unit['text'][:200]}")
+
+
+def _pass_rates(replay_dir: Path, cells: list[str]) -> dict[str, list[bool]]:
+    """Per-cell pass indicators across all seed files in a replay dir."""
+    res: dict[str, list[bool]] = defaultdict(list)
+    for f in sorted(replay_dir.glob("*.jsonl")):
+        for line in f.read_text().splitlines():
+            if not line.strip():
+                continue
+            r = json.loads(line)
+            if r["scenario_id"] in cells:
+                res[r["scenario_id"]].append(failure_type(r) is None)
+    return res
+
+
+def cmd_judge(unit_id: str, treat_dir: str, ctrl_dir: str, tier: str) -> None:
+    """Automatic promotion judgement for one replay tier (dev or gapcheck).
+
+    Discipline: promote iff target mean gain >= +8pp AND win mean delta
+    >= -3pp (noise tolerance). Verdict is written back to the registry.
+    """
+    reg = load_registry()
+    unit = next(u for u in reg if u["unit_id"] == unit_id)
+    meta = json.loads((Path(treat_dir) / "replay_meta.json").read_text())
+    targets, wins = meta["target_cells"], meta["win_cells"]
+    t, c = _pass_rates(Path(treat_dir), targets + wins), \
+        _pass_rates(Path(ctrl_dir), targets + wins)
+
+    def delta(group):
+        d = []
+        for s in group:
+            tv, cv = t.get(s, []), c.get(s, [])
+            if tv and cv:
+                d.append(sum(tv) / len(tv) - sum(cv) / len(cv))
+        return (sum(d) / len(d) * 100) if d else 0.0, len(d)
+
+    tg, nt = delta(targets)
+    wg, nw = delta(wins)
+    verdict = "dev-passed" if (tg >= 8.0 and wg >= -3.0) else "rejected"
+    if tier == "gapcheck" and unit["status"] == "dev-passed":
+        verdict = "promoted" if (tg >= 5.0 and wg >= -3.0) else "rejected"
+    unit["status"] = verdict
+    unit["stats"][f"{tier}"] = {"target_gain_pp": round(tg, 1),
+                                "win_delta_pp": round(wg, 1),
+                                "n_targets": nt, "n_wins": nw}
+    REGISTRY.write_text("\n".join(json.dumps(u, ensure_ascii=False)
+                                  for u in reg) + "\n")
+    print(f"{unit_id} [{tier}] target_gain={tg:+.1f}pp win_delta={wg:+.1f}pp "
+          f"-> {verdict.upper()}")
+
+
 def main() -> None:
     ap = argparse.ArgumentParser()
     sub = ap.add_subparsers(dest="cmd", required=True)
@@ -245,6 +369,14 @@ def main() -> None:
     rp.add_argument("--base", default=None,
                     help="base conventions file the candidate is appended to")
     rp.add_argument("--tag", default="r1")
+    pp = sub.add_parser("propose")
+    pp.add_argument("--cluster", required=True)
+    pp.add_argument("--n-examples", type=int, default=3)
+    jp = sub.add_parser("judge")
+    jp.add_argument("--unit", required=True)
+    jp.add_argument("--treat-dir", required=True)
+    jp.add_argument("--ctrl-dir", required=True)
+    jp.add_argument("--tier", choices=["dev40", "gapcheck"], required=True)
     args = ap.parse_args()
 
     if args.cmd == "cluster":
@@ -255,6 +387,10 @@ def main() -> None:
         print(f"registered {u['unit_id']}")
     elif args.cmd == "replay":
         cmd_replay(args.unit, args.base, args.tag)
+    elif args.cmd == "propose":
+        cmd_propose(args.cluster, args.n_examples)
+    elif args.cmd == "judge":
+        cmd_judge(args.unit, args.treat_dir, args.ctrl_dir, args.tier)
     elif args.cmd == "status":
         cmd_status()
 

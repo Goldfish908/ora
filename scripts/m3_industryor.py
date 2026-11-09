@@ -116,6 +116,9 @@ def main() -> None:
                     choices=["z0", "z1", "z2", "z0b", "z0c"])
     ap.add_argument("--shard", default="0/1", help="k/K zero-based")
     ap.add_argument("--limit", type=int, default=0)
+    ap.add_argument("--out-suffix", default="",
+                    help="appended to output filename, e.g. '_pearl4b' keeps "
+                         "per-model results separate")
     args = ap.parse_args()
 
     k, kk = (int(x) for x in args.shard.split("/"))
@@ -128,7 +131,7 @@ def main() -> None:
     conventions = load_priors() if args.arm == "z2" else None
     cfg = llm_mod.load_config()
     OUT_DIR.mkdir(parents=True, exist_ok=True)
-    out_path = OUT_DIR / f"m3_{args.arm}_s{k}.jsonl"
+    out_path = OUT_DIR / f"m3_{args.arm}{args.out_suffix}_s{k}.jsonl"
     done = set()
     last: dict[int, dict] = {}
     if out_path.exists():
@@ -159,7 +162,7 @@ def main() -> None:
                         break
                     if not prev_text:
                         sb = (OUT_DIR / "sandbox"
-                              / f"{args.arm}__{pid}__r{rnd - 1}" / "gen.py")
+                              / f"{args.arm}{args.out_suffix}__{pid}__r{rnd - 1}" / "gen.py")
                         prev_text = (sb.read_text() if sb.exists()
                                      else "# (previous code unavailable)")
                     msgs = [{"role": "user", "content": prompt},
@@ -188,7 +191,7 @@ def main() -> None:
                         .get("reasoning_tokens"))
                     rec["code_chars"] = len(text)
                     sandbox = (OUT_DIR / "sandbox"
-                               / f"{args.arm}__{pid}__r{rnd}")
+                               / f"{args.arm}{args.out_suffix}__{pid}__r{rnd}")
                     rec.update(run_code(extract_code(text), sandbox))
                 fp.write(json.dumps(rec, ensure_ascii=False) + "\n")
                 fp.flush()

@@ -107,8 +107,18 @@ class Guard(ast.NodeVisitor):
             f = v.func
             nm = f.attr if isinstance(f, ast.Attribute) else (
                 f.id if isinstance(f, ast.Name) else "")
+            if nm == "sum":
+                # builtin sum is Expr-producing only when its input is
+                # (CEGIS refinement: plain sum(costs) must NOT be tainted)
+                return any(self._exprish(a) for a in v.args)
             return nm in ("addVar", "quicksum", "addCons") \
                 or nm in self._exprfuncs
+        if isinstance(v, ast.GeneratorExp):
+            return self._exprish(v.elt)
+        if isinstance(v, (ast.List, ast.Tuple, ast.Set)):
+            return any(self._exprish(e) for e in v.elts)
+        if isinstance(v, ast.Dict):
+            return any(self._exprish(x) for x in v.values)
         if isinstance(v, ast.Name):
             return v.id in self._tainted
         if isinstance(v, ast.Subscript):

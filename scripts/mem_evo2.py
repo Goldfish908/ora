@@ -254,9 +254,93 @@ Reply with ONLY a JSON object:
   "text": "<the clause>", "rationale": "<mechanism diagnosis, 1-2 sentences>",
   "win_safety": "<why passing cells are unaffected>"}}"""
 
+PROPOSE_SUCCESS_PROMPT = """You are the PROPOSER in a self-evolving OR-modeling system.
+Instead of learning from failures, you learn from VERIFIED SUCCESSES:
+the following cells produced solutions that passed an independent
+deterministic semantic auditor (conservation laws, initial conditions,
+capacity — all re-computed and correct).
 
-def cmd_propose(cluster_id: str, n_examples: int = 3) -> None:
-    """LLM diagnoses a failure cluster and drafts a candidate unit."""
+Your job: distill the POSITIVE modeling pattern they share into ONE
+conditional memory clause that would help OTHER cells get the same
+mechanism right on the first attempt.
+
+Success examples (problem excerpt + the code pattern that worked):
+{examples}
+
+Hard requirements:
+1. Extract the POSITIVE pattern (what correct code does), not a warning.
+2. CONDITIONAL on a specific data structure (exact field/edge names).
+3. WIN-SAFE on cells where the trigger is absent.
+4. SMALL: one mechanism per clause, <= 4 sentences.
+5. Do NOT mention reference objectives or ground truth.
+
+Reply with ONLY a JSON object:
+{{"asset": "memory_clause", "trigger": "<exact data-field condition>",
+  "text": "<the clause>", "rationale": "<why this pattern is correct>",
+  "win_safety": "<why passing cells are unaffected>"}}"""
+
+PROPOSE_MIX_PROMPT = """You are the PROPOSER in a self-evolving OR-modeling system.
+You get BOTH sides of the evidence: verified-success cells (what correct
+code does) and failed cells from cluster {sig} (how it breaks).
+
+Draft ONE conditional memory clause where the SUCCESS examples define the
+positive pattern and the FAILURE examples define the exclusion conditions
+(when the pattern must NOT be applied naively).
+
+SUCCESS examples:
+{success_examples}
+
+FAILURE examples (same mechanism, violated):
+{examples}
+
+Hard requirements:
+1. Positive pattern from successes, exclusion conditions from failures.
+2. CONDITIONAL on exact data fields/edge names.
+3. WIN-SAFE on cells where the trigger is absent.
+4. SMALL: <= 5 sentences including the exclusion condition.
+5. Do NOT mention reference objectives or ground truth.
+
+Reply with ONLY a JSON object:
+{{"asset": "memory_clause", "trigger": "<exact data-field condition>",
+  "text": "<the clause>", "rationale": "<mechanism>",
+  "win_safety": "<why passing cells are unaffected>"}}"""
+
+
+def _success_examples(cluster_id: str, n: int = 3) -> list[str]:
+    """Verified-success cells from the same run as positive evidence."""
+    from scripts.m1_pilot import DATA
+    cl = json.loads(CLUSTERS.read_text())
+    ds = {json.loads(l)["scenario_id"]: json.loads(l)
+          for l in DATA.read_text().splitlines() if l.strip()}
+    out = []
+    for g in cl.get("runs", []):
+        for f in sorted(ROOT.glob(g)):
+            last: dict[str, dict] = {}
+            for line in f.read_text().splitlines():
+                if not line.strip():
+                    continue
+                r = json.loads(line)
+                k = r["scenario_id"]
+                if k not in last or r.get("round", 1) > last[k].get("round", 1):
+                    last[k] = r
+            for sid, r in sorted(last.items()):
+                if len(out) >= n:
+                    return out
+                if failure_type(r) is not None:
+                    continue
+                row = ds.get(sid)
+                if not row:
+                    continue
+                out.append(f"--- {sid} (VERIFIED SUCCESS) ---\n"
+                           f"{row['prompt_schema'][:1000]}\n"
+                           f"witness verdict: feasible; objective matches")
+    return out
+
+
+def cmd_propose(cluster_id: str, n_examples: int = 3, mode: str = "fail") -> None:
+    """LLM proposes a candidate unit. mode: fail (failure-cluster only),
+    success (positive distillation from verified successes),
+    mix (success pattern + failure exclusion conditions)."""
     from ora_agent import llm as llm_mod
     from scripts.m1_pilot import DATA
     cl = json.loads(CLUSTERS.read_text())
@@ -279,9 +363,18 @@ def cmd_propose(cluster_id: str, n_examples: int = 3) -> None:
         row = ds.get(sid)
         excerpt = (row["prompt_schema"][:1200] if row else "(prompt n/a)")
         examples.append(f"--- {sid} ---\n{excerpt}\nVIOLATION:\n{ev[:800]}")
-    prompt = PROPOSE_PROMPT.format(sig=cluster_id,
-                                   n=len(cl["clusters"][cluster_id]),
-                                   examples="\n\n".join(examples))
+    if mode == "success":
+        prompt = PROPOSE_SUCCESS_PROMPT.format(
+            examples="\n\n".join(_success_examples(cluster_id, n_examples)))
+    elif mode == "mix":
+        prompt = PROPOSE_MIX_PROMPT.format(
+            sig=cluster_id, examples="\n\n".join(examples),
+            success_examples="\n\n".join(
+                _success_examples(cluster_id, n_examples)))
+    else:
+        prompt = PROPOSE_PROMPT.format(sig=cluster_id,
+                                       n=len(cl["clusters"][cluster_id]),
+                                       examples="\n\n".join(examples))
     cfg = llm_mod.load_config()
     resp = llm_mod.chat([{"role": "user", "content": prompt}],
                         max_tokens=8192, temperature=0.6,
@@ -295,7 +388,7 @@ def cmd_propose(cluster_id: str, n_examples: int = 3) -> None:
     spec = json.loads(m.group(0))
     unit = register_unit(spec.get("asset", "memory_clause"), spec["text"],
                          spec.get("trigger", ""),
-                         {"cluster_id": cluster_id, "proposer": "llm",
+                         {"cluster_id": cluster_id, "proposer": f"llm-{mode}",
                           "rationale": spec.get("rationale", ""),
                           "win_safety": spec.get("win_safety", "")})
     print(f"proposed {unit['unit_id']}: trigger={unit['trigger']}")
@@ -372,6 +465,7 @@ def main() -> None:
     pp = sub.add_parser("propose")
     pp.add_argument("--cluster", required=True)
     pp.add_argument("--n-examples", type=int, default=3)
+    pp.add_argument("--mode", choices=["fail", "success", "mix"], default="fail")
     jp = sub.add_parser("judge")
     jp.add_argument("--unit", required=True)
     jp.add_argument("--treat-dir", required=True)
@@ -388,7 +482,7 @@ def main() -> None:
     elif args.cmd == "replay":
         cmd_replay(args.unit, args.base, args.tag)
     elif args.cmd == "propose":
-        cmd_propose(args.cluster, args.n_examples)
+        cmd_propose(args.cluster, args.n_examples, args.mode)
     elif args.cmd == "judge":
         cmd_judge(args.unit, args.treat_dir, args.ctrl_dir, args.tier)
     elif args.cmd == "status":

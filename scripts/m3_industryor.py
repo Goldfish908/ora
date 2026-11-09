@@ -116,13 +116,16 @@ def main() -> None:
                     choices=["z0", "z1", "z2", "z0b", "z0c"])
     ap.add_argument("--shard", default="0/1", help="k/K zero-based")
     ap.add_argument("--limit", type=int, default=0)
+    ap.add_argument("--data", default=None,
+                    help="override dataset json (id/en_question/en_answer), "
+                         "e.g. data/external/mamo_complex_lp.json")
     ap.add_argument("--out-suffix", default="",
                     help="appended to output filename, e.g. '_pearl4b' keeps "
                          "per-model results separate")
     args = ap.parse_args()
 
     k, kk = (int(x) for x in args.shard.split("/"))
-    rows = json.loads(DATA.read_text())
+    rows = json.loads((Path(args.data) if args.data else DATA).read_text())
     rows = [r for i, r in enumerate(sorted(rows, key=lambda r: r["id"]))
             if i % kk == k]
     if args.limit:

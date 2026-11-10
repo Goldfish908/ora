@@ -146,3 +146,5 @@ def init_pin_evidence(signals: dict) -> dict:
             hits.append(seg[:200])
     return {"inv_vars": inv_vars, "pin_hits": hits,
             "heuristic_pass": bool(hits)}
+
+

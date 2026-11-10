@@ -23,7 +23,7 @@ SNAP = sorted(glob.glob("/dfs/data/hewj13/.cache/huggingface/hub/models--Qwen--Q
 BASE = "/dfs/data/hewj13/j4_judge"
 DATA = f"{BASE}/train_v4.jsonl"
 LOG = f"{BASE}/logs/train_v4_metrics.jsonl"
-MAXLEN = 12288
+MAXLEN = int(os.environ.get("MAXLEN", "12288"))  # samples longer than this are DROPPED (not truncated)
 EPOCHS = int(os.environ.get("EPOCHS", "3"))
 LR = 1e-4
 LIMIT = int(os.environ.get("LIMIT", "0"))  # >0: stop after LIMIT steps, no save
@@ -89,6 +89,7 @@ for r in rows:
     n_sup = sum(1 for x in labels if x != -100)
     if n_sup < len(c_ids):
         n_trunc += 1
+        continue  # drop over-long: truncating the target corrupts the label
     if n_sup < 3:
         continue
     samples.append((ids, labels, float(r.get("weight", 1.0))))
@@ -112,23 +113,30 @@ for ep in range(EPOCHS):
     random.shuffle(samples)
     for ids, labels, w in samples:
         t = time.time()
-        input_ids = torch.tensor([ids], device=dev)
         n_sup = sum(1 for x in labels if x != -100)
-        if use_ltk:
-            try:
-                out = model(input_ids=input_ids, logits_to_keep=n_sup + 1)
-                logits = out.logits[0, :-1, :]
-                tgt = input_ids[0, -n_sup:]
-                loss = F.cross_entropy(logits.float(), tgt)
-            except TypeError:
-                use_ltk = False
-        if not use_ltk:
-            lab = torch.tensor([labels], device=dev)
-            out = model(input_ids=input_ids, labels=lab)
-            loss = out.loss
-        (loss * w).backward()
-        opt.step()
-        opt.zero_grad(set_to_none=True)
+        try:
+            input_ids = torch.tensor([ids], device=dev)
+            if use_ltk:
+                try:
+                    out = model(input_ids=input_ids, logits_to_keep=n_sup + 1)
+                    logits = out.logits[0, :-1, :]
+                    tgt = input_ids[0, -n_sup:]
+                    loss = F.cross_entropy(logits, tgt)  # bf16 CE: fp32 upcast costs ~2x logits memory
+                except TypeError:
+                    use_ltk = False
+            if not use_ltk:
+                lab = torch.tensor([labels], device=dev)
+                out = model(input_ids=input_ids, labels=lab)
+                loss = out.loss
+            (loss * w).backward()
+            opt.step()
+            opt.zero_grad(set_to_none=True)
+        except torch.cuda.OutOfMemoryError as e:
+            opt.zero_grad(set_to_none=True)
+            torch.cuda.empty_cache()
+            log({"event": "oom_skip", "step": step, "epoch": ep,
+                 "seq_len": len(ids), "n_sup": n_sup})
+            continue
         step += 1
         losses.append(loss.item())
         rec = {"event": "step", "step": step, "epoch": ep,

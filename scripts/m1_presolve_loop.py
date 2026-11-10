@@ -111,7 +111,7 @@ def main() -> None:
                     help="prepend distilled-conventions text to the prompt "
                          "(generation-side upgrade arms)")
     ap.add_argument("--memory-mode", default="full",
-                    choices=["full", "trigger", "embed"],
+                    choices=["full", "trigger", "embed", "trig_embed"],
                     help="memory injection mode: full=concatenate all; "
                          "trigger=data-predicate selection; "
                          "embed=embedding-ranked top-k selection")
@@ -209,6 +209,11 @@ def main() -> None:
                     from scripts.mem_embed import select_by_embedding
                     conv = select_by_embedding(conventions,
                                                row["prompt_schema"])
+                elif args.memory_mode == "trig_embed":
+                    from scripts.mem_embed import select_trigger_then_embedding
+                    conv = select_trigger_then_embedding(
+                        conventions, json.loads(row["data"]),
+                        row["prompt_schema"])
                 else:
                     conv = conventions
                 prompt = conv + "\n\n" + prompt

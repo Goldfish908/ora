@@ -60,3 +60,11 @@ def select_by_embedding(text: str, prompt: str, top_k: int = 2) -> str:
         if i in keep:
             parts.append(title + "\n" + body)
     return "\n\n".join(p for p in parts if p.strip()).strip()
+
+
+def select_trigger_then_embedding(text: str, data: dict, prompt: str,
+                                  top_k: int = 2) -> str:
+    """Arm 4: deterministic trigger filter first, embedding rank second."""
+    from scripts.mem_selective import select_conventions
+    filtered = select_conventions(text, data)
+    return select_by_embedding(filtered, prompt, top_k)

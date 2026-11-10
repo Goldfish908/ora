@@ -196,7 +196,10 @@ def main() -> None:
             prompt = adapt_prompt_schema(row["prompt_schema"],
                                          SCIP_OUTPUT_FORMAT_SOL)
             if conventions:
-                prompt = conventions + "\n\n" + prompt
+                from scripts.mem_selective import select_conventions
+                prompt = select_conventions(conventions,
+                                            json.loads(row["data"])) \
+                    + "\n\n" + prompt
             prev = last_rec.get((sid, mode)) or r1[(sid, mode)]
             prev_code = None
             # round-1 gate verdict from the offline Phase-C pass — only valid

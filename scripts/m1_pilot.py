@@ -289,7 +289,10 @@ def main() -> None:
                 prompt = adapt_prompt_schema(row["prompt_schema"],
                                              SCIP_OUTPUT_FORMAT_SOL)
             if conventions:
-                prompt = conventions + "\n\n" + prompt
+                from scripts.mem_selective import select_conventions
+                prompt = select_conventions(conventions,
+                                            json.loads(row["data"])) \
+                    + "\n\n" + prompt
             for mode in args.modes:
                 sid = row["scenario_id"]
                 if (sid, mode) in done:

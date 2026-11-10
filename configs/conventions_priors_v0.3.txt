@@ -57,6 +57,7 @@ Follow them literally; do not substitute your own conventions.
    exist cannot buy. If you write demand as a ">=" coverage constraint, the
    optimizer will oversell to harvest phantom revenue.
 
+[TRIGGER: sub_edges]
 3. Substitution orientation follows the dump contract EXACTLY:
    sub["pf|pt|l|t"] = units of pf's DEMAND fulfilled by substitute pt.
    Consequences you must enforce in the model:

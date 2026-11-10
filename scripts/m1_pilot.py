@@ -243,6 +243,11 @@ def main() -> None:
     ap.add_argument("--conventions-file", default=None,
                     help="optional text file with distilled conventions "
                          "(memory priors) prepended to the prompt")
+    ap.add_argument("--memory-mode", default="full",
+                    choices=["full", "trigger", "embed"],
+                    help="memory injection mode: full=concatenate all; "
+                         "trigger=data-predicate selection; "
+                         "embed=embedding-ranked top-k selection")
     ap.add_argument("--scenarios-file", default=None,
                     help="jsonl of scenario rows; overrides the default "
                          "dataset and skips --variant/--families filtering "
@@ -289,10 +294,17 @@ def main() -> None:
                 prompt = adapt_prompt_schema(row["prompt_schema"],
                                              SCIP_OUTPUT_FORMAT_SOL)
             if conventions:
-                from scripts.mem_selective import select_conventions
-                prompt = select_conventions(conventions,
-                                            json.loads(row["data"])) \
-                    + "\n\n" + prompt
+                if args.memory_mode == "trigger":
+                    from scripts.mem_selective import select_conventions
+                    conv = select_conventions(conventions,
+                                              json.loads(row["data"]))
+                elif args.memory_mode == "embed":
+                    from scripts.mem_embed import select_by_embedding
+                    conv = select_by_embedding(conventions,
+                                               row["prompt_schema"])
+                else:
+                    conv = conventions
+                prompt = conv + "\n\n" + prompt
             for mode in args.modes:
                 sid = row["scenario_id"]
                 if (sid, mode) in done:

@@ -110,6 +110,11 @@ def main() -> None:
     ap.add_argument("--conventions-file", default=None,
                     help="prepend distilled-conventions text to the prompt "
                          "(generation-side upgrade arms)")
+    ap.add_argument("--memory-mode", default="full",
+                    choices=["full", "trigger", "embed"],
+                    help="memory injection mode: full=concatenate all; "
+                         "trigger=data-predicate selection; "
+                         "embed=embedding-ranked top-k selection")
     ap.add_argument("--pilot-dir", default=None,
                     help="pilot run dir supplying round-1 records/sandboxes "
                          "(default runs/m1_pilot); round-1 offline gate "
@@ -196,10 +201,17 @@ def main() -> None:
             prompt = adapt_prompt_schema(row["prompt_schema"],
                                          SCIP_OUTPUT_FORMAT_SOL)
             if conventions:
-                from scripts.mem_selective import select_conventions
-                prompt = select_conventions(conventions,
-                                            json.loads(row["data"])) \
-                    + "\n\n" + prompt
+                if args.memory_mode == "trigger":
+                    from scripts.mem_selective import select_conventions
+                    conv = select_conventions(conventions,
+                                              json.loads(row["data"]))
+                elif args.memory_mode == "embed":
+                    from scripts.mem_embed import select_by_embedding
+                    conv = select_by_embedding(conventions,
+                                               row["prompt_schema"])
+                else:
+                    conv = conventions
+                prompt = conv + "\n\n" + prompt
             prev = last_rec.get((sid, mode)) or r1[(sid, mode)]
             prev_code = None
             # round-1 gate verdict from the offline Phase-C pass — only valid

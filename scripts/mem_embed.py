@@ -21,25 +21,44 @@ def _model():
 
 
 def _split_clauses(text: str):
-    """Return (universal_text, [(title, body)]) for optional selection."""
+    """Return (universal_text, [(title, body)]) for optional selection.
+
+    Universal = KNOWN PITFALLS, MODELING PROCEDURE, and SEMANTIC items
+    1,2,4,5,6,7 (always kept). Optional = SEMANTIC item 3 (substitution)
+    and appended '# candidate' units (these are the ones to rank/filter).
+    """
     lines = text.split("\n")
     universal, optional = [], []
     cur_title, cur_body = None, []
-    opt_mode = False
+    section = None
     for line in lines:
-        if line.strip().startswith("[TRIGGER:"):
+        s = line.strip()
+        if s.startswith("[TRIGGER:"):
             continue  # embedding arm ignores data-predicate markers
-        m = re.match(r"^(\d+\.\s.+|# candidate.+)$", line.strip())
-        if m:
-            if cur_title is not None:
-                optional.append((cur_title, "\n".join(cur_body)))
-            cur_title, cur_body = line, []
-            opt_mode = True
-        else:
-            if opt_mode and cur_title is not None:
-                cur_body.append(line)
+        if s.startswith("[KNOWN PITFALLS"):
+            section = "pitfalls"
+        elif s.startswith("[MODELING PROCEDURE"):
+            section = "procedure"
+        elif s.startswith("[SEMANTIC CONVENTIONS"):
+            section = "semantic"
+        m = re.match(r"^(\d+\.\s.+|# candidate.+)$", s)
+        if m and (section == "semantic" or s.startswith("# candidate")):
+            is_optional = s.startswith("3.") or s.startswith("# candidate")
+            if is_optional:
+                if cur_title is not None:
+                    optional.append((cur_title, "\n".join(cur_body)))
+                cur_title, cur_body = line, []
+                continue
             else:
+                if cur_title is not None:
+                    optional.append((cur_title, "\n".join(cur_body)))
+                    cur_title = None
                 universal.append(line)
+                continue
+        if cur_title is not None:
+            cur_body.append(line)
+        else:
+            universal.append(line)
     if cur_title is not None:
         optional.append((cur_title, "\n".join(cur_body)))
     return "\n".join(universal).strip(), optional

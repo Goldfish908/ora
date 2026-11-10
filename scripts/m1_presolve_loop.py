@@ -44,6 +44,8 @@ from scripts.psv_score import blocked  # noqa: E402
 from scripts.guard_check import guard_source  # noqa: E402
 from scripts.sac_opt import (  # noqa: E402
     ANCHOR_EXTRACT, ANCHOR_RECONSTRUCT)
+from scripts.p10_active_judge import (  # noqa: E402
+    PLANNER_PROMPT, DECIDER_TEMPLATE, run_check)
 
 # Feedback-swap ablation: on semantic failures, replace the deterministic
 # witness violation report with a SAC-Opt-style LLM self-assessed anchor
@@ -123,10 +125,10 @@ def main() -> None:
                          "--pilot-dir (e.g. verdicts computed over the P3 "
                          "pilot code)")
     ap.add_argument("--feedback-mode", default="route_b",
-                    choices=["route_b", "anchor"],
-                    help="anchor = feedback-swap ablation: on semantic "
-                         "failures feed a SAC-Opt-style LLM anchor-mismatch "
-                         "list instead of the deterministic witness report")
+                    choices=["route_b", "anchor", "judge"],
+                    help="anchor = SAC-Opt-style LLM self-assessed feedback; "
+                         "judge = executable LLM-written checks (active "
+                         "auditor) as feedback — attribution control")
     ap.add_argument("--scenarios-only", default=None,
                     help="jsonl file; restrict cells to its scenario_ids")
     args = ap.parse_args()
@@ -277,6 +279,45 @@ def main() -> None:
                           "Fix ONLY these mismatches and rewrite the COMPLETE "
                           "script. Output ONLY executable Python code.")
                     fb_kind = f"anchor_{ftype}"
+                elif (args.feedback_mode == "judge"
+                      and ftype in SEMANTIC_FTYPES):
+                    # executable-LLM-check control: the auditor writes and
+                    # RUNS its own checks on the previous solution (same
+                    # execution privilege as the witness, but LLM-driven)
+                    if rnd > 2:
+                        sb = (OUT_DIR / "sandbox"
+                              / f"psv{args.out_tag}__{sid}__{mode}__r{rnd - 1}")
+                    else:
+                        sb = (pilot_dir / "sandbox"
+                              / f"schema_sol__{sid}__{mode}")
+                    schema = row["data"][:3000]
+                    ctx = row["prompt_schema"][:4000]
+                    p_resp = llm_mod.chat(
+                        [{"role": "user", "content":
+                          PLANNER_PROMPT.format(context=ctx, schema=schema)}],
+                        max_tokens=8192, temperature=0.0,
+                        extra={"reasoning_effort": "medium"}, config=cfg)
+                    script = extract_code(p_resp.get("content") or "")
+                    if not script:
+                        fb = feedback_msg(ftype, prev)
+                        fb_kind = f"{ftype}_judge_fallback"
+                    else:
+                        output = run_check(script, sb)
+                        d_resp = llm_mod.chat(
+                            [{"role": "user", "content":
+                              DECIDER_TEMPLATE.format(
+                                  context=ctx, script=script, output=output)}],
+                            max_tokens=4096, temperature=0.0,
+                            extra={"reasoning_effort": "medium"}, config=cfg)
+                        verdict = (d_resp.get("content") or "").strip()
+                        fb = ("An independent auditor wrote and RAN the "
+                              "following checks on your solution:\n"
+                              f"{output[:2000]}\n"
+                              f"Auditor verdict:\n{verdict[-600:]}\n"
+                              "Fix the reported violations and rewrite the "
+                              "COMPLETE script. Output ONLY executable "
+                              "Python code.")
+                        fb_kind = f"judge_{ftype}"
                 else:
                     fb = feedback_msg(ftype, prev)
                     fb_kind = ftype

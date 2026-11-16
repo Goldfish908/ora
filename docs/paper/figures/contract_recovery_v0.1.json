@@ -1,0 +1,27 @@
+{
+ "scope": "historical saved-response and candidate-blind replays; not new generation or frozen evaluation",
+ "development": {
+  "legacy_correct": 2,
+  "normalized_correct": 5,
+  "business_recovered_after_normalization": 3,
+  "fixed_correct": 5,
+  "progress_correct": 5
+ },
+ "blind": {
+  "legacy_correct": 4,
+  "normalized_correct": 4,
+  "fixed_correct": 4,
+  "progress_correct": 4,
+  "failed_ids": [
+   "BWOR-024",
+   "BWOR-025"
+  ],
+  "failure_scope": "reference-schema mismatch, not proven model errors; both alternatives independently validated in precedence_reaudit"
+ },
+ "new_llm_calls": 0,
+ "sources": [
+  "work/bwor_saved_contract_replay_v0.2/analysis.json",
+  "work/bwor_candidate_blind_replay_v0.1/analysis.json",
+  "work/bwor_candidate_blind_replay_v0.1/label_audit.json"
+ ]
+}

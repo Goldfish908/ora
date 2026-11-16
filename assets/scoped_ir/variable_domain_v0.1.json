@@ -1,0 +1,17 @@
+{
+ "mechanism_id": "variable_domain",
+ "version": "0.1.0",
+ "status": "candidate",
+ "scope": {"constraint_kind": "variable_domain"},
+ "source": {"type": "explicit_or_independently_validated_domain", "reference": "integer_domain_only_with_evidence"},
+ "validation": {
+  "question": "The number of meals must be an integer.",
+  "clean": {"variables": {"x": 5.0}, "objective": 0.0},
+  "wrong": {"variables": {"x": 5.5}, "objective": 0.0},
+  "binding": {
+   "invariant_id": "integer_domain",
+   "source_span": "must be an integer",
+   "terms": [{"path": "solution.variables.x", "coefficient": 1}]
+  }
+ }
+}

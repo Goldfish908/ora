@@ -1,0 +1,60 @@
+{
+ "ids": [
+  4,
+  8,
+  9,
+  19,
+  20,
+  21,
+  25,
+  48
+ ],
+ "arms": [
+  "bind_only",
+  "single_line",
+  "branch_dag"
+ ],
+ "model": "Qwen3_8-27B",
+ "base_url": "https://10.46.124.101/service-large-50-1789958762589/llm/v1",
+ "temperature": 0.6,
+ "reasoning_effort": "medium",
+ "max_tokens": 32768,
+ "max_regenerations_per_arm": 1,
+ "max_llm_calls_per_arm": 2,
+ "max_depth": 2,
+ "max_solver_runs": 4,
+ "branch_stop_on_accept": false,
+ "local_repair_ids": [
+  9,
+  19,
+  20,
+  21
+ ],
+ "exposure": "development_replay_not_heldout",
+ "binding_reused_for_all_arms": true,
+ "source_analysis_sha256": "8fc94a9db2ba7d833dd4e645831bf8c98321992caf8b33788c52d8a47140dfa5",
+ "binding_analysis_sha256": "106f73d3a1f4e6a65e4d7f1215e1dd7f79dd2ee2504832a696dbe147622d05f1",
+ "business_manifest_sha256": "a513925bf9b1bd75586266195b63caee2c7d8fa098bc7669e93d4adacbacf27c",
+ "protocol_sha256": "4ed48db526c6ffa90a5af5a95dc1e060a985dec2ff2f6b95cf49ab16af2424a0",
+ "implementation_sha256": {
+  "scripts/industryor_semantic_dag.py": "03631802230319cdfbc191f687ac0e26dfd73929016d0652780cab4389267ecf",
+  "ora_agent/semantic_binding.py": "a48286c347662e7ce09389d0b284d9d9270e7f5fe27e9f32296785d06fc22687",
+  "ora_agent/evidence_dag.py": "2dc36dd3b07703fe50212daf96412f9add723294ab722ee5d06c6edc63c5867a",
+  "ora_agent/semantic_dag.py": "831a0f1e5e3cead974a78ad4d2bc66c81319ad113b39bf1d7f38cd9b1c590256",
+  "scripts/industryor_scoped_loop.py": "5ae77ae6365d68e32a17f91cce5f68d6e925fdf6af1bbfef1894be84046fbfed",
+  "scripts/industryor_next_stage.py": "8daba1b593668d890978337f7215a520c363e3027eb2e34587ef4738fa20d7b7",
+  "scripts/m1_pilot.py": "f687c8f2daa2c55eb22a22a91dba169c1440acab9b6a23f8d0f079cbb8c7509a",
+  "ora_agent/llm.py": "eb2b6f6ebc36813149d52ea1a109addd51cb02419c53f7427de7c7a712d7aa18",
+  "ora_agent/acceptance.py": "e073cffd12efd27ebdb65f6bf34b66a0e3235855a2f1adb52db92dfbb2c5084d"
+ },
+ "regeneration_replay": {
+  "source": "work/industryor_semantic_dag_dev_v0.1/shared_generations",
+  "files": {
+   "3221d868ce10c88ad10b2a118661baaf9abb68cd5048fb876ea02ab48b99cbac.json": "ee92334dea0eee1fa849656374648dba22e81c2275ee71e238e6e44a5ec70a8e",
+   "3fe32a1927fb878ee4ca901df155a16a5eb23df917911b78166db716d3553b4f.json": "472b8df273a3f3af7de962e212a39dc647c641e47b727f15708c546a06d01fa7",
+   "7335f5f7b8d4de8ad9334738e15089e1f05b4dcb16c08798c746ad71126ce8f7.json": "ae0d82f9a6735c7616e3a6c4dcffd8ed73b38a079891690042d0550d7a083509",
+   "8dd1255f4f9e497a680cccac12d8adb93afdb7785e77be15e6a280233d0ea24b.json": "e5cf66ffde511f8a3f0e6972ea542651a29350135bd8429ea3d0ad83b5156b21",
+   "c7a30736041ebcee3293990a70cbf53fed630e419ecbd7d940a35410463edccf.json": "e0a8513519ea63749824efd669066a06136c16231a4b33fd2d349182781ebc9a"
+  }
+ }
+}

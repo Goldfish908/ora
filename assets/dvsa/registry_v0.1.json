@@ -1,0 +1,49 @@
+{
+  "registry_version": "dvsa.registry.v0.1",
+  "protocol": "dvsa-bwor-v0.1",
+  "status": "prototype_not_promoted",
+  "implementations": {
+    "ora_agent/dvsa.py": "038364ea69512be581a4cbe95608c9ad5d7c2eb47afa82288433cda2bff445b0",
+    "scripts/dvsa_split.py": "2c4940f578b6a5f85ce2d50a2f0ef13d78c4bc35b3d7400bd0fdc1d6a41241ee",
+    "scripts/dvsa_retailopt.py": "88366b6eafd51da8cc4d176f89d1496f7abf77f92e228e7119dec93f71991b13"
+  },
+  "splits": {
+    "path": "data/dvsa/splits_manifest.json",
+    "sha256": "361498953b0a87ebb933bbddb6f837dc4098289a21a1ca05650154135e1cf7a6",
+    "bwor": {"dev": 16, "validation": 16, "frozen": 41},
+    "frozen_problem_content_accessed_for_design": false
+  },
+  "assets": [
+    {
+      "asset_id": "retailopt.demand_substitution_balance",
+      "asset_version": "0.1.0",
+      "path": "assets/dvsa/retailopt_demand_v0.1.json",
+      "source_file_sha256": "2df2264e284758daee58d5edf4192c89d08a264486fb0cf46b7d497a6149f470",
+      "implementation_sha256": "1c10d4316bd2f394bf1869c5974f37066fd652bcbefb9bc2725c2e3b82769999",
+      "status": "candidate",
+      "promotion": "not_promoted",
+      "reuse_mode": "frozen_template_no_llm",
+      "validation": {
+        "kind": "retailopt-dev40-implementation-consistency-v0.1",
+        "result_path": "work/dvsa/retailopt_demand_consistency.json",
+        "result_sha256": "45ca91e9be99fdf5b2243531a7c925a91ceea382225ea5ef21c3ea5cbe8532c9",
+        "saved_solution_scenarios": 17,
+        "missing_saved_solution_scenarios": 23,
+        "visible_legacy_demand_cells_match": 17,
+        "unknown": 0,
+        "llm_calls": 0,
+        "independent_semantic_truth": false
+      }
+    }
+  ],
+  "verification": {
+    "python39_tests": "126 passed; one pre-existing m2gen Python 3.9 dict|None failure",
+    "python312_m2gen": "REGRESSION OK",
+    "split_recheck": "OK"
+  },
+  "limitations": [
+    "The first asset covers demand/substitution balance only, not all RetailOpt business rules.",
+    "Legacy checker agreement is implementation consistency, not independent semantic truth.",
+    "No BWOR asset, four-arm result, detection gain, repair gain or SOTA conclusion has been produced."
+  ]
+}

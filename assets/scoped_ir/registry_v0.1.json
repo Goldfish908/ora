@@ -1,0 +1,12 @@
+{
+ "schema_version": "scoped_assets.registry.v0.1",
+ "assets": [
+  "makespan_v0.1.json",
+  "objective_recompute_v0.1.json",
+  "resource_bound_v0.1.json",
+  "variable_domain_v0.1.json",
+  "state_conservation_v0.1.json",
+  "indicator_link_v0.1.json",
+  "job_precedence_v0.1.json"
+ ]
+}

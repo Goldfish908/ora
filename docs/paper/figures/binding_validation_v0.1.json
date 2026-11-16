@@ -1,0 +1,17 @@
+{
+ "scope": "reference_assisted_development_and_controlled_counterexamples_not_frozen",
+ "summary": {
+  "families": 2,
+  "valid_bindings": 2,
+  "wrong_bindings_rejected": 2,
+  "missing_evidence_unknown": 2,
+  "conflicts_unknown": 2,
+  "accepted_but_business_incorrect": 0,
+  "new_llm_calls": 0
+ },
+ "accepted_but_business_incorrect": 0,
+ "new_llm_calls": 0,
+ "sources": [
+  "work/binding_validation_v0.1/analysis.json"
+ ]
+}

@@ -1,0 +1,18 @@
+{
+  "registry_version": "dvsa.registry.v0.6.3",
+  "status": "frozen_for_bwor_validation_with_metadata_and_driver_amendments",
+  "base_registry": {
+    "path": "assets/dvsa/registry_v0.6.2.json",
+    "sha256": "2049cf19386f7d922949747a2d9046080d5da6b0602d7cb4dca797a108053017"
+  },
+  "experiment_configuration_changed": false,
+  "implementation_overrides": {
+    "scripts/dvsa_fixed_arm_analyze.py": "e22ed458435d9660a455c4aa1f904ceddc23e38373ff34cabb9bb5d34071e7e9",
+    "scripts/dvsa_validation_analyze.sh": "2586419d1fcf976f506116b94786b9064e8e22b88d80ba2decb9cace86473e03"
+  },
+  "amendments": [
+    "Use split-specific protocol names, figure titles and fresh-judgment notes.",
+    "Pass the eligible validation IDs explicitly to the natural-repair analyzer."
+  ],
+  "sota_started": false
+}

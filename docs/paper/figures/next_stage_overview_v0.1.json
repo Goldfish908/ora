@@ -1,0 +1,1108 @@
+{
+ "scope": "historical development; not frozen/sealed evaluation",
+ "industryor": {
+  "no_repair": {
+   "n": 7,
+   "correct": 3,
+   "harmed_win": 0
+  },
+  "fixed": {
+   "n": 7,
+   "correct": 5,
+   "harmed_win": 0
+  },
+  "progress": {
+   "n": 7,
+   "correct": 5,
+   "harmed_win": 0
+  }
+ },
+ "bwor": {
+  "no_repair": {
+   "n": 6,
+   "correct": 5,
+   "reference_bound_recoveries": 0,
+   "harmed_win": 0
+  },
+  "fixed": {
+   "n": 6,
+   "correct": 6,
+   "reference_bound_recoveries": 1,
+   "harmed_win": 0
+  },
+  "progress": {
+   "n": 6,
+   "correct": 6,
+   "reference_bound_recoveries": 1,
+   "harmed_win": 0
+  }
+ },
+ "ranker_dev": {
+  "length_only": {
+   "pairs": 38,
+   "scenarios": 10,
+   "covered": 38,
+   "coverage": 1.0,
+   "coverage_wilson_ci95": [
+    0.908190131774416,
+    0.9999999999999999
+   ],
+   "correct": 22,
+   "abstentions": 0,
+   "pairwise_accuracy": 0.5789473684210527,
+   "pairwise_accuracy_wilson_ci95": [
+    0.42192345343670545,
+    0.7214749884224129
+   ],
+   "unconditional_accuracy_abstain_wrong": 0.5789473684210527,
+   "macro_scenario_accuracy": 0.575,
+   "macro_scenario_bootstrap_ci95": [
+    0.4132916666666666,
+    0.7384166666666662
+   ],
+   "accuracy_note": "pairwise_accuracy is conditional on non-abstention; macro_scenario_accuracy weights each covered scenario equally; CI resamples scenario IDs",
+   "by_scenario": [
+    {
+     "scenario_id": "retail_f1_52_weeks_v0",
+     "pairs": 4,
+     "covered": 4,
+     "coverage": 1.0,
+     "correct": 2,
+     "pairwise_accuracy": 0.5
+    },
+    {
+     "scenario_id": "retail_f1_high_waste_v0",
+     "pairs": 2,
+     "covered": 2,
+     "coverage": 1.0,
+     "correct": 2,
+     "pairwise_accuracy": 1.0
+    },
+    {
+     "scenario_id": "retail_f2_cannibalization_v0",
+     "pairs": 5,
+     "covered": 5,
+     "coverage": 1.0,
+     "correct": 4,
+     "pairwise_accuracy": 0.8
+    },
+    {
+     "scenario_id": "retail_f2_no_substitution_v0",
+     "pairs": 3,
+     "covered": 3,
+     "coverage": 1.0,
+     "correct": 1,
+     "pairwise_accuracy": 0.3333333333333333
+    },
+    {
+     "scenario_id": "retail_f2_promo_budget_v0",
+     "pairs": 4,
+     "covered": 4,
+     "coverage": 1.0,
+     "correct": 3,
+     "pairwise_accuracy": 0.75
+    },
+    {
+     "scenario_id": "retail_f3_storage_bottleneck_v0",
+     "pairs": 3,
+     "covered": 3,
+     "coverage": 1.0,
+     "correct": 2,
+     "pairwise_accuracy": 0.6666666666666666
+    },
+    {
+     "scenario_id": "retail_f3_unbalanced_network_v0",
+     "pairs": 5,
+     "covered": 5,
+     "coverage": 1.0,
+     "correct": 4,
+     "pairwise_accuracy": 0.8
+    },
+    {
+     "scenario_id": "retail_f4_demand_surge_v0",
+     "pairs": 5,
+     "covered": 5,
+     "coverage": 1.0,
+     "correct": 2,
+     "pairwise_accuracy": 0.4
+    },
+    {
+     "scenario_id": "retail_f4_peak_failure_v0",
+     "pairs": 4,
+     "covered": 4,
+     "coverage": 1.0,
+     "correct": 2,
+     "pairwise_accuracy": 0.5
+    },
+    {
+     "scenario_id": "retail_f4_robust_variance_v0",
+     "pairs": 3,
+     "covered": 3,
+     "coverage": 1.0,
+     "correct": 0,
+     "pairwise_accuracy": 0.0
+    }
+   ],
+   "length_matched": {
+    "pairs": 31,
+    "scenarios": 9,
+    "covered": 31,
+    "coverage": 1.0,
+    "coverage_wilson_ci95": [
+     0.889744604539564,
+     1.0
+    ],
+    "correct": 19,
+    "abstentions": 0,
+    "pairwise_accuracy": 0.6129032258064516,
+    "pairwise_accuracy_wilson_ci95": [
+     0.4382410861966073,
+     0.7626689857961975
+    ],
+    "unconditional_accuracy_abstain_wrong": 0.6129032258064516,
+    "macro_scenario_accuracy": 0.5944444444444444,
+    "macro_scenario_bootstrap_ci95": [
+     0.3907407407407407,
+     0.7666666666666667
+    ],
+    "accuracy_note": "pairwise_accuracy is conditional on non-abstention; macro_scenario_accuracy weights each covered scenario equally; CI resamples scenario IDs",
+    "relative_char_difference_threshold": 0.05
+   },
+   "by_source": {
+    "factory_pass": {
+     "pairs": 23,
+     "scenarios": 9,
+     "covered": 23,
+     "coverage": 1.0,
+     "coverage_wilson_ci95": [
+      0.8568833815495731,
+      1.0
+     ],
+     "correct": 11,
+     "abstentions": 0,
+     "pairwise_accuracy": 0.4782608695652174,
+     "pairwise_accuracy_wilson_ci95": [
+      0.29237157416646653,
+      0.6703726266357259
+     ],
+     "unconditional_accuracy_abstain_wrong": 0.4782608695652174,
+     "macro_scenario_accuracy": 0.4259259259259259,
+     "macro_scenario_bootstrap_ci95": null,
+     "accuracy_note": "pairwise_accuracy is conditional on non-abstention; macro_scenario_accuracy weights each covered scenario equally; CI resamples scenario IDs"
+    },
+    "rescue_pass": {
+     "pairs": 15,
+     "scenarios": 9,
+     "covered": 15,
+     "coverage": 1.0,
+     "coverage_wilson_ci95": [
+      0.7961166989641515,
+      1.0
+     ],
+     "correct": 11,
+     "abstentions": 0,
+     "pairwise_accuracy": 0.7333333333333333,
+     "pairwise_accuracy_wilson_ci95": [
+      0.4804956594401943,
+      0.8910254667430761
+     ],
+     "unconditional_accuracy_abstain_wrong": 0.7333333333333333,
+     "macro_scenario_accuracy": 0.6666666666666666,
+     "macro_scenario_bootstrap_ci95": null,
+     "accuracy_note": "pairwise_accuracy is conditional on non-abstention; macro_scenario_accuracy weights each covered scenario equally; CI resamples scenario IDs"
+    }
+   },
+   "by_mutant": {
+    "drop_constraint": {
+     "pairs": 11,
+     "scenarios": 7,
+     "covered": 11,
+     "coverage": 1.0,
+     "coverage_wilson_ci95": [
+      0.7411670330319684,
+      1.0
+     ],
+     "correct": 9,
+     "abstentions": 0,
+     "pairwise_accuracy": 0.8181818181818182,
+     "pairwise_accuracy_wilson_ci95": [
+      0.523019438039156,
+      0.9486323102539149
+     ],
+     "unconditional_accuracy_abstain_wrong": 0.8181818181818182,
+     "macro_scenario_accuracy": 0.7142857142857143,
+     "macro_scenario_bootstrap_ci95": null,
+     "accuracy_note": "pairwise_accuracy is conditional on non-abstention; macro_scenario_accuracy weights each covered scenario equally; CI resamples scenario IDs"
+    },
+    "phantom_inventory": {
+     "pairs": 15,
+     "scenarios": 9,
+     "covered": 15,
+     "coverage": 1.0,
+     "coverage_wilson_ci95": [
+      0.7961166989641515,
+      1.0
+     ],
+     "correct": 12,
+     "abstentions": 0,
+     "pairwise_accuracy": 0.8,
+     "pairwise_accuracy_wilson_ci95": [
+      0.5481455128483065,
+      0.9295245065301844
+     ],
+     "unconditional_accuracy_abstain_wrong": 0.8,
+     "macro_scenario_accuracy": 0.8333333333333334,
+     "macro_scenario_bootstrap_ci95": null,
+     "accuracy_note": "pairwise_accuracy is conditional on non-abstention; macro_scenario_accuracy weights each covered scenario equally; CI resamples scenario IDs"
+    },
+    "wrong_constant": {
+     "pairs": 12,
+     "scenarios": 9,
+     "covered": 12,
+     "coverage": 1.0,
+     "coverage_wilson_ci95": [
+      0.7575059933447592,
+      1.0
+     ],
+     "correct": 1,
+     "abstentions": 0,
+     "pairwise_accuracy": 0.08333333333333333,
+     "pairwise_accuracy_wilson_ci95": [
+      0.014865094404917095,
+      0.35387991114111694
+     ],
+     "unconditional_accuracy_abstain_wrong": 0.08333333333333333,
+     "macro_scenario_accuracy": 0.05555555555555555,
+     "macro_scenario_bootstrap_ci95": null,
+     "accuracy_note": "pairwise_accuracy is conditional on non-abstention; macro_scenario_accuracy weights each covered scenario equally; CI resamples scenario IDs"
+    }
+   },
+   "novel_candidate_subset": {
+    "pairs": 34,
+    "scenarios": 10,
+    "covered": 34,
+    "coverage": 1.0,
+    "coverage_wilson_ci95": [
+     0.8984854458466761,
+     0.9999999999999999
+    ],
+    "correct": 21,
+    "abstentions": 0,
+    "pairwise_accuracy": 0.6176470588235294,
+    "pairwise_accuracy_wilson_ci95": [
+     0.450410173444307,
+     0.7609981667549109
+    ],
+    "unconditional_accuracy_abstain_wrong": 0.6176470588235294,
+    "macro_scenario_accuracy": 0.635,
+    "macro_scenario_bootstrap_ci95": [
+     0.45499999999999996,
+     0.8049999999999999
+    ],
+    "accuracy_note": "pairwise_accuracy is conditional on non-abstention; macro_scenario_accuracy weights each covered scenario equally; CI resamples scenario IDs"
+   }
+  },
+  "style_logreg": {
+   "pairs": 38,
+   "scenarios": 10,
+   "covered": 38,
+   "coverage": 1.0,
+   "coverage_wilson_ci95": [
+    0.908190131774416,
+    0.9999999999999999
+   ],
+   "correct": 28,
+   "abstentions": 0,
+   "pairwise_accuracy": 0.7368421052631579,
+   "pairwise_accuracy_wilson_ci95": [
+    0.5799115381253364,
+    0.8502837874520186
+   ],
+   "unconditional_accuracy_abstain_wrong": 0.7368421052631579,
+   "macro_scenario_accuracy": 0.7266666666666667,
+   "macro_scenario_bootstrap_ci95": [
+    0.60825,
+    0.8433333333333334
+   ],
+   "accuracy_note": "pairwise_accuracy is conditional on non-abstention; macro_scenario_accuracy weights each covered scenario equally; CI resamples scenario IDs",
+   "by_scenario": [
+    {
+     "scenario_id": "retail_f1_52_weeks_v0",
+     "pairs": 4,
+     "covered": 4,
+     "coverage": 1.0,
+     "correct": 3,
+     "pairwise_accuracy": 0.75
+    },
+    {
+     "scenario_id": "retail_f1_high_waste_v0",
+     "pairs": 2,
+     "covered": 2,
+     "coverage": 1.0,
+     "correct": 2,
+     "pairwise_accuracy": 1.0
+    },
+    {
+     "scenario_id": "retail_f2_cannibalization_v0",
+     "pairs": 5,
+     "covered": 5,
+     "coverage": 1.0,
+     "correct": 4,
+     "pairwise_accuracy": 0.8
+    },
+    {
+     "scenario_id": "retail_f2_no_substitution_v0",
+     "pairs": 3,
+     "covered": 3,
+     "coverage": 1.0,
+     "correct": 1,
+     "pairwise_accuracy": 0.3333333333333333
+    },
+    {
+     "scenario_id": "retail_f2_promo_budget_v0",
+     "pairs": 4,
+     "covered": 4,
+     "coverage": 1.0,
+     "correct": 3,
+     "pairwise_accuracy": 0.75
+    },
+    {
+     "scenario_id": "retail_f3_storage_bottleneck_v0",
+     "pairs": 3,
+     "covered": 3,
+     "coverage": 1.0,
+     "correct": 2,
+     "pairwise_accuracy": 0.6666666666666666
+    },
+    {
+     "scenario_id": "retail_f3_unbalanced_network_v0",
+     "pairs": 5,
+     "covered": 5,
+     "coverage": 1.0,
+     "correct": 5,
+     "pairwise_accuracy": 1.0
+    },
+    {
+     "scenario_id": "retail_f4_demand_surge_v0",
+     "pairs": 5,
+     "covered": 5,
+     "coverage": 1.0,
+     "correct": 4,
+     "pairwise_accuracy": 0.8
+    },
+    {
+     "scenario_id": "retail_f4_peak_failure_v0",
+     "pairs": 4,
+     "covered": 4,
+     "coverage": 1.0,
+     "correct": 2,
+     "pairwise_accuracy": 0.5
+    },
+    {
+     "scenario_id": "retail_f4_robust_variance_v0",
+     "pairs": 3,
+     "covered": 3,
+     "coverage": 1.0,
+     "correct": 2,
+     "pairwise_accuracy": 0.6666666666666666
+    }
+   ],
+   "length_matched": {
+    "pairs": 31,
+    "scenarios": 9,
+    "covered": 31,
+    "coverage": 1.0,
+    "coverage_wilson_ci95": [
+     0.889744604539564,
+     1.0
+    ],
+    "correct": 23,
+    "abstentions": 0,
+    "pairwise_accuracy": 0.7419354838709677,
+    "pairwise_accuracy_wilson_ci95": [
+     0.5675386419056621,
+     0.8629829409360625
+    ],
+    "unconditional_accuracy_abstain_wrong": 0.7419354838709677,
+    "macro_scenario_accuracy": 0.7462962962962963,
+    "macro_scenario_bootstrap_ci95": [
+     0.5980555555555556,
+     0.8851851851851852
+    ],
+    "accuracy_note": "pairwise_accuracy is conditional on non-abstention; macro_scenario_accuracy weights each covered scenario equally; CI resamples scenario IDs",
+    "relative_char_difference_threshold": 0.05
+   },
+   "by_source": {
+    "factory_pass": {
+     "pairs": 23,
+     "scenarios": 9,
+     "covered": 23,
+     "coverage": 1.0,
+     "coverage_wilson_ci95": [
+      0.8568833815495731,
+      1.0
+     ],
+     "correct": 15,
+     "abstentions": 0,
+     "pairwise_accuracy": 0.6521739130434783,
+     "pairwise_accuracy_wilson_ci95": [
+      0.44890335377263,
+      0.8118872406120227
+     ],
+     "unconditional_accuracy_abstain_wrong": 0.6521739130434783,
+     "macro_scenario_accuracy": 0.574074074074074,
+     "macro_scenario_bootstrap_ci95": null,
+     "accuracy_note": "pairwise_accuracy is conditional on non-abstention; macro_scenario_accuracy weights each covered scenario equally; CI resamples scenario IDs"
+    },
+    "rescue_pass": {
+     "pairs": 15,
+     "scenarios": 9,
+     "covered": 15,
+     "coverage": 1.0,
+     "coverage_wilson_ci95": [
+      0.7961166989641515,
+      1.0
+     ],
+     "correct": 13,
+     "abstentions": 0,
+     "pairwise_accuracy": 0.8666666666666667,
+     "pairwise_accuracy_wilson_ci95": [
+      0.6211801716767764,
+      0.9626387408969346
+     ],
+     "unconditional_accuracy_abstain_wrong": 0.8666666666666667,
+     "macro_scenario_accuracy": 0.7777777777777778,
+     "macro_scenario_bootstrap_ci95": null,
+     "accuracy_note": "pairwise_accuracy is conditional on non-abstention; macro_scenario_accuracy weights each covered scenario equally; CI resamples scenario IDs"
+    }
+   },
+   "by_mutant": {
+    "drop_constraint": {
+     "pairs": 11,
+     "scenarios": 7,
+     "covered": 11,
+     "coverage": 1.0,
+     "coverage_wilson_ci95": [
+      0.7411670330319684,
+      1.0
+     ],
+     "correct": 10,
+     "abstentions": 0,
+     "pairwise_accuracy": 0.9090909090909091,
+     "pairwise_accuracy_wilson_ci95": [
+      0.6226415635484043,
+      0.9837678271141151
+     ],
+     "unconditional_accuracy_abstain_wrong": 0.9090909090909091,
+     "macro_scenario_accuracy": 0.8571428571428571,
+     "macro_scenario_bootstrap_ci95": null,
+     "accuracy_note": "pairwise_accuracy is conditional on non-abstention; macro_scenario_accuracy weights each covered scenario equally; CI resamples scenario IDs"
+    },
+    "phantom_inventory": {
+     "pairs": 15,
+     "scenarios": 9,
+     "covered": 15,
+     "coverage": 1.0,
+     "coverage_wilson_ci95": [
+      0.7961166989641515,
+      1.0
+     ],
+     "correct": 14,
+     "abstentions": 0,
+     "pairwise_accuracy": 0.9333333333333333,
+     "pairwise_accuracy_wilson_ci95": [
+      0.7018347012621998,
+      0.9881331045067315
+     ],
+     "unconditional_accuracy_abstain_wrong": 0.9333333333333333,
+     "macro_scenario_accuracy": 0.9444444444444444,
+     "macro_scenario_bootstrap_ci95": null,
+     "accuracy_note": "pairwise_accuracy is conditional on non-abstention; macro_scenario_accuracy weights each covered scenario equally; CI resamples scenario IDs"
+    },
+    "wrong_constant": {
+     "pairs": 12,
+     "scenarios": 9,
+     "covered": 12,
+     "coverage": 1.0,
+     "coverage_wilson_ci95": [
+      0.7575059933447592,
+      1.0
+     ],
+     "correct": 4,
+     "abstentions": 0,
+     "pairwise_accuracy": 0.3333333333333333,
+     "pairwise_accuracy_wilson_ci95": [
+      0.13812009109121315,
+      0.6093779111272004
+     ],
+     "unconditional_accuracy_abstain_wrong": 0.3333333333333333,
+     "macro_scenario_accuracy": 0.2777777777777778,
+     "macro_scenario_bootstrap_ci95": null,
+     "accuracy_note": "pairwise_accuracy is conditional on non-abstention; macro_scenario_accuracy weights each covered scenario equally; CI resamples scenario IDs"
+    }
+   },
+   "novel_candidate_subset": {
+    "pairs": 34,
+    "scenarios": 10,
+    "covered": 34,
+    "coverage": 1.0,
+    "coverage_wilson_ci95": [
+     0.8984854458466761,
+     0.9999999999999999
+    ],
+    "correct": 25,
+    "abstentions": 0,
+    "pairwise_accuracy": 0.7352941176470589,
+    "pairwise_accuracy_wilson_ci95": [
+     0.5688285871705534,
+     0.8539880932278825
+    ],
+    "unconditional_accuracy_abstain_wrong": 0.7352941176470589,
+    "macro_scenario_accuracy": 0.7466666666666667,
+    "macro_scenario_bootstrap_ci95": [
+     0.6166666666666666,
+     0.8716666666666667
+    ],
+    "accuracy_note": "pairwise_accuracy is conditional on non-abstention; macro_scenario_accuracy weights each covered scenario equally; CI resamples scenario IDs"
+   }
+  },
+  "ast_logreg": {
+   "pairs": 38,
+   "scenarios": 10,
+   "covered": 38,
+   "coverage": 1.0,
+   "coverage_wilson_ci95": [
+    0.908190131774416,
+    0.9999999999999999
+   ],
+   "correct": 38,
+   "abstentions": 0,
+   "pairwise_accuracy": 1.0,
+   "pairwise_accuracy_wilson_ci95": [
+    0.908190131774416,
+    0.9999999999999999
+   ],
+   "unconditional_accuracy_abstain_wrong": 1.0,
+   "macro_scenario_accuracy": 1.0,
+   "macro_scenario_bootstrap_ci95": [
+    1.0,
+    1.0
+   ],
+   "accuracy_note": "pairwise_accuracy is conditional on non-abstention; macro_scenario_accuracy weights each covered scenario equally; CI resamples scenario IDs",
+   "by_scenario": [
+    {
+     "scenario_id": "retail_f1_52_weeks_v0",
+     "pairs": 4,
+     "covered": 4,
+     "coverage": 1.0,
+     "correct": 4,
+     "pairwise_accuracy": 1.0
+    },
+    {
+     "scenario_id": "retail_f1_high_waste_v0",
+     "pairs": 2,
+     "covered": 2,
+     "coverage": 1.0,
+     "correct": 2,
+     "pairwise_accuracy": 1.0
+    },
+    {
+     "scenario_id": "retail_f2_cannibalization_v0",
+     "pairs": 5,
+     "covered": 5,
+     "coverage": 1.0,
+     "correct": 5,
+     "pairwise_accuracy": 1.0
+    },
+    {
+     "scenario_id": "retail_f2_no_substitution_v0",
+     "pairs": 3,
+     "covered": 3,
+     "coverage": 1.0,
+     "correct": 3,
+     "pairwise_accuracy": 1.0
+    },
+    {
+     "scenario_id": "retail_f2_promo_budget_v0",
+     "pairs": 4,
+     "covered": 4,
+     "coverage": 1.0,
+     "correct": 4,
+     "pairwise_accuracy": 1.0
+    },
+    {
+     "scenario_id": "retail_f3_storage_bottleneck_v0",
+     "pairs": 3,
+     "covered": 3,
+     "coverage": 1.0,
+     "correct": 3,
+     "pairwise_accuracy": 1.0
+    },
+    {
+     "scenario_id": "retail_f3_unbalanced_network_v0",
+     "pairs": 5,
+     "covered": 5,
+     "coverage": 1.0,
+     "correct": 5,
+     "pairwise_accuracy": 1.0
+    },
+    {
+     "scenario_id": "retail_f4_demand_surge_v0",
+     "pairs": 5,
+     "covered": 5,
+     "coverage": 1.0,
+     "correct": 5,
+     "pairwise_accuracy": 1.0
+    },
+    {
+     "scenario_id": "retail_f4_peak_failure_v0",
+     "pairs": 4,
+     "covered": 4,
+     "coverage": 1.0,
+     "correct": 4,
+     "pairwise_accuracy": 1.0
+    },
+    {
+     "scenario_id": "retail_f4_robust_variance_v0",
+     "pairs": 3,
+     "covered": 3,
+     "coverage": 1.0,
+     "correct": 3,
+     "pairwise_accuracy": 1.0
+    }
+   ],
+   "length_matched": {
+    "pairs": 31,
+    "scenarios": 9,
+    "covered": 31,
+    "coverage": 1.0,
+    "coverage_wilson_ci95": [
+     0.889744604539564,
+     1.0
+    ],
+    "correct": 31,
+    "abstentions": 0,
+    "pairwise_accuracy": 1.0,
+    "pairwise_accuracy_wilson_ci95": [
+     0.889744604539564,
+     1.0
+    ],
+    "unconditional_accuracy_abstain_wrong": 1.0,
+    "macro_scenario_accuracy": 1.0,
+    "macro_scenario_bootstrap_ci95": [
+     1.0,
+     1.0
+    ],
+    "accuracy_note": "pairwise_accuracy is conditional on non-abstention; macro_scenario_accuracy weights each covered scenario equally; CI resamples scenario IDs",
+    "relative_char_difference_threshold": 0.05
+   },
+   "by_source": {
+    "factory_pass": {
+     "pairs": 23,
+     "scenarios": 9,
+     "covered": 23,
+     "coverage": 1.0,
+     "coverage_wilson_ci95": [
+      0.8568833815495731,
+      1.0
+     ],
+     "correct": 23,
+     "abstentions": 0,
+     "pairwise_accuracy": 1.0,
+     "pairwise_accuracy_wilson_ci95": [
+      0.8568833815495731,
+      1.0
+     ],
+     "unconditional_accuracy_abstain_wrong": 1.0,
+     "macro_scenario_accuracy": 1.0,
+     "macro_scenario_bootstrap_ci95": null,
+     "accuracy_note": "pairwise_accuracy is conditional on non-abstention; macro_scenario_accuracy weights each covered scenario equally; CI resamples scenario IDs"
+    },
+    "rescue_pass": {
+     "pairs": 15,
+     "scenarios": 9,
+     "covered": 15,
+     "coverage": 1.0,
+     "coverage_wilson_ci95": [
+      0.7961166989641515,
+      1.0
+     ],
+     "correct": 15,
+     "abstentions": 0,
+     "pairwise_accuracy": 1.0,
+     "pairwise_accuracy_wilson_ci95": [
+      0.7961166989641515,
+      1.0
+     ],
+     "unconditional_accuracy_abstain_wrong": 1.0,
+     "macro_scenario_accuracy": 1.0,
+     "macro_scenario_bootstrap_ci95": null,
+     "accuracy_note": "pairwise_accuracy is conditional on non-abstention; macro_scenario_accuracy weights each covered scenario equally; CI resamples scenario IDs"
+    }
+   },
+   "by_mutant": {
+    "drop_constraint": {
+     "pairs": 11,
+     "scenarios": 7,
+     "covered": 11,
+     "coverage": 1.0,
+     "coverage_wilson_ci95": [
+      0.7411670330319684,
+      1.0
+     ],
+     "correct": 11,
+     "abstentions": 0,
+     "pairwise_accuracy": 1.0,
+     "pairwise_accuracy_wilson_ci95": [
+      0.7411670330319684,
+      1.0
+     ],
+     "unconditional_accuracy_abstain_wrong": 1.0,
+     "macro_scenario_accuracy": 1.0,
+     "macro_scenario_bootstrap_ci95": null,
+     "accuracy_note": "pairwise_accuracy is conditional on non-abstention; macro_scenario_accuracy weights each covered scenario equally; CI resamples scenario IDs"
+    },
+    "phantom_inventory": {
+     "pairs": 15,
+     "scenarios": 9,
+     "covered": 15,
+     "coverage": 1.0,
+     "coverage_wilson_ci95": [
+      0.7961166989641515,
+      1.0
+     ],
+     "correct": 15,
+     "abstentions": 0,
+     "pairwise_accuracy": 1.0,
+     "pairwise_accuracy_wilson_ci95": [
+      0.7961166989641515,
+      1.0
+     ],
+     "unconditional_accuracy_abstain_wrong": 1.0,
+     "macro_scenario_accuracy": 1.0,
+     "macro_scenario_bootstrap_ci95": null,
+     "accuracy_note": "pairwise_accuracy is conditional on non-abstention; macro_scenario_accuracy weights each covered scenario equally; CI resamples scenario IDs"
+    },
+    "wrong_constant": {
+     "pairs": 12,
+     "scenarios": 9,
+     "covered": 12,
+     "coverage": 1.0,
+     "coverage_wilson_ci95": [
+      0.7575059933447592,
+      1.0
+     ],
+     "correct": 12,
+     "abstentions": 0,
+     "pairwise_accuracy": 1.0,
+     "pairwise_accuracy_wilson_ci95": [
+      0.7575059933447592,
+      1.0
+     ],
+     "unconditional_accuracy_abstain_wrong": 1.0,
+     "macro_scenario_accuracy": 1.0,
+     "macro_scenario_bootstrap_ci95": null,
+     "accuracy_note": "pairwise_accuracy is conditional on non-abstention; macro_scenario_accuracy weights each covered scenario equally; CI resamples scenario IDs"
+    }
+   },
+   "novel_candidate_subset": {
+    "pairs": 34,
+    "scenarios": 10,
+    "covered": 34,
+    "coverage": 1.0,
+    "coverage_wilson_ci95": [
+     0.8984854458466761,
+     0.9999999999999999
+    ],
+    "correct": 34,
+    "abstentions": 0,
+    "pairwise_accuracy": 1.0,
+    "pairwise_accuracy_wilson_ci95": [
+     0.8984854458466761,
+     0.9999999999999999
+    ],
+    "unconditional_accuracy_abstain_wrong": 1.0,
+    "macro_scenario_accuracy": 1.0,
+    "macro_scenario_bootstrap_ci95": [
+     1.0,
+     1.0
+    ],
+    "accuracy_note": "pairwise_accuracy is conditional on non-abstention; macro_scenario_accuracy weights each covered scenario equally; CI resamples scenario IDs"
+   }
+  },
+  "tfidf_logreg": {
+   "pairs": 38,
+   "scenarios": 10,
+   "covered": 38,
+   "coverage": 1.0,
+   "coverage_wilson_ci95": [
+    0.908190131774416,
+    0.9999999999999999
+   ],
+   "correct": 35,
+   "abstentions": 0,
+   "pairwise_accuracy": 0.9210526315789473,
+   "pairwise_accuracy_wilson_ci95": [
+    0.7920062854222853,
+    0.9727854044930122
+   ],
+   "unconditional_accuracy_abstain_wrong": 0.9210526315789473,
+   "macro_scenario_accuracy": 0.9083333333333332,
+   "macro_scenario_bootstrap_ci95": [
+    0.8166666666666667,
+    0.975
+   ],
+   "accuracy_note": "pairwise_accuracy is conditional on non-abstention; macro_scenario_accuracy weights each covered scenario equally; CI resamples scenario IDs",
+   "by_scenario": [
+    {
+     "scenario_id": "retail_f1_52_weeks_v0",
+     "pairs": 4,
+     "covered": 4,
+     "coverage": 1.0,
+     "correct": 3,
+     "pairwise_accuracy": 0.75
+    },
+    {
+     "scenario_id": "retail_f1_high_waste_v0",
+     "pairs": 2,
+     "covered": 2,
+     "coverage": 1.0,
+     "correct": 2,
+     "pairwise_accuracy": 1.0
+    },
+    {
+     "scenario_id": "retail_f2_cannibalization_v0",
+     "pairs": 5,
+     "covered": 5,
+     "coverage": 1.0,
+     "correct": 5,
+     "pairwise_accuracy": 1.0
+    },
+    {
+     "scenario_id": "retail_f2_no_substitution_v0",
+     "pairs": 3,
+     "covered": 3,
+     "coverage": 1.0,
+     "correct": 2,
+     "pairwise_accuracy": 0.6666666666666666
+    },
+    {
+     "scenario_id": "retail_f2_promo_budget_v0",
+     "pairs": 4,
+     "covered": 4,
+     "coverage": 1.0,
+     "correct": 4,
+     "pairwise_accuracy": 1.0
+    },
+    {
+     "scenario_id": "retail_f3_storage_bottleneck_v0",
+     "pairs": 3,
+     "covered": 3,
+     "coverage": 1.0,
+     "correct": 3,
+     "pairwise_accuracy": 1.0
+    },
+    {
+     "scenario_id": "retail_f3_unbalanced_network_v0",
+     "pairs": 5,
+     "covered": 5,
+     "coverage": 1.0,
+     "correct": 5,
+     "pairwise_accuracy": 1.0
+    },
+    {
+     "scenario_id": "retail_f4_demand_surge_v0",
+     "pairs": 5,
+     "covered": 5,
+     "coverage": 1.0,
+     "correct": 5,
+     "pairwise_accuracy": 1.0
+    },
+    {
+     "scenario_id": "retail_f4_peak_failure_v0",
+     "pairs": 4,
+     "covered": 4,
+     "coverage": 1.0,
+     "correct": 4,
+     "pairwise_accuracy": 1.0
+    },
+    {
+     "scenario_id": "retail_f4_robust_variance_v0",
+     "pairs": 3,
+     "covered": 3,
+     "coverage": 1.0,
+     "correct": 2,
+     "pairwise_accuracy": 0.6666666666666666
+    }
+   ],
+   "length_matched": {
+    "pairs": 31,
+    "scenarios": 9,
+    "covered": 31,
+    "coverage": 1.0,
+    "coverage_wilson_ci95": [
+     0.889744604539564,
+     1.0
+    ],
+    "correct": 29,
+    "abstentions": 0,
+    "pairwise_accuracy": 0.9354838709677419,
+    "pairwise_accuracy_wilson_ci95": [
+     0.7928136326370188,
+     0.9821252164780854
+    ],
+    "unconditional_accuracy_abstain_wrong": 0.9354838709677419,
+    "macro_scenario_accuracy": 0.9259259259259258,
+    "macro_scenario_bootstrap_ci95": [
+     0.8148148148148148,
+     1.0
+    ],
+    "accuracy_note": "pairwise_accuracy is conditional on non-abstention; macro_scenario_accuracy weights each covered scenario equally; CI resamples scenario IDs",
+    "relative_char_difference_threshold": 0.05
+   },
+   "by_source": {
+    "factory_pass": {
+     "pairs": 23,
+     "scenarios": 9,
+     "covered": 23,
+     "coverage": 1.0,
+     "coverage_wilson_ci95": [
+      0.8568833815495731,
+      1.0
+     ],
+     "correct": 23,
+     "abstentions": 0,
+     "pairwise_accuracy": 1.0,
+     "pairwise_accuracy_wilson_ci95": [
+      0.8568833815495731,
+      1.0
+     ],
+     "unconditional_accuracy_abstain_wrong": 1.0,
+     "macro_scenario_accuracy": 1.0,
+     "macro_scenario_bootstrap_ci95": null,
+     "accuracy_note": "pairwise_accuracy is conditional on non-abstention; macro_scenario_accuracy weights each covered scenario equally; CI resamples scenario IDs"
+    },
+    "rescue_pass": {
+     "pairs": 15,
+     "scenarios": 9,
+     "covered": 15,
+     "coverage": 1.0,
+     "coverage_wilson_ci95": [
+      0.7961166989641515,
+      1.0
+     ],
+     "correct": 12,
+     "abstentions": 0,
+     "pairwise_accuracy": 0.8,
+     "pairwise_accuracy_wilson_ci95": [
+      0.5481455128483065,
+      0.9295245065301844
+     ],
+     "unconditional_accuracy_abstain_wrong": 0.8,
+     "macro_scenario_accuracy": 0.7222222222222222,
+     "macro_scenario_bootstrap_ci95": null,
+     "accuracy_note": "pairwise_accuracy is conditional on non-abstention; macro_scenario_accuracy weights each covered scenario equally; CI resamples scenario IDs"
+    }
+   },
+   "by_mutant": {
+    "drop_constraint": {
+     "pairs": 11,
+     "scenarios": 7,
+     "covered": 11,
+     "coverage": 1.0,
+     "coverage_wilson_ci95": [
+      0.7411670330319684,
+      1.0
+     ],
+     "correct": 10,
+     "abstentions": 0,
+     "pairwise_accuracy": 0.9090909090909091,
+     "pairwise_accuracy_wilson_ci95": [
+      0.6226415635484043,
+      0.9837678271141151
+     ],
+     "unconditional_accuracy_abstain_wrong": 0.9090909090909091,
+     "macro_scenario_accuracy": 0.8571428571428571,
+     "macro_scenario_bootstrap_ci95": null,
+     "accuracy_note": "pairwise_accuracy is conditional on non-abstention; macro_scenario_accuracy weights each covered scenario equally; CI resamples scenario IDs"
+    },
+    "phantom_inventory": {
+     "pairs": 15,
+     "scenarios": 9,
+     "covered": 15,
+     "coverage": 1.0,
+     "coverage_wilson_ci95": [
+      0.7961166989641515,
+      1.0
+     ],
+     "correct": 14,
+     "abstentions": 0,
+     "pairwise_accuracy": 0.9333333333333333,
+     "pairwise_accuracy_wilson_ci95": [
+      0.7018347012621998,
+      0.9881331045067315
+     ],
+     "unconditional_accuracy_abstain_wrong": 0.9333333333333333,
+     "macro_scenario_accuracy": 0.9444444444444444,
+     "macro_scenario_bootstrap_ci95": null,
+     "accuracy_note": "pairwise_accuracy is conditional on non-abstention; macro_scenario_accuracy weights each covered scenario equally; CI resamples scenario IDs"
+    },
+    "wrong_constant": {
+     "pairs": 12,
+     "scenarios": 9,
+     "covered": 12,
+     "coverage": 1.0,
+     "coverage_wilson_ci95": [
+      0.7575059933447592,
+      1.0
+     ],
+     "correct": 11,
+     "abstentions": 0,
+     "pairwise_accuracy": 0.9166666666666666,
+     "pairwise_accuracy_wilson_ci95": [
+      0.646120088858883,
+      0.9851349055950829
+     ],
+     "unconditional_accuracy_abstain_wrong": 0.9166666666666666,
+     "macro_scenario_accuracy": 0.9444444444444444,
+     "macro_scenario_bootstrap_ci95": null,
+     "accuracy_note": "pairwise_accuracy is conditional on non-abstention; macro_scenario_accuracy weights each covered scenario equally; CI resamples scenario IDs"
+    }
+   },
+   "novel_candidate_subset": {
+    "pairs": 34,
+    "scenarios": 10,
+    "covered": 34,
+    "coverage": 1.0,
+    "coverage_wilson_ci95": [
+     0.8984854458466761,
+     0.9999999999999999
+    ],
+    "correct": 31,
+    "abstentions": 0,
+    "pairwise_accuracy": 0.9117647058823529,
+    "pairwise_accuracy_wilson_ci95": [
+     0.7703951343719113,
+     0.9695340563253514
+    ],
+    "unconditional_accuracy_abstain_wrong": 0.9117647058823529,
+    "macro_scenario_accuracy": 0.9083333333333332,
+    "macro_scenario_bootstrap_ci95": [
+     0.8166666666666667,
+     1.0
+    ],
+    "accuracy_note": "pairwise_accuracy is conditional on non-abstention; macro_scenario_accuracy weights each covered scenario equally; CI resamples scenario IDs"
+   }
+  }
+ },
+ "tfidf_independent_top_choice": {
+  "passed": 35,
+  "attempted": 38
+ },
+ "sources": [
+  "work/industryor_scoped_loop_v0.5/analysis.json",
+  "work/bwor_scoped_loop_v0.1/summary.json",
+  "work/repair_ranker_v0.1/metrics.json",
+  "work/repair_ranker_v0.1/top_choice_validation.json"
+ ]
+}

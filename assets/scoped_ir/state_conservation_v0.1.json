@@ -1,0 +1,31 @@
+{
+ "mechanism_id": "state_conservation",
+ "version": "0.1.0",
+ "status": "candidate",
+ "scope": {"constraint_kind": "state_initialization_and_flow_balance"},
+ "source": {"type": "explicit_or_independently_validated_domain", "reference": "state_boundary_and_conservation"},
+ "validation": {
+  "question": "Starting stock is zero and next stock equals stock plus production minus demand.",
+  "clean": {
+   "variables": {"stock_0": 0.0, "stock_1": 4.0, "production": 5.0, "demand": 1.0},
+   "objective": 0.0
+  },
+  "wrong_initial": {
+   "variables": {"stock_0": 3.0, "stock_1": 7.0, "production": 5.0, "demand": 1.0},
+   "objective": 0.0
+  },
+  "wrong_flow": {
+   "variables": {"stock_0": 0.0, "stock_1": 3.0, "production": 5.0, "demand": 1.0},
+   "objective": 0.0
+  },
+  "binding": {
+   "initial": {"path": "solution.variables.stock_0", "value": 0},
+   "next": {"path": "solution.variables.stock_1"},
+   "previous": {"path": "solution.variables.stock_0"},
+   "inflows": [{"path": "solution.variables.production"}],
+   "outflows": [{"path": "solution.variables.demand"}],
+   "source_span": "Starting stock is zero",
+   "flow_source_span": "next stock equals stock plus production minus demand."
+  }
+ }
+}

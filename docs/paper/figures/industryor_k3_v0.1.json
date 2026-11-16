@@ -1,0 +1,61 @@
+{
+ "scope": "development_new_samples_not_heldout",
+ "n": 100,
+ "summary": {
+  "n": 100,
+  "runner_errors": 0,
+  "k1_matches": 60,
+  "k3_selected_matches": 66,
+  "k3_oracle_matches_not_deployable": 70,
+  "selection_missed_pool": 4,
+  "k1_business_correct": 2,
+  "k3_selected_business_correct": 3,
+  "k3_pool_business_correct": 3,
+  "business_unverified": 92,
+  "selector_fallbacks": 0,
+  "selector_choice_mismatches": 15,
+  "cost_k1": {
+   "logical_llm_calls": 106,
+   "new_llm_calls": 106,
+   "api_attempts": 106,
+   "completion_tokens": 331806,
+   "total_tokens": 456444,
+   "llm_latency_s": 3432.4829999999997,
+   "new_llm_latency_s": 3432.4829999999997
+  },
+  "cost_k3": {
+   "logical_llm_calls": 414,
+   "new_llm_calls": 414,
+   "api_attempts": 414,
+   "completion_tokens": 1342532,
+   "total_tokens": 1983788,
+   "llm_latency_s": 13882.933000000003,
+   "new_llm_latency_s": 13882.933000000003
+  },
+  "wall_seconds": 3555.285
+ },
+ "validation": {
+  "results": 100,
+  "candidate_generations_verified": 300,
+  "selector_records_verified": 97,
+  "business_scores_recomputed": 24,
+  "source_snapshots_verified": 6,
+  "analysis_sha256": "75d9930ea1f84263404e5bb3bbf36b06a183d9807a2c9586eb5f169f9f99c600"
+ },
+ "selection_missed_pool_ids": [
+  28,
+  33,
+  41,
+  49
+ ],
+ "claims": {
+  "sota": false,
+  "oracle_is_deployable": false,
+  "memory": false,
+  "extra_repair": false
+ },
+ "sources": [
+  "work/industryor_k3_dev_v0.1/analysis.json",
+  "work/industryor_k3_dev_v0.1/manifest.json"
+ ]
+}

@@ -1,0 +1,36 @@
+{
+  "asset_id": "retailopt.initial_inventory_zero",
+  "schema_version": "dvsa.expr.v0.1",
+  "asset_version": "0.1.0",
+  "status": "candidate",
+  "source": {
+    "type": "domain_modeling_convention",
+    "reference": "RetailOpt initial-inventory convention and legacy C-INIT",
+    "excerpt": "Inventory is tracked by remaining life at the start of each period; r=shelf_life is the freshest bucket. Older buckets must not be initialized with invented stock."
+  },
+  "text": "At period 1, inventory in every older bucket with remaining life r < shelf_life[p] must be zero for every product and location. Do not initialize aged stock from a guessed demand or capacity number. The freshest bucket is handled separately by the fresh-inflow equation and is not covered by this asset.",
+  "scope": {
+    "domain": "retailopt",
+    "required_data": ["products", "locations", "shelf_life"],
+    "required_solution": ["I"]
+  },
+  "invariant_id": "C-INIT",
+  "forall": {
+    "p": {"path": "data.products"},
+    "l": {"path": "data.locations"},
+    "r": {"range": [1, {"index": {"value": {"path": "data.shelf_life"}, "at": {"var": "p"}}}]}
+  },
+  "relation": "eq",
+  "lhs": {"lookup": {
+    "path": "solution.I",
+    "key": [{"var": "p"}, {"var": "l"}, 1, {"var": "r"}],
+    "default": 0
+  }},
+  "rhs": 0,
+  "tolerance": {"abs": 0.0001, "rel": 0.0001},
+  "validation": {
+    "status": "candidate_for_natural_dev_repair",
+    "promotion": "not_promoted",
+    "note": "This is a declared RetailOpt modeling convention, not a universally valid inventory rule or independent semantic truth."
+  }
+}

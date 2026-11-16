@@ -1,0 +1,5507 @@
+{
+ "run_config": {
+  "ids": [
+   1,
+   4,
+   8,
+   20
+  ],
+  "arms": [
+   "structured",
+   "structured_dag"
+  ],
+  "model": "Qwen3_8-27B",
+  "base_url": "https://10.46.124.101/service-large-50-1789958762589/llm/v1",
+  "exposure": "development_new_samples_not_heldout",
+  "method": "COOPA-inspired structured iterative formulation; not an official COOPA run",
+  "dataset_sha256": "5b889e49d9aa64ae5b368bc80a05ee71a1daf20d126f54efc6207c98f9095f36",
+  "protocol_sha256": "d8dc29c339290f9633e5f623f9b070c4a519b2e1ecee7331ba5ed91a6b9eb1b2",
+  "implementation_sha256": {
+   "scripts/industryor_structured_pipeline.py": "6f1802c5e76f6d6bcc3048dc27ba4434901e4e613e56c4c3eb9b775dbf00ace9",
+   "ora_agent/structured_models.py": "5af7fc8ca18299e7c3c844b79282ee0e5d49553b96aef4ac64114f0cfd3179b8",
+   "scripts/industryor_k3_pipeline.py": "7eef88681f1aa649991fa34fdde7ec5dc8f23872f4ae095b7990274487a5d746",
+   "scripts/industryor_semantic_dag.py": "3b8f3c50d846357e101bda724cb06f194a5973803f2e95faac653b9fad73fffc",
+   "ora_agent/semantic_dag.py": "831a0f1e5e3cead974a78ad4d2bc66c81319ad113b39bf1d7f38cd9b1c590256",
+   "ora_agent/semantic_binding.py": "a48286c347662e7ce09389d0b284d9d9270e7f5fe27e9f32296785d06fc22687",
+   "scripts/industryor_next_stage.py": "8daba1b593668d890978337f7215a520c363e3027eb2e34587ef4738fa20d7b7",
+   "scripts/m1_pilot.py": "f687c8f2daa2c55eb22a22a91dba169c1440acab9b6a23f8d0f079cbb8c7509a",
+   "ora_agent/llm.py": "eb2b6f6ebc36813149d52ea1a109addd51cb02419c53f7427de7c7a712d7aa18"
+  }
+ },
+ "summary": {
+  "n_problems": 4,
+  "wall_seconds": 489.101,
+  "arms": {
+   "structured": {
+    "n": 4,
+    "runner_errors": 2,
+    "first_matches": 2,
+    "selected_matches": 2,
+    "first_business_correct": 2,
+    "business_correct": 2,
+    "business_unverified": 1,
+    "cost": {
+     "logical_llm_calls": 16,
+     "new_llm_calls": 16,
+     "api_attempts": 16,
+     "completion_tokens": 30465,
+     "total_tokens": 77380,
+     "llm_latency_s": 315.735,
+     "new_llm_latency_s": 315.735
+    }
+   },
+   "structured_dag": {
+    "n": 4,
+    "runner_errors": 2,
+    "first_matches": 2,
+    "selected_matches": 2,
+    "first_business_correct": 2,
+    "business_correct": 2,
+    "business_unverified": 1,
+    "cost": {
+     "logical_llm_calls": 16,
+     "new_llm_calls": 16,
+     "api_attempts": 16,
+     "completion_tokens": 30465,
+     "total_tokens": 77380,
+     "llm_latency_s": 315.735,
+     "new_llm_latency_s": 315.735
+    }
+   }
+  }
+ },
+ "results": [
+  {
+   "id": 1,
+   "arm": "structured",
+   "run_config": {
+    "ids": [
+     1,
+     4,
+     8,
+     20
+    ],
+    "arms": [
+     "structured",
+     "structured_dag"
+    ],
+    "model": "Qwen3_8-27B",
+    "base_url": "https://10.46.124.101/service-large-50-1789958762589/llm/v1",
+    "exposure": "development_new_samples_not_heldout",
+    "method": "COOPA-inspired structured iterative formulation; not an official COOPA run",
+    "dataset_sha256": "5b889e49d9aa64ae5b368bc80a05ee71a1daf20d126f54efc6207c98f9095f36",
+    "protocol_sha256": "d8dc29c339290f9633e5f623f9b070c4a519b2e1ecee7331ba5ed91a6b9eb1b2",
+    "implementation_sha256": {
+     "scripts/industryor_structured_pipeline.py": "6f1802c5e76f6d6bcc3048dc27ba4434901e4e613e56c4c3eb9b775dbf00ace9",
+     "ora_agent/structured_models.py": "5af7fc8ca18299e7c3c844b79282ee0e5d49553b96aef4ac64114f0cfd3179b8",
+     "scripts/industryor_k3_pipeline.py": "7eef88681f1aa649991fa34fdde7ec5dc8f23872f4ae095b7990274487a5d746",
+     "scripts/industryor_semantic_dag.py": "3b8f3c50d846357e101bda724cb06f194a5973803f2e95faac653b9fad73fffc",
+     "ora_agent/semantic_dag.py": "831a0f1e5e3cead974a78ad4d2bc66c81319ad113b39bf1d7f38cd9b1c590256",
+     "ora_agent/semantic_binding.py": "a48286c347662e7ce09389d0b284d9d9270e7f5fe27e9f32296785d06fc22687",
+     "scripts/industryor_next_stage.py": "8daba1b593668d890978337f7215a520c363e3027eb2e34587ef4738fa20d7b7",
+     "scripts/m1_pilot.py": "f687c8f2daa2c55eb22a22a91dba169c1440acab9b6a23f8d0f079cbb8c7509a",
+     "ora_agent/llm.py": "eb2b6f6ebc36813149d52ea1a109addd51cb02419c53f7427de7c7a712d7aa18"
+    }
+   },
+   "status": "runner_error",
+   "error": "RuntimeError: LLMRequestError: LLM request failed with HTTP 405: <html>\r\n<head><title>405 Not Allowed</title></head>\r\n<body>\r\n<center><h1>405 Not Allowed</h1></center>\r\n<hr><center>nginx/1.19.1</center>\r\n</body>\r\n</html>\r\n",
+   "reference": 219888.0,
+   "match": false,
+   "first_match": false,
+   "first_business_correct": false,
+   "business_correct": false,
+   "business_unverified": true,
+   "public_answer_used_for_selection": false,
+   "cost": {
+    "logical_llm_calls": 0,
+    "new_llm_calls": 0,
+    "api_attempts": 0,
+    "completion_tokens": 0,
+    "total_tokens": 0,
+    "llm_latency_s": 0,
+    "new_llm_latency_s": 0
+   }
+  },
+  {
+   "id": 1,
+   "arm": "structured_dag",
+   "run_config": {
+    "ids": [
+     1,
+     4,
+     8,
+     20
+    ],
+    "arms": [
+     "structured",
+     "structured_dag"
+    ],
+    "model": "Qwen3_8-27B",
+    "base_url": "https://10.46.124.101/service-large-50-1789958762589/llm/v1",
+    "exposure": "development_new_samples_not_heldout",
+    "method": "COOPA-inspired structured iterative formulation; not an official COOPA run",
+    "dataset_sha256": "5b889e49d9aa64ae5b368bc80a05ee71a1daf20d126f54efc6207c98f9095f36",
+    "protocol_sha256": "d8dc29c339290f9633e5f623f9b070c4a519b2e1ecee7331ba5ed91a6b9eb1b2",
+    "implementation_sha256": {
+     "scripts/industryor_structured_pipeline.py": "6f1802c5e76f6d6bcc3048dc27ba4434901e4e613e56c4c3eb9b775dbf00ace9",
+     "ora_agent/structured_models.py": "5af7fc8ca18299e7c3c844b79282ee0e5d49553b96aef4ac64114f0cfd3179b8",
+     "scripts/industryor_k3_pipeline.py": "7eef88681f1aa649991fa34fdde7ec5dc8f23872f4ae095b7990274487a5d746",
+     "scripts/industryor_semantic_dag.py": "3b8f3c50d846357e101bda724cb06f194a5973803f2e95faac653b9fad73fffc",
+     "ora_agent/semantic_dag.py": "831a0f1e5e3cead974a78ad4d2bc66c81319ad113b39bf1d7f38cd9b1c590256",
+     "ora_agent/semantic_binding.py": "a48286c347662e7ce09389d0b284d9d9270e7f5fe27e9f32296785d06fc22687",
+     "scripts/industryor_next_stage.py": "8daba1b593668d890978337f7215a520c363e3027eb2e34587ef4738fa20d7b7",
+     "scripts/m1_pilot.py": "f687c8f2daa2c55eb22a22a91dba169c1440acab9b6a23f8d0f079cbb8c7509a",
+     "ora_agent/llm.py": "eb2b6f6ebc36813149d52ea1a109addd51cb02419c53f7427de7c7a712d7aa18"
+    }
+   },
+   "status": "runner_error",
+   "error": "RuntimeError: LLMRequestError: LLM request failed with HTTP 405: <html>\r\n<head><title>405 Not Allowed</title></head>\r\n<body>\r\n<center><h1>405 Not Allowed</h1></center>\r\n<hr><center>nginx/1.19.1</center>\r\n</body>\r\n</html>\r\n",
+   "reference": 219888.0,
+   "match": false,
+   "first_match": false,
+   "first_business_correct": false,
+   "business_correct": false,
+   "business_unverified": true,
+   "public_answer_used_for_selection": false,
+   "cost": {
+    "logical_llm_calls": 0,
+    "new_llm_calls": 0,
+    "api_attempts": 0,
+    "completion_tokens": 0,
+    "total_tokens": 0,
+    "llm_latency_s": 0,
+    "new_llm_latency_s": 0
+   }
+  },
+  {
+   "id": 4,
+   "arm": "structured",
+   "run_config": {
+    "ids": [
+     1,
+     4,
+     8,
+     20
+    ],
+    "arms": [
+     "structured",
+     "structured_dag"
+    ],
+    "model": "Qwen3_8-27B",
+    "base_url": "https://10.46.124.101/service-large-50-1789958762589/llm/v1",
+    "exposure": "development_new_samples_not_heldout",
+    "method": "COOPA-inspired structured iterative formulation; not an official COOPA run",
+    "dataset_sha256": "5b889e49d9aa64ae5b368bc80a05ee71a1daf20d126f54efc6207c98f9095f36",
+    "protocol_sha256": "d8dc29c339290f9633e5f623f9b070c4a519b2e1ecee7331ba5ed91a6b9eb1b2",
+    "implementation_sha256": {
+     "scripts/industryor_structured_pipeline.py": "6f1802c5e76f6d6bcc3048dc27ba4434901e4e613e56c4c3eb9b775dbf00ace9",
+     "ora_agent/structured_models.py": "5af7fc8ca18299e7c3c844b79282ee0e5d49553b96aef4ac64114f0cfd3179b8",
+     "scripts/industryor_k3_pipeline.py": "7eef88681f1aa649991fa34fdde7ec5dc8f23872f4ae095b7990274487a5d746",
+     "scripts/industryor_semantic_dag.py": "3b8f3c50d846357e101bda724cb06f194a5973803f2e95faac653b9fad73fffc",
+     "ora_agent/semantic_dag.py": "831a0f1e5e3cead974a78ad4d2bc66c81319ad113b39bf1d7f38cd9b1c590256",
+     "ora_agent/semantic_binding.py": "a48286c347662e7ce09389d0b284d9d9270e7f5fe27e9f32296785d06fc22687",
+     "scripts/industryor_next_stage.py": "8daba1b593668d890978337f7215a520c363e3027eb2e34587ef4738fa20d7b7",
+     "scripts/m1_pilot.py": "f687c8f2daa2c55eb22a22a91dba169c1440acab9b6a23f8d0f079cbb8c7509a",
+     "ora_agent/llm.py": "eb2b6f6ebc36813149d52ea1a109addd51cb02419c53f7427de7c7a712d7aa18"
+    }
+   },
+   "status": "completed",
+   "selected_index": 2,
+   "selection_method": "max_min_confidence",
+   "min_confidence": {
+    "B": 98.0,
+    "C": 100.0
+   },
+   "first_objective": 30400.0,
+   "first_match": true,
+   "objective": 30400.0,
+   "reference": 30400.0,
+   "match": true,
+   "first_business_correct": true,
+   "business_correct": true,
+   "business_unverified": false,
+   "selected_code": "from pyscipopt import Model, quicksum\nimport json\n\n# Data literals\nsell_price_cow = 500\nsell_price_sheep = 200\nsell_price_chicken = 8\nfeed_cost_cow = 100\nfeed_cost_sheep = 80\nfeed_cost_chicken = 5\nmanure_cow = 10\nmanure_sheep = 5\nmanure_chicken = 3\nmax_manure = 800\nmax_chickens = 50\nmin_cows = 10\nmin_sheep = 20\nmax_total_animals = 100\n\n# Create model\nm = Model()\nm.hideOutput()\nm.setRealParam(\"limits/time\", 570)\n\n# Decision variables (INTEGER)\nx_cows = m.addVar(\"x_cows\", vtype=\"I\", lb=10, ub=80)\nx_sheep = m.addVar(\"x_sheep\", vtype=\"I\", lb=20, ub=90)\nx_chickens = m.addVar(\"x_chickens\", vtype=\"I\", lb=0, ub=50)\n\n# Objective: maximize profit\nprofit_cow = sell_price_cow - feed_cost_cow\nprofit_sheep = sell_price_sheep - feed_cost_sheep\nprofit_chicken = sell_price_chicken - feed_cost_chicken\nm.setObjective(profit_cow * x_cows + profit_sheep * x_sheep + profit_chicken * x_chickens, \"maximize\")\n\n# Constraints\nm.addCons(manure_cow * x_cows + manure_sheep * x_sheep + manure_chicken * x_chickens <= max_manure, \"manure_limit\")\nm.addCons(x_chickens <= max_chickens, \"chicken_upper_bound\")\nm.addCons(x_cows >= min_cows, \"cow_lower_bound\")\nm.addCons(x_sheep >= min_sheep, \"sheep_lower_bound\")\nm.addCons(x_cows + x_sheep + x_chickens <= max_total_animals, \"total_animals_cap\")\n\n# Solve\nm.optimize()\n\nst = m.getStatus()\nprint(f\"status: {st}\")\nif m.getNSols() > 0:\n    print(f\"objective: {m.getObjVal()}\")",
+   "final_record": {
+    "exec_status": "ok",
+    "return_code": 0,
+    "solver_status": "optimal",
+    "objective": 30400.0,
+    "stderr_tail": "",
+    "wall_s": 0.1,
+    "stdout_artifact": "stdout.txt",
+    "stderr_artifact": "stderr.txt",
+    "code_sha256": "533818bdd537e1724b909e5c747c8f7883e799fe1c9a8e411d2227d2b6a39324",
+    "aliases_sha256": "db0fd6564294d75c3c73fd071436cab876708775274ce9a8e7ca0816ea21c64c",
+    "export_error": null,
+    "reused_execution": false
+   },
+   "final_solution": {
+    "export": {
+     "complete": true,
+     "error": null
+    },
+    "objective": 30400.0,
+    "schema_version": "industryor.solution.v1",
+    "solution_count": 2,
+    "solver_status": "optimal",
+    "variable_types": {
+     "x_chickens": "INTEGER",
+     "x_cows": "INTEGER",
+     "x_sheep": "INTEGER"
+    },
+    "variables": {
+     "x_chickens": 0.0,
+     "x_cows": 70.0,
+     "x_sheep": 20.0
+    }
+   },
+   "final_score": {
+    "schema_version": "industryor.business_audit.v1",
+    "problem_id": 4,
+    "audit_status": "complete",
+    "business_correct": true,
+    "variable_audit": {
+     "x_cows": {
+      "present": true,
+      "value": 70.0,
+      "domain": "integer",
+      "passed": true
+     },
+     "x_sheep": {
+      "present": true,
+      "value": 20.0,
+      "domain": "integer",
+      "passed": true
+     },
+     "x_chickens": {
+      "present": true,
+      "value": 0.0,
+      "domain": "integer",
+      "passed": true
+     }
+    },
+    "constraint_checks": [
+     {
+      "rule": "nonnegative_x_cows",
+      "passed": true,
+      "observed": 70.0,
+      "expected": ">= 0"
+     },
+     {
+      "rule": "nonnegative_x_sheep",
+      "passed": true,
+      "observed": 20.0,
+      "expected": ">= 0"
+     },
+     {
+      "rule": "nonnegative_x_chickens",
+      "passed": true,
+      "observed": 0.0,
+      "expected": ">= 0"
+     },
+     {
+      "rule": "manure_capacity",
+      "passed": true,
+      "observed": 800.0,
+      "expected": "<= 800"
+     },
+     {
+      "rule": "chicken_capacity",
+      "passed": true,
+      "observed": 0.0,
+      "expected": "<= 50"
+     },
+     {
+      "rule": "minimum_cows",
+      "passed": true,
+      "observed": 70.0,
+      "expected": ">= 10"
+     },
+     {
+      "rule": "minimum_sheep",
+      "passed": true,
+      "observed": 20.0,
+      "expected": ">= 20"
+     },
+     {
+      "rule": "animal_capacity",
+      "passed": true,
+      "observed": 90.0,
+      "expected": "<= 100"
+     }
+    ],
+    "violations": [],
+    "execution_checks": {
+     "export_complete": true,
+     "solver_optimal": true,
+     "has_solution": true,
+     "model_objective_finite": true
+    },
+    "business_objective": 30400.0,
+    "model_objective_consistent": true,
+    "optimality": "proven_optimal",
+    "blocking_reasons": []
+   },
+   "candidates": [
+    {
+     "candidate_id": "A",
+     "model": {
+      "parameters": [
+       {
+        "name": "sell_price_cow",
+        "value": 500,
+        "source": "sell cows, sheep, and chickens for $500, $200, and $8 each"
+       },
+       {
+        "name": "sell_price_sheep",
+        "value": 200,
+        "source": "sell cows, sheep, and chickens for $500, $200, and $8 each"
+       },
+       {
+        "name": "sell_price_chicken",
+        "value": 8,
+        "source": "sell cows, sheep, and chickens for $500, $200, and $8 each"
+       },
+       {
+        "name": "feed_cost_cow",
+        "value": 100,
+        "source": "feed costs for each cow, sheep, and chicken are $100, $80, and $5"
+       },
+       {
+        "name": "feed_cost_sheep",
+        "value": 80,
+        "source": "feed costs for each cow, sheep, and chicken are $100, $80, and $5"
+       },
+       {
+        "name": "feed_cost_chicken",
+        "value": 5,
+        "source": "feed costs for each cow, sheep, and chicken are $100, $80, and $5"
+       },
+       {
+        "name": "manure_cow",
+        "value": 10,
+        "source": "Each cow, sheep, and chicken produces 10, 5, and 3 units of manure per day"
+       },
+       {
+        "name": "manure_sheep",
+        "value": 5,
+        "source": "Each cow, sheep, and chicken produces 10, 5, and 3 units of manure per day"
+       },
+       {
+        "name": "manure_chicken",
+        "value": 3,
+        "source": "Each cow, sheep, and chicken produces 10, 5, and 3 units of manure per day"
+       },
+       {
+        "name": "max_manure",
+        "value": 800,
+        "source": "they can handle up to 800 units of manure"
+       },
+       {
+        "name": "max_chickens",
+        "value": 50,
+        "source": "the farmer can raise at most 50 chickens"
+       },
+       {
+        "name": "min_cows",
+        "value": 10,
+        "source": "the farmer must have at least 10 cows to meet customer demand"
+       },
+       {
+        "name": "min_sheep",
+        "value": 20,
+        "source": "The farmer must also raise at least 20 sheep"
+       },
+       {
+        "name": "max_total_animals",
+        "value": 100,
+        "source": "the total number of animals cannot exceed 100"
+       }
+      ],
+      "variables": [
+       {
+        "name": "x_cows",
+        "symbol": "x_cows",
+        "type": "integer",
+        "bounds": [
+         10,
+         null
+        ],
+        "source": "how many cows, sheep, and chickens to raise"
+       },
+       {
+        "name": "x_sheep",
+        "symbol": "x_sheep",
+        "type": "integer",
+        "bounds": [
+         20,
+         null
+        ],
+        "source": "how many cows, sheep, and chickens to raise"
+       },
+       {
+        "name": "x_chickens",
+        "symbol": "x_chickens",
+        "type": "integer",
+        "bounds": [
+         0,
+         50
+        ],
+        "source": "how many cows, sheep, and chickens to raise"
+       }
+      ],
+      "objective": {
+       "direction": "maximize",
+       "expression": "400 * x_cows + 120 * x_sheep + 3 * x_chickens",
+       "variables": [
+        "x_cows",
+        "x_sheep",
+        "x_chickens"
+       ],
+       "source": "The profit is the difference between the selling price and the feed cost"
+      },
+      "constraints": [
+       {
+        "name": "manure_limit",
+        "expression": "10 * x_cows + 5 * x_sheep + 3 * x_chickens <= 800",
+        "type": "inequality",
+        "source": "they can handle up to 800 units of manure"
+       },
+       {
+        "name": "max_chickens",
+        "expression": "x_chickens <= 50",
+        "type": "inequality",
+        "source": "the farmer can raise at most 50 chickens"
+       },
+       {
+        "name": "min_cows",
+        "expression": "x_cows >= 10",
+        "type": "inequality",
+        "source": "the farmer must have at least 10 cows to meet customer demand"
+       },
+       {
+        "name": "min_sheep",
+        "expression": "x_sheep >= 20",
+        "type": "inequality",
+        "source": "The farmer must also raise at least 20 sheep"
+       },
+       {
+        "name": "total_animals",
+        "expression": "x_cows + x_sheep + x_chickens <= 100",
+        "type": "inequality",
+        "source": "the total number of animals cannot exceed 100"
+       }
+      ]
+     },
+     "schema_errors": [
+      "JSONDecodeError: Extra data: line 1 column 468 (char 467)",
+      "no valid confidence scores"
+     ],
+     "evaluation": {
+      "scores": {},
+      "weak_points": [
+       "JSONDecodeError: Extra data: line 1 column 468 (char 467)"
+      ]
+     }
+    },
+    {
+     "candidate_id": "B",
+     "model": {
+      "parameters": [
+       {
+        "name": "sell_price_cow",
+        "value": 500,
+        "source": "sell cows, sheep, and chickens for $500, $200, and $8 each"
+       },
+       {
+        "name": "sell_price_sheep",
+        "value": 200,
+        "source": "sell cows, sheep, and chickens for $500, $200, and $8 each"
+       },
+       {
+        "name": "sell_price_chicken",
+        "value": 8,
+        "source": "sell cows, sheep, and chickens for $500, $200, and $8 each"
+       },
+       {
+        "name": "feed_cost_cow",
+        "value": 100,
+        "source": "feed costs for each cow, sheep, and chicken are $100, $80, and $5"
+       },
+       {
+        "name": "feed_cost_sheep",
+        "value": 80,
+        "source": "feed costs for each cow, sheep, and chicken are $100, $80, and $5"
+       },
+       {
+        "name": "feed_cost_chicken",
+        "value": 5,
+        "source": "feed costs for each cow, sheep, and chicken are $100, $80, and $5"
+       },
+       {
+        "name": "manure_cow",
+        "value": 10,
+        "source": "Each cow, sheep, and chicken produces 10, 5, and 3 units of manure per day"
+       },
+       {
+        "name": "manure_sheep",
+        "value": 5,
+        "source": "Each cow, sheep, and chicken produces 10, 5, and 3 units of manure per day"
+       },
+       {
+        "name": "manure_chicken",
+        "value": 3,
+        "source": "Each cow, sheep, and chicken produces 10, 5, and 3 units of manure per day"
+       },
+       {
+        "name": "max_manure",
+        "value": 800,
+        "source": "they can handle up to 800 units of manure"
+       },
+       {
+        "name": "max_chickens",
+        "value": 50,
+        "source": "the farmer can raise at most 50 chickens"
+       },
+       {
+        "name": "min_cows",
+        "value": 10,
+        "source": "the farmer must have at least 10 cows to meet customer demand"
+       },
+       {
+        "name": "min_sheep",
+        "value": 20,
+        "source": "The farmer must also raise at least 20 sheep"
+       },
+       {
+        "name": "max_total_animals",
+        "value": 100,
+        "source": "the total number of animals cannot exceed 100"
+       }
+      ],
+      "variables": [
+       {
+        "name": "x_cows",
+        "symbol": "x_cows",
+        "type": "integer",
+        "bounds": [
+         10,
+         100
+        ],
+        "source": "how many cows, sheep, and chickens to raise"
+       },
+       {
+        "name": "x_sheep",
+        "symbol": "x_sheep",
+        "type": "integer",
+        "bounds": [
+         20,
+         100
+        ],
+        "source": "how many cows, sheep, and chickens to raise"
+       },
+       {
+        "name": "x_chickens",
+        "symbol": "x_chickens",
+        "type": "integer",
+        "bounds": [
+         0,
+         50
+        ],
+        "source": "how many cows, sheep, and chickens to raise"
+       }
+      ],
+      "objective": {
+       "direction": "maximize",
+       "expression": "(500 - 100) * x_cows + (200 - 80) * x_sheep + (8 - 5) * x_chickens",
+       "variables": [
+        "x_cows",
+        "x_sheep",
+        "x_chickens"
+       ],
+       "source": "The profit is the difference between the selling price and the feed cost"
+      },
+      "constraints": [
+       {
+        "name": "manure_limit",
+        "expression": "10 * x_cows + 5 * x_sheep + 3 * x_chickens <= 800",
+        "type": "inequality",
+        "source": "they can handle up to 800 units of manure"
+       },
+       {
+        "name": "chicken_upper_bound",
+        "expression": "x_chickens <= 50",
+        "type": "inequality",
+        "source": "the farmer can raise at most 50 chickens"
+       },
+       {
+        "name": "cow_lower_bound",
+        "expression": "x_cows >= 10",
+        "type": "inequality",
+        "source": "the farmer must have at least 10 cows to meet customer demand"
+       },
+       {
+        "name": "sheep_lower_bound",
+        "expression": "x_sheep >= 20",
+        "type": "inequality",
+        "source": "The farmer must also raise at least 20 sheep"
+       },
+       {
+        "name": "total_animals_cap",
+        "expression": "x_cows + x_sheep + x_chickens <= 100",
+        "type": "inequality",
+        "source": "the total number of animals cannot exceed 100"
+       }
+      ]
+     },
+     "schema_errors": [],
+     "evaluation": {
+      "scores": {
+       "parameters": 100.0,
+       "variables": 98.0,
+       "constraints": 100.0,
+       "objective": 100.0
+      },
+      "weak_points": [
+       "Variable upper bounds are valid but not maximally tight: x_cows could be bounded at 80 (since x_sheep >= 20 and total <= 100) and x_sheep at 90 (since x_cows >= 10 and total <= 100); the current bounds of 100 are correct but leave redundant search space for a solver."
+      ]
+     }
+    },
+    {
+     "candidate_id": "C",
+     "model": {
+      "parameters": [
+       {
+        "name": "sell_price_cow",
+        "value": 500,
+        "source": "sell cows, sheep, and chickens for $500, $200, and $8 each"
+       },
+       {
+        "name": "sell_price_sheep",
+        "value": 200,
+        "source": "sell cows, sheep, and chickens for $500, $200, and $8 each"
+       },
+       {
+        "name": "sell_price_chicken",
+        "value": 8,
+        "source": "sell cows, sheep, and chickens for $500, $200, and $8 each"
+       },
+       {
+        "name": "feed_cost_cow",
+        "value": 100,
+        "source": "feed costs for each cow, sheep, and chicken are $100, $80, and $5"
+       },
+       {
+        "name": "feed_cost_sheep",
+        "value": 80,
+        "source": "feed costs for each cow, sheep, and chicken are $100, $80, and $5"
+       },
+       {
+        "name": "feed_cost_chicken",
+        "value": 5,
+        "source": "feed costs for each cow, sheep, and chicken are $100, $80, and $5"
+       },
+       {
+        "name": "manure_cow",
+        "value": 10,
+        "source": "Each cow, sheep, and chicken produces 10, 5, and 3 units of manure per day"
+       },
+       {
+        "name": "manure_sheep",
+        "value": 5,
+        "source": "Each cow, sheep, and chicken produces 10, 5, and 3 units of manure per day"
+       },
+       {
+        "name": "manure_chicken",
+        "value": 3,
+        "source": "Each cow, sheep, and chicken produces 10, 5, and 3 units of manure per day"
+       },
+       {
+        "name": "max_manure",
+        "value": 800,
+        "source": "they can handle up to 800 units of manure"
+       },
+       {
+        "name": "max_chickens",
+        "value": 50,
+        "source": "the farmer can raise at most 50 chickens"
+       },
+       {
+        "name": "min_cows",
+        "value": 10,
+        "source": "the farmer must have at least 10 cows to meet customer demand"
+       },
+       {
+        "name": "min_sheep",
+        "value": 20,
+        "source": "The farmer must also raise at least 20 sheep"
+       },
+       {
+        "name": "max_total_animals",
+        "value": 100,
+        "source": "the total number of animals cannot exceed 100"
+       }
+      ],
+      "variables": [
+       {
+        "name": "x_cows",
+        "symbol": "x_cows",
+        "type": "integer",
+        "bounds": [
+         10,
+         80
+        ],
+        "source": "how many cows, sheep, and chickens to raise"
+       },
+       {
+        "name": "x_sheep",
+        "symbol": "x_sheep",
+        "type": "integer",
+        "bounds": [
+         20,
+         90
+        ],
+        "source": "how many cows, sheep, and chickens to raise"
+       },
+       {
+        "name": "x_chickens",
+        "symbol": "x_chickens",
+        "type": "integer",
+        "bounds": [
+         0,
+         50
+        ],
+        "source": "how many cows, sheep, and chickens to raise"
+       }
+      ],
+      "objective": {
+       "direction": "maximize",
+       "expression": "(500 - 100) * x_cows + (200 - 80) * x_sheep + (8 - 5) * x_chickens",
+       "variables": [
+        "x_cows",
+        "x_sheep",
+        "x_chickens"
+       ],
+       "source": "The profit is the difference between the selling price and the feed cost"
+      },
+      "constraints": [
+       {
+        "name": "manure_limit",
+        "expression": "10 * x_cows + 5 * x_sheep + 3 * x_chickens <= 800",
+        "type": "inequality",
+        "source": "they can handle up to 800 units of manure"
+       },
+       {
+        "name": "chicken_upper_bound",
+        "expression": "x_chickens <= 50",
+        "type": "inequality",
+        "source": "the farmer can raise at most 50 chickens"
+       },
+       {
+        "name": "cow_lower_bound",
+        "expression": "x_cows >= 10",
+        "type": "inequality",
+        "source": "the farmer must have at least 10 cows to meet customer demand"
+       },
+       {
+        "name": "sheep_lower_bound",
+        "expression": "x_sheep >= 20",
+        "type": "inequality",
+        "source": "The farmer must also raise at least 20 sheep"
+       },
+       {
+        "name": "total_animals_cap",
+        "expression": "x_cows + x_sheep + x_chickens <= 100",
+        "type": "inequality",
+        "source": "the total number of animals cannot exceed 100"
+       }
+      ]
+     },
+     "schema_errors": [],
+     "evaluation": {
+      "scores": {
+       "parameters": 100.0,
+       "variables": 100.0,
+       "constraints": 100.0,
+       "objective": 100.0
+      },
+      "weak_points": [
+       "Variable bounds (e.g., x_cows upper bound 80, x_sheep upper bound 90) are derived from the interplay of the total-animal cap and minimum constraints on other species; while correct, they are redundant with the explicit constraints and could become stale if the problem data changes without updating the bounds.",
+       "No explicit non-negativity constraint is listed as a separate constraint; it is only implied by the lower bounds on each variable (10, 20, 0). This is functionally equivalent but could be made more explicit for clarity in a general solver interface."
+      ]
+     }
+    }
+   ],
+   "first_code": "from pyscipopt import Model, quicksum\nimport json\n\n# Data\nsell_price_cow = 500\nsell_price_sheep = 200\nsell_price_chicken = 8\nfeed_cost_cow = 100\nfeed_cost_sheep = 80\nfeed_cost_chicken = 5\nmanure_cow = 10\nmanure_sheep = 5\nmanure_chicken = 3\nmax_manure = 800\nmax_chickens = 50\nmin_cows = 10\nmin_sheep = 20\nmax_total_animals = 100\n\n# Profit per animal\nprofit_cow = sell_price_cow - feed_cost_cow      # 400\nprofit_sheep = sell_price_sheep - feed_cost_sheep  # 120\nprofit_chicken = sell_price_chicken - feed_cost_chicken  # 3\n\n# Model\nm = Model()\nm.hideOutput()\nm.setRealParam(\"limits/time\", 570)\n\n# Decision variables (INTEGER)\nx_cows = m.addVar(\"x_cows\", vtype=\"I\", lb=min_cows, ub=m.infinity())\nx_sheep = m.addVar(\"x_sheep\", vtype=\"I\", lb=min_sheep, ub=m.infinity())\nx_chickens = m.addVar(\"x_chickens\", vtype=\"I\", lb=0, ub=max_chickens)\n\n# Objective: maximize profit\nobj = profit_cow * x_cows + profit_sheep * x_sheep + profit_chicken * x_chickens\nm.setObjective(obj, \"maximize\")\n\n# Constraints\nm.addCons(manure_cow * x_cows + manure_sheep * x_sheep + manure_chicken * x_chickens <= max_manure, \"manure_limit\")\nm.addCons(x_chickens <= max_chickens, \"max_chickens\")\nm.addCons(x_cows >= min_cows, \"min_cows\")\nm.addCons(x_sheep >= min_sheep, \"min_sheep\")\nm.addCons(x_cows + x_sheep + x_chickens <= max_total_animals, \"total_animals\")\n\n# Solve\nm.optimize()\n\nst = m.getStatus()\nprint(f\"status: {st}\")\nif m.getNSols() > 0:\n    print(f\"objective: {m.getObjVal()}\")",
+   "first_record": {
+    "exec_status": "ok",
+    "return_code": 0,
+    "solver_status": "optimal",
+    "objective": 30400.0,
+    "stderr_tail": "",
+    "wall_s": 0.2,
+    "stdout_artifact": "stdout.txt",
+    "stderr_artifact": "stderr.txt",
+    "code_sha256": "ca84afbdfc486b35d33a2e507f3d53437436716bdefda69186532b2bd96a43a4",
+    "aliases_sha256": "db0fd6564294d75c3c73fd071436cab876708775274ce9a8e7ca0816ea21c64c",
+    "export_error": null,
+    "reused_execution": false
+   },
+   "dag": null,
+   "cost": {
+    "logical_llm_calls": 8,
+    "new_llm_calls": 8,
+    "api_attempts": 8,
+    "completion_tokens": 11668,
+    "total_tokens": 27720,
+    "llm_latency_s": 122.119,
+    "new_llm_latency_s": 122.119
+   },
+   "shared_cost": {
+    "logical_llm_calls": 8,
+    "new_llm_calls": 8,
+    "api_attempts": 8,
+    "completion_tokens": 11668,
+    "total_tokens": 27720,
+    "llm_latency_s": 122.119,
+    "new_llm_latency_s": 122.119
+   },
+   "repair_cost": {
+    "logical_llm_calls": 0,
+    "new_llm_calls": 0,
+    "api_attempts": 0,
+    "completion_tokens": 0,
+    "total_tokens": 0,
+    "llm_latency_s": 0,
+    "new_llm_latency_s": 0
+   },
+   "public_answer_used_for_selection": false
+  },
+  {
+   "id": 4,
+   "arm": "structured_dag",
+   "run_config": {
+    "ids": [
+     1,
+     4,
+     8,
+     20
+    ],
+    "arms": [
+     "structured",
+     "structured_dag"
+    ],
+    "model": "Qwen3_8-27B",
+    "base_url": "https://10.46.124.101/service-large-50-1789958762589/llm/v1",
+    "exposure": "development_new_samples_not_heldout",
+    "method": "COOPA-inspired structured iterative formulation; not an official COOPA run",
+    "dataset_sha256": "5b889e49d9aa64ae5b368bc80a05ee71a1daf20d126f54efc6207c98f9095f36",
+    "protocol_sha256": "d8dc29c339290f9633e5f623f9b070c4a519b2e1ecee7331ba5ed91a6b9eb1b2",
+    "implementation_sha256": {
+     "scripts/industryor_structured_pipeline.py": "6f1802c5e76f6d6bcc3048dc27ba4434901e4e613e56c4c3eb9b775dbf00ace9",
+     "ora_agent/structured_models.py": "5af7fc8ca18299e7c3c844b79282ee0e5d49553b96aef4ac64114f0cfd3179b8",
+     "scripts/industryor_k3_pipeline.py": "7eef88681f1aa649991fa34fdde7ec5dc8f23872f4ae095b7990274487a5d746",
+     "scripts/industryor_semantic_dag.py": "3b8f3c50d846357e101bda724cb06f194a5973803f2e95faac653b9fad73fffc",
+     "ora_agent/semantic_dag.py": "831a0f1e5e3cead974a78ad4d2bc66c81319ad113b39bf1d7f38cd9b1c590256",
+     "ora_agent/semantic_binding.py": "a48286c347662e7ce09389d0b284d9d9270e7f5fe27e9f32296785d06fc22687",
+     "scripts/industryor_next_stage.py": "8daba1b593668d890978337f7215a520c363e3027eb2e34587ef4738fa20d7b7",
+     "scripts/m1_pilot.py": "f687c8f2daa2c55eb22a22a91dba169c1440acab9b6a23f8d0f079cbb8c7509a",
+     "ora_agent/llm.py": "eb2b6f6ebc36813149d52ea1a109addd51cb02419c53f7427de7c7a712d7aa18"
+    }
+   },
+   "status": "completed",
+   "selected_index": 2,
+   "selection_method": "accepted_min_llm_solver_depth",
+   "min_confidence": {
+    "B": 98.0,
+    "C": 100.0
+   },
+   "first_objective": 30400.0,
+   "first_match": true,
+   "objective": 30400.0,
+   "reference": 30400.0,
+   "match": true,
+   "first_business_correct": true,
+   "business_correct": true,
+   "business_unverified": false,
+   "selected_code": "from pyscipopt import Model, quicksum\nimport json\n\n# Data literals\nsell_price_cow = 500\nsell_price_sheep = 200\nsell_price_chicken = 8\nfeed_cost_cow = 100\nfeed_cost_sheep = 80\nfeed_cost_chicken = 5\nmanure_cow = 10\nmanure_sheep = 5\nmanure_chicken = 3\nmax_manure = 800\nmax_chickens = 50\nmin_cows = 10\nmin_sheep = 20\nmax_total_animals = 100\n\n# Create model\nm = Model()\nm.hideOutput()\nm.setRealParam(\"limits/time\", 570)\n\n# Decision variables (INTEGER)\nx_cows = m.addVar(\"x_cows\", vtype=\"I\", lb=10, ub=80)\nx_sheep = m.addVar(\"x_sheep\", vtype=\"I\", lb=20, ub=90)\nx_chickens = m.addVar(\"x_chickens\", vtype=\"I\", lb=0, ub=50)\n\n# Objective: maximize profit\nprofit_cow = sell_price_cow - feed_cost_cow\nprofit_sheep = sell_price_sheep - feed_cost_sheep\nprofit_chicken = sell_price_chicken - feed_cost_chicken\nm.setObjective(profit_cow * x_cows + profit_sheep * x_sheep + profit_chicken * x_chickens, \"maximize\")\n\n# Constraints\nm.addCons(manure_cow * x_cows + manure_sheep * x_sheep + manure_chicken * x_chickens <= max_manure, \"manure_limit\")\nm.addCons(x_chickens <= max_chickens, \"chicken_upper_bound\")\nm.addCons(x_cows >= min_cows, \"cow_lower_bound\")\nm.addCons(x_sheep >= min_sheep, \"sheep_lower_bound\")\nm.addCons(x_cows + x_sheep + x_chickens <= max_total_animals, \"total_animals_cap\")\n\n# Solve\nm.optimize()\n\nst = m.getStatus()\nprint(f\"status: {st}\")\nif m.getNSols() > 0:\n    print(f\"objective: {m.getObjVal()}\")",
+   "final_record": {
+    "exec_status": "ok",
+    "return_code": 0,
+    "solver_status": "optimal",
+    "objective": 30400.0,
+    "stderr_tail": "",
+    "wall_s": 0.1,
+    "stdout_artifact": "stdout.txt",
+    "stderr_artifact": "stderr.txt",
+    "code_sha256": "533818bdd537e1724b909e5c747c8f7883e799fe1c9a8e411d2227d2b6a39324",
+    "aliases_sha256": "db0fd6564294d75c3c73fd071436cab876708775274ce9a8e7ca0816ea21c64c",
+    "export_error": null,
+    "reused_execution": false,
+    "solution": {
+     "export": {
+      "complete": true,
+      "error": null
+     },
+     "objective": 30400.0,
+     "schema_version": "industryor.solution.v1",
+     "solution_count": 2,
+     "solver_status": "optimal",
+     "variable_types": {
+      "x_chickens": "INTEGER",
+      "x_cows": "INTEGER",
+      "x_sheep": "INTEGER"
+     },
+     "variables": {
+      "x_chickens": 0.0,
+      "x_cows": 70.0,
+      "x_sheep": 20.0
+     }
+    }
+   },
+   "final_solution": {
+    "export": {
+     "complete": true,
+     "error": null
+    },
+    "objective": 30400.0,
+    "schema_version": "industryor.solution.v1",
+    "solution_count": 2,
+    "solver_status": "optimal",
+    "variable_types": {
+     "x_chickens": "INTEGER",
+     "x_cows": "INTEGER",
+     "x_sheep": "INTEGER"
+    },
+    "variables": {
+     "x_chickens": 0.0,
+     "x_cows": 70.0,
+     "x_sheep": 20.0
+    }
+   },
+   "final_score": {
+    "schema_version": "industryor.business_audit.v1",
+    "problem_id": 4,
+    "audit_status": "complete",
+    "business_correct": true,
+    "variable_audit": {
+     "x_cows": {
+      "present": true,
+      "value": 70.0,
+      "domain": "integer",
+      "passed": true
+     },
+     "x_sheep": {
+      "present": true,
+      "value": 20.0,
+      "domain": "integer",
+      "passed": true
+     },
+     "x_chickens": {
+      "present": true,
+      "value": 0.0,
+      "domain": "integer",
+      "passed": true
+     }
+    },
+    "constraint_checks": [
+     {
+      "rule": "nonnegative_x_cows",
+      "passed": true,
+      "observed": 70.0,
+      "expected": ">= 0"
+     },
+     {
+      "rule": "nonnegative_x_sheep",
+      "passed": true,
+      "observed": 20.0,
+      "expected": ">= 0"
+     },
+     {
+      "rule": "nonnegative_x_chickens",
+      "passed": true,
+      "observed": 0.0,
+      "expected": ">= 0"
+     },
+     {
+      "rule": "manure_capacity",
+      "passed": true,
+      "observed": 800.0,
+      "expected": "<= 800"
+     },
+     {
+      "rule": "chicken_capacity",
+      "passed": true,
+      "observed": 0.0,
+      "expected": "<= 50"
+     },
+     {
+      "rule": "minimum_cows",
+      "passed": true,
+      "observed": 70.0,
+      "expected": ">= 10"
+     },
+     {
+      "rule": "minimum_sheep",
+      "passed": true,
+      "observed": 20.0,
+      "expected": ">= 20"
+     },
+     {
+      "rule": "animal_capacity",
+      "passed": true,
+      "observed": 90.0,
+      "expected": "<= 100"
+     }
+    ],
+    "violations": [],
+    "execution_checks": {
+     "export_complete": true,
+     "solver_optimal": true,
+     "has_solution": true,
+     "model_objective_finite": true
+    },
+    "business_objective": 30400.0,
+    "model_objective_consistent": true,
+    "optimality": "proven_optimal",
+    "blocking_reasons": []
+   },
+   "candidates": [
+    {
+     "candidate_id": "A",
+     "model": {
+      "parameters": [
+       {
+        "name": "sell_price_cow",
+        "value": 500,
+        "source": "sell cows, sheep, and chickens for $500, $200, and $8 each"
+       },
+       {
+        "name": "sell_price_sheep",
+        "value": 200,
+        "source": "sell cows, sheep, and chickens for $500, $200, and $8 each"
+       },
+       {
+        "name": "sell_price_chicken",
+        "value": 8,
+        "source": "sell cows, sheep, and chickens for $500, $200, and $8 each"
+       },
+       {
+        "name": "feed_cost_cow",
+        "value": 100,
+        "source": "feed costs for each cow, sheep, and chicken are $100, $80, and $5"
+       },
+       {
+        "name": "feed_cost_sheep",
+        "value": 80,
+        "source": "feed costs for each cow, sheep, and chicken are $100, $80, and $5"
+       },
+       {
+        "name": "feed_cost_chicken",
+        "value": 5,
+        "source": "feed costs for each cow, sheep, and chicken are $100, $80, and $5"
+       },
+       {
+        "name": "manure_cow",
+        "value": 10,
+        "source": "Each cow, sheep, and chicken produces 10, 5, and 3 units of manure per day"
+       },
+       {
+        "name": "manure_sheep",
+        "value": 5,
+        "source": "Each cow, sheep, and chicken produces 10, 5, and 3 units of manure per day"
+       },
+       {
+        "name": "manure_chicken",
+        "value": 3,
+        "source": "Each cow, sheep, and chicken produces 10, 5, and 3 units of manure per day"
+       },
+       {
+        "name": "max_manure",
+        "value": 800,
+        "source": "they can handle up to 800 units of manure"
+       },
+       {
+        "name": "max_chickens",
+        "value": 50,
+        "source": "the farmer can raise at most 50 chickens"
+       },
+       {
+        "name": "min_cows",
+        "value": 10,
+        "source": "the farmer must have at least 10 cows to meet customer demand"
+       },
+       {
+        "name": "min_sheep",
+        "value": 20,
+        "source": "The farmer must also raise at least 20 sheep"
+       },
+       {
+        "name": "max_total_animals",
+        "value": 100,
+        "source": "the total number of animals cannot exceed 100"
+       }
+      ],
+      "variables": [
+       {
+        "name": "x_cows",
+        "symbol": "x_cows",
+        "type": "integer",
+        "bounds": [
+         10,
+         null
+        ],
+        "source": "how many cows, sheep, and chickens to raise"
+       },
+       {
+        "name": "x_sheep",
+        "symbol": "x_sheep",
+        "type": "integer",
+        "bounds": [
+         20,
+         null
+        ],
+        "source": "how many cows, sheep, and chickens to raise"
+       },
+       {
+        "name": "x_chickens",
+        "symbol": "x_chickens",
+        "type": "integer",
+        "bounds": [
+         0,
+         50
+        ],
+        "source": "how many cows, sheep, and chickens to raise"
+       }
+      ],
+      "objective": {
+       "direction": "maximize",
+       "expression": "400 * x_cows + 120 * x_sheep + 3 * x_chickens",
+       "variables": [
+        "x_cows",
+        "x_sheep",
+        "x_chickens"
+       ],
+       "source": "The profit is the difference between the selling price and the feed cost"
+      },
+      "constraints": [
+       {
+        "name": "manure_limit",
+        "expression": "10 * x_cows + 5 * x_sheep + 3 * x_chickens <= 800",
+        "type": "inequality",
+        "source": "they can handle up to 800 units of manure"
+       },
+       {
+        "name": "max_chickens",
+        "expression": "x_chickens <= 50",
+        "type": "inequality",
+        "source": "the farmer can raise at most 50 chickens"
+       },
+       {
+        "name": "min_cows",
+        "expression": "x_cows >= 10",
+        "type": "inequality",
+        "source": "the farmer must have at least 10 cows to meet customer demand"
+       },
+       {
+        "name": "min_sheep",
+        "expression": "x_sheep >= 20",
+        "type": "inequality",
+        "source": "The farmer must also raise at least 20 sheep"
+       },
+       {
+        "name": "total_animals",
+        "expression": "x_cows + x_sheep + x_chickens <= 100",
+        "type": "inequality",
+        "source": "the total number of animals cannot exceed 100"
+       }
+      ]
+     },
+     "schema_errors": [
+      "JSONDecodeError: Extra data: line 1 column 468 (char 467)",
+      "no valid confidence scores"
+     ],
+     "evaluation": {
+      "scores": {},
+      "weak_points": [
+       "JSONDecodeError: Extra data: line 1 column 468 (char 467)"
+      ]
+     }
+    },
+    {
+     "candidate_id": "B",
+     "model": {
+      "parameters": [
+       {
+        "name": "sell_price_cow",
+        "value": 500,
+        "source": "sell cows, sheep, and chickens for $500, $200, and $8 each"
+       },
+       {
+        "name": "sell_price_sheep",
+        "value": 200,
+        "source": "sell cows, sheep, and chickens for $500, $200, and $8 each"
+       },
+       {
+        "name": "sell_price_chicken",
+        "value": 8,
+        "source": "sell cows, sheep, and chickens for $500, $200, and $8 each"
+       },
+       {
+        "name": "feed_cost_cow",
+        "value": 100,
+        "source": "feed costs for each cow, sheep, and chicken are $100, $80, and $5"
+       },
+       {
+        "name": "feed_cost_sheep",
+        "value": 80,
+        "source": "feed costs for each cow, sheep, and chicken are $100, $80, and $5"
+       },
+       {
+        "name": "feed_cost_chicken",
+        "value": 5,
+        "source": "feed costs for each cow, sheep, and chicken are $100, $80, and $5"
+       },
+       {
+        "name": "manure_cow",
+        "value": 10,
+        "source": "Each cow, sheep, and chicken produces 10, 5, and 3 units of manure per day"
+       },
+       {
+        "name": "manure_sheep",
+        "value": 5,
+        "source": "Each cow, sheep, and chicken produces 10, 5, and 3 units of manure per day"
+       },
+       {
+        "name": "manure_chicken",
+        "value": 3,
+        "source": "Each cow, sheep, and chicken produces 10, 5, and 3 units of manure per day"
+       },
+       {
+        "name": "max_manure",
+        "value": 800,
+        "source": "they can handle up to 800 units of manure"
+       },
+       {
+        "name": "max_chickens",
+        "value": 50,
+        "source": "the farmer can raise at most 50 chickens"
+       },
+       {
+        "name": "min_cows",
+        "value": 10,
+        "source": "the farmer must have at least 10 cows to meet customer demand"
+       },
+       {
+        "name": "min_sheep",
+        "value": 20,
+        "source": "The farmer must also raise at least 20 sheep"
+       },
+       {
+        "name": "max_total_animals",
+        "value": 100,
+        "source": "the total number of animals cannot exceed 100"
+       }
+      ],
+      "variables": [
+       {
+        "name": "x_cows",
+        "symbol": "x_cows",
+        "type": "integer",
+        "bounds": [
+         10,
+         100
+        ],
+        "source": "how many cows, sheep, and chickens to raise"
+       },
+       {
+        "name": "x_sheep",
+        "symbol": "x_sheep",
+        "type": "integer",
+        "bounds": [
+         20,
+         100
+        ],
+        "source": "how many cows, sheep, and chickens to raise"
+       },
+       {
+        "name": "x_chickens",
+        "symbol": "x_chickens",
+        "type": "integer",
+        "bounds": [
+         0,
+         50
+        ],
+        "source": "how many cows, sheep, and chickens to raise"
+       }
+      ],
+      "objective": {
+       "direction": "maximize",
+       "expression": "(500 - 100) * x_cows + (200 - 80) * x_sheep + (8 - 5) * x_chickens",
+       "variables": [
+        "x_cows",
+        "x_sheep",
+        "x_chickens"
+       ],
+       "source": "The profit is the difference between the selling price and the feed cost"
+      },
+      "constraints": [
+       {
+        "name": "manure_limit",
+        "expression": "10 * x_cows + 5 * x_sheep + 3 * x_chickens <= 800",
+        "type": "inequality",
+        "source": "they can handle up to 800 units of manure"
+       },
+       {
+        "name": "chicken_upper_bound",
+        "expression": "x_chickens <= 50",
+        "type": "inequality",
+        "source": "the farmer can raise at most 50 chickens"
+       },
+       {
+        "name": "cow_lower_bound",
+        "expression": "x_cows >= 10",
+        "type": "inequality",
+        "source": "the farmer must have at least 10 cows to meet customer demand"
+       },
+       {
+        "name": "sheep_lower_bound",
+        "expression": "x_sheep >= 20",
+        "type": "inequality",
+        "source": "The farmer must also raise at least 20 sheep"
+       },
+       {
+        "name": "total_animals_cap",
+        "expression": "x_cows + x_sheep + x_chickens <= 100",
+        "type": "inequality",
+        "source": "the total number of animals cannot exceed 100"
+       }
+      ]
+     },
+     "schema_errors": [],
+     "evaluation": {
+      "scores": {
+       "parameters": 100.0,
+       "variables": 98.0,
+       "constraints": 100.0,
+       "objective": 100.0
+      },
+      "weak_points": [
+       "Variable upper bounds are valid but not maximally tight: x_cows could be bounded at 80 (since x_sheep >= 20 and total <= 100) and x_sheep at 90 (since x_cows >= 10 and total <= 100); the current bounds of 100 are correct but leave redundant search space for a solver."
+      ]
+     }
+    },
+    {
+     "candidate_id": "C",
+     "model": {
+      "parameters": [
+       {
+        "name": "sell_price_cow",
+        "value": 500,
+        "source": "sell cows, sheep, and chickens for $500, $200, and $8 each"
+       },
+       {
+        "name": "sell_price_sheep",
+        "value": 200,
+        "source": "sell cows, sheep, and chickens for $500, $200, and $8 each"
+       },
+       {
+        "name": "sell_price_chicken",
+        "value": 8,
+        "source": "sell cows, sheep, and chickens for $500, $200, and $8 each"
+       },
+       {
+        "name": "feed_cost_cow",
+        "value": 100,
+        "source": "feed costs for each cow, sheep, and chicken are $100, $80, and $5"
+       },
+       {
+        "name": "feed_cost_sheep",
+        "value": 80,
+        "source": "feed costs for each cow, sheep, and chicken are $100, $80, and $5"
+       },
+       {
+        "name": "feed_cost_chicken",
+        "value": 5,
+        "source": "feed costs for each cow, sheep, and chicken are $100, $80, and $5"
+       },
+       {
+        "name": "manure_cow",
+        "value": 10,
+        "source": "Each cow, sheep, and chicken produces 10, 5, and 3 units of manure per day"
+       },
+       {
+        "name": "manure_sheep",
+        "value": 5,
+        "source": "Each cow, sheep, and chicken produces 10, 5, and 3 units of manure per day"
+       },
+       {
+        "name": "manure_chicken",
+        "value": 3,
+        "source": "Each cow, sheep, and chicken produces 10, 5, and 3 units of manure per day"
+       },
+       {
+        "name": "max_manure",
+        "value": 800,
+        "source": "they can handle up to 800 units of manure"
+       },
+       {
+        "name": "max_chickens",
+        "value": 50,
+        "source": "the farmer can raise at most 50 chickens"
+       },
+       {
+        "name": "min_cows",
+        "value": 10,
+        "source": "the farmer must have at least 10 cows to meet customer demand"
+       },
+       {
+        "name": "min_sheep",
+        "value": 20,
+        "source": "The farmer must also raise at least 20 sheep"
+       },
+       {
+        "name": "max_total_animals",
+        "value": 100,
+        "source": "the total number of animals cannot exceed 100"
+       }
+      ],
+      "variables": [
+       {
+        "name": "x_cows",
+        "symbol": "x_cows",
+        "type": "integer",
+        "bounds": [
+         10,
+         80
+        ],
+        "source": "how many cows, sheep, and chickens to raise"
+       },
+       {
+        "name": "x_sheep",
+        "symbol": "x_sheep",
+        "type": "integer",
+        "bounds": [
+         20,
+         90
+        ],
+        "source": "how many cows, sheep, and chickens to raise"
+       },
+       {
+        "name": "x_chickens",
+        "symbol": "x_chickens",
+        "type": "integer",
+        "bounds": [
+         0,
+         50
+        ],
+        "source": "how many cows, sheep, and chickens to raise"
+       }
+      ],
+      "objective": {
+       "direction": "maximize",
+       "expression": "(500 - 100) * x_cows + (200 - 80) * x_sheep + (8 - 5) * x_chickens",
+       "variables": [
+        "x_cows",
+        "x_sheep",
+        "x_chickens"
+       ],
+       "source": "The profit is the difference between the selling price and the feed cost"
+      },
+      "constraints": [
+       {
+        "name": "manure_limit",
+        "expression": "10 * x_cows + 5 * x_sheep + 3 * x_chickens <= 800",
+        "type": "inequality",
+        "source": "they can handle up to 800 units of manure"
+       },
+       {
+        "name": "chicken_upper_bound",
+        "expression": "x_chickens <= 50",
+        "type": "inequality",
+        "source": "the farmer can raise at most 50 chickens"
+       },
+       {
+        "name": "cow_lower_bound",
+        "expression": "x_cows >= 10",
+        "type": "inequality",
+        "source": "the farmer must have at least 10 cows to meet customer demand"
+       },
+       {
+        "name": "sheep_lower_bound",
+        "expression": "x_sheep >= 20",
+        "type": "inequality",
+        "source": "The farmer must also raise at least 20 sheep"
+       },
+       {
+        "name": "total_animals_cap",
+        "expression": "x_cows + x_sheep + x_chickens <= 100",
+        "type": "inequality",
+        "source": "the total number of animals cannot exceed 100"
+       }
+      ]
+     },
+     "schema_errors": [],
+     "evaluation": {
+      "scores": {
+       "parameters": 100.0,
+       "variables": 100.0,
+       "constraints": 100.0,
+       "objective": 100.0
+      },
+      "weak_points": [
+       "Variable bounds (e.g., x_cows upper bound 80, x_sheep upper bound 90) are derived from the interplay of the total-animal cap and minimum constraints on other species; while correct, they are redundant with the explicit constraints and could become stale if the problem data changes without updating the bounds.",
+       "No explicit non-negativity constraint is listed as a separate constraint; it is only implied by the lower bounds on each variable (10, 20, 0). This is functionally equivalent but could be made more explicit for clarity in a general solver interface."
+      ]
+     }
+    }
+   ],
+   "first_code": "from pyscipopt import Model, quicksum\nimport json\n\n# Data\nsell_price_cow = 500\nsell_price_sheep = 200\nsell_price_chicken = 8\nfeed_cost_cow = 100\nfeed_cost_sheep = 80\nfeed_cost_chicken = 5\nmanure_cow = 10\nmanure_sheep = 5\nmanure_chicken = 3\nmax_manure = 800\nmax_chickens = 50\nmin_cows = 10\nmin_sheep = 20\nmax_total_animals = 100\n\n# Profit per animal\nprofit_cow = sell_price_cow - feed_cost_cow      # 400\nprofit_sheep = sell_price_sheep - feed_cost_sheep  # 120\nprofit_chicken = sell_price_chicken - feed_cost_chicken  # 3\n\n# Model\nm = Model()\nm.hideOutput()\nm.setRealParam(\"limits/time\", 570)\n\n# Decision variables (INTEGER)\nx_cows = m.addVar(\"x_cows\", vtype=\"I\", lb=min_cows, ub=m.infinity())\nx_sheep = m.addVar(\"x_sheep\", vtype=\"I\", lb=min_sheep, ub=m.infinity())\nx_chickens = m.addVar(\"x_chickens\", vtype=\"I\", lb=0, ub=max_chickens)\n\n# Objective: maximize profit\nobj = profit_cow * x_cows + profit_sheep * x_sheep + profit_chicken * x_chickens\nm.setObjective(obj, \"maximize\")\n\n# Constraints\nm.addCons(manure_cow * x_cows + manure_sheep * x_sheep + manure_chicken * x_chickens <= max_manure, \"manure_limit\")\nm.addCons(x_chickens <= max_chickens, \"max_chickens\")\nm.addCons(x_cows >= min_cows, \"min_cows\")\nm.addCons(x_sheep >= min_sheep, \"min_sheep\")\nm.addCons(x_cows + x_sheep + x_chickens <= max_total_animals, \"total_animals\")\n\n# Solve\nm.optimize()\n\nst = m.getStatus()\nprint(f\"status: {st}\")\nif m.getNSols() > 0:\n    print(f\"objective: {m.getObjVal()}\")",
+   "first_record": {
+    "exec_status": "ok",
+    "return_code": 0,
+    "solver_status": "optimal",
+    "objective": 30400.0,
+    "stderr_tail": "",
+    "wall_s": 0.2,
+    "stdout_artifact": "stdout.txt",
+    "stderr_artifact": "stderr.txt",
+    "code_sha256": "ca84afbdfc486b35d33a2e507f3d53437436716bdefda69186532b2bd96a43a4",
+    "aliases_sha256": "db0fd6564294d75c3c73fd071436cab876708775274ce9a8e7ca0816ea21c64c",
+    "export_error": null,
+    "reused_execution": false
+   },
+   "dag": {
+    "nodes": [
+     {
+      "node_id": "root",
+      "candidate_hash": "533818bdd537e1724b909e5c747c8f7883e799fe1c9a8e411d2227d2b6a39324",
+      "parent_id": null,
+      "action": "initial",
+      "binding_sha256": "db0fd6564294d75c3c73fd071436cab876708775274ce9a8e7ca0816ea21c64c",
+      "binding_status": "validated",
+      "execution": {
+       "exec_status": "ok",
+       "return_code": 0,
+       "solver_status": "optimal",
+       "objective": 30400.0,
+       "stderr_tail": "",
+       "wall_s": 0.1,
+       "stdout_artifact": "stdout.txt",
+       "stderr_artifact": "stderr.txt",
+       "code_sha256": "533818bdd537e1724b909e5c747c8f7883e799fe1c9a8e411d2227d2b6a39324",
+       "aliases_sha256": "db0fd6564294d75c3c73fd071436cab876708775274ce9a8e7ca0816ea21c64c",
+       "export_error": null,
+       "reused_execution": false,
+       "solution": {
+        "export": {
+         "complete": true,
+         "error": null
+        },
+        "objective": 30400.0,
+        "schema_version": "industryor.solution.v1",
+        "solution_count": 2,
+        "solver_status": "optimal",
+        "variable_types": {
+         "x_chickens": "INTEGER",
+         "x_cows": "INTEGER",
+         "x_sheep": "INTEGER"
+        },
+        "variables": {
+         "x_chickens": 0.0,
+         "x_cows": 70.0,
+         "x_sheep": 20.0
+        }
+       }
+      },
+      "business_audit": {
+       "schema_version": "industryor.business_audit.v1",
+       "problem_id": 4,
+       "audit_status": "complete",
+       "business_correct": true,
+       "variable_audit": {
+        "x_cows": {
+         "present": true,
+         "value": 70.0,
+         "domain": "integer",
+         "passed": true
+        },
+        "x_sheep": {
+         "present": true,
+         "value": 20.0,
+         "domain": "integer",
+         "passed": true
+        },
+        "x_chickens": {
+         "present": true,
+         "value": 0.0,
+         "domain": "integer",
+         "passed": true
+        }
+       },
+       "constraint_checks": [
+        {
+         "rule": "nonnegative_x_cows",
+         "passed": true,
+         "observed": 70.0,
+         "expected": ">= 0"
+        },
+        {
+         "rule": "nonnegative_x_sheep",
+         "passed": true,
+         "observed": 20.0,
+         "expected": ">= 0"
+        },
+        {
+         "rule": "nonnegative_x_chickens",
+         "passed": true,
+         "observed": 0.0,
+         "expected": ">= 0"
+        },
+        {
+         "rule": "manure_capacity",
+         "passed": true,
+         "observed": 800.0,
+         "expected": "<= 800"
+        },
+        {
+         "rule": "chicken_capacity",
+         "passed": true,
+         "observed": 0.0,
+         "expected": "<= 50"
+        },
+        {
+         "rule": "minimum_cows",
+         "passed": true,
+         "observed": 70.0,
+         "expected": ">= 10"
+        },
+        {
+         "rule": "minimum_sheep",
+         "passed": true,
+         "observed": 20.0,
+         "expected": ">= 20"
+        },
+        {
+         "rule": "animal_capacity",
+         "passed": true,
+         "observed": 90.0,
+         "expected": "<= 100"
+        }
+       ],
+       "violations": [],
+       "execution_checks": {
+        "export_complete": true,
+        "solver_optimal": true,
+        "has_solution": true,
+        "model_objective_finite": true
+       },
+       "business_objective": 30400.0,
+       "model_objective_consistent": true,
+       "optimality": "proven_optimal",
+       "blocking_reasons": []
+      },
+      "solver_runs": 0,
+      "llm_calls": 0,
+      "done": true,
+      "children": [],
+      "depth": 0,
+      "snapshot": "from pyscipopt import Model, quicksum\nimport json\n\n# Data literals\nsell_price_cow = 500\nsell_price_sheep = 200\nsell_price_chicken = 8\nfeed_cost_cow = 100\nfeed_cost_sheep = 80\nfeed_cost_chicken = 5\nmanure_cow = 10\nmanure_sheep = 5\nmanure_chicken = 3\nmax_manure = 800\nmax_chickens = 50\nmin_cows = 10\nmin_sheep = 20\nmax_total_animals = 100\n\n# Create model\nm = Model()\nm.hideOutput()\nm.setRealParam(\"limits/time\", 570)\n\n# Decision variables (INTEGER)\nx_cows = m.addVar(\"x_cows\", vtype=\"I\", lb=10, ub=80)\nx_sheep = m.addVar(\"x_sheep\", vtype=\"I\", lb=20, ub=90)\nx_chickens = m.addVar(\"x_chickens\", vtype=\"I\", lb=0, ub=50)\n\n# Objective: maximize profit\nprofit_cow = sell_price_cow - feed_cost_cow\nprofit_sheep = sell_price_sheep - feed_cost_sheep\nprofit_chicken = sell_price_chicken - feed_cost_chicken\nm.setObjective(profit_cow * x_cows + profit_sheep * x_sheep + profit_chicken * x_chickens, \"maximize\")\n\n# Constraints\nm.addCons(manure_cow * x_cows + manure_sheep * x_sheep + manure_chicken * x_chickens <= max_manure, \"manure_limit\")\nm.addCons(x_chickens <= max_chickens, \"chicken_upper_bound\")\nm.addCons(x_cows >= min_cows, \"cow_lower_bound\")\nm.addCons(x_sheep >= min_sheep, \"sheep_lower_bound\")\nm.addCons(x_cows + x_sheep + x_chickens <= max_total_animals, \"total_animals_cap\")\n\n# Solve\nm.optimize()\n\nst = m.getStatus()\nprint(f\"status: {st}\")\nif m.getNSols() > 0:\n    print(f\"objective: {m.getObjVal()}\")",
+      "candidate_kind": "pyscipopt_code",
+      "stop_reason": "accepted"
+     }
+    ],
+    "events": [
+     {
+      "type": "done",
+      "node_id": "root",
+      "reason": "accepted"
+     }
+    ],
+    "accepted_node_ids": [
+     "root"
+    ],
+    "negative_node_ids": [],
+    "leaf_node_ids": [
+     "root"
+    ],
+    "finished": true,
+    "score_based_pruning": false,
+    "total_solver_runs": 0,
+    "total_llm_calls": 0
+   },
+   "cost": {
+    "logical_llm_calls": 8,
+    "new_llm_calls": 8,
+    "api_attempts": 8,
+    "completion_tokens": 11668,
+    "total_tokens": 27720,
+    "llm_latency_s": 122.119,
+    "new_llm_latency_s": 122.119
+   },
+   "shared_cost": {
+    "logical_llm_calls": 8,
+    "new_llm_calls": 8,
+    "api_attempts": 8,
+    "completion_tokens": 11668,
+    "total_tokens": 27720,
+    "llm_latency_s": 122.119,
+    "new_llm_latency_s": 122.119
+   },
+   "repair_cost": {
+    "logical_llm_calls": 0,
+    "new_llm_calls": 0,
+    "api_attempts": 0,
+    "completion_tokens": 0,
+    "total_tokens": 0,
+    "llm_latency_s": 0,
+    "new_llm_latency_s": 0
+   },
+   "public_answer_used_for_selection": false
+  },
+  {
+   "id": 8,
+   "arm": "structured",
+   "run_config": {
+    "ids": [
+     1,
+     4,
+     8,
+     20
+    ],
+    "arms": [
+     "structured",
+     "structured_dag"
+    ],
+    "model": "Qwen3_8-27B",
+    "base_url": "https://10.46.124.101/service-large-50-1789958762589/llm/v1",
+    "exposure": "development_new_samples_not_heldout",
+    "method": "COOPA-inspired structured iterative formulation; not an official COOPA run",
+    "dataset_sha256": "5b889e49d9aa64ae5b368bc80a05ee71a1daf20d126f54efc6207c98f9095f36",
+    "protocol_sha256": "d8dc29c339290f9633e5f623f9b070c4a519b2e1ecee7331ba5ed91a6b9eb1b2",
+    "implementation_sha256": {
+     "scripts/industryor_structured_pipeline.py": "6f1802c5e76f6d6bcc3048dc27ba4434901e4e613e56c4c3eb9b775dbf00ace9",
+     "ora_agent/structured_models.py": "5af7fc8ca18299e7c3c844b79282ee0e5d49553b96aef4ac64114f0cfd3179b8",
+     "scripts/industryor_k3_pipeline.py": "7eef88681f1aa649991fa34fdde7ec5dc8f23872f4ae095b7990274487a5d746",
+     "scripts/industryor_semantic_dag.py": "3b8f3c50d846357e101bda724cb06f194a5973803f2e95faac653b9fad73fffc",
+     "ora_agent/semantic_dag.py": "831a0f1e5e3cead974a78ad4d2bc66c81319ad113b39bf1d7f38cd9b1c590256",
+     "ora_agent/semantic_binding.py": "a48286c347662e7ce09389d0b284d9d9270e7f5fe27e9f32296785d06fc22687",
+     "scripts/industryor_next_stage.py": "8daba1b593668d890978337f7215a520c363e3027eb2e34587ef4738fa20d7b7",
+     "scripts/m1_pilot.py": "f687c8f2daa2c55eb22a22a91dba169c1440acab9b6a23f8d0f079cbb8c7509a",
+     "ora_agent/llm.py": "eb2b6f6ebc36813149d52ea1a109addd51cb02419c53f7427de7c7a712d7aa18"
+    }
+   },
+   "status": "completed",
+   "selected_index": 0,
+   "selection_method": "no_valid_candidate_fallback_first",
+   "min_confidence": {},
+   "first_objective": 14.0,
+   "first_match": true,
+   "objective": 14.0,
+   "reference": 14.0,
+   "match": true,
+   "first_business_correct": true,
+   "business_correct": true,
+   "business_unverified": false,
+   "selected_code": "from pyscipopt import Model, quicksum\nimport json\n\n# Data\nc = {\n    (1, 'A'): 9,  (1, 'B'): 4,  (1, 'C'): 3,  (1, 'D'): 7,\n    (2, 'A'): 4,  (2, 'B'): 6,  (2, 'C'): 5,  (2, 'D'): 6,\n    (3, 'A'): 5,  (3, 'B'): 4,  (3, 'C'): 7,  (3, 'D'): 5,\n    (4, 'A'): 7,  (4, 'B'): 5,  (4, 'C'): 2,  (4, 'D'): 3,\n    (5, 'A'): 10, (5, 'B'): 6,  (5, 'C'): 7,  (5, 'D'): 4,\n}\n\nworkers = [1, 2, 3, 4, 5]\ntasks = ['A', 'B', 'C', 'D']\n\nm = Model()\nm.hideOutput()\nm.setRealParam(\"limits/time\", 570)\n\n# Decision variables: binary\nx = {}\nfor i in workers:\n    for j in tasks:\n        x[(i, j)] = m.addVar(vtype=\"B\", lb=0, ub=1, name=f\"x_{i}_{j}\")\n\n# Objective: minimize total hours\nobj = quicksum(c[(i, j)] * x[(i, j)] for i in workers for j in tasks)\nm.setObjective(obj, \"minimize\")\n\n# Each task is assigned to exactly one worker\nfor j in tasks:\n    m.addCons(quicksum(x[(i, j)] for i in workers) == 1, name=f\"task_{j}_assigned\")\n\n# Each worker is assigned to at most one task\nfor i in workers:\n    m.addCons(quicksum(x[(i, j)] for j in tasks) <= 1, name=f\"worker_{i}_at_most_one\")\n\nm.optimize()\n\nst = m.getStatus()\nprint(f\"status: {st}\")\nif m.getNSols() > 0:\n    print(f\"objective: {m.getObjVal()}\")",
+   "final_record": {
+    "exec_status": "ok",
+    "return_code": 0,
+    "solver_status": "optimal",
+    "objective": 14.0,
+    "stderr_tail": "",
+    "wall_s": 0.1,
+    "stdout_artifact": "stdout.txt",
+    "stderr_artifact": "stderr.txt",
+    "code_sha256": "4cb109d247bdaef3ead3ac43d40527e2b6c3dfa42584505b4fdf5df29004d008",
+    "aliases_sha256": "265cc06a668baf3f8d85263857c70c76e538e1336bd2569ba12cb51dedd5fd47",
+    "export_error": null,
+    "reused_execution": false
+   },
+   "final_solution": {
+    "export": {
+     "complete": true,
+     "error": null
+    },
+    "objective": 14.0,
+    "schema_version": "industryor.solution.v1",
+    "solution_count": 1,
+    "solver_status": "optimal",
+    "variable_types": {
+     "x_0_0": "BINARY",
+     "x_0_1": "BINARY",
+     "x_0_2": "BINARY",
+     "x_0_3": "BINARY",
+     "x_1_0": "BINARY",
+     "x_1_1": "BINARY",
+     "x_1_2": "BINARY",
+     "x_1_3": "BINARY",
+     "x_2_0": "BINARY",
+     "x_2_1": "BINARY",
+     "x_2_2": "BINARY",
+     "x_2_3": "BINARY",
+     "x_3_0": "BINARY",
+     "x_3_1": "BINARY",
+     "x_3_2": "BINARY",
+     "x_3_3": "BINARY",
+     "x_4_0": "BINARY",
+     "x_4_1": "BINARY",
+     "x_4_2": "BINARY",
+     "x_4_3": "BINARY"
+    },
+    "variables": {
+     "x_0_0": 0.0,
+     "x_0_1": 1.0,
+     "x_0_2": 0.0,
+     "x_0_3": 0.0,
+     "x_1_0": 1.0,
+     "x_1_1": 0.0,
+     "x_1_2": 0.0,
+     "x_1_3": 0.0,
+     "x_2_0": 0.0,
+     "x_2_1": 0.0,
+     "x_2_2": 0.0,
+     "x_2_3": 0.0,
+     "x_3_0": 0.0,
+     "x_3_1": 0.0,
+     "x_3_2": 1.0,
+     "x_3_3": 0.0,
+     "x_4_0": 0.0,
+     "x_4_1": 0.0,
+     "x_4_2": 0.0,
+     "x_4_3": 1.0
+    }
+   },
+   "final_score": {
+    "schema_version": "industryor.business_audit.v1",
+    "problem_id": 8,
+    "audit_status": "complete",
+    "business_correct": true,
+    "variable_audit": {
+     "x_0_0": {
+      "present": true,
+      "value": 0.0,
+      "domain": "binary",
+      "passed": true
+     },
+     "x_0_1": {
+      "present": true,
+      "value": 1.0,
+      "domain": "binary",
+      "passed": true
+     },
+     "x_0_2": {
+      "present": true,
+      "value": 0.0,
+      "domain": "binary",
+      "passed": true
+     },
+     "x_0_3": {
+      "present": true,
+      "value": 0.0,
+      "domain": "binary",
+      "passed": true
+     },
+     "x_1_0": {
+      "present": true,
+      "value": 1.0,
+      "domain": "binary",
+      "passed": true
+     },
+     "x_1_1": {
+      "present": true,
+      "value": 0.0,
+      "domain": "binary",
+      "passed": true
+     },
+     "x_1_2": {
+      "present": true,
+      "value": 0.0,
+      "domain": "binary",
+      "passed": true
+     },
+     "x_1_3": {
+      "present": true,
+      "value": 0.0,
+      "domain": "binary",
+      "passed": true
+     },
+     "x_2_0": {
+      "present": true,
+      "value": 0.0,
+      "domain": "binary",
+      "passed": true
+     },
+     "x_2_1": {
+      "present": true,
+      "value": 0.0,
+      "domain": "binary",
+      "passed": true
+     },
+     "x_2_2": {
+      "present": true,
+      "value": 0.0,
+      "domain": "binary",
+      "passed": true
+     },
+     "x_2_3": {
+      "present": true,
+      "value": 0.0,
+      "domain": "binary",
+      "passed": true
+     },
+     "x_3_0": {
+      "present": true,
+      "value": 0.0,
+      "domain": "binary",
+      "passed": true
+     },
+     "x_3_1": {
+      "present": true,
+      "value": 0.0,
+      "domain": "binary",
+      "passed": true
+     },
+     "x_3_2": {
+      "present": true,
+      "value": 1.0,
+      "domain": "binary",
+      "passed": true
+     },
+     "x_3_3": {
+      "present": true,
+      "value": 0.0,
+      "domain": "binary",
+      "passed": true
+     },
+     "x_4_0": {
+      "present": true,
+      "value": 0.0,
+      "domain": "binary",
+      "passed": true
+     },
+     "x_4_1": {
+      "present": true,
+      "value": 0.0,
+      "domain": "binary",
+      "passed": true
+     },
+     "x_4_2": {
+      "present": true,
+      "value": 0.0,
+      "domain": "binary",
+      "passed": true
+     },
+     "x_4_3": {
+      "present": true,
+      "value": 1.0,
+      "domain": "binary",
+      "passed": true
+     }
+    },
+    "constraint_checks": [
+     {
+      "rule": "task_0_exactly_once",
+      "passed": true,
+      "observed": 1.0,
+      "expected": "= 1"
+     },
+     {
+      "rule": "task_1_exactly_once",
+      "passed": true,
+      "observed": 1.0,
+      "expected": "= 1"
+     },
+     {
+      "rule": "task_2_exactly_once",
+      "passed": true,
+      "observed": 1.0,
+      "expected": "= 1"
+     },
+     {
+      "rule": "task_3_exactly_once",
+      "passed": true,
+      "observed": 1.0,
+      "expected": "= 1"
+     },
+     {
+      "rule": "worker_0_at_most_once",
+      "passed": true,
+      "observed": 1.0,
+      "expected": "<= 1"
+     },
+     {
+      "rule": "worker_1_at_most_once",
+      "passed": true,
+      "observed": 1.0,
+      "expected": "<= 1"
+     },
+     {
+      "rule": "worker_2_at_most_once",
+      "passed": true,
+      "observed": 0.0,
+      "expected": "<= 1"
+     },
+     {
+      "rule": "worker_3_at_most_once",
+      "passed": true,
+      "observed": 1.0,
+      "expected": "<= 1"
+     },
+     {
+      "rule": "worker_4_at_most_once",
+      "passed": true,
+      "observed": 1.0,
+      "expected": "<= 1"
+     },
+     {
+      "rule": "exactly_four_workers",
+      "passed": true,
+      "observed": 4.0,
+      "expected": "= 4"
+     }
+    ],
+    "violations": [],
+    "execution_checks": {
+     "export_complete": true,
+     "solver_optimal": true,
+     "has_solution": true,
+     "model_objective_finite": true
+    },
+    "business_objective": 14.0,
+    "model_objective_consistent": true,
+    "optimality": "proven_optimal",
+    "blocking_reasons": []
+   },
+   "candidates": [
+    {
+     "candidate_id": "A",
+     "model": {
+      "parameters": [
+       {
+        "name": "c_1_A",
+        "value": 9,
+        "source": "I | 9 | 4 | 3 | 7"
+       },
+       {
+        "name": "c_1_B",
+        "value": 4,
+        "source": "I | 9 | 4 | 3 | 7"
+       },
+       {
+        "name": "c_1_C",
+        "value": 3,
+        "source": "I | 9 | 4 | 3 | 7"
+       },
+       {
+        "name": "c_1_D",
+        "value": 7,
+        "source": "I | 9 | 4 | 3 | 7"
+       },
+       {
+        "name": "c_2_A",
+        "value": 4,
+        "source": "II | 4 | 6 | 5 | 6"
+       },
+       {
+        "name": "c_2_B",
+        "value": 6,
+        "source": "II | 4 | 6 | 5 | 6"
+       },
+       {
+        "name": "c_2_C",
+        "value": 5,
+        "source": "II | 4 | 6 | 5 | 6"
+       },
+       {
+        "name": "c_2_D",
+        "value": 6,
+        "source": "II | 4 | 6 | 5 | 6"
+       },
+       {
+        "name": "c_3_A",
+        "value": 5,
+        "source": "III | 5 | 4 | 7 | 5"
+       },
+       {
+        "name": "c_3_B",
+        "value": 4,
+        "source": "III | 5 | 4 | 7 | 5"
+       },
+       {
+        "name": "c_3_C",
+        "value": 7,
+        "source": "III | 5 | 4 | 7 | 5"
+       },
+       {
+        "name": "c_3_D",
+        "value": 5,
+        "source": "III | 5 | 4 | 7 | 5"
+       },
+       {
+        "name": "c_4_A",
+        "value": 7,
+        "source": "IV | 7 | 5 | 2 | 3"
+       },
+       {
+        "name": "c_4_B",
+        "value": 5,
+        "source": "IV | 7 | 5 | 2 | 3"
+       },
+       {
+        "name": "c_4_C",
+        "value": 2,
+        "source": "IV | 7 | 5 | 2 | 3"
+       },
+       {
+        "name": "c_4_D",
+        "value": 3,
+        "source": "IV | 7 | 5 | 2 | 3"
+       },
+       {
+        "name": "c_5_A",
+        "value": 10,
+        "source": "V | 10 | 6 | 7 | 4"
+       },
+       {
+        "name": "c_5_B",
+        "value": 6,
+        "source": "V | 10 | 6 | 7 | 4"
+       },
+       {
+        "name": "c_5_C",
+        "value": 7,
+        "source": "V | 10 | 6 | 7 | 4"
+       },
+       {
+        "name": "c_5_D",
+        "value": 4,
+        "source": "V | 10 | 6 | 7 | 4"
+       }
+      ],
+      "variables": [
+       {
+        "name": "x_1_A",
+        "symbol": "x_{1,A}",
+        "type": "binary",
+        "bounds": [
+         0,
+         1
+        ],
+        "source": "determine 4 out of 5 workers to complete one of the four tasks respectively"
+       },
+       {
+        "name": "x_1_B",
+        "symbol": "x_{1,B}",
+        "type": "binary",
+        "bounds": [
+         0,
+         1
+        ],
+        "source": "determine 4 out of 5 workers to complete one of the four tasks respectively"
+       },
+       {
+        "name": "x_1_C",
+        "symbol": "x_{1,C}",
+        "type": "binary",
+        "bounds": [
+         0,
+         1
+        ],
+        "source": "determine 4 out of 5 workers to complete one of the four tasks respectively"
+       },
+       {
+        "name": "x_1_D",
+        "symbol": "x_{1,D}",
+        "type": "binary",
+        "bounds": [
+         0,
+         1
+        ],
+        "source": "determine 4 out of 5 workers to complete one of the four tasks respectively"
+       },
+       {
+        "name": "x_2_A",
+        "symbol": "x_{2,A}",
+        "type": "binary",
+        "bounds": [
+         0,
+         1
+        ],
+        "source": "determine 4 out of 5 workers to complete one of the four tasks respectively"
+       },
+       {
+        "name": "x_2_B",
+        "symbol": "x_{2,B}",
+        "type": "binary",
+        "bounds": [
+         0,
+         1
+        ],
+        "source": "determine 4 out of 5 workers to complete one of the four tasks respectively"
+       },
+       {
+        "name": "x_2_C",
+        "symbol": "x_{2,C}",
+        "type": "binary",
+        "bounds": [
+         0,
+         1
+        ],
+        "source": "determine 4 out of 5 workers to complete one of the four tasks respectively"
+       },
+       {
+        "name": "x_2_D",
+        "symbol": "x_{2,D}",
+        "type": "binary",
+        "bounds": [
+         0,
+         1
+        ],
+        "source": "determine 4 out of 5 workers to complete one of the four tasks respectively"
+       },
+       {
+        "name": "x_3_A",
+        "symbol": "x_{3,A}",
+        "type": "binary",
+        "bounds": [
+         0,
+         1
+        ],
+        "source": "determine 4 out of 5 workers to complete one of the four tasks respectively"
+       },
+       {
+        "name": "x_3_B",
+        "symbol": "x_{3,B}",
+        "type": "binary",
+        "bounds": [
+         0,
+         1
+        ],
+        "source": "determine 4 out of 5 workers to complete one of the four tasks respectively"
+       },
+       {
+        "name": "x_3_C",
+        "symbol": "x_{3,C}",
+        "type": "binary",
+        "bounds": [
+         0,
+         1
+        ],
+        "source": "determine 4 out of 5 workers to complete one of the four tasks respectively"
+       },
+       {
+        "name": "x_3_D",
+        "symbol": "x_{3,D}",
+        "type": "binary",
+        "bounds": [
+         0,
+         1
+        ],
+        "source": "determine 4 out of 5 workers to complete one of the four tasks respectively"
+       },
+       {
+        "name": "x_4_A",
+        "symbol": "x_{4,A}",
+        "type": "binary",
+        "bounds": [
+         0,
+         1
+        ],
+        "source": "determine 4 out of 5 workers to complete one of the four tasks respectively"
+       },
+       {
+        "name": "x_4_B",
+        "symbol": "x_{4,B}",
+        "type": "binary",
+        "bounds": [
+         0,
+         1
+        ],
+        "source": "determine 4 out of 5 workers to complete one of the four tasks respectively"
+       },
+       {
+        "name": "x_4_C",
+        "symbol": "x_{4,C}",
+        "type": "binary",
+        "bounds": [
+         0,
+         1
+        ],
+        "source": "determine 4 out of 5 workers to complete one of the four tasks respectively"
+       },
+       {
+        "name": "x_4_D",
+        "symbol": "x_{4,D}",
+        "type": "binary",
+        "bounds": [
+         0,
+         1
+        ],
+        "source": "determine 4 out of 5 workers to complete one of the four tasks respectively"
+       },
+       {
+        "name": "x_5_A",
+        "symbol": "x_{5,A}",
+        "type": "binary",
+        "bounds": [
+         0,
+         1
+        ],
+        "source": "determine 4 out of 5 workers to complete one of the four tasks respectively"
+       },
+       {
+        "name": "x_5_B",
+        "symbol": "x_{5,B}",
+        "type": "binary",
+        "bounds": [
+         0,
+         1
+        ],
+        "source": "determine 4 out of 5 workers to complete one of the four tasks respectively"
+       },
+       {
+        "name": "x_5_C",
+        "symbol": "x_{5,C}",
+        "type": "binary",
+        "bounds": [
+         0,
+         1
+        ],
+        "source": "determine 4 out of 5 workers to complete one of the four tasks respectively"
+       },
+       {
+        "name": "x_5_D",
+        "symbol": "x_{5,D}",
+        "type": "binary",
+        "bounds": [
+         0,
+         1
+        ],
+        "source": "determine 4 out of 5 workers to complete one of the four tasks respectively"
+       }
+      ],
+      "objective": {
+       "direction": "minimize",
+       "expression": "c_1_A*x_1_A + c_1_B*x_1_B + c_1_C*x_1_C + c_1_D*x_1_D + c_2_A*x_2_A + c_2_B*x_2_B + c_2_C*x_2_C + c_2_D*x_2_D + c_3_A*x_3_A + c_3_B*x_3_B + c_3_C*x_3_C + c_3_D*x_3_D + c_4_A*x_4_A + c_4_B*x_4_B + c_4_C*x_4_C + c_4_D*x_4_D + c_5_A*x_5_A + c_5_B*x_5_B + c_5_C*x_5_C + c_5_D*x_5_D",
+       "variables": [
+        "x_1_A",
+        "x_1_B",
+        "x_1_C",
+        "x_1_D",
+        "x_2_A",
+        "x_2_B",
+        "x_2_C",
+        "x_2_D",
+        "x_3_A",
+        "x_3_B",
+        "x_3_C",
+        "x_3_D",
+        "x_4_A",
+        "x_4_B",
+        "x_4_C",
+        "x_4_D",
+        "x_5_A",
+        "x_5_B",
+        "x_5_C",
+        "x_5_D"
+       ],
+       "source": "minimizes the total working hours"
+      },
+      "constraints": [
+       {
+        "name": "task_A_assigned",
+        "expression": "x_1_A + x_2_A + x_3_A + x_4_A + x_5_A = 1",
+        "type": "equality",
+        "source": "complete one of the four tasks respectively"
+       },
+       {
+        "name": "task_B_assigned",
+        "expression": "x_1_B + x_2_B + x_3_B + x_4_B + x_5_B = 1",
+        "type": "equality",
+        "source": "complete one of the four tasks respectively"
+       },
+       {
+        "name": "task_C_assigned",
+        "expression": "x_1_C + x_2_C + x_3_C + x_4_C + x_5_C = 1",
+        "type": "equality",
+        "source": "complete one of the four tasks respectively"
+       },
+       {
+        "name": "task_D_assigned",
+        "expression": "x_1_D + x_2_D + x_3_D + x_4_D + x_5_D = 1",
+        "type": "equality",
+        "source": "complete one of the four tasks respectively"
+       },
+       {
+        "name": "worker_I_at_most_one",
+        "expression": "x_1_A + x_1_B + x_1_C + x_1_D <= 1",
+        "type": "inequality",
+        "source": "determine 4 out of 5 workers to complete one of the four tasks respectively"
+       },
+       {
+        "name": "worker_II_at_most_one",
+        "expression": "x_2_A + x_2_B + x_2_C + x_2_D <= 1",
+        "type": "inequality",
+        "source": "determine 4 out of 5 workers to complete one of the four tasks respectively"
+       },
+       {
+        "name": "worker_III_at_most_one",
+        "expression": "x_3_A + x_3_B + x_3_C + x_3_D <= 1",
+        "type": "inequality",
+        "source": "determine 4 out of 5 workers to complete one of the four tasks respectively"
+       },
+       {
+        "name": "worker_IV_at_most_one",
+        "expression": "x_4_A + x_4_B + x_4_C + x_4_D <= 1",
+        "type": "inequality",
+        "source": "determine 4 out of 5 workers to complete one of the four tasks respectively"
+       },
+       {
+        "name": "worker_V_at_most_one",
+        "expression": "x_5_A + x_5_B + x_5_C + x_5_D <= 1",
+        "type": "inequality",
+        "source": "determine 4 out of 5 workers to complete one of the four tasks respectively"
+       }
+      ]
+     },
+     "schema_errors": [
+      "parameters[0] source is not verbatim problem text",
+      "parameters[1] source is not verbatim problem text",
+      "parameters[2] source is not verbatim problem text",
+      "parameters[3] source is not verbatim problem text",
+      "parameters[4] source is not verbatim problem text",
+      "parameters[5] source is not verbatim problem text",
+      "parameters[6] source is not verbatim problem text",
+      "parameters[7] source is not verbatim problem text",
+      "parameters[8] source is not verbatim problem text",
+      "parameters[9] source is not verbatim problem text",
+      "parameters[10] source is not verbatim problem text",
+      "parameters[11] source is not verbatim problem text",
+      "parameters[12] source is not verbatim problem text",
+      "parameters[13] source is not verbatim problem text",
+      "parameters[14] source is not verbatim problem text",
+      "parameters[15] source is not verbatim problem text",
+      "parameters[16] source is not verbatim problem text",
+      "parameters[17] source is not verbatim problem text",
+      "parameters[18] source is not verbatim problem text",
+      "parameters[19] source is not verbatim problem text",
+      "JSONDecodeError: Extra data: line 1 column 97 (char 96)",
+      "no valid confidence scores"
+     ],
+     "evaluation": {
+      "scores": {},
+      "weak_points": [
+       "JSONDecodeError: Extra data: line 1 column 97 (char 96)"
+      ]
+     }
+    },
+    {
+     "candidate_id": "B",
+     "model": {
+      "parameters": [
+       {
+        "name": "c_1_A",
+        "value": 9,
+        "source": "I | 9 | 4 | 3 | 7"
+       },
+       {
+        "name": "c_1_B",
+        "value": 4,
+        "source": "I | 9 | 4 | 3 | 7"
+       },
+       {
+        "name": "c_1_C",
+        "value": 3,
+        "source": "I | 9 | 4 | 3 | 7"
+       },
+       {
+        "name": "c_1_D",
+        "value": 7,
+        "source": "I | 9 | 4 | 3 | 7"
+       },
+       {
+        "name": "c_2_A",
+        "value": 4,
+        "source": "II | 4 | 6 | 5 | 6"
+       },
+       {
+        "name": "c_2_B",
+        "value": 6,
+        "source": "II | 4 | 6 | 5 | 6"
+       },
+       {
+        "name": "c_2_C",
+        "value": 5,
+        "source": "II | 4 | 6 | 5 | 6"
+       },
+       {
+        "name": "c_2_D",
+        "value": 6,
+        "source": "II | 4 | 6 | 5 | 6"
+       },
+       {
+        "name": "c_3_A",
+        "value": 5,
+        "source": "III | 5 | 4 | 7 | 5"
+       },
+       {
+        "name": "c_3_B",
+        "value": 4,
+        "source": "III | 5 | 4 | 7 | 5"
+       },
+       {
+        "name": "c_3_C",
+        "value": 7,
+        "source": "III | 5 | 4 | 7 | 5"
+       },
+       {
+        "name": "c_3_D",
+        "value": 5,
+        "source": "III | 5 | 4 | 7 | 5"
+       },
+       {
+        "name": "c_4_A",
+        "value": 7,
+        "source": "IV | 7 | 5 | 2 | 3"
+       },
+       {
+        "name": "c_4_B",
+        "value": 5,
+        "source": "IV | 7 | 5 | 2 | 3"
+       },
+       {
+        "name": "c_4_C",
+        "value": 2,
+        "source": "IV | 7 | 5 | 2 | 3"
+       },
+       {
+        "name": "c_4_D",
+        "value": 3,
+        "source": "IV | 7 | 5 | 2 | 3"
+       },
+       {
+        "name": "c_5_A",
+        "value": 10,
+        "source": "V | 10 | 6 | 7 | 4"
+       },
+       {
+        "name": "c_5_B",
+        "value": 6,
+        "source": "V | 10 | 6 | 7 | 4"
+       },
+       {
+        "name": "c_5_C",
+        "value": 7,
+        "source": "V | 10 | 6 | 7 | 4"
+       },
+       {
+        "name": "c_5_D",
+        "value": 4,
+        "source": "V | 10 | 6 | 7 | 4"
+       }
+      ],
+      "variables": [
+       {
+        "name": "x_1_A",
+        "symbol": "x_{1,A}",
+        "type": "binary",
+        "bounds": [
+         0,
+         1
+        ],
+        "source": "determine 4 out of 5 workers to complete one of the four tasks respectively"
+       },
+       {
+        "name": "x_1_B",
+        "symbol": "x_{1,B}",
+        "type": "binary",
+        "bounds": [
+         0,
+         1
+        ],
+        "source": "determine 4 out of 5 workers to complete one of the four tasks respectively"
+       },
+       {
+        "name": "x_1_C",
+        "symbol": "x_{1,C}",
+        "type": "binary",
+        "bounds": [
+         0,
+         1
+        ],
+        "source": "determine 4 out of 5 workers to complete one of the four tasks respectively"
+       },
+       {
+        "name": "x_1_D",
+        "symbol": "x_{1,D}",
+        "type": "binary",
+        "bounds": [
+         0,
+         1
+        ],
+        "source": "determine 4 out of 5 workers to complete one of the four tasks respectively"
+       },
+       {
+        "name": "x_2_A",
+        "symbol": "x_{2,A}",
+        "type": "binary",
+        "bounds": [
+         0,
+         1
+        ],
+        "source": "determine 4 out of 5 workers to complete one of the four tasks respectively"
+       },
+       {
+        "name": "x_2_B",
+        "symbol": "x_{2,B}",
+        "type": "binary",
+        "bounds": [
+         0,
+         1
+        ],
+        "source": "determine 4 out of 5 workers to complete one of the four tasks respectively"
+       },
+       {
+        "name": "x_2_C",
+        "symbol": "x_{2,C}",
+        "type": "binary",
+        "bounds": [
+         0,
+         1
+        ],
+        "source": "determine 4 out of 5 workers to complete one of the four tasks respectively"
+       },
+       {
+        "name": "x_2_D",
+        "symbol": "x_{2,D}",
+        "type": "binary",
+        "bounds": [
+         0,
+         1
+        ],
+        "source": "determine 4 out of 5 workers to complete one of the four tasks respectively"
+       },
+       {
+        "name": "x_3_A",
+        "symbol": "x_{3,A}",
+        "type": "binary",
+        "bounds": [
+         0,
+         1
+        ],
+        "source": "determine 4 out of 5 workers to complete one of the four tasks respectively"
+       },
+       {
+        "name": "x_3_B",
+        "symbol": "x_{3,B}",
+        "type": "binary",
+        "bounds": [
+         0,
+         1
+        ],
+        "source": "determine 4 out of 5 workers to complete one of the four tasks respectively"
+       },
+       {
+        "name": "x_3_C",
+        "symbol": "x_{3,C}",
+        "type": "binary",
+        "bounds": [
+         0,
+         1
+        ],
+        "source": "determine 4 out of 5 workers to complete one of the four tasks respectively"
+       },
+       {
+        "name": "x_3_D",
+        "symbol": "x_{3,D}",
+        "type": "binary",
+        "bounds": [
+         0,
+         1
+        ],
+        "source": "determine 4 out of 5 workers to complete one of the four tasks respectively"
+       },
+       {
+        "name": "x_4_A",
+        "symbol": "x_{4,A}",
+        "type": "binary",
+        "bounds": [
+         0,
+         1
+        ],
+        "source": "determine 4 out of 5 workers to complete one of the four tasks respectively"
+       },
+       {
+        "name": "x_4_B",
+        "symbol": "x_{4,B}",
+        "type": "binary",
+        "bounds": [
+         0,
+         1
+        ],
+        "source": "determine 4 out of 5 workers to complete one of the four tasks respectively"
+       },
+       {
+        "name": "x_4_C",
+        "symbol": "x_{4,C}",
+        "type": "binary",
+        "bounds": [
+         0,
+         1
+        ],
+        "source": "determine 4 out of 5 workers to complete one of the four tasks respectively"
+       },
+       {
+        "name": "x_4_D",
+        "symbol": "x_{4,D}",
+        "type": "binary",
+        "bounds": [
+         0,
+         1
+        ],
+        "source": "determine 4 out of 5 workers to complete one of the four tasks respectively"
+       },
+       {
+        "name": "x_5_A",
+        "symbol": "x_{5,A}",
+        "type": "binary",
+        "bounds": [
+         0,
+         1
+        ],
+        "source": "determine 4 out of 5 workers to complete one of the four tasks respectively"
+       },
+       {
+        "name": "x_5_B",
+        "symbol": "x_{5,B}",
+        "type": "binary",
+        "bounds": [
+         0,
+         1
+        ],
+        "source": "determine 4 out of 5 workers to complete one of the four tasks respectively"
+       },
+       {
+        "name": "x_5_C",
+        "symbol": "x_{5,C}",
+        "type": "binary",
+        "bounds": [
+         0,
+         1
+        ],
+        "source": "determine 4 out of 5 workers to complete one of the four tasks respectively"
+       },
+       {
+        "name": "x_5_D",
+        "symbol": "x_{5,D}",
+        "type": "binary",
+        "bounds": [
+         0,
+         1
+        ],
+        "source": "determine 4 out of 5 workers to complete one of the four tasks respectively"
+       }
+      ],
+      "objective": {
+       "direction": "minimize",
+       "expression": "c_1_A*x_1_A + c_1_B*x_1_B + c_1_C*x_1_C + c_1_D*x_1_D + c_2_A*x_2_A + c_2_B*x_2_B + c_2_C*x_2_C + c_2_D*x_2_D + c_3_A*x_3_A + c_3_B*x_3_B + c_3_C*x_3_C + c_3_D*x_3_D + c_4_A*x_4_A + c_4_B*x_4_B + c_4_C*x_4_C + c_4_D*x_4_D + c_5_A*x_5_A + c_5_B*x_5_B + c_5_C*x_5_C + c_5_D*x_5_D",
+       "variables": [
+        "x_1_A",
+        "x_1_B",
+        "x_1_C",
+        "x_1_D",
+        "x_2_A",
+        "x_2_B",
+        "x_2_C",
+        "x_2_D",
+        "x_3_A",
+        "x_3_B",
+        "x_3_C",
+        "x_3_D",
+        "x_4_A",
+        "x_4_B",
+        "x_4_C",
+        "x_4_D",
+        "x_5_A",
+        "x_5_B",
+        "x_5_C",
+        "x_5_D"
+       ],
+       "source": "minimizes the total working hours"
+      },
+      "constraints": [
+       {
+        "name": "task_A_exactly_one_worker",
+        "expression": "x_1_A + x_2_A + x_3_A + x_4_A + x_5_A = 1",
+        "type": "equality",
+        "source": "complete one of the four tasks respectively"
+       },
+       {
+        "name": "task_B_exactly_one_worker",
+        "expression": "x_1_B + x_2_B + x_3_B + x_4_B + x_5_B = 1",
+        "type": "equality",
+        "source": "complete one of the four tasks respectively"
+       },
+       {
+        "name": "task_C_exactly_one_worker",
+        "expression": "x_1_C + x_2_C + x_3_C + x_4_C + x_5_C = 1",
+        "type": "equality",
+        "source": "complete one of the four tasks respectively"
+       },
+       {
+        "name": "task_D_exactly_one_worker",
+        "expression": "x_1_D + x_2_D + x_3_D + x_4_D + x_5_D = 1",
+        "type": "equality",
+        "source": "complete one of the four tasks respectively"
+       },
+       {
+        "name": "worker_I_at_most_one_task",
+        "expression": "x_1_A + x_1_B + x_1_C + x_1_D <= 1",
+        "type": "inequality",
+        "source": "determine 4 out of 5 workers to complete one of the four tasks respectively"
+       },
+       {
+        "name": "worker_II_at_most_one_task",
+        "expression": "x_2_A + x_2_B + x_2_C + x_2_D <= 1",
+        "type": "inequality",
+        "source": "determine 4 out of 5 workers to complete one of the four tasks respectively"
+       },
+       {
+        "name": "worker_III_at_most_one_task",
+        "expression": "x_3_A + x_3_B + x_3_C + x_3_D <= 1",
+        "type": "inequality",
+        "source": "determine 4 out of 5 workers to complete one of the four tasks respectively"
+       },
+       {
+        "name": "worker_IV_at_most_one_task",
+        "expression": "x_4_A + x_4_B + x_4_C + x_4_D <= 1",
+        "type": "inequality",
+        "source": "determine 4 out of 5 workers to complete one of the four tasks respectively"
+       },
+       {
+        "name": "worker_V_at_most_one_task",
+        "expression": "x_5_A + x_5_B + x_5_C + x_5_D <= 1",
+        "type": "inequality",
+        "source": "determine 4 out of 5 workers to complete one of the four tasks respectively"
+       }
+      ]
+     },
+     "schema_errors": [
+      "parameters[0] source is not verbatim problem text",
+      "parameters[1] source is not verbatim problem text",
+      "parameters[2] source is not verbatim problem text",
+      "parameters[3] source is not verbatim problem text",
+      "parameters[4] source is not verbatim problem text",
+      "parameters[5] source is not verbatim problem text",
+      "parameters[6] source is not verbatim problem text",
+      "parameters[7] source is not verbatim problem text",
+      "parameters[8] source is not verbatim problem text",
+      "parameters[9] source is not verbatim problem text",
+      "parameters[10] source is not verbatim problem text",
+      "parameters[11] source is not verbatim problem text",
+      "parameters[12] source is not verbatim problem text",
+      "parameters[13] source is not verbatim problem text",
+      "parameters[14] source is not verbatim problem text",
+      "parameters[15] source is not verbatim problem text",
+      "parameters[16] source is not verbatim problem text",
+      "parameters[17] source is not verbatim problem text",
+      "parameters[18] source is not verbatim problem text",
+      "parameters[19] source is not verbatim problem text"
+     ],
+     "evaluation": {
+      "scores": {
+       "parameters": 98.0,
+       "variables": 98.0,
+       "constraints": 98.0,
+       "objective": 98.0
+      },
+      "weak_points": [
+       "Parameter naming convention (c_1_A) is inconsistent with variable symbol notation (x_{1,A}), which could cause confusion during implementation or verification.",
+       "The constraint that exactly 4 workers are selected is only implicitly enforced through the combination of task-equality and worker-inequality constraints; an explicit constraint (sum of all x_{i,j} = 4) is absent, though mathematically redundant. A later formulation could include it for clarity and solver readability.",
+       "The 'source' fields for parameters merely repeat the table row rather than identifying the specific cell (worker, task) pair, reducing traceability if the table is updated."
+      ]
+     }
+    },
+    {
+     "candidate_id": "C",
+     "model": {
+      "parameters": [
+       {
+        "name": "hours_I_A",
+        "value": 9,
+        "source": "| I | 9 | 4 | 3 | 7 |"
+       },
+       {
+        "name": "hours_I_B",
+        "value": 4,
+        "source": "| I | 9 | 4 | 3 | 7 |"
+       },
+       {
+        "name": "hours_I_C",
+        "value": 3,
+        "source": "| I | 9 | 4 | 3 | 7 |"
+       },
+       {
+        "name": "hours_I_D",
+        "value": 7,
+        "source": "| I | 9 | 4 | 3 | 7 |"
+       },
+       {
+        "name": "hours_II_A",
+        "value": 4,
+        "source": "| II | 4 | 6 | 5 | 6 |"
+       },
+       {
+        "name": "hours_II_B",
+        "value": 6,
+        "source": "| II | 4 | 6 | 5 | 6 |"
+       },
+       {
+        "name": "hours_II_C",
+        "value": 5,
+        "source": "| II | 4 | 6 | 5 | 6 |"
+       },
+       {
+        "name": "hours_II_D",
+        "value": 6,
+        "source": "| II | 4 | 6 | 5 | 6 |"
+       },
+       {
+        "name": "hours_III_A",
+        "value": 5,
+        "source": "| III | 5 | 4 | 7 | 5 |"
+       },
+       {
+        "name": "hours_III_B",
+        "value": 4,
+        "source": "| III | 5 | 4 | 7 | 5 |"
+       },
+       {
+        "name": "hours_III_C",
+        "value": 7,
+        "source": "| III | 5 | 4 | 7 | 5 |"
+       },
+       {
+        "name": "hours_III_D",
+        "value": 5,
+        "source": "| III | 5 | 4 | 7 | 5 |"
+       },
+       {
+        "name": "hours_IV_A",
+        "value": 7,
+        "source": "| IV | 7 | 5 | 2 | 3 |"
+       },
+       {
+        "name": "hours_IV_B",
+        "value": 5,
+        "source": "| IV | 7 | 5 | 2 | 3 |"
+       },
+       {
+        "name": "hours_IV_C",
+        "value": 2,
+        "source": "| IV | 7 | 5 | 2 | 3 |"
+       },
+       {
+        "name": "hours_IV_D",
+        "value": 3,
+        "source": "| IV | 7 | 5 | 2 | 3 |"
+       },
+       {
+        "name": "hours_V_A",
+        "value": 10,
+        "source": "| V | 10 | 6 | 7 | 4 |"
+       },
+       {
+        "name": "hours_V_B",
+        "value": 6,
+        "source": "| V | 10 | 6 | 7 | 4 |"
+       },
+       {
+        "name": "hours_V_C",
+        "value": 7,
+        "source": "| V | 10 | 6 | 7 | 4 |"
+       },
+       {
+        "name": "hours_V_D",
+        "value": 4,
+        "source": "| V | 10 | 6 | 7 | 4 |"
+       }
+      ],
+      "variables": [
+       {
+        "name": "x_I_A",
+        "symbol": "x_{I,A}",
+        "type": "binary",
+        "bounds": [
+         0,
+         1
+        ],
+        "source": "determine 4 out of 5 workers to complete one of the four tasks respectively"
+       },
+       {
+        "name": "x_I_B",
+        "symbol": "x_{I,B}",
+        "type": "binary",
+        "bounds": [
+         0,
+         1
+        ],
+        "source": "determine 4 out of 5 workers to complete one of the four tasks respectively"
+       },
+       {
+        "name": "x_I_C",
+        "symbol": "x_{I,C}",
+        "type": "binary",
+        "bounds": [
+         0,
+         1
+        ],
+        "source": "determine 4 out of 5 workers to complete one of the four tasks respectively"
+       },
+       {
+        "name": "x_I_D",
+        "symbol": "x_{I,D}",
+        "type": "binary",
+        "bounds": [
+         0,
+         1
+        ],
+        "source": "determine 4 out of 5 workers to complete one of the four tasks respectively"
+       },
+       {
+        "name": "x_II_A",
+        "symbol": "x_{II,A}",
+        "type": "binary",
+        "bounds": [
+         0,
+         1
+        ],
+        "source": "determine 4 out of 5 workers to complete one of the four tasks respectively"
+       },
+       {
+        "name": "x_II_B",
+        "symbol": "x_{II,B}",
+        "type": "binary",
+        "bounds": [
+         0,
+         1
+        ],
+        "source": "determine 4 out of 5 workers to complete one of the four tasks respectively"
+       },
+       {
+        "name": "x_II_C",
+        "symbol": "x_{II,C}",
+        "type": "binary",
+        "bounds": [
+         0,
+         1
+        ],
+        "source": "determine 4 out of 5 workers to complete one of the four tasks respectively"
+       },
+       {
+        "name": "x_II_D",
+        "symbol": "x_{II,D}",
+        "type": "binary",
+        "bounds": [
+         0,
+         1
+        ],
+        "source": "determine 4 out of 5 workers to complete one of the four tasks respectively"
+       },
+       {
+        "name": "x_III_A",
+        "symbol": "x_{III,A}",
+        "type": "binary",
+        "bounds": [
+         0,
+         1
+        ],
+        "source": "determine 4 out of 5 workers to complete one of the four tasks respectively"
+       },
+       {
+        "name": "x_III_B",
+        "symbol": "x_{III,B}",
+        "type": "binary",
+        "bounds": [
+         0,
+         1
+        ],
+        "source": "determine 4 out of 5 workers to complete one of the four tasks respectively"
+       },
+       {
+        "name": "x_III_C",
+        "symbol": "x_{III,C}",
+        "type": "binary",
+        "bounds": [
+         0,
+         1
+        ],
+        "source": "determine 4 out of 5 workers to complete one of the four tasks respectively"
+       },
+       {
+        "name": "x_III_D",
+        "symbol": "x_{III,D}",
+        "type": "binary",
+        "bounds": [
+         0,
+         1
+        ],
+        "source": "determine 4 out of 5 workers to complete one of the four tasks respectively"
+       },
+       {
+        "name": "x_IV_A",
+        "symbol": "x_{IV,A}",
+        "type": "binary",
+        "bounds": [
+         0,
+         1
+        ],
+        "source": "determine 4 out of 5 workers to complete one of the four tasks respectively"
+       },
+       {
+        "name": "x_IV_B",
+        "symbol": "x_{IV,B}",
+        "type": "binary",
+        "bounds": [
+         0,
+         1
+        ],
+        "source": "determine 4 out of 5 workers to complete one of the four tasks respectively"
+       },
+       {
+        "name": "x_IV_C",
+        "symbol": "x_{IV,C}",
+        "type": "binary",
+        "bounds": [
+         0,
+         1
+        ],
+        "source": "determine 4 out of 5 workers to complete one of the four tasks respectively"
+       },
+       {
+        "name": "x_IV_D",
+        "symbol": "x_{IV,D}",
+        "type": "binary",
+        "bounds": [
+         0,
+         1
+        ],
+        "source": "determine 4 out of 5 workers to complete one of the four tasks respectively"
+       },
+       {
+        "name": "x_V_A",
+        "symbol": "x_{V,A}",
+        "type": "binary",
+        "bounds": [
+         0,
+         1
+        ],
+        "source": "determine 4 out of 5 workers to complete one of the four tasks respectively"
+       },
+       {
+        "name": "x_V_B",
+        "symbol": "x_{V,B}",
+        "type": "binary",
+        "bounds": [
+         0,
+         1
+        ],
+        "source": "determine 4 out of 5 workers to complete one of the four tasks respectively"
+       },
+       {
+        "name": "x_V_C",
+        "symbol": "x_{V,C}",
+        "type": "binary",
+        "bounds": [
+         0,
+         1
+        ],
+        "source": "determine 4 out of 5 workers to complete one of the four tasks respectively"
+       },
+       {
+        "name": "x_V_D",
+        "symbol": "x_{V,D}",
+        "type": "binary",
+        "bounds": [
+         0,
+         1
+        ],
+        "source": "determine 4 out of 5 workers to complete one of the four tasks respectively"
+       }
+      ],
+      "objective": {
+       "direction": "minimize",
+       "expression": "hours_I_A*x_I_A + hours_I_B*x_I_B + hours_I_C*x_I_C + hours_I_D*x_I_D + hours_II_A*x_II_A + hours_II_B*x_II_B + hours_II_C*x_II_C + hours_II_D*x_II_D + hours_III_A*x_III_A + hours_III_B*x_III_B + hours_III_C*x_III_C + hours_III_D*x_III_D + hours_IV_A*x_IV_A + hours_IV_B*x_IV_B + hours_IV_C*x_IV_C + hours_IV_D*x_IV_D + hours_V_A*x_V_A + hours_V_B*x_V_B + hours_V_C*x_V_C + hours_V_D*x_V_D",
+       "variables": [
+        "x_I_A",
+        "x_I_B",
+        "x_I_C",
+        "x_I_D",
+        "x_II_A",
+        "x_II_B",
+        "x_II_C",
+        "x_II_D",
+        "x_III_A",
+        "x_III_B",
+        "x_III_C",
+        "x_III_D",
+        "x_IV_A",
+        "x_IV_B",
+        "x_IV_C",
+        "x_IV_D",
+        "x_V_A",
+        "x_V_B",
+        "x_V_C",
+        "x_V_D"
+       ],
+       "source": "minimizes the total working hours"
+      },
+      "constraints": [
+       {
+        "name": "task_A_one_worker",
+        "expression": "x_I_A + x_II_A + x_III_A + x_IV_A + x_V_A = 1",
+        "type": "equality",
+        "source": "complete one of the four tasks respectively"
+       },
+       {
+        "name": "task_B_one_worker",
+        "expression": "x_I_B + x_II_B + x_III_B + x_IV_B + x_V_B = 1",
+        "type": "equality",
+        "source": "complete one of the four tasks respectively"
+       },
+       {
+        "name": "task_C_one_worker",
+        "expression": "x_I_C + x_II_C + x_III_C + x_IV_C + x_V_C = 1",
+        "type": "equality",
+        "source": "complete one of the four tasks respectively"
+       },
+       {
+        "name": "task_D_one_worker",
+        "expression": "x_I_D + x_II_D + x_III_D + x_IV_D + x_V_D = 1",
+        "type": "equality",
+        "source": "complete one of the four tasks respectively"
+       },
+       {
+        "name": "worker_I_at_most_one",
+        "expression": "x_I_A + x_I_B + x_I_C + x_I_D <= 1",
+        "type": "inequality",
+        "source": "determine 4 out of 5 workers to complete one of the four tasks respectively"
+       },
+       {
+        "name": "worker_II_at_most_one",
+        "expression": "x_II_A + x_II_B + x_II_C + x_II_D <= 1",
+        "type": "inequality",
+        "source": "determine 4 out of 5 workers to complete one of the four tasks respectively"
+       },
+       {
+        "name": "worker_III_at_most_one",
+        "expression": "x_III_A + x_III_B + x_III_C + x_III_D <= 1",
+        "type": "inequality",
+        "source": "determine 4 out of 5 workers to complete one of the four tasks respectively"
+       },
+       {
+        "name": "worker_IV_at_most_one",
+        "expression": "x_IV_A + x_IV_B + x_IV_C + x_IV_D <= 1",
+        "type": "inequality",
+        "source": "determine 4 out of 5 workers to complete one of the four tasks respectively"
+       },
+       {
+        "name": "worker_V_at_most_one",
+        "expression": "x_V_A + x_V_B + x_V_C + x_V_D <= 1",
+        "type": "inequality",
+        "source": "determine 4 out of 5 workers to complete one of the four tasks respectively"
+       },
+       {
+        "name": "exactly_four_workers_assigned",
+        "expression": "x_I_A + x_I_B + x_I_C + x_I_D + x_II_A + x_II_B + x_II_C + x_II_D + x_III_A + x_III_B + x_III_C + x_III_D + x_IV_A + x_IV_B + x_IV_C + x_IV_D + x_V_A + x_V_B + x_V_C + x_V_D = 4",
+        "type": "equality",
+        "source": "determine 4 out of 5 workers to complete one of the four tasks respectively"
+       }
+      ]
+     },
+     "schema_errors": [
+      "parameters[0] source is not verbatim problem text",
+      "parameters[1] source is not verbatim problem text",
+      "parameters[2] source is not verbatim problem text",
+      "parameters[3] source is not verbatim problem text",
+      "parameters[4] source is not verbatim problem text",
+      "parameters[5] source is not verbatim problem text",
+      "parameters[6] source is not verbatim problem text",
+      "parameters[7] source is not verbatim problem text",
+      "parameters[8] source is not verbatim problem text",
+      "parameters[9] source is not verbatim problem text",
+      "parameters[10] source is not verbatim problem text",
+      "parameters[11] source is not verbatim problem text",
+      "parameters[12] source is not verbatim problem text",
+      "parameters[13] source is not verbatim problem text",
+      "parameters[14] source is not verbatim problem text",
+      "parameters[15] source is not verbatim problem text",
+      "parameters[16] source is not verbatim problem text",
+      "parameters[17] source is not verbatim problem text",
+      "parameters[18] source is not verbatim problem text",
+      "parameters[19] source is not verbatim problem text"
+     ],
+     "evaluation": {
+      "scores": {
+       "parameters": 100.0,
+       "variables": 100.0,
+       "constraints": 95.0,
+       "objective": 100.0
+      },
+      "weak_points": [
+       "The constraint 'exactly_four_workers_assigned' (sum of all x = 4) is redundant: it is already implied by the four task-equality constraints (each task assigned to exactly one worker, giving a total of 4 assignments) combined with the five worker-inequality constraints (each worker at most one task). While not incorrect, it adds unnecessary complexity and could be removed for a cleaner formulation."
+      ]
+     }
+    }
+   ],
+   "first_code": "from pyscipopt import Model, quicksum\nimport json\n\n# Data\nc = {\n    (1, 'A'): 9,  (1, 'B'): 4,  (1, 'C'): 3,  (1, 'D'): 7,\n    (2, 'A'): 4,  (2, 'B'): 6,  (2, 'C'): 5,  (2, 'D'): 6,\n    (3, 'A'): 5,  (3, 'B'): 4,  (3, 'C'): 7,  (3, 'D'): 5,\n    (4, 'A'): 7,  (4, 'B'): 5,  (4, 'C'): 2,  (4, 'D'): 3,\n    (5, 'A'): 10, (5, 'B'): 6,  (5, 'C'): 7,  (5, 'D'): 4,\n}\n\nworkers = [1, 2, 3, 4, 5]\ntasks = ['A', 'B', 'C', 'D']\n\nm = Model()\nm.hideOutput()\nm.setRealParam(\"limits/time\", 570)\n\n# Decision variables: binary\nx = {}\nfor i in workers:\n    for j in tasks:\n        x[(i, j)] = m.addVar(vtype=\"B\", lb=0, ub=1, name=f\"x_{i}_{j}\")\n\n# Objective: minimize total hours\nobj = quicksum(c[(i, j)] * x[(i, j)] for i in workers for j in tasks)\nm.setObjective(obj, \"minimize\")\n\n# Each task is assigned to exactly one worker\nfor j in tasks:\n    m.addCons(quicksum(x[(i, j)] for i in workers) == 1, name=f\"task_{j}_assigned\")\n\n# Each worker is assigned to at most one task\nfor i in workers:\n    m.addCons(quicksum(x[(i, j)] for j in tasks) <= 1, name=f\"worker_{i}_at_most_one\")\n\nm.optimize()\n\nst = m.getStatus()\nprint(f\"status: {st}\")\nif m.getNSols() > 0:\n    print(f\"objective: {m.getObjVal()}\")",
+   "first_record": {
+    "exec_status": "ok",
+    "return_code": 0,
+    "solver_status": "optimal",
+    "objective": 14.0,
+    "stderr_tail": "",
+    "wall_s": 0.1,
+    "stdout_artifact": "stdout.txt",
+    "stderr_artifact": "stderr.txt",
+    "code_sha256": "4cb109d247bdaef3ead3ac43d40527e2b6c3dfa42584505b4fdf5df29004d008",
+    "aliases_sha256": "265cc06a668baf3f8d85263857c70c76e538e1336bd2569ba12cb51dedd5fd47",
+    "export_error": null,
+    "reused_execution": false
+   },
+   "dag": null,
+   "cost": {
+    "logical_llm_calls": 8,
+    "new_llm_calls": 8,
+    "api_attempts": 8,
+    "completion_tokens": 18797,
+    "total_tokens": 49660,
+    "llm_latency_s": 193.616,
+    "new_llm_latency_s": 193.616
+   },
+   "shared_cost": {
+    "logical_llm_calls": 8,
+    "new_llm_calls": 8,
+    "api_attempts": 8,
+    "completion_tokens": 18797,
+    "total_tokens": 49660,
+    "llm_latency_s": 193.616,
+    "new_llm_latency_s": 193.616
+   },
+   "repair_cost": {
+    "logical_llm_calls": 0,
+    "new_llm_calls": 0,
+    "api_attempts": 0,
+    "completion_tokens": 0,
+    "total_tokens": 0,
+    "llm_latency_s": 0,
+    "new_llm_latency_s": 0
+   },
+   "public_answer_used_for_selection": false
+  },
+  {
+   "id": 8,
+   "arm": "structured_dag",
+   "run_config": {
+    "ids": [
+     1,
+     4,
+     8,
+     20
+    ],
+    "arms": [
+     "structured",
+     "structured_dag"
+    ],
+    "model": "Qwen3_8-27B",
+    "base_url": "https://10.46.124.101/service-large-50-1789958762589/llm/v1",
+    "exposure": "development_new_samples_not_heldout",
+    "method": "COOPA-inspired structured iterative formulation; not an official COOPA run",
+    "dataset_sha256": "5b889e49d9aa64ae5b368bc80a05ee71a1daf20d126f54efc6207c98f9095f36",
+    "protocol_sha256": "d8dc29c339290f9633e5f623f9b070c4a519b2e1ecee7331ba5ed91a6b9eb1b2",
+    "implementation_sha256": {
+     "scripts/industryor_structured_pipeline.py": "6f1802c5e76f6d6bcc3048dc27ba4434901e4e613e56c4c3eb9b775dbf00ace9",
+     "ora_agent/structured_models.py": "5af7fc8ca18299e7c3c844b79282ee0e5d49553b96aef4ac64114f0cfd3179b8",
+     "scripts/industryor_k3_pipeline.py": "7eef88681f1aa649991fa34fdde7ec5dc8f23872f4ae095b7990274487a5d746",
+     "scripts/industryor_semantic_dag.py": "3b8f3c50d846357e101bda724cb06f194a5973803f2e95faac653b9fad73fffc",
+     "ora_agent/semantic_dag.py": "831a0f1e5e3cead974a78ad4d2bc66c81319ad113b39bf1d7f38cd9b1c590256",
+     "ora_agent/semantic_binding.py": "a48286c347662e7ce09389d0b284d9d9270e7f5fe27e9f32296785d06fc22687",
+     "scripts/industryor_next_stage.py": "8daba1b593668d890978337f7215a520c363e3027eb2e34587ef4738fa20d7b7",
+     "scripts/m1_pilot.py": "f687c8f2daa2c55eb22a22a91dba169c1440acab9b6a23f8d0f079cbb8c7509a",
+     "ora_agent/llm.py": "eb2b6f6ebc36813149d52ea1a109addd51cb02419c53f7427de7c7a712d7aa18"
+    }
+   },
+   "status": "completed",
+   "selected_index": 0,
+   "selection_method": "accepted_min_llm_solver_depth",
+   "min_confidence": {},
+   "first_objective": 14.0,
+   "first_match": true,
+   "objective": 14.0,
+   "reference": 14.0,
+   "match": true,
+   "first_business_correct": true,
+   "business_correct": true,
+   "business_unverified": false,
+   "selected_code": "from pyscipopt import Model, quicksum\nimport json\n\n# Data\nc = {\n    (1, 'A'): 9,  (1, 'B'): 4,  (1, 'C'): 3,  (1, 'D'): 7,\n    (2, 'A'): 4,  (2, 'B'): 6,  (2, 'C'): 5,  (2, 'D'): 6,\n    (3, 'A'): 5,  (3, 'B'): 4,  (3, 'C'): 7,  (3, 'D'): 5,\n    (4, 'A'): 7,  (4, 'B'): 5,  (4, 'C'): 2,  (4, 'D'): 3,\n    (5, 'A'): 10, (5, 'B'): 6,  (5, 'C'): 7,  (5, 'D'): 4,\n}\n\nworkers = [1, 2, 3, 4, 5]\ntasks = ['A', 'B', 'C', 'D']\n\nm = Model()\nm.hideOutput()\nm.setRealParam(\"limits/time\", 570)\n\n# Decision variables: binary\nx = {}\nfor i in workers:\n    for j in tasks:\n        x[(i, j)] = m.addVar(vtype=\"B\", lb=0, ub=1, name=f\"x_{i}_{j}\")\n\n# Objective: minimize total hours\nobj = quicksum(c[(i, j)] * x[(i, j)] for i in workers for j in tasks)\nm.setObjective(obj, \"minimize\")\n\n# Each task is assigned to exactly one worker\nfor j in tasks:\n    m.addCons(quicksum(x[(i, j)] for i in workers) == 1, name=f\"task_{j}_assigned\")\n\n# Each worker is assigned to at most one task\nfor i in workers:\n    m.addCons(quicksum(x[(i, j)] for j in tasks) <= 1, name=f\"worker_{i}_at_most_one\")\n\nm.optimize()\n\nst = m.getStatus()\nprint(f\"status: {st}\")\nif m.getNSols() > 0:\n    print(f\"objective: {m.getObjVal()}\")",
+   "final_record": {
+    "exec_status": "ok",
+    "return_code": 0,
+    "solver_status": "optimal",
+    "objective": 14.0,
+    "stderr_tail": "",
+    "wall_s": 0.1,
+    "stdout_artifact": "stdout.txt",
+    "stderr_artifact": "stderr.txt",
+    "code_sha256": "4cb109d247bdaef3ead3ac43d40527e2b6c3dfa42584505b4fdf5df29004d008",
+    "aliases_sha256": "265cc06a668baf3f8d85263857c70c76e538e1336bd2569ba12cb51dedd5fd47",
+    "export_error": null,
+    "reused_execution": false,
+    "solution": {
+     "export": {
+      "complete": true,
+      "error": null
+     },
+     "objective": 14.0,
+     "schema_version": "industryor.solution.v1",
+     "solution_count": 1,
+     "solver_status": "optimal",
+     "variable_types": {
+      "x_0_0": "BINARY",
+      "x_0_1": "BINARY",
+      "x_0_2": "BINARY",
+      "x_0_3": "BINARY",
+      "x_1_0": "BINARY",
+      "x_1_1": "BINARY",
+      "x_1_2": "BINARY",
+      "x_1_3": "BINARY",
+      "x_2_0": "BINARY",
+      "x_2_1": "BINARY",
+      "x_2_2": "BINARY",
+      "x_2_3": "BINARY",
+      "x_3_0": "BINARY",
+      "x_3_1": "BINARY",
+      "x_3_2": "BINARY",
+      "x_3_3": "BINARY",
+      "x_4_0": "BINARY",
+      "x_4_1": "BINARY",
+      "x_4_2": "BINARY",
+      "x_4_3": "BINARY"
+     },
+     "variables": {
+      "x_0_0": 0.0,
+      "x_0_1": 1.0,
+      "x_0_2": 0.0,
+      "x_0_3": 0.0,
+      "x_1_0": 1.0,
+      "x_1_1": 0.0,
+      "x_1_2": 0.0,
+      "x_1_3": 0.0,
+      "x_2_0": 0.0,
+      "x_2_1": 0.0,
+      "x_2_2": 0.0,
+      "x_2_3": 0.0,
+      "x_3_0": 0.0,
+      "x_3_1": 0.0,
+      "x_3_2": 1.0,
+      "x_3_3": 0.0,
+      "x_4_0": 0.0,
+      "x_4_1": 0.0,
+      "x_4_2": 0.0,
+      "x_4_3": 1.0
+     }
+    }
+   },
+   "final_solution": {
+    "export": {
+     "complete": true,
+     "error": null
+    },
+    "objective": 14.0,
+    "schema_version": "industryor.solution.v1",
+    "solution_count": 1,
+    "solver_status": "optimal",
+    "variable_types": {
+     "x_0_0": "BINARY",
+     "x_0_1": "BINARY",
+     "x_0_2": "BINARY",
+     "x_0_3": "BINARY",
+     "x_1_0": "BINARY",
+     "x_1_1": "BINARY",
+     "x_1_2": "BINARY",
+     "x_1_3": "BINARY",
+     "x_2_0": "BINARY",
+     "x_2_1": "BINARY",
+     "x_2_2": "BINARY",
+     "x_2_3": "BINARY",
+     "x_3_0": "BINARY",
+     "x_3_1": "BINARY",
+     "x_3_2": "BINARY",
+     "x_3_3": "BINARY",
+     "x_4_0": "BINARY",
+     "x_4_1": "BINARY",
+     "x_4_2": "BINARY",
+     "x_4_3": "BINARY"
+    },
+    "variables": {
+     "x_0_0": 0.0,
+     "x_0_1": 1.0,
+     "x_0_2": 0.0,
+     "x_0_3": 0.0,
+     "x_1_0": 1.0,
+     "x_1_1": 0.0,
+     "x_1_2": 0.0,
+     "x_1_3": 0.0,
+     "x_2_0": 0.0,
+     "x_2_1": 0.0,
+     "x_2_2": 0.0,
+     "x_2_3": 0.0,
+     "x_3_0": 0.0,
+     "x_3_1": 0.0,
+     "x_3_2": 1.0,
+     "x_3_3": 0.0,
+     "x_4_0": 0.0,
+     "x_4_1": 0.0,
+     "x_4_2": 0.0,
+     "x_4_3": 1.0
+    }
+   },
+   "final_score": {
+    "schema_version": "industryor.business_audit.v1",
+    "problem_id": 8,
+    "audit_status": "complete",
+    "business_correct": true,
+    "variable_audit": {
+     "x_0_0": {
+      "present": true,
+      "value": 0.0,
+      "domain": "binary",
+      "passed": true
+     },
+     "x_0_1": {
+      "present": true,
+      "value": 1.0,
+      "domain": "binary",
+      "passed": true
+     },
+     "x_0_2": {
+      "present": true,
+      "value": 0.0,
+      "domain": "binary",
+      "passed": true
+     },
+     "x_0_3": {
+      "present": true,
+      "value": 0.0,
+      "domain": "binary",
+      "passed": true
+     },
+     "x_1_0": {
+      "present": true,
+      "value": 1.0,
+      "domain": "binary",
+      "passed": true
+     },
+     "x_1_1": {
+      "present": true,
+      "value": 0.0,
+      "domain": "binary",
+      "passed": true
+     },
+     "x_1_2": {
+      "present": true,
+      "value": 0.0,
+      "domain": "binary",
+      "passed": true
+     },
+     "x_1_3": {
+      "present": true,
+      "value": 0.0,
+      "domain": "binary",
+      "passed": true
+     },
+     "x_2_0": {
+      "present": true,
+      "value": 0.0,
+      "domain": "binary",
+      "passed": true
+     },
+     "x_2_1": {
+      "present": true,
+      "value": 0.0,
+      "domain": "binary",
+      "passed": true
+     },
+     "x_2_2": {
+      "present": true,
+      "value": 0.0,
+      "domain": "binary",
+      "passed": true
+     },
+     "x_2_3": {
+      "present": true,
+      "value": 0.0,
+      "domain": "binary",
+      "passed": true
+     },
+     "x_3_0": {
+      "present": true,
+      "value": 0.0,
+      "domain": "binary",
+      "passed": true
+     },
+     "x_3_1": {
+      "present": true,
+      "value": 0.0,
+      "domain": "binary",
+      "passed": true
+     },
+     "x_3_2": {
+      "present": true,
+      "value": 1.0,
+      "domain": "binary",
+      "passed": true
+     },
+     "x_3_3": {
+      "present": true,
+      "value": 0.0,
+      "domain": "binary",
+      "passed": true
+     },
+     "x_4_0": {
+      "present": true,
+      "value": 0.0,
+      "domain": "binary",
+      "passed": true
+     },
+     "x_4_1": {
+      "present": true,
+      "value": 0.0,
+      "domain": "binary",
+      "passed": true
+     },
+     "x_4_2": {
+      "present": true,
+      "value": 0.0,
+      "domain": "binary",
+      "passed": true
+     },
+     "x_4_3": {
+      "present": true,
+      "value": 1.0,
+      "domain": "binary",
+      "passed": true
+     }
+    },
+    "constraint_checks": [
+     {
+      "rule": "task_0_exactly_once",
+      "passed": true,
+      "observed": 1.0,
+      "expected": "= 1"
+     },
+     {
+      "rule": "task_1_exactly_once",
+      "passed": true,
+      "observed": 1.0,
+      "expected": "= 1"
+     },
+     {
+      "rule": "task_2_exactly_once",
+      "passed": true,
+      "observed": 1.0,
+      "expected": "= 1"
+     },
+     {
+      "rule": "task_3_exactly_once",
+      "passed": true,
+      "observed": 1.0,
+      "expected": "= 1"
+     },
+     {
+      "rule": "worker_0_at_most_once",
+      "passed": true,
+      "observed": 1.0,
+      "expected": "<= 1"
+     },
+     {
+      "rule": "worker_1_at_most_once",
+      "passed": true,
+      "observed": 1.0,
+      "expected": "<= 1"
+     },
+     {
+      "rule": "worker_2_at_most_once",
+      "passed": true,
+      "observed": 0.0,
+      "expected": "<= 1"
+     },
+     {
+      "rule": "worker_3_at_most_once",
+      "passed": true,
+      "observed": 1.0,
+      "expected": "<= 1"
+     },
+     {
+      "rule": "worker_4_at_most_once",
+      "passed": true,
+      "observed": 1.0,
+      "expected": "<= 1"
+     },
+     {
+      "rule": "exactly_four_workers",
+      "passed": true,
+      "observed": 4.0,
+      "expected": "= 4"
+     }
+    ],
+    "violations": [],
+    "execution_checks": {
+     "export_complete": true,
+     "solver_optimal": true,
+     "has_solution": true,
+     "model_objective_finite": true
+    },
+    "business_objective": 14.0,
+    "model_objective_consistent": true,
+    "optimality": "proven_optimal",
+    "blocking_reasons": []
+   },
+   "candidates": [
+    {
+     "candidate_id": "A",
+     "model": {
+      "parameters": [
+       {
+        "name": "c_1_A",
+        "value": 9,
+        "source": "I | 9 | 4 | 3 | 7"
+       },
+       {
+        "name": "c_1_B",
+        "value": 4,
+        "source": "I | 9 | 4 | 3 | 7"
+       },
+       {
+        "name": "c_1_C",
+        "value": 3,
+        "source": "I | 9 | 4 | 3 | 7"
+       },
+       {
+        "name": "c_1_D",
+        "value": 7,
+        "source": "I | 9 | 4 | 3 | 7"
+       },
+       {
+        "name": "c_2_A",
+        "value": 4,
+        "source": "II | 4 | 6 | 5 | 6"
+       },
+       {
+        "name": "c_2_B",
+        "value": 6,
+        "source": "II | 4 | 6 | 5 | 6"
+       },
+       {
+        "name": "c_2_C",
+        "value": 5,
+        "source": "II | 4 | 6 | 5 | 6"
+       },
+       {
+        "name": "c_2_D",
+        "value": 6,
+        "source": "II | 4 | 6 | 5 | 6"
+       },
+       {
+        "name": "c_3_A",
+        "value": 5,
+        "source": "III | 5 | 4 | 7 | 5"
+       },
+       {
+        "name": "c_3_B",
+        "value": 4,
+        "source": "III | 5 | 4 | 7 | 5"
+       },
+       {
+        "name": "c_3_C",
+        "value": 7,
+        "source": "III | 5 | 4 | 7 | 5"
+       },
+       {
+        "name": "c_3_D",
+        "value": 5,
+        "source": "III | 5 | 4 | 7 | 5"
+       },
+       {
+        "name": "c_4_A",
+        "value": 7,
+        "source": "IV | 7 | 5 | 2 | 3"
+       },
+       {
+        "name": "c_4_B",
+        "value": 5,
+        "source": "IV | 7 | 5 | 2 | 3"
+       },
+       {
+        "name": "c_4_C",
+        "value": 2,
+        "source": "IV | 7 | 5 | 2 | 3"
+       },
+       {
+        "name": "c_4_D",
+        "value": 3,
+        "source": "IV | 7 | 5 | 2 | 3"
+       },
+       {
+        "name": "c_5_A",
+        "value": 10,
+        "source": "V | 10 | 6 | 7 | 4"
+       },
+       {
+        "name": "c_5_B",
+        "value": 6,
+        "source": "V | 10 | 6 | 7 | 4"
+       },
+       {
+        "name": "c_5_C",
+        "value": 7,
+        "source": "V | 10 | 6 | 7 | 4"
+       },
+       {
+        "name": "c_5_D",
+        "value": 4,
+        "source": "V | 10 | 6 | 7 | 4"
+       }
+      ],
+      "variables": [
+       {
+        "name": "x_1_A",
+        "symbol": "x_{1,A}",
+        "type": "binary",
+        "bounds": [
+         0,
+         1
+        ],
+        "source": "determine 4 out of 5 workers to complete one of the four tasks respectively"
+       },
+       {
+        "name": "x_1_B",
+        "symbol": "x_{1,B}",
+        "type": "binary",
+        "bounds": [
+         0,
+         1
+        ],
+        "source": "determine 4 out of 5 workers to complete one of the four tasks respectively"
+       },
+       {
+        "name": "x_1_C",
+        "symbol": "x_{1,C}",
+        "type": "binary",
+        "bounds": [
+         0,
+         1
+        ],
+        "source": "determine 4 out of 5 workers to complete one of the four tasks respectively"
+       },
+       {
+        "name": "x_1_D",
+        "symbol": "x_{1,D}",
+        "type": "binary",
+        "bounds": [
+         0,
+         1
+        ],
+        "source": "determine 4 out of 5 workers to complete one of the four tasks respectively"
+       },
+       {
+        "name": "x_2_A",
+        "symbol": "x_{2,A}",
+        "type": "binary",
+        "bounds": [
+         0,
+         1
+        ],
+        "source": "determine 4 out of 5 workers to complete one of the four tasks respectively"
+       },
+       {
+        "name": "x_2_B",
+        "symbol": "x_{2,B}",
+        "type": "binary",
+        "bounds": [
+         0,
+         1
+        ],
+        "source": "determine 4 out of 5 workers to complete one of the four tasks respectively"
+       },
+       {
+        "name": "x_2_C",
+        "symbol": "x_{2,C}",
+        "type": "binary",
+        "bounds": [
+         0,
+         1
+        ],
+        "source": "determine 4 out of 5 workers to complete one of the four tasks respectively"
+       },
+       {
+        "name": "x_2_D",
+        "symbol": "x_{2,D}",
+        "type": "binary",
+        "bounds": [
+         0,
+         1
+        ],
+        "source": "determine 4 out of 5 workers to complete one of the four tasks respectively"
+       },
+       {
+        "name": "x_3_A",
+        "symbol": "x_{3,A}",
+        "type": "binary",
+        "bounds": [
+         0,
+         1
+        ],
+        "source": "determine 4 out of 5 workers to complete one of the four tasks respectively"
+       },
+       {
+        "name": "x_3_B",
+        "symbol": "x_{3,B}",
+        "type": "binary",
+        "bounds": [
+         0,
+         1
+        ],
+        "source": "determine 4 out of 5 workers to complete one of the four tasks respectively"
+       },
+       {
+        "name": "x_3_C",
+        "symbol": "x_{3,C}",
+        "type": "binary",
+        "bounds": [
+         0,
+         1
+        ],
+        "source": "determine 4 out of 5 workers to complete one of the four tasks respectively"
+       },
+       {
+        "name": "x_3_D",
+        "symbol": "x_{3,D}",
+        "type": "binary",
+        "bounds": [
+         0,
+         1
+        ],
+        "source": "determine 4 out of 5 workers to complete one of the four tasks respectively"
+       },
+       {
+        "name": "x_4_A",
+        "symbol": "x_{4,A}",
+        "type": "binary",
+        "bounds": [
+         0,
+         1
+        ],
+        "source": "determine 4 out of 5 workers to complete one of the four tasks respectively"
+       },
+       {
+        "name": "x_4_B",
+        "symbol": "x_{4,B}",
+        "type": "binary",
+        "bounds": [
+         0,
+         1
+        ],
+        "source": "determine 4 out of 5 workers to complete one of the four tasks respectively"
+       },
+       {
+        "name": "x_4_C",
+        "symbol": "x_{4,C}",
+        "type": "binary",
+        "bounds": [
+         0,
+         1
+        ],
+        "source": "determine 4 out of 5 workers to complete one of the four tasks respectively"
+       },
+       {
+        "name": "x_4_D",
+        "symbol": "x_{4,D}",
+        "type": "binary",
+        "bounds": [
+         0,
+         1
+        ],
+        "source": "determine 4 out of 5 workers to complete one of the four tasks respectively"
+       },
+       {
+        "name": "x_5_A",
+        "symbol": "x_{5,A}",
+        "type": "binary",
+        "bounds": [
+         0,
+         1
+        ],
+        "source": "determine 4 out of 5 workers to complete one of the four tasks respectively"
+       },
+       {
+        "name": "x_5_B",
+        "symbol": "x_{5,B}",
+        "type": "binary",
+        "bounds": [
+         0,
+         1
+        ],
+        "source": "determine 4 out of 5 workers to complete one of the four tasks respectively"
+       },
+       {
+        "name": "x_5_C",
+        "symbol": "x_{5,C}",
+        "type": "binary",
+        "bounds": [
+         0,
+         1
+        ],
+        "source": "determine 4 out of 5 workers to complete one of the four tasks respectively"
+       },
+       {
+        "name": "x_5_D",
+        "symbol": "x_{5,D}",
+        "type": "binary",
+        "bounds": [
+         0,
+         1
+        ],
+        "source": "determine 4 out of 5 workers to complete one of the four tasks respectively"
+       }
+      ],
+      "objective": {
+       "direction": "minimize",
+       "expression": "c_1_A*x_1_A + c_1_B*x_1_B + c_1_C*x_1_C + c_1_D*x_1_D + c_2_A*x_2_A + c_2_B*x_2_B + c_2_C*x_2_C + c_2_D*x_2_D + c_3_A*x_3_A + c_3_B*x_3_B + c_3_C*x_3_C + c_3_D*x_3_D + c_4_A*x_4_A + c_4_B*x_4_B + c_4_C*x_4_C + c_4_D*x_4_D + c_5_A*x_5_A + c_5_B*x_5_B + c_5_C*x_5_C + c_5_D*x_5_D",
+       "variables": [
+        "x_1_A",
+        "x_1_B",
+        "x_1_C",
+        "x_1_D",
+        "x_2_A",
+        "x_2_B",
+        "x_2_C",
+        "x_2_D",
+        "x_3_A",
+        "x_3_B",
+        "x_3_C",
+        "x_3_D",
+        "x_4_A",
+        "x_4_B",
+        "x_4_C",
+        "x_4_D",
+        "x_5_A",
+        "x_5_B",
+        "x_5_C",
+        "x_5_D"
+       ],
+       "source": "minimizes the total working hours"
+      },
+      "constraints": [
+       {
+        "name": "task_A_assigned",
+        "expression": "x_1_A + x_2_A + x_3_A + x_4_A + x_5_A = 1",
+        "type": "equality",
+        "source": "complete one of the four tasks respectively"
+       },
+       {
+        "name": "task_B_assigned",
+        "expression": "x_1_B + x_2_B + x_3_B + x_4_B + x_5_B = 1",
+        "type": "equality",
+        "source": "complete one of the four tasks respectively"
+       },
+       {
+        "name": "task_C_assigned",
+        "expression": "x_1_C + x_2_C + x_3_C + x_4_C + x_5_C = 1",
+        "type": "equality",
+        "source": "complete one of the four tasks respectively"
+       },
+       {
+        "name": "task_D_assigned",
+        "expression": "x_1_D + x_2_D + x_3_D + x_4_D + x_5_D = 1",
+        "type": "equality",
+        "source": "complete one of the four tasks respectively"
+       },
+       {
+        "name": "worker_I_at_most_one",
+        "expression": "x_1_A + x_1_B + x_1_C + x_1_D <= 1",
+        "type": "inequality",
+        "source": "determine 4 out of 5 workers to complete one of the four tasks respectively"
+       },
+       {
+        "name": "worker_II_at_most_one",
+        "expression": "x_2_A + x_2_B + x_2_C + x_2_D <= 1",
+        "type": "inequality",
+        "source": "determine 4 out of 5 workers to complete one of the four tasks respectively"
+       },
+       {
+        "name": "worker_III_at_most_one",
+        "expression": "x_3_A + x_3_B + x_3_C + x_3_D <= 1",
+        "type": "inequality",
+        "source": "determine 4 out of 5 workers to complete one of the four tasks respectively"
+       },
+       {
+        "name": "worker_IV_at_most_one",
+        "expression": "x_4_A + x_4_B + x_4_C + x_4_D <= 1",
+        "type": "inequality",
+        "source": "determine 4 out of 5 workers to complete one of the four tasks respectively"
+       },
+       {
+        "name": "worker_V_at_most_one",
+        "expression": "x_5_A + x_5_B + x_5_C + x_5_D <= 1",
+        "type": "inequality",
+        "source": "determine 4 out of 5 workers to complete one of the four tasks respectively"
+       }
+      ]
+     },
+     "schema_errors": [
+      "parameters[0] source is not verbatim problem text",
+      "parameters[1] source is not verbatim problem text",
+      "parameters[2] source is not verbatim problem text",
+      "parameters[3] source is not verbatim problem text",
+      "parameters[4] source is not verbatim problem text",
+      "parameters[5] source is not verbatim problem text",
+      "parameters[6] source is not verbatim problem text",
+      "parameters[7] source is not verbatim problem text",
+      "parameters[8] source is not verbatim problem text",
+      "parameters[9] source is not verbatim problem text",
+      "parameters[10] source is not verbatim problem text",
+      "parameters[11] source is not verbatim problem text",
+      "parameters[12] source is not verbatim problem text",
+      "parameters[13] source is not verbatim problem text",
+      "parameters[14] source is not verbatim problem text",
+      "parameters[15] source is not verbatim problem text",
+      "parameters[16] source is not verbatim problem text",
+      "parameters[17] source is not verbatim problem text",
+      "parameters[18] source is not verbatim problem text",
+      "parameters[19] source is not verbatim problem text",
+      "JSONDecodeError: Extra data: line 1 column 97 (char 96)",
+      "no valid confidence scores"
+     ],
+     "evaluation": {
+      "scores": {},
+      "weak_points": [
+       "JSONDecodeError: Extra data: line 1 column 97 (char 96)"
+      ]
+     }
+    },
+    {
+     "candidate_id": "B",
+     "model": {
+      "parameters": [
+       {
+        "name": "c_1_A",
+        "value": 9,
+        "source": "I | 9 | 4 | 3 | 7"
+       },
+       {
+        "name": "c_1_B",
+        "value": 4,
+        "source": "I | 9 | 4 | 3 | 7"
+       },
+       {
+        "name": "c_1_C",
+        "value": 3,
+        "source": "I | 9 | 4 | 3 | 7"
+       },
+       {
+        "name": "c_1_D",
+        "value": 7,
+        "source": "I | 9 | 4 | 3 | 7"
+       },
+       {
+        "name": "c_2_A",
+        "value": 4,
+        "source": "II | 4 | 6 | 5 | 6"
+       },
+       {
+        "name": "c_2_B",
+        "value": 6,
+        "source": "II | 4 | 6 | 5 | 6"
+       },
+       {
+        "name": "c_2_C",
+        "value": 5,
+        "source": "II | 4 | 6 | 5 | 6"
+       },
+       {
+        "name": "c_2_D",
+        "value": 6,
+        "source": "II | 4 | 6 | 5 | 6"
+       },
+       {
+        "name": "c_3_A",
+        "value": 5,
+        "source": "III | 5 | 4 | 7 | 5"
+       },
+       {
+        "name": "c_3_B",
+        "value": 4,
+        "source": "III | 5 | 4 | 7 | 5"
+       },
+       {
+        "name": "c_3_C",
+        "value": 7,
+        "source": "III | 5 | 4 | 7 | 5"
+       },
+       {
+        "name": "c_3_D",
+        "value": 5,
+        "source": "III | 5 | 4 | 7 | 5"
+       },
+       {
+        "name": "c_4_A",
+        "value": 7,
+        "source": "IV | 7 | 5 | 2 | 3"
+       },
+       {
+        "name": "c_4_B",
+        "value": 5,
+        "source": "IV | 7 | 5 | 2 | 3"
+       },
+       {
+        "name": "c_4_C",
+        "value": 2,
+        "source": "IV | 7 | 5 | 2 | 3"
+       },
+       {
+        "name": "c_4_D",
+        "value": 3,
+        "source": "IV | 7 | 5 | 2 | 3"
+       },
+       {
+        "name": "c_5_A",
+        "value": 10,
+        "source": "V | 10 | 6 | 7 | 4"
+       },
+       {
+        "name": "c_5_B",
+        "value": 6,
+        "source": "V | 10 | 6 | 7 | 4"
+       },
+       {
+        "name": "c_5_C",
+        "value": 7,
+        "source": "V | 10 | 6 | 7 | 4"
+       },
+       {
+        "name": "c_5_D",
+        "value": 4,
+        "source": "V | 10 | 6 | 7 | 4"
+       }
+      ],
+      "variables": [
+       {
+        "name": "x_1_A",
+        "symbol": "x_{1,A}",
+        "type": "binary",
+        "bounds": [
+         0,
+         1
+        ],
+        "source": "determine 4 out of 5 workers to complete one of the four tasks respectively"
+       },
+       {
+        "name": "x_1_B",
+        "symbol": "x_{1,B}",
+        "type": "binary",
+        "bounds": [
+         0,
+         1
+        ],
+        "source": "determine 4 out of 5 workers to complete one of the four tasks respectively"
+       },
+       {
+        "name": "x_1_C",
+        "symbol": "x_{1,C}",
+        "type": "binary",
+        "bounds": [
+         0,
+         1
+        ],
+        "source": "determine 4 out of 5 workers to complete one of the four tasks respectively"
+       },
+       {
+        "name": "x_1_D",
+        "symbol": "x_{1,D}",
+        "type": "binary",
+        "bounds": [
+         0,
+         1
+        ],
+        "source": "determine 4 out of 5 workers to complete one of the four tasks respectively"
+       },
+       {
+        "name": "x_2_A",
+        "symbol": "x_{2,A}",
+        "type": "binary",
+        "bounds": [
+         0,
+         1
+        ],
+        "source": "determine 4 out of 5 workers to complete one of the four tasks respectively"
+       },
+       {
+        "name": "x_2_B",
+        "symbol": "x_{2,B}",
+        "type": "binary",
+        "bounds": [
+         0,
+         1
+        ],
+        "source": "determine 4 out of 5 workers to complete one of the four tasks respectively"
+       },
+       {
+        "name": "x_2_C",
+        "symbol": "x_{2,C}",
+        "type": "binary",
+        "bounds": [
+         0,
+         1
+        ],
+        "source": "determine 4 out of 5 workers to complete one of the four tasks respectively"
+       },
+       {
+        "name": "x_2_D",
+        "symbol": "x_{2,D}",
+        "type": "binary",
+        "bounds": [
+         0,
+         1
+        ],
+        "source": "determine 4 out of 5 workers to complete one of the four tasks respectively"
+       },
+       {
+        "name": "x_3_A",
+        "symbol": "x_{3,A}",
+        "type": "binary",
+        "bounds": [
+         0,
+         1
+        ],
+        "source": "determine 4 out of 5 workers to complete one of the four tasks respectively"
+       },
+       {
+        "name": "x_3_B",
+        "symbol": "x_{3,B}",
+        "type": "binary",
+        "bounds": [
+         0,
+         1
+        ],
+        "source": "determine 4 out of 5 workers to complete one of the four tasks respectively"
+       },
+       {
+        "name": "x_3_C",
+        "symbol": "x_{3,C}",
+        "type": "binary",
+        "bounds": [
+         0,
+         1
+        ],
+        "source": "determine 4 out of 5 workers to complete one of the four tasks respectively"
+       },
+       {
+        "name": "x_3_D",
+        "symbol": "x_{3,D}",
+        "type": "binary",
+        "bounds": [
+         0,
+         1
+        ],
+        "source": "determine 4 out of 5 workers to complete one of the four tasks respectively"
+       },
+       {
+        "name": "x_4_A",
+        "symbol": "x_{4,A}",
+        "type": "binary",
+        "bounds": [
+         0,
+         1
+        ],
+        "source": "determine 4 out of 5 workers to complete one of the four tasks respectively"
+       },
+       {
+        "name": "x_4_B",
+        "symbol": "x_{4,B}",
+        "type": "binary",
+        "bounds": [
+         0,
+         1
+        ],
+        "source": "determine 4 out of 5 workers to complete one of the four tasks respectively"
+       },
+       {
+        "name": "x_4_C",
+        "symbol": "x_{4,C}",
+        "type": "binary",
+        "bounds": [
+         0,
+         1
+        ],
+        "source": "determine 4 out of 5 workers to complete one of the four tasks respectively"
+       },
+       {
+        "name": "x_4_D",
+        "symbol": "x_{4,D}",
+        "type": "binary",
+        "bounds": [
+         0,
+         1
+        ],
+        "source": "determine 4 out of 5 workers to complete one of the four tasks respectively"
+       },
+       {
+        "name": "x_5_A",
+        "symbol": "x_{5,A}",
+        "type": "binary",
+        "bounds": [
+         0,
+         1
+        ],
+        "source": "determine 4 out of 5 workers to complete one of the four tasks respectively"
+       },
+       {
+        "name": "x_5_B",
+        "symbol": "x_{5,B}",
+        "type": "binary",
+        "bounds": [
+         0,
+         1
+        ],
+        "source": "determine 4 out of 5 workers to complete one of the four tasks respectively"
+       },
+       {
+        "name": "x_5_C",
+        "symbol": "x_{5,C}",
+        "type": "binary",
+        "bounds": [
+         0,
+         1
+        ],
+        "source": "determine 4 out of 5 workers to complete one of the four tasks respectively"
+       },
+       {
+        "name": "x_5_D",
+        "symbol": "x_{5,D}",
+        "type": "binary",
+        "bounds": [
+         0,
+         1
+        ],
+        "source": "determine 4 out of 5 workers to complete one of the four tasks respectively"
+       }
+      ],
+      "objective": {
+       "direction": "minimize",
+       "expression": "c_1_A*x_1_A + c_1_B*x_1_B + c_1_C*x_1_C + c_1_D*x_1_D + c_2_A*x_2_A + c_2_B*x_2_B + c_2_C*x_2_C + c_2_D*x_2_D + c_3_A*x_3_A + c_3_B*x_3_B + c_3_C*x_3_C + c_3_D*x_3_D + c_4_A*x_4_A + c_4_B*x_4_B + c_4_C*x_4_C + c_4_D*x_4_D + c_5_A*x_5_A + c_5_B*x_5_B + c_5_C*x_5_C + c_5_D*x_5_D",
+       "variables": [
+        "x_1_A",
+        "x_1_B",
+        "x_1_C",
+        "x_1_D",
+        "x_2_A",
+        "x_2_B",
+        "x_2_C",
+        "x_2_D",
+        "x_3_A",
+        "x_3_B",
+        "x_3_C",
+        "x_3_D",
+        "x_4_A",
+        "x_4_B",
+        "x_4_C",
+        "x_4_D",
+        "x_5_A",
+        "x_5_B",
+        "x_5_C",
+        "x_5_D"
+       ],
+       "source": "minimizes the total working hours"
+      },
+      "constraints": [
+       {
+        "name": "task_A_exactly_one_worker",
+        "expression": "x_1_A + x_2_A + x_3_A + x_4_A + x_5_A = 1",
+        "type": "equality",
+        "source": "complete one of the four tasks respectively"
+       },
+       {
+        "name": "task_B_exactly_one_worker",
+        "expression": "x_1_B + x_2_B + x_3_B + x_4_B + x_5_B = 1",
+        "type": "equality",
+        "source": "complete one of the four tasks respectively"
+       },
+       {
+        "name": "task_C_exactly_one_worker",
+        "expression": "x_1_C + x_2_C + x_3_C + x_4_C + x_5_C = 1",
+        "type": "equality",
+        "source": "complete one of the four tasks respectively"
+       },
+       {
+        "name": "task_D_exactly_one_worker",
+        "expression": "x_1_D + x_2_D + x_3_D + x_4_D + x_5_D = 1",
+        "type": "equality",
+        "source": "complete one of the four tasks respectively"
+       },
+       {
+        "name": "worker_I_at_most_one_task",
+        "expression": "x_1_A + x_1_B + x_1_C + x_1_D <= 1",
+        "type": "inequality",
+        "source": "determine 4 out of 5 workers to complete one of the four tasks respectively"
+       },
+       {
+        "name": "worker_II_at_most_one_task",
+        "expression": "x_2_A + x_2_B + x_2_C + x_2_D <= 1",
+        "type": "inequality",
+        "source": "determine 4 out of 5 workers to complete one of the four tasks respectively"
+       },
+       {
+        "name": "worker_III_at_most_one_task",
+        "expression": "x_3_A + x_3_B + x_3_C + x_3_D <= 1",
+        "type": "inequality",
+        "source": "determine 4 out of 5 workers to complete one of the four tasks respectively"
+       },
+       {
+        "name": "worker_IV_at_most_one_task",
+        "expression": "x_4_A + x_4_B + x_4_C + x_4_D <= 1",
+        "type": "inequality",
+        "source": "determine 4 out of 5 workers to complete one of the four tasks respectively"
+       },
+       {
+        "name": "worker_V_at_most_one_task",
+        "expression": "x_5_A + x_5_B + x_5_C + x_5_D <= 1",
+        "type": "inequality",
+        "source": "determine 4 out of 5 workers to complete one of the four tasks respectively"
+       }
+      ]
+     },
+     "schema_errors": [
+      "parameters[0] source is not verbatim problem text",
+      "parameters[1] source is not verbatim problem text",
+      "parameters[2] source is not verbatim problem text",
+      "parameters[3] source is not verbatim problem text",
+      "parameters[4] source is not verbatim problem text",
+      "parameters[5] source is not verbatim problem text",
+      "parameters[6] source is not verbatim problem text",
+      "parameters[7] source is not verbatim problem text",
+      "parameters[8] source is not verbatim problem text",
+      "parameters[9] source is not verbatim problem text",
+      "parameters[10] source is not verbatim problem text",
+      "parameters[11] source is not verbatim problem text",
+      "parameters[12] source is not verbatim problem text",
+      "parameters[13] source is not verbatim problem text",
+      "parameters[14] source is not verbatim problem text",
+      "parameters[15] source is not verbatim problem text",
+      "parameters[16] source is not verbatim problem text",
+      "parameters[17] source is not verbatim problem text",
+      "parameters[18] source is not verbatim problem text",
+      "parameters[19] source is not verbatim problem text"
+     ],
+     "evaluation": {
+      "scores": {
+       "parameters": 98.0,
+       "variables": 98.0,
+       "constraints": 98.0,
+       "objective": 98.0
+      },
+      "weak_points": [
+       "Parameter naming convention (c_1_A) is inconsistent with variable symbol notation (x_{1,A}), which could cause confusion during implementation or verification.",
+       "The constraint that exactly 4 workers are selected is only implicitly enforced through the combination of task-equality and worker-inequality constraints; an explicit constraint (sum of all x_{i,j} = 4) is absent, though mathematically redundant. A later formulation could include it for clarity and solver readability.",
+       "The 'source' fields for parameters merely repeat the table row rather than identifying the specific cell (worker, task) pair, reducing traceability if the table is updated."
+      ]
+     }
+    },
+    {
+     "candidate_id": "C",
+     "model": {
+      "parameters": [
+       {
+        "name": "hours_I_A",
+        "value": 9,
+        "source": "| I | 9 | 4 | 3 | 7 |"
+       },
+       {
+        "name": "hours_I_B",
+        "value": 4,
+        "source": "| I | 9 | 4 | 3 | 7 |"
+       },
+       {
+        "name": "hours_I_C",
+        "value": 3,
+        "source": "| I | 9 | 4 | 3 | 7 |"
+       },
+       {
+        "name": "hours_I_D",
+        "value": 7,
+        "source": "| I | 9 | 4 | 3 | 7 |"
+       },
+       {
+        "name": "hours_II_A",
+        "value": 4,
+        "source": "| II | 4 | 6 | 5 | 6 |"
+       },
+       {
+        "name": "hours_II_B",
+        "value": 6,
+        "source": "| II | 4 | 6 | 5 | 6 |"
+       },
+       {
+        "name": "hours_II_C",
+        "value": 5,
+        "source": "| II | 4 | 6 | 5 | 6 |"
+       },
+       {
+        "name": "hours_II_D",
+        "value": 6,
+        "source": "| II | 4 | 6 | 5 | 6 |"
+       },
+       {
+        "name": "hours_III_A",
+        "value": 5,
+        "source": "| III | 5 | 4 | 7 | 5 |"
+       },
+       {
+        "name": "hours_III_B",
+        "value": 4,
+        "source": "| III | 5 | 4 | 7 | 5 |"
+       },
+       {
+        "name": "hours_III_C",
+        "value": 7,
+        "source": "| III | 5 | 4 | 7 | 5 |"
+       },
+       {
+        "name": "hours_III_D",
+        "value": 5,
+        "source": "| III | 5 | 4 | 7 | 5 |"
+       },
+       {
+        "name": "hours_IV_A",
+        "value": 7,
+        "source": "| IV | 7 | 5 | 2 | 3 |"
+       },
+       {
+        "name": "hours_IV_B",
+        "value": 5,
+        "source": "| IV | 7 | 5 | 2 | 3 |"
+       },
+       {
+        "name": "hours_IV_C",
+        "value": 2,
+        "source": "| IV | 7 | 5 | 2 | 3 |"
+       },
+       {
+        "name": "hours_IV_D",
+        "value": 3,
+        "source": "| IV | 7 | 5 | 2 | 3 |"
+       },
+       {
+        "name": "hours_V_A",
+        "value": 10,
+        "source": "| V | 10 | 6 | 7 | 4 |"
+       },
+       {
+        "name": "hours_V_B",
+        "value": 6,
+        "source": "| V | 10 | 6 | 7 | 4 |"
+       },
+       {
+        "name": "hours_V_C",
+        "value": 7,
+        "source": "| V | 10 | 6 | 7 | 4 |"
+       },
+       {
+        "name": "hours_V_D",
+        "value": 4,
+        "source": "| V | 10 | 6 | 7 | 4 |"
+       }
+      ],
+      "variables": [
+       {
+        "name": "x_I_A",
+        "symbol": "x_{I,A}",
+        "type": "binary",
+        "bounds": [
+         0,
+         1
+        ],
+        "source": "determine 4 out of 5 workers to complete one of the four tasks respectively"
+       },
+       {
+        "name": "x_I_B",
+        "symbol": "x_{I,B}",
+        "type": "binary",
+        "bounds": [
+         0,
+         1
+        ],
+        "source": "determine 4 out of 5 workers to complete one of the four tasks respectively"
+       },
+       {
+        "name": "x_I_C",
+        "symbol": "x_{I,C}",
+        "type": "binary",
+        "bounds": [
+         0,
+         1
+        ],
+        "source": "determine 4 out of 5 workers to complete one of the four tasks respectively"
+       },
+       {
+        "name": "x_I_D",
+        "symbol": "x_{I,D}",
+        "type": "binary",
+        "bounds": [
+         0,
+         1
+        ],
+        "source": "determine 4 out of 5 workers to complete one of the four tasks respectively"
+       },
+       {
+        "name": "x_II_A",
+        "symbol": "x_{II,A}",
+        "type": "binary",
+        "bounds": [
+         0,
+         1
+        ],
+        "source": "determine 4 out of 5 workers to complete one of the four tasks respectively"
+       },
+       {
+        "name": "x_II_B",
+        "symbol": "x_{II,B}",
+        "type": "binary",
+        "bounds": [
+         0,
+         1
+        ],
+        "source": "determine 4 out of 5 workers to complete one of the four tasks respectively"
+       },
+       {
+        "name": "x_II_C",
+        "symbol": "x_{II,C}",
+        "type": "binary",
+        "bounds": [
+         0,
+         1
+        ],
+        "source": "determine 4 out of 5 workers to complete one of the four tasks respectively"
+       },
+       {
+        "name": "x_II_D",
+        "symbol": "x_{II,D}",
+        "type": "binary",
+        "bounds": [
+         0,
+         1
+        ],
+        "source": "determine 4 out of 5 workers to complete one of the four tasks respectively"
+       },
+       {
+        "name": "x_III_A",
+        "symbol": "x_{III,A}",
+        "type": "binary",
+        "bounds": [
+         0,
+         1
+        ],
+        "source": "determine 4 out of 5 workers to complete one of the four tasks respectively"
+       },
+       {
+        "name": "x_III_B",
+        "symbol": "x_{III,B}",
+        "type": "binary",
+        "bounds": [
+         0,
+         1
+        ],
+        "source": "determine 4 out of 5 workers to complete one of the four tasks respectively"
+       },
+       {
+        "name": "x_III_C",
+        "symbol": "x_{III,C}",
+        "type": "binary",
+        "bounds": [
+         0,
+         1
+        ],
+        "source": "determine 4 out of 5 workers to complete one of the four tasks respectively"
+       },
+       {
+        "name": "x_III_D",
+        "symbol": "x_{III,D}",
+        "type": "binary",
+        "bounds": [
+         0,
+         1
+        ],
+        "source": "determine 4 out of 5 workers to complete one of the four tasks respectively"
+       },
+       {
+        "name": "x_IV_A",
+        "symbol": "x_{IV,A}",
+        "type": "binary",
+        "bounds": [
+         0,
+         1
+        ],
+        "source": "determine 4 out of 5 workers to complete one of the four tasks respectively"
+       },
+       {
+        "name": "x_IV_B",
+        "symbol": "x_{IV,B}",
+        "type": "binary",
+        "bounds": [
+         0,
+         1
+        ],
+        "source": "determine 4 out of 5 workers to complete one of the four tasks respectively"
+       },
+       {
+        "name": "x_IV_C",
+        "symbol": "x_{IV,C}",
+        "type": "binary",
+        "bounds": [
+         0,
+         1
+        ],
+        "source": "determine 4 out of 5 workers to complete one of the four tasks respectively"
+       },
+       {
+        "name": "x_IV_D",
+        "symbol": "x_{IV,D}",
+        "type": "binary",
+        "bounds": [
+         0,
+         1
+        ],
+        "source": "determine 4 out of 5 workers to complete one of the four tasks respectively"
+       },
+       {
+        "name": "x_V_A",
+        "symbol": "x_{V,A}",
+        "type": "binary",
+        "bounds": [
+         0,
+         1
+        ],
+        "source": "determine 4 out of 5 workers to complete one of the four tasks respectively"
+       },
+       {
+        "name": "x_V_B",
+        "symbol": "x_{V,B}",
+        "type": "binary",
+        "bounds": [
+         0,
+         1
+        ],
+        "source": "determine 4 out of 5 workers to complete one of the four tasks respectively"
+       },
+       {
+        "name": "x_V_C",
+        "symbol": "x_{V,C}",
+        "type": "binary",
+        "bounds": [
+         0,
+         1
+        ],
+        "source": "determine 4 out of 5 workers to complete one of the four tasks respectively"
+       },
+       {
+        "name": "x_V_D",
+        "symbol": "x_{V,D}",
+        "type": "binary",
+        "bounds": [
+         0,
+         1
+        ],
+        "source": "determine 4 out of 5 workers to complete one of the four tasks respectively"
+       }
+      ],
+      "objective": {
+       "direction": "minimize",
+       "expression": "hours_I_A*x_I_A + hours_I_B*x_I_B + hours_I_C*x_I_C + hours_I_D*x_I_D + hours_II_A*x_II_A + hours_II_B*x_II_B + hours_II_C*x_II_C + hours_II_D*x_II_D + hours_III_A*x_III_A + hours_III_B*x_III_B + hours_III_C*x_III_C + hours_III_D*x_III_D + hours_IV_A*x_IV_A + hours_IV_B*x_IV_B + hours_IV_C*x_IV_C + hours_IV_D*x_IV_D + hours_V_A*x_V_A + hours_V_B*x_V_B + hours_V_C*x_V_C + hours_V_D*x_V_D",
+       "variables": [
+        "x_I_A",
+        "x_I_B",
+        "x_I_C",
+        "x_I_D",
+        "x_II_A",
+        "x_II_B",
+        "x_II_C",
+        "x_II_D",
+        "x_III_A",
+        "x_III_B",
+        "x_III_C",
+        "x_III_D",
+        "x_IV_A",
+        "x_IV_B",
+        "x_IV_C",
+        "x_IV_D",
+        "x_V_A",
+        "x_V_B",
+        "x_V_C",
+        "x_V_D"
+       ],
+       "source": "minimizes the total working hours"
+      },
+      "constraints": [
+       {
+        "name": "task_A_one_worker",
+        "expression": "x_I_A + x_II_A + x_III_A + x_IV_A + x_V_A = 1",
+        "type": "equality",
+        "source": "complete one of the four tasks respectively"
+       },
+       {
+        "name": "task_B_one_worker",
+        "expression": "x_I_B + x_II_B + x_III_B + x_IV_B + x_V_B = 1",
+        "type": "equality",
+        "source": "complete one of the four tasks respectively"
+       },
+       {
+        "name": "task_C_one_worker",
+        "expression": "x_I_C + x_II_C + x_III_C + x_IV_C + x_V_C = 1",
+        "type": "equality",
+        "source": "complete one of the four tasks respectively"
+       },
+       {
+        "name": "task_D_one_worker",
+        "expression": "x_I_D + x_II_D + x_III_D + x_IV_D + x_V_D = 1",
+        "type": "equality",
+        "source": "complete one of the four tasks respectively"
+       },
+       {
+        "name": "worker_I_at_most_one",
+        "expression": "x_I_A + x_I_B + x_I_C + x_I_D <= 1",
+        "type": "inequality",
+        "source": "determine 4 out of 5 workers to complete one of the four tasks respectively"
+       },
+       {
+        "name": "worker_II_at_most_one",
+        "expression": "x_II_A + x_II_B + x_II_C + x_II_D <= 1",
+        "type": "inequality",
+        "source": "determine 4 out of 5 workers to complete one of the four tasks respectively"
+       },
+       {
+        "name": "worker_III_at_most_one",
+        "expression": "x_III_A + x_III_B + x_III_C + x_III_D <= 1",
+        "type": "inequality",
+        "source": "determine 4 out of 5 workers to complete one of the four tasks respectively"
+       },
+       {
+        "name": "worker_IV_at_most_one",
+        "expression": "x_IV_A + x_IV_B + x_IV_C + x_IV_D <= 1",
+        "type": "inequality",
+        "source": "determine 4 out of 5 workers to complete one of the four tasks respectively"
+       },
+       {
+        "name": "worker_V_at_most_one",
+        "expression": "x_V_A + x_V_B + x_V_C + x_V_D <= 1",
+        "type": "inequality",
+        "source": "determine 4 out of 5 workers to complete one of the four tasks respectively"
+       },
+       {
+        "name": "exactly_four_workers_assigned",
+        "expression": "x_I_A + x_I_B + x_I_C + x_I_D + x_II_A + x_II_B + x_II_C + x_II_D + x_III_A + x_III_B + x_III_C + x_III_D + x_IV_A + x_IV_B + x_IV_C + x_IV_D + x_V_A + x_V_B + x_V_C + x_V_D = 4",
+        "type": "equality",
+        "source": "determine 4 out of 5 workers to complete one of the four tasks respectively"
+       }
+      ]
+     },
+     "schema_errors": [
+      "parameters[0] source is not verbatim problem text",
+      "parameters[1] source is not verbatim problem text",
+      "parameters[2] source is not verbatim problem text",
+      "parameters[3] source is not verbatim problem text",
+      "parameters[4] source is not verbatim problem text",
+      "parameters[5] source is not verbatim problem text",
+      "parameters[6] source is not verbatim problem text",
+      "parameters[7] source is not verbatim problem text",
+      "parameters[8] source is not verbatim problem text",
+      "parameters[9] source is not verbatim problem text",
+      "parameters[10] source is not verbatim problem text",
+      "parameters[11] source is not verbatim problem text",
+      "parameters[12] source is not verbatim problem text",
+      "parameters[13] source is not verbatim problem text",
+      "parameters[14] source is not verbatim problem text",
+      "parameters[15] source is not verbatim problem text",
+      "parameters[16] source is not verbatim problem text",
+      "parameters[17] source is not verbatim problem text",
+      "parameters[18] source is not verbatim problem text",
+      "parameters[19] source is not verbatim problem text"
+     ],
+     "evaluation": {
+      "scores": {
+       "parameters": 100.0,
+       "variables": 100.0,
+       "constraints": 95.0,
+       "objective": 100.0
+      },
+      "weak_points": [
+       "The constraint 'exactly_four_workers_assigned' (sum of all x = 4) is redundant: it is already implied by the four task-equality constraints (each task assigned to exactly one worker, giving a total of 4 assignments) combined with the five worker-inequality constraints (each worker at most one task). While not incorrect, it adds unnecessary complexity and could be removed for a cleaner formulation."
+      ]
+     }
+    }
+   ],
+   "first_code": "from pyscipopt import Model, quicksum\nimport json\n\n# Data\nc = {\n    (1, 'A'): 9,  (1, 'B'): 4,  (1, 'C'): 3,  (1, 'D'): 7,\n    (2, 'A'): 4,  (2, 'B'): 6,  (2, 'C'): 5,  (2, 'D'): 6,\n    (3, 'A'): 5,  (3, 'B'): 4,  (3, 'C'): 7,  (3, 'D'): 5,\n    (4, 'A'): 7,  (4, 'B'): 5,  (4, 'C'): 2,  (4, 'D'): 3,\n    (5, 'A'): 10, (5, 'B'): 6,  (5, 'C'): 7,  (5, 'D'): 4,\n}\n\nworkers = [1, 2, 3, 4, 5]\ntasks = ['A', 'B', 'C', 'D']\n\nm = Model()\nm.hideOutput()\nm.setRealParam(\"limits/time\", 570)\n\n# Decision variables: binary\nx = {}\nfor i in workers:\n    for j in tasks:\n        x[(i, j)] = m.addVar(vtype=\"B\", lb=0, ub=1, name=f\"x_{i}_{j}\")\n\n# Objective: minimize total hours\nobj = quicksum(c[(i, j)] * x[(i, j)] for i in workers for j in tasks)\nm.setObjective(obj, \"minimize\")\n\n# Each task is assigned to exactly one worker\nfor j in tasks:\n    m.addCons(quicksum(x[(i, j)] for i in workers) == 1, name=f\"task_{j}_assigned\")\n\n# Each worker is assigned to at most one task\nfor i in workers:\n    m.addCons(quicksum(x[(i, j)] for j in tasks) <= 1, name=f\"worker_{i}_at_most_one\")\n\nm.optimize()\n\nst = m.getStatus()\nprint(f\"status: {st}\")\nif m.getNSols() > 0:\n    print(f\"objective: {m.getObjVal()}\")",
+   "first_record": {
+    "exec_status": "ok",
+    "return_code": 0,
+    "solver_status": "optimal",
+    "objective": 14.0,
+    "stderr_tail": "",
+    "wall_s": 0.1,
+    "stdout_artifact": "stdout.txt",
+    "stderr_artifact": "stderr.txt",
+    "code_sha256": "4cb109d247bdaef3ead3ac43d40527e2b6c3dfa42584505b4fdf5df29004d008",
+    "aliases_sha256": "265cc06a668baf3f8d85263857c70c76e538e1336bd2569ba12cb51dedd5fd47",
+    "export_error": null,
+    "reused_execution": false
+   },
+   "dag": {
+    "nodes": [
+     {
+      "node_id": "root",
+      "candidate_hash": "4cb109d247bdaef3ead3ac43d40527e2b6c3dfa42584505b4fdf5df29004d008",
+      "parent_id": null,
+      "action": "initial",
+      "binding_sha256": "265cc06a668baf3f8d85263857c70c76e538e1336bd2569ba12cb51dedd5fd47",
+      "binding_status": "validated",
+      "execution": {
+       "exec_status": "ok",
+       "return_code": 0,
+       "solver_status": "optimal",
+       "objective": 14.0,
+       "stderr_tail": "",
+       "wall_s": 0.1,
+       "stdout_artifact": "stdout.txt",
+       "stderr_artifact": "stderr.txt",
+       "code_sha256": "4cb109d247bdaef3ead3ac43d40527e2b6c3dfa42584505b4fdf5df29004d008",
+       "aliases_sha256": "265cc06a668baf3f8d85263857c70c76e538e1336bd2569ba12cb51dedd5fd47",
+       "export_error": null,
+       "reused_execution": false,
+       "solution": {
+        "export": {
+         "complete": true,
+         "error": null
+        },
+        "objective": 14.0,
+        "schema_version": "industryor.solution.v1",
+        "solution_count": 1,
+        "solver_status": "optimal",
+        "variable_types": {
+         "x_0_0": "BINARY",
+         "x_0_1": "BINARY",
+         "x_0_2": "BINARY",
+         "x_0_3": "BINARY",
+         "x_1_0": "BINARY",
+         "x_1_1": "BINARY",
+         "x_1_2": "BINARY",
+         "x_1_3": "BINARY",
+         "x_2_0": "BINARY",
+         "x_2_1": "BINARY",
+         "x_2_2": "BINARY",
+         "x_2_3": "BINARY",
+         "x_3_0": "BINARY",
+         "x_3_1": "BINARY",
+         "x_3_2": "BINARY",
+         "x_3_3": "BINARY",
+         "x_4_0": "BINARY",
+         "x_4_1": "BINARY",
+         "x_4_2": "BINARY",
+         "x_4_3": "BINARY"
+        },
+        "variables": {
+         "x_0_0": 0.0,
+         "x_0_1": 1.0,
+         "x_0_2": 0.0,
+         "x_0_3": 0.0,
+         "x_1_0": 1.0,
+         "x_1_1": 0.0,
+         "x_1_2": 0.0,
+         "x_1_3": 0.0,
+         "x_2_0": 0.0,
+         "x_2_1": 0.0,
+         "x_2_2": 0.0,
+         "x_2_3": 0.0,
+         "x_3_0": 0.0,
+         "x_3_1": 0.0,
+         "x_3_2": 1.0,
+         "x_3_3": 0.0,
+         "x_4_0": 0.0,
+         "x_4_1": 0.0,
+         "x_4_2": 0.0,
+         "x_4_3": 1.0
+        }
+       }
+      },
+      "business_audit": {
+       "schema_version": "industryor.business_audit.v1",
+       "problem_id": 8,
+       "audit_status": "complete",
+       "business_correct": true,
+       "variable_audit": {
+        "x_0_0": {
+         "present": true,
+         "value": 0.0,
+         "domain": "binary",
+         "passed": true
+        },
+        "x_0_1": {
+         "present": true,
+         "value": 1.0,
+         "domain": "binary",
+         "passed": true
+        },
+        "x_0_2": {
+         "present": true,
+         "value": 0.0,
+         "domain": "binary",
+         "passed": true
+        },
+        "x_0_3": {
+         "present": true,
+         "value": 0.0,
+         "domain": "binary",
+         "passed": true
+        },
+        "x_1_0": {
+         "present": true,
+         "value": 1.0,
+         "domain": "binary",
+         "passed": true
+        },
+        "x_1_1": {
+         "present": true,
+         "value": 0.0,
+         "domain": "binary",
+         "passed": true
+        },
+        "x_1_2": {
+         "present": true,
+         "value": 0.0,
+         "domain": "binary",
+         "passed": true
+        },
+        "x_1_3": {
+         "present": true,
+         "value": 0.0,
+         "domain": "binary",
+         "passed": true
+        },
+        "x_2_0": {
+         "present": true,
+         "value": 0.0,
+         "domain": "binary",
+         "passed": true
+        },
+        "x_2_1": {
+         "present": true,
+         "value": 0.0,
+         "domain": "binary",
+         "passed": true
+        },
+        "x_2_2": {
+         "present": true,
+         "value": 0.0,
+         "domain": "binary",
+         "passed": true
+        },
+        "x_2_3": {
+         "present": true,
+         "value": 0.0,
+         "domain": "binary",
+         "passed": true
+        },
+        "x_3_0": {
+         "present": true,
+         "value": 0.0,
+         "domain": "binary",
+         "passed": true
+        },
+        "x_3_1": {
+         "present": true,
+         "value": 0.0,
+         "domain": "binary",
+         "passed": true
+        },
+        "x_3_2": {
+         "present": true,
+         "value": 1.0,
+         "domain": "binary",
+         "passed": true
+        },
+        "x_3_3": {
+         "present": true,
+         "value": 0.0,
+         "domain": "binary",
+         "passed": true
+        },
+        "x_4_0": {
+         "present": true,
+         "value": 0.0,
+         "domain": "binary",
+         "passed": true
+        },
+        "x_4_1": {
+         "present": true,
+         "value": 0.0,
+         "domain": "binary",
+         "passed": true
+        },
+        "x_4_2": {
+         "present": true,
+         "value": 0.0,
+         "domain": "binary",
+         "passed": true
+        },
+        "x_4_3": {
+         "present": true,
+         "value": 1.0,
+         "domain": "binary",
+         "passed": true
+        }
+       },
+       "constraint_checks": [
+        {
+         "rule": "task_0_exactly_once",
+         "passed": true,
+         "observed": 1.0,
+         "expected": "= 1"
+        },
+        {
+         "rule": "task_1_exactly_once",
+         "passed": true,
+         "observed": 1.0,
+         "expected": "= 1"
+        },
+        {
+         "rule": "task_2_exactly_once",
+         "passed": true,
+         "observed": 1.0,
+         "expected": "= 1"
+        },
+        {
+         "rule": "task_3_exactly_once",
+         "passed": true,
+         "observed": 1.0,
+         "expected": "= 1"
+        },
+        {
+         "rule": "worker_0_at_most_once",
+         "passed": true,
+         "observed": 1.0,
+         "expected": "<= 1"
+        },
+        {
+         "rule": "worker_1_at_most_once",
+         "passed": true,
+         "observed": 1.0,
+         "expected": "<= 1"
+        },
+        {
+         "rule": "worker_2_at_most_once",
+         "passed": true,
+         "observed": 0.0,
+         "expected": "<= 1"
+        },
+        {
+         "rule": "worker_3_at_most_once",
+         "passed": true,
+         "observed": 1.0,
+         "expected": "<= 1"
+        },
+        {
+         "rule": "worker_4_at_most_once",
+         "passed": true,
+         "observed": 1.0,
+         "expected": "<= 1"
+        },
+        {
+         "rule": "exactly_four_workers",
+         "passed": true,
+         "observed": 4.0,
+         "expected": "= 4"
+        }
+       ],
+       "violations": [],
+       "execution_checks": {
+        "export_complete": true,
+        "solver_optimal": true,
+        "has_solution": true,
+        "model_objective_finite": true
+       },
+       "business_objective": 14.0,
+       "model_objective_consistent": true,
+       "optimality": "proven_optimal",
+       "blocking_reasons": []
+      },
+      "solver_runs": 0,
+      "llm_calls": 0,
+      "done": true,
+      "children": [],
+      "depth": 0,
+      "snapshot": "from pyscipopt import Model, quicksum\nimport json\n\n# Data\nc = {\n    (1, 'A'): 9,  (1, 'B'): 4,  (1, 'C'): 3,  (1, 'D'): 7,\n    (2, 'A'): 4,  (2, 'B'): 6,  (2, 'C'): 5,  (2, 'D'): 6,\n    (3, 'A'): 5,  (3, 'B'): 4,  (3, 'C'): 7,  (3, 'D'): 5,\n    (4, 'A'): 7,  (4, 'B'): 5,  (4, 'C'): 2,  (4, 'D'): 3,\n    (5, 'A'): 10, (5, 'B'): 6,  (5, 'C'): 7,  (5, 'D'): 4,\n}\n\nworkers = [1, 2, 3, 4, 5]\ntasks = ['A', 'B', 'C', 'D']\n\nm = Model()\nm.hideOutput()\nm.setRealParam(\"limits/time\", 570)\n\n# Decision variables: binary\nx = {}\nfor i in workers:\n    for j in tasks:\n        x[(i, j)] = m.addVar(vtype=\"B\", lb=0, ub=1, name=f\"x_{i}_{j}\")\n\n# Objective: minimize total hours\nobj = quicksum(c[(i, j)] * x[(i, j)] for i in workers for j in tasks)\nm.setObjective(obj, \"minimize\")\n\n# Each task is assigned to exactly one worker\nfor j in tasks:\n    m.addCons(quicksum(x[(i, j)] for i in workers) == 1, name=f\"task_{j}_assigned\")\n\n# Each worker is assigned to at most one task\nfor i in workers:\n    m.addCons(quicksum(x[(i, j)] for j in tasks) <= 1, name=f\"worker_{i}_at_most_one\")\n\nm.optimize()\n\nst = m.getStatus()\nprint(f\"status: {st}\")\nif m.getNSols() > 0:\n    print(f\"objective: {m.getObjVal()}\")",
+      "candidate_kind": "pyscipopt_code",
+      "stop_reason": "accepted"
+     }
+    ],
+    "events": [
+     {
+      "type": "done",
+      "node_id": "root",
+      "reason": "accepted"
+     }
+    ],
+    "accepted_node_ids": [
+     "root"
+    ],
+    "negative_node_ids": [],
+    "leaf_node_ids": [
+     "root"
+    ],
+    "finished": true,
+    "score_based_pruning": false,
+    "total_solver_runs": 0,
+    "total_llm_calls": 0
+   },
+   "cost": {
+    "logical_llm_calls": 8,
+    "new_llm_calls": 8,
+    "api_attempts": 8,
+    "completion_tokens": 18797,
+    "total_tokens": 49660,
+    "llm_latency_s": 193.616,
+    "new_llm_latency_s": 193.616
+   },
+   "shared_cost": {
+    "logical_llm_calls": 8,
+    "new_llm_calls": 8,
+    "api_attempts": 8,
+    "completion_tokens": 18797,
+    "total_tokens": 49660,
+    "llm_latency_s": 193.616,
+    "new_llm_latency_s": 193.616
+   },
+   "repair_cost": {
+    "logical_llm_calls": 0,
+    "new_llm_calls": 0,
+    "api_attempts": 0,
+    "completion_tokens": 0,
+    "total_tokens": 0,
+    "llm_latency_s": 0,
+    "new_llm_latency_s": 0
+   },
+   "public_answer_used_for_selection": false
+  },
+  {
+   "id": 20,
+   "arm": "structured",
+   "run_config": {
+    "ids": [
+     1,
+     4,
+     8,
+     20
+    ],
+    "arms": [
+     "structured",
+     "structured_dag"
+    ],
+    "model": "Qwen3_8-27B",
+    "base_url": "https://10.46.124.101/service-large-50-1789958762589/llm/v1",
+    "exposure": "development_new_samples_not_heldout",
+    "method": "COOPA-inspired structured iterative formulation; not an official COOPA run",
+    "dataset_sha256": "5b889e49d9aa64ae5b368bc80a05ee71a1daf20d126f54efc6207c98f9095f36",
+    "protocol_sha256": "d8dc29c339290f9633e5f623f9b070c4a519b2e1ecee7331ba5ed91a6b9eb1b2",
+    "implementation_sha256": {
+     "scripts/industryor_structured_pipeline.py": "6f1802c5e76f6d6bcc3048dc27ba4434901e4e613e56c4c3eb9b775dbf00ace9",
+     "ora_agent/structured_models.py": "5af7fc8ca18299e7c3c844b79282ee0e5d49553b96aef4ac64114f0cfd3179b8",
+     "scripts/industryor_k3_pipeline.py": "7eef88681f1aa649991fa34fdde7ec5dc8f23872f4ae095b7990274487a5d746",
+     "scripts/industryor_semantic_dag.py": "3b8f3c50d846357e101bda724cb06f194a5973803f2e95faac653b9fad73fffc",
+     "ora_agent/semantic_dag.py": "831a0f1e5e3cead974a78ad4d2bc66c81319ad113b39bf1d7f38cd9b1c590256",
+     "ora_agent/semantic_binding.py": "a48286c347662e7ce09389d0b284d9d9270e7f5fe27e9f32296785d06fc22687",
+     "scripts/industryor_next_stage.py": "8daba1b593668d890978337f7215a520c363e3027eb2e34587ef4738fa20d7b7",
+     "scripts/m1_pilot.py": "f687c8f2daa2c55eb22a22a91dba169c1440acab9b6a23f8d0f079cbb8c7509a",
+     "ora_agent/llm.py": "eb2b6f6ebc36813149d52ea1a109addd51cb02419c53f7427de7c7a712d7aa18"
+    }
+   },
+   "status": "runner_error",
+   "error": "RuntimeError: LLMRequestError: LLM request failed with HTTP 405: <html>\r\n<head><title>405 Not Allowed</title></head>\r\n<body>\r\n<center><h1>405 Not Allowed</h1></center>\r\n<hr><center>nginx/1.19.1</center>\r\n</body>\r\n</html>\r\n",
+   "reference": 956.0,
+   "match": false,
+   "first_match": false,
+   "first_business_correct": false,
+   "business_correct": false,
+   "business_unverified": false,
+   "public_answer_used_for_selection": false,
+   "cost": {
+    "logical_llm_calls": 0,
+    "new_llm_calls": 0,
+    "api_attempts": 0,
+    "completion_tokens": 0,
+    "total_tokens": 0,
+    "llm_latency_s": 0,
+    "new_llm_latency_s": 0
+   }
+  },
+  {
+   "id": 20,
+   "arm": "structured_dag",
+   "run_config": {
+    "ids": [
+     1,
+     4,
+     8,
+     20
+    ],
+    "arms": [
+     "structured",
+     "structured_dag"
+    ],
+    "model": "Qwen3_8-27B",
+    "base_url": "https://10.46.124.101/service-large-50-1789958762589/llm/v1",
+    "exposure": "development_new_samples_not_heldout",
+    "method": "COOPA-inspired structured iterative formulation; not an official COOPA run",
+    "dataset_sha256": "5b889e49d9aa64ae5b368bc80a05ee71a1daf20d126f54efc6207c98f9095f36",
+    "protocol_sha256": "d8dc29c339290f9633e5f623f9b070c4a519b2e1ecee7331ba5ed91a6b9eb1b2",
+    "implementation_sha256": {
+     "scripts/industryor_structured_pipeline.py": "6f1802c5e76f6d6bcc3048dc27ba4434901e4e613e56c4c3eb9b775dbf00ace9",
+     "ora_agent/structured_models.py": "5af7fc8ca18299e7c3c844b79282ee0e5d49553b96aef4ac64114f0cfd3179b8",
+     "scripts/industryor_k3_pipeline.py": "7eef88681f1aa649991fa34fdde7ec5dc8f23872f4ae095b7990274487a5d746",
+     "scripts/industryor_semantic_dag.py": "3b8f3c50d846357e101bda724cb06f194a5973803f2e95faac653b9fad73fffc",
+     "ora_agent/semantic_dag.py": "831a0f1e5e3cead974a78ad4d2bc66c81319ad113b39bf1d7f38cd9b1c590256",
+     "ora_agent/semantic_binding.py": "a48286c347662e7ce09389d0b284d9d9270e7f5fe27e9f32296785d06fc22687",
+     "scripts/industryor_next_stage.py": "8daba1b593668d890978337f7215a520c363e3027eb2e34587ef4738fa20d7b7",
+     "scripts/m1_pilot.py": "f687c8f2daa2c55eb22a22a91dba169c1440acab9b6a23f8d0f079cbb8c7509a",
+     "ora_agent/llm.py": "eb2b6f6ebc36813149d52ea1a109addd51cb02419c53f7427de7c7a712d7aa18"
+    }
+   },
+   "status": "runner_error",
+   "error": "RuntimeError: LLMRequestError: LLM request failed with HTTP 405: <html>\r\n<head><title>405 Not Allowed</title></head>\r\n<body>\r\n<center><h1>405 Not Allowed</h1></center>\r\n<hr><center>nginx/1.19.1</center>\r\n</body>\r\n</html>\r\n",
+   "reference": 956.0,
+   "match": false,
+   "first_match": false,
+   "first_business_correct": false,
+   "business_correct": false,
+   "business_unverified": false,
+   "public_answer_used_for_selection": false,
+   "cost": {
+    "logical_llm_calls": 0,
+    "new_llm_calls": 0,
+    "api_attempts": 0,
+    "completion_tokens": 0,
+    "total_tokens": 0,
+    "llm_latency_s": 0,
+    "new_llm_latency_s": 0
+   }
+  }
+ ]
+}

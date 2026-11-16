@@ -148,11 +148,15 @@ def chat(messages: list[dict], *, max_tokens: int = 8192, temperature: float = 0
         usage: dict as returned by the API ({} if absent)
         model: model id echoed by the API (falls back to configured model)
         latency_s: wall-clock seconds for the successful request
+        request_wall_s: wall-clock seconds including retries and backoff
+        request_attempts: per-request outcome and latency, including visible retries
         finish_reason: str | None (reported as-is, e.g. "stop"/"length"/"tool_calls")
 
     ``extra`` is merged into the request body (e.g. {"tools": [...]}).
     Network-layer failures and retryable HTTP statuses are retried up to
     MAX_RETRIES times with exponential backoff; other HTTP errors fail loud.
+    Every request attempt is returned in ``request_attempts`` or attached to
+    the raised ``LLMRequestError``; no network retry is hidden from callers.
     """
     config = config or load_config()
     body = {
@@ -168,6 +172,8 @@ def chat(messages: list[dict], *, max_tokens: int = 8192, temperature: float = 0
     if opener is None:
         opener = _build_opener(config.insecure)
 
+    request_started = time.monotonic()
+    attempts = []
     last_error: Exception | None = None
     for attempt in range(MAX_RETRIES + 1):
         request = urllib.request.Request(
@@ -184,6 +190,8 @@ def chat(messages: list[dict], *, max_tokens: int = 8192, temperature: float = 0
             with opener.open(request, timeout=REQUEST_TIMEOUT_SEC) as resp:
                 raw = resp.read().decode("utf-8", errors="replace")
             latency_s = time.monotonic() - started
+            attempts.append({"attempt": attempt + 1, "outcome": "success",
+                             "latency_s": round(latency_s, 3)})
             break
         except urllib.error.HTTPError as e:
             # Read the body for diagnostics; never includes our headers.
@@ -194,12 +202,15 @@ def chat(messages: list[dict], *, max_tokens: int = 8192, temperature: float = 0
             last_error = LLMRequestError(
                 f"LLM request failed with HTTP {e.code}: {snippet}", status=e.code
             )
-            if e.code not in _RETRYABLE_HTTP_STATUSES or attempt >= MAX_RETRIES:
-                raise last_error from e
         except (urllib.error.URLError, TimeoutError, OSError) as e:
             last_error = LLMRequestError(f"LLM request network error: {e}")
-            if attempt >= MAX_RETRIES:
-                raise last_error from e
+        attempts.append({"attempt": attempt + 1, "outcome": "error",
+                         "latency_s": round(time.monotonic() - started, 3),
+                         "error": str(last_error)})
+        last_error.request_attempts = list(attempts)
+        retryable = last_error.status is None or last_error.status in _RETRYABLE_HTTP_STATUSES
+        if not retryable or attempt >= MAX_RETRIES:
+            raise last_error
         sleep_fn(min(2.0 * (2 ** attempt), 30.0))
     else:  # pragma: no cover - loop always raises or breaks
         raise last_error  # type: ignore[misc]
@@ -207,14 +218,14 @@ def chat(messages: list[dict], *, max_tokens: int = 8192, temperature: float = 0
     try:
         payload = json.loads(raw)
     except json.JSONDecodeError as e:
-        raise LLMRequestError(
-            f"LLM response was not valid JSON: {raw[:300]!r}"
-        ) from e
+        error = LLMRequestError(f"LLM response was not valid JSON: {raw[:300]!r}")
+        error.request_attempts = attempts
+        raise error from e
     choices = payload.get("choices") or []
     if not choices:
-        raise LLMRequestError(
-            f"LLM response has no choices: keys={sorted(payload.keys())}"
-        )
+        error = LLMRequestError(f"LLM response has no choices: keys={sorted(payload.keys())}")
+        error.request_attempts = attempts
+        raise error
     choice = choices[0]
     message = choice.get("message") or {}
     return {
@@ -223,5 +234,8 @@ def chat(messages: list[dict], *, max_tokens: int = 8192, temperature: float = 0
         "usage": payload.get("usage") or {},
         "model": payload.get("model") or config.model,
         "latency_s": latency_s,
+        "request_wall_s": time.monotonic() - request_started,
+        "request_attempts": attempts,
+        "retry_count": len(attempts) - 1,
         "finish_reason": choice.get("finish_reason"),
     }

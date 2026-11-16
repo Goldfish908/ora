@@ -1,0 +1,26 @@
+{
+ "messages": [
+  {
+   "role": "user",
+   "content": "[KNOWN PITFALLS — read before writing code]\nThese are environment/API conventions for this PySCIPOpt harness, distilled\nfrom past failures. Follow them strictly:\n\n1. All data appears in the problem text; transcribe it into\n   Python literals ONCE at the top of the script and never\n   re-read or reassign the container (e.g. `data = None`\n   kills every subsequent data[...] access).\n2. m.setObjective: the sense must be the string \"minimize\" or \"maximize\"\n   (never \"min\"/\"max\"), passed as a keyword: m.setObjective(expr, \"minimize\").\n3. setObjective takes ONE expression, not a Python list — sum terms with\n   quicksum([...]) first, and never pass a list indirectly via a variable\n   (obj = [...]; m.setObjective(obj) also fails).\n4. quicksum is a module-level function: from pyscipopt import quicksum.\n   m.quicksum(...) and m.sum(...) do not exist.\n5. Build comparisons ONLY inside m.addCons(...); never use <=, >=, == on\n   expressions in if/assert/bool contexts (it raises TypeError, not a\n   constraint).\n6. m.infinity is a METHOD: call m.infinity() — passing it uncalled as ub/lb\n   raises TypeError.\n7. m.setParam only with real SCIP parameter names (e.g. limits/time,\n   limits/gap, presolving/maxrounds); never invent parameter names.\n8. The code must parse as Python 3: watch indentation and bracket balance,\n   especially in long quicksum expressions.\n9. PySCIPOpt has NO gurobipy-style attributes: no .ObjVal/.Status/.X/.Pi/.ub/\n   .lb/.getLb()/.getUb(). Use m.getObjVal(), m.getStatus(), m.getVal(v),\n   m.chgVarLb(v, x) / m.chgVarUb(v, x) instead.\n\n[MODELING PROCEDURE — follow this order BEFORE writing code]\n1. UNDERSTAND: one short paragraph — objective and its sense; the decision\n   variables; every constraint; and which data fields activate which\n   mechanisms (check moq/pack_size/budget_per_period/waste_limit_pct/\n   sub_edges/trans_edges/return_rate/labor values in the data schema — a\n   zero/null/empty field means that mechanism is INACTIVE for this instance).\n2. FORMALIZE: list each decision variable with its domain — CONTINUOUS,\n   INTEGER, or BINARY; decide from physical meaning (units of product may be\n   continuous; counts of trucks/workers/setups are INTEGER; yes-no decisions\n   are BINARY). Then write every constraint as a one-line math statement with\n   its index sets, and the objective as a sum of ALL cost/revenue terms\n   mentioned in the problem.\n3. VERIFY against the problem text: every constraint from the text has an\n   addCons, every cost term appears in the objective, every data key you use\n   exists in the DATA SCHEMA. Fix any gap, then output the code.\n\n[OUTPUT FORMAT]\n- Import: from pyscipopt import Model; import json\n- Create the model: m = Model(); silence solver logs: m.hideOutput()\n- Set a solver time limit: m.setRealParam(\"limits/time\", 570)\n- After m.optimize(), print at end:\n  st = m.getStatus()\n  print(f\"status: {st}\")\n  if m.getNSols() > 0:\n      print(f\"objective: {m.getObjVal()}\")\n- Output ONLY executable Python code. No markdown, no explanations.\n\n[TASK]\nWrite a PySCIPOpt script that models and solves the following optimization\nproblem. All data appears in the problem text; transcribe it into Python\nliterals at the top of your script.\n\n[PROBLEM]\nBright Future Toys wants to build and sell robots, model cars, building blocks, and dolls. The profit for each robot sold is $15, for each model car sold is $8, for each set of building blocks sold is $12, and for each doll sold is $5. How many types of toys should Bright Future Toys manufacture to maximize profit?\nThere are 1200 units of plastic available. Each robot requires 30 units of plastic, each model car requires 10 units of plastic, each set of building blocks requires 20 units of plastic, and each doll requires 15 units of plastic.\n\nThere are 800 units of electronic components available. Each robot requires 8 units of electronic components, each model car requires 5 units of electronic components, each set of building blocks requires 3 units of electronic components, and each doll requires 2 units of electronic components.\n\nIf Bright Future Toys manufactures robots, they will not manufacture dolls.\n\nHowever, if they manufacture model cars, they will also manufacture building blocks.\n\nThe number of dolls manufactured cannot exceed the number of model cars manufactured."
+  }
+ ],
+ "request": {
+  "temperature": 0.6,
+  "max_tokens": 32768,
+  "reasoning_effort": "medium"
+ },
+ "response": {
+  "request_attempts": [
+   {
+    "attempt": 1,
+    "outcome": "error",
+    "latency_s": 1.026,
+    "error": "LLM request failed with HTTP 405: <html>\r\n<head><title>405 Not Allowed</title></head>\r\n<body>\r\n<center><h1>405 Not Allowed</h1></center>\r\n<hr><center>nginx/1.19.1</center>\r\n</body>\r\n</html>\r\n"
+   }
+  ]
+ },
+ "error": "LLMRequestError: LLM request failed with HTTP 405: <html>\r\n<head><title>405 Not Allowed</title></head>\r\n<body>\r\n<center><h1>405 Not Allowed</h1></center>\r\n<hr><center>nginx/1.19.1</center>\r\n</body>\r\n</html>\r\n",
+ "new_llm_calls": 1,
+ "reused": false
+}

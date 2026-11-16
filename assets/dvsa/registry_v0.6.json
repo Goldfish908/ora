@@ -1,0 +1,61 @@
+{
+  "registry_version": "dvsa.registry.v0.6",
+  "registered_on": "2026-11-12",
+  "status": "frozen_for_bwor_validation_no_results_accessed",
+  "protocol": {
+    "path": "docs/paper/dvsa_validation_protocol_v0.1.md",
+    "sha256": "07c2fc8842ee3bd66ecca8ad1448ec5d086ef9fff47f42d6de24810ca6d2ba61"
+  },
+  "splits": {
+    "path": "data/dvsa/splits_manifest.json",
+    "sha256": "361498953b0a87ebb933bbddb6f837dc4098289a21a1ca05650154135e1cf7a6",
+    "validation_n": 16,
+    "frozen_n": 41,
+    "existing_validation_artifacts_before_freeze": 0
+  },
+  "template_library": {
+    "path": "assets/dvsa/bwor_primitives_v0.1.json",
+    "sha256": "a875d12c862dce6216980ef9e5cd83abd081c3392f39bf3672f9196f71fd32f5",
+    "frozen_for_validation": true,
+    "retailopt_assets_transferred": false
+  },
+  "implementations": {
+    "ora_agent/dvsa.py": "8224e7d15cf8a328d83b2d2c22d83d81a15b6717a10d4db22b231e601db81945",
+    "ora_agent/dvsa_model.py": "4ea833ed266251b4ae1e16b8e4bea382a8d2bb21417df65e92da0187df3513d6",
+    "ora_agent/dvsa_templates.py": "2e6335759d38d5c7bec775d627984188d993a11a17bd82a96edb41c6bff7688f",
+    "ora_agent/dvsa_linear.py": "ec292c4f73e976219604ff1ed3dda69155a3e38068aa6d07d8dee5f93f942c1c",
+    "ora_agent/dvsa_repair.py": "4add51fb2a80791a6c79c4e475ac9951a68a0ab524d75661343cae8a0926bf7c",
+    "scripts/dvsa_bwor_reference.py": "6467dafafe10aa01e0e4fc895a68c6ff2f645f00c894be8d296868ef0d9e814d",
+    "scripts/dvsa_bwor_reference_repair.py": "283e2cb3788032871899572acd46ecb0cb24d6842b069eccca5baa3c00edd15f",
+    "scripts/dvsa_reference_select.py": "1390dc17fb8ac7bee82bc3ebdb5dc6bb7f6f2e7e5887f6862b512273e37cf984",
+    "scripts/dvsa_binding_author.py": "5083508d5d9f1ba5166d87828ed0d0087dba8c10f0b722fc939e27f81891b25c",
+    "scripts/dvsa_binding_eval.py": "d7891c95ed92230b33c89438942f9d473485fa9b634a24c76c1cd05265d8c480",
+    "scripts/dvsa_llm_judge.py": "7923fe2504e43b712b45cb8c3b291f4a911030e871e577186539a581567d4aed",
+    "scripts/dvsa_candidate.py": "ec24cec4124c35e3336a4d96a8acb734b9954ce6bb7980bebf54370888a7ed67",
+    "scripts/dvsa_repair.py": "59e651ed574dddc6e74f4c5637ef8102c3c9313048cf054ad0f26ec6d4df3ff2",
+    "scripts/dvsa_template_audit.py": "8b84b4fa79beeff9a8af9c488282a4056f6e7d6f4a8fee90faa9a2896157c93a",
+    "scripts/dvsa_fixed_arm_analyze.py": "5c357e7f0033f295d28d103b2a78fedba14083cf0ab97f787c20335bd772b3c5",
+    "scripts/dvsa_repair_analyze.py": "aba548c36cb9e33042c2bf130522b53a82a2cd0481bbdee2b0803f3d04a7da05"
+  },
+  "model": {
+    "name": "Qwen3_8-27B",
+    "closed_source_model_used": false,
+    "temperature": 0,
+    "reasoning_effort": "medium",
+    "max_tokens": 32768,
+    "solver": "PySCIPOpt 4.3.0 / SCIP",
+    "solver_time_limit_s": 60
+  },
+  "reference_revision_policy": {
+    "syntax_only_max_calls": 1,
+    "public_answer_in_revision_prompt": false,
+    "manual_structural_revision_allowed": false,
+    "select_reference_accepts_structural_r1": false,
+    "objective_conflict_kept_as_coverage_failure": true
+  },
+  "usage_policy": {
+    "validation_results_may_change_assets_prompts_budgets_or_metrics": false,
+    "sota_started": false,
+    "frozen_results_may_update_assets": false
+  }
+}

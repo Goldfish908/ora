@@ -1,0 +1,25 @@
+{
+ "scope": "new_internal_qwen_proposals_schema_source_span_assisted_not_frozen",
+ "summary": {
+  "families": 2,
+  "cold_start_valid": 2,
+  "reference_assisted_valid": 2,
+  "wrong_bindings_rejected": 2,
+  "missing_evidence_unknown": 2,
+  "conflicts_unknown": 2,
+  "accepted_but_business_incorrect": 0,
+  "new_llm_calls": 0,
+  "proposal_generation_llm_calls": 2,
+  "prompt_tokens": 1324,
+  "completion_tokens": 584,
+  "total_tokens": 1908,
+  "llm_latency_s": 7.694,
+  "new_solver_runs": 1
+ },
+ "api_key_recorded": false,
+ "sources": [
+  "work/internal_cold_start_v0.1/analysis.json",
+  "work/internal_cold_start_v0.1/objective_recompute/generation.json",
+  "work/internal_cold_start_v0.1/resource_bound/generation.json"
+ ]
+}

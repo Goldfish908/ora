@@ -20,6 +20,7 @@ Usage (from /home/hewj13/wm/ora):
 from __future__ import annotations
 
 import argparse
+import ast
 import json
 import sys
 import time
@@ -29,7 +30,7 @@ ROOT = Path(__file__).resolve().parents[1]
 sys.path.insert(0, str(ROOT))
 
 from ora_agent import llm as llm_mod  # noqa: E402
-from m1_pilot import extract_code, run_code  # noqa: E402
+from scripts.m1_pilot import extract_code, run_code  # noqa: E402
 
 DATA = ROOT / "data" / "industryor" / "IndustryOR.json"
 OUT_DIR = ROOT / "runs" / "industryor"
@@ -81,9 +82,60 @@ def load_priors() -> str:
     return txt.strip()
 
 
+def _addvar_calls(code: str) -> list[ast.Call]:
+    try:
+        tree = ast.parse(code)
+    except SyntaxError:
+        return []
+    return [node for node in ast.walk(tree)
+            if isinstance(node, ast.Call) and isinstance(node.func, ast.Attribute)
+            and node.func.attr == "addVar"]
+
+
+def has_continuous_variables(code: str) -> bool:
+    for call in _addvar_calls(code):
+        vtype = next((kw.value for kw in call.keywords if kw.arg == "vtype"), None)
+        if vtype is None:
+            return True
+        if isinstance(vtype, ast.Constant) and vtype.value in ("C", "CONTINUOUS"):
+            return True
+        if isinstance(vtype, ast.Attribute) and vtype.attr == "CONTINUOUS":
+            return True
+    return False
+
+
+def force_integer_variables(code: str) -> str:
+    tree = ast.parse(code)
+    for call in ast.walk(tree):
+        if not (isinstance(call, ast.Call) and isinstance(call.func, ast.Attribute)
+                and call.func.attr == "addVar"):
+            continue
+        for kw in call.keywords:
+            if kw.arg == "vtype":
+                kw.value = ast.Constant("I")
+                break
+        else:
+            call.keywords.append(ast.keyword(arg="vtype", value=ast.Constant("I")))
+    return ast.unparse(tree)
+
+
+def countable_witness_feedback(config: dict, pid: int, code: str) -> str | None:
+    rule = (config or {}).get(str(pid))
+    if not rule or not has_continuous_variables(code):
+        return None
+    entity = rule.get("entity", "indivisible main decision quantities")
+    return ("Deterministic witness COUNTABLE_INTEGER: the main decision "
+            f"variables represent {entity}, but the code uses continuous variables. "
+            "Change every main quantity variable to INTEGER and re-solve; "
+            "do not round the objective after solving. "
+            f"Evidence: {rule['evidence']}. Rewrite the COMPLETE script.")
+
+
 def feedback_msg(rec: dict) -> str | None:
     """None = stop (a solution printed an objective; correctness unknowable
     inside the loop without ground truth — deliberately unused here)."""
+    if rec.get("guard_feedback"):
+        return rec["guard_feedback"]
     tail = (rec.get("stderr_tail") or "")[-600:]
     es, ss = rec.get("exec_status"), rec.get("solver_status")
     if es == "crash":
@@ -122,6 +174,14 @@ def main() -> None:
     ap.add_argument("--out-suffix", default="",
                     help="appended to output filename, e.g. '_pearl4b' keeps "
                          "per-model results separate")
+    ap.add_argument("--extra-priors", default=None)
+    ap.add_argument("--dump-solution", action="store_true")
+    ap.add_argument("--witness-config", default=None)
+    ap.add_argument("--solution-witness-dir", default=None)
+    ap.add_argument("--solution-schema", default=None)
+    ap.add_argument("--direct-retail-witness", action="store_true")
+    ap.add_argument("--seed", type=int)
+    ap.add_argument("--temperature", type=float, default=0.6)
     args = ap.parse_args()
 
     k, kk = (int(x) for x in args.shard.split("/"))
@@ -132,6 +192,10 @@ def main() -> None:
         rows = rows[: args.limit]
 
     conventions = load_priors() if args.arm == "z2" else None
+    witness_config = (json.loads(Path(args.witness_config).read_text())
+                      if args.witness_config else {})
+    solution_schema = (json.loads(Path(args.solution_schema).read_text())
+                       if args.solution_schema else {})
     cfg = llm_mod.load_config()
     OUT_DIR.mkdir(parents=True, exist_ok=True)
     out_path = OUT_DIR / f"m3_{args.arm}{args.out_suffix}_s{k}.jsonl"
@@ -148,9 +212,25 @@ def main() -> None:
     with out_path.open("a", encoding="utf-8") as fp:
         for row in rows:
             pid = row["id"]
-            prompt = SCIP_CONTRACT + row["en_question"]
+            contract = SCIP_CONTRACT
+            if args.dump_solution:
+                contract = contract.replace(
+                    "- Output ONLY executable Python code. No markdown, no explanations.",
+                    "- When a solution exists, ALSO write solution.json containing "
+                    "{\"variables\": {v.name: m.getVal(v) for v in m.getVars()}, "
+                    "\"objective\": float(m.getObjVal())}.\n"
+                    "- Output ONLY executable Python code. No markdown, no explanations.")
+            prompt = contract + row["en_question"]
+            if str(pid) in solution_schema:
+                prompt += ("\n\n[WITNESS OUTPUT SCHEMA]\n"
+                           "When writing solution.json, use these exact variable names "
+                           "in the `variables` object, even if your internal solver "
+                           "variables use different names: "
+                           + ", ".join(solution_schema[str(pid)]))
             if conventions:
                 prompt = conventions + "\n\n" + prompt
+            if args.extra_priors:
+                prompt = Path(args.extra_priors).read_text().strip() + "\n\n" + prompt
             msgs: list[dict] = []
             prev: dict = last.get(pid) or {}
             prev_text = ""
@@ -173,9 +253,12 @@ def main() -> None:
                             {"role": "user", "content": fb}]
                 t0 = time.time()
                 try:
+                    extra = {"reasoning_effort": "medium"}
+                    if args.seed is not None:
+                        extra["seed"] = args.seed
                     resp = llm_mod.chat(
-                        msgs, max_tokens=32768, temperature=0.6,
-                        extra={"reasoning_effort": "medium"}, config=cfg)
+                        msgs, max_tokens=32768, temperature=args.temperature,
+                        extra=extra, config=cfg)
                     text = resp.get("content") or ""
                     llm_err = None
                 except Exception as e:
@@ -184,6 +267,8 @@ def main() -> None:
                        "difficulty": row["difficulty"],
                        "llm_latency_s": round(time.time() - t0, 1),
                        "reference": float(row["en_answer"])}
+                if args.seed is not None:
+                    rec["seed"] = args.seed
                 if llm_err:
                     rec.update(exec_status="llm_error", error=llm_err)
                 else:
@@ -195,7 +280,55 @@ def main() -> None:
                     rec["code_chars"] = len(text)
                     sandbox = (OUT_DIR / "sandbox"
                                / f"{args.arm}{args.out_suffix}__{pid}__r{rnd}")
-                    rec.update(run_code(extract_code(text), sandbox))
+                    code = extract_code(text)
+                    guard_feedback = countable_witness_feedback(
+                        witness_config, pid, code)
+                    if guard_feedback:
+                        sandbox.mkdir(parents=True, exist_ok=True)
+                        (sandbox / "gen.py").write_text(code)
+                        rec.update(exec_status="witness_block",
+                                   guard_rule="COUNTABLE_INTEGER",
+                                   guard_feedback=guard_feedback)
+                    else:
+                        rec.update(run_code(code, sandbox))
+                    if args.direct_retail_witness:
+                        from m1_witness import retailopt as retail_witness
+                        try:
+                            solution_path = sandbox / "solution.json"
+                            solution = (json.loads(solution_path.read_text())
+                                        if solution_path.exists() else {})
+                            result = retail_witness.check({}, solution)
+                            rec["witness"] = ("infeasible" if result["violations"]
+                                              else "feasible")
+                            if result["violations"]:
+                                rec["guard_feedback"] = str(result["violations"][:3])
+                        except Exception as e:
+                            rec.update(witness="unknown_schema",
+                                       witness_error=f"{type(e).__name__}: {e}",
+                                       witness_fail_open=True)
+                    if args.solution_witness_dir:
+                        from scripts.memory_witness_cegis import run_check
+                        solution_path = sandbox / "solution.json"
+                        solution = (json.loads(solution_path.read_text())
+                                    if solution_path.exists() else {})
+                        witness_script = (Path(args.solution_witness_dir) / str(pid) / "witness.py")
+                        if witness_script.exists() and solution_path.exists():
+                            witness_result = run_check(
+                                witness_script.read_text(), solution)
+                            if witness_result["fired"]:
+                                rec.update(exec_status="witness_block",
+                                           guard_rule="SOLUTION_WITNESS",
+                                           guard_feedback=json.dumps(
+                                               witness_result["violations"][:5]),
+                                           witness="infeasible",
+                                           objective=None,
+                                           solver_status=None)
+                            elif witness_result["status"] != "ok":
+                                rec["witness"] = "unknown"
+                            else:
+                                rec["witness"] = "feasible"
+                        else:
+                            rec["witness"] = "missing"
                 fp.write(json.dumps(rec, ensure_ascii=False) + "\n")
                 fp.flush()
                 print(f"[{args.arm}][{pid}][r{rnd}] "

@@ -1,0 +1,103 @@
+{
+ "schema_version": "industryor.full_pipeline.manifest.v0.1",
+ "run_config": {
+  "llm": {
+   "model": "Qwen3_8-27B",
+   "base_url": "https://10.46.124.101/service-large-50-1789958762589/llm/v1"
+  },
+  "dataset": "data/industryor/IndustryOR.json",
+  "dataset_sha256": "5b889e49d9aa64ae5b368bc80a05ee71a1daf20d126f54efc6207c98f9095f36",
+  "protocol_sha256": "cd474489d0c0e6217b8814e324e60927ec11589be1481e7ffdeaac124cc8102c",
+  "ids": [
+   1,
+   8,
+   19,
+   20
+  ],
+  "max_rounds": 3,
+  "temperature": 0.6,
+  "reasoning_effort": "medium",
+  "max_tokens": 32768,
+  "prior_sha256": "0fa52ef51cf1563070c08b3941e15bff9d4d97bae600639ab64e695f16aaee80",
+  "seed": null,
+  "metric": "absolute_error_at_most_0.1",
+  "independent_business_audit_ids": [
+   4,
+   8,
+   9,
+   19,
+   20,
+   21,
+   25,
+   48
+  ],
+  "implementation_sha256": {
+   "scripts/industryor_full_pipeline.py": "56f6a568ecaa0f8a9c8757b3c67abae800734151fc59cdd2d08f09ab6eccd75a",
+   "scripts/industryor_scoped_loop.py": "674cc868e00b9e1db03e14e992bcd9a55a5e8e4322772fbe3b15c62f647e892a",
+   "scripts/industryor_next_stage.py": "8daba1b593668d890978337f7215a520c363e3027eb2e34587ef4738fa20d7b7",
+   "scripts/m1_pilot.py": "f687c8f2daa2c55eb22a22a91dba169c1440acab9b6a23f8d0f079cbb8c7509a",
+   "scripts/m3_industryor.py": "f6b7e6a81942c5f5c920a35807db6ac6df738f35f91069a90f8c7bc8fcc79d13",
+   "scripts/scoped_ir_e2e.py": "c58f6d077b1e8d83fb2cb5e3eb3dda4a5a7df24820956c7889cc1931f7ca219f",
+   "scripts/scoped_ir_gate.py": "d9d87048c893ab4f43916d5bd0f5e6342af1e5bf69f03a119927325a2e973311",
+   "ora_agent/llm.py": "eb2b6f6ebc36813149d52ea1a109addd51cb02419c53f7427de7c7a712d7aa18",
+   "ora_agent/evidence_dag.py": "2dc36dd3b07703fe50212daf96412f9add723294ab722ee5d06c6edc63c5867a",
+   "ora_agent/repair_controller.py": "af265fcb4c4eadfc6146492b8bef0083b4693462bde68c6abafc81c8e5ee6e34",
+   "ora_agent/acceptance.py": "e073cffd12efd27ebdb65f6bf34b66a0e3235855a2f1adb52db92dfbb2c5084d",
+   "ora_agent/scoped_ir.py": "2156c0b58a4265fa34d90340eea5fc47ad3d4d7d8e32fc6770fb247804d13942",
+   "ora_agent/scoped_assets.py": "38f760d4b5eb330589e4dd2180f8d48f3545f79fbd09c6eedf70aaceaf44fcfa"
+  }
+ },
+ "registered_n": 4,
+ "accounted_n": 4,
+ "initial_generation_n": 4,
+ "completed_n": 4,
+ "runner_error_n": 0,
+ "business_semantics": "only the eight independently registered audit IDs; other problems are business_unverified",
+ "answer_visibility": "en_answer is used only for final objective grading and baseline deltas",
+ "entries": [
+  {
+   "id": 1,
+   "terminal_status": "completed",
+   "result_path": "work/industryor_full_smoke_v0.2/prob_001/result.json",
+   "initial_generation_present": true,
+   "initial_model": "Qwen3_8-27B",
+   "llm_calls": 1,
+   "api_attempts": 1,
+   "candidate_evaluations": 1,
+   "failure_class": "objective_mismatch_or_suboptimal"
+  },
+  {
+   "id": 8,
+   "terminal_status": "completed",
+   "result_path": "work/industryor_full_smoke_v0.2/prob_008/result.json",
+   "initial_generation_present": true,
+   "initial_model": "Qwen3_8-27B",
+   "llm_calls": 1,
+   "api_attempts": 1,
+   "candidate_evaluations": 1,
+   "failure_class": "business_correct"
+  },
+  {
+   "id": 19,
+   "terminal_status": "completed",
+   "result_path": "work/industryor_full_smoke_v0.2/prob_019/result.json",
+   "initial_generation_present": true,
+   "initial_model": "Qwen3_8-27B",
+   "llm_calls": 1,
+   "api_attempts": 1,
+   "candidate_evaluations": 2,
+   "failure_class": "business_correct"
+  },
+  {
+   "id": 20,
+   "terminal_status": "completed",
+   "result_path": "work/industryor_full_smoke_v0.2/prob_020/result.json",
+   "initial_generation_present": true,
+   "initial_model": "Qwen3_8-27B",
+   "llm_calls": 1,
+   "api_attempts": 1,
+   "candidate_evaluations": 2,
+   "failure_class": "business_correct"
+  }
+ ]
+}

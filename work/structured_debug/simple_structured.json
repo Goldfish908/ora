@@ -1,0 +1,26 @@
+{
+ "messages": [
+  {
+   "role": "user",
+   "content": "Implement the selected structured formulation faithfully as a PySCIPOpt script.\nPreserve its business variables, objective direction and constraints. Output ONLY executable Python code.\n\n[ORIGINAL PROBLEM]\nProduce at most 10 chairs. Each chair yields 5 profit.\n\n[SELECTED FORMULATION]\n{\n \"parameters\": [],\n \"variables\": [\n  {\n   \"name\": \"x\",\n   \"symbol\": \"x\",\n   \"type\": \"integer\",\n   \"bounds\": [\n    0,\n    10\n   ],\n   \"source\": \"chairs\"\n  }\n ],\n \"objective\": {\n  \"direction\": \"maximize\",\n  \"expression\": \"5*x\",\n  \"variables\": [\n   \"x\"\n  ],\n  \"source\": \"Each chair yields 5 profit\"\n },\n \"constraints\": [\n  {\n   \"name\": \"cap\",\n   \"expression\": \"x<=10\",\n   \"type\": \"<=\",\n   \"source\": \"at most 10 chairs\"\n  }\n ]\n}"
+  }
+ ],
+ "request": {
+  "temperature": 0.6,
+  "max_tokens": 32768,
+  "reasoning_effort": "medium"
+ },
+ "response": {
+  "request_attempts": [
+   {
+    "attempt": 1,
+    "outcome": "error",
+    "latency_s": 1.015,
+    "error": "LLM request failed with HTTP 405: <html>\r\n<head><title>405 Not Allowed</title></head>\r\n<body>\r\n<center><h1>405 Not Allowed</h1></center>\r\n<hr><center>nginx/1.19.1</center>\r\n</body>\r\n</html>\r\n"
+   }
+  ]
+ },
+ "error": "LLMRequestError: LLM request failed with HTTP 405: <html>\r\n<head><title>405 Not Allowed</title></head>\r\n<body>\r\n<center><h1>405 Not Allowed</h1></center>\r\n<hr><center>nginx/1.19.1</center>\r\n</body>\r\n</html>\r\n",
+ "new_llm_calls": 1,
+ "reused": false
+}

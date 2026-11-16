@@ -1,0 +1,68 @@
+{
+ "scope": "historical development; two valid natural alternatives and one controlled repair; not frozen or SOTA",
+ "natural": {
+  "legacy_reference_correct": 0,
+  "independent_correct": 2,
+  "forms": {
+   "BWOR-024": "cut",
+   "BWOR-025": "completion/position_job"
+  },
+  "natural_repairs": 0,
+  "dag_evaluated": false
+ },
+ "arms": {
+  "no_repair": {
+   "n": 2,
+   "initial_business_correct": 2,
+   "final_business_correct": 2,
+   "recoveries": 0,
+   "round0_unchanged": 2,
+   "harmed_win": 0,
+   "accepted_but_business_incorrect": 0,
+   "baseline_fallback": 0,
+   "deterministic_transforms": 0,
+   "solver_runs_this_run": 0,
+   "llm_calls": 0,
+   "tokens": 0
+  },
+  "fixed": {
+   "n": 2,
+   "initial_business_correct": 2,
+   "final_business_correct": 2,
+   "recoveries": 0,
+   "round0_unchanged": 2,
+   "harmed_win": 0,
+   "accepted_but_business_incorrect": 0,
+   "baseline_fallback": 0,
+   "deterministic_transforms": 0,
+   "solver_runs_this_run": 0,
+   "llm_calls": 0,
+   "tokens": 0
+  },
+  "progress": {
+   "n": 2,
+   "initial_business_correct": 2,
+   "final_business_correct": 2,
+   "recoveries": 0,
+   "round0_unchanged": 2,
+   "harmed_win": 0,
+   "accepted_but_business_incorrect": 0,
+   "baseline_fallback": 0,
+   "deterministic_transforms": 0,
+   "solver_runs_this_run": 0,
+   "llm_calls": 0,
+   "tokens": 0
+  }
+ },
+ "controlled_repair": {
+  "independent_correct": true,
+  "objective": 81,
+  "registry_decision": "not_promoted_controlled_only",
+  "solver_runs": 1,
+  "llm_calls": 0
+ },
+ "sources": [
+  "work/precedence_witness_v0.1/analysis.json",
+  "work/precedence_witness_v0.1/controlled_repair/lifecycle.json"
+ ]
+}

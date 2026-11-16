@@ -1,0 +1,20 @@
+{
+ "mechanism_id": "objective_recompute",
+ "version": "0.1.0",
+ "status": "candidate",
+ "scope": {"objective_kind": "linear"},
+ "source": {"type": "mechanism_convention", "reference": "independent_objective_recomputation"},
+ "validation": {
+  "question": "Each unit of A yields 2 profit and each unit of B yields 3 profit.",
+  "clean": {"variables": {"a": 2.0, "b": 3.0}, "objective": 13.0},
+  "wrong": {"variables": {"a": 2.0, "b": 3.0}, "objective": 15.0},
+  "binding": {
+   "invariant_id": "objective_recompute",
+   "source_span": "profit",
+   "terms": [
+    {"path": "solution.variables.a", "coefficient": 2},
+    {"path": "solution.variables.b", "coefficient": 3}
+   ]
+  }
+ }
+}

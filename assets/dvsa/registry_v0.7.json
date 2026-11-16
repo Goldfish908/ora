@@ -1,0 +1,76 @@
+{
+  "registry_version": "dvsa.registry.v0.7",
+  "registered_on": "2026-11-12",
+  "status": "frozen_final_before_any_frozen_artifacts",
+  "protocol": {
+    "path": "docs/paper/dvsa_frozen_protocol_v0.1.md",
+    "sha256": "b28be76c21998700b6cb0c282d748475e6f45e9400bc587a29f874ae8c8833d7"
+  },
+  "splits": {
+    "path": "data/dvsa/splits_manifest.json",
+    "sha256": "361498953b0a87ebb933bbddb6f837dc4098289a21a1ca05650154135e1cf7a6",
+    "frozen_n": 41,
+    "existing_frozen_artifacts_before_freeze": 0
+  },
+  "template_library": {
+    "path": "assets/dvsa/bwor_primitives_v0.1.json",
+    "sha256": "a875d12c862dce6216980ef9e5cd83abd081c3392f39bf3672f9196f71fd32f5",
+    "changed_after_validation": false,
+    "retailopt_assets_transferred": false
+  },
+  "implementations": {
+    "ora_agent/dvsa.py": "8224e7d15cf8a328d83b2d2c22d83d81a15b6717a10d4db22b231e601db81945",
+    "ora_agent/dvsa_model.py": "4ea833ed266251b4ae1e16b8e4bea382a8d2bb21417df65e92da0187df3513d6",
+    "ora_agent/dvsa_templates.py": "2e6335759d38d5c7bec775d627984188d993a11a17bd82a96edb41c6bff7688f",
+    "ora_agent/dvsa_linear.py": "ec292c4f73e976219604ff1ed3dda69155a3e38068aa6d07d8dee5f93f942c1c",
+    "ora_agent/dvsa_repair.py": "4add51fb2a80791a6c79c4e475ac9951a68a0ab524d75661343cae8a0926bf7c",
+    "scripts/dvsa_bwor_reference.py": "1145ef27b36f8e55a1c7a1b132bc0d94c9aaa4568e293031e85934564dad4a19",
+    "scripts/dvsa_bwor_reference_repair.py": "edde7a9ee82ad87205e72da1481f0b25ff608666becebb138c52f7f316fb3806",
+    "scripts/dvsa_reference_select.py": "d9b1e42bf12b0e1030f9fe0c383d5379ee316feabb60831f9d81ef0020bca302",
+    "scripts/dvsa_binding_author.py": "b6a9508563822c0a13dbfded002645ab2e503c2ac9c1b4507eb35a6b7d3d3946",
+    "scripts/dvsa_binding_eval.py": "a271ed56cb4e9301fcc4a72dab1464698c368fa1eb830786b76d8ba1e7498aef",
+    "scripts/dvsa_llm_judge.py": "3aa7b874d54f61e261eb701aae9617bca05ee9950d64392cffd2d6151f86f1ee",
+    "scripts/dvsa_candidate.py": "1e6112040176678ecbf30a44c2cea9f42c16cf26ccfc2ac5f0c09ef19e8fa341",
+    "scripts/dvsa_repair.py": "243b4940d111a43a27f020579dc0f2dbf27bfe9571aa29bdf03b0d04976bb227",
+    "scripts/dvsa_template_audit.py": "8b84b4fa79beeff9a8af9c488282a4056f6e7d6f4a8fee90faa9a2896157c93a",
+    "scripts/dvsa_fixed_arm_analyze.py": "732ef7ccb007668035ae2fed88dfe22852372dac2420eae0b9ccf58a6910534a",
+    "scripts/dvsa_repair_analyze.py": "97cc9dc68b79a61765baef8023f07251cf95b6b48c988792cd1655c4072c41b9",
+    "scripts/dvsa_reference_collect.py": "4ce83c9d642260f75a197ec450efd5a499eb982f679c41e0b235b07f14427912",
+    "scripts/dvsa_coverage_report.py": "ac6bb60b4bf2a2bf0c3d574b787c9cfb6828311dd1a6bf813df6f8248c520778",
+    "scripts/dvsa_frozen_reference_shard.sh": "0c04907a0774eb2ae3ab1265a0ef177f9c9cc5a96d6679f53c005ec5ed187a54",
+    "scripts/dvsa_frozen_shard.sh": "7dd196174c84e9d9fa373fd17373a3ac7765897800da45e9a892d2a6bc2d514e",
+    "scripts/dvsa_frozen_analyze.sh": "22be05d9f5f794f2f2faa8c4320147febab8e21ba08cdc4a64ef7dfa9751e5cb"
+  },
+  "configuration": {
+    "model": "Qwen3_8-27B",
+    "closed_source_model_used": false,
+    "temperature": 0,
+    "reasoning_effort": "medium",
+    "max_tokens": 32768,
+    "solver_time_limit_s": 60,
+    "max_repair_calls_per_arm": 1,
+    "max_syntax_only_reference_repairs": 1,
+    "manual_structural_reference_revision_allowed": false
+  },
+  "validation_history": {
+    "report": "docs/paper/dvsa_validation_results_v0.1.md",
+    "eligible_n": 12,
+    "all_n": 16,
+    "natural_business_correct_n": 11,
+    "dvsa_vs_text_mcnemar_p": 1.0,
+    "fixed_detection_dvsa_vs_text_p": 0.14599609375,
+    "used_to_change_assets_prompts_or_budgets": false
+  },
+  "final_gate": {
+    "dvsa_vs_text_business_mcnemar_p_required": "<0.05",
+    "clean_false_positive_rate_max": 0.1,
+    "harmed_win_required": 0,
+    "real_frozen_template_reuse_required": true,
+    "sota_started": false
+  },
+  "verification": {
+    "python39_tests": "174 passed; one pre-existing m2gen Python 3.9 dict|None failure",
+    "python312_m2gen": "REGRESSION OK",
+    "driver_syntax_and_compile_checks": "OK"
+  }
+}

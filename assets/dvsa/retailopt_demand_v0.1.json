@@ -1,0 +1,96 @@
+{
+  "asset_id": "retailopt.demand_substitution_balance",
+  "schema_version": "dvsa.expr.v0.1",
+  "asset_version": "0.1.0",
+  "status": "candidate",
+  "source": {
+    "type": "domain_requirement",
+    "reference": "RetailOpt-190 prompt_schema: Substitution and Demand fulfillment equation",
+    "excerpt": "For p_from: total_sales[p_from] + sub[p_from,p_to] + L[p_from] = demand[p_from]. For p_to: total_sales[p_to] - sub[p_from,p_to] + L[p_to] = demand[p_to]."
+  },
+  "text": "For every product, location and period, recompute demand as demand_curve[p][t-1] * demand_share[l]. Sales across all shelf-life buckets, plus substitution outflow, minus substitution inflow, plus lost sales must equal demand. A substitution from p to q serves p's demand but consumes q's inventory; omitting the outflow on p or the inflow on q breaks the balance.",
+  "scope": {
+    "domain": "retailopt",
+    "required_data": [
+      "products",
+      "locations",
+      "periods",
+      "shelf_life",
+      "demand_curve",
+      "demand_share",
+      "network.sub_edges"
+    ],
+    "required_solution": ["sales", "lost", "sub"]
+  },
+  "invariant_id": "C-DEMAND",
+  "forall": {
+    "p": {"path": "data.products"},
+    "l": {"path": "data.locations"},
+    "t": {"range": [1, {"add": [{"path": "data.periods"}, 1]}]}
+  },
+  "local": {
+    "shelf_life": {"index": {"value": {"path": "data.shelf_life"}, "at": {"var": "p"}}},
+    "demand": {"mul": [
+      {"index": {
+        "value": {"index": {"value": {"path": "data.demand_curve"}, "at": {"var": "p"}}},
+        "at": {"sub": [{"var": "t"}, 1]}
+      }},
+      {"index": {"value": {"path": "data.demand_share"}, "at": {"var": "l"}}}
+    ]},
+    "sales_total": {"sum": {
+      "forall": {"r": {"range": [1, {"add": [{"var": "shelf_life"}, 1]}]}},
+      "value": {"lookup": {
+        "path": "solution.sales",
+        "key": [{"var": "p"}, {"var": "l"}, {"var": "t"}, {"var": "r"}],
+        "default": 0
+      }}
+    }},
+    "substitution_out": {"sum": {
+      "forall": {"edge": {"path": "data.network.sub_edges"}},
+      "where": {"eq": [{"index": {"value": {"var": "edge"}, "at": 0}}, {"var": "p"}]},
+      "value": {"lookup": {
+        "path": "solution.sub",
+        "key": [
+          {"index": {"value": {"var": "edge"}, "at": 0}},
+          {"index": {"value": {"var": "edge"}, "at": 1}},
+          {"var": "l"},
+          {"var": "t"}
+        ],
+        "default": 0
+      }}
+    }},
+    "substitution_in": {"sum": {
+      "forall": {"edge": {"path": "data.network.sub_edges"}},
+      "where": {"eq": [{"index": {"value": {"var": "edge"}, "at": 1}}, {"var": "p"}]},
+      "value": {"lookup": {
+        "path": "solution.sub",
+        "key": [
+          {"index": {"value": {"var": "edge"}, "at": 0}},
+          {"index": {"value": {"var": "edge"}, "at": 1}},
+          {"var": "l"},
+          {"var": "t"}
+        ],
+        "default": 0
+      }}
+    }},
+    "lost_value": {"lookup": {
+      "path": "solution.lost",
+      "key": [{"var": "p"}, {"var": "l"}, {"var": "t"}],
+      "default": 0
+    }}
+  },
+  "relation": "eq",
+  "lhs": {"add": [
+    {"var": "sales_total"},
+    {"var": "substitution_out"},
+    {"neg": {"var": "substitution_in"}},
+    {"var": "lost_value"}
+  ]},
+  "rhs": {"var": "demand"},
+  "tolerance": {"abs": 0.0001, "rel": 0.0001},
+  "validation": {
+    "status": "implementation_consistency_only",
+    "promotion": "not_promoted",
+    "note": "Agreement with the legacy checker is not independent semantic truth."
+  }
+}

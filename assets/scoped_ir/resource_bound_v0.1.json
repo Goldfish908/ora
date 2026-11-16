@@ -1,0 +1,22 @@
+{
+ "mechanism_id": "resource_bound",
+ "version": "0.1.0",
+ "status": "candidate",
+ "scope": {"constraint_kind": "linear_bound"},
+ "source": {"type": "explicit_requirement", "reference": "linear_resource_bound"},
+ "validation": {
+  "question": "At most 10 units of resource.",
+  "clean": {"variables": {"a": 2.0, "b": 3.0}, "objective": 0.0},
+  "wrong": {"variables": {"a": 8.0, "b": 4.0}, "objective": 0.0},
+  "binding": {
+   "invariant_id": "resource_bound",
+   "source_span": "At most 10 units of resource.",
+   "relation": "le",
+   "limit": 10,
+   "terms": [
+    {"path": "solution.variables.a", "coefficient": 1},
+    {"path": "solution.variables.b", "coefficient": 1}
+   ]
+  }
+ }
+}

@@ -1,0 +1,19 @@
+{
+ "scope": "historical_development_natural_errors_not_frozen",
+ "summary": {
+  "families": 2,
+  "dag_business_correct": 2,
+  "single_line_business_correct": 2,
+  "dag_solver_runs": 3,
+  "single_line_solver_runs": 2,
+  "extra_dag_solver_runs": 1,
+  "rollback_events": 2,
+  "accepted_but_business_incorrect": 0,
+  "harmed_win": 0,
+  "new_llm_calls": 0,
+  "dag_gain": "not_demonstrated"
+ },
+ "sources": [
+  "work/cross_family_dag_v0.1/analysis.json"
+ ]
+}

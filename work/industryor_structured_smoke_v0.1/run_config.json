@@ -1,0 +1,29 @@
+{
+ "ids": [
+  1,
+  4,
+  8,
+  20
+ ],
+ "arms": [
+  "structured",
+  "structured_dag"
+ ],
+ "model": "Qwen3_8-27B",
+ "base_url": "https://10.46.124.101/service-large-50-1789958762589/llm/v1",
+ "exposure": "development_new_samples_not_heldout",
+ "method": "COOPA-inspired structured iterative formulation; not an official COOPA run",
+ "dataset_sha256": "5b889e49d9aa64ae5b368bc80a05ee71a1daf20d126f54efc6207c98f9095f36",
+ "protocol_sha256": "d8dc29c339290f9633e5f623f9b070c4a519b2e1ecee7331ba5ed91a6b9eb1b2",
+ "implementation_sha256": {
+  "scripts/industryor_structured_pipeline.py": "6f1802c5e76f6d6bcc3048dc27ba4434901e4e613e56c4c3eb9b775dbf00ace9",
+  "ora_agent/structured_models.py": "5af7fc8ca18299e7c3c844b79282ee0e5d49553b96aef4ac64114f0cfd3179b8",
+  "scripts/industryor_k3_pipeline.py": "7eef88681f1aa649991fa34fdde7ec5dc8f23872f4ae095b7990274487a5d746",
+  "scripts/industryor_semantic_dag.py": "3b8f3c50d846357e101bda724cb06f194a5973803f2e95faac653b9fad73fffc",
+  "ora_agent/semantic_dag.py": "831a0f1e5e3cead974a78ad4d2bc66c81319ad113b39bf1d7f38cd9b1c590256",
+  "ora_agent/semantic_binding.py": "a48286c347662e7ce09389d0b284d9d9270e7f5fe27e9f32296785d06fc22687",
+  "scripts/industryor_next_stage.py": "8daba1b593668d890978337f7215a520c363e3027eb2e34587ef4738fa20d7b7",
+  "scripts/m1_pilot.py": "f687c8f2daa2c55eb22a22a91dba169c1440acab9b6a23f8d0f079cbb8c7509a",
+  "ora_agent/llm.py": "eb2b6f6ebc36813149d52ea1a109addd51cb02419c53f7427de7c7a712d7aa18"
+ }
+}

@@ -1,0 +1,74 @@
+{
+  "registry_version": "dvsa.registry.v0.4",
+  "status": "retailopt_batch_in_progress_not_frozen",
+  "protocol": "retailopt-shared-initial-dvsa-four-arm-v0.1",
+  "implementations": {
+    "ora_agent/dvsa.py": "8224e7d15cf8a328d83b2d2c22d83d81a15b6717a10d4db22b231e601db81945",
+    "scripts/dvsa_retail_core.py": "e5988010a7a2ecb502e2db75a6cc7f387724f80007820370b34bc9d127a85caa",
+    "scripts/dvsa_retail_repair.py": "6e5e6fa931a09942d55c947ac39a8eed141990b52dc58022a8b726e0aa31743c",
+    "scripts/dvsa_retail_execution_recovery.py": "90de592ba6d38592bdf5b267d29943c684c7104aa82329c1da18d347c2cf96ab",
+    "scripts/dvsa_retail_core_audit.py": "85161b1d5ba04db706b8e81769b7a3e6ba17783ca6a5ca819a58449a03d2b5d9"
+  },
+  "baseline": {
+    "path": "work/mem_evo/replay_gen1/m1_pilot_schema_sol_gen1.jsonl",
+    "sha256": "3c81b08c3ca5f81825446a672bb9fcb38ab836b1ac24783f81a6a81e15642551",
+    "dev_scenarios": 20,
+    "with_solution": 17,
+    "without_solution": 3,
+    "initial_business_correct": 6,
+    "initial_semantic_error_mechanisms": {"C-INIT": 10, "C-DEMAND": 1}
+  },
+  "assets": [
+    {
+      "asset_id": "retailopt.demand_substitution_balance",
+      "path": "assets/dvsa/retailopt_demand_v0.1.json",
+      "implementation_sha256": "1c10d4316bd2f394bf1869c5974f37066fd652bcbefb9bc2725c2e3b82769999",
+      "status": "candidate"
+    },
+    {
+      "asset_id": "retailopt.initial_inventory_zero",
+      "path": "assets/dvsa/retailopt_initial_inventory_v0.1.json",
+      "source_file_sha256": "f6642880c49f50284a0441600f37fcc34051d2d962d759dfa5ca71c6e59601f4",
+      "implementation_sha256": "71ac134157bf4c90a8423a930d864d96c25dc9aa756f15e55e5566d46f3702c0",
+      "status": "candidate"
+    }
+  ],
+  "sanity": {
+    "path": "work/dvsa/retailopt_core_audit/analysis.json",
+    "sha256": "cf0fc03b6674d9552c4f2bfb72e8b73ea9ab3f0b7fb7f5c1ec18ee39a562cef6",
+    "saved_solutions": 17,
+    "demand_legacy_count_compatible": 17,
+    "initial_inventory_legacy_count_compatible": 17,
+    "unknown": 0,
+    "asset_violation_on_initial_business_correct": 0,
+    "independent_semantic_truth": false
+  },
+  "single_case_chain_check": {
+    "scenario_id": "retail_f2_cannibalization_v0",
+    "initial_business_correct": false,
+    "text_memory_final_business_correct": true,
+    "dvsa_initial_feedback": "C-INIT violated",
+    "dvsa_first_code_error": "Variable.setUb unsupported",
+    "dvsa_execution_recovery_result": "work/dvsa/retailopt_repair/dev/retail_f2_cannibalization_v0/dvsa/execution_recovery/result.json",
+    "result_sha256": "49afe3836fecd44891f52b01a65248c0b5b2c4fca97d0e465a16094cca89d4f7",
+    "dvsa_final_business_correct_after_execution_recovery": true,
+    "legacy_final_business_correct": true,
+    "not_batch_evidence": true
+  },
+  "budget": {
+    "max_feedback_or_self_review_calls_per_arm": 1,
+    "max_execution_recovery_calls_per_arm": 1,
+    "solver_time_limit_s": 120,
+    "execution_timeout_s": 180,
+    "initial_generation": "cached; excluded from repair-only incremental cost"
+  },
+  "verification": {
+    "python39_tests": "173 passed; one pre-existing m2gen Python 3.9 dict|None failure",
+    "python312_m2gen": "REGRESSION OK"
+  },
+  "limitations": [
+    "The twenty-scenario four-arm batch and sixteen-artifact text judging are still running.",
+    "Two assets cover the observed C-INIT/C-DEMAND mechanisms, not every legacy witness rule.",
+    "No final RetailOpt accuracy, paired test, frozen result or SOTA conclusion is available."
+  ]
+}

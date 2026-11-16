@@ -1,0 +1,14 @@
+{
+  "registry_version": "dvsa.registry.v0.6.2",
+  "status": "frozen_for_bwor_validation_with_analysis_entry_amendment",
+  "base_registry": {
+    "path": "assets/dvsa/registry_v0.6.1.json",
+    "sha256": "b593f47bb53d77ccd20e55014975ed9ae0fd90420dc8c65ac8b63e57311ece93"
+  },
+  "experiment_configuration_changed": false,
+  "implementation_overrides": {
+    "scripts/dvsa_fixed_arm_analyze.py": "485686bf2b598c5d608691f6cc50c5f26de7c72a05b8940a8424a8810e937eb8"
+  },
+  "amendment": "Allow the existing --split validation analysis entry. No metric, prompt, asset, budget or arm logic changed.",
+  "sota_started": false
+}

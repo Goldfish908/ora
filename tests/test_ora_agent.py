@@ -399,6 +399,10 @@ class TestLLMClient(unittest.TestCase):
                            sleep_fn=lambda s: None)
         self.assertEqual(out["content"], "OK")
         self.assertEqual(opener.n_calls, 3)  # 1 initial + 2 retries
+        self.assertEqual(out["retry_count"], 2)
+        self.assertEqual([item["outcome"] for item in out["request_attempts"]],
+                         ["error", "error", "success"])
+        self.assertGreaterEqual(out["request_wall_s"], out["latency_s"])
 
     def test_retry_exhaustion_raises(self):
         opener = _FakeOpener([urllib.error.URLError("down")] * 3)

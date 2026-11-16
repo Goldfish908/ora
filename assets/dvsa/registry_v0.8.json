@@ -1,0 +1,99 @@
+{
+  "registry_version": "dvsa.registry.v0.8",
+  "registered_on": "2026-11-12",
+  "status": "frozen_complete_negative_result_no_sota",
+  "base_registry": {
+    "path": "assets/dvsa/registry_v0.7.1.json",
+    "sha256": "f4b9bb73884823539ae3f4e0e7b97265072c1e9a8cde60d81da666c072a619ff"
+  },
+  "experiment_configuration_changed_after_frozen": false,
+  "report": {
+    "path": "docs/paper/dvsa_frozen_results_v0.1.md",
+    "sha256": "7620fa7601a327aec2eb26cd980dffda69c5eb3381ef0280492e71bacea18d79"
+  },
+  "reference_coverage": {
+    "eligible_n": 28,
+    "all_n": 41,
+    "ineligible_n": 13,
+    "initial_llm_calls": 42,
+    "total_tokens": 414768,
+    "llm_latency_s": 3837.714,
+    "syntax_only_repairs": 1,
+    "manual_structural_repairs": 0
+  },
+  "fixed_artifacts": {
+    "analysis": "work/dvsa/bwor_fixed_arms_frozen/analysis.json",
+    "sha256": "72b0a8c23ed1390b3c3dcc63edef4045771fa3ee839fdbe171083045238d12a4",
+    "unique_artifacts": 332,
+    "wrong_artifacts": 304,
+    "clean_artifacts": 28,
+    "detection_n": {"no_memory": 283, "text_memory": 294, "dvsa": 272, "direct_legacy_witness": 0},
+    "false_positive_n": {"no_memory": 4, "text_memory": 3, "dvsa": 3, "direct_legacy_witness": 0},
+    "unknown": {"no_memory": 0, "text_memory": 0, "dvsa": 0, "direct_legacy_witness": 332},
+    "dvsa_vs_text_detection": {"dvsa_only": 12, "text_only": 34, "mcnemar_p": 0.0016414913408482334, "direction": "text significantly better"},
+    "dvsa_vs_text_false_positive": {"dvsa_only": 2, "text_only": 2, "mcnemar_p": 1.0},
+    "dvsa_false_positive_rate": 0.10714285714285714,
+    "figure": "/home/hewj13/paper_icml2027/figures/dvsa_bwor_frozen_fixed_arms.png",
+    "figure_sha256": "c1946673a24ec31495bb7726b1e81569b79923985c4c13b4c2d95b547607a93e"
+  },
+  "natural_repair": {
+    "analysis": "work/dvsa/bwor_repair_frozen_analysis/analysis.json",
+    "sha256": "deb3ec85bb71e512456df08c04a0ca53deefc19cdd928265ac47cb4f8363c3ad",
+    "initial_business_correct_n": 21,
+    "business_correct_n": {"no_memory": 21, "text_memory": 19, "dvsa": 20, "direct_legacy_witness": 19},
+    "improved_n": {"no_memory": 3, "text_memory": 3, "dvsa": 0, "direct_legacy_witness": 3},
+    "harmed_win_n": {"no_memory": 3, "text_memory": 5, "dvsa": 1, "direct_legacy_witness": 5},
+    "dvsa_vs_text_mcnemar_p": 1.0,
+    "dvsa_vs_no_memory_mcnemar_p": 1.0,
+    "dvsa_semantic_triggers": 3,
+    "dvsa_semantic_trigger_business_improvements": 0,
+    "dvsa_no_call": 22,
+    "dvsa_execution_triggers": 3,
+    "repair_llm_calls": {"no_memory": 28, "text_memory": 28, "dvsa": 6, "direct_legacy_witness_actual": 0, "direct_legacy_witness_equivalent": 28},
+    "repair_tokens": {"no_memory": 341460, "text_memory": 312712, "dvsa": 133996, "direct_legacy_witness_equivalent": 312712},
+    "figure": "/home/hewj13/paper_icml2027/figures/dvsa_bwor_frozen_repair.png",
+    "figure_sha256": "68e0e33ddad0733005db6d659ad10144a01f5303479ac3a9a1ce928736974d02"
+  },
+  "full_cohort": {
+    "analysis": "work/dvsa/bwor_frozen_coverage/analysis.json",
+    "sha256": "a5121c83956859e32fb6ed6708d8d3aebe383c2a08d25b3339123d84f534e6b5",
+    "business_correct_lower_bound": {"no_memory": 21, "text_memory": 19, "dvsa": 20, "direct_legacy_witness": 19},
+    "denominator": 41,
+    "note": "Conservative lower bound, not a public leaderboard score",
+    "figure": "/home/hewj13/paper_icml2027/figures/dvsa_bwor_frozen_coverage.png",
+    "figure_sha256": "5e19bb671296f96ca844bec7bf2d438c44b3c7834eae20f4b576b27a48c3be3f"
+  },
+  "failure_layers": {
+    "reference_coverage_failures": 13,
+    "full_behavioral_coverage_problems": 16,
+    "mean_behavioral_coverage": 0.8339310698639663,
+    "clean_false_positive_cases": ["BWOR-024", "BWOR-041", "BWOR-047"],
+    "invalid_repair_n": 28,
+    "invalid_repair_reasons": {"problem_id mismatch": 26, "no complete JSON object in model response": 1, "constraints must contain 1..2000 entries": 1},
+    "invalid_repair_by_arm": {"no_memory": 6, "text_memory": 8, "dvsa": 6, "direct_legacy_witness": 8},
+    "harmed_dvsa_case": "BWOR-047",
+    "true_binding_error_examples": {
+      "BWOR-041": "Per-toy store demand was incorrectly aggregated across all toys",
+      "BWOR-047": "A storage constant of 40 was added before any delay year existed",
+      "BWOR-024": "Complex scheduling bindings had 45.2% behavioral coverage and nine clean violations"
+    }
+  },
+  "gate": {
+    "dvsa_vs_text_business_mcnemar_p": 1.0,
+    "required_p": 0.05,
+    "dvsa_false_positive_rate": 0.10714285714285714,
+    "max_false_positive_rate": 0.1,
+    "dvsa_harmed_win": 1,
+    "required_harmed_win": 0,
+    "frozen_template_reuse_observed": true,
+    "passed": false
+  },
+  "sota_started": false,
+  "closed_source_model_used": false,
+  "parameter_training_used": false,
+  "verification": {
+    "python39_tests": "174 passed; one pre-existing m2gen Python 3.9 dict|None failure",
+    "python312_m2gen": "REGRESSION OK",
+    "figures_read_back": true
+  }
+}

@@ -1,0 +1,20 @@
+{
+ "mechanism_id": "makespan",
+ "version": "0.1.0",
+ "status": "candidate",
+ "scope": {"objective_kind": "parallel_completion", "required_activities": 2},
+ "source": {"type": "mechanism_convention", "reference": "independent_activity_durations"},
+ "validation": {
+  "question": "Two required activities have independent completion times.",
+  "clean": {"variables": {"a": 2.0, "b": 4.0}, "objective": 4.0},
+  "wrong": {"variables": {"a": 2.0, "b": 4.0}, "objective": 6.0},
+  "binding": {
+   "invariant_id": "parallel_completion_makespan",
+   "source_span": "independent completion times",
+   "terms": [
+    {"path": "solution.variables.a", "coefficient": 1},
+    {"path": "solution.variables.b", "coefficient": 1}
+   ]
+  }
+ }
+}

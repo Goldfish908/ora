@@ -1,0 +1,28 @@
+{
+  "registry_version": "dvsa.registry.v0.6.1",
+  "status": "frozen_for_bwor_validation_with_presentation_tooling_amendment",
+  "base_registry": {
+    "path": "assets/dvsa/registry_v0.6.json",
+    "sha256": "85fc8d82178cb32579b569a9dbef74ee68b4134d25c89d315ea07afaee0d7f4a"
+  },
+  "experiment_configuration_changed": false,
+  "implementation_overrides": {
+    "scripts/dvsa_fixed_arm_analyze.py": "c609f9232a65769fbc822605084772d8066fcffb0ffbd294066cae15037b19c5",
+    "scripts/dvsa_repair_analyze.py": "fc2e3a2a2fa4576b654f2d42ef1be9a544a88c1a79c9620582b72e26c8b04c39"
+  },
+  "amendment": "Only report scope strings now use the actual split and eligible count instead of hardcoded Seven/dev. Metrics, prompts, assets, solver budgets and arms are unchanged.",
+  "tooling": {
+    "scripts/dvsa_validation_shard.sh": "b87166c1b7d7814a906af161af3cad6673291ea42d6e56f373ffe6a62ee6bb16",
+    "scripts/dvsa_validation_analyze.sh": "cd0ea310271454775d84956a9b5852df9dec34b10dfb029b19d0b09be372ee4d",
+    "scripts/dvsa_reference_collect.py": "6a656eab8096eeaa61d93d400bb1701e3a1031f4f298be6b229a1c08c0087c9a",
+    "scripts/dvsa_coverage_report.py": "8e097937b1c08193b42e019d9c7b1c9377b7c2ebd09d59390784eeb2693519a9"
+  },
+  "reference_coverage": {
+    "path": "work/dvsa/bwor_reference/validation/summary.json",
+    "eligible_n": 12,
+    "all_n": 16,
+    "ineligible_ids": ["BWOR-020", "BWOR-053", "BWOR-077", "BWOR-080"],
+    "manual_structural_revisions": 0
+  },
+  "sota_started": false
+}

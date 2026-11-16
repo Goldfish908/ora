@@ -1,0 +1,138 @@
+{
+  "library_version": "dvsa-bwor-primitives-v0.1",
+  "status": "candidate_templates_not_promoted",
+  "templates": [
+    {
+      "asset_id": "bwor.resource_capacity",
+      "schema_version": "dvsa.expr.v0.1",
+      "asset_version": "0.1.0",
+      "status": "candidate",
+      "source": {"type": "template", "reference": "Explicit linear resource capacity"},
+      "text": "For each explicit resource limit, multiply each bound decision quantity by its actual consumption coefficient, sum the terms, and require the total not to exceed the stated limit. Do not infer a capacity that is absent from the problem.",
+      "scope": {"domain": "bwor.scalar", "required_data": ["terms", "limit"], "required_solution": ["variables"]},
+      "invariant_id": "RESOURCE_CAPACITY",
+      "relation": "le",
+      "lhs": {"sum": {
+        "forall": {"term": {"path": "data.terms"}},
+        "value": {"mul": [
+          {"index": {"value": {"var": "term"}, "at": "coefficient"}},
+          {"lookup": {"path": "solution.variables", "key": [{"index": {"value": {"var": "term"}, "at": "variable"}}]}}
+        ]}
+      }},
+      "rhs": {"path": "data.limit"},
+      "tolerance": {"abs": 0.00001, "rel": 0.000001}
+    },
+    {
+      "asset_id": "bwor.proportion_lower",
+      "schema_version": "dvsa.expr.v0.1",
+      "asset_version": "0.1.0",
+      "status": "candidate",
+      "source": {"type": "template", "reference": "Explicit minimum component proportion"},
+      "text": "For a minimum component proportion, the component quantity must be at least the stated fraction of the total of all components making up that product. Preserve the stated percentage direction and do not fix the remaining component ratios in advance.",
+      "scope": {"domain": "bwor.scalar", "required_data": ["numerator", "denominator", "ratio"], "required_solution": ["variables"]},
+      "invariant_id": "PROPORTION_LOWER",
+      "relation": "ge",
+      "lhs": {"lookup": {"path": "solution.variables", "key": [{"path": "data.numerator"}]}},
+      "rhs": {"mul": [
+        {"path": "data.ratio"},
+        {"sum": {
+          "forall": {"name": {"path": "data.denominator"}},
+          "value": {"lookup": {"path": "solution.variables", "key": [{"var": "name"}]}}
+        }}
+      ]},
+      "tolerance": {"abs": 0.00001, "rel": 0.000001}
+    },
+    {
+      "asset_id": "bwor.proportion_upper",
+      "schema_version": "dvsa.expr.v0.1",
+      "asset_version": "0.1.0",
+      "status": "candidate",
+      "source": {"type": "template", "reference": "Explicit maximum component proportion"},
+      "text": "For a maximum component proportion, the component quantity must not exceed the stated fraction of the total of all components making up that product. Preserve the stated percentage direction and do not fix the remaining component ratios in advance.",
+      "scope": {"domain": "bwor.scalar", "required_data": ["numerator", "denominator", "ratio"], "required_solution": ["variables"]},
+      "invariant_id": "PROPORTION_UPPER",
+      "relation": "le",
+      "lhs": {"lookup": {"path": "solution.variables", "key": [{"path": "data.numerator"}]}},
+      "rhs": {"mul": [
+        {"path": "data.ratio"},
+        {"sum": {
+          "forall": {"name": {"path": "data.denominator"}},
+          "value": {"lookup": {"path": "solution.variables", "key": [{"var": "name"}]}}
+        }}
+      ]},
+      "tolerance": {"abs": 0.00001, "rel": 0.000001}
+    },
+    {
+      "asset_id": "bwor.objective_recompute",
+      "schema_version": "dvsa.expr.v0.1",
+      "asset_version": "0.1.0",
+      "status": "candidate",
+      "source": {"type": "template", "reference": "Objective recomputation from returned decisions"},
+      "text": "Recompute the reported objective from returned decision quantities and the stated price, cost, profit or penalty coefficients. A better reported objective is not evidence of feasibility, and a copied objective is not an independent check.",
+      "scope": {"domain": "bwor.scalar", "required_data": ["terms", "constant"], "required_solution": ["variables", "objective"]},
+      "invariant_id": "OBJECTIVE",
+      "relation": "eq",
+      "lhs": {"path": "solution.objective"},
+      "rhs": {"add": [
+        {"path": "data.constant"},
+        {"sum": {
+          "forall": {"term": {"path": "data.terms"}},
+          "value": {"mul": [
+            {"index": {"value": {"var": "term"}, "at": "coefficient"}},
+            {"lookup": {"path": "solution.variables", "key": [{"index": {"value": {"var": "term"}, "at": "variable"}}]}}
+          ]}
+        }}
+      ]},
+      "tolerance": {"abs": 0.00001, "rel": 0.000001}
+    },
+    {
+      "asset_id": "bwor.linear_balance",
+      "schema_version": "dvsa.expr.v0.1",
+      "asset_version": "0.1.0",
+      "status": "candidate",
+      "source": {"type": "template", "reference": "Explicit linear conservation or balance"},
+      "text": "For an explicit conservation or balance requirement, recompute both sides from the returned quantities. Positive terms add to the left side and negative terms subtract; do not drop an outgoing or incoming role because its coefficient is inconvenient.",
+      "scope": {"domain": "bwor.scalar", "required_data": ["positive_terms", "negative_terms", "rhs"], "required_solution": ["variables"]},
+      "invariant_id": "LINEAR_BALANCE",
+      "relation": "eq",
+      "lhs": {"sub": [
+        {"sum": {
+          "forall": {"term": {"path": "data.positive_terms"}},
+          "value": {"mul": [
+            {"index": {"value": {"var": "term"}, "at": "coefficient"}},
+            {"lookup": {"path": "solution.variables", "key": [{"index": {"value": {"var": "term"}, "at": "variable"}}]}}
+          ]}
+        }},
+        {"sum": {
+          "forall": {"term": {"path": "data.negative_terms"}},
+          "value": {"mul": [
+            {"index": {"value": {"var": "term"}, "at": "coefficient"}},
+            {"lookup": {"path": "solution.variables", "key": [{"index": {"value": {"var": "term"}, "at": "variable"}}]}}
+          ]}
+        }}
+      ]},
+      "rhs": {"path": "data.rhs"},
+      "tolerance": {"abs": 0.00001, "rel": 0.000001}
+    },
+    {
+      "asset_id": "bwor.linear_lower_bound",
+      "schema_version": "dvsa.expr.v0.1",
+      "asset_version": "0.1.0",
+      "status": "candidate",
+      "source": {"type": "template", "reference": "Explicit linear lower bound"},
+      "text": "For an explicit minimum requirement or lower bound, multiply each bound decision quantity by its stated coefficient, sum the terms, and require the total to meet or exceed the stated bound. Do not convert a minimum into a maximum or discard a required term.",
+      "scope": {"domain": "bwor.scalar", "required_data": ["terms", "bound"], "required_solution": ["variables"]},
+      "invariant_id": "LINEAR_LOWER_BOUND",
+      "relation": "ge",
+      "lhs": {"sum": {
+        "forall": {"term": {"path": "data.terms"}},
+        "value": {"mul": [
+          {"index": {"value": {"var": "term"}, "at": "coefficient"}},
+          {"lookup": {"path": "solution.variables", "key": [{"index": {"value": {"var": "term"}, "at": "variable"}}]}}
+        ]}
+      }},
+      "rhs": {"path": "data.bound"},
+      "tolerance": {"abs": 0.00001, "rel": 0.000001}
+    }
+  ]
+}

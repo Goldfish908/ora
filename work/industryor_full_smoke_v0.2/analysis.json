@@ -1,0 +1,5088 @@
+{
+ "run_config": {
+  "llm": {
+   "model": "Qwen3_8-27B",
+   "base_url": "https://10.46.124.101/service-large-50-1789958762589/llm/v1"
+  },
+  "dataset": "data/industryor/IndustryOR.json",
+  "dataset_sha256": "5b889e49d9aa64ae5b368bc80a05ee71a1daf20d126f54efc6207c98f9095f36",
+  "protocol_sha256": "cd474489d0c0e6217b8814e324e60927ec11589be1481e7ffdeaac124cc8102c",
+  "ids": [
+   1,
+   8,
+   19,
+   20
+  ],
+  "max_rounds": 3,
+  "temperature": 0.6,
+  "reasoning_effort": "medium",
+  "max_tokens": 32768,
+  "prior_sha256": "0fa52ef51cf1563070c08b3941e15bff9d4d97bae600639ab64e695f16aaee80",
+  "seed": null,
+  "metric": "absolute_error_at_most_0.1",
+  "independent_business_audit_ids": [
+   4,
+   8,
+   9,
+   19,
+   20,
+   21,
+   25,
+   48
+  ],
+  "implementation_sha256": {
+   "scripts/industryor_full_pipeline.py": "56f6a568ecaa0f8a9c8757b3c67abae800734151fc59cdd2d08f09ab6eccd75a",
+   "scripts/industryor_scoped_loop.py": "674cc868e00b9e1db03e14e992bcd9a55a5e8e4322772fbe3b15c62f647e892a",
+   "scripts/industryor_next_stage.py": "8daba1b593668d890978337f7215a520c363e3027eb2e34587ef4738fa20d7b7",
+   "scripts/m1_pilot.py": "f687c8f2daa2c55eb22a22a91dba169c1440acab9b6a23f8d0f079cbb8c7509a",
+   "scripts/m3_industryor.py": "f6b7e6a81942c5f5c920a35807db6ac6df738f35f91069a90f8c7bc8fcc79d13",
+   "scripts/scoped_ir_e2e.py": "c58f6d077b1e8d83fb2cb5e3eb3dda4a5a7df24820956c7889cc1931f7ca219f",
+   "scripts/scoped_ir_gate.py": "d9d87048c893ab4f43916d5bd0f5e6342af1e5bf69f03a119927325a2e973311",
+   "ora_agent/llm.py": "eb2b6f6ebc36813149d52ea1a109addd51cb02419c53f7427de7c7a712d7aa18",
+   "ora_agent/evidence_dag.py": "2dc36dd3b07703fe50212daf96412f9add723294ab722ee5d06c6edc63c5867a",
+   "ora_agent/repair_controller.py": "af265fcb4c4eadfc6146492b8bef0083b4693462bde68c6abafc81c8e5ee6e34",
+   "ora_agent/acceptance.py": "e073cffd12efd27ebdb65f6bf34b66a0e3235855a2f1adb52db92dfbb2c5084d",
+   "ora_agent/scoped_ir.py": "2156c0b58a4265fa34d90340eea5fc47ad3d4d7d8e32fc6770fb247804d13942",
+   "ora_agent/scoped_assets.py": "38f760d4b5eb330589e4dd2180f8d48f3545f79fbd09c6eedf70aaceaf44fcfa"
+  }
+ },
+ "summary": {
+  "n": 4,
+  "registered_n": 4,
+  "runner_errors": 0,
+  "objective_matches_abs_0_1": 3,
+  "objective_match_rate": 0.75,
+  "initial_objective_matches_abs_0_1": 3,
+  "exec_ok": 4,
+  "optimal": 4,
+  "accepted": 2,
+  "accepted_but_business_incorrect": 0,
+  "harmed_win": 0,
+  "objective_below_reference": 1,
+  "objective_above_reference": 0,
+  "llm_calls": 4,
+  "new_llm_calls": 0,
+  "api_attempts": 4,
+  "retry_accounting_complete": false,
+  "prompt_tokens": 4628,
+  "completion_tokens": 19303,
+  "total_tokens": 23931,
+  "reasoning_tokens": 15605,
+  "llm_latency_s": 190.926,
+  "new_llm_latency_s": 0,
+  "candidate_evaluations": 6,
+  "solver_runs": 6,
+  "reused_candidate_evaluations": 0,
+  "deterministic_transforms": 2,
+  "failed_deterministic_transforms": 0,
+  "rollbacks": 1,
+  "duplicate_candidate_stops": 0,
+  "business_audit": {
+   "n": 3,
+   "initial_business_correct": 1,
+   "final_business_correct": 3,
+   "unverified_or_blocked": 0,
+   "blocked": 0
+  },
+  "business_unverified": 1,
+  "failure_classes": {
+   "business_correct": 3,
+   "objective_mismatch_or_suboptimal": 1
+  },
+  "stop_reasons": {
+   "accepted": 2,
+   "baseline_fallback": 1,
+   "business_unverified": 1
+  },
+  "delta_vs_z2_abs_0_1": -71,
+  "wall_seconds": 1.325
+ },
+ "baseline": {
+  "z0": {
+   "n": 100,
+   "objective_matches_abs_0_1": 35,
+   "objective_matches_relative_1pct": 39,
+   "exec_ok": 50,
+   "optimal": 49,
+   "llm_calls": 100
+  },
+  "z1": {
+   "n": 100,
+   "objective_matches_abs_0_1": 60,
+   "objective_matches_relative_1pct": 67,
+   "exec_ok": 93,
+   "optimal": 92,
+   "llm_calls": 179
+  },
+  "z2": {
+   "n": 100,
+   "objective_matches_abs_0_1": 74,
+   "objective_matches_relative_1pct": 79,
+   "exec_ok": 100,
+   "optimal": 99,
+   "llm_calls": 115
+  }
+ },
+ "results": [
+  {
+   "id": 1,
+   "run_config": {
+    "llm": {
+     "model": "Qwen3_8-27B",
+     "base_url": "https://10.46.124.101/service-large-50-1789958762589/llm/v1"
+    },
+    "dataset": "data/industryor/IndustryOR.json",
+    "dataset_sha256": "5b889e49d9aa64ae5b368bc80a05ee71a1daf20d126f54efc6207c98f9095f36",
+    "protocol_sha256": "cd474489d0c0e6217b8814e324e60927ec11589be1481e7ffdeaac124cc8102c",
+    "ids": [
+     1,
+     8,
+     19,
+     20
+    ],
+    "max_rounds": 3,
+    "temperature": 0.6,
+    "reasoning_effort": "medium",
+    "max_tokens": 32768,
+    "prior_sha256": "0fa52ef51cf1563070c08b3941e15bff9d4d97bae600639ab64e695f16aaee80",
+    "seed": null,
+    "metric": "absolute_error_at_most_0.1",
+    "independent_business_audit_ids": [
+     4,
+     8,
+     9,
+     19,
+     20,
+     21,
+     25,
+     48
+    ],
+    "implementation_sha256": {
+     "scripts/industryor_full_pipeline.py": "56f6a568ecaa0f8a9c8757b3c67abae800734151fc59cdd2d08f09ab6eccd75a",
+     "scripts/industryor_scoped_loop.py": "674cc868e00b9e1db03e14e992bcd9a55a5e8e4322772fbe3b15c62f647e892a",
+     "scripts/industryor_next_stage.py": "8daba1b593668d890978337f7215a520c363e3027eb2e34587ef4738fa20d7b7",
+     "scripts/m1_pilot.py": "f687c8f2daa2c55eb22a22a91dba169c1440acab9b6a23f8d0f079cbb8c7509a",
+     "scripts/m3_industryor.py": "f6b7e6a81942c5f5c920a35807db6ac6df738f35f91069a90f8c7bc8fcc79d13",
+     "scripts/scoped_ir_e2e.py": "c58f6d077b1e8d83fb2cb5e3eb3dda4a5a7df24820956c7889cc1931f7ca219f",
+     "scripts/scoped_ir_gate.py": "d9d87048c893ab4f43916d5bd0f5e6342af1e5bf69f03a119927325a2e973311",
+     "ora_agent/llm.py": "eb2b6f6ebc36813149d52ea1a109addd51cb02419c53f7427de7c7a712d7aa18",
+     "ora_agent/evidence_dag.py": "2dc36dd3b07703fe50212daf96412f9add723294ab722ee5d06c6edc63c5867a",
+     "ora_agent/repair_controller.py": "af265fcb4c4eadfc6146492b8bef0083b4693462bde68c6abafc81c8e5ee6e34",
+     "ora_agent/acceptance.py": "e073cffd12efd27ebdb65f6bf34b66a0e3235855a2f1adb52db92dfbb2c5084d",
+     "ora_agent/scoped_ir.py": "2156c0b58a4265fa34d90340eea5fc47ad3d4d7d8e32fc6770fb247804d13942",
+     "ora_agent/scoped_assets.py": "38f760d4b5eb330589e4dd2180f8d48f3545f79fbd09c6eedf70aaceaf44fcfa"
+    }
+   },
+   "status": "completed",
+   "prompt_sha256": "6c4c85184007bf7b50192eeadd3e8df4dca695031e9163e0918b751dc95266cc",
+   "initial_code": "from pyscipopt import Model, quicksum\nimport json\n\n# Data\ndemand_I = [10000, 10000, 12000, 12000, 16000, 16000, 20000, 20000]\ndemand_II = [6000, 7200, 8400, 10800, 10800, 12000, 12000, 12000]\n\nn_weeks = 8\nn_train_weeks = 7  # training can start weeks 1-7\ninitial_workers = 50\ntrainees_per_trainer = 3\ntotal_new_workers = 50\n\nrate_I = 10   # kg/h\nrate_II = 6   # kg/h\nhours_normal = 40\nhours_ot = 60\n\nwage_orig_40 = 360\nwage_orig_60 = 540\nwage_new_40 = 240\nwage_new_60 = 540\nwage_trainee = 120\nwage_trainer = 360\n\npenalty_I = 0.5\npenalty_II = 0.6\n\nm = Model()\nm.hideOutput()\nm.setRealParam(\"limits/time\", 570)\n\n# Decision variables\n# x_train[t]: number of skilled workers starting training in week t+1 (0-indexed t=0..6)\nx_train = [m.addVar(vtype=\"I\", lb=0, name=f\"x_train_{t+1}\") for t in range(n_train_weeks)]\n\n# Original skilled workers (wage 360/540)\na_I40 = [m.addVar(vtype=\"I\", lb=0, name=f\"a_I40_{t+1}\") for t in range(n_weeks)]\na_II40 = [m.addVar(vtype=\"I\", lb=0, name=f\"a_II40_{t+1}\") for t in range(n_weeks)]\na_I60 = [m.addVar(vtype=\"I\", lb=0, name=f\"a_I60_{t+1}\") for t in range(n_weeks)]\na_II60 = [m.addVar(vtype=\"I\", lb=0, name=f\"a_II60_{t+1}\") for t in range(n_weeks)]\n\n# Newly trained workers (wage 240/540)\nb_I40 = [m.addVar(vtype=\"I\", lb=0, name=f\"b_I40_{t+1}\") for t in range(n_weeks)]\nb_II40 = [m.addVar(vtype=\"I\", lb=0, name=f\"b_II40_{t+1}\") for t in range(n_weeks)]\nb_I60 = [m.addVar(vtype=\"I\", lb=0, name=f\"b_I60_{t+1}\") for t in range(n_weeks)]\nb_II60 = [m.addVar(vtype=\"I\", lb=0, name=f\"b_II60_{t+1}\") for t in range(n_weeks)]\n\n# Inventory (can be negative = backlog)\ninv_I = [m.addVar(vtype=\"C\", lb=-m.infinity(), name=f\"inv_I_{t+1}\") for t in range(n_weeks)]\ninv_II = [m.addVar(vtype=\"C\", lb=-m.infinity(), name=f\"inv_II_{t+1}\") for t in range(n_weeks)]\n\n# Backlog (non-negative)\nback_I = [m.addVar(vtype=\"C\", lb=0, name=f\"back_I_{t+1}\") for t in range(n_weeks)]\nback_II = [m.addVar(vtype=\"C\", lb=0, name=f\"back_II_{t+1}\") for t in range(n_weeks)]\n\n# Helper: x_train indexed by 0-based week, 0 if out of range\ndef xt0(t):\n    if t < 0 or t >= n_train_weeks:\n        return 0\n    return x_train[t]\n\n# Constraints\n\n# 1. Original workers: production + training <= 50\nfor t in range(n_weeks):\n    m.addCons(\n        a_I40[t] + a_II40[t] + a_I60[t] + a_II60[t] + xt0(t) + xt0(t - 1) <= initial_workers,\n        name=f\"orig_avail_{t+1}\"\n    )\n\n# 2. New workers: production <= those who have finished training\nfor t in range(n_weeks):\n    # Training started in 0-based week s is available starting week s+2\n    # In week t: available if s+2 <= t, i.e., s <= t-2\n    new_avail = 0\n    for s in range(0, min(t - 1, n_train_weeks)):\n        new_avail += trainees_per_trainer * x_train[s]\n    m.addCons(\n        b_I40[t] + b_II40[t] + b_I60[t] + b_II60[t] <= new_avail,\n        name=f\"new_avail_{t+1}\"\n    )\n\n# 3. Total new workers trained >= 50\nm.addCons(\n    quicksum(trainees_per_trainer * x_train[t] for t in range(n_train_weeks)) >= total_new_workers,\n    name=\"total_training\"\n)\n\n# 4. Inventory balance\nfor t in range(n_weeks):\n    prod_I = rate_I * hours_normal * (a_I40[t] + b_I40[t]) + rate_I * hours_ot * (a_I60[t] + b_I60[t])\n    prod_II = rate_II * hours_normal * (a_II40[t] + b_II40[t]) + rate_II * hours_ot * (a_II60[t] + b_II60[t])\n    if t == 0:\n        m.addCons(inv_I[t] == prod_I - demand_I[t], name=f\"inv_I_{t+1}\")\n        m.addCons(inv_II[t] == prod_II - demand_II[t], name=f\"inv_II_{t+1}\")\n    else:\n        m.addCons(inv_I[t] == inv_I[t - 1] + prod_I - demand_I[t], name=f\"inv_I_{t+1}\")\n        m.addCons(inv_II[t] == inv_II[t - 1] + prod_II - demand_II[t], name=f\"inv_II_{t+1}\")\n\n# 5. Backlog linearization\nfor t in range(n_weeks):\n    m.addCons(back_I[t] >= -inv_I[t], name=f\"back_I_{t+1}\")\n    m.addCons(back_II[t] >= -inv_II[t], name=f\"back_II_{t+1}\")\n\n# 6. All demand met by end of week 8\nm.addCons(inv_I[n_weeks - 1] >= 0, name=\"final_inv_I\")\nm.addCons(inv_II[n_weeks - 1] >= 0, name=\"final_inv_II\")\n\n# Objective: minimize total cost\ncost_terms = []\nfor t in range(n_weeks):\n    # Original workers production wages\n    cost_terms.append(wage_orig_40 * (a_I40[t] + a_II40[t]))\n    cost_terms.append(wage_orig_60 * (a_I60[t] + a_II60[t]))\n    # New workers production wages\n    cost_terms.append(wage_new_40 * (b_I40[t] + b_II40[t]))\n    cost_terms.append(wage_new_60 * (b_I60[t] + b_II60[t]))\n    # Training wages (skilled trainer + 3 trainees per group)\n    train_cost = (wage_trainer + trainees_per_trainer * wage_trainee) * (xt0(t) + xt0(t - 1))\n    cost_terms.append(train_cost)\n    # Late delivery penalty\n    cost_terms.append(penalty_I * back_I[t])\n    cost_terms.append(penalty_II * back_II[t])\n\nm.setObjective(quicksum(cost_terms), \"minimize\")\n\nm.optimize()\n\nst = m.getStatus()\nprint(f\"status: {st}\")\nif m.getNSols() > 0:\n    print(f\"objective: {m.getObjVal()}\")",
+   "final_code": "from pyscipopt import Model, quicksum\nimport json\n\n# Data\ndemand_I = [10000, 10000, 12000, 12000, 16000, 16000, 20000, 20000]\ndemand_II = [6000, 7200, 8400, 10800, 10800, 12000, 12000, 12000]\n\nn_weeks = 8\nn_train_weeks = 7  # training can start weeks 1-7\ninitial_workers = 50\ntrainees_per_trainer = 3\ntotal_new_workers = 50\n\nrate_I = 10   # kg/h\nrate_II = 6   # kg/h\nhours_normal = 40\nhours_ot = 60\n\nwage_orig_40 = 360\nwage_orig_60 = 540\nwage_new_40 = 240\nwage_new_60 = 540\nwage_trainee = 120\nwage_trainer = 360\n\npenalty_I = 0.5\npenalty_II = 0.6\n\nm = Model()\nm.hideOutput()\nm.setRealParam(\"limits/time\", 570)\n\n# Decision variables\n# x_train[t]: number of skilled workers starting training in week t+1 (0-indexed t=0..6)\nx_train = [m.addVar(vtype=\"I\", lb=0, name=f\"x_train_{t+1}\") for t in range(n_train_weeks)]\n\n# Original skilled workers (wage 360/540)\na_I40 = [m.addVar(vtype=\"I\", lb=0, name=f\"a_I40_{t+1}\") for t in range(n_weeks)]\na_II40 = [m.addVar(vtype=\"I\", lb=0, name=f\"a_II40_{t+1}\") for t in range(n_weeks)]\na_I60 = [m.addVar(vtype=\"I\", lb=0, name=f\"a_I60_{t+1}\") for t in range(n_weeks)]\na_II60 = [m.addVar(vtype=\"I\", lb=0, name=f\"a_II60_{t+1}\") for t in range(n_weeks)]\n\n# Newly trained workers (wage 240/540)\nb_I40 = [m.addVar(vtype=\"I\", lb=0, name=f\"b_I40_{t+1}\") for t in range(n_weeks)]\nb_II40 = [m.addVar(vtype=\"I\", lb=0, name=f\"b_II40_{t+1}\") for t in range(n_weeks)]\nb_I60 = [m.addVar(vtype=\"I\", lb=0, name=f\"b_I60_{t+1}\") for t in range(n_weeks)]\nb_II60 = [m.addVar(vtype=\"I\", lb=0, name=f\"b_II60_{t+1}\") for t in range(n_weeks)]\n\n# Inventory (can be negative = backlog)\ninv_I = [m.addVar(vtype=\"C\", lb=-m.infinity(), name=f\"inv_I_{t+1}\") for t in range(n_weeks)]\ninv_II = [m.addVar(vtype=\"C\", lb=-m.infinity(), name=f\"inv_II_{t+1}\") for t in range(n_weeks)]\n\n# Backlog (non-negative)\nback_I = [m.addVar(vtype=\"C\", lb=0, name=f\"back_I_{t+1}\") for t in range(n_weeks)]\nback_II = [m.addVar(vtype=\"C\", lb=0, name=f\"back_II_{t+1}\") for t in range(n_weeks)]\n\n# Helper: x_train indexed by 0-based week, 0 if out of range\ndef xt0(t):\n    if t < 0 or t >= n_train_weeks:\n        return 0\n    return x_train[t]\n\n# Constraints\n\n# 1. Original workers: production + training <= 50\nfor t in range(n_weeks):\n    m.addCons(\n        a_I40[t] + a_II40[t] + a_I60[t] + a_II60[t] + xt0(t) + xt0(t - 1) <= initial_workers,\n        name=f\"orig_avail_{t+1}\"\n    )\n\n# 2. New workers: production <= those who have finished training\nfor t in range(n_weeks):\n    # Training started in 0-based week s is available starting week s+2\n    # In week t: available if s+2 <= t, i.e., s <= t-2\n    new_avail = 0\n    for s in range(0, min(t - 1, n_train_weeks)):\n        new_avail += trainees_per_trainer * x_train[s]\n    m.addCons(\n        b_I40[t] + b_II40[t] + b_I60[t] + b_II60[t] <= new_avail,\n        name=f\"new_avail_{t+1}\"\n    )\n\n# 3. Total new workers trained >= 50\nm.addCons(\n    quicksum(trainees_per_trainer * x_train[t] for t in range(n_train_weeks)) >= total_new_workers,\n    name=\"total_training\"\n)\n\n# 4. Inventory balance\nfor t in range(n_weeks):\n    prod_I = rate_I * hours_normal * (a_I40[t] + b_I40[t]) + rate_I * hours_ot * (a_I60[t] + b_I60[t])\n    prod_II = rate_II * hours_normal * (a_II40[t] + b_II40[t]) + rate_II * hours_ot * (a_II60[t] + b_II60[t])\n    if t == 0:\n        m.addCons(inv_I[t] == prod_I - demand_I[t], name=f\"inv_I_{t+1}\")\n        m.addCons(inv_II[t] == prod_II - demand_II[t], name=f\"inv_II_{t+1}\")\n    else:\n        m.addCons(inv_I[t] == inv_I[t - 1] + prod_I - demand_I[t], name=f\"inv_I_{t+1}\")\n        m.addCons(inv_II[t] == inv_II[t - 1] + prod_II - demand_II[t], name=f\"inv_II_{t+1}\")\n\n# 5. Backlog linearization\nfor t in range(n_weeks):\n    m.addCons(back_I[t] >= -inv_I[t], name=f\"back_I_{t+1}\")\n    m.addCons(back_II[t] >= -inv_II[t], name=f\"back_II_{t+1}\")\n\n# 6. All demand met by end of week 8\nm.addCons(inv_I[n_weeks - 1] >= 0, name=\"final_inv_I\")\nm.addCons(inv_II[n_weeks - 1] >= 0, name=\"final_inv_II\")\n\n# Objective: minimize total cost\ncost_terms = []\nfor t in range(n_weeks):\n    # Original workers production wages\n    cost_terms.append(wage_orig_40 * (a_I40[t] + a_II40[t]))\n    cost_terms.append(wage_orig_60 * (a_I60[t] + a_II60[t]))\n    # New workers production wages\n    cost_terms.append(wage_new_40 * (b_I40[t] + b_II40[t]))\n    cost_terms.append(wage_new_60 * (b_I60[t] + b_II60[t]))\n    # Training wages (skilled trainer + 3 trainees per group)\n    train_cost = (wage_trainer + trainees_per_trainer * wage_trainee) * (xt0(t) + xt0(t - 1))\n    cost_terms.append(train_cost)\n    # Late delivery penalty\n    cost_terms.append(penalty_I * back_I[t])\n    cost_terms.append(penalty_II * back_II[t])\n\nm.setObjective(quicksum(cost_terms), \"minimize\")\n\nm.optimize()\n\nst = m.getStatus()\nprint(f\"status: {st}\")\nif m.getNSols() > 0:\n    print(f\"objective: {m.getObjVal()}\")",
+   "initial_score": null,
+   "final_score": null,
+   "initial_objective": 210124.0,
+   "initial_objective_match_abs_0_1": false,
+   "objective": 210124.0,
+   "printed_objective": 210124.0,
+   "reference": 219888.0,
+   "objective_match_abs_0_1": false,
+   "objective_error": 9764.0,
+   "objective_below_reference": true,
+   "objective_above_reference": false,
+   "exec_status": "ok",
+   "solver_status": "optimal",
+   "accepted": false,
+   "accepted_round": null,
+   "accepted_but_business_incorrect": false,
+   "harmed_win": false,
+   "business_unverified": true,
+   "stop_reason": "business_unverified",
+   "history": [
+    {
+     "round": 0,
+     "action": "initial",
+     "code": "from pyscipopt import Model, quicksum\nimport json\n\n# Data\ndemand_I = [10000, 10000, 12000, 12000, 16000, 16000, 20000, 20000]\ndemand_II = [6000, 7200, 8400, 10800, 10800, 12000, 12000, 12000]\n\nn_weeks = 8\nn_train_weeks = 7  # training can start weeks 1-7\ninitial_workers = 50\ntrainees_per_trainer = 3\ntotal_new_workers = 50\n\nrate_I = 10   # kg/h\nrate_II = 6   # kg/h\nhours_normal = 40\nhours_ot = 60\n\nwage_orig_40 = 360\nwage_orig_60 = 540\nwage_new_40 = 240\nwage_new_60 = 540\nwage_trainee = 120\nwage_trainer = 360\n\npenalty_I = 0.5\npenalty_II = 0.6\n\nm = Model()\nm.hideOutput()\nm.setRealParam(\"limits/time\", 570)\n\n# Decision variables\n# x_train[t]: number of skilled workers starting training in week t+1 (0-indexed t=0..6)\nx_train = [m.addVar(vtype=\"I\", lb=0, name=f\"x_train_{t+1}\") for t in range(n_train_weeks)]\n\n# Original skilled workers (wage 360/540)\na_I40 = [m.addVar(vtype=\"I\", lb=0, name=f\"a_I40_{t+1}\") for t in range(n_weeks)]\na_II40 = [m.addVar(vtype=\"I\", lb=0, name=f\"a_II40_{t+1}\") for t in range(n_weeks)]\na_I60 = [m.addVar(vtype=\"I\", lb=0, name=f\"a_I60_{t+1}\") for t in range(n_weeks)]\na_II60 = [m.addVar(vtype=\"I\", lb=0, name=f\"a_II60_{t+1}\") for t in range(n_weeks)]\n\n# Newly trained workers (wage 240/540)\nb_I40 = [m.addVar(vtype=\"I\", lb=0, name=f\"b_I40_{t+1}\") for t in range(n_weeks)]\nb_II40 = [m.addVar(vtype=\"I\", lb=0, name=f\"b_II40_{t+1}\") for t in range(n_weeks)]\nb_I60 = [m.addVar(vtype=\"I\", lb=0, name=f\"b_I60_{t+1}\") for t in range(n_weeks)]\nb_II60 = [m.addVar(vtype=\"I\", lb=0, name=f\"b_II60_{t+1}\") for t in range(n_weeks)]\n\n# Inventory (can be negative = backlog)\ninv_I = [m.addVar(vtype=\"C\", lb=-m.infinity(), name=f\"inv_I_{t+1}\") for t in range(n_weeks)]\ninv_II = [m.addVar(vtype=\"C\", lb=-m.infinity(), name=f\"inv_II_{t+1}\") for t in range(n_weeks)]\n\n# Backlog (non-negative)\nback_I = [m.addVar(vtype=\"C\", lb=0, name=f\"back_I_{t+1}\") for t in range(n_weeks)]\nback_II = [m.addVar(vtype=\"C\", lb=0, name=f\"back_II_{t+1}\") for t in range(n_weeks)]\n\n# Helper: x_train indexed by 0-based week, 0 if out of range\ndef xt0(t):\n    if t < 0 or t >= n_train_weeks:\n        return 0\n    return x_train[t]\n\n# Constraints\n\n# 1. Original workers: production + training <= 50\nfor t in range(n_weeks):\n    m.addCons(\n        a_I40[t] + a_II40[t] + a_I60[t] + a_II60[t] + xt0(t) + xt0(t - 1) <= initial_workers,\n        name=f\"orig_avail_{t+1}\"\n    )\n\n# 2. New workers: production <= those who have finished training\nfor t in range(n_weeks):\n    # Training started in 0-based week s is available starting week s+2\n    # In week t: available if s+2 <= t, i.e., s <= t-2\n    new_avail = 0\n    for s in range(0, min(t - 1, n_train_weeks)):\n        new_avail += trainees_per_trainer * x_train[s]\n    m.addCons(\n        b_I40[t] + b_II40[t] + b_I60[t] + b_II60[t] <= new_avail,\n        name=f\"new_avail_{t+1}\"\n    )\n\n# 3. Total new workers trained >= 50\nm.addCons(\n    quicksum(trainees_per_trainer * x_train[t] for t in range(n_train_weeks)) >= total_new_workers,\n    name=\"total_training\"\n)\n\n# 4. Inventory balance\nfor t in range(n_weeks):\n    prod_I = rate_I * hours_normal * (a_I40[t] + b_I40[t]) + rate_I * hours_ot * (a_I60[t] + b_I60[t])\n    prod_II = rate_II * hours_normal * (a_II40[t] + b_II40[t]) + rate_II * hours_ot * (a_II60[t] + b_II60[t])\n    if t == 0:\n        m.addCons(inv_I[t] == prod_I - demand_I[t], name=f\"inv_I_{t+1}\")\n        m.addCons(inv_II[t] == prod_II - demand_II[t], name=f\"inv_II_{t+1}\")\n    else:\n        m.addCons(inv_I[t] == inv_I[t - 1] + prod_I - demand_I[t], name=f\"inv_I_{t+1}\")\n        m.addCons(inv_II[t] == inv_II[t - 1] + prod_II - demand_II[t], name=f\"inv_II_{t+1}\")\n\n# 5. Backlog linearization\nfor t in range(n_weeks):\n    m.addCons(back_I[t] >= -inv_I[t], name=f\"back_I_{t+1}\")\n    m.addCons(back_II[t] >= -inv_II[t], name=f\"back_II_{t+1}\")\n\n# 6. All demand met by end of week 8\nm.addCons(inv_I[n_weeks - 1] >= 0, name=\"final_inv_I\")\nm.addCons(inv_II[n_weeks - 1] >= 0, name=\"final_inv_II\")\n\n# Objective: minimize total cost\ncost_terms = []\nfor t in range(n_weeks):\n    # Original workers production wages\n    cost_terms.append(wage_orig_40 * (a_I40[t] + a_II40[t]))\n    cost_terms.append(wage_orig_60 * (a_I60[t] + a_II60[t]))\n    # New workers production wages\n    cost_terms.append(wage_new_40 * (b_I40[t] + b_II40[t]))\n    cost_terms.append(wage_new_60 * (b_I60[t] + b_II60[t]))\n    # Training wages (skilled trainer + 3 trainees per group)\n    train_cost = (wage_trainer + trainees_per_trainer * wage_trainee) * (xt0(t) + xt0(t - 1))\n    cost_terms.append(train_cost)\n    # Late delivery penalty\n    cost_terms.append(penalty_I * back_I[t])\n    cost_terms.append(penalty_II * back_II[t])\n\nm.setObjective(quicksum(cost_terms), \"minimize\")\n\nm.optimize()\n\nst = m.getStatus()\nprint(f\"status: {st}\")\nif m.getNSols() > 0:\n    print(f\"objective: {m.getObjVal()}\")",
+     "record": {
+      "exec_status": "ok",
+      "return_code": 0,
+      "solver_status": "optimal",
+      "objective": 210124.0,
+      "stderr_tail": "",
+      "wall_s": 0.3,
+      "stdout_artifact": "stdout.txt",
+      "stderr_artifact": "stderr.txt",
+      "code_sha256": "d0e6fc4b6c1ae43c1b24b2c656f06797373e2c3acdb6605668c40b56f704ae52",
+      "instrumented_sha256": "dada9d0d367727e5ca4b1618af88b59eb281a7207a97fe353f5414ffaa874aec",
+      "solution_exists": true,
+      "export_error": null,
+      "export_aliases": {},
+      "repair_aliases": {}
+     },
+     "audit": {
+      "status": "unknown",
+      "reason": "business_unverified",
+      "fired": false,
+      "violations": [],
+      "unknown_evidence": [
+       {
+        "detail": "no registered business auditor"
+       }
+      ],
+      "rejected": []
+     },
+     "score": null,
+     "generation_artifact": "generation_00.json",
+     "generation_reused": true,
+     "execution_reused": false
+    }
+   ],
+   "controller_trace": [],
+   "deterministic_transforms": 0,
+   "failed_deterministic_transforms": 0,
+   "generation_artifacts": [
+    {
+     "path": "generation_00.json",
+     "reused": true
+    }
+   ],
+   "llm_calls": 1,
+   "new_llm_calls": 0,
+   "api_attempts": 1,
+   "retry_accounting_complete": false,
+   "usage": [
+    {
+     "prompt_tokens": 1384,
+     "total_tokens": 16161,
+     "completion_tokens": 14777,
+     "prompt_tokens_details": null,
+     "completion_tokens_details": {
+      "reasoning_tokens": 12804
+     }
+    }
+   ],
+   "prompt_tokens": 1384,
+   "completion_tokens": 14777,
+   "total_tokens": 16161,
+   "reasoning_tokens": 12804,
+   "llm_latency_s": 142.885,
+   "new_llm_latency_s": 0,
+   "candidate_evaluations": 1,
+   "solver_runs": 1,
+   "reused_candidate_evaluations": 0,
+   "dag": {
+    "nodes": [
+     {
+      "node_id": "root",
+      "candidate_hash": "d0e6fc4b6c1ae43c1b24b2c656f06797373e2c3acdb6605668c40b56f704ae52",
+      "parent_id": null,
+      "action": "seed",
+      "binding_sha256": null,
+      "binding_status": "unvalidated",
+      "execution": {
+       "exec_status": "ok",
+       "return_code": 0,
+       "solver_status": "optimal",
+       "objective": 210124.0,
+       "stderr_tail": "",
+       "wall_s": 0.3,
+       "stdout_artifact": "stdout.txt",
+       "stderr_artifact": "stderr.txt",
+       "code_sha256": "d0e6fc4b6c1ae43c1b24b2c656f06797373e2c3acdb6605668c40b56f704ae52",
+       "instrumented_sha256": "dada9d0d367727e5ca4b1618af88b59eb281a7207a97fe353f5414ffaa874aec",
+       "solution_exists": true,
+       "export_error": null,
+       "export_aliases": {},
+       "repair_aliases": {},
+       "solution": {
+        "export": {
+         "complete": true,
+         "error": null
+        },
+        "objective": 210124.0,
+        "schema_version": "industryor.solution.v1",
+        "solution_count": 4,
+        "solver_status": "optimal",
+        "variable_types": {
+         "a_I40_1": "INTEGER",
+         "a_I40_2": "INTEGER",
+         "a_I40_3": "INTEGER",
+         "a_I40_4": "INTEGER",
+         "a_I40_5": "INTEGER",
+         "a_I40_6": "INTEGER",
+         "a_I40_7": "INTEGER",
+         "a_I40_8": "INTEGER",
+         "a_I60_1": "INTEGER",
+         "a_I60_2": "INTEGER",
+         "a_I60_3": "INTEGER",
+         "a_I60_4": "INTEGER",
+         "a_I60_5": "INTEGER",
+         "a_I60_6": "INTEGER",
+         "a_I60_7": "INTEGER",
+         "a_I60_8": "INTEGER",
+         "a_II40_1": "INTEGER",
+         "a_II40_2": "INTEGER",
+         "a_II40_3": "INTEGER",
+         "a_II40_4": "INTEGER",
+         "a_II40_5": "INTEGER",
+         "a_II40_6": "INTEGER",
+         "a_II40_7": "INTEGER",
+         "a_II40_8": "INTEGER",
+         "a_II60_1": "INTEGER",
+         "a_II60_2": "INTEGER",
+         "a_II60_3": "INTEGER",
+         "a_II60_4": "INTEGER",
+         "a_II60_5": "INTEGER",
+         "a_II60_6": "INTEGER",
+         "a_II60_7": "INTEGER",
+         "a_II60_8": "INTEGER",
+         "b_I40_1": "INTEGER",
+         "b_I40_2": "INTEGER",
+         "b_I40_3": "INTEGER",
+         "b_I40_4": "INTEGER",
+         "b_I40_5": "INTEGER",
+         "b_I40_6": "INTEGER",
+         "b_I40_7": "INTEGER",
+         "b_I40_8": "INTEGER",
+         "b_I60_1": "INTEGER",
+         "b_I60_2": "INTEGER",
+         "b_I60_3": "INTEGER",
+         "b_I60_4": "INTEGER",
+         "b_I60_5": "INTEGER",
+         "b_I60_6": "INTEGER",
+         "b_I60_7": "INTEGER",
+         "b_I60_8": "INTEGER",
+         "b_II40_1": "INTEGER",
+         "b_II40_2": "INTEGER",
+         "b_II40_3": "INTEGER",
+         "b_II40_4": "INTEGER",
+         "b_II40_5": "INTEGER",
+         "b_II40_6": "INTEGER",
+         "b_II40_7": "INTEGER",
+         "b_II40_8": "INTEGER",
+         "b_II60_1": "INTEGER",
+         "b_II60_2": "INTEGER",
+         "b_II60_3": "INTEGER",
+         "b_II60_4": "INTEGER",
+         "b_II60_5": "INTEGER",
+         "b_II60_6": "INTEGER",
+         "b_II60_7": "INTEGER",
+         "b_II60_8": "INTEGER",
+         "back_II_1": "CONTINUOUS",
+         "back_II_2": "CONTINUOUS",
+         "back_II_3": "CONTINUOUS",
+         "back_II_4": "CONTINUOUS",
+         "back_II_5": "CONTINUOUS",
+         "back_II_6": "CONTINUOUS",
+         "back_II_7": "CONTINUOUS",
+         "back_II_8": "CONTINUOUS",
+         "back_I_1": "CONTINUOUS",
+         "back_I_2": "CONTINUOUS",
+         "back_I_3": "CONTINUOUS",
+         "back_I_4": "CONTINUOUS",
+         "back_I_5": "CONTINUOUS",
+         "back_I_6": "CONTINUOUS",
+         "back_I_7": "CONTINUOUS",
+         "back_I_8": "CONTINUOUS",
+         "inv_II_1": "CONTINUOUS",
+         "inv_II_2": "CONTINUOUS",
+         "inv_II_3": "CONTINUOUS",
+         "inv_II_4": "CONTINUOUS",
+         "inv_II_5": "CONTINUOUS",
+         "inv_II_6": "CONTINUOUS",
+         "inv_II_7": "CONTINUOUS",
+         "inv_II_8": "CONTINUOUS",
+         "inv_I_1": "CONTINUOUS",
+         "inv_I_2": "CONTINUOUS",
+         "inv_I_3": "CONTINUOUS",
+         "inv_I_4": "CONTINUOUS",
+         "inv_I_5": "CONTINUOUS",
+         "inv_I_6": "CONTINUOUS",
+         "inv_I_7": "CONTINUOUS",
+         "inv_I_8": "CONTINUOUS",
+         "x_train_1": "INTEGER",
+         "x_train_2": "INTEGER",
+         "x_train_3": "INTEGER",
+         "x_train_4": "INTEGER",
+         "x_train_5": "INTEGER",
+         "x_train_6": "INTEGER",
+         "x_train_7": "INTEGER"
+        },
+        "variables": {
+         "a_I40_1": 0.0,
+         "a_I40_2": 0.0,
+         "a_I40_3": 26.0,
+         "a_I40_4": 0.0,
+         "a_I40_5": 0.0,
+         "a_I40_6": 0.0,
+         "a_I40_7": 0.0,
+         "a_I40_8": 0.0,
+         "a_I60_1": 17.0,
+         "a_I60_2": 16.0,
+         "a_I60_3": 3.0,
+         "a_I60_4": 0.0,
+         "a_I60_5": 0.0,
+         "a_I60_6": 0.0,
+         "a_I60_7": 0.0,
+         "a_I60_8": 0.0,
+         "a_II40_1": 0.0,
+         "a_II40_2": 0.0,
+         "a_II40_3": 0.0,
+         "a_II40_4": 0.0,
+         "a_II40_5": 0.0,
+         "a_II40_6": 0.0,
+         "a_II40_7": 0.0,
+         "a_II40_8": 0.0,
+         "a_II60_1": 17.0,
+         "a_II60_2": 4.0,
+         "a_II60_3": 7.0,
+         "a_II60_4": 0.0,
+         "a_II60_5": 0.0,
+         "a_II60_6": 0.0,
+         "a_II60_7": 0.0,
+         "a_II60_8": 0.0,
+         "b_I40_1": 0.0,
+         "b_I40_2": 0.0,
+         "b_I40_3": 0.0,
+         "b_I40_4": 30.0,
+         "b_I40_5": 60.0,
+         "b_I40_6": 40.0,
+         "b_I40_7": 30.0,
+         "b_I40_8": 50.0,
+         "b_I60_1": 0.0,
+         "b_I60_2": 0.0,
+         "b_I60_3": -0.0,
+         "b_I60_4": -0.0,
+         "b_I60_5": -0.0,
+         "b_I60_6": -0.0,
+         "b_I60_7": -0.0,
+         "b_I60_8": -0.0,
+         "b_II40_1": 0.0,
+         "b_II40_2": 0.0,
+         "b_II40_3": 48.0,
+         "b_II40_4": 60.0,
+         "b_II40_5": 30.0,
+         "b_II40_6": 50.0,
+         "b_II40_7": 60.0,
+         "b_II40_8": 40.0,
+         "b_II60_1": 0.0,
+         "b_II60_2": 0.0,
+         "b_II60_3": -0.0,
+         "b_II60_4": -0.0,
+         "b_II60_5": -0.0,
+         "b_II60_6": -0.0,
+         "b_II60_7": -0.0,
+         "b_II60_8": -0.0,
+         "back_II_1": 0.0,
+         "back_II_2": 5640.0,
+         "back_II_3": 0.0,
+         "back_II_4": 0.0,
+         "back_II_5": 0.0,
+         "back_II_6": 0.0,
+         "back_II_7": 0.0,
+         "back_II_8": 0.0,
+         "back_I_1": 0.0,
+         "back_I_2": 200.0000000000002,
+         "back_I_3": 0.0,
+         "back_I_4": 0.0,
+         "back_I_5": 0.0,
+         "back_I_6": 0.0,
+         "back_I_7": 0.0,
+         "back_I_8": 0.0,
+         "inv_II_1": 120.0,
+         "inv_II_2": -5640.0,
+         "inv_II_3": 0.0,
+         "inv_II_4": 3600.0,
+         "inv_II_5": 0.0,
+         "inv_II_6": 0.0,
+         "inv_II_7": 2400.0,
+         "inv_II_8": 0.0,
+         "inv_I_1": 200.0,
+         "inv_I_2": -200.0,
+         "inv_I_3": 0.0,
+         "inv_I_4": 0.0,
+         "inv_I_5": 8000.0,
+         "inv_I_6": 8000.0,
+         "inv_I_7": 0.0,
+         "inv_I_8": 0.0,
+         "x_train_1": 16.0,
+         "x_train_2": 14.0,
+         "x_train_3": 0.0,
+         "x_train_4": -0.0,
+         "x_train_5": -0.0,
+         "x_train_6": -0.0,
+         "x_train_7": -0.0
+        }
+       }
+      },
+      "business_audit": {
+       "business_correct": false
+      },
+      "solver_runs": 0,
+      "llm_calls": 0,
+      "done": true,
+      "children": [
+       "r0"
+      ],
+      "depth": 0,
+      "snapshot": "from pyscipopt import Model, quicksum\nimport json\n\n# Data\ndemand_I = [10000, 10000, 12000, 12000, 16000, 16000, 20000, 20000]\ndemand_II = [6000, 7200, 8400, 10800, 10800, 12000, 12000, 12000]\n\nn_weeks = 8\nn_train_weeks = 7  # training can start weeks 1-7\ninitial_workers = 50\ntrainees_per_trainer = 3\ntotal_new_workers = 50\n\nrate_I = 10   # kg/h\nrate_II = 6   # kg/h\nhours_normal = 40\nhours_ot = 60\n\nwage_orig_40 = 360\nwage_orig_60 = 540\nwage_new_40 = 240\nwage_new_60 = 540\nwage_trainee = 120\nwage_trainer = 360\n\npenalty_I = 0.5\npenalty_II = 0.6\n\nm = Model()\nm.hideOutput()\nm.setRealParam(\"limits/time\", 570)\n\n# Decision variables\n# x_train[t]: number of skilled workers starting training in week t+1 (0-indexed t=0..6)\nx_train = [m.addVar(vtype=\"I\", lb=0, name=f\"x_train_{t+1}\") for t in range(n_train_weeks)]\n\n# Original skilled workers (wage 360/540)\na_I40 = [m.addVar(vtype=\"I\", lb=0, name=f\"a_I40_{t+1}\") for t in range(n_weeks)]\na_II40 = [m.addVar(vtype=\"I\", lb=0, name=f\"a_II40_{t+1}\") for t in range(n_weeks)]\na_I60 = [m.addVar(vtype=\"I\", lb=0, name=f\"a_I60_{t+1}\") for t in range(n_weeks)]\na_II60 = [m.addVar(vtype=\"I\", lb=0, name=f\"a_II60_{t+1}\") for t in range(n_weeks)]\n\n# Newly trained workers (wage 240/540)\nb_I40 = [m.addVar(vtype=\"I\", lb=0, name=f\"b_I40_{t+1}\") for t in range(n_weeks)]\nb_II40 = [m.addVar(vtype=\"I\", lb=0, name=f\"b_II40_{t+1}\") for t in range(n_weeks)]\nb_I60 = [m.addVar(vtype=\"I\", lb=0, name=f\"b_I60_{t+1}\") for t in range(n_weeks)]\nb_II60 = [m.addVar(vtype=\"I\", lb=0, name=f\"b_II60_{t+1}\") for t in range(n_weeks)]\n\n# Inventory (can be negative = backlog)\ninv_I = [m.addVar(vtype=\"C\", lb=-m.infinity(), name=f\"inv_I_{t+1}\") for t in range(n_weeks)]\ninv_II = [m.addVar(vtype=\"C\", lb=-m.infinity(), name=f\"inv_II_{t+1}\") for t in range(n_weeks)]\n\n# Backlog (non-negative)\nback_I = [m.addVar(vtype=\"C\", lb=0, name=f\"back_I_{t+1}\") for t in range(n_weeks)]\nback_II = [m.addVar(vtype=\"C\", lb=0, name=f\"back_II_{t+1}\") for t in range(n_weeks)]\n\n# Helper: x_train indexed by 0-based week, 0 if out of range\ndef xt0(t):\n    if t < 0 or t >= n_train_weeks:\n        return 0\n    return x_train[t]\n\n# Constraints\n\n# 1. Original workers: production + training <= 50\nfor t in range(n_weeks):\n    m.addCons(\n        a_I40[t] + a_II40[t] + a_I60[t] + a_II60[t] + xt0(t) + xt0(t - 1) <= initial_workers,\n        name=f\"orig_avail_{t+1}\"\n    )\n\n# 2. New workers: production <= those who have finished training\nfor t in range(n_weeks):\n    # Training started in 0-based week s is available starting week s+2\n    # In week t: available if s+2 <= t, i.e., s <= t-2\n    new_avail = 0\n    for s in range(0, min(t - 1, n_train_weeks)):\n        new_avail += trainees_per_trainer * x_train[s]\n    m.addCons(\n        b_I40[t] + b_II40[t] + b_I60[t] + b_II60[t] <= new_avail,\n        name=f\"new_avail_{t+1}\"\n    )\n\n# 3. Total new workers trained >= 50\nm.addCons(\n    quicksum(trainees_per_trainer * x_train[t] for t in range(n_train_weeks)) >= total_new_workers,\n    name=\"total_training\"\n)\n\n# 4. Inventory balance\nfor t in range(n_weeks):\n    prod_I = rate_I * hours_normal * (a_I40[t] + b_I40[t]) + rate_I * hours_ot * (a_I60[t] + b_I60[t])\n    prod_II = rate_II * hours_normal * (a_II40[t] + b_II40[t]) + rate_II * hours_ot * (a_II60[t] + b_II60[t])\n    if t == 0:\n        m.addCons(inv_I[t] == prod_I - demand_I[t], name=f\"inv_I_{t+1}\")\n        m.addCons(inv_II[t] == prod_II - demand_II[t], name=f\"inv_II_{t+1}\")\n    else:\n        m.addCons(inv_I[t] == inv_I[t - 1] + prod_I - demand_I[t], name=f\"inv_I_{t+1}\")\n        m.addCons(inv_II[t] == inv_II[t - 1] + prod_II - demand_II[t], name=f\"inv_II_{t+1}\")\n\n# 5. Backlog linearization\nfor t in range(n_weeks):\n    m.addCons(back_I[t] >= -inv_I[t], name=f\"back_I_{t+1}\")\n    m.addCons(back_II[t] >= -inv_II[t], name=f\"back_II_{t+1}\")\n\n# 6. All demand met by end of week 8\nm.addCons(inv_I[n_weeks - 1] >= 0, name=\"final_inv_I\")\nm.addCons(inv_II[n_weeks - 1] >= 0, name=\"final_inv_II\")\n\n# Objective: minimize total cost\ncost_terms = []\nfor t in range(n_weeks):\n    # Original workers production wages\n    cost_terms.append(wage_orig_40 * (a_I40[t] + a_II40[t]))\n    cost_terms.append(wage_orig_60 * (a_I60[t] + a_II60[t]))\n    # New workers production wages\n    cost_terms.append(wage_new_40 * (b_I40[t] + b_II40[t]))\n    cost_terms.append(wage_new_60 * (b_I60[t] + b_II60[t]))\n    # Training wages (skilled trainer + 3 trainees per group)\n    train_cost = (wage_trainer + trainees_per_trainer * wage_trainee) * (xt0(t) + xt0(t - 1))\n    cost_terms.append(train_cost)\n    # Late delivery penalty\n    cost_terms.append(penalty_I * back_I[t])\n    cost_terms.append(penalty_II * back_II[t])\n\nm.setObjective(quicksum(cost_terms), \"minimize\")\n\nm.optimize()\n\nst = m.getStatus()\nprint(f\"status: {st}\")\nif m.getNSols() > 0:\n    print(f\"objective: {m.getObjVal()}\")",
+      "candidate_kind": "pyscipopt_code",
+      "stop_reason": null
+     },
+     {
+      "node_id": "r0",
+      "candidate_hash": "d0e6fc4b6c1ae43c1b24b2c656f06797373e2c3acdb6605668c40b56f704ae52",
+      "parent_id": "root",
+      "action": "initial",
+      "binding_sha256": null,
+      "binding_status": "unvalidated",
+      "execution": {
+       "exec_status": "ok",
+       "return_code": 0,
+       "solver_status": "optimal",
+       "objective": 210124.0,
+       "stderr_tail": "",
+       "wall_s": 0.3,
+       "stdout_artifact": "stdout.txt",
+       "stderr_artifact": "stderr.txt",
+       "code_sha256": "d0e6fc4b6c1ae43c1b24b2c656f06797373e2c3acdb6605668c40b56f704ae52",
+       "instrumented_sha256": "dada9d0d367727e5ca4b1618af88b59eb281a7207a97fe353f5414ffaa874aec",
+       "solution_exists": true,
+       "export_error": null,
+       "export_aliases": {},
+       "repair_aliases": {},
+       "solution": {
+        "export": {
+         "complete": true,
+         "error": null
+        },
+        "objective": 210124.0,
+        "schema_version": "industryor.solution.v1",
+        "solution_count": 4,
+        "solver_status": "optimal",
+        "variable_types": {
+         "a_I40_1": "INTEGER",
+         "a_I40_2": "INTEGER",
+         "a_I40_3": "INTEGER",
+         "a_I40_4": "INTEGER",
+         "a_I40_5": "INTEGER",
+         "a_I40_6": "INTEGER",
+         "a_I40_7": "INTEGER",
+         "a_I40_8": "INTEGER",
+         "a_I60_1": "INTEGER",
+         "a_I60_2": "INTEGER",
+         "a_I60_3": "INTEGER",
+         "a_I60_4": "INTEGER",
+         "a_I60_5": "INTEGER",
+         "a_I60_6": "INTEGER",
+         "a_I60_7": "INTEGER",
+         "a_I60_8": "INTEGER",
+         "a_II40_1": "INTEGER",
+         "a_II40_2": "INTEGER",
+         "a_II40_3": "INTEGER",
+         "a_II40_4": "INTEGER",
+         "a_II40_5": "INTEGER",
+         "a_II40_6": "INTEGER",
+         "a_II40_7": "INTEGER",
+         "a_II40_8": "INTEGER",
+         "a_II60_1": "INTEGER",
+         "a_II60_2": "INTEGER",
+         "a_II60_3": "INTEGER",
+         "a_II60_4": "INTEGER",
+         "a_II60_5": "INTEGER",
+         "a_II60_6": "INTEGER",
+         "a_II60_7": "INTEGER",
+         "a_II60_8": "INTEGER",
+         "b_I40_1": "INTEGER",
+         "b_I40_2": "INTEGER",
+         "b_I40_3": "INTEGER",
+         "b_I40_4": "INTEGER",
+         "b_I40_5": "INTEGER",
+         "b_I40_6": "INTEGER",
+         "b_I40_7": "INTEGER",
+         "b_I40_8": "INTEGER",
+         "b_I60_1": "INTEGER",
+         "b_I60_2": "INTEGER",
+         "b_I60_3": "INTEGER",
+         "b_I60_4": "INTEGER",
+         "b_I60_5": "INTEGER",
+         "b_I60_6": "INTEGER",
+         "b_I60_7": "INTEGER",
+         "b_I60_8": "INTEGER",
+         "b_II40_1": "INTEGER",
+         "b_II40_2": "INTEGER",
+         "b_II40_3": "INTEGER",
+         "b_II40_4": "INTEGER",
+         "b_II40_5": "INTEGER",
+         "b_II40_6": "INTEGER",
+         "b_II40_7": "INTEGER",
+         "b_II40_8": "INTEGER",
+         "b_II60_1": "INTEGER",
+         "b_II60_2": "INTEGER",
+         "b_II60_3": "INTEGER",
+         "b_II60_4": "INTEGER",
+         "b_II60_5": "INTEGER",
+         "b_II60_6": "INTEGER",
+         "b_II60_7": "INTEGER",
+         "b_II60_8": "INTEGER",
+         "back_II_1": "CONTINUOUS",
+         "back_II_2": "CONTINUOUS",
+         "back_II_3": "CONTINUOUS",
+         "back_II_4": "CONTINUOUS",
+         "back_II_5": "CONTINUOUS",
+         "back_II_6": "CONTINUOUS",
+         "back_II_7": "CONTINUOUS",
+         "back_II_8": "CONTINUOUS",
+         "back_I_1": "CONTINUOUS",
+         "back_I_2": "CONTINUOUS",
+         "back_I_3": "CONTINUOUS",
+         "back_I_4": "CONTINUOUS",
+         "back_I_5": "CONTINUOUS",
+         "back_I_6": "CONTINUOUS",
+         "back_I_7": "CONTINUOUS",
+         "back_I_8": "CONTINUOUS",
+         "inv_II_1": "CONTINUOUS",
+         "inv_II_2": "CONTINUOUS",
+         "inv_II_3": "CONTINUOUS",
+         "inv_II_4": "CONTINUOUS",
+         "inv_II_5": "CONTINUOUS",
+         "inv_II_6": "CONTINUOUS",
+         "inv_II_7": "CONTINUOUS",
+         "inv_II_8": "CONTINUOUS",
+         "inv_I_1": "CONTINUOUS",
+         "inv_I_2": "CONTINUOUS",
+         "inv_I_3": "CONTINUOUS",
+         "inv_I_4": "CONTINUOUS",
+         "inv_I_5": "CONTINUOUS",
+         "inv_I_6": "CONTINUOUS",
+         "inv_I_7": "CONTINUOUS",
+         "inv_I_8": "CONTINUOUS",
+         "x_train_1": "INTEGER",
+         "x_train_2": "INTEGER",
+         "x_train_3": "INTEGER",
+         "x_train_4": "INTEGER",
+         "x_train_5": "INTEGER",
+         "x_train_6": "INTEGER",
+         "x_train_7": "INTEGER"
+        },
+        "variables": {
+         "a_I40_1": 0.0,
+         "a_I40_2": 0.0,
+         "a_I40_3": 26.0,
+         "a_I40_4": 0.0,
+         "a_I40_5": 0.0,
+         "a_I40_6": 0.0,
+         "a_I40_7": 0.0,
+         "a_I40_8": 0.0,
+         "a_I60_1": 17.0,
+         "a_I60_2": 16.0,
+         "a_I60_3": 3.0,
+         "a_I60_4": 0.0,
+         "a_I60_5": 0.0,
+         "a_I60_6": 0.0,
+         "a_I60_7": 0.0,
+         "a_I60_8": 0.0,
+         "a_II40_1": 0.0,
+         "a_II40_2": 0.0,
+         "a_II40_3": 0.0,
+         "a_II40_4": 0.0,
+         "a_II40_5": 0.0,
+         "a_II40_6": 0.0,
+         "a_II40_7": 0.0,
+         "a_II40_8": 0.0,
+         "a_II60_1": 17.0,
+         "a_II60_2": 4.0,
+         "a_II60_3": 7.0,
+         "a_II60_4": 0.0,
+         "a_II60_5": 0.0,
+         "a_II60_6": 0.0,
+         "a_II60_7": 0.0,
+         "a_II60_8": 0.0,
+         "b_I40_1": 0.0,
+         "b_I40_2": 0.0,
+         "b_I40_3": 0.0,
+         "b_I40_4": 30.0,
+         "b_I40_5": 60.0,
+         "b_I40_6": 40.0,
+         "b_I40_7": 30.0,
+         "b_I40_8": 50.0,
+         "b_I60_1": 0.0,
+         "b_I60_2": 0.0,
+         "b_I60_3": -0.0,
+         "b_I60_4": -0.0,
+         "b_I60_5": -0.0,
+         "b_I60_6": -0.0,
+         "b_I60_7": -0.0,
+         "b_I60_8": -0.0,
+         "b_II40_1": 0.0,
+         "b_II40_2": 0.0,
+         "b_II40_3": 48.0,
+         "b_II40_4": 60.0,
+         "b_II40_5": 30.0,
+         "b_II40_6": 50.0,
+         "b_II40_7": 60.0,
+         "b_II40_8": 40.0,
+         "b_II60_1": 0.0,
+         "b_II60_2": 0.0,
+         "b_II60_3": -0.0,
+         "b_II60_4": -0.0,
+         "b_II60_5": -0.0,
+         "b_II60_6": -0.0,
+         "b_II60_7": -0.0,
+         "b_II60_8": -0.0,
+         "back_II_1": 0.0,
+         "back_II_2": 5640.0,
+         "back_II_3": 0.0,
+         "back_II_4": 0.0,
+         "back_II_5": 0.0,
+         "back_II_6": 0.0,
+         "back_II_7": 0.0,
+         "back_II_8": 0.0,
+         "back_I_1": 0.0,
+         "back_I_2": 200.0000000000002,
+         "back_I_3": 0.0,
+         "back_I_4": 0.0,
+         "back_I_5": 0.0,
+         "back_I_6": 0.0,
+         "back_I_7": 0.0,
+         "back_I_8": 0.0,
+         "inv_II_1": 120.0,
+         "inv_II_2": -5640.0,
+         "inv_II_3": 0.0,
+         "inv_II_4": 3600.0,
+         "inv_II_5": 0.0,
+         "inv_II_6": 0.0,
+         "inv_II_7": 2400.0,
+         "inv_II_8": 0.0,
+         "inv_I_1": 200.0,
+         "inv_I_2": -200.0,
+         "inv_I_3": 0.0,
+         "inv_I_4": 0.0,
+         "inv_I_5": 8000.0,
+         "inv_I_6": 8000.0,
+         "inv_I_7": 0.0,
+         "inv_I_8": 0.0,
+         "x_train_1": 16.0,
+         "x_train_2": 14.0,
+         "x_train_3": 0.0,
+         "x_train_4": -0.0,
+         "x_train_5": -0.0,
+         "x_train_6": -0.0,
+         "x_train_7": -0.0
+        }
+       }
+      },
+      "business_audit": {
+       "business_correct": false
+      },
+      "solver_runs": 1,
+      "llm_calls": 0,
+      "done": true,
+      "children": [],
+      "depth": 1,
+      "snapshot": "from pyscipopt import Model, quicksum\nimport json\n\n# Data\ndemand_I = [10000, 10000, 12000, 12000, 16000, 16000, 20000, 20000]\ndemand_II = [6000, 7200, 8400, 10800, 10800, 12000, 12000, 12000]\n\nn_weeks = 8\nn_train_weeks = 7  # training can start weeks 1-7\ninitial_workers = 50\ntrainees_per_trainer = 3\ntotal_new_workers = 50\n\nrate_I = 10   # kg/h\nrate_II = 6   # kg/h\nhours_normal = 40\nhours_ot = 60\n\nwage_orig_40 = 360\nwage_orig_60 = 540\nwage_new_40 = 240\nwage_new_60 = 540\nwage_trainee = 120\nwage_trainer = 360\n\npenalty_I = 0.5\npenalty_II = 0.6\n\nm = Model()\nm.hideOutput()\nm.setRealParam(\"limits/time\", 570)\n\n# Decision variables\n# x_train[t]: number of skilled workers starting training in week t+1 (0-indexed t=0..6)\nx_train = [m.addVar(vtype=\"I\", lb=0, name=f\"x_train_{t+1}\") for t in range(n_train_weeks)]\n\n# Original skilled workers (wage 360/540)\na_I40 = [m.addVar(vtype=\"I\", lb=0, name=f\"a_I40_{t+1}\") for t in range(n_weeks)]\na_II40 = [m.addVar(vtype=\"I\", lb=0, name=f\"a_II40_{t+1}\") for t in range(n_weeks)]\na_I60 = [m.addVar(vtype=\"I\", lb=0, name=f\"a_I60_{t+1}\") for t in range(n_weeks)]\na_II60 = [m.addVar(vtype=\"I\", lb=0, name=f\"a_II60_{t+1}\") for t in range(n_weeks)]\n\n# Newly trained workers (wage 240/540)\nb_I40 = [m.addVar(vtype=\"I\", lb=0, name=f\"b_I40_{t+1}\") for t in range(n_weeks)]\nb_II40 = [m.addVar(vtype=\"I\", lb=0, name=f\"b_II40_{t+1}\") for t in range(n_weeks)]\nb_I60 = [m.addVar(vtype=\"I\", lb=0, name=f\"b_I60_{t+1}\") for t in range(n_weeks)]\nb_II60 = [m.addVar(vtype=\"I\", lb=0, name=f\"b_II60_{t+1}\") for t in range(n_weeks)]\n\n# Inventory (can be negative = backlog)\ninv_I = [m.addVar(vtype=\"C\", lb=-m.infinity(), name=f\"inv_I_{t+1}\") for t in range(n_weeks)]\ninv_II = [m.addVar(vtype=\"C\", lb=-m.infinity(), name=f\"inv_II_{t+1}\") for t in range(n_weeks)]\n\n# Backlog (non-negative)\nback_I = [m.addVar(vtype=\"C\", lb=0, name=f\"back_I_{t+1}\") for t in range(n_weeks)]\nback_II = [m.addVar(vtype=\"C\", lb=0, name=f\"back_II_{t+1}\") for t in range(n_weeks)]\n\n# Helper: x_train indexed by 0-based week, 0 if out of range\ndef xt0(t):\n    if t < 0 or t >= n_train_weeks:\n        return 0\n    return x_train[t]\n\n# Constraints\n\n# 1. Original workers: production + training <= 50\nfor t in range(n_weeks):\n    m.addCons(\n        a_I40[t] + a_II40[t] + a_I60[t] + a_II60[t] + xt0(t) + xt0(t - 1) <= initial_workers,\n        name=f\"orig_avail_{t+1}\"\n    )\n\n# 2. New workers: production <= those who have finished training\nfor t in range(n_weeks):\n    # Training started in 0-based week s is available starting week s+2\n    # In week t: available if s+2 <= t, i.e., s <= t-2\n    new_avail = 0\n    for s in range(0, min(t - 1, n_train_weeks)):\n        new_avail += trainees_per_trainer * x_train[s]\n    m.addCons(\n        b_I40[t] + b_II40[t] + b_I60[t] + b_II60[t] <= new_avail,\n        name=f\"new_avail_{t+1}\"\n    )\n\n# 3. Total new workers trained >= 50\nm.addCons(\n    quicksum(trainees_per_trainer * x_train[t] for t in range(n_train_weeks)) >= total_new_workers,\n    name=\"total_training\"\n)\n\n# 4. Inventory balance\nfor t in range(n_weeks):\n    prod_I = rate_I * hours_normal * (a_I40[t] + b_I40[t]) + rate_I * hours_ot * (a_I60[t] + b_I60[t])\n    prod_II = rate_II * hours_normal * (a_II40[t] + b_II40[t]) + rate_II * hours_ot * (a_II60[t] + b_II60[t])\n    if t == 0:\n        m.addCons(inv_I[t] == prod_I - demand_I[t], name=f\"inv_I_{t+1}\")\n        m.addCons(inv_II[t] == prod_II - demand_II[t], name=f\"inv_II_{t+1}\")\n    else:\n        m.addCons(inv_I[t] == inv_I[t - 1] + prod_I - demand_I[t], name=f\"inv_I_{t+1}\")\n        m.addCons(inv_II[t] == inv_II[t - 1] + prod_II - demand_II[t], name=f\"inv_II_{t+1}\")\n\n# 5. Backlog linearization\nfor t in range(n_weeks):\n    m.addCons(back_I[t] >= -inv_I[t], name=f\"back_I_{t+1}\")\n    m.addCons(back_II[t] >= -inv_II[t], name=f\"back_II_{t+1}\")\n\n# 6. All demand met by end of week 8\nm.addCons(inv_I[n_weeks - 1] >= 0, name=\"final_inv_I\")\nm.addCons(inv_II[n_weeks - 1] >= 0, name=\"final_inv_II\")\n\n# Objective: minimize total cost\ncost_terms = []\nfor t in range(n_weeks):\n    # Original workers production wages\n    cost_terms.append(wage_orig_40 * (a_I40[t] + a_II40[t]))\n    cost_terms.append(wage_orig_60 * (a_I60[t] + a_II60[t]))\n    # New workers production wages\n    cost_terms.append(wage_new_40 * (b_I40[t] + b_II40[t]))\n    cost_terms.append(wage_new_60 * (b_I60[t] + b_II60[t]))\n    # Training wages (skilled trainer + 3 trainees per group)\n    train_cost = (wage_trainer + trainees_per_trainer * wage_trainee) * (xt0(t) + xt0(t - 1))\n    cost_terms.append(train_cost)\n    # Late delivery penalty\n    cost_terms.append(penalty_I * back_I[t])\n    cost_terms.append(penalty_II * back_II[t])\n\nm.setObjective(quicksum(cost_terms), \"minimize\")\n\nm.optimize()\n\nst = m.getStatus()\nprint(f\"status: {st}\")\nif m.getNSols() > 0:\n    print(f\"objective: {m.getObjVal()}\")",
+      "candidate_kind": "pyscipopt_code",
+      "stop_reason": "business_unverified"
+     }
+    ],
+    "events": [
+     {
+      "type": "candidate_evaluated",
+      "node_id": "r0",
+      "parent_id": "root",
+      "action": "initial",
+      "candidate_hash": "d0e6fc4b6c1ae43c1b24b2c656f06797373e2c3acdb6605668c40b56f704ae52"
+     },
+     {
+      "type": "done",
+      "node_id": "r0",
+      "reason": "business_unverified"
+     }
+    ],
+    "accepted_node_ids": [],
+    "negative_node_ids": [
+     "root",
+     "r0"
+    ],
+    "leaf_node_ids": [
+     "r0"
+    ],
+    "finished": true,
+    "score_based_pruning": false,
+    "total_solver_runs": 1,
+    "total_llm_calls": 0
+   },
+   "final_solution": {
+    "export": {
+     "complete": true,
+     "error": null
+    },
+    "objective": 210124.0,
+    "schema_version": "industryor.solution.v1",
+    "solution_count": 4,
+    "solver_status": "optimal",
+    "variable_types": {
+     "a_I40_1": "INTEGER",
+     "a_I40_2": "INTEGER",
+     "a_I40_3": "INTEGER",
+     "a_I40_4": "INTEGER",
+     "a_I40_5": "INTEGER",
+     "a_I40_6": "INTEGER",
+     "a_I40_7": "INTEGER",
+     "a_I40_8": "INTEGER",
+     "a_I60_1": "INTEGER",
+     "a_I60_2": "INTEGER",
+     "a_I60_3": "INTEGER",
+     "a_I60_4": "INTEGER",
+     "a_I60_5": "INTEGER",
+     "a_I60_6": "INTEGER",
+     "a_I60_7": "INTEGER",
+     "a_I60_8": "INTEGER",
+     "a_II40_1": "INTEGER",
+     "a_II40_2": "INTEGER",
+     "a_II40_3": "INTEGER",
+     "a_II40_4": "INTEGER",
+     "a_II40_5": "INTEGER",
+     "a_II40_6": "INTEGER",
+     "a_II40_7": "INTEGER",
+     "a_II40_8": "INTEGER",
+     "a_II60_1": "INTEGER",
+     "a_II60_2": "INTEGER",
+     "a_II60_3": "INTEGER",
+     "a_II60_4": "INTEGER",
+     "a_II60_5": "INTEGER",
+     "a_II60_6": "INTEGER",
+     "a_II60_7": "INTEGER",
+     "a_II60_8": "INTEGER",
+     "b_I40_1": "INTEGER",
+     "b_I40_2": "INTEGER",
+     "b_I40_3": "INTEGER",
+     "b_I40_4": "INTEGER",
+     "b_I40_5": "INTEGER",
+     "b_I40_6": "INTEGER",
+     "b_I40_7": "INTEGER",
+     "b_I40_8": "INTEGER",
+     "b_I60_1": "INTEGER",
+     "b_I60_2": "INTEGER",
+     "b_I60_3": "INTEGER",
+     "b_I60_4": "INTEGER",
+     "b_I60_5": "INTEGER",
+     "b_I60_6": "INTEGER",
+     "b_I60_7": "INTEGER",
+     "b_I60_8": "INTEGER",
+     "b_II40_1": "INTEGER",
+     "b_II40_2": "INTEGER",
+     "b_II40_3": "INTEGER",
+     "b_II40_4": "INTEGER",
+     "b_II40_5": "INTEGER",
+     "b_II40_6": "INTEGER",
+     "b_II40_7": "INTEGER",
+     "b_II40_8": "INTEGER",
+     "b_II60_1": "INTEGER",
+     "b_II60_2": "INTEGER",
+     "b_II60_3": "INTEGER",
+     "b_II60_4": "INTEGER",
+     "b_II60_5": "INTEGER",
+     "b_II60_6": "INTEGER",
+     "b_II60_7": "INTEGER",
+     "b_II60_8": "INTEGER",
+     "back_II_1": "CONTINUOUS",
+     "back_II_2": "CONTINUOUS",
+     "back_II_3": "CONTINUOUS",
+     "back_II_4": "CONTINUOUS",
+     "back_II_5": "CONTINUOUS",
+     "back_II_6": "CONTINUOUS",
+     "back_II_7": "CONTINUOUS",
+     "back_II_8": "CONTINUOUS",
+     "back_I_1": "CONTINUOUS",
+     "back_I_2": "CONTINUOUS",
+     "back_I_3": "CONTINUOUS",
+     "back_I_4": "CONTINUOUS",
+     "back_I_5": "CONTINUOUS",
+     "back_I_6": "CONTINUOUS",
+     "back_I_7": "CONTINUOUS",
+     "back_I_8": "CONTINUOUS",
+     "inv_II_1": "CONTINUOUS",
+     "inv_II_2": "CONTINUOUS",
+     "inv_II_3": "CONTINUOUS",
+     "inv_II_4": "CONTINUOUS",
+     "inv_II_5": "CONTINUOUS",
+     "inv_II_6": "CONTINUOUS",
+     "inv_II_7": "CONTINUOUS",
+     "inv_II_8": "CONTINUOUS",
+     "inv_I_1": "CONTINUOUS",
+     "inv_I_2": "CONTINUOUS",
+     "inv_I_3": "CONTINUOUS",
+     "inv_I_4": "CONTINUOUS",
+     "inv_I_5": "CONTINUOUS",
+     "inv_I_6": "CONTINUOUS",
+     "inv_I_7": "CONTINUOUS",
+     "inv_I_8": "CONTINUOUS",
+     "x_train_1": "INTEGER",
+     "x_train_2": "INTEGER",
+     "x_train_3": "INTEGER",
+     "x_train_4": "INTEGER",
+     "x_train_5": "INTEGER",
+     "x_train_6": "INTEGER",
+     "x_train_7": "INTEGER"
+    },
+    "variables": {
+     "a_I40_1": 0.0,
+     "a_I40_2": 0.0,
+     "a_I40_3": 26.0,
+     "a_I40_4": 0.0,
+     "a_I40_5": 0.0,
+     "a_I40_6": 0.0,
+     "a_I40_7": 0.0,
+     "a_I40_8": 0.0,
+     "a_I60_1": 17.0,
+     "a_I60_2": 16.0,
+     "a_I60_3": 3.0,
+     "a_I60_4": 0.0,
+     "a_I60_5": 0.0,
+     "a_I60_6": 0.0,
+     "a_I60_7": 0.0,
+     "a_I60_8": 0.0,
+     "a_II40_1": 0.0,
+     "a_II40_2": 0.0,
+     "a_II40_3": 0.0,
+     "a_II40_4": 0.0,
+     "a_II40_5": 0.0,
+     "a_II40_6": 0.0,
+     "a_II40_7": 0.0,
+     "a_II40_8": 0.0,
+     "a_II60_1": 17.0,
+     "a_II60_2": 4.0,
+     "a_II60_3": 7.0,
+     "a_II60_4": 0.0,
+     "a_II60_5": 0.0,
+     "a_II60_6": 0.0,
+     "a_II60_7": 0.0,
+     "a_II60_8": 0.0,
+     "b_I40_1": 0.0,
+     "b_I40_2": 0.0,
+     "b_I40_3": 0.0,
+     "b_I40_4": 30.0,
+     "b_I40_5": 60.0,
+     "b_I40_6": 40.0,
+     "b_I40_7": 30.0,
+     "b_I40_8": 50.0,
+     "b_I60_1": 0.0,
+     "b_I60_2": 0.0,
+     "b_I60_3": -0.0,
+     "b_I60_4": -0.0,
+     "b_I60_5": -0.0,
+     "b_I60_6": -0.0,
+     "b_I60_7": -0.0,
+     "b_I60_8": -0.0,
+     "b_II40_1": 0.0,
+     "b_II40_2": 0.0,
+     "b_II40_3": 48.0,
+     "b_II40_4": 60.0,
+     "b_II40_5": 30.0,
+     "b_II40_6": 50.0,
+     "b_II40_7": 60.0,
+     "b_II40_8": 40.0,
+     "b_II60_1": 0.0,
+     "b_II60_2": 0.0,
+     "b_II60_3": -0.0,
+     "b_II60_4": -0.0,
+     "b_II60_5": -0.0,
+     "b_II60_6": -0.0,
+     "b_II60_7": -0.0,
+     "b_II60_8": -0.0,
+     "back_II_1": 0.0,
+     "back_II_2": 5640.0,
+     "back_II_3": 0.0,
+     "back_II_4": 0.0,
+     "back_II_5": 0.0,
+     "back_II_6": 0.0,
+     "back_II_7": 0.0,
+     "back_II_8": 0.0,
+     "back_I_1": 0.0,
+     "back_I_2": 200.0000000000002,
+     "back_I_3": 0.0,
+     "back_I_4": 0.0,
+     "back_I_5": 0.0,
+     "back_I_6": 0.0,
+     "back_I_7": 0.0,
+     "back_I_8": 0.0,
+     "inv_II_1": 120.0,
+     "inv_II_2": -5640.0,
+     "inv_II_3": 0.0,
+     "inv_II_4": 3600.0,
+     "inv_II_5": 0.0,
+     "inv_II_6": 0.0,
+     "inv_II_7": 2400.0,
+     "inv_II_8": 0.0,
+     "inv_I_1": 200.0,
+     "inv_I_2": -200.0,
+     "inv_I_3": 0.0,
+     "inv_I_4": 0.0,
+     "inv_I_5": 8000.0,
+     "inv_I_6": 8000.0,
+     "inv_I_7": 0.0,
+     "inv_I_8": 0.0,
+     "x_train_1": 16.0,
+     "x_train_2": 14.0,
+     "x_train_3": 0.0,
+     "x_train_4": -0.0,
+     "x_train_5": -0.0,
+     "x_train_6": -0.0,
+     "x_train_7": -0.0
+    }
+   },
+   "baseline_z2": {
+    "objective": 196216.0,
+    "exec_status": "ok",
+    "solver_status": "optimal",
+    "round": 1,
+    "exec_s": null,
+    "llm_latency_s": 181.7,
+    "completion_tokens": 16451,
+    "reasoning_tokens": 15205
+   },
+   "objective_match_delta_vs_z2": 0,
+   "public_answer_hidden_from_prompt": true,
+   "failure_class": "objective_mismatch_or_suboptimal"
+  },
+  {
+   "id": 8,
+   "run_config": {
+    "llm": {
+     "model": "Qwen3_8-27B",
+     "base_url": "https://10.46.124.101/service-large-50-1789958762589/llm/v1"
+    },
+    "dataset": "data/industryor/IndustryOR.json",
+    "dataset_sha256": "5b889e49d9aa64ae5b368bc80a05ee71a1daf20d126f54efc6207c98f9095f36",
+    "protocol_sha256": "cd474489d0c0e6217b8814e324e60927ec11589be1481e7ffdeaac124cc8102c",
+    "ids": [
+     1,
+     8,
+     19,
+     20
+    ],
+    "max_rounds": 3,
+    "temperature": 0.6,
+    "reasoning_effort": "medium",
+    "max_tokens": 32768,
+    "prior_sha256": "0fa52ef51cf1563070c08b3941e15bff9d4d97bae600639ab64e695f16aaee80",
+    "seed": null,
+    "metric": "absolute_error_at_most_0.1",
+    "independent_business_audit_ids": [
+     4,
+     8,
+     9,
+     19,
+     20,
+     21,
+     25,
+     48
+    ],
+    "implementation_sha256": {
+     "scripts/industryor_full_pipeline.py": "56f6a568ecaa0f8a9c8757b3c67abae800734151fc59cdd2d08f09ab6eccd75a",
+     "scripts/industryor_scoped_loop.py": "674cc868e00b9e1db03e14e992bcd9a55a5e8e4322772fbe3b15c62f647e892a",
+     "scripts/industryor_next_stage.py": "8daba1b593668d890978337f7215a520c363e3027eb2e34587ef4738fa20d7b7",
+     "scripts/m1_pilot.py": "f687c8f2daa2c55eb22a22a91dba169c1440acab9b6a23f8d0f079cbb8c7509a",
+     "scripts/m3_industryor.py": "f6b7e6a81942c5f5c920a35807db6ac6df738f35f91069a90f8c7bc8fcc79d13",
+     "scripts/scoped_ir_e2e.py": "c58f6d077b1e8d83fb2cb5e3eb3dda4a5a7df24820956c7889cc1931f7ca219f",
+     "scripts/scoped_ir_gate.py": "d9d87048c893ab4f43916d5bd0f5e6342af1e5bf69f03a119927325a2e973311",
+     "ora_agent/llm.py": "eb2b6f6ebc36813149d52ea1a109addd51cb02419c53f7427de7c7a712d7aa18",
+     "ora_agent/evidence_dag.py": "2dc36dd3b07703fe50212daf96412f9add723294ab722ee5d06c6edc63c5867a",
+     "ora_agent/repair_controller.py": "af265fcb4c4eadfc6146492b8bef0083b4693462bde68c6abafc81c8e5ee6e34",
+     "ora_agent/acceptance.py": "e073cffd12efd27ebdb65f6bf34b66a0e3235855a2f1adb52db92dfbb2c5084d",
+     "ora_agent/scoped_ir.py": "2156c0b58a4265fa34d90340eea5fc47ad3d4d7d8e32fc6770fb247804d13942",
+     "ora_agent/scoped_assets.py": "38f760d4b5eb330589e4dd2180f8d48f3545f79fbd09c6eedf70aaceaf44fcfa"
+    }
+   },
+   "status": "completed",
+   "prompt_sha256": "a5650bf84d090d101231a10740f75cb13401a2932849e9aac99e5aa9e0cefda1",
+   "initial_code": "from pyscipopt import Model, quicksum\nimport json\n\n# Data: hours[worker][task]\n# Workers: I, II, III, IV, V (0-4); Tasks: A, B, C, D (0-3)\nhours = [\n    [9, 4, 3, 7],   # Worker I\n    [4, 6, 5, 6],   # Worker II\n    [5, 4, 7, 5],   # Worker III\n    [7, 5, 2, 3],   # Worker IV\n    [10, 6, 7, 4],  # Worker V\n]\n\nn_workers = 5\nn_tasks = 4\n\nm = Model()\nm.hideOutput()\nm.setRealParam(\"limits/time\", 570)\n\n# Decision variables: x[i][j] = 1 if worker i is assigned to task j\nx = {}\nfor i in range(n_workers):\n    for j in range(n_tasks):\n        x[i, j] = m.addVar(vtype=\"B\", name=f\"x_{i}_{j}\")\n\n# Each task is assigned to exactly one worker\nfor j in range(n_tasks):\n    m.addCons(quicksum(x[i, j] for i in range(n_workers)) == 1, name=f\"task_{j}\")\n\n# Each worker is assigned to at most one task\nfor i in range(n_workers):\n    m.addCons(quicksum(x[i, j] for j in range(n_tasks)) <= 1, name=f\"worker_{i}\")\n\n# Objective: minimize total working hours\nm.setObjective(quicksum(hours[i][j] * x[i, j] for i in range(n_workers) for j in range(n_tasks)), \"minimize\")\n\nm.optimize()\n\nst = m.getStatus()\nprint(f\"status: {st}\")\nif m.getNSols() > 0:\n    print(f\"objective: {m.getObjVal()}\")\n    for i in range(n_workers):\n        for j in range(n_tasks):\n            if m.getVal(x[i, j]) > 0.5:\n                print(f\"Worker {['I','II','III','IV','V'][i]} -> Task {['A','B','C','D'][j]} ({hours[i][j]} hours)\")",
+   "final_code": "from pyscipopt import Model, quicksum\nimport json\n\n# Data: hours[worker][task]\n# Workers: I, II, III, IV, V (0-4); Tasks: A, B, C, D (0-3)\nhours = [\n    [9, 4, 3, 7],   # Worker I\n    [4, 6, 5, 6],   # Worker II\n    [5, 4, 7, 5],   # Worker III\n    [7, 5, 2, 3],   # Worker IV\n    [10, 6, 7, 4],  # Worker V\n]\n\nn_workers = 5\nn_tasks = 4\n\nm = Model()\nm.hideOutput()\nm.setRealParam(\"limits/time\", 570)\n\n# Decision variables: x[i][j] = 1 if worker i is assigned to task j\nx = {}\nfor i in range(n_workers):\n    for j in range(n_tasks):\n        x[i, j] = m.addVar(vtype=\"B\", name=f\"x_{i}_{j}\")\n\n# Each task is assigned to exactly one worker\nfor j in range(n_tasks):\n    m.addCons(quicksum(x[i, j] for i in range(n_workers)) == 1, name=f\"task_{j}\")\n\n# Each worker is assigned to at most one task\nfor i in range(n_workers):\n    m.addCons(quicksum(x[i, j] for j in range(n_tasks)) <= 1, name=f\"worker_{i}\")\n\n# Objective: minimize total working hours\nm.setObjective(quicksum(hours[i][j] * x[i, j] for i in range(n_workers) for j in range(n_tasks)), \"minimize\")\n\nm.optimize()\n\nst = m.getStatus()\nprint(f\"status: {st}\")\nif m.getNSols() > 0:\n    print(f\"objective: {m.getObjVal()}\")\n    for i in range(n_workers):\n        for j in range(n_tasks):\n            if m.getVal(x[i, j]) > 0.5:\n                print(f\"Worker {['I','II','III','IV','V'][i]} -> Task {['A','B','C','D'][j]} ({hours[i][j]} hours)\")",
+   "initial_score": {
+    "schema_version": "industryor.business_audit.v1",
+    "problem_id": 8,
+    "audit_status": "complete",
+    "business_correct": true,
+    "variable_audit": {
+     "x_0_0": {
+      "present": true,
+      "value": 0.0,
+      "domain": "binary",
+      "passed": true
+     },
+     "x_0_1": {
+      "present": true,
+      "value": 1.0,
+      "domain": "binary",
+      "passed": true
+     },
+     "x_0_2": {
+      "present": true,
+      "value": 0.0,
+      "domain": "binary",
+      "passed": true
+     },
+     "x_0_3": {
+      "present": true,
+      "value": 0.0,
+      "domain": "binary",
+      "passed": true
+     },
+     "x_1_0": {
+      "present": true,
+      "value": 1.0,
+      "domain": "binary",
+      "passed": true
+     },
+     "x_1_1": {
+      "present": true,
+      "value": 0.0,
+      "domain": "binary",
+      "passed": true
+     },
+     "x_1_2": {
+      "present": true,
+      "value": 0.0,
+      "domain": "binary",
+      "passed": true
+     },
+     "x_1_3": {
+      "present": true,
+      "value": 0.0,
+      "domain": "binary",
+      "passed": true
+     },
+     "x_2_0": {
+      "present": true,
+      "value": 0.0,
+      "domain": "binary",
+      "passed": true
+     },
+     "x_2_1": {
+      "present": true,
+      "value": 0.0,
+      "domain": "binary",
+      "passed": true
+     },
+     "x_2_2": {
+      "present": true,
+      "value": 0.0,
+      "domain": "binary",
+      "passed": true
+     },
+     "x_2_3": {
+      "present": true,
+      "value": 0.0,
+      "domain": "binary",
+      "passed": true
+     },
+     "x_3_0": {
+      "present": true,
+      "value": 0.0,
+      "domain": "binary",
+      "passed": true
+     },
+     "x_3_1": {
+      "present": true,
+      "value": 0.0,
+      "domain": "binary",
+      "passed": true
+     },
+     "x_3_2": {
+      "present": true,
+      "value": 1.0,
+      "domain": "binary",
+      "passed": true
+     },
+     "x_3_3": {
+      "present": true,
+      "value": 0.0,
+      "domain": "binary",
+      "passed": true
+     },
+     "x_4_0": {
+      "present": true,
+      "value": 0.0,
+      "domain": "binary",
+      "passed": true
+     },
+     "x_4_1": {
+      "present": true,
+      "value": 0.0,
+      "domain": "binary",
+      "passed": true
+     },
+     "x_4_2": {
+      "present": true,
+      "value": 0.0,
+      "domain": "binary",
+      "passed": true
+     },
+     "x_4_3": {
+      "present": true,
+      "value": 1.0,
+      "domain": "binary",
+      "passed": true
+     }
+    },
+    "constraint_checks": [
+     {
+      "rule": "task_0_exactly_once",
+      "passed": true,
+      "observed": 1.0,
+      "expected": "= 1"
+     },
+     {
+      "rule": "task_1_exactly_once",
+      "passed": true,
+      "observed": 1.0,
+      "expected": "= 1"
+     },
+     {
+      "rule": "task_2_exactly_once",
+      "passed": true,
+      "observed": 1.0,
+      "expected": "= 1"
+     },
+     {
+      "rule": "task_3_exactly_once",
+      "passed": true,
+      "observed": 1.0,
+      "expected": "= 1"
+     },
+     {
+      "rule": "worker_0_at_most_once",
+      "passed": true,
+      "observed": 1.0,
+      "expected": "<= 1"
+     },
+     {
+      "rule": "worker_1_at_most_once",
+      "passed": true,
+      "observed": 1.0,
+      "expected": "<= 1"
+     },
+     {
+      "rule": "worker_2_at_most_once",
+      "passed": true,
+      "observed": 0.0,
+      "expected": "<= 1"
+     },
+     {
+      "rule": "worker_3_at_most_once",
+      "passed": true,
+      "observed": 1.0,
+      "expected": "<= 1"
+     },
+     {
+      "rule": "worker_4_at_most_once",
+      "passed": true,
+      "observed": 1.0,
+      "expected": "<= 1"
+     },
+     {
+      "rule": "exactly_four_workers",
+      "passed": true,
+      "observed": 4.0,
+      "expected": "= 4"
+     }
+    ],
+    "violations": [],
+    "execution_checks": {
+     "export_complete": true,
+     "solver_optimal": true,
+     "has_solution": true,
+     "model_objective_finite": true
+    },
+    "business_objective": 14.0,
+    "model_objective_consistent": true,
+    "optimality": "proven_optimal",
+    "blocking_reasons": []
+   },
+   "final_score": {
+    "schema_version": "industryor.business_audit.v1",
+    "problem_id": 8,
+    "audit_status": "complete",
+    "business_correct": true,
+    "variable_audit": {
+     "x_0_0": {
+      "present": true,
+      "value": 0.0,
+      "domain": "binary",
+      "passed": true
+     },
+     "x_0_1": {
+      "present": true,
+      "value": 1.0,
+      "domain": "binary",
+      "passed": true
+     },
+     "x_0_2": {
+      "present": true,
+      "value": 0.0,
+      "domain": "binary",
+      "passed": true
+     },
+     "x_0_3": {
+      "present": true,
+      "value": 0.0,
+      "domain": "binary",
+      "passed": true
+     },
+     "x_1_0": {
+      "present": true,
+      "value": 1.0,
+      "domain": "binary",
+      "passed": true
+     },
+     "x_1_1": {
+      "present": true,
+      "value": 0.0,
+      "domain": "binary",
+      "passed": true
+     },
+     "x_1_2": {
+      "present": true,
+      "value": 0.0,
+      "domain": "binary",
+      "passed": true
+     },
+     "x_1_3": {
+      "present": true,
+      "value": 0.0,
+      "domain": "binary",
+      "passed": true
+     },
+     "x_2_0": {
+      "present": true,
+      "value": 0.0,
+      "domain": "binary",
+      "passed": true
+     },
+     "x_2_1": {
+      "present": true,
+      "value": 0.0,
+      "domain": "binary",
+      "passed": true
+     },
+     "x_2_2": {
+      "present": true,
+      "value": 0.0,
+      "domain": "binary",
+      "passed": true
+     },
+     "x_2_3": {
+      "present": true,
+      "value": 0.0,
+      "domain": "binary",
+      "passed": true
+     },
+     "x_3_0": {
+      "present": true,
+      "value": 0.0,
+      "domain": "binary",
+      "passed": true
+     },
+     "x_3_1": {
+      "present": true,
+      "value": 0.0,
+      "domain": "binary",
+      "passed": true
+     },
+     "x_3_2": {
+      "present": true,
+      "value": 1.0,
+      "domain": "binary",
+      "passed": true
+     },
+     "x_3_3": {
+      "present": true,
+      "value": 0.0,
+      "domain": "binary",
+      "passed": true
+     },
+     "x_4_0": {
+      "present": true,
+      "value": 0.0,
+      "domain": "binary",
+      "passed": true
+     },
+     "x_4_1": {
+      "present": true,
+      "value": 0.0,
+      "domain": "binary",
+      "passed": true
+     },
+     "x_4_2": {
+      "present": true,
+      "value": 0.0,
+      "domain": "binary",
+      "passed": true
+     },
+     "x_4_3": {
+      "present": true,
+      "value": 1.0,
+      "domain": "binary",
+      "passed": true
+     }
+    },
+    "constraint_checks": [
+     {
+      "rule": "task_0_exactly_once",
+      "passed": true,
+      "observed": 1.0,
+      "expected": "= 1"
+     },
+     {
+      "rule": "task_1_exactly_once",
+      "passed": true,
+      "observed": 1.0,
+      "expected": "= 1"
+     },
+     {
+      "rule": "task_2_exactly_once",
+      "passed": true,
+      "observed": 1.0,
+      "expected": "= 1"
+     },
+     {
+      "rule": "task_3_exactly_once",
+      "passed": true,
+      "observed": 1.0,
+      "expected": "= 1"
+     },
+     {
+      "rule": "worker_0_at_most_once",
+      "passed": true,
+      "observed": 1.0,
+      "expected": "<= 1"
+     },
+     {
+      "rule": "worker_1_at_most_once",
+      "passed": true,
+      "observed": 1.0,
+      "expected": "<= 1"
+     },
+     {
+      "rule": "worker_2_at_most_once",
+      "passed": true,
+      "observed": 0.0,
+      "expected": "<= 1"
+     },
+     {
+      "rule": "worker_3_at_most_once",
+      "passed": true,
+      "observed": 1.0,
+      "expected": "<= 1"
+     },
+     {
+      "rule": "worker_4_at_most_once",
+      "passed": true,
+      "observed": 1.0,
+      "expected": "<= 1"
+     },
+     {
+      "rule": "exactly_four_workers",
+      "passed": true,
+      "observed": 4.0,
+      "expected": "= 4"
+     }
+    ],
+    "violations": [],
+    "execution_checks": {
+     "export_complete": true,
+     "solver_optimal": true,
+     "has_solution": true,
+     "model_objective_finite": true
+    },
+    "business_objective": 14.0,
+    "model_objective_consistent": true,
+    "optimality": "proven_optimal",
+    "blocking_reasons": []
+   },
+   "initial_objective": 14.0,
+   "initial_objective_match_abs_0_1": true,
+   "objective": 14.0,
+   "printed_objective": 14.0,
+   "reference": 14.0,
+   "objective_match_abs_0_1": true,
+   "objective_error": 0.0,
+   "objective_below_reference": false,
+   "objective_above_reference": false,
+   "exec_status": "ok",
+   "solver_status": "optimal",
+   "accepted": false,
+   "accepted_round": null,
+   "accepted_but_business_incorrect": false,
+   "harmed_win": false,
+   "business_unverified": false,
+   "stop_reason": "baseline_fallback",
+   "history": [
+    {
+     "round": 0,
+     "action": "initial",
+     "code": "from pyscipopt import Model, quicksum\nimport json\n\n# Data: hours[worker][task]\n# Workers: I, II, III, IV, V (0-4); Tasks: A, B, C, D (0-3)\nhours = [\n    [9, 4, 3, 7],   # Worker I\n    [4, 6, 5, 6],   # Worker II\n    [5, 4, 7, 5],   # Worker III\n    [7, 5, 2, 3],   # Worker IV\n    [10, 6, 7, 4],  # Worker V\n]\n\nn_workers = 5\nn_tasks = 4\n\nm = Model()\nm.hideOutput()\nm.setRealParam(\"limits/time\", 570)\n\n# Decision variables: x[i][j] = 1 if worker i is assigned to task j\nx = {}\nfor i in range(n_workers):\n    for j in range(n_tasks):\n        x[i, j] = m.addVar(vtype=\"B\", name=f\"x_{i}_{j}\")\n\n# Each task is assigned to exactly one worker\nfor j in range(n_tasks):\n    m.addCons(quicksum(x[i, j] for i in range(n_workers)) == 1, name=f\"task_{j}\")\n\n# Each worker is assigned to at most one task\nfor i in range(n_workers):\n    m.addCons(quicksum(x[i, j] for j in range(n_tasks)) <= 1, name=f\"worker_{i}\")\n\n# Objective: minimize total working hours\nm.setObjective(quicksum(hours[i][j] * x[i, j] for i in range(n_workers) for j in range(n_tasks)), \"minimize\")\n\nm.optimize()\n\nst = m.getStatus()\nprint(f\"status: {st}\")\nif m.getNSols() > 0:\n    print(f\"objective: {m.getObjVal()}\")\n    for i in range(n_workers):\n        for j in range(n_tasks):\n            if m.getVal(x[i, j]) > 0.5:\n                print(f\"Worker {['I','II','III','IV','V'][i]} -> Task {['A','B','C','D'][j]} ({hours[i][j]} hours)\")",
+     "record": {
+      "exec_status": "ok",
+      "return_code": 0,
+      "solver_status": "optimal",
+      "objective": 14.0,
+      "stderr_tail": "",
+      "wall_s": 0.2,
+      "stdout_artifact": "stdout.txt",
+      "stderr_artifact": "stderr.txt",
+      "code_sha256": "e17f8b342cfcd27fb5551dc2d817cd5f000ec6dd63d6251defdf3e291090fbc7",
+      "instrumented_sha256": "f47aa64c135ee4664ba1ecd2626aed9207505df5428c95f4525b693cb0ab92b8",
+      "solution_exists": true,
+      "export_error": null,
+      "export_aliases": {},
+      "repair_aliases": {}
+     },
+     "audit": {
+      "status": "ok",
+      "fired": false,
+      "violations": [],
+      "unknown_evidence": [],
+      "rejected": []
+     },
+     "score": {
+      "schema_version": "industryor.business_audit.v1",
+      "problem_id": 8,
+      "audit_status": "complete",
+      "business_correct": true,
+      "variable_audit": {
+       "x_0_0": {
+        "present": true,
+        "value": 0.0,
+        "domain": "binary",
+        "passed": true
+       },
+       "x_0_1": {
+        "present": true,
+        "value": 1.0,
+        "domain": "binary",
+        "passed": true
+       },
+       "x_0_2": {
+        "present": true,
+        "value": 0.0,
+        "domain": "binary",
+        "passed": true
+       },
+       "x_0_3": {
+        "present": true,
+        "value": 0.0,
+        "domain": "binary",
+        "passed": true
+       },
+       "x_1_0": {
+        "present": true,
+        "value": 1.0,
+        "domain": "binary",
+        "passed": true
+       },
+       "x_1_1": {
+        "present": true,
+        "value": 0.0,
+        "domain": "binary",
+        "passed": true
+       },
+       "x_1_2": {
+        "present": true,
+        "value": 0.0,
+        "domain": "binary",
+        "passed": true
+       },
+       "x_1_3": {
+        "present": true,
+        "value": 0.0,
+        "domain": "binary",
+        "passed": true
+       },
+       "x_2_0": {
+        "present": true,
+        "value": 0.0,
+        "domain": "binary",
+        "passed": true
+       },
+       "x_2_1": {
+        "present": true,
+        "value": 0.0,
+        "domain": "binary",
+        "passed": true
+       },
+       "x_2_2": {
+        "present": true,
+        "value": 0.0,
+        "domain": "binary",
+        "passed": true
+       },
+       "x_2_3": {
+        "present": true,
+        "value": 0.0,
+        "domain": "binary",
+        "passed": true
+       },
+       "x_3_0": {
+        "present": true,
+        "value": 0.0,
+        "domain": "binary",
+        "passed": true
+       },
+       "x_3_1": {
+        "present": true,
+        "value": 0.0,
+        "domain": "binary",
+        "passed": true
+       },
+       "x_3_2": {
+        "present": true,
+        "value": 1.0,
+        "domain": "binary",
+        "passed": true
+       },
+       "x_3_3": {
+        "present": true,
+        "value": 0.0,
+        "domain": "binary",
+        "passed": true
+       },
+       "x_4_0": {
+        "present": true,
+        "value": 0.0,
+        "domain": "binary",
+        "passed": true
+       },
+       "x_4_1": {
+        "present": true,
+        "value": 0.0,
+        "domain": "binary",
+        "passed": true
+       },
+       "x_4_2": {
+        "present": true,
+        "value": 0.0,
+        "domain": "binary",
+        "passed": true
+       },
+       "x_4_3": {
+        "present": true,
+        "value": 1.0,
+        "domain": "binary",
+        "passed": true
+       }
+      },
+      "constraint_checks": [
+       {
+        "rule": "task_0_exactly_once",
+        "passed": true,
+        "observed": 1.0,
+        "expected": "= 1"
+       },
+       {
+        "rule": "task_1_exactly_once",
+        "passed": true,
+        "observed": 1.0,
+        "expected": "= 1"
+       },
+       {
+        "rule": "task_2_exactly_once",
+        "passed": true,
+        "observed": 1.0,
+        "expected": "= 1"
+       },
+       {
+        "rule": "task_3_exactly_once",
+        "passed": true,
+        "observed": 1.0,
+        "expected": "= 1"
+       },
+       {
+        "rule": "worker_0_at_most_once",
+        "passed": true,
+        "observed": 1.0,
+        "expected": "<= 1"
+       },
+       {
+        "rule": "worker_1_at_most_once",
+        "passed": true,
+        "observed": 1.0,
+        "expected": "<= 1"
+       },
+       {
+        "rule": "worker_2_at_most_once",
+        "passed": true,
+        "observed": 0.0,
+        "expected": "<= 1"
+       },
+       {
+        "rule": "worker_3_at_most_once",
+        "passed": true,
+        "observed": 1.0,
+        "expected": "<= 1"
+       },
+       {
+        "rule": "worker_4_at_most_once",
+        "passed": true,
+        "observed": 1.0,
+        "expected": "<= 1"
+       },
+       {
+        "rule": "exactly_four_workers",
+        "passed": true,
+        "observed": 4.0,
+        "expected": "= 4"
+       }
+      ],
+      "violations": [],
+      "execution_checks": {
+       "export_complete": true,
+       "solver_optimal": true,
+       "has_solution": true,
+       "model_objective_finite": true
+      },
+      "business_objective": 14.0,
+      "model_objective_consistent": true,
+      "optimality": "proven_optimal",
+      "blocking_reasons": []
+     },
+     "generation_artifact": "generation_00.json",
+     "generation_reused": true,
+     "execution_reused": false
+    }
+   ],
+   "controller_trace": [],
+   "deterministic_transforms": 0,
+   "failed_deterministic_transforms": 0,
+   "generation_artifacts": [
+    {
+     "path": "generation_00.json",
+     "reused": true
+    }
+   ],
+   "llm_calls": 1,
+   "new_llm_calls": 0,
+   "api_attempts": 1,
+   "retry_accounting_complete": false,
+   "usage": [
+    {
+     "prompt_tokens": 1082,
+     "total_tokens": 2013,
+     "completion_tokens": 931,
+     "prompt_tokens_details": null,
+     "completion_tokens_details": {
+      "reasoning_tokens": 411
+     }
+    }
+   ],
+   "prompt_tokens": 1082,
+   "completion_tokens": 931,
+   "total_tokens": 2013,
+   "reasoning_tokens": 411,
+   "llm_latency_s": 11.282,
+   "new_llm_latency_s": 0,
+   "candidate_evaluations": 1,
+   "solver_runs": 1,
+   "reused_candidate_evaluations": 0,
+   "dag": {
+    "nodes": [
+     {
+      "node_id": "root",
+      "candidate_hash": "e17f8b342cfcd27fb5551dc2d817cd5f000ec6dd63d6251defdf3e291090fbc7",
+      "parent_id": null,
+      "action": "seed",
+      "binding_sha256": null,
+      "binding_status": "rejected",
+      "execution": {
+       "exec_status": "ok",
+       "return_code": 0,
+       "solver_status": "optimal",
+       "objective": 14.0,
+       "stderr_tail": "",
+       "wall_s": 0.2,
+       "stdout_artifact": "stdout.txt",
+       "stderr_artifact": "stderr.txt",
+       "code_sha256": "e17f8b342cfcd27fb5551dc2d817cd5f000ec6dd63d6251defdf3e291090fbc7",
+       "instrumented_sha256": "f47aa64c135ee4664ba1ecd2626aed9207505df5428c95f4525b693cb0ab92b8",
+       "solution_exists": true,
+       "export_error": null,
+       "export_aliases": {},
+       "repair_aliases": {},
+       "solution": {
+        "export": {
+         "complete": true,
+         "error": null
+        },
+        "objective": 14.0,
+        "schema_version": "industryor.solution.v1",
+        "solution_count": 1,
+        "solver_status": "optimal",
+        "variable_types": {
+         "x_0_0": "BINARY",
+         "x_0_1": "BINARY",
+         "x_0_2": "BINARY",
+         "x_0_3": "BINARY",
+         "x_1_0": "BINARY",
+         "x_1_1": "BINARY",
+         "x_1_2": "BINARY",
+         "x_1_3": "BINARY",
+         "x_2_0": "BINARY",
+         "x_2_1": "BINARY",
+         "x_2_2": "BINARY",
+         "x_2_3": "BINARY",
+         "x_3_0": "BINARY",
+         "x_3_1": "BINARY",
+         "x_3_2": "BINARY",
+         "x_3_3": "BINARY",
+         "x_4_0": "BINARY",
+         "x_4_1": "BINARY",
+         "x_4_2": "BINARY",
+         "x_4_3": "BINARY"
+        },
+        "variables": {
+         "x_0_0": 0.0,
+         "x_0_1": 1.0,
+         "x_0_2": 0.0,
+         "x_0_3": 0.0,
+         "x_1_0": 1.0,
+         "x_1_1": 0.0,
+         "x_1_2": 0.0,
+         "x_1_3": 0.0,
+         "x_2_0": 0.0,
+         "x_2_1": 0.0,
+         "x_2_2": 0.0,
+         "x_2_3": 0.0,
+         "x_3_0": 0.0,
+         "x_3_1": 0.0,
+         "x_3_2": 1.0,
+         "x_3_3": 0.0,
+         "x_4_0": 0.0,
+         "x_4_1": 0.0,
+         "x_4_2": 0.0,
+         "x_4_3": 1.0
+        }
+       }
+      },
+      "business_audit": {
+       "schema_version": "industryor.business_audit.v1",
+       "problem_id": 8,
+       "audit_status": "complete",
+       "business_correct": true,
+       "variable_audit": {
+        "x_0_0": {
+         "present": true,
+         "value": 0.0,
+         "domain": "binary",
+         "passed": true
+        },
+        "x_0_1": {
+         "present": true,
+         "value": 1.0,
+         "domain": "binary",
+         "passed": true
+        },
+        "x_0_2": {
+         "present": true,
+         "value": 0.0,
+         "domain": "binary",
+         "passed": true
+        },
+        "x_0_3": {
+         "present": true,
+         "value": 0.0,
+         "domain": "binary",
+         "passed": true
+        },
+        "x_1_0": {
+         "present": true,
+         "value": 1.0,
+         "domain": "binary",
+         "passed": true
+        },
+        "x_1_1": {
+         "present": true,
+         "value": 0.0,
+         "domain": "binary",
+         "passed": true
+        },
+        "x_1_2": {
+         "present": true,
+         "value": 0.0,
+         "domain": "binary",
+         "passed": true
+        },
+        "x_1_3": {
+         "present": true,
+         "value": 0.0,
+         "domain": "binary",
+         "passed": true
+        },
+        "x_2_0": {
+         "present": true,
+         "value": 0.0,
+         "domain": "binary",
+         "passed": true
+        },
+        "x_2_1": {
+         "present": true,
+         "value": 0.0,
+         "domain": "binary",
+         "passed": true
+        },
+        "x_2_2": {
+         "present": true,
+         "value": 0.0,
+         "domain": "binary",
+         "passed": true
+        },
+        "x_2_3": {
+         "present": true,
+         "value": 0.0,
+         "domain": "binary",
+         "passed": true
+        },
+        "x_3_0": {
+         "present": true,
+         "value": 0.0,
+         "domain": "binary",
+         "passed": true
+        },
+        "x_3_1": {
+         "present": true,
+         "value": 0.0,
+         "domain": "binary",
+         "passed": true
+        },
+        "x_3_2": {
+         "present": true,
+         "value": 1.0,
+         "domain": "binary",
+         "passed": true
+        },
+        "x_3_3": {
+         "present": true,
+         "value": 0.0,
+         "domain": "binary",
+         "passed": true
+        },
+        "x_4_0": {
+         "present": true,
+         "value": 0.0,
+         "domain": "binary",
+         "passed": true
+        },
+        "x_4_1": {
+         "present": true,
+         "value": 0.0,
+         "domain": "binary",
+         "passed": true
+        },
+        "x_4_2": {
+         "present": true,
+         "value": 0.0,
+         "domain": "binary",
+         "passed": true
+        },
+        "x_4_3": {
+         "present": true,
+         "value": 1.0,
+         "domain": "binary",
+         "passed": true
+        }
+       },
+       "constraint_checks": [
+        {
+         "rule": "task_0_exactly_once",
+         "passed": true,
+         "observed": 1.0,
+         "expected": "= 1"
+        },
+        {
+         "rule": "task_1_exactly_once",
+         "passed": true,
+         "observed": 1.0,
+         "expected": "= 1"
+        },
+        {
+         "rule": "task_2_exactly_once",
+         "passed": true,
+         "observed": 1.0,
+         "expected": "= 1"
+        },
+        {
+         "rule": "task_3_exactly_once",
+         "passed": true,
+         "observed": 1.0,
+         "expected": "= 1"
+        },
+        {
+         "rule": "worker_0_at_most_once",
+         "passed": true,
+         "observed": 1.0,
+         "expected": "<= 1"
+        },
+        {
+         "rule": "worker_1_at_most_once",
+         "passed": true,
+         "observed": 1.0,
+         "expected": "<= 1"
+        },
+        {
+         "rule": "worker_2_at_most_once",
+         "passed": true,
+         "observed": 0.0,
+         "expected": "<= 1"
+        },
+        {
+         "rule": "worker_3_at_most_once",
+         "passed": true,
+         "observed": 1.0,
+         "expected": "<= 1"
+        },
+        {
+         "rule": "worker_4_at_most_once",
+         "passed": true,
+         "observed": 1.0,
+         "expected": "<= 1"
+        },
+        {
+         "rule": "exactly_four_workers",
+         "passed": true,
+         "observed": 4.0,
+         "expected": "= 4"
+        }
+       ],
+       "violations": [],
+       "execution_checks": {
+        "export_complete": true,
+        "solver_optimal": true,
+        "has_solution": true,
+        "model_objective_finite": true
+       },
+       "business_objective": 14.0,
+       "model_objective_consistent": true,
+       "optimality": "proven_optimal",
+       "blocking_reasons": []
+      },
+      "solver_runs": 0,
+      "llm_calls": 0,
+      "done": false,
+      "children": [
+       "r0"
+      ],
+      "depth": 0,
+      "snapshot": "from pyscipopt import Model, quicksum\nimport json\n\n# Data: hours[worker][task]\n# Workers: I, II, III, IV, V (0-4); Tasks: A, B, C, D (0-3)\nhours = [\n    [9, 4, 3, 7],   # Worker I\n    [4, 6, 5, 6],   # Worker II\n    [5, 4, 7, 5],   # Worker III\n    [7, 5, 2, 3],   # Worker IV\n    [10, 6, 7, 4],  # Worker V\n]\n\nn_workers = 5\nn_tasks = 4\n\nm = Model()\nm.hideOutput()\nm.setRealParam(\"limits/time\", 570)\n\n# Decision variables: x[i][j] = 1 if worker i is assigned to task j\nx = {}\nfor i in range(n_workers):\n    for j in range(n_tasks):\n        x[i, j] = m.addVar(vtype=\"B\", name=f\"x_{i}_{j}\")\n\n# Each task is assigned to exactly one worker\nfor j in range(n_tasks):\n    m.addCons(quicksum(x[i, j] for i in range(n_workers)) == 1, name=f\"task_{j}\")\n\n# Each worker is assigned to at most one task\nfor i in range(n_workers):\n    m.addCons(quicksum(x[i, j] for j in range(n_tasks)) <= 1, name=f\"worker_{i}\")\n\n# Objective: minimize total working hours\nm.setObjective(quicksum(hours[i][j] * x[i, j] for i in range(n_workers) for j in range(n_tasks)), \"minimize\")\n\nm.optimize()\n\nst = m.getStatus()\nprint(f\"status: {st}\")\nif m.getNSols() > 0:\n    print(f\"objective: {m.getObjVal()}\")\n    for i in range(n_workers):\n        for j in range(n_tasks):\n            if m.getVal(x[i, j]) > 0.5:\n                print(f\"Worker {['I','II','III','IV','V'][i]} -> Task {['A','B','C','D'][j]} ({hours[i][j]} hours)\")",
+      "candidate_kind": "pyscipopt_code",
+      "stop_reason": "rollback_resumed"
+     },
+     {
+      "node_id": "r0",
+      "candidate_hash": "e17f8b342cfcd27fb5551dc2d817cd5f000ec6dd63d6251defdf3e291090fbc7",
+      "parent_id": "root",
+      "action": "initial",
+      "binding_sha256": null,
+      "binding_status": "rejected",
+      "execution": {
+       "exec_status": "ok",
+       "return_code": 0,
+       "solver_status": "optimal",
+       "objective": 14.0,
+       "stderr_tail": "",
+       "wall_s": 0.2,
+       "stdout_artifact": "stdout.txt",
+       "stderr_artifact": "stderr.txt",
+       "code_sha256": "e17f8b342cfcd27fb5551dc2d817cd5f000ec6dd63d6251defdf3e291090fbc7",
+       "instrumented_sha256": "f47aa64c135ee4664ba1ecd2626aed9207505df5428c95f4525b693cb0ab92b8",
+       "solution_exists": true,
+       "export_error": null,
+       "export_aliases": {},
+       "repair_aliases": {},
+       "solution": {
+        "export": {
+         "complete": true,
+         "error": null
+        },
+        "objective": 14.0,
+        "schema_version": "industryor.solution.v1",
+        "solution_count": 1,
+        "solver_status": "optimal",
+        "variable_types": {
+         "x_0_0": "BINARY",
+         "x_0_1": "BINARY",
+         "x_0_2": "BINARY",
+         "x_0_3": "BINARY",
+         "x_1_0": "BINARY",
+         "x_1_1": "BINARY",
+         "x_1_2": "BINARY",
+         "x_1_3": "BINARY",
+         "x_2_0": "BINARY",
+         "x_2_1": "BINARY",
+         "x_2_2": "BINARY",
+         "x_2_3": "BINARY",
+         "x_3_0": "BINARY",
+         "x_3_1": "BINARY",
+         "x_3_2": "BINARY",
+         "x_3_3": "BINARY",
+         "x_4_0": "BINARY",
+         "x_4_1": "BINARY",
+         "x_4_2": "BINARY",
+         "x_4_3": "BINARY"
+        },
+        "variables": {
+         "x_0_0": 0.0,
+         "x_0_1": 1.0,
+         "x_0_2": 0.0,
+         "x_0_3": 0.0,
+         "x_1_0": 1.0,
+         "x_1_1": 0.0,
+         "x_1_2": 0.0,
+         "x_1_3": 0.0,
+         "x_2_0": 0.0,
+         "x_2_1": 0.0,
+         "x_2_2": 0.0,
+         "x_2_3": 0.0,
+         "x_3_0": 0.0,
+         "x_3_1": 0.0,
+         "x_3_2": 1.0,
+         "x_3_3": 0.0,
+         "x_4_0": 0.0,
+         "x_4_1": 0.0,
+         "x_4_2": 0.0,
+         "x_4_3": 1.0
+        }
+       }
+      },
+      "business_audit": {
+       "schema_version": "industryor.business_audit.v1",
+       "problem_id": 8,
+       "audit_status": "complete",
+       "business_correct": true,
+       "variable_audit": {
+        "x_0_0": {
+         "present": true,
+         "value": 0.0,
+         "domain": "binary",
+         "passed": true
+        },
+        "x_0_1": {
+         "present": true,
+         "value": 1.0,
+         "domain": "binary",
+         "passed": true
+        },
+        "x_0_2": {
+         "present": true,
+         "value": 0.0,
+         "domain": "binary",
+         "passed": true
+        },
+        "x_0_3": {
+         "present": true,
+         "value": 0.0,
+         "domain": "binary",
+         "passed": true
+        },
+        "x_1_0": {
+         "present": true,
+         "value": 1.0,
+         "domain": "binary",
+         "passed": true
+        },
+        "x_1_1": {
+         "present": true,
+         "value": 0.0,
+         "domain": "binary",
+         "passed": true
+        },
+        "x_1_2": {
+         "present": true,
+         "value": 0.0,
+         "domain": "binary",
+         "passed": true
+        },
+        "x_1_3": {
+         "present": true,
+         "value": 0.0,
+         "domain": "binary",
+         "passed": true
+        },
+        "x_2_0": {
+         "present": true,
+         "value": 0.0,
+         "domain": "binary",
+         "passed": true
+        },
+        "x_2_1": {
+         "present": true,
+         "value": 0.0,
+         "domain": "binary",
+         "passed": true
+        },
+        "x_2_2": {
+         "present": true,
+         "value": 0.0,
+         "domain": "binary",
+         "passed": true
+        },
+        "x_2_3": {
+         "present": true,
+         "value": 0.0,
+         "domain": "binary",
+         "passed": true
+        },
+        "x_3_0": {
+         "present": true,
+         "value": 0.0,
+         "domain": "binary",
+         "passed": true
+        },
+        "x_3_1": {
+         "present": true,
+         "value": 0.0,
+         "domain": "binary",
+         "passed": true
+        },
+        "x_3_2": {
+         "present": true,
+         "value": 1.0,
+         "domain": "binary",
+         "passed": true
+        },
+        "x_3_3": {
+         "present": true,
+         "value": 0.0,
+         "domain": "binary",
+         "passed": true
+        },
+        "x_4_0": {
+         "present": true,
+         "value": 0.0,
+         "domain": "binary",
+         "passed": true
+        },
+        "x_4_1": {
+         "present": true,
+         "value": 0.0,
+         "domain": "binary",
+         "passed": true
+        },
+        "x_4_2": {
+         "present": true,
+         "value": 0.0,
+         "domain": "binary",
+         "passed": true
+        },
+        "x_4_3": {
+         "present": true,
+         "value": 1.0,
+         "domain": "binary",
+         "passed": true
+        }
+       },
+       "constraint_checks": [
+        {
+         "rule": "task_0_exactly_once",
+         "passed": true,
+         "observed": 1.0,
+         "expected": "= 1"
+        },
+        {
+         "rule": "task_1_exactly_once",
+         "passed": true,
+         "observed": 1.0,
+         "expected": "= 1"
+        },
+        {
+         "rule": "task_2_exactly_once",
+         "passed": true,
+         "observed": 1.0,
+         "expected": "= 1"
+        },
+        {
+         "rule": "task_3_exactly_once",
+         "passed": true,
+         "observed": 1.0,
+         "expected": "= 1"
+        },
+        {
+         "rule": "worker_0_at_most_once",
+         "passed": true,
+         "observed": 1.0,
+         "expected": "<= 1"
+        },
+        {
+         "rule": "worker_1_at_most_once",
+         "passed": true,
+         "observed": 1.0,
+         "expected": "<= 1"
+        },
+        {
+         "rule": "worker_2_at_most_once",
+         "passed": true,
+         "observed": 0.0,
+         "expected": "<= 1"
+        },
+        {
+         "rule": "worker_3_at_most_once",
+         "passed": true,
+         "observed": 1.0,
+         "expected": "<= 1"
+        },
+        {
+         "rule": "worker_4_at_most_once",
+         "passed": true,
+         "observed": 1.0,
+         "expected": "<= 1"
+        },
+        {
+         "rule": "exactly_four_workers",
+         "passed": true,
+         "observed": 4.0,
+         "expected": "= 4"
+        }
+       ],
+       "violations": [],
+       "execution_checks": {
+        "export_complete": true,
+        "solver_optimal": true,
+        "has_solution": true,
+        "model_objective_finite": true
+       },
+       "business_objective": 14.0,
+       "model_objective_consistent": true,
+       "optimality": "proven_optimal",
+       "blocking_reasons": []
+      },
+      "solver_runs": 1,
+      "llm_calls": 0,
+      "done": true,
+      "children": [],
+      "depth": 1,
+      "snapshot": "from pyscipopt import Model, quicksum\nimport json\n\n# Data: hours[worker][task]\n# Workers: I, II, III, IV, V (0-4); Tasks: A, B, C, D (0-3)\nhours = [\n    [9, 4, 3, 7],   # Worker I\n    [4, 6, 5, 6],   # Worker II\n    [5, 4, 7, 5],   # Worker III\n    [7, 5, 2, 3],   # Worker IV\n    [10, 6, 7, 4],  # Worker V\n]\n\nn_workers = 5\nn_tasks = 4\n\nm = Model()\nm.hideOutput()\nm.setRealParam(\"limits/time\", 570)\n\n# Decision variables: x[i][j] = 1 if worker i is assigned to task j\nx = {}\nfor i in range(n_workers):\n    for j in range(n_tasks):\n        x[i, j] = m.addVar(vtype=\"B\", name=f\"x_{i}_{j}\")\n\n# Each task is assigned to exactly one worker\nfor j in range(n_tasks):\n    m.addCons(quicksum(x[i, j] for i in range(n_workers)) == 1, name=f\"task_{j}\")\n\n# Each worker is assigned to at most one task\nfor i in range(n_workers):\n    m.addCons(quicksum(x[i, j] for j in range(n_tasks)) <= 1, name=f\"worker_{i}\")\n\n# Objective: minimize total working hours\nm.setObjective(quicksum(hours[i][j] * x[i, j] for i in range(n_workers) for j in range(n_tasks)), \"minimize\")\n\nm.optimize()\n\nst = m.getStatus()\nprint(f\"status: {st}\")\nif m.getNSols() > 0:\n    print(f\"objective: {m.getObjVal()}\")\n    for i in range(n_workers):\n        for j in range(n_tasks):\n            if m.getVal(x[i, j]) > 0.5:\n                print(f\"Worker {['I','II','III','IV','V'][i]} -> Task {['A','B','C','D'][j]} ({hours[i][j]} hours)\")",
+      "candidate_kind": "pyscipopt_code",
+      "stop_reason": "rollback_rejected_branch"
+     }
+    ],
+    "events": [
+     {
+      "type": "candidate_evaluated",
+      "node_id": "r0",
+      "parent_id": "root",
+      "action": "initial",
+      "candidate_hash": "e17f8b342cfcd27fb5551dc2d817cd5f000ec6dd63d6251defdf3e291090fbc7"
+     },
+     {
+      "type": "done",
+      "node_id": "r0",
+      "reason": "business_audit_complete_no_registered_repair"
+     },
+     {
+      "type": "done",
+      "node_id": "r0",
+      "reason": "rollback_rejected_branch"
+     },
+     {
+      "type": "rollback",
+      "from_node_id": "r0",
+      "to_node_id": "root",
+      "candidate_hash": "e17f8b342cfcd27fb5551dc2d817cd5f000ec6dd63d6251defdf3e291090fbc7",
+      "snapshot_restored": true
+     }
+    ],
+    "accepted_node_ids": [],
+    "negative_node_ids": [
+     "root",
+     "r0"
+    ],
+    "leaf_node_ids": [
+     "r0"
+    ],
+    "finished": true,
+    "score_based_pruning": false,
+    "total_solver_runs": 1,
+    "total_llm_calls": 0
+   },
+   "final_solution": {
+    "export": {
+     "complete": true,
+     "error": null
+    },
+    "objective": 14.0,
+    "schema_version": "industryor.solution.v1",
+    "solution_count": 1,
+    "solver_status": "optimal",
+    "variable_types": {
+     "x_0_0": "BINARY",
+     "x_0_1": "BINARY",
+     "x_0_2": "BINARY",
+     "x_0_3": "BINARY",
+     "x_1_0": "BINARY",
+     "x_1_1": "BINARY",
+     "x_1_2": "BINARY",
+     "x_1_3": "BINARY",
+     "x_2_0": "BINARY",
+     "x_2_1": "BINARY",
+     "x_2_2": "BINARY",
+     "x_2_3": "BINARY",
+     "x_3_0": "BINARY",
+     "x_3_1": "BINARY",
+     "x_3_2": "BINARY",
+     "x_3_3": "BINARY",
+     "x_4_0": "BINARY",
+     "x_4_1": "BINARY",
+     "x_4_2": "BINARY",
+     "x_4_3": "BINARY"
+    },
+    "variables": {
+     "x_0_0": 0.0,
+     "x_0_1": 1.0,
+     "x_0_2": 0.0,
+     "x_0_3": 0.0,
+     "x_1_0": 1.0,
+     "x_1_1": 0.0,
+     "x_1_2": 0.0,
+     "x_1_3": 0.0,
+     "x_2_0": 0.0,
+     "x_2_1": 0.0,
+     "x_2_2": 0.0,
+     "x_2_3": 0.0,
+     "x_3_0": 0.0,
+     "x_3_1": 0.0,
+     "x_3_2": 1.0,
+     "x_3_3": 0.0,
+     "x_4_0": 0.0,
+     "x_4_1": 0.0,
+     "x_4_2": 0.0,
+     "x_4_3": 1.0
+    }
+   },
+   "baseline_z2": {
+    "objective": 14.0,
+    "exec_status": "ok",
+    "solver_status": "optimal",
+    "round": 1,
+    "exec_s": null,
+    "llm_latency_s": 10.8,
+    "completion_tokens": 916,
+    "reasoning_tokens": 464
+   },
+   "objective_match_delta_vs_z2": 0,
+   "public_answer_hidden_from_prompt": true,
+   "failure_class": "business_correct"
+  },
+  {
+   "id": 19,
+   "run_config": {
+    "llm": {
+     "model": "Qwen3_8-27B",
+     "base_url": "https://10.46.124.101/service-large-50-1789958762589/llm/v1"
+    },
+    "dataset": "data/industryor/IndustryOR.json",
+    "dataset_sha256": "5b889e49d9aa64ae5b368bc80a05ee71a1daf20d126f54efc6207c98f9095f36",
+    "protocol_sha256": "cd474489d0c0e6217b8814e324e60927ec11589be1481e7ffdeaac124cc8102c",
+    "ids": [
+     1,
+     8,
+     19,
+     20
+    ],
+    "max_rounds": 3,
+    "temperature": 0.6,
+    "reasoning_effort": "medium",
+    "max_tokens": 32768,
+    "prior_sha256": "0fa52ef51cf1563070c08b3941e15bff9d4d97bae600639ab64e695f16aaee80",
+    "seed": null,
+    "metric": "absolute_error_at_most_0.1",
+    "independent_business_audit_ids": [
+     4,
+     8,
+     9,
+     19,
+     20,
+     21,
+     25,
+     48
+    ],
+    "implementation_sha256": {
+     "scripts/industryor_full_pipeline.py": "56f6a568ecaa0f8a9c8757b3c67abae800734151fc59cdd2d08f09ab6eccd75a",
+     "scripts/industryor_scoped_loop.py": "674cc868e00b9e1db03e14e992bcd9a55a5e8e4322772fbe3b15c62f647e892a",
+     "scripts/industryor_next_stage.py": "8daba1b593668d890978337f7215a520c363e3027eb2e34587ef4738fa20d7b7",
+     "scripts/m1_pilot.py": "f687c8f2daa2c55eb22a22a91dba169c1440acab9b6a23f8d0f079cbb8c7509a",
+     "scripts/m3_industryor.py": "f6b7e6a81942c5f5c920a35807db6ac6df738f35f91069a90f8c7bc8fcc79d13",
+     "scripts/scoped_ir_e2e.py": "c58f6d077b1e8d83fb2cb5e3eb3dda4a5a7df24820956c7889cc1931f7ca219f",
+     "scripts/scoped_ir_gate.py": "d9d87048c893ab4f43916d5bd0f5e6342af1e5bf69f03a119927325a2e973311",
+     "ora_agent/llm.py": "eb2b6f6ebc36813149d52ea1a109addd51cb02419c53f7427de7c7a712d7aa18",
+     "ora_agent/evidence_dag.py": "2dc36dd3b07703fe50212daf96412f9add723294ab722ee5d06c6edc63c5867a",
+     "ora_agent/repair_controller.py": "af265fcb4c4eadfc6146492b8bef0083b4693462bde68c6abafc81c8e5ee6e34",
+     "ora_agent/acceptance.py": "e073cffd12efd27ebdb65f6bf34b66a0e3235855a2f1adb52db92dfbb2c5084d",
+     "ora_agent/scoped_ir.py": "2156c0b58a4265fa34d90340eea5fc47ad3d4d7d8e32fc6770fb247804d13942",
+     "ora_agent/scoped_assets.py": "38f760d4b5eb330589e4dd2180f8d48f3545f79fbd09c6eedf70aaceaf44fcfa"
+    }
+   },
+   "status": "completed",
+   "prompt_sha256": "4e0ff299dfbf1b40a41a8af483ff828df50766e435c958897f4df8c2957b663a",
+   "initial_code": "from pyscipopt import Model, quicksum\nimport json\n\n# Data\ncost_A = 50\ncost_B = 45\ncost_C = 40\nchairs_per_order_A = 15\nchairs_per_order_B = 10\nchairs_per_order_C = 10\nmin_chairs = 100\nmax_chairs = 500\nM = 50  # upper bound on orders from any single manufacturer\n\nm = Model()\nm.hideOutput()\nm.setRealParam(\"limits/time\", 570)\n\n# Decision variables\nx_A = m.addVar(name=\"x_A\", vtype=\"I\", lb=0, ub=M)\nx_B = m.addVar(name=\"x_B\", vtype=\"I\", lb=0, ub=M)\nx_C = m.addVar(name=\"x_C\", vtype=\"I\", lb=0, ub=M)\n\ny_A = m.addVar(name=\"y_A\", vtype=\"B\", lb=0, ub=1)\ny_B = m.addVar(name=\"y_B\", vtype=\"B\", lb=0, ub=1)\ny_C = m.addVar(name=\"y_C\", vtype=\"B\", lb=0, ub=1)\n\n# Link binary to integer\nm.addCons(x_A <= M * y_A)\nm.addCons(x_B <= M * y_B)\nm.addCons(x_C <= M * y_C)\n\n# Total chairs constraints\nm.addCons(chairs_per_order_A * x_A + chairs_per_order_B * x_B + chairs_per_order_C * x_C >= min_chairs)\nm.addCons(chairs_per_order_A * x_A + chairs_per_order_B * x_B + chairs_per_order_C * x_C <= max_chairs)\n\n# If ordering from A, must order at least 1 order from B (>=10 chairs from B)\nm.addCons(y_A <= y_B)\n\n# If ordering from B, must order from C\nm.addCons(y_B <= y_C)\n\n# Objective: minimize total cost\nobj = cost_A * chairs_per_order_A * x_A + cost_B * chairs_per_order_B * x_B + cost_C * chairs_per_order_C * x_C\nm.setObjective(obj, \"minimize\")\n\nm.optimize()\n\nst = m.getStatus()\nprint(f\"status: {st}\")\nif m.getNSols() > 0:\n    print(f\"objective: {m.getObjVal()}\")",
+   "final_code": "from pyscipopt import Model, quicksum\nimport json\ncost_A = 50\ncost_B = 45\ncost_C = 40\nchairs_per_order_A = 15\nchairs_per_order_B = 10\nchairs_per_order_C = 10\nmin_chairs = 100\nmax_chairs = 500\nM = 50\nm = Model()\nm.hideOutput()\nm.setRealParam('limits/time', 570)\nx_A = m.addVar(name='x_A', vtype='I', lb=0, ub=M)\nx_B = m.addVar(name='x_B', vtype='I', lb=0, ub=M)\nx_C = m.addVar(name='x_C', vtype='I', lb=0, ub=M)\ny_A = m.addVar(name='y_A', vtype='B', lb=0, ub=1)\ny_B = m.addVar(name='y_B', vtype='B', lb=0, ub=1)\ny_C = m.addVar(name='y_C', vtype='B', lb=0, ub=1)\nm.addCons(x_A <= M * y_A)\nm.addCons(x_B <= M * y_B)\nm.addCons(x_C <= M * y_C)\nm.addCons(chairs_per_order_A * x_A + chairs_per_order_B * x_B + chairs_per_order_C * x_C >= min_chairs)\nm.addCons(chairs_per_order_A * x_A + chairs_per_order_B * x_B + chairs_per_order_C * x_C <= max_chairs)\nm.addCons(y_A <= y_B)\nm.addCons(y_B <= y_C)\nobj = cost_A * chairs_per_order_A * x_A + cost_B * chairs_per_order_B * x_B + cost_C * chairs_per_order_C * x_C\nm.setObjective(750 * x_A + 450 * x_B + 400 * x_C, 'minimize')\nm.addCons(y_A <= x_A, 'industryor_19_x_A_indicator_off')\nm.addCons(x_A <= 33 * y_A, 'industryor_19_x_A_indicator_on')\nm.addCons(y_B <= x_B, 'industryor_19_x_B_indicator_off')\nm.addCons(x_B <= 50 * y_B, 'industryor_19_x_B_indicator_on')\nm.optimize()\nst = m.getStatus()\nprint(f'status: {st}')\nif m.getNSols() > 0:\n    print(f'objective: {m.getObjVal()}')\n",
+   "initial_score": {
+    "schema_version": "industryor.business_audit.v1",
+    "problem_id": 19,
+    "audit_status": "complete",
+    "business_correct": false,
+    "variable_audit": {
+     "x_A": {
+      "present": true,
+      "value": 0.0,
+      "domain": "integer",
+      "passed": true
+     },
+     "x_B": {
+      "present": true,
+      "value": -0.0,
+      "domain": "integer",
+      "passed": true
+     },
+     "x_C": {
+      "present": true,
+      "value": 10.0,
+      "domain": "integer",
+      "passed": true
+     },
+     "y_A": {
+      "present": true,
+      "value": 1.0,
+      "domain": "binary",
+      "passed": true
+     },
+     "y_B": {
+      "present": true,
+      "value": 1.0,
+      "domain": "binary",
+      "passed": true
+     }
+    },
+    "constraint_checks": [
+     {
+      "rule": "nonnegative_x_A",
+      "passed": true,
+      "observed": 0.0,
+      "expected": ">= 0"
+     },
+     {
+      "rule": "nonnegative_x_B",
+      "passed": true,
+      "observed": -0.0,
+      "expected": ">= 0"
+     },
+     {
+      "rule": "nonnegative_x_C",
+      "passed": true,
+      "observed": 10.0,
+      "expected": ">= 0"
+     },
+     {
+      "rule": "minimum_chairs",
+      "passed": true,
+      "observed": 100.0,
+      "expected": ">= 100"
+     },
+     {
+      "rule": "maximum_chairs",
+      "passed": true,
+      "observed": 100.0,
+      "expected": "<= 500"
+     },
+     {
+      "rule": "A_implies_ten_B_chairs",
+      "passed": true,
+      "observed": -0.0,
+      "expected": ">= 10 when A is ordered"
+     },
+     {
+      "rule": "B_implies_C_order",
+      "passed": true,
+      "observed": 10.0,
+      "expected": ">= 1 when B is ordered"
+     },
+     {
+      "rule": "link_x_A_y_A",
+      "passed": false,
+      "observed": {
+       "x_A": 0.0,
+       "y_A": 1.0
+      },
+      "expected": "indicator is 1 exactly when quantity is positive"
+     },
+     {
+      "rule": "link_x_B_y_B",
+      "passed": false,
+      "observed": {
+       "x_B": -0.0,
+       "y_B": 1.0
+      },
+      "expected": "indicator is 1 exactly when quantity is positive"
+     }
+    ],
+    "violations": [
+     "business constraint failed: link_x_A_y_A",
+     "business constraint failed: link_x_B_y_B"
+    ],
+    "execution_checks": {
+     "export_complete": true,
+     "solver_optimal": true,
+     "has_solution": true,
+     "model_objective_finite": true
+    },
+    "business_objective": 4000.0,
+    "model_objective_consistent": true,
+    "optimality": "not_applicable_infeasible",
+    "blocking_reasons": []
+   },
+   "final_score": {
+    "schema_version": "industryor.business_audit.v1",
+    "problem_id": 19,
+    "audit_status": "complete",
+    "business_correct": true,
+    "variable_audit": {
+     "x_A": {
+      "present": true,
+      "value": 0.0,
+      "domain": "integer",
+      "passed": true
+     },
+     "x_B": {
+      "present": true,
+      "value": 0.0,
+      "domain": "integer",
+      "passed": true
+     },
+     "x_C": {
+      "present": true,
+      "value": 10.0,
+      "domain": "integer",
+      "passed": true
+     },
+     "y_A": {
+      "present": true,
+      "value": 0.0,
+      "domain": "binary",
+      "passed": true
+     },
+     "y_B": {
+      "present": true,
+      "value": 0.0,
+      "domain": "binary",
+      "passed": true
+     }
+    },
+    "constraint_checks": [
+     {
+      "rule": "nonnegative_x_A",
+      "passed": true,
+      "observed": 0.0,
+      "expected": ">= 0"
+     },
+     {
+      "rule": "nonnegative_x_B",
+      "passed": true,
+      "observed": 0.0,
+      "expected": ">= 0"
+     },
+     {
+      "rule": "nonnegative_x_C",
+      "passed": true,
+      "observed": 10.0,
+      "expected": ">= 0"
+     },
+     {
+      "rule": "minimum_chairs",
+      "passed": true,
+      "observed": 100.0,
+      "expected": ">= 100"
+     },
+     {
+      "rule": "maximum_chairs",
+      "passed": true,
+      "observed": 100.0,
+      "expected": "<= 500"
+     },
+     {
+      "rule": "A_implies_ten_B_chairs",
+      "passed": true,
+      "observed": 0.0,
+      "expected": ">= 10 when A is ordered"
+     },
+     {
+      "rule": "B_implies_C_order",
+      "passed": true,
+      "observed": 10.0,
+      "expected": ">= 1 when B is ordered"
+     },
+     {
+      "rule": "link_x_A_y_A",
+      "passed": true,
+      "observed": {
+       "x_A": 0.0,
+       "y_A": 0.0
+      },
+      "expected": "indicator is 1 exactly when quantity is positive"
+     },
+     {
+      "rule": "link_x_B_y_B",
+      "passed": true,
+      "observed": {
+       "x_B": 0.0,
+       "y_B": 0.0
+      },
+      "expected": "indicator is 1 exactly when quantity is positive"
+     }
+    ],
+    "violations": [],
+    "execution_checks": {
+     "export_complete": true,
+     "solver_optimal": true,
+     "has_solution": true,
+     "model_objective_finite": true
+    },
+    "business_objective": 4000.0,
+    "model_objective_consistent": true,
+    "optimality": "proven_optimal",
+    "blocking_reasons": []
+   },
+   "initial_objective": 4000.0,
+   "initial_objective_match_abs_0_1": true,
+   "objective": 4000.0,
+   "printed_objective": 4000.0,
+   "reference": 4000.0,
+   "objective_match_abs_0_1": true,
+   "objective_error": 0.0,
+   "objective_below_reference": false,
+   "objective_above_reference": false,
+   "exec_status": "ok",
+   "solver_status": "optimal",
+   "accepted": true,
+   "accepted_round": 1,
+   "accepted_but_business_incorrect": false,
+   "harmed_win": false,
+   "business_unverified": false,
+   "stop_reason": "accepted",
+   "history": [
+    {
+     "round": 0,
+     "action": "initial",
+     "code": "from pyscipopt import Model, quicksum\nimport json\n\n# Data\ncost_A = 50\ncost_B = 45\ncost_C = 40\nchairs_per_order_A = 15\nchairs_per_order_B = 10\nchairs_per_order_C = 10\nmin_chairs = 100\nmax_chairs = 500\nM = 50  # upper bound on orders from any single manufacturer\n\nm = Model()\nm.hideOutput()\nm.setRealParam(\"limits/time\", 570)\n\n# Decision variables\nx_A = m.addVar(name=\"x_A\", vtype=\"I\", lb=0, ub=M)\nx_B = m.addVar(name=\"x_B\", vtype=\"I\", lb=0, ub=M)\nx_C = m.addVar(name=\"x_C\", vtype=\"I\", lb=0, ub=M)\n\ny_A = m.addVar(name=\"y_A\", vtype=\"B\", lb=0, ub=1)\ny_B = m.addVar(name=\"y_B\", vtype=\"B\", lb=0, ub=1)\ny_C = m.addVar(name=\"y_C\", vtype=\"B\", lb=0, ub=1)\n\n# Link binary to integer\nm.addCons(x_A <= M * y_A)\nm.addCons(x_B <= M * y_B)\nm.addCons(x_C <= M * y_C)\n\n# Total chairs constraints\nm.addCons(chairs_per_order_A * x_A + chairs_per_order_B * x_B + chairs_per_order_C * x_C >= min_chairs)\nm.addCons(chairs_per_order_A * x_A + chairs_per_order_B * x_B + chairs_per_order_C * x_C <= max_chairs)\n\n# If ordering from A, must order at least 1 order from B (>=10 chairs from B)\nm.addCons(y_A <= y_B)\n\n# If ordering from B, must order from C\nm.addCons(y_B <= y_C)\n\n# Objective: minimize total cost\nobj = cost_A * chairs_per_order_A * x_A + cost_B * chairs_per_order_B * x_B + cost_C * chairs_per_order_C * x_C\nm.setObjective(obj, \"minimize\")\n\nm.optimize()\n\nst = m.getStatus()\nprint(f\"status: {st}\")\nif m.getNSols() > 0:\n    print(f\"objective: {m.getObjVal()}\")",
+     "record": {
+      "exec_status": "ok",
+      "return_code": 0,
+      "solver_status": "optimal",
+      "objective": 4000.0,
+      "stderr_tail": "",
+      "wall_s": 0.2,
+      "stdout_artifact": "stdout.txt",
+      "stderr_artifact": "stderr.txt",
+      "code_sha256": "f92b0c0e83a6156a33ceb150cfbdf8033542bcfd709417910793d8f0ff63fd68",
+      "instrumented_sha256": "30cdf927d80395720b365624a48886d4ac245e1db7287d8200e00204e50d6095",
+      "solution_exists": true,
+      "export_error": null,
+      "export_aliases": {},
+      "repair_aliases": {}
+     },
+     "audit": {
+      "key": "current",
+      "wrong": false,
+      "mutation": "candidate",
+      "reference_violations": [],
+      "status": "ok",
+      "asset_status": "VIOLATED",
+      "fired": true,
+      "violations": [
+       {
+        "rule": "industryor_19_x_A_indicator_off",
+        "source": "19",
+        "status": "VIOLATED",
+        "lhs": 1.0,
+        "rhs": 0.0,
+        "delta": 1.0,
+        "tolerance": 2e-06,
+        "bindings": {}
+       },
+       {
+        "rule": "industryor_19_x_B_indicator_off",
+        "source": "19",
+        "status": "VIOLATED",
+        "lhs": 1.0,
+        "rhs": -0.0,
+        "delta": 1.0,
+        "tolerance": 2e-06,
+        "bindings": {}
+       }
+      ],
+      "unknown_evidence": [],
+      "rejected": [],
+      "asset_sha256": "2a1fbc374b56605bde90dbefce523f804143f17b5ca12addf6cf0b316983e50c"
+     },
+     "score": {
+      "schema_version": "industryor.business_audit.v1",
+      "problem_id": 19,
+      "audit_status": "complete",
+      "business_correct": false,
+      "variable_audit": {
+       "x_A": {
+        "present": true,
+        "value": 0.0,
+        "domain": "integer",
+        "passed": true
+       },
+       "x_B": {
+        "present": true,
+        "value": -0.0,
+        "domain": "integer",
+        "passed": true
+       },
+       "x_C": {
+        "present": true,
+        "value": 10.0,
+        "domain": "integer",
+        "passed": true
+       },
+       "y_A": {
+        "present": true,
+        "value": 1.0,
+        "domain": "binary",
+        "passed": true
+       },
+       "y_B": {
+        "present": true,
+        "value": 1.0,
+        "domain": "binary",
+        "passed": true
+       }
+      },
+      "constraint_checks": [
+       {
+        "rule": "nonnegative_x_A",
+        "passed": true,
+        "observed": 0.0,
+        "expected": ">= 0"
+       },
+       {
+        "rule": "nonnegative_x_B",
+        "passed": true,
+        "observed": -0.0,
+        "expected": ">= 0"
+       },
+       {
+        "rule": "nonnegative_x_C",
+        "passed": true,
+        "observed": 10.0,
+        "expected": ">= 0"
+       },
+       {
+        "rule": "minimum_chairs",
+        "passed": true,
+        "observed": 100.0,
+        "expected": ">= 100"
+       },
+       {
+        "rule": "maximum_chairs",
+        "passed": true,
+        "observed": 100.0,
+        "expected": "<= 500"
+       },
+       {
+        "rule": "A_implies_ten_B_chairs",
+        "passed": true,
+        "observed": -0.0,
+        "expected": ">= 10 when A is ordered"
+       },
+       {
+        "rule": "B_implies_C_order",
+        "passed": true,
+        "observed": 10.0,
+        "expected": ">= 1 when B is ordered"
+       },
+       {
+        "rule": "link_x_A_y_A",
+        "passed": false,
+        "observed": {
+         "x_A": 0.0,
+         "y_A": 1.0
+        },
+        "expected": "indicator is 1 exactly when quantity is positive"
+       },
+       {
+        "rule": "link_x_B_y_B",
+        "passed": false,
+        "observed": {
+         "x_B": -0.0,
+         "y_B": 1.0
+        },
+        "expected": "indicator is 1 exactly when quantity is positive"
+       }
+      ],
+      "violations": [
+       "business constraint failed: link_x_A_y_A",
+       "business constraint failed: link_x_B_y_B"
+      ],
+      "execution_checks": {
+       "export_complete": true,
+       "solver_optimal": true,
+       "has_solution": true,
+       "model_objective_finite": true
+      },
+      "business_objective": 4000.0,
+      "model_objective_consistent": true,
+      "optimality": "not_applicable_infeasible",
+      "blocking_reasons": []
+     },
+     "generation_artifact": "generation_00.json",
+     "generation_reused": true,
+     "execution_reused": false,
+     "controller_decision": {
+      "action": "local_patch",
+      "reason": "first_action_for_failure",
+      "code_sha256": "f92b0c0e83a6156a33ceb150cfbdf8033542bcfd709417910793d8f0ff63fd68",
+      "failure_signature": "semantic:industryor_19_x_A_indicator_off,industryor_19_x_B_indicator_off",
+      "failure_kind": "semantic_complex",
+      "evidence": {
+       "industryor_19_x_A_indicator_off": 1.0,
+       "industryor_19_x_B_indicator_off": 1.0
+      },
+      "new_error_introduced": false
+     },
+     "next_action": "local_patch",
+     "before_sha256": "f92b0c0e83a6156a33ceb150cfbdf8033542bcfd709417910793d8f0ff63fd68",
+     "after_sha256": "4a201693e7253ae31424861c79b311bba9ac8fbe3924f4f0faaae6d283935b92"
+    },
+    {
+     "round": 1,
+     "action": "local_patch",
+     "code": "from pyscipopt import Model, quicksum\nimport json\ncost_A = 50\ncost_B = 45\ncost_C = 40\nchairs_per_order_A = 15\nchairs_per_order_B = 10\nchairs_per_order_C = 10\nmin_chairs = 100\nmax_chairs = 500\nM = 50\nm = Model()\nm.hideOutput()\nm.setRealParam('limits/time', 570)\nx_A = m.addVar(name='x_A', vtype='I', lb=0, ub=M)\nx_B = m.addVar(name='x_B', vtype='I', lb=0, ub=M)\nx_C = m.addVar(name='x_C', vtype='I', lb=0, ub=M)\ny_A = m.addVar(name='y_A', vtype='B', lb=0, ub=1)\ny_B = m.addVar(name='y_B', vtype='B', lb=0, ub=1)\ny_C = m.addVar(name='y_C', vtype='B', lb=0, ub=1)\nm.addCons(x_A <= M * y_A)\nm.addCons(x_B <= M * y_B)\nm.addCons(x_C <= M * y_C)\nm.addCons(chairs_per_order_A * x_A + chairs_per_order_B * x_B + chairs_per_order_C * x_C >= min_chairs)\nm.addCons(chairs_per_order_A * x_A + chairs_per_order_B * x_B + chairs_per_order_C * x_C <= max_chairs)\nm.addCons(y_A <= y_B)\nm.addCons(y_B <= y_C)\nobj = cost_A * chairs_per_order_A * x_A + cost_B * chairs_per_order_B * x_B + cost_C * chairs_per_order_C * x_C\nm.setObjective(750 * x_A + 450 * x_B + 400 * x_C, 'minimize')\nm.addCons(y_A <= x_A, 'industryor_19_x_A_indicator_off')\nm.addCons(x_A <= 33 * y_A, 'industryor_19_x_A_indicator_on')\nm.addCons(y_B <= x_B, 'industryor_19_x_B_indicator_off')\nm.addCons(x_B <= 50 * y_B, 'industryor_19_x_B_indicator_on')\nm.optimize()\nst = m.getStatus()\nprint(f'status: {st}')\nif m.getNSols() > 0:\n    print(f'objective: {m.getObjVal()}')\n",
+     "record": {
+      "exec_status": "ok",
+      "return_code": 0,
+      "solver_status": "optimal",
+      "objective": 4000.0,
+      "stderr_tail": "",
+      "wall_s": 0.1,
+      "stdout_artifact": "stdout.txt",
+      "stderr_artifact": "stderr.txt",
+      "code_sha256": "4a201693e7253ae31424861c79b311bba9ac8fbe3924f4f0faaae6d283935b92",
+      "instrumented_sha256": "1326f83a2147a5f96fbdc8efc2ac0df84cbe7d3518a17ce5a11ea440c5d69f5f",
+      "solution_exists": true,
+      "export_error": null,
+      "export_aliases": {},
+      "repair_aliases": {}
+     },
+     "audit": {
+      "key": "current",
+      "wrong": false,
+      "mutation": "candidate",
+      "reference_violations": [],
+      "status": "ok",
+      "asset_status": "SATISFIED",
+      "fired": false,
+      "violations": [],
+      "unknown_evidence": [],
+      "rejected": [],
+      "asset_sha256": "2a1fbc374b56605bde90dbefce523f804143f17b5ca12addf6cf0b316983e50c"
+     },
+     "score": {
+      "schema_version": "industryor.business_audit.v1",
+      "problem_id": 19,
+      "audit_status": "complete",
+      "business_correct": true,
+      "variable_audit": {
+       "x_A": {
+        "present": true,
+        "value": 0.0,
+        "domain": "integer",
+        "passed": true
+       },
+       "x_B": {
+        "present": true,
+        "value": 0.0,
+        "domain": "integer",
+        "passed": true
+       },
+       "x_C": {
+        "present": true,
+        "value": 10.0,
+        "domain": "integer",
+        "passed": true
+       },
+       "y_A": {
+        "present": true,
+        "value": 0.0,
+        "domain": "binary",
+        "passed": true
+       },
+       "y_B": {
+        "present": true,
+        "value": 0.0,
+        "domain": "binary",
+        "passed": true
+       }
+      },
+      "constraint_checks": [
+       {
+        "rule": "nonnegative_x_A",
+        "passed": true,
+        "observed": 0.0,
+        "expected": ">= 0"
+       },
+       {
+        "rule": "nonnegative_x_B",
+        "passed": true,
+        "observed": 0.0,
+        "expected": ">= 0"
+       },
+       {
+        "rule": "nonnegative_x_C",
+        "passed": true,
+        "observed": 10.0,
+        "expected": ">= 0"
+       },
+       {
+        "rule": "minimum_chairs",
+        "passed": true,
+        "observed": 100.0,
+        "expected": ">= 100"
+       },
+       {
+        "rule": "maximum_chairs",
+        "passed": true,
+        "observed": 100.0,
+        "expected": "<= 500"
+       },
+       {
+        "rule": "A_implies_ten_B_chairs",
+        "passed": true,
+        "observed": 0.0,
+        "expected": ">= 10 when A is ordered"
+       },
+       {
+        "rule": "B_implies_C_order",
+        "passed": true,
+        "observed": 10.0,
+        "expected": ">= 1 when B is ordered"
+       },
+       {
+        "rule": "link_x_A_y_A",
+        "passed": true,
+        "observed": {
+         "x_A": 0.0,
+         "y_A": 0.0
+        },
+        "expected": "indicator is 1 exactly when quantity is positive"
+       },
+       {
+        "rule": "link_x_B_y_B",
+        "passed": true,
+        "observed": {
+         "x_B": 0.0,
+         "y_B": 0.0
+        },
+        "expected": "indicator is 1 exactly when quantity is positive"
+       }
+      ],
+      "violations": [],
+      "execution_checks": {
+       "export_complete": true,
+       "solver_optimal": true,
+       "has_solution": true,
+       "model_objective_finite": true
+      },
+      "business_objective": 4000.0,
+      "model_objective_consistent": true,
+      "optimality": "proven_optimal",
+      "blocking_reasons": []
+     },
+     "generation_artifact": "generation_01.json",
+     "generation_reused": true,
+     "execution_reused": false
+    }
+   ],
+   "controller_trace": [
+    {
+     "action": "local_patch",
+     "code_sha256": "f92b0c0e83a6156a33ceb150cfbdf8033542bcfd709417910793d8f0ff63fd68",
+     "failure_signature": "semantic:industryor_19_x_A_indicator_off,industryor_19_x_B_indicator_off",
+     "result_code_sha256": "4a201693e7253ae31424861c79b311bba9ac8fbe3924f4f0faaae6d283935b92",
+     "no_progress": null,
+     "failure_kind": "semantic_complex",
+     "evidence": {
+      "industryor_19_x_A_indicator_off": 1.0,
+      "industryor_19_x_B_indicator_off": 1.0
+     },
+     "evidence_improved": false,
+     "new_error_introduced": false
+    }
+   ],
+   "deterministic_transforms": 1,
+   "failed_deterministic_transforms": 0,
+   "generation_artifacts": [
+    {
+     "path": "generation_00.json",
+     "reused": true
+    }
+   ],
+   "llm_calls": 1,
+   "new_llm_calls": 0,
+   "api_attempts": 1,
+   "retry_accounting_complete": false,
+   "usage": [
+    {
+     "prompt_tokens": 1066,
+     "total_tokens": 2543,
+     "completion_tokens": 1477,
+     "prompt_tokens_details": null,
+     "completion_tokens_details": {
+      "reasoning_tokens": 935
+     }
+    }
+   ],
+   "prompt_tokens": 1066,
+   "completion_tokens": 1477,
+   "total_tokens": 2543,
+   "reasoning_tokens": 935,
+   "llm_latency_s": 15.265,
+   "new_llm_latency_s": 0,
+   "candidate_evaluations": 2,
+   "solver_runs": 2,
+   "reused_candidate_evaluations": 0,
+   "dag": {
+    "nodes": [
+     {
+      "node_id": "root",
+      "candidate_hash": "f92b0c0e83a6156a33ceb150cfbdf8033542bcfd709417910793d8f0ff63fd68",
+      "parent_id": null,
+      "action": "seed",
+      "binding_sha256": null,
+      "binding_status": "rejected",
+      "execution": {
+       "exec_status": "ok",
+       "return_code": 0,
+       "solver_status": "optimal",
+       "objective": 4000.0,
+       "stderr_tail": "",
+       "wall_s": 0.2,
+       "stdout_artifact": "stdout.txt",
+       "stderr_artifact": "stderr.txt",
+       "code_sha256": "f92b0c0e83a6156a33ceb150cfbdf8033542bcfd709417910793d8f0ff63fd68",
+       "instrumented_sha256": "30cdf927d80395720b365624a48886d4ac245e1db7287d8200e00204e50d6095",
+       "solution_exists": true,
+       "export_error": null,
+       "export_aliases": {},
+       "repair_aliases": {},
+       "solution": {
+        "export": {
+         "complete": true,
+         "error": null
+        },
+        "objective": 4000.0,
+        "schema_version": "industryor.solution.v1",
+        "solution_count": 2,
+        "solver_status": "optimal",
+        "variable_types": {
+         "x_A": "INTEGER",
+         "x_B": "INTEGER",
+         "x_C": "INTEGER",
+         "y_A": "BINARY",
+         "y_B": "BINARY",
+         "y_C": "BINARY"
+        },
+        "variables": {
+         "x_A": 0.0,
+         "x_B": -0.0,
+         "x_C": 10.0,
+         "y_A": 1.0,
+         "y_B": 1.0,
+         "y_C": 1.0
+        }
+       }
+      },
+      "business_audit": {
+       "schema_version": "industryor.business_audit.v1",
+       "problem_id": 19,
+       "audit_status": "complete",
+       "business_correct": false,
+       "variable_audit": {
+        "x_A": {
+         "present": true,
+         "value": 0.0,
+         "domain": "integer",
+         "passed": true
+        },
+        "x_B": {
+         "present": true,
+         "value": -0.0,
+         "domain": "integer",
+         "passed": true
+        },
+        "x_C": {
+         "present": true,
+         "value": 10.0,
+         "domain": "integer",
+         "passed": true
+        },
+        "y_A": {
+         "present": true,
+         "value": 1.0,
+         "domain": "binary",
+         "passed": true
+        },
+        "y_B": {
+         "present": true,
+         "value": 1.0,
+         "domain": "binary",
+         "passed": true
+        }
+       },
+       "constraint_checks": [
+        {
+         "rule": "nonnegative_x_A",
+         "passed": true,
+         "observed": 0.0,
+         "expected": ">= 0"
+        },
+        {
+         "rule": "nonnegative_x_B",
+         "passed": true,
+         "observed": -0.0,
+         "expected": ">= 0"
+        },
+        {
+         "rule": "nonnegative_x_C",
+         "passed": true,
+         "observed": 10.0,
+         "expected": ">= 0"
+        },
+        {
+         "rule": "minimum_chairs",
+         "passed": true,
+         "observed": 100.0,
+         "expected": ">= 100"
+        },
+        {
+         "rule": "maximum_chairs",
+         "passed": true,
+         "observed": 100.0,
+         "expected": "<= 500"
+        },
+        {
+         "rule": "A_implies_ten_B_chairs",
+         "passed": true,
+         "observed": -0.0,
+         "expected": ">= 10 when A is ordered"
+        },
+        {
+         "rule": "B_implies_C_order",
+         "passed": true,
+         "observed": 10.0,
+         "expected": ">= 1 when B is ordered"
+        },
+        {
+         "rule": "link_x_A_y_A",
+         "passed": false,
+         "observed": {
+          "x_A": 0.0,
+          "y_A": 1.0
+         },
+         "expected": "indicator is 1 exactly when quantity is positive"
+        },
+        {
+         "rule": "link_x_B_y_B",
+         "passed": false,
+         "observed": {
+          "x_B": -0.0,
+          "y_B": 1.0
+         },
+         "expected": "indicator is 1 exactly when quantity is positive"
+        }
+       ],
+       "violations": [
+        "business constraint failed: link_x_A_y_A",
+        "business constraint failed: link_x_B_y_B"
+       ],
+       "execution_checks": {
+        "export_complete": true,
+        "solver_optimal": true,
+        "has_solution": true,
+        "model_objective_finite": true
+       },
+       "business_objective": 4000.0,
+       "model_objective_consistent": true,
+       "optimality": "not_applicable_infeasible",
+       "blocking_reasons": []
+      },
+      "solver_runs": 0,
+      "llm_calls": 0,
+      "done": true,
+      "children": [
+       "r0"
+      ],
+      "depth": 0,
+      "snapshot": "from pyscipopt import Model, quicksum\nimport json\n\n# Data\ncost_A = 50\ncost_B = 45\ncost_C = 40\nchairs_per_order_A = 15\nchairs_per_order_B = 10\nchairs_per_order_C = 10\nmin_chairs = 100\nmax_chairs = 500\nM = 50  # upper bound on orders from any single manufacturer\n\nm = Model()\nm.hideOutput()\nm.setRealParam(\"limits/time\", 570)\n\n# Decision variables\nx_A = m.addVar(name=\"x_A\", vtype=\"I\", lb=0, ub=M)\nx_B = m.addVar(name=\"x_B\", vtype=\"I\", lb=0, ub=M)\nx_C = m.addVar(name=\"x_C\", vtype=\"I\", lb=0, ub=M)\n\ny_A = m.addVar(name=\"y_A\", vtype=\"B\", lb=0, ub=1)\ny_B = m.addVar(name=\"y_B\", vtype=\"B\", lb=0, ub=1)\ny_C = m.addVar(name=\"y_C\", vtype=\"B\", lb=0, ub=1)\n\n# Link binary to integer\nm.addCons(x_A <= M * y_A)\nm.addCons(x_B <= M * y_B)\nm.addCons(x_C <= M * y_C)\n\n# Total chairs constraints\nm.addCons(chairs_per_order_A * x_A + chairs_per_order_B * x_B + chairs_per_order_C * x_C >= min_chairs)\nm.addCons(chairs_per_order_A * x_A + chairs_per_order_B * x_B + chairs_per_order_C * x_C <= max_chairs)\n\n# If ordering from A, must order at least 1 order from B (>=10 chairs from B)\nm.addCons(y_A <= y_B)\n\n# If ordering from B, must order from C\nm.addCons(y_B <= y_C)\n\n# Objective: minimize total cost\nobj = cost_A * chairs_per_order_A * x_A + cost_B * chairs_per_order_B * x_B + cost_C * chairs_per_order_C * x_C\nm.setObjective(obj, \"minimize\")\n\nm.optimize()\n\nst = m.getStatus()\nprint(f\"status: {st}\")\nif m.getNSols() > 0:\n    print(f\"objective: {m.getObjVal()}\")",
+      "candidate_kind": "pyscipopt_code",
+      "stop_reason": null
+     },
+     {
+      "node_id": "r0",
+      "candidate_hash": "f92b0c0e83a6156a33ceb150cfbdf8033542bcfd709417910793d8f0ff63fd68",
+      "parent_id": "root",
+      "action": "initial",
+      "binding_sha256": null,
+      "binding_status": "rejected",
+      "execution": {
+       "exec_status": "ok",
+       "return_code": 0,
+       "solver_status": "optimal",
+       "objective": 4000.0,
+       "stderr_tail": "",
+       "wall_s": 0.2,
+       "stdout_artifact": "stdout.txt",
+       "stderr_artifact": "stderr.txt",
+       "code_sha256": "f92b0c0e83a6156a33ceb150cfbdf8033542bcfd709417910793d8f0ff63fd68",
+       "instrumented_sha256": "30cdf927d80395720b365624a48886d4ac245e1db7287d8200e00204e50d6095",
+       "solution_exists": true,
+       "export_error": null,
+       "export_aliases": {},
+       "repair_aliases": {},
+       "solution": {
+        "export": {
+         "complete": true,
+         "error": null
+        },
+        "objective": 4000.0,
+        "schema_version": "industryor.solution.v1",
+        "solution_count": 2,
+        "solver_status": "optimal",
+        "variable_types": {
+         "x_A": "INTEGER",
+         "x_B": "INTEGER",
+         "x_C": "INTEGER",
+         "y_A": "BINARY",
+         "y_B": "BINARY",
+         "y_C": "BINARY"
+        },
+        "variables": {
+         "x_A": 0.0,
+         "x_B": -0.0,
+         "x_C": 10.0,
+         "y_A": 1.0,
+         "y_B": 1.0,
+         "y_C": 1.0
+        }
+       }
+      },
+      "business_audit": {
+       "schema_version": "industryor.business_audit.v1",
+       "problem_id": 19,
+       "audit_status": "complete",
+       "business_correct": false,
+       "variable_audit": {
+        "x_A": {
+         "present": true,
+         "value": 0.0,
+         "domain": "integer",
+         "passed": true
+        },
+        "x_B": {
+         "present": true,
+         "value": -0.0,
+         "domain": "integer",
+         "passed": true
+        },
+        "x_C": {
+         "present": true,
+         "value": 10.0,
+         "domain": "integer",
+         "passed": true
+        },
+        "y_A": {
+         "present": true,
+         "value": 1.0,
+         "domain": "binary",
+         "passed": true
+        },
+        "y_B": {
+         "present": true,
+         "value": 1.0,
+         "domain": "binary",
+         "passed": true
+        }
+       },
+       "constraint_checks": [
+        {
+         "rule": "nonnegative_x_A",
+         "passed": true,
+         "observed": 0.0,
+         "expected": ">= 0"
+        },
+        {
+         "rule": "nonnegative_x_B",
+         "passed": true,
+         "observed": -0.0,
+         "expected": ">= 0"
+        },
+        {
+         "rule": "nonnegative_x_C",
+         "passed": true,
+         "observed": 10.0,
+         "expected": ">= 0"
+        },
+        {
+         "rule": "minimum_chairs",
+         "passed": true,
+         "observed": 100.0,
+         "expected": ">= 100"
+        },
+        {
+         "rule": "maximum_chairs",
+         "passed": true,
+         "observed": 100.0,
+         "expected": "<= 500"
+        },
+        {
+         "rule": "A_implies_ten_B_chairs",
+         "passed": true,
+         "observed": -0.0,
+         "expected": ">= 10 when A is ordered"
+        },
+        {
+         "rule": "B_implies_C_order",
+         "passed": true,
+         "observed": 10.0,
+         "expected": ">= 1 when B is ordered"
+        },
+        {
+         "rule": "link_x_A_y_A",
+         "passed": false,
+         "observed": {
+          "x_A": 0.0,
+          "y_A": 1.0
+         },
+         "expected": "indicator is 1 exactly when quantity is positive"
+        },
+        {
+         "rule": "link_x_B_y_B",
+         "passed": false,
+         "observed": {
+          "x_B": -0.0,
+          "y_B": 1.0
+         },
+         "expected": "indicator is 1 exactly when quantity is positive"
+        }
+       ],
+       "violations": [
+        "business constraint failed: link_x_A_y_A",
+        "business constraint failed: link_x_B_y_B"
+       ],
+       "execution_checks": {
+        "export_complete": true,
+        "solver_optimal": true,
+        "has_solution": true,
+        "model_objective_finite": true
+       },
+       "business_objective": 4000.0,
+       "model_objective_consistent": true,
+       "optimality": "not_applicable_infeasible",
+       "blocking_reasons": []
+      },
+      "solver_runs": 1,
+      "llm_calls": 0,
+      "done": true,
+      "children": [
+       "r1"
+      ],
+      "depth": 1,
+      "snapshot": "from pyscipopt import Model, quicksum\nimport json\n\n# Data\ncost_A = 50\ncost_B = 45\ncost_C = 40\nchairs_per_order_A = 15\nchairs_per_order_B = 10\nchairs_per_order_C = 10\nmin_chairs = 100\nmax_chairs = 500\nM = 50  # upper bound on orders from any single manufacturer\n\nm = Model()\nm.hideOutput()\nm.setRealParam(\"limits/time\", 570)\n\n# Decision variables\nx_A = m.addVar(name=\"x_A\", vtype=\"I\", lb=0, ub=M)\nx_B = m.addVar(name=\"x_B\", vtype=\"I\", lb=0, ub=M)\nx_C = m.addVar(name=\"x_C\", vtype=\"I\", lb=0, ub=M)\n\ny_A = m.addVar(name=\"y_A\", vtype=\"B\", lb=0, ub=1)\ny_B = m.addVar(name=\"y_B\", vtype=\"B\", lb=0, ub=1)\ny_C = m.addVar(name=\"y_C\", vtype=\"B\", lb=0, ub=1)\n\n# Link binary to integer\nm.addCons(x_A <= M * y_A)\nm.addCons(x_B <= M * y_B)\nm.addCons(x_C <= M * y_C)\n\n# Total chairs constraints\nm.addCons(chairs_per_order_A * x_A + chairs_per_order_B * x_B + chairs_per_order_C * x_C >= min_chairs)\nm.addCons(chairs_per_order_A * x_A + chairs_per_order_B * x_B + chairs_per_order_C * x_C <= max_chairs)\n\n# If ordering from A, must order at least 1 order from B (>=10 chairs from B)\nm.addCons(y_A <= y_B)\n\n# If ordering from B, must order from C\nm.addCons(y_B <= y_C)\n\n# Objective: minimize total cost\nobj = cost_A * chairs_per_order_A * x_A + cost_B * chairs_per_order_B * x_B + cost_C * chairs_per_order_C * x_C\nm.setObjective(obj, \"minimize\")\n\nm.optimize()\n\nst = m.getStatus()\nprint(f\"status: {st}\")\nif m.getNSols() > 0:\n    print(f\"objective: {m.getObjVal()}\")",
+      "candidate_kind": "pyscipopt_code",
+      "stop_reason": null
+     },
+     {
+      "node_id": "r1",
+      "candidate_hash": "4a201693e7253ae31424861c79b311bba9ac8fbe3924f4f0faaae6d283935b92",
+      "parent_id": "r0",
+      "action": "local_patch",
+      "binding_sha256": null,
+      "binding_status": "validated",
+      "execution": {
+       "exec_status": "ok",
+       "return_code": 0,
+       "solver_status": "optimal",
+       "objective": 4000.0,
+       "stderr_tail": "",
+       "wall_s": 0.1,
+       "stdout_artifact": "stdout.txt",
+       "stderr_artifact": "stderr.txt",
+       "code_sha256": "4a201693e7253ae31424861c79b311bba9ac8fbe3924f4f0faaae6d283935b92",
+       "instrumented_sha256": "1326f83a2147a5f96fbdc8efc2ac0df84cbe7d3518a17ce5a11ea440c5d69f5f",
+       "solution_exists": true,
+       "export_error": null,
+       "export_aliases": {},
+       "repair_aliases": {},
+       "solution": {
+        "export": {
+         "complete": true,
+         "error": null
+        },
+        "objective": 4000.0,
+        "schema_version": "industryor.solution.v1",
+        "solution_count": 2,
+        "solver_status": "optimal",
+        "variable_types": {
+         "x_A": "INTEGER",
+         "x_B": "INTEGER",
+         "x_C": "INTEGER",
+         "y_A": "BINARY",
+         "y_B": "BINARY",
+         "y_C": "BINARY"
+        },
+        "variables": {
+         "x_A": 0.0,
+         "x_B": 0.0,
+         "x_C": 10.0,
+         "y_A": 0.0,
+         "y_B": 0.0,
+         "y_C": 1.0
+        }
+       }
+      },
+      "business_audit": {
+       "schema_version": "industryor.business_audit.v1",
+       "problem_id": 19,
+       "audit_status": "complete",
+       "business_correct": true,
+       "variable_audit": {
+        "x_A": {
+         "present": true,
+         "value": 0.0,
+         "domain": "integer",
+         "passed": true
+        },
+        "x_B": {
+         "present": true,
+         "value": 0.0,
+         "domain": "integer",
+         "passed": true
+        },
+        "x_C": {
+         "present": true,
+         "value": 10.0,
+         "domain": "integer",
+         "passed": true
+        },
+        "y_A": {
+         "present": true,
+         "value": 0.0,
+         "domain": "binary",
+         "passed": true
+        },
+        "y_B": {
+         "present": true,
+         "value": 0.0,
+         "domain": "binary",
+         "passed": true
+        }
+       },
+       "constraint_checks": [
+        {
+         "rule": "nonnegative_x_A",
+         "passed": true,
+         "observed": 0.0,
+         "expected": ">= 0"
+        },
+        {
+         "rule": "nonnegative_x_B",
+         "passed": true,
+         "observed": 0.0,
+         "expected": ">= 0"
+        },
+        {
+         "rule": "nonnegative_x_C",
+         "passed": true,
+         "observed": 10.0,
+         "expected": ">= 0"
+        },
+        {
+         "rule": "minimum_chairs",
+         "passed": true,
+         "observed": 100.0,
+         "expected": ">= 100"
+        },
+        {
+         "rule": "maximum_chairs",
+         "passed": true,
+         "observed": 100.0,
+         "expected": "<= 500"
+        },
+        {
+         "rule": "A_implies_ten_B_chairs",
+         "passed": true,
+         "observed": 0.0,
+         "expected": ">= 10 when A is ordered"
+        },
+        {
+         "rule": "B_implies_C_order",
+         "passed": true,
+         "observed": 10.0,
+         "expected": ">= 1 when B is ordered"
+        },
+        {
+         "rule": "link_x_A_y_A",
+         "passed": true,
+         "observed": {
+          "x_A": 0.0,
+          "y_A": 0.0
+         },
+         "expected": "indicator is 1 exactly when quantity is positive"
+        },
+        {
+         "rule": "link_x_B_y_B",
+         "passed": true,
+         "observed": {
+          "x_B": 0.0,
+          "y_B": 0.0
+         },
+         "expected": "indicator is 1 exactly when quantity is positive"
+        }
+       ],
+       "violations": [],
+       "execution_checks": {
+        "export_complete": true,
+        "solver_optimal": true,
+        "has_solution": true,
+        "model_objective_finite": true
+       },
+       "business_objective": 4000.0,
+       "model_objective_consistent": true,
+       "optimality": "proven_optimal",
+       "blocking_reasons": []
+      },
+      "solver_runs": 1,
+      "llm_calls": 0,
+      "done": true,
+      "children": [],
+      "depth": 2,
+      "snapshot": "from pyscipopt import Model, quicksum\nimport json\ncost_A = 50\ncost_B = 45\ncost_C = 40\nchairs_per_order_A = 15\nchairs_per_order_B = 10\nchairs_per_order_C = 10\nmin_chairs = 100\nmax_chairs = 500\nM = 50\nm = Model()\nm.hideOutput()\nm.setRealParam('limits/time', 570)\nx_A = m.addVar(name='x_A', vtype='I', lb=0, ub=M)\nx_B = m.addVar(name='x_B', vtype='I', lb=0, ub=M)\nx_C = m.addVar(name='x_C', vtype='I', lb=0, ub=M)\ny_A = m.addVar(name='y_A', vtype='B', lb=0, ub=1)\ny_B = m.addVar(name='y_B', vtype='B', lb=0, ub=1)\ny_C = m.addVar(name='y_C', vtype='B', lb=0, ub=1)\nm.addCons(x_A <= M * y_A)\nm.addCons(x_B <= M * y_B)\nm.addCons(x_C <= M * y_C)\nm.addCons(chairs_per_order_A * x_A + chairs_per_order_B * x_B + chairs_per_order_C * x_C >= min_chairs)\nm.addCons(chairs_per_order_A * x_A + chairs_per_order_B * x_B + chairs_per_order_C * x_C <= max_chairs)\nm.addCons(y_A <= y_B)\nm.addCons(y_B <= y_C)\nobj = cost_A * chairs_per_order_A * x_A + cost_B * chairs_per_order_B * x_B + cost_C * chairs_per_order_C * x_C\nm.setObjective(750 * x_A + 450 * x_B + 400 * x_C, 'minimize')\nm.addCons(y_A <= x_A, 'industryor_19_x_A_indicator_off')\nm.addCons(x_A <= 33 * y_A, 'industryor_19_x_A_indicator_on')\nm.addCons(y_B <= x_B, 'industryor_19_x_B_indicator_off')\nm.addCons(x_B <= 50 * y_B, 'industryor_19_x_B_indicator_on')\nm.optimize()\nst = m.getStatus()\nprint(f'status: {st}')\nif m.getNSols() > 0:\n    print(f'objective: {m.getObjVal()}')\n",
+      "candidate_kind": "pyscipopt_code",
+      "stop_reason": "accepted"
+     }
+    ],
+    "events": [
+     {
+      "type": "candidate_evaluated",
+      "node_id": "r0",
+      "parent_id": "root",
+      "action": "initial",
+      "candidate_hash": "f92b0c0e83a6156a33ceb150cfbdf8033542bcfd709417910793d8f0ff63fd68"
+     },
+     {
+      "type": "candidate_evaluated",
+      "node_id": "r1",
+      "parent_id": "r0",
+      "action": "local_patch",
+      "candidate_hash": "4a201693e7253ae31424861c79b311bba9ac8fbe3924f4f0faaae6d283935b92"
+     },
+     {
+      "type": "done",
+      "node_id": "r1",
+      "reason": "accepted"
+     }
+    ],
+    "accepted_node_ids": [
+     "r1"
+    ],
+    "negative_node_ids": [
+     "root",
+     "r0"
+    ],
+    "leaf_node_ids": [
+     "r1"
+    ],
+    "finished": true,
+    "score_based_pruning": false,
+    "total_solver_runs": 2,
+    "total_llm_calls": 0
+   },
+   "final_solution": {
+    "export": {
+     "complete": true,
+     "error": null
+    },
+    "objective": 4000.0,
+    "schema_version": "industryor.solution.v1",
+    "solution_count": 2,
+    "solver_status": "optimal",
+    "variable_types": {
+     "x_A": "INTEGER",
+     "x_B": "INTEGER",
+     "x_C": "INTEGER",
+     "y_A": "BINARY",
+     "y_B": "BINARY",
+     "y_C": "BINARY"
+    },
+    "variables": {
+     "x_A": 0.0,
+     "x_B": 0.0,
+     "x_C": 10.0,
+     "y_A": 0.0,
+     "y_B": 0.0,
+     "y_C": 1.0
+    }
+   },
+   "baseline_z2": {
+    "objective": 4000.0,
+    "exec_status": "ok",
+    "solver_status": "optimal",
+    "round": 1,
+    "exec_s": null,
+    "llm_latency_s": 23.1,
+    "completion_tokens": 2039,
+    "reasoning_tokens": 1328
+   },
+   "objective_match_delta_vs_z2": 0,
+   "public_answer_hidden_from_prompt": true,
+   "failure_class": "business_correct"
+  },
+  {
+   "id": 20,
+   "run_config": {
+    "llm": {
+     "model": "Qwen3_8-27B",
+     "base_url": "https://10.46.124.101/service-large-50-1789958762589/llm/v1"
+    },
+    "dataset": "data/industryor/IndustryOR.json",
+    "dataset_sha256": "5b889e49d9aa64ae5b368bc80a05ee71a1daf20d126f54efc6207c98f9095f36",
+    "protocol_sha256": "cd474489d0c0e6217b8814e324e60927ec11589be1481e7ffdeaac124cc8102c",
+    "ids": [
+     1,
+     8,
+     19,
+     20
+    ],
+    "max_rounds": 3,
+    "temperature": 0.6,
+    "reasoning_effort": "medium",
+    "max_tokens": 32768,
+    "prior_sha256": "0fa52ef51cf1563070c08b3941e15bff9d4d97bae600639ab64e695f16aaee80",
+    "seed": null,
+    "metric": "absolute_error_at_most_0.1",
+    "independent_business_audit_ids": [
+     4,
+     8,
+     9,
+     19,
+     20,
+     21,
+     25,
+     48
+    ],
+    "implementation_sha256": {
+     "scripts/industryor_full_pipeline.py": "56f6a568ecaa0f8a9c8757b3c67abae800734151fc59cdd2d08f09ab6eccd75a",
+     "scripts/industryor_scoped_loop.py": "674cc868e00b9e1db03e14e992bcd9a55a5e8e4322772fbe3b15c62f647e892a",
+     "scripts/industryor_next_stage.py": "8daba1b593668d890978337f7215a520c363e3027eb2e34587ef4738fa20d7b7",
+     "scripts/m1_pilot.py": "f687c8f2daa2c55eb22a22a91dba169c1440acab9b6a23f8d0f079cbb8c7509a",
+     "scripts/m3_industryor.py": "f6b7e6a81942c5f5c920a35807db6ac6df738f35f91069a90f8c7bc8fcc79d13",
+     "scripts/scoped_ir_e2e.py": "c58f6d077b1e8d83fb2cb5e3eb3dda4a5a7df24820956c7889cc1931f7ca219f",
+     "scripts/scoped_ir_gate.py": "d9d87048c893ab4f43916d5bd0f5e6342af1e5bf69f03a119927325a2e973311",
+     "ora_agent/llm.py": "eb2b6f6ebc36813149d52ea1a109addd51cb02419c53f7427de7c7a712d7aa18",
+     "ora_agent/evidence_dag.py": "2dc36dd3b07703fe50212daf96412f9add723294ab722ee5d06c6edc63c5867a",
+     "ora_agent/repair_controller.py": "af265fcb4c4eadfc6146492b8bef0083b4693462bde68c6abafc81c8e5ee6e34",
+     "ora_agent/acceptance.py": "e073cffd12efd27ebdb65f6bf34b66a0e3235855a2f1adb52db92dfbb2c5084d",
+     "ora_agent/scoped_ir.py": "2156c0b58a4265fa34d90340eea5fc47ad3d4d7d8e32fc6770fb247804d13942",
+     "ora_agent/scoped_assets.py": "38f760d4b5eb330589e4dd2180f8d48f3545f79fbd09c6eedf70aaceaf44fcfa"
+    }
+   },
+   "status": "completed",
+   "prompt_sha256": "14eee62bda2bb6ecea3c620b5e360d6acf778992c3ee95de9195ea46c5bec430",
+   "initial_code": "from pyscipopt import Model, quicksum\nimport json\n\n# Data\nprofit = {\"robot\": 15, \"car\": 8, \"blocks\": 12, \"doll\": 5}\nplastic_avail = 1200\nplastic_use = {\"robot\": 30, \"car\": 10, \"blocks\": 20, \"doll\": 15}\nelec_avail = 800\nelec_use = {\"robot\": 8, \"car\": 5, \"blocks\": 3, \"doll\": 2}\n\nm = Model()\nm.hideOutput()\nm.setRealParam(\"limits/time\", 570)\n\n# Decision variables (integer counts of toys)\nR = m.addVar(\"R\", vtype=\"I\", lb=0, ub=40)   # robots\nC = m.addVar(\"C\", vtype=\"I\", lb=0, ub=120)  # model cars\nB = m.addVar(\"B\", vtype=\"I\", lb=0, ub=60)   # building blocks\nD = m.addVar(\"D\", vtype=\"I\", lb=0, ub=80)   # dolls\n\n# Binary auxiliaries\ny = m.addVar(\"y\", vtype=\"B\")  # y=1 means robots may be produced (dolls excluded)\nz = m.addVar(\"z\", vtype=\"B\")  # z=1 means cars are produced (blocks required)\n\n# Constraint 1: Plastic\nm.addCons(30*R + 10*C + 20*B + 15*D <= plastic_avail, \"plastic\")\n\n# Constraint 2: Electronic components\nm.addCons(8*R + 5*C + 3*B + 2*D <= elec_avail, \"electronics\")\n\n# Constraint 3: If robots manufactured, no dolls (mutual exclusion)\nm.addCons(R <= 40 * y, \"robot_implies_y\")\nm.addCons(D <= 80 * (1 - y), \"doll_excluded_if_robot\")\n\n# Constraint 4: If model cars manufactured, also manufacture building blocks\nm.addCons(C <= 120 * z, \"car_implies_z\")\nm.addCons(B >= z, \"blocks_required_if_car\")\n\n# Constraint 5: Dolls <= Model cars\nm.addCons(D <= C, \"doll_le_car\")\n\n# Objective: maximize profit\nm.setObjective(15*R + 8*C + 12*B + 5*D, \"maximize\")\n\nm.optimize()\n\nst = m.getStatus()\nprint(f\"status: {st}\")\nif m.getNSols() > 0:\n    print(f\"objective: {m.getObjVal()}\")\n    print(f\"robots: {m.getVal(R)}\")\n    print(f\"model cars: {m.getVal(C)}\")\n    print(f\"building blocks: {m.getVal(B)}\")\n    print(f\"dolls: {m.getVal(D)}\")",
+   "final_code": "from pyscipopt import Model, quicksum\nimport json\nprofit = {'robot': 15, 'car': 8, 'blocks': 12, 'doll': 5}\nplastic_avail = 1200\nplastic_use = {'robot': 30, 'car': 10, 'blocks': 20, 'doll': 15}\nelec_avail = 800\nelec_use = {'robot': 8, 'car': 5, 'blocks': 3, 'doll': 2}\nm = Model()\nm.hideOutput()\nm.setRealParam('limits/time', 570)\nR = m.addVar('R', vtype='I', lb=0, ub=40)\nC = m.addVar('C', vtype='I', lb=0, ub=120)\nB = m.addVar('B', vtype='I', lb=0, ub=60)\nD = m.addVar('D', vtype='I', lb=0, ub=80)\ny = m.addVar('y', vtype='B')\nz = m.addVar('z', vtype='B')\nm.addCons(30 * R + 10 * C + 20 * B + 15 * D <= plastic_avail, 'plastic')\nm.addCons(8 * R + 5 * C + 3 * B + 2 * D <= elec_avail, 'electronics')\nm.addCons(R <= 40 * y, 'robot_implies_y')\nm.addCons(D <= 80 * (1 - y), 'doll_excluded_if_robot')\nm.addCons(C <= 120 * z, 'car_implies_z')\nm.addCons(B >= z, 'blocks_required_if_car')\nm.addCons(D <= C, 'doll_le_car')\nm.setObjective(15 * R + 8 * C + 12 * B + 5 * D, 'maximize')\ny3 = m.addVar('y3', vtype='B')\ny4 = m.addVar('y4', vtype='B')\nm.addCons(y <= R, 'industryor_20_x1_indicator_off')\nm.addCons(z <= C, 'industryor_20_x2_indicator_off')\nm.addCons(y3 <= B, 'industryor_20_x3_indicator_off')\nm.addCons(B <= 60 * y3, 'industryor_20_x3_indicator_on')\nm.addCons(y4 <= D, 'industryor_20_x4_indicator_off')\nm.addCons(D <= 80 * y4, 'industryor_20_x4_indicator_on')\nm.optimize()\nst = m.getStatus()\nprint(f'status: {st}')\nif m.getNSols() > 0:\n    print(f'objective: {m.getObjVal()}')\n    print(f'robots: {m.getVal(R)}')\n    print(f'model cars: {m.getVal(C)}')\n    print(f'building blocks: {m.getVal(B)}')\n    print(f'dolls: {m.getVal(D)}')\n",
+   "initial_score": {
+    "schema_version": "industryor.business_audit.v1",
+    "problem_id": 20,
+    "audit_status": "invalid_solution",
+    "business_correct": false,
+    "variable_audit": {
+     "x1": {
+      "present": true,
+      "value": 0.0,
+      "domain": "integer",
+      "passed": true
+     },
+     "x2": {
+      "present": true,
+      "value": 118.0,
+      "domain": "integer",
+      "passed": true
+     },
+     "x3": {
+      "present": true,
+      "value": 1.0,
+      "domain": "integer",
+      "passed": true
+     },
+     "x4": {
+      "present": true,
+      "value": 0.0,
+      "domain": "integer",
+      "passed": true
+     },
+     "y1": {
+      "present": true,
+      "value": 0.0,
+      "domain": "binary",
+      "passed": true
+     },
+     "y2": {
+      "present": true,
+      "value": 1.0,
+      "domain": "binary",
+      "passed": true
+     },
+     "y3": {
+      "present": false,
+      "value": null,
+      "domain": "binary",
+      "passed": false
+     },
+     "y4": {
+      "present": false,
+      "value": null,
+      "domain": "binary",
+      "passed": false
+     }
+    },
+    "constraint_checks": [],
+    "violations": [
+     "variable domain failed: y3",
+     "variable domain failed: y4",
+     "required variables or model objective are unavailable"
+    ],
+    "execution_checks": {
+     "export_complete": true,
+     "solver_optimal": true,
+     "has_solution": true,
+     "model_objective_finite": true
+    },
+    "business_objective": null,
+    "model_objective_consistent": false,
+    "optimality": "not_assessed",
+    "blocking_reasons": []
+   },
+   "final_score": {
+    "schema_version": "industryor.business_audit.v1",
+    "problem_id": 20,
+    "audit_status": "complete",
+    "business_correct": true,
+    "variable_audit": {
+     "x1": {
+      "present": true,
+      "value": 0.0,
+      "domain": "integer",
+      "passed": true
+     },
+     "x2": {
+      "present": true,
+      "value": 118.0,
+      "domain": "integer",
+      "passed": true
+     },
+     "x3": {
+      "present": true,
+      "value": 1.0,
+      "domain": "integer",
+      "passed": true
+     },
+     "x4": {
+      "present": true,
+      "value": 0.0,
+      "domain": "integer",
+      "passed": true
+     },
+     "y1": {
+      "present": true,
+      "value": 0.0,
+      "domain": "binary",
+      "passed": true
+     },
+     "y2": {
+      "present": true,
+      "value": 1.0,
+      "domain": "binary",
+      "passed": true
+     },
+     "y3": {
+      "present": true,
+      "value": 1.0,
+      "domain": "binary",
+      "passed": true
+     },
+     "y4": {
+      "present": true,
+      "value": 0.0,
+      "domain": "binary",
+      "passed": true
+     }
+    },
+    "constraint_checks": [
+     {
+      "rule": "nonnegative_x1",
+      "passed": true,
+      "observed": 0.0,
+      "expected": ">= 0"
+     },
+     {
+      "rule": "nonnegative_x2",
+      "passed": true,
+      "observed": 118.0,
+      "expected": ">= 0"
+     },
+     {
+      "rule": "nonnegative_x3",
+      "passed": true,
+      "observed": 1.0,
+      "expected": ">= 0"
+     },
+     {
+      "rule": "nonnegative_x4",
+      "passed": true,
+      "observed": 0.0,
+      "expected": ">= 0"
+     },
+     {
+      "rule": "plastic",
+      "passed": true,
+      "observed": 1200.0,
+      "expected": "<= 1200"
+     },
+     {
+      "rule": "electronics",
+      "passed": true,
+      "observed": 593.0,
+      "expected": "<= 800"
+     },
+     {
+      "rule": "first_excludes_fourth",
+      "passed": true,
+      "observed": {
+       "x1": 0.0,
+       "x4": 0.0
+      },
+      "expected": "x4 = 0 when x1 > 0"
+     },
+     {
+      "rule": "cars_imply_blocks",
+      "passed": true,
+      "observed": {
+       "x2": 118.0,
+       "x3": 1.0
+      },
+      "expected": "x3 >= 1 when x2 > 0"
+     },
+     {
+      "rule": "dolls_no_greater_than_cars",
+      "passed": true,
+      "observed": {
+       "x2": 118.0,
+       "x4": 0.0
+      },
+      "expected": "x4 <= x2"
+     },
+     {
+      "rule": "link_x1_y1",
+      "passed": true,
+      "observed": {
+       "x1": 0.0,
+       "y1": 0.0
+      },
+      "expected": "indicator is 1 exactly when quantity is positive"
+     },
+     {
+      "rule": "link_x2_y2",
+      "passed": true,
+      "observed": {
+       "x2": 118.0,
+       "y2": 1.0
+      },
+      "expected": "indicator is 1 exactly when quantity is positive"
+     },
+     {
+      "rule": "link_x3_y3",
+      "passed": true,
+      "observed": {
+       "x3": 1.0,
+       "y3": 1.0
+      },
+      "expected": "indicator is 1 exactly when quantity is positive"
+     },
+     {
+      "rule": "link_x4_y4",
+      "passed": true,
+      "observed": {
+       "x4": 0.0,
+       "y4": 0.0
+      },
+      "expected": "indicator is 1 exactly when quantity is positive"
+     }
+    ],
+    "violations": [],
+    "execution_checks": {
+     "export_complete": true,
+     "solver_optimal": true,
+     "has_solution": true,
+     "model_objective_finite": true
+    },
+    "business_objective": 956.0,
+    "model_objective_consistent": true,
+    "optimality": "proven_optimal",
+    "blocking_reasons": []
+   },
+   "initial_objective": 956.0,
+   "initial_objective_match_abs_0_1": true,
+   "objective": 956.0,
+   "printed_objective": 956.0,
+   "reference": 956.0,
+   "objective_match_abs_0_1": true,
+   "objective_error": 0.0,
+   "objective_below_reference": false,
+   "objective_above_reference": false,
+   "exec_status": "ok",
+   "solver_status": "optimal",
+   "accepted": true,
+   "accepted_round": 1,
+   "accepted_but_business_incorrect": false,
+   "harmed_win": false,
+   "business_unverified": false,
+   "stop_reason": "accepted",
+   "history": [
+    {
+     "round": 0,
+     "action": "initial",
+     "code": "from pyscipopt import Model, quicksum\nimport json\n\n# Data\nprofit = {\"robot\": 15, \"car\": 8, \"blocks\": 12, \"doll\": 5}\nplastic_avail = 1200\nplastic_use = {\"robot\": 30, \"car\": 10, \"blocks\": 20, \"doll\": 15}\nelec_avail = 800\nelec_use = {\"robot\": 8, \"car\": 5, \"blocks\": 3, \"doll\": 2}\n\nm = Model()\nm.hideOutput()\nm.setRealParam(\"limits/time\", 570)\n\n# Decision variables (integer counts of toys)\nR = m.addVar(\"R\", vtype=\"I\", lb=0, ub=40)   # robots\nC = m.addVar(\"C\", vtype=\"I\", lb=0, ub=120)  # model cars\nB = m.addVar(\"B\", vtype=\"I\", lb=0, ub=60)   # building blocks\nD = m.addVar(\"D\", vtype=\"I\", lb=0, ub=80)   # dolls\n\n# Binary auxiliaries\ny = m.addVar(\"y\", vtype=\"B\")  # y=1 means robots may be produced (dolls excluded)\nz = m.addVar(\"z\", vtype=\"B\")  # z=1 means cars are produced (blocks required)\n\n# Constraint 1: Plastic\nm.addCons(30*R + 10*C + 20*B + 15*D <= plastic_avail, \"plastic\")\n\n# Constraint 2: Electronic components\nm.addCons(8*R + 5*C + 3*B + 2*D <= elec_avail, \"electronics\")\n\n# Constraint 3: If robots manufactured, no dolls (mutual exclusion)\nm.addCons(R <= 40 * y, \"robot_implies_y\")\nm.addCons(D <= 80 * (1 - y), \"doll_excluded_if_robot\")\n\n# Constraint 4: If model cars manufactured, also manufacture building blocks\nm.addCons(C <= 120 * z, \"car_implies_z\")\nm.addCons(B >= z, \"blocks_required_if_car\")\n\n# Constraint 5: Dolls <= Model cars\nm.addCons(D <= C, \"doll_le_car\")\n\n# Objective: maximize profit\nm.setObjective(15*R + 8*C + 12*B + 5*D, \"maximize\")\n\nm.optimize()\n\nst = m.getStatus()\nprint(f\"status: {st}\")\nif m.getNSols() > 0:\n    print(f\"objective: {m.getObjVal()}\")\n    print(f\"robots: {m.getVal(R)}\")\n    print(f\"model cars: {m.getVal(C)}\")\n    print(f\"building blocks: {m.getVal(B)}\")\n    print(f\"dolls: {m.getVal(D)}\")",
+     "record": {
+      "exec_status": "ok",
+      "return_code": 0,
+      "solver_status": "optimal",
+      "objective": 956.0,
+      "stderr_tail": "",
+      "wall_s": 0.2,
+      "stdout_artifact": "stdout.txt",
+      "stderr_artifact": "stderr.txt",
+      "code_sha256": "65bb353c72fd1e354e4fb8a96e942da30ce1a82104b55a6157492310479b2cad",
+      "instrumented_sha256": "3800b21af2908a145ebc581e6a5a9dddd14d34bad44882dce5f249ae7325e9e9",
+      "solution_exists": true,
+      "export_error": null,
+      "export_aliases": {
+       "R": "x1",
+       "C": "x2",
+       "B": "x3",
+       "D": "x4",
+       "y": "y1",
+       "z": "y2"
+      },
+      "repair_aliases": {
+       "x1": "R",
+       "x2": "C",
+       "x3": "B",
+       "x4": "D",
+       "y1": "y",
+       "y2": "z",
+       "y3": "y3",
+       "y4": "y4"
+      }
+     },
+     "audit": {
+      "status": "unknown",
+      "reason": "no_solution",
+      "fired": false,
+      "violations": [],
+      "unknown_evidence": [
+       "variable domain failed: y3",
+       "variable domain failed: y4",
+       "required variables or model objective are unavailable"
+      ],
+      "rejected": []
+     },
+     "score": {
+      "schema_version": "industryor.business_audit.v1",
+      "problem_id": 20,
+      "audit_status": "invalid_solution",
+      "business_correct": false,
+      "variable_audit": {
+       "x1": {
+        "present": true,
+        "value": 0.0,
+        "domain": "integer",
+        "passed": true
+       },
+       "x2": {
+        "present": true,
+        "value": 118.0,
+        "domain": "integer",
+        "passed": true
+       },
+       "x3": {
+        "present": true,
+        "value": 1.0,
+        "domain": "integer",
+        "passed": true
+       },
+       "x4": {
+        "present": true,
+        "value": 0.0,
+        "domain": "integer",
+        "passed": true
+       },
+       "y1": {
+        "present": true,
+        "value": 0.0,
+        "domain": "binary",
+        "passed": true
+       },
+       "y2": {
+        "present": true,
+        "value": 1.0,
+        "domain": "binary",
+        "passed": true
+       },
+       "y3": {
+        "present": false,
+        "value": null,
+        "domain": "binary",
+        "passed": false
+       },
+       "y4": {
+        "present": false,
+        "value": null,
+        "domain": "binary",
+        "passed": false
+       }
+      },
+      "constraint_checks": [],
+      "violations": [
+       "variable domain failed: y3",
+       "variable domain failed: y4",
+       "required variables or model objective are unavailable"
+      ],
+      "execution_checks": {
+       "export_complete": true,
+       "solver_optimal": true,
+       "has_solution": true,
+       "model_objective_finite": true
+      },
+      "business_objective": null,
+      "model_objective_consistent": false,
+      "optimality": "not_assessed",
+      "blocking_reasons": []
+     },
+     "generation_artifact": "generation_00.json",
+     "generation_reused": true,
+     "execution_reused": false,
+     "controller_decision": {
+      "action": "local_patch",
+      "reason": "first_action_for_failure",
+      "code_sha256": "65bb353c72fd1e354e4fb8a96e942da30ce1a82104b55a6157492310479b2cad",
+      "failure_signature": "unknown:no_solution",
+      "failure_kind": "contract",
+      "evidence": {},
+      "new_error_introduced": false
+     },
+     "next_action": "local_patch",
+     "before_sha256": "65bb353c72fd1e354e4fb8a96e942da30ce1a82104b55a6157492310479b2cad",
+     "after_sha256": "fee4dc545aeb1532b6a8babc99e327830f3720eb8109ede9015383535bf13b4b"
+    },
+    {
+     "round": 1,
+     "action": "local_patch",
+     "code": "from pyscipopt import Model, quicksum\nimport json\nprofit = {'robot': 15, 'car': 8, 'blocks': 12, 'doll': 5}\nplastic_avail = 1200\nplastic_use = {'robot': 30, 'car': 10, 'blocks': 20, 'doll': 15}\nelec_avail = 800\nelec_use = {'robot': 8, 'car': 5, 'blocks': 3, 'doll': 2}\nm = Model()\nm.hideOutput()\nm.setRealParam('limits/time', 570)\nR = m.addVar('R', vtype='I', lb=0, ub=40)\nC = m.addVar('C', vtype='I', lb=0, ub=120)\nB = m.addVar('B', vtype='I', lb=0, ub=60)\nD = m.addVar('D', vtype='I', lb=0, ub=80)\ny = m.addVar('y', vtype='B')\nz = m.addVar('z', vtype='B')\nm.addCons(30 * R + 10 * C + 20 * B + 15 * D <= plastic_avail, 'plastic')\nm.addCons(8 * R + 5 * C + 3 * B + 2 * D <= elec_avail, 'electronics')\nm.addCons(R <= 40 * y, 'robot_implies_y')\nm.addCons(D <= 80 * (1 - y), 'doll_excluded_if_robot')\nm.addCons(C <= 120 * z, 'car_implies_z')\nm.addCons(B >= z, 'blocks_required_if_car')\nm.addCons(D <= C, 'doll_le_car')\nm.setObjective(15 * R + 8 * C + 12 * B + 5 * D, 'maximize')\ny3 = m.addVar('y3', vtype='B')\ny4 = m.addVar('y4', vtype='B')\nm.addCons(y <= R, 'industryor_20_x1_indicator_off')\nm.addCons(z <= C, 'industryor_20_x2_indicator_off')\nm.addCons(y3 <= B, 'industryor_20_x3_indicator_off')\nm.addCons(B <= 60 * y3, 'industryor_20_x3_indicator_on')\nm.addCons(y4 <= D, 'industryor_20_x4_indicator_off')\nm.addCons(D <= 80 * y4, 'industryor_20_x4_indicator_on')\nm.optimize()\nst = m.getStatus()\nprint(f'status: {st}')\nif m.getNSols() > 0:\n    print(f'objective: {m.getObjVal()}')\n    print(f'robots: {m.getVal(R)}')\n    print(f'model cars: {m.getVal(C)}')\n    print(f'building blocks: {m.getVal(B)}')\n    print(f'dolls: {m.getVal(D)}')\n",
+     "record": {
+      "exec_status": "ok",
+      "return_code": 0,
+      "solver_status": "optimal",
+      "objective": 956.0,
+      "stderr_tail": "",
+      "wall_s": 0.2,
+      "stdout_artifact": "stdout.txt",
+      "stderr_artifact": "stderr.txt",
+      "code_sha256": "fee4dc545aeb1532b6a8babc99e327830f3720eb8109ede9015383535bf13b4b",
+      "instrumented_sha256": "3c1c666358078227a0efd4ff908aa71c50eb30ac229450c545a6217d447fcfcd",
+      "solution_exists": true,
+      "export_error": null,
+      "export_aliases": {
+       "R": "x1",
+       "C": "x2",
+       "B": "x3",
+       "D": "x4",
+       "y": "y1",
+       "z": "y2"
+      },
+      "repair_aliases": {
+       "x1": "R",
+       "x2": "C",
+       "x3": "B",
+       "x4": "D",
+       "y1": "y",
+       "y2": "z",
+       "y3": "y3",
+       "y4": "y4"
+      }
+     },
+     "audit": {
+      "key": "current",
+      "wrong": false,
+      "mutation": "candidate",
+      "reference_violations": [],
+      "status": "ok",
+      "asset_status": "SATISFIED",
+      "fired": false,
+      "violations": [],
+      "unknown_evidence": [],
+      "rejected": [],
+      "asset_sha256": "8254f52e691049a80afe49de881a891eb697528c8db75e59daeb0bad7120a47e"
+     },
+     "score": {
+      "schema_version": "industryor.business_audit.v1",
+      "problem_id": 20,
+      "audit_status": "complete",
+      "business_correct": true,
+      "variable_audit": {
+       "x1": {
+        "present": true,
+        "value": 0.0,
+        "domain": "integer",
+        "passed": true
+       },
+       "x2": {
+        "present": true,
+        "value": 118.0,
+        "domain": "integer",
+        "passed": true
+       },
+       "x3": {
+        "present": true,
+        "value": 1.0,
+        "domain": "integer",
+        "passed": true
+       },
+       "x4": {
+        "present": true,
+        "value": 0.0,
+        "domain": "integer",
+        "passed": true
+       },
+       "y1": {
+        "present": true,
+        "value": 0.0,
+        "domain": "binary",
+        "passed": true
+       },
+       "y2": {
+        "present": true,
+        "value": 1.0,
+        "domain": "binary",
+        "passed": true
+       },
+       "y3": {
+        "present": true,
+        "value": 1.0,
+        "domain": "binary",
+        "passed": true
+       },
+       "y4": {
+        "present": true,
+        "value": 0.0,
+        "domain": "binary",
+        "passed": true
+       }
+      },
+      "constraint_checks": [
+       {
+        "rule": "nonnegative_x1",
+        "passed": true,
+        "observed": 0.0,
+        "expected": ">= 0"
+       },
+       {
+        "rule": "nonnegative_x2",
+        "passed": true,
+        "observed": 118.0,
+        "expected": ">= 0"
+       },
+       {
+        "rule": "nonnegative_x3",
+        "passed": true,
+        "observed": 1.0,
+        "expected": ">= 0"
+       },
+       {
+        "rule": "nonnegative_x4",
+        "passed": true,
+        "observed": 0.0,
+        "expected": ">= 0"
+       },
+       {
+        "rule": "plastic",
+        "passed": true,
+        "observed": 1200.0,
+        "expected": "<= 1200"
+       },
+       {
+        "rule": "electronics",
+        "passed": true,
+        "observed": 593.0,
+        "expected": "<= 800"
+       },
+       {
+        "rule": "first_excludes_fourth",
+        "passed": true,
+        "observed": {
+         "x1": 0.0,
+         "x4": 0.0
+        },
+        "expected": "x4 = 0 when x1 > 0"
+       },
+       {
+        "rule": "cars_imply_blocks",
+        "passed": true,
+        "observed": {
+         "x2": 118.0,
+         "x3": 1.0
+        },
+        "expected": "x3 >= 1 when x2 > 0"
+       },
+       {
+        "rule": "dolls_no_greater_than_cars",
+        "passed": true,
+        "observed": {
+         "x2": 118.0,
+         "x4": 0.0
+        },
+        "expected": "x4 <= x2"
+       },
+       {
+        "rule": "link_x1_y1",
+        "passed": true,
+        "observed": {
+         "x1": 0.0,
+         "y1": 0.0
+        },
+        "expected": "indicator is 1 exactly when quantity is positive"
+       },
+       {
+        "rule": "link_x2_y2",
+        "passed": true,
+        "observed": {
+         "x2": 118.0,
+         "y2": 1.0
+        },
+        "expected": "indicator is 1 exactly when quantity is positive"
+       },
+       {
+        "rule": "link_x3_y3",
+        "passed": true,
+        "observed": {
+         "x3": 1.0,
+         "y3": 1.0
+        },
+        "expected": "indicator is 1 exactly when quantity is positive"
+       },
+       {
+        "rule": "link_x4_y4",
+        "passed": true,
+        "observed": {
+         "x4": 0.0,
+         "y4": 0.0
+        },
+        "expected": "indicator is 1 exactly when quantity is positive"
+       }
+      ],
+      "violations": [],
+      "execution_checks": {
+       "export_complete": true,
+       "solver_optimal": true,
+       "has_solution": true,
+       "model_objective_finite": true
+      },
+      "business_objective": 956.0,
+      "model_objective_consistent": true,
+      "optimality": "proven_optimal",
+      "blocking_reasons": []
+     },
+     "generation_artifact": "generation_01.json",
+     "generation_reused": true,
+     "execution_reused": false
+    }
+   ],
+   "controller_trace": [
+    {
+     "action": "local_patch",
+     "code_sha256": "65bb353c72fd1e354e4fb8a96e942da30ce1a82104b55a6157492310479b2cad",
+     "failure_signature": "unknown:no_solution",
+     "result_code_sha256": "fee4dc545aeb1532b6a8babc99e327830f3720eb8109ede9015383535bf13b4b",
+     "no_progress": null,
+     "failure_kind": "contract",
+     "evidence": {},
+     "evidence_improved": false,
+     "new_error_introduced": false
+    }
+   ],
+   "deterministic_transforms": 1,
+   "failed_deterministic_transforms": 0,
+   "generation_artifacts": [
+    {
+     "path": "generation_00.json",
+     "reused": true
+    }
+   ],
+   "llm_calls": 1,
+   "new_llm_calls": 0,
+   "api_attempts": 1,
+   "retry_accounting_complete": false,
+   "usage": [
+    {
+     "prompt_tokens": 1096,
+     "total_tokens": 3214,
+     "completion_tokens": 2118,
+     "prompt_tokens_details": null,
+     "completion_tokens_details": {
+      "reasoning_tokens": 1455
+     }
+    }
+   ],
+   "prompt_tokens": 1096,
+   "completion_tokens": 2118,
+   "total_tokens": 3214,
+   "reasoning_tokens": 1455,
+   "llm_latency_s": 21.494,
+   "new_llm_latency_s": 0,
+   "candidate_evaluations": 2,
+   "solver_runs": 2,
+   "reused_candidate_evaluations": 0,
+   "dag": {
+    "nodes": [
+     {
+      "node_id": "root",
+      "candidate_hash": "65bb353c72fd1e354e4fb8a96e942da30ce1a82104b55a6157492310479b2cad",
+      "parent_id": null,
+      "action": "seed",
+      "binding_sha256": null,
+      "binding_status": "rejected",
+      "execution": {
+       "exec_status": "ok",
+       "return_code": 0,
+       "solver_status": "optimal",
+       "objective": 956.0,
+       "stderr_tail": "",
+       "wall_s": 0.2,
+       "stdout_artifact": "stdout.txt",
+       "stderr_artifact": "stderr.txt",
+       "code_sha256": "65bb353c72fd1e354e4fb8a96e942da30ce1a82104b55a6157492310479b2cad",
+       "instrumented_sha256": "3800b21af2908a145ebc581e6a5a9dddd14d34bad44882dce5f249ae7325e9e9",
+       "solution_exists": true,
+       "export_error": null,
+       "export_aliases": {
+        "R": "x1",
+        "C": "x2",
+        "B": "x3",
+        "D": "x4",
+        "y": "y1",
+        "z": "y2"
+       },
+       "repair_aliases": {
+        "x1": "R",
+        "x2": "C",
+        "x3": "B",
+        "x4": "D",
+        "y1": "y",
+        "y2": "z",
+        "y3": "y3",
+        "y4": "y4"
+       },
+       "solution": {
+        "export": {
+         "complete": true,
+         "error": null
+        },
+        "objective": 956.0,
+        "schema_version": "industryor.solution.v1",
+        "solution_count": 4,
+        "solver_status": "optimal",
+        "variable_types": {
+         "x1": "INTEGER",
+         "x2": "INTEGER",
+         "x3": "INTEGER",
+         "x4": "INTEGER",
+         "y1": "BINARY",
+         "y2": "BINARY"
+        },
+        "variables": {
+         "x1": 0.0,
+         "x2": 118.0,
+         "x3": 1.0,
+         "x4": 0.0,
+         "y1": 0.0,
+         "y2": 1.0
+        }
+       }
+      },
+      "business_audit": {
+       "schema_version": "industryor.business_audit.v1",
+       "problem_id": 20,
+       "audit_status": "invalid_solution",
+       "business_correct": false,
+       "variable_audit": {
+        "x1": {
+         "present": true,
+         "value": 0.0,
+         "domain": "integer",
+         "passed": true
+        },
+        "x2": {
+         "present": true,
+         "value": 118.0,
+         "domain": "integer",
+         "passed": true
+        },
+        "x3": {
+         "present": true,
+         "value": 1.0,
+         "domain": "integer",
+         "passed": true
+        },
+        "x4": {
+         "present": true,
+         "value": 0.0,
+         "domain": "integer",
+         "passed": true
+        },
+        "y1": {
+         "present": true,
+         "value": 0.0,
+         "domain": "binary",
+         "passed": true
+        },
+        "y2": {
+         "present": true,
+         "value": 1.0,
+         "domain": "binary",
+         "passed": true
+        },
+        "y3": {
+         "present": false,
+         "value": null,
+         "domain": "binary",
+         "passed": false
+        },
+        "y4": {
+         "present": false,
+         "value": null,
+         "domain": "binary",
+         "passed": false
+        }
+       },
+       "constraint_checks": [],
+       "violations": [
+        "variable domain failed: y3",
+        "variable domain failed: y4",
+        "required variables or model objective are unavailable"
+       ],
+       "execution_checks": {
+        "export_complete": true,
+        "solver_optimal": true,
+        "has_solution": true,
+        "model_objective_finite": true
+       },
+       "business_objective": null,
+       "model_objective_consistent": false,
+       "optimality": "not_assessed",
+       "blocking_reasons": []
+      },
+      "solver_runs": 0,
+      "llm_calls": 0,
+      "done": true,
+      "children": [
+       "r0"
+      ],
+      "depth": 0,
+      "snapshot": "from pyscipopt import Model, quicksum\nimport json\n\n# Data\nprofit = {\"robot\": 15, \"car\": 8, \"blocks\": 12, \"doll\": 5}\nplastic_avail = 1200\nplastic_use = {\"robot\": 30, \"car\": 10, \"blocks\": 20, \"doll\": 15}\nelec_avail = 800\nelec_use = {\"robot\": 8, \"car\": 5, \"blocks\": 3, \"doll\": 2}\n\nm = Model()\nm.hideOutput()\nm.setRealParam(\"limits/time\", 570)\n\n# Decision variables (integer counts of toys)\nR = m.addVar(\"R\", vtype=\"I\", lb=0, ub=40)   # robots\nC = m.addVar(\"C\", vtype=\"I\", lb=0, ub=120)  # model cars\nB = m.addVar(\"B\", vtype=\"I\", lb=0, ub=60)   # building blocks\nD = m.addVar(\"D\", vtype=\"I\", lb=0, ub=80)   # dolls\n\n# Binary auxiliaries\ny = m.addVar(\"y\", vtype=\"B\")  # y=1 means robots may be produced (dolls excluded)\nz = m.addVar(\"z\", vtype=\"B\")  # z=1 means cars are produced (blocks required)\n\n# Constraint 1: Plastic\nm.addCons(30*R + 10*C + 20*B + 15*D <= plastic_avail, \"plastic\")\n\n# Constraint 2: Electronic components\nm.addCons(8*R + 5*C + 3*B + 2*D <= elec_avail, \"electronics\")\n\n# Constraint 3: If robots manufactured, no dolls (mutual exclusion)\nm.addCons(R <= 40 * y, \"robot_implies_y\")\nm.addCons(D <= 80 * (1 - y), \"doll_excluded_if_robot\")\n\n# Constraint 4: If model cars manufactured, also manufacture building blocks\nm.addCons(C <= 120 * z, \"car_implies_z\")\nm.addCons(B >= z, \"blocks_required_if_car\")\n\n# Constraint 5: Dolls <= Model cars\nm.addCons(D <= C, \"doll_le_car\")\n\n# Objective: maximize profit\nm.setObjective(15*R + 8*C + 12*B + 5*D, \"maximize\")\n\nm.optimize()\n\nst = m.getStatus()\nprint(f\"status: {st}\")\nif m.getNSols() > 0:\n    print(f\"objective: {m.getObjVal()}\")\n    print(f\"robots: {m.getVal(R)}\")\n    print(f\"model cars: {m.getVal(C)}\")\n    print(f\"building blocks: {m.getVal(B)}\")\n    print(f\"dolls: {m.getVal(D)}\")",
+      "candidate_kind": "pyscipopt_code",
+      "stop_reason": null
+     },
+     {
+      "node_id": "r0",
+      "candidate_hash": "65bb353c72fd1e354e4fb8a96e942da30ce1a82104b55a6157492310479b2cad",
+      "parent_id": "root",
+      "action": "initial",
+      "binding_sha256": null,
+      "binding_status": "rejected",
+      "execution": {
+       "exec_status": "ok",
+       "return_code": 0,
+       "solver_status": "optimal",
+       "objective": 956.0,
+       "stderr_tail": "",
+       "wall_s": 0.2,
+       "stdout_artifact": "stdout.txt",
+       "stderr_artifact": "stderr.txt",
+       "code_sha256": "65bb353c72fd1e354e4fb8a96e942da30ce1a82104b55a6157492310479b2cad",
+       "instrumented_sha256": "3800b21af2908a145ebc581e6a5a9dddd14d34bad44882dce5f249ae7325e9e9",
+       "solution_exists": true,
+       "export_error": null,
+       "export_aliases": {
+        "R": "x1",
+        "C": "x2",
+        "B": "x3",
+        "D": "x4",
+        "y": "y1",
+        "z": "y2"
+       },
+       "repair_aliases": {
+        "x1": "R",
+        "x2": "C",
+        "x3": "B",
+        "x4": "D",
+        "y1": "y",
+        "y2": "z",
+        "y3": "y3",
+        "y4": "y4"
+       },
+       "solution": {
+        "export": {
+         "complete": true,
+         "error": null
+        },
+        "objective": 956.0,
+        "schema_version": "industryor.solution.v1",
+        "solution_count": 4,
+        "solver_status": "optimal",
+        "variable_types": {
+         "x1": "INTEGER",
+         "x2": "INTEGER",
+         "x3": "INTEGER",
+         "x4": "INTEGER",
+         "y1": "BINARY",
+         "y2": "BINARY"
+        },
+        "variables": {
+         "x1": 0.0,
+         "x2": 118.0,
+         "x3": 1.0,
+         "x4": 0.0,
+         "y1": 0.0,
+         "y2": 1.0
+        }
+       }
+      },
+      "business_audit": {
+       "schema_version": "industryor.business_audit.v1",
+       "problem_id": 20,
+       "audit_status": "invalid_solution",
+       "business_correct": false,
+       "variable_audit": {
+        "x1": {
+         "present": true,
+         "value": 0.0,
+         "domain": "integer",
+         "passed": true
+        },
+        "x2": {
+         "present": true,
+         "value": 118.0,
+         "domain": "integer",
+         "passed": true
+        },
+        "x3": {
+         "present": true,
+         "value": 1.0,
+         "domain": "integer",
+         "passed": true
+        },
+        "x4": {
+         "present": true,
+         "value": 0.0,
+         "domain": "integer",
+         "passed": true
+        },
+        "y1": {
+         "present": true,
+         "value": 0.0,
+         "domain": "binary",
+         "passed": true
+        },
+        "y2": {
+         "present": true,
+         "value": 1.0,
+         "domain": "binary",
+         "passed": true
+        },
+        "y3": {
+         "present": false,
+         "value": null,
+         "domain": "binary",
+         "passed": false
+        },
+        "y4": {
+         "present": false,
+         "value": null,
+         "domain": "binary",
+         "passed": false
+        }
+       },
+       "constraint_checks": [],
+       "violations": [
+        "variable domain failed: y3",
+        "variable domain failed: y4",
+        "required variables or model objective are unavailable"
+       ],
+       "execution_checks": {
+        "export_complete": true,
+        "solver_optimal": true,
+        "has_solution": true,
+        "model_objective_finite": true
+       },
+       "business_objective": null,
+       "model_objective_consistent": false,
+       "optimality": "not_assessed",
+       "blocking_reasons": []
+      },
+      "solver_runs": 1,
+      "llm_calls": 0,
+      "done": true,
+      "children": [
+       "r1"
+      ],
+      "depth": 1,
+      "snapshot": "from pyscipopt import Model, quicksum\nimport json\n\n# Data\nprofit = {\"robot\": 15, \"car\": 8, \"blocks\": 12, \"doll\": 5}\nplastic_avail = 1200\nplastic_use = {\"robot\": 30, \"car\": 10, \"blocks\": 20, \"doll\": 15}\nelec_avail = 800\nelec_use = {\"robot\": 8, \"car\": 5, \"blocks\": 3, \"doll\": 2}\n\nm = Model()\nm.hideOutput()\nm.setRealParam(\"limits/time\", 570)\n\n# Decision variables (integer counts of toys)\nR = m.addVar(\"R\", vtype=\"I\", lb=0, ub=40)   # robots\nC = m.addVar(\"C\", vtype=\"I\", lb=0, ub=120)  # model cars\nB = m.addVar(\"B\", vtype=\"I\", lb=0, ub=60)   # building blocks\nD = m.addVar(\"D\", vtype=\"I\", lb=0, ub=80)   # dolls\n\n# Binary auxiliaries\ny = m.addVar(\"y\", vtype=\"B\")  # y=1 means robots may be produced (dolls excluded)\nz = m.addVar(\"z\", vtype=\"B\")  # z=1 means cars are produced (blocks required)\n\n# Constraint 1: Plastic\nm.addCons(30*R + 10*C + 20*B + 15*D <= plastic_avail, \"plastic\")\n\n# Constraint 2: Electronic components\nm.addCons(8*R + 5*C + 3*B + 2*D <= elec_avail, \"electronics\")\n\n# Constraint 3: If robots manufactured, no dolls (mutual exclusion)\nm.addCons(R <= 40 * y, \"robot_implies_y\")\nm.addCons(D <= 80 * (1 - y), \"doll_excluded_if_robot\")\n\n# Constraint 4: If model cars manufactured, also manufacture building blocks\nm.addCons(C <= 120 * z, \"car_implies_z\")\nm.addCons(B >= z, \"blocks_required_if_car\")\n\n# Constraint 5: Dolls <= Model cars\nm.addCons(D <= C, \"doll_le_car\")\n\n# Objective: maximize profit\nm.setObjective(15*R + 8*C + 12*B + 5*D, \"maximize\")\n\nm.optimize()\n\nst = m.getStatus()\nprint(f\"status: {st}\")\nif m.getNSols() > 0:\n    print(f\"objective: {m.getObjVal()}\")\n    print(f\"robots: {m.getVal(R)}\")\n    print(f\"model cars: {m.getVal(C)}\")\n    print(f\"building blocks: {m.getVal(B)}\")\n    print(f\"dolls: {m.getVal(D)}\")",
+      "candidate_kind": "pyscipopt_code",
+      "stop_reason": null
+     },
+     {
+      "node_id": "r1",
+      "candidate_hash": "fee4dc545aeb1532b6a8babc99e327830f3720eb8109ede9015383535bf13b4b",
+      "parent_id": "r0",
+      "action": "local_patch",
+      "binding_sha256": null,
+      "binding_status": "validated",
+      "execution": {
+       "exec_status": "ok",
+       "return_code": 0,
+       "solver_status": "optimal",
+       "objective": 956.0,
+       "stderr_tail": "",
+       "wall_s": 0.2,
+       "stdout_artifact": "stdout.txt",
+       "stderr_artifact": "stderr.txt",
+       "code_sha256": "fee4dc545aeb1532b6a8babc99e327830f3720eb8109ede9015383535bf13b4b",
+       "instrumented_sha256": "3c1c666358078227a0efd4ff908aa71c50eb30ac229450c545a6217d447fcfcd",
+       "solution_exists": true,
+       "export_error": null,
+       "export_aliases": {
+        "R": "x1",
+        "C": "x2",
+        "B": "x3",
+        "D": "x4",
+        "y": "y1",
+        "z": "y2"
+       },
+       "repair_aliases": {
+        "x1": "R",
+        "x2": "C",
+        "x3": "B",
+        "x4": "D",
+        "y1": "y",
+        "y2": "z",
+        "y3": "y3",
+        "y4": "y4"
+       },
+       "solution": {
+        "export": {
+         "complete": true,
+         "error": null
+        },
+        "objective": 956.0,
+        "schema_version": "industryor.solution.v1",
+        "solution_count": 3,
+        "solver_status": "optimal",
+        "variable_types": {
+         "x1": "INTEGER",
+         "x2": "INTEGER",
+         "x3": "INTEGER",
+         "x4": "INTEGER",
+         "y1": "BINARY",
+         "y2": "BINARY",
+         "y3": "BINARY",
+         "y4": "BINARY"
+        },
+        "variables": {
+         "x1": 0.0,
+         "x2": 118.0,
+         "x3": 1.0,
+         "x4": 0.0,
+         "y1": 0.0,
+         "y2": 1.0,
+         "y3": 1.0,
+         "y4": 0.0
+        }
+       }
+      },
+      "business_audit": {
+       "schema_version": "industryor.business_audit.v1",
+       "problem_id": 20,
+       "audit_status": "complete",
+       "business_correct": true,
+       "variable_audit": {
+        "x1": {
+         "present": true,
+         "value": 0.0,
+         "domain": "integer",
+         "passed": true
+        },
+        "x2": {
+         "present": true,
+         "value": 118.0,
+         "domain": "integer",
+         "passed": true
+        },
+        "x3": {
+         "present": true,
+         "value": 1.0,
+         "domain": "integer",
+         "passed": true
+        },
+        "x4": {
+         "present": true,
+         "value": 0.0,
+         "domain": "integer",
+         "passed": true
+        },
+        "y1": {
+         "present": true,
+         "value": 0.0,
+         "domain": "binary",
+         "passed": true
+        },
+        "y2": {
+         "present": true,
+         "value": 1.0,
+         "domain": "binary",
+         "passed": true
+        },
+        "y3": {
+         "present": true,
+         "value": 1.0,
+         "domain": "binary",
+         "passed": true
+        },
+        "y4": {
+         "present": true,
+         "value": 0.0,
+         "domain": "binary",
+         "passed": true
+        }
+       },
+       "constraint_checks": [
+        {
+         "rule": "nonnegative_x1",
+         "passed": true,
+         "observed": 0.0,
+         "expected": ">= 0"
+        },
+        {
+         "rule": "nonnegative_x2",
+         "passed": true,
+         "observed": 118.0,
+         "expected": ">= 0"
+        },
+        {
+         "rule": "nonnegative_x3",
+         "passed": true,
+         "observed": 1.0,
+         "expected": ">= 0"
+        },
+        {
+         "rule": "nonnegative_x4",
+         "passed": true,
+         "observed": 0.0,
+         "expected": ">= 0"
+        },
+        {
+         "rule": "plastic",
+         "passed": true,
+         "observed": 1200.0,
+         "expected": "<= 1200"
+        },
+        {
+         "rule": "electronics",
+         "passed": true,
+         "observed": 593.0,
+         "expected": "<= 800"
+        },
+        {
+         "rule": "first_excludes_fourth",
+         "passed": true,
+         "observed": {
+          "x1": 0.0,
+          "x4": 0.0
+         },
+         "expected": "x4 = 0 when x1 > 0"
+        },
+        {
+         "rule": "cars_imply_blocks",
+         "passed": true,
+         "observed": {
+          "x2": 118.0,
+          "x3": 1.0
+         },
+         "expected": "x3 >= 1 when x2 > 0"
+        },
+        {
+         "rule": "dolls_no_greater_than_cars",
+         "passed": true,
+         "observed": {
+          "x2": 118.0,
+          "x4": 0.0
+         },
+         "expected": "x4 <= x2"
+        },
+        {
+         "rule": "link_x1_y1",
+         "passed": true,
+         "observed": {
+          "x1": 0.0,
+          "y1": 0.0
+         },
+         "expected": "indicator is 1 exactly when quantity is positive"
+        },
+        {
+         "rule": "link_x2_y2",
+         "passed": true,
+         "observed": {
+          "x2": 118.0,
+          "y2": 1.0
+         },
+         "expected": "indicator is 1 exactly when quantity is positive"
+        },
+        {
+         "rule": "link_x3_y3",
+         "passed": true,
+         "observed": {
+          "x3": 1.0,
+          "y3": 1.0
+         },
+         "expected": "indicator is 1 exactly when quantity is positive"
+        },
+        {
+         "rule": "link_x4_y4",
+         "passed": true,
+         "observed": {
+          "x4": 0.0,
+          "y4": 0.0
+         },
+         "expected": "indicator is 1 exactly when quantity is positive"
+        }
+       ],
+       "violations": [],
+       "execution_checks": {
+        "export_complete": true,
+        "solver_optimal": true,
+        "has_solution": true,
+        "model_objective_finite": true
+       },
+       "business_objective": 956.0,
+       "model_objective_consistent": true,
+       "optimality": "proven_optimal",
+       "blocking_reasons": []
+      },
+      "solver_runs": 1,
+      "llm_calls": 0,
+      "done": true,
+      "children": [],
+      "depth": 2,
+      "snapshot": "from pyscipopt import Model, quicksum\nimport json\nprofit = {'robot': 15, 'car': 8, 'blocks': 12, 'doll': 5}\nplastic_avail = 1200\nplastic_use = {'robot': 30, 'car': 10, 'blocks': 20, 'doll': 15}\nelec_avail = 800\nelec_use = {'robot': 8, 'car': 5, 'blocks': 3, 'doll': 2}\nm = Model()\nm.hideOutput()\nm.setRealParam('limits/time', 570)\nR = m.addVar('R', vtype='I', lb=0, ub=40)\nC = m.addVar('C', vtype='I', lb=0, ub=120)\nB = m.addVar('B', vtype='I', lb=0, ub=60)\nD = m.addVar('D', vtype='I', lb=0, ub=80)\ny = m.addVar('y', vtype='B')\nz = m.addVar('z', vtype='B')\nm.addCons(30 * R + 10 * C + 20 * B + 15 * D <= plastic_avail, 'plastic')\nm.addCons(8 * R + 5 * C + 3 * B + 2 * D <= elec_avail, 'electronics')\nm.addCons(R <= 40 * y, 'robot_implies_y')\nm.addCons(D <= 80 * (1 - y), 'doll_excluded_if_robot')\nm.addCons(C <= 120 * z, 'car_implies_z')\nm.addCons(B >= z, 'blocks_required_if_car')\nm.addCons(D <= C, 'doll_le_car')\nm.setObjective(15 * R + 8 * C + 12 * B + 5 * D, 'maximize')\ny3 = m.addVar('y3', vtype='B')\ny4 = m.addVar('y4', vtype='B')\nm.addCons(y <= R, 'industryor_20_x1_indicator_off')\nm.addCons(z <= C, 'industryor_20_x2_indicator_off')\nm.addCons(y3 <= B, 'industryor_20_x3_indicator_off')\nm.addCons(B <= 60 * y3, 'industryor_20_x3_indicator_on')\nm.addCons(y4 <= D, 'industryor_20_x4_indicator_off')\nm.addCons(D <= 80 * y4, 'industryor_20_x4_indicator_on')\nm.optimize()\nst = m.getStatus()\nprint(f'status: {st}')\nif m.getNSols() > 0:\n    print(f'objective: {m.getObjVal()}')\n    print(f'robots: {m.getVal(R)}')\n    print(f'model cars: {m.getVal(C)}')\n    print(f'building blocks: {m.getVal(B)}')\n    print(f'dolls: {m.getVal(D)}')\n",
+      "candidate_kind": "pyscipopt_code",
+      "stop_reason": "accepted"
+     }
+    ],
+    "events": [
+     {
+      "type": "candidate_evaluated",
+      "node_id": "r0",
+      "parent_id": "root",
+      "action": "initial",
+      "candidate_hash": "65bb353c72fd1e354e4fb8a96e942da30ce1a82104b55a6157492310479b2cad"
+     },
+     {
+      "type": "candidate_evaluated",
+      "node_id": "r1",
+      "parent_id": "r0",
+      "action": "local_patch",
+      "candidate_hash": "fee4dc545aeb1532b6a8babc99e327830f3720eb8109ede9015383535bf13b4b"
+     },
+     {
+      "type": "done",
+      "node_id": "r1",
+      "reason": "accepted"
+     }
+    ],
+    "accepted_node_ids": [
+     "r1"
+    ],
+    "negative_node_ids": [
+     "root",
+     "r0"
+    ],
+    "leaf_node_ids": [
+     "r1"
+    ],
+    "finished": true,
+    "score_based_pruning": false,
+    "total_solver_runs": 2,
+    "total_llm_calls": 0
+   },
+   "final_solution": {
+    "export": {
+     "complete": true,
+     "error": null
+    },
+    "objective": 956.0,
+    "schema_version": "industryor.solution.v1",
+    "solution_count": 3,
+    "solver_status": "optimal",
+    "variable_types": {
+     "x1": "INTEGER",
+     "x2": "INTEGER",
+     "x3": "INTEGER",
+     "x4": "INTEGER",
+     "y1": "BINARY",
+     "y2": "BINARY",
+     "y3": "BINARY",
+     "y4": "BINARY"
+    },
+    "variables": {
+     "x1": 0.0,
+     "x2": 118.0,
+     "x3": 1.0,
+     "x4": 0.0,
+     "y1": 0.0,
+     "y2": 1.0,
+     "y3": 1.0,
+     "y4": 0.0
+    }
+   },
+   "baseline_z2": {
+    "objective": 956.0,
+    "exec_status": "ok",
+    "solver_status": "optimal",
+    "round": 1,
+    "exec_s": null,
+    "llm_latency_s": 28.6,
+    "completion_tokens": 2522,
+    "reasoning_tokens": 1635
+   },
+   "objective_match_delta_vs_z2": 0,
+   "public_answer_hidden_from_prompt": true,
+   "failure_class": "business_correct"
+  }
+ ]
+}

@@ -1,0 +1,66 @@
+{
+  "registry_version": "dvsa.registry.v0.3",
+  "status": "dev_natural_repair_complete_not_frozen",
+  "protocol": "dvsa-bwor-v0.1",
+  "frozen_problem_content_accessed_for_design": false,
+  "template_library": {
+    "path": "assets/dvsa/bwor_primitives_v0.1.json",
+    "sha256": "a875d12c862dce6216980ef9e5cd83abd081c3392f39bf3672f9196f71fd32f5",
+    "status": "candidate_not_promoted"
+  },
+  "implementations": {
+    "ora_agent/dvsa_model.py": "4ea833ed266251b4ae1e16b8e4bea382a8d2bb21417df65e92da0187df3513d6",
+    "ora_agent/dvsa_repair.py": "4add51fb2a80791a6c79c4e475ac9951a68a0ab524d75661343cae8a0926bf7c",
+    "scripts/dvsa_candidate.py": "ec24cec4124c35e3336a4d96a8acb734b9954ce6bb7980bebf54370888a7ed67",
+    "scripts/dvsa_repair.py": "59e651ed574dddc6e74f4c5637ef8102c3c9313048cf054ad0f26ec6d4df3ff2",
+    "scripts/dvsa_repair_analyze.py": "1f39ffa99ada50b6983d31eab111844a184a98d58a3b24b78c921f37fc086084"
+  },
+  "shared_initial": {
+    "reference_qualified_problems": 7,
+    "total_dev_problems": 16,
+    "business_correct_n": 6,
+    "llm_calls": 7,
+    "total_tokens": 30067,
+    "latency_s": 219.686,
+    "prompt_bug_archive": "work/dvsa/bwor_repair_promptbug0/"
+  },
+  "strict_schema": {
+    "analysis": "work/dvsa/bwor_repair_analysis/analysis.json",
+    "sha256": "9d9ae4c290ae73088d484314ebf261f67d8048d2800cbe81a20c4777c7f2ac40",
+    "figure": "/home/hewj13/paper_icml2027/figures/dvsa_bwor_dev_repair_strict.png",
+    "figure_sha256": "6151f3a756c40fddb69bcb7040edf786e7c6de36de4463aecb1891ff43d4f65e",
+    "business_correct_n": {"no_memory": 7, "text_memory": 6, "dvsa": 6, "direct_legacy_witness": 6},
+    "dvsa_vs_text_mcnemar_p": 1.0,
+    "harmed_win_n": 0
+  },
+  "format_sensitivity": {
+    "analysis": "work/dvsa/bwor_repair_normalized_analysis/analysis.json",
+    "sha256": "9cae375f07859616e327005451f0c440addfd2122a9a3e25930dbe7f51355a47",
+    "figure": "/home/hewj13/paper_icml2027/figures/dvsa_bwor_dev_repair_normalized.png",
+    "figure_sha256": "41ae9623f5910bb51b53c6ce199f6dac39e6281ce07435a0f332b441cce9a929",
+    "business_correct_n": {"no_memory": 7, "text_memory": 7, "dvsa": 7, "direct_legacy_witness": 7},
+    "dvsa_vs_text_mcnemar_p": 1.0,
+    "harmed_win_n": 0,
+    "new_llm_calls": 0,
+    "rule": "Missing data defaults to empty object; missing data.path still fails."
+  },
+  "dvsa_semantic_repair_triggers": 0,
+  "dvsa_execution_recovery_triggers": 1,
+  "dvsa_no_call": 6,
+  "dvsa_repair_llm_calls": 1,
+  "text_repair_llm_calls": 7,
+  "dvsa_repair_tokens": 4650,
+  "text_repair_tokens": 48312,
+  "sota_started": false,
+  "report": "docs/paper/dvsa_dev_repair_v0.1.md",
+  "verification": {
+    "python39_tests": "162 passed; one pre-existing m2gen Python 3.9 dict|None failure",
+    "python312_m2gen": "REGRESSION OK"
+  },
+  "limitations": [
+    "No natural DVSA semantic-repair event occurred; only conservative gating and one execution recovery were observed.",
+    "Results cover seven reference-qualified problems with shared variable schema, not full dev or autonomous modeling.",
+    "Format sensitivity does not replace the strict-schema result.",
+    "No validation, frozen or SOTA result has been produced."
+  ]
+}

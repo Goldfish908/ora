@@ -1,0 +1,169 @@
+{
+ "scope": "development_replay_not_heldout",
+ "arms": {
+  "bind_only": {
+   "n": 8,
+   "runner_errors": 0,
+   "initial_objective_matches_abs_0_1": 6,
+   "root_objective_matches_abs_0_1": 6,
+   "binding_preserved_objective": 8,
+   "root_business_correct": 3,
+   "final_business_correct": 3,
+   "business_recoveries": 0,
+   "objective_matches_abs_0_1": 6,
+   "accepted": 3,
+   "new_llm_calls": 0,
+   "logical_repair_llm_calls": 0,
+   "rebinding_llm_calls": 0,
+   "new_rebinding_llm_calls": 0,
+   "shared_regeneration_reuses": 0,
+   "api_attempts": 0,
+   "completion_tokens": 0,
+   "total_tokens": 0,
+   "llm_latency_s": 0,
+   "new_llm_latency_s": 0,
+   "candidate_evaluations": 8,
+   "multi_branch_cases": 0,
+   "solver_runs": 8,
+   "accepted_actions": [
+    "initial"
+   ]
+  },
+  "single_line": {
+   "n": 8,
+   "runner_errors": 0,
+   "initial_objective_matches_abs_0_1": 6,
+   "root_objective_matches_abs_0_1": 6,
+   "binding_preserved_objective": 8,
+   "root_business_correct": 3,
+   "final_business_correct": 7,
+   "business_recoveries": 4,
+   "objective_matches_abs_0_1": 7,
+   "accepted": 7,
+   "new_llm_calls": 0,
+   "logical_repair_llm_calls": 1,
+   "rebinding_llm_calls": 0,
+   "new_rebinding_llm_calls": 0,
+   "shared_regeneration_reuses": 1,
+   "api_attempts": 1,
+   "completion_tokens": 6154,
+   "total_tokens": 8894,
+   "llm_latency_s": 58.975,
+   "new_llm_latency_s": 0,
+   "candidate_evaluations": 13,
+   "multi_branch_cases": 0,
+   "solver_runs": 5,
+   "accepted_actions": [
+    "initial",
+    "local_patch"
+   ]
+  },
+  "branch_dag": {
+   "n": 8,
+   "runner_errors": 0,
+   "initial_objective_matches_abs_0_1": 6,
+   "root_objective_matches_abs_0_1": 6,
+   "binding_preserved_objective": 8,
+   "root_business_correct": 3,
+   "final_business_correct": 7,
+   "business_recoveries": 4,
+   "objective_matches_abs_0_1": 7,
+   "accepted": 7,
+   "new_llm_calls": 0,
+   "logical_repair_llm_calls": 5,
+   "rebinding_llm_calls": 0,
+   "new_rebinding_llm_calls": 0,
+   "shared_regeneration_reuses": 5,
+   "api_attempts": 5,
+   "completion_tokens": 19675,
+   "total_tokens": 27333,
+   "llm_latency_s": 193.9,
+   "new_llm_latency_s": 0,
+   "candidate_evaluations": 17,
+   "multi_branch_cases": 4,
+   "solver_runs": 9,
+   "accepted_actions": [
+    "initial",
+    "local_patch",
+    "regenerate"
+   ]
+  }
+ },
+ "audit_complete_problem_ids": {
+  "bind_only": [
+   4,
+   8,
+   9,
+   19,
+   20,
+   21,
+   25
+  ],
+  "single_line": [
+   4,
+   8,
+   9,
+   19,
+   20,
+   21,
+   25,
+   48
+  ],
+  "branch_dag": [
+   4,
+   8,
+   9,
+   19,
+   20,
+   21,
+   25,
+   48
+  ]
+ },
+ "dag_minus_single_business_correct": 0,
+ "dag_minus_single_new_llm_calls": 0,
+ "dag_minus_single_logical_llm_calls": 4,
+ "binding_cost": {
+  "n": 8,
+  "runner_errors": 0,
+  "binding_ready": 7,
+  "initial_business_correct": 0,
+  "rebound_business_correct": 3,
+  "objective_unchanged": 7,
+  "objective_matches_abs_0_1": 6,
+  "new_llm_calls": 8,
+  "api_attempts": 8,
+  "completion_tokens": 10905,
+  "total_tokens": 24609,
+  "llm_latency_s": 116.798,
+  "wall_seconds": 50.816,
+  "scope": "development replay; binding coverage is not proof of model semantic repair"
+ },
+ "validation": {
+  "results": 24,
+  "business_scores_recomputed": 32,
+  "source_snapshots_verified": 9,
+  "generation_records_verified": 5,
+  "analysis_sha256": "14833eb82f5810d1b7e55d069aece4a774ed273a1a4c34e5871b9b13e4498f50"
+ },
+ "regeneration_replay": {
+  "source": "work/industryor_semantic_dag_dev_v0.1/shared_generations",
+  "files": {
+   "3221d868ce10c88ad10b2a118661baaf9abb68cd5048fb876ea02ab48b99cbac.json": "ee92334dea0eee1fa849656374648dba22e81c2275ee71e238e6e44a5ec70a8e",
+   "3fe32a1927fb878ee4ca901df155a16a5eb23df917911b78166db716d3553b4f.json": "472b8df273a3f3af7de962e212a39dc647c641e47b727f15708c546a06d01fa7",
+   "7335f5f7b8d4de8ad9334738e15089e1f05b4dcb16c08798c746ad71126ce8f7.json": "ae0d82f9a6735c7616e3a6c4dcffd8ed73b38a079891690042d0550d7a083509",
+   "8dd1255f4f9e497a680cccac12d8adb93afdb7785e77be15e6a280233d0ea24b.json": "e5cf66ffde511f8a3f0e6972ea542651a29350135bd8429ea3d0ad83b5156b21",
+   "c7a30736041ebcee3293990a70cbf53fed630e419ecbd7d940a35410463edccf.json": "e0a8513519ea63749824efd669066a06136c16231a4b33fd2d349182781ebc9a"
+  }
+ },
+ "claims": {
+  "full_industryor_improvement": false,
+  "cross_family_transfer": false,
+  "outer_loop_evolution": false,
+  "heldout": false
+ },
+ "sources": [
+  "work/industryor_semantic_dag_dev_v0.2/analysis.json",
+  "work/industryor_semantic_dag_dev_v0.2/manifest.json"
+ ]
+}

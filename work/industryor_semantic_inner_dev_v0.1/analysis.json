@@ -1,0 +1,1124 @@
+{
+ "run_config": {
+  "ids": [
+   4,
+   8,
+   20
+  ],
+  "model": "Qwen3_8-27B",
+  "base_url": "https://10.46.124.101/service-large-50-1789958762589/llm/v1",
+  "exposure": "development_replay_not_heldout",
+  "binding_temperature": 0.2,
+  "reasoning_effort": "medium",
+  "max_tokens": 32768,
+  "source_analysis_sha256": "8fc94a9db2ba7d833dd4e645831bf8c98321992caf8b33788c52d8a47140dfa5",
+  "protocol_sha256": "5e74e9eb2bf63f1b4030a46829b4e808fb64333b588e6d1b6e23446649530e01",
+  "implementation_sha256": {
+   "scripts/industryor_binding_pilot.py": "e6ce15370a1c4e5e3db197e0d9cfa08656e951ea321724d661a444ab3abedc21",
+   "ora_agent/semantic_binding.py": "2b07c25f540d1f150e8bc7833ebba59129742fc36da82a8f83b301ad2c121f0d",
+   "scripts/industryor_next_stage.py": "8daba1b593668d890978337f7215a520c363e3027eb2e34587ef4738fa20d7b7",
+   "scripts/m1_pilot.py": "f687c8f2daa2c55eb22a22a91dba169c1440acab9b6a23f8d0f079cbb8c7509a",
+   "ora_agent/llm.py": "eb2b6f6ebc36813149d52ea1a109addd51cb02419c53f7427de7c7a712d7aa18"
+  }
+ },
+ "summary": {
+  "n": 3,
+  "runner_errors": 0,
+  "binding_ready": 3,
+  "initial_business_correct": 0,
+  "rebound_business_correct": 2,
+  "objective_unchanged": 3,
+  "objective_matches_abs_0_1": 2,
+  "new_llm_calls": 3,
+  "api_attempts": 3,
+  "completion_tokens": 3060,
+  "total_tokens": 8037,
+  "llm_latency_s": 33.992,
+  "wall_seconds": 17.33,
+  "scope": "development replay; binding coverage is not proof of model semantic repair"
+ },
+ "results": [
+  {
+   "id": 4,
+   "run_config": {
+    "ids": [
+     4,
+     8,
+     20
+    ],
+    "model": "Qwen3_8-27B",
+    "base_url": "https://10.46.124.101/service-large-50-1789958762589/llm/v1",
+    "exposure": "development_replay_not_heldout",
+    "binding_temperature": 0.2,
+    "reasoning_effort": "medium",
+    "max_tokens": 32768,
+    "source_analysis_sha256": "8fc94a9db2ba7d833dd4e645831bf8c98321992caf8b33788c52d8a47140dfa5",
+    "protocol_sha256": "5e74e9eb2bf63f1b4030a46829b4e808fb64333b588e6d1b6e23446649530e01",
+    "implementation_sha256": {
+     "scripts/industryor_binding_pilot.py": "e6ce15370a1c4e5e3db197e0d9cfa08656e951ea321724d661a444ab3abedc21",
+     "ora_agent/semantic_binding.py": "2b07c25f540d1f150e8bc7833ebba59129742fc36da82a8f83b301ad2c121f0d",
+     "scripts/industryor_next_stage.py": "8daba1b593668d890978337f7215a520c363e3027eb2e34587ef4738fa20d7b7",
+     "scripts/m1_pilot.py": "f687c8f2daa2c55eb22a22a91dba169c1440acab9b6a23f8d0f079cbb8c7509a",
+     "ora_agent/llm.py": "eb2b6f6ebc36813149d52ea1a109addd51cb02419c53f7427de7c7a712d7aa18"
+    }
+   },
+   "binding_status": "ready",
+   "binding_gate": {
+    "status": "ready",
+    "accepted_for_execution": true,
+    "business_correct": false,
+    "aliases": {
+     "x_cow": "x_cows",
+     "x_sheep": "x_sheep",
+     "x_chicken": "x_chickens"
+    },
+    "repair_aliases": {
+     "x_cows": "x_cow",
+     "x_sheep": "x_sheep",
+     "x_chickens": "x_chicken"
+    },
+    "required_semantic_names": [
+     "x_chickens",
+     "x_cows",
+     "x_sheep"
+    ],
+    "covered_semantic_names": [
+     "x_chickens",
+     "x_cows",
+     "x_sheep"
+    ],
+    "missing_semantic_names": [],
+    "unresolved_solver_names": [],
+    "domain_mismatches": [],
+    "export_error": null,
+    "errors": [],
+    "runtime_verification_required": true,
+    "scope": "name binding and declared domains only; constraints and objective require independent post-solve audit"
+   },
+   "initial_score": {
+    "schema_version": "industryor.business_audit.v1",
+    "problem_id": 4,
+    "audit_status": "invalid_solution",
+    "business_correct": false,
+    "variable_audit": {
+     "x_cows": {
+      "present": false,
+      "value": null,
+      "domain": "integer",
+      "passed": false
+     },
+     "x_sheep": {
+      "present": true,
+      "value": 20.0,
+      "domain": "integer",
+      "passed": true
+     },
+     "x_chickens": {
+      "present": false,
+      "value": null,
+      "domain": "integer",
+      "passed": false
+     }
+    },
+    "constraint_checks": [],
+    "violations": [
+     "variable domain failed: x_cows",
+     "variable domain failed: x_chickens",
+     "required variables or model objective are unavailable"
+    ],
+    "execution_checks": {
+     "export_complete": true,
+     "solver_optimal": true,
+     "has_solution": true,
+     "model_objective_finite": true
+    },
+    "business_objective": null,
+    "model_objective_consistent": false,
+    "optimality": "not_assessed",
+    "blocking_reasons": []
+   },
+   "rebound_score": {
+    "schema_version": "industryor.business_audit.v1",
+    "problem_id": 4,
+    "audit_status": "complete",
+    "business_correct": true,
+    "variable_audit": {
+     "x_cows": {
+      "present": true,
+      "value": 70.0,
+      "domain": "integer",
+      "passed": true
+     },
+     "x_sheep": {
+      "present": true,
+      "value": 20.0,
+      "domain": "integer",
+      "passed": true
+     },
+     "x_chickens": {
+      "present": true,
+      "value": 0.0,
+      "domain": "integer",
+      "passed": true
+     }
+    },
+    "constraint_checks": [
+     {
+      "rule": "nonnegative_x_cows",
+      "passed": true,
+      "observed": 70.0,
+      "expected": ">= 0"
+     },
+     {
+      "rule": "nonnegative_x_sheep",
+      "passed": true,
+      "observed": 20.0,
+      "expected": ">= 0"
+     },
+     {
+      "rule": "nonnegative_x_chickens",
+      "passed": true,
+      "observed": 0.0,
+      "expected": ">= 0"
+     },
+     {
+      "rule": "manure_capacity",
+      "passed": true,
+      "observed": 800.0,
+      "expected": "<= 800"
+     },
+     {
+      "rule": "chicken_capacity",
+      "passed": true,
+      "observed": 0.0,
+      "expected": "<= 50"
+     },
+     {
+      "rule": "minimum_cows",
+      "passed": true,
+      "observed": 70.0,
+      "expected": ">= 10"
+     },
+     {
+      "rule": "minimum_sheep",
+      "passed": true,
+      "observed": 20.0,
+      "expected": ">= 20"
+     },
+     {
+      "rule": "animal_capacity",
+      "passed": true,
+      "observed": 90.0,
+      "expected": "<= 100"
+     }
+    ],
+    "violations": [],
+    "execution_checks": {
+     "export_complete": true,
+     "solver_optimal": true,
+     "has_solution": true,
+     "model_objective_finite": true
+    },
+    "business_objective": 30400.0,
+    "model_objective_consistent": true,
+    "optimality": "proven_optimal",
+    "blocking_reasons": []
+   },
+   "initial_objective": 30400.0,
+   "rebound_objective": 30400.0,
+   "reference": 30400.0,
+   "new_llm_calls": 1,
+   "binding_reused": false,
+   "api_attempts": 1,
+   "usage": {
+    "prompt_tokens": 1151,
+    "total_tokens": 1634,
+    "completion_tokens": 483,
+    "prompt_tokens_details": null,
+    "completion_tokens_details": {
+     "reasoning_tokens": 337
+    }
+   },
+   "llm_latency_s": 6.262797147035599,
+   "source_initial_code_sha256": "838767d84c6d382e72efa839611b98a52b22d83c8f122794a887e6c7aa90061f",
+   "source_result_sha256": "01e00fe87e29fda1fbcba3a43c47efe9f1808ad7c52ab9f2625f9c02927f9cc7",
+   "code_semantics_changed": false,
+   "business_accepted": true,
+   "execution": {
+    "exec_status": "ok",
+    "return_code": 0,
+    "solver_status": "optimal",
+    "objective": 30400.0,
+    "stderr_tail": "",
+    "wall_s": 0.2,
+    "stdout_artifact": "stdout.txt",
+    "stderr_artifact": "stderr.txt"
+   },
+   "objective_unchanged": true,
+   "objective_match_abs_0_1": true,
+   "status": "completed"
+  },
+  {
+   "id": 8,
+   "run_config": {
+    "ids": [
+     4,
+     8,
+     20
+    ],
+    "model": "Qwen3_8-27B",
+    "base_url": "https://10.46.124.101/service-large-50-1789958762589/llm/v1",
+    "exposure": "development_replay_not_heldout",
+    "binding_temperature": 0.2,
+    "reasoning_effort": "medium",
+    "max_tokens": 32768,
+    "source_analysis_sha256": "8fc94a9db2ba7d833dd4e645831bf8c98321992caf8b33788c52d8a47140dfa5",
+    "protocol_sha256": "5e74e9eb2bf63f1b4030a46829b4e808fb64333b588e6d1b6e23446649530e01",
+    "implementation_sha256": {
+     "scripts/industryor_binding_pilot.py": "e6ce15370a1c4e5e3db197e0d9cfa08656e951ea321724d661a444ab3abedc21",
+     "ora_agent/semantic_binding.py": "2b07c25f540d1f150e8bc7833ebba59129742fc36da82a8f83b301ad2c121f0d",
+     "scripts/industryor_next_stage.py": "8daba1b593668d890978337f7215a520c363e3027eb2e34587ef4738fa20d7b7",
+     "scripts/m1_pilot.py": "f687c8f2daa2c55eb22a22a91dba169c1440acab9b6a23f8d0f079cbb8c7509a",
+     "ora_agent/llm.py": "eb2b6f6ebc36813149d52ea1a109addd51cb02419c53f7427de7c7a712d7aa18"
+    }
+   },
+   "binding_status": "ready",
+   "binding_gate": {
+    "status": "ready",
+    "accepted_for_execution": true,
+    "business_correct": false,
+    "aliases": {
+     "x_I_A": "x_0_0",
+     "x_I_B": "x_0_1",
+     "x_I_C": "x_0_2",
+     "x_I_D": "x_0_3",
+     "x_II_A": "x_1_0",
+     "x_II_B": "x_1_1",
+     "x_II_C": "x_1_2",
+     "x_II_D": "x_1_3",
+     "x_III_A": "x_2_0",
+     "x_III_B": "x_2_1",
+     "x_III_C": "x_2_2",
+     "x_III_D": "x_2_3",
+     "x_IV_A": "x_3_0",
+     "x_IV_B": "x_3_1",
+     "x_IV_C": "x_3_2",
+     "x_IV_D": "x_3_3",
+     "x_V_A": "x_4_0",
+     "x_V_B": "x_4_1",
+     "x_V_C": "x_4_2",
+     "x_V_D": "x_4_3"
+    },
+    "repair_aliases": {},
+    "required_semantic_names": [
+     "x_0_0",
+     "x_0_1",
+     "x_0_2",
+     "x_0_3",
+     "x_1_0",
+     "x_1_1",
+     "x_1_2",
+     "x_1_3",
+     "x_2_0",
+     "x_2_1",
+     "x_2_2",
+     "x_2_3",
+     "x_3_0",
+     "x_3_1",
+     "x_3_2",
+     "x_3_3",
+     "x_4_0",
+     "x_4_1",
+     "x_4_2",
+     "x_4_3"
+    ],
+    "covered_semantic_names": [
+     "x_0_0",
+     "x_0_1",
+     "x_0_2",
+     "x_0_3",
+     "x_1_0",
+     "x_1_1",
+     "x_1_2",
+     "x_1_3",
+     "x_2_0",
+     "x_2_1",
+     "x_2_2",
+     "x_2_3",
+     "x_3_0",
+     "x_3_1",
+     "x_3_2",
+     "x_3_3",
+     "x_4_0",
+     "x_4_1",
+     "x_4_2",
+     "x_4_3"
+    ],
+    "missing_semantic_names": [],
+    "unresolved_solver_names": [],
+    "domain_mismatches": [],
+    "export_error": null,
+    "errors": [],
+    "runtime_verification_required": true,
+    "scope": "name binding and declared domains only; constraints and objective require independent post-solve audit"
+   },
+   "initial_score": {
+    "schema_version": "industryor.business_audit.v1",
+    "problem_id": 8,
+    "audit_status": "invalid_solution",
+    "business_correct": false,
+    "variable_audit": {
+     "x_0_0": {
+      "present": false,
+      "value": null,
+      "domain": "binary",
+      "passed": false
+     },
+     "x_0_1": {
+      "present": false,
+      "value": null,
+      "domain": "binary",
+      "passed": false
+     },
+     "x_0_2": {
+      "present": false,
+      "value": null,
+      "domain": "binary",
+      "passed": false
+     },
+     "x_0_3": {
+      "present": false,
+      "value": null,
+      "domain": "binary",
+      "passed": false
+     },
+     "x_1_0": {
+      "present": false,
+      "value": null,
+      "domain": "binary",
+      "passed": false
+     },
+     "x_1_1": {
+      "present": false,
+      "value": null,
+      "domain": "binary",
+      "passed": false
+     },
+     "x_1_2": {
+      "present": false,
+      "value": null,
+      "domain": "binary",
+      "passed": false
+     },
+     "x_1_3": {
+      "present": false,
+      "value": null,
+      "domain": "binary",
+      "passed": false
+     },
+     "x_2_0": {
+      "present": false,
+      "value": null,
+      "domain": "binary",
+      "passed": false
+     },
+     "x_2_1": {
+      "present": false,
+      "value": null,
+      "domain": "binary",
+      "passed": false
+     },
+     "x_2_2": {
+      "present": false,
+      "value": null,
+      "domain": "binary",
+      "passed": false
+     },
+     "x_2_3": {
+      "present": false,
+      "value": null,
+      "domain": "binary",
+      "passed": false
+     },
+     "x_3_0": {
+      "present": false,
+      "value": null,
+      "domain": "binary",
+      "passed": false
+     },
+     "x_3_1": {
+      "present": false,
+      "value": null,
+      "domain": "binary",
+      "passed": false
+     },
+     "x_3_2": {
+      "present": false,
+      "value": null,
+      "domain": "binary",
+      "passed": false
+     },
+     "x_3_3": {
+      "present": false,
+      "value": null,
+      "domain": "binary",
+      "passed": false
+     },
+     "x_4_0": {
+      "present": false,
+      "value": null,
+      "domain": "binary",
+      "passed": false
+     },
+     "x_4_1": {
+      "present": false,
+      "value": null,
+      "domain": "binary",
+      "passed": false
+     },
+     "x_4_2": {
+      "present": false,
+      "value": null,
+      "domain": "binary",
+      "passed": false
+     },
+     "x_4_3": {
+      "present": false,
+      "value": null,
+      "domain": "binary",
+      "passed": false
+     }
+    },
+    "constraint_checks": [],
+    "violations": [
+     "variable domain failed: x_0_0",
+     "variable domain failed: x_0_1",
+     "variable domain failed: x_0_2",
+     "variable domain failed: x_0_3",
+     "variable domain failed: x_1_0",
+     "variable domain failed: x_1_1",
+     "variable domain failed: x_1_2",
+     "variable domain failed: x_1_3",
+     "variable domain failed: x_2_0",
+     "variable domain failed: x_2_1",
+     "variable domain failed: x_2_2",
+     "variable domain failed: x_2_3",
+     "variable domain failed: x_3_0",
+     "variable domain failed: x_3_1",
+     "variable domain failed: x_3_2",
+     "variable domain failed: x_3_3",
+     "variable domain failed: x_4_0",
+     "variable domain failed: x_4_1",
+     "variable domain failed: x_4_2",
+     "variable domain failed: x_4_3",
+     "required variables or model objective are unavailable"
+    ],
+    "execution_checks": {
+     "export_complete": true,
+     "solver_optimal": true,
+     "has_solution": true,
+     "model_objective_finite": true
+    },
+    "business_objective": null,
+    "model_objective_consistent": false,
+    "optimality": "not_assessed",
+    "blocking_reasons": []
+   },
+   "rebound_score": {
+    "schema_version": "industryor.business_audit.v1",
+    "problem_id": 8,
+    "audit_status": "complete",
+    "business_correct": true,
+    "variable_audit": {
+     "x_0_0": {
+      "present": true,
+      "value": 0.0,
+      "domain": "binary",
+      "passed": true
+     },
+     "x_0_1": {
+      "present": true,
+      "value": 1.0,
+      "domain": "binary",
+      "passed": true
+     },
+     "x_0_2": {
+      "present": true,
+      "value": 0.0,
+      "domain": "binary",
+      "passed": true
+     },
+     "x_0_3": {
+      "present": true,
+      "value": 0.0,
+      "domain": "binary",
+      "passed": true
+     },
+     "x_1_0": {
+      "present": true,
+      "value": 1.0,
+      "domain": "binary",
+      "passed": true
+     },
+     "x_1_1": {
+      "present": true,
+      "value": 0.0,
+      "domain": "binary",
+      "passed": true
+     },
+     "x_1_2": {
+      "present": true,
+      "value": 0.0,
+      "domain": "binary",
+      "passed": true
+     },
+     "x_1_3": {
+      "present": true,
+      "value": 0.0,
+      "domain": "binary",
+      "passed": true
+     },
+     "x_2_0": {
+      "present": true,
+      "value": 0.0,
+      "domain": "binary",
+      "passed": true
+     },
+     "x_2_1": {
+      "present": true,
+      "value": 0.0,
+      "domain": "binary",
+      "passed": true
+     },
+     "x_2_2": {
+      "present": true,
+      "value": 0.0,
+      "domain": "binary",
+      "passed": true
+     },
+     "x_2_3": {
+      "present": true,
+      "value": 0.0,
+      "domain": "binary",
+      "passed": true
+     },
+     "x_3_0": {
+      "present": true,
+      "value": 0.0,
+      "domain": "binary",
+      "passed": true
+     },
+     "x_3_1": {
+      "present": true,
+      "value": 0.0,
+      "domain": "binary",
+      "passed": true
+     },
+     "x_3_2": {
+      "present": true,
+      "value": 1.0,
+      "domain": "binary",
+      "passed": true
+     },
+     "x_3_3": {
+      "present": true,
+      "value": 0.0,
+      "domain": "binary",
+      "passed": true
+     },
+     "x_4_0": {
+      "present": true,
+      "value": 0.0,
+      "domain": "binary",
+      "passed": true
+     },
+     "x_4_1": {
+      "present": true,
+      "value": 0.0,
+      "domain": "binary",
+      "passed": true
+     },
+     "x_4_2": {
+      "present": true,
+      "value": 0.0,
+      "domain": "binary",
+      "passed": true
+     },
+     "x_4_3": {
+      "present": true,
+      "value": 1.0,
+      "domain": "binary",
+      "passed": true
+     }
+    },
+    "constraint_checks": [
+     {
+      "rule": "task_0_exactly_once",
+      "passed": true,
+      "observed": 1.0,
+      "expected": "= 1"
+     },
+     {
+      "rule": "task_1_exactly_once",
+      "passed": true,
+      "observed": 1.0,
+      "expected": "= 1"
+     },
+     {
+      "rule": "task_2_exactly_once",
+      "passed": true,
+      "observed": 1.0,
+      "expected": "= 1"
+     },
+     {
+      "rule": "task_3_exactly_once",
+      "passed": true,
+      "observed": 1.0,
+      "expected": "= 1"
+     },
+     {
+      "rule": "worker_0_at_most_once",
+      "passed": true,
+      "observed": 1.0,
+      "expected": "<= 1"
+     },
+     {
+      "rule": "worker_1_at_most_once",
+      "passed": true,
+      "observed": 1.0,
+      "expected": "<= 1"
+     },
+     {
+      "rule": "worker_2_at_most_once",
+      "passed": true,
+      "observed": 0.0,
+      "expected": "<= 1"
+     },
+     {
+      "rule": "worker_3_at_most_once",
+      "passed": true,
+      "observed": 1.0,
+      "expected": "<= 1"
+     },
+     {
+      "rule": "worker_4_at_most_once",
+      "passed": true,
+      "observed": 1.0,
+      "expected": "<= 1"
+     },
+     {
+      "rule": "exactly_four_workers",
+      "passed": true,
+      "observed": 4.0,
+      "expected": "= 4"
+     }
+    ],
+    "violations": [],
+    "execution_checks": {
+     "export_complete": true,
+     "solver_optimal": true,
+     "has_solution": true,
+     "model_objective_finite": true
+    },
+    "business_objective": 14.0,
+    "model_objective_consistent": true,
+    "optimality": "proven_optimal",
+    "blocking_reasons": []
+   },
+   "initial_objective": 14.0,
+   "rebound_objective": 14.0,
+   "reference": 14.0,
+   "new_llm_calls": 1,
+   "binding_reused": false,
+   "api_attempts": 1,
+   "usage": {
+    "prompt_tokens": 2344,
+    "total_tokens": 3983,
+    "completion_tokens": 1639,
+    "prompt_tokens_details": null,
+    "completion_tokens_details": {
+     "reasoning_tokens": 869
+    }
+   },
+   "llm_latency_s": 17.125677213072777,
+   "source_initial_code_sha256": "83ad6fc502b0ffa86bb812e86f60b9a303ce83da17405896489ca8b218275a9a",
+   "source_result_sha256": "862132e5af316fc8956d59b3bd493ae86460ebe9fec8e17c186b65874e1e008c",
+   "code_semantics_changed": false,
+   "business_accepted": true,
+   "execution": {
+    "exec_status": "ok",
+    "return_code": 0,
+    "solver_status": "optimal",
+    "objective": 14.0,
+    "stderr_tail": "",
+    "wall_s": 0.2,
+    "stdout_artifact": "stdout.txt",
+    "stderr_artifact": "stderr.txt"
+   },
+   "objective_unchanged": true,
+   "objective_match_abs_0_1": true,
+   "status": "completed"
+  },
+  {
+   "id": 20,
+   "run_config": {
+    "ids": [
+     4,
+     8,
+     20
+    ],
+    "model": "Qwen3_8-27B",
+    "base_url": "https://10.46.124.101/service-large-50-1789958762589/llm/v1",
+    "exposure": "development_replay_not_heldout",
+    "binding_temperature": 0.2,
+    "reasoning_effort": "medium",
+    "max_tokens": 32768,
+    "source_analysis_sha256": "8fc94a9db2ba7d833dd4e645831bf8c98321992caf8b33788c52d8a47140dfa5",
+    "protocol_sha256": "5e74e9eb2bf63f1b4030a46829b4e808fb64333b588e6d1b6e23446649530e01",
+    "implementation_sha256": {
+     "scripts/industryor_binding_pilot.py": "e6ce15370a1c4e5e3db197e0d9cfa08656e951ea321724d661a444ab3abedc21",
+     "ora_agent/semantic_binding.py": "2b07c25f540d1f150e8bc7833ebba59129742fc36da82a8f83b301ad2c121f0d",
+     "scripts/industryor_next_stage.py": "8daba1b593668d890978337f7215a520c363e3027eb2e34587ef4738fa20d7b7",
+     "scripts/m1_pilot.py": "f687c8f2daa2c55eb22a22a91dba169c1440acab9b6a23f8d0f079cbb8c7509a",
+     "ora_agent/llm.py": "eb2b6f6ebc36813149d52ea1a109addd51cb02419c53f7427de7c7a712d7aa18"
+    }
+   },
+   "binding_status": "ready",
+   "binding_gate": {
+    "status": "ready",
+    "accepted_for_execution": true,
+    "business_correct": false,
+    "aliases": {
+     "R": "x1",
+     "C": "x2",
+     "B": "x3",
+     "D": "x4",
+     "y_R": "y1",
+     "y_C": "y2",
+     "y_B": "y3",
+     "y_D": "y4"
+    },
+    "repair_aliases": {
+     "x1": "R",
+     "x2": "C",
+     "x3": "B",
+     "x4": "D",
+     "y1": "y_R",
+     "y2": "y_C",
+     "y3": "y_B",
+     "y4": "y_D"
+    },
+    "required_semantic_names": [
+     "x1",
+     "x2",
+     "x3",
+     "x4",
+     "y1",
+     "y2",
+     "y3",
+     "y4"
+    ],
+    "covered_semantic_names": [
+     "x1",
+     "x2",
+     "x3",
+     "x4",
+     "y1",
+     "y2",
+     "y3",
+     "y4"
+    ],
+    "missing_semantic_names": [],
+    "unresolved_solver_names": [],
+    "domain_mismatches": [],
+    "export_error": null,
+    "errors": [],
+    "runtime_verification_required": true,
+    "scope": "name binding and declared domains only; constraints and objective require independent post-solve audit"
+   },
+   "initial_score": {
+    "schema_version": "industryor.business_audit.v1",
+    "problem_id": 20,
+    "audit_status": "invalid_solution",
+    "business_correct": false,
+    "variable_audit": {
+     "x1": {
+      "present": false,
+      "value": null,
+      "domain": "integer",
+      "passed": false
+     },
+     "x2": {
+      "present": false,
+      "value": null,
+      "domain": "integer",
+      "passed": false
+     },
+     "x3": {
+      "present": false,
+      "value": null,
+      "domain": "integer",
+      "passed": false
+     },
+     "x4": {
+      "present": false,
+      "value": null,
+      "domain": "integer",
+      "passed": false
+     },
+     "y1": {
+      "present": false,
+      "value": null,
+      "domain": "binary",
+      "passed": false
+     },
+     "y2": {
+      "present": false,
+      "value": null,
+      "domain": "binary",
+      "passed": false
+     },
+     "y3": {
+      "present": false,
+      "value": null,
+      "domain": "binary",
+      "passed": false
+     },
+     "y4": {
+      "present": false,
+      "value": null,
+      "domain": "binary",
+      "passed": false
+     }
+    },
+    "constraint_checks": [],
+    "violations": [
+     "variable domain failed: x1",
+     "variable domain failed: x2",
+     "variable domain failed: x3",
+     "variable domain failed: x4",
+     "variable domain failed: y1",
+     "variable domain failed: y2",
+     "variable domain failed: y3",
+     "variable domain failed: y4",
+     "required variables or model objective are unavailable"
+    ],
+    "execution_checks": {
+     "export_complete": true,
+     "solver_optimal": true,
+     "has_solution": true,
+     "model_objective_finite": true
+    },
+    "business_objective": null,
+    "model_objective_consistent": false,
+    "optimality": "not_assessed",
+    "blocking_reasons": []
+   },
+   "rebound_score": {
+    "schema_version": "industryor.business_audit.v1",
+    "problem_id": 20,
+    "audit_status": "complete",
+    "business_correct": false,
+    "variable_audit": {
+     "x1": {
+      "present": true,
+      "value": 0.0,
+      "domain": "integer",
+      "passed": true
+     },
+     "x2": {
+      "present": true,
+      "value": 120.0,
+      "domain": "integer",
+      "passed": true
+     },
+     "x3": {
+      "present": true,
+      "value": 0.0,
+      "domain": "integer",
+      "passed": true
+     },
+     "x4": {
+      "present": true,
+      "value": 0.0,
+      "domain": "integer",
+      "passed": true
+     },
+     "y1": {
+      "present": true,
+      "value": 0.0,
+      "domain": "binary",
+      "passed": true
+     },
+     "y2": {
+      "present": true,
+      "value": 1.0,
+      "domain": "binary",
+      "passed": true
+     },
+     "y3": {
+      "present": true,
+      "value": 1.0,
+      "domain": "binary",
+      "passed": true
+     },
+     "y4": {
+      "present": true,
+      "value": 1.0,
+      "domain": "binary",
+      "passed": true
+     }
+    },
+    "constraint_checks": [
+     {
+      "rule": "nonnegative_x1",
+      "passed": true,
+      "observed": 0.0,
+      "expected": ">= 0"
+     },
+     {
+      "rule": "nonnegative_x2",
+      "passed": true,
+      "observed": 120.0,
+      "expected": ">= 0"
+     },
+     {
+      "rule": "nonnegative_x3",
+      "passed": true,
+      "observed": 0.0,
+      "expected": ">= 0"
+     },
+     {
+      "rule": "nonnegative_x4",
+      "passed": true,
+      "observed": 0.0,
+      "expected": ">= 0"
+     },
+     {
+      "rule": "plastic",
+      "passed": true,
+      "observed": 1200.0,
+      "expected": "<= 1200"
+     },
+     {
+      "rule": "electronics",
+      "passed": true,
+      "observed": 600.0,
+      "expected": "<= 800"
+     },
+     {
+      "rule": "first_excludes_fourth",
+      "passed": true,
+      "observed": {
+       "x1": 0.0,
+       "x4": 0.0
+      },
+      "expected": "x4 = 0 when x1 > 0"
+     },
+     {
+      "rule": "cars_imply_blocks",
+      "passed": false,
+      "observed": {
+       "x2": 120.0,
+       "x3": 0.0
+      },
+      "expected": "x3 >= 1 when x2 > 0"
+     },
+     {
+      "rule": "dolls_no_greater_than_cars",
+      "passed": true,
+      "observed": {
+       "x2": 120.0,
+       "x4": 0.0
+      },
+      "expected": "x4 <= x2"
+     },
+     {
+      "rule": "link_x1_y1",
+      "passed": true,
+      "observed": {
+       "x1": 0.0,
+       "y1": 0.0
+      },
+      "expected": "indicator is 1 exactly when quantity is positive"
+     },
+     {
+      "rule": "link_x2_y2",
+      "passed": true,
+      "observed": {
+       "x2": 120.0,
+       "y2": 1.0
+      },
+      "expected": "indicator is 1 exactly when quantity is positive"
+     },
+     {
+      "rule": "link_x3_y3",
+      "passed": false,
+      "observed": {
+       "x3": 0.0,
+       "y3": 1.0
+      },
+      "expected": "indicator is 1 exactly when quantity is positive"
+     },
+     {
+      "rule": "link_x4_y4",
+      "passed": false,
+      "observed": {
+       "x4": 0.0,
+       "y4": 1.0
+      },
+      "expected": "indicator is 1 exactly when quantity is positive"
+     }
+    ],
+    "violations": [
+     "business constraint failed: cars_imply_blocks",
+     "business constraint failed: link_x3_y3",
+     "business constraint failed: link_x4_y4"
+    ],
+    "execution_checks": {
+     "export_complete": true,
+     "solver_optimal": true,
+     "has_solution": true,
+     "model_objective_finite": true
+    },
+    "business_objective": 960.0,
+    "model_objective_consistent": true,
+    "optimality": "not_applicable_infeasible",
+    "blocking_reasons": []
+   },
+   "initial_objective": 960.0,
+   "rebound_objective": 960.0,
+   "reference": 956.0,
+   "new_llm_calls": 1,
+   "binding_reused": false,
+   "api_attempts": 1,
+   "usage": {
+    "prompt_tokens": 1482,
+    "total_tokens": 2420,
+    "completion_tokens": 938,
+    "prompt_tokens_details": null,
+    "completion_tokens_details": {
+     "reasoning_tokens": 644
+    }
+   },
+   "llm_latency_s": 10.603548675775528,
+   "source_initial_code_sha256": "d7e40636a36501188e1a8ed1965f18fd8b3f8b46e58b0b95d2e0b496839b9ebb",
+   "source_result_sha256": "88980b1d166b073355041db243b8fc3b0bcc2a82aebc8a7434274c9ac1017488",
+   "code_semantics_changed": false,
+   "business_accepted": false,
+   "execution": {
+    "exec_status": "ok",
+    "return_code": 0,
+    "solver_status": "optimal",
+    "objective": 960.0,
+    "stderr_tail": "",
+    "wall_s": 0.2,
+    "stdout_artifact": "stdout.txt",
+    "stderr_artifact": "stderr.txt"
+   },
+   "objective_unchanged": true,
+   "objective_match_abs_0_1": false,
+   "status": "completed"
+  }
+ ]
+}

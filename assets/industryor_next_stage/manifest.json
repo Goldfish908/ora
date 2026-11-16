@@ -1,0 +1,1008 @@
+{
+  "execution_environment": {
+    "pyscipopt": "4.3.0",
+    "python": "/home/hewj13/planbb/miniforge3/envs/rl/bin/python",
+    "scip": "8.03"
+  },
+  "problem_ids": [
+    19,
+    20,
+    21,
+    25,
+    48,
+    4,
+    8,
+    9
+  ],
+  "problems": [
+    {
+      "artifacts": {
+        "boundaries.json": "work/industryor_next_stage_v0.1/prob_019/boundaries.json",
+        "execution.json": "work/industryor_next_stage_v0.1/prob_019/execution.json",
+        "initial.py": "work/industryor_next_stage_v0.1/prob_019/initial.py",
+        "instrumented.py": "work/industryor_next_stage_v0.1/prob_019/instrumented.py",
+        "score.json": "work/industryor_next_stage_v0.1/prob_019/score.json",
+        "solution.json": "work/industryor_next_stage_v0.1/prob_019/solution.json",
+        "stderr.txt": "work/industryor_next_stage_v0.1/prob_019/stderr.txt",
+        "stdout.txt": "work/industryor_next_stage_v0.1/prob_019/stdout.txt"
+      },
+      "audit": {
+        "audit_status": "complete",
+        "blocking_reasons": [],
+        "business_correct": false,
+        "business_correct_requires": [
+          "complete export from an optimal SCIP solve",
+          "all mapped variable domains and business constraints pass",
+          "business objective recomputed from variables is independently optimal",
+          "reported model objective equals the recomputed business objective"
+        ],
+        "method": "bounded integer order enumeration; per-chair costs multiplied by chairs per order",
+        "optimality_target_returned_to_caller": false,
+        "qualified": true
+      },
+      "cohort": "natural_objective_error",
+      "id": 19,
+      "initial": {
+        "sha256": "3a989ba7c80ccbac2313082940e47c68a1e6597d982ce066db56fd1ea4db5f77",
+        "source_path": "runs/industryor/sandbox/z0__19__r1/gen.py"
+      },
+      "instrumented": {
+        "business_statements_rewritten": false,
+        "method": "AST-validated fixed append-only exporter",
+        "public_answer_injected": false,
+        "sha256": "f09bf2f03511ac0188249ae9b980e4c8544f8d478dc82f45aeb737ed342ccbf2"
+      },
+      "question": "A furniture store can choose to order chairs from three different manufacturers: A, B, and C. The cost of ordering each chair from manufacturer A is $50, from manufacturer B is $45, and from manufacturer C is $40. The store needs to minimize the total cost of the order.\n\nAdditionally, each order from manufacturer A will include 15 chairs, while each order from manufacturers B and C will include 10 chairs. The number of orders must be an integer. The store needs to order at least 100 chairs.\n\nEach order from manufacturer A will include 15 chairs, while each order from manufacturers B and C will include 10 chairs. The store needs to order at most 500 chairs.\n\nIf the store decides to order chairs from manufacturer A, it must also order at least 10 chairs from manufacturer B.\n\nFurthermore, if the store decides to order chairs from manufacturer B, it must also order chairs from manufacturer C.",
+      "question_sha256": "fe37a30dfca55f4ce240a35fc90d5b407e0b71550d9a2dcf2122b333904ba25b",
+      "solution_schema": {
+        "export": "complete boolean and captured error",
+        "name": "industryor.solution.v1",
+        "objective": "candidate model objective, not a reference objective",
+        "variable_types": "flat object keyed like variables",
+        "variables": "flat object keyed by PySCIPOpt variable name; finite numeric values including zeros"
+      },
+      "sources": {
+        "industryor_question": {
+          "dataset_sha256": "5b889e49d9aa64ae5b368bc80a05ee71a1daf20d126f54efc6207c98f9095f36",
+          "path": "data/industryor/IndustryOR.json",
+          "record_id": 19
+        },
+        "orthought": {
+          "code.py": {
+            "path": "data/external/ORThought/datasets/processed/IndustryOR/prob_018/code.py",
+            "sha256": "eb9020a0fb7ff3f538c0eeb07fcbf3b1e36a54f3bb5877f0870d7a9380e28222"
+          },
+          "model.txt": {
+            "path": "data/external/ORThought/datasets/processed/IndustryOR/prob_018/model.txt",
+            "sha256": "7dead408358d647bd1f943bd8f9231f87dd41f5f1a8ee0c5212e0f9f2bdd3f75"
+          },
+          "question.txt": {
+            "path": "data/external/ORThought/datasets/processed/IndustryOR/prob_018/question.txt",
+            "sha256": "fe37a30dfca55f4ce240a35fc90d5b407e0b71550d9a2dcf2122b333904ba25b"
+          }
+        }
+      },
+      "variable_mapping": {
+        "x_A": {
+          "domain": "integer",
+          "meaning": "chair orders from A",
+          "observed_in_initial_export": true,
+          "required_for_audit": true
+        },
+        "x_B": {
+          "domain": "integer",
+          "meaning": "chair orders from B",
+          "observed_in_initial_export": true,
+          "required_for_audit": true
+        },
+        "x_C": {
+          "domain": "integer",
+          "meaning": "chair orders from C",
+          "observed_in_initial_export": true,
+          "required_for_audit": true
+        },
+        "y_A": {
+          "domain": "binary",
+          "meaning": "whether supplier A is used",
+          "observed_in_initial_export": true,
+          "required_for_audit": true
+        },
+        "y_B": {
+          "domain": "binary",
+          "meaning": "whether supplier B is used",
+          "observed_in_initial_export": true,
+          "required_for_audit": true
+        }
+      }
+    },
+    {
+      "artifacts": {
+        "boundaries.json": "work/industryor_next_stage_v0.1/prob_020/boundaries.json",
+        "execution.json": "work/industryor_next_stage_v0.1/prob_020/execution.json",
+        "initial.py": "work/industryor_next_stage_v0.1/prob_020/initial.py",
+        "instrumented.py": "work/industryor_next_stage_v0.1/prob_020/instrumented.py",
+        "score.json": "work/industryor_next_stage_v0.1/prob_020/score.json",
+        "solution.json": "work/industryor_next_stage_v0.1/prob_020/solution.json",
+        "stderr.txt": "work/industryor_next_stage_v0.1/prob_020/stderr.txt",
+        "stdout.txt": "work/industryor_next_stage_v0.1/prob_020/stdout.txt"
+      },
+      "audit": {
+        "audit_status": "complete",
+        "blocking_reasons": [],
+        "business_correct": false,
+        "business_correct_requires": [
+          "complete export from an optimal SCIP solve",
+          "all mapped variable domains and business constraints pass",
+          "business objective recomputed from variables is independently optimal",
+          "reported model objective equals the recomputed business objective"
+        ],
+        "method": "bounded integer quantity enumeration using ORThought's integer semantics",
+        "optimality_target_returned_to_caller": false,
+        "qualified": true
+      },
+      "cohort": "natural_objective_error",
+      "id": 20,
+      "initial": {
+        "sha256": "53165be3b1ce2487a0e3a5a62095a3a45260a88e21b7b7336641290cae3ada6c",
+        "source_path": "runs/industryor/sandbox/z0__20__r1/gen.py"
+      },
+      "instrumented": {
+        "business_statements_rewritten": false,
+        "method": "AST-validated fixed append-only exporter",
+        "public_answer_injected": false,
+        "sha256": "b4c3ac50e94f45a04e60189a65506fc4e44b14e5a37048ed98c11137374ce212"
+      },
+      "question": "Bright Future Toys wants to build and sell robots, model cars, building blocks, and dolls. The profit for each robot sold is $15, for each model car sold is $8, for each set of building blocks sold is $12, and for each doll sold is $5. How many types of toys should Bright Future Toys manufacture to maximize profit?\nThere are 1200 units of plastic available. Each robot requires 30 units of plastic, each model car requires 10 units of plastic, each set of building blocks requires 20 units of plastic, and each doll requires 15 units of plastic.\n\nThere are 800 units of electronic components available. Each robot requires 8 units of electronic components, each model car requires 5 units of electronic components, each set of building blocks requires 3 units of electronic components, and each doll requires 2 units of electronic components.\n\nIf Bright Future Toys manufactures robots, they will not manufacture dolls.\n\nHowever, if they manufacture model cars, they will also manufacture building blocks.\n\nThe number of dolls manufactured cannot exceed the number of model cars manufactured.",
+      "question_sha256": "69176a205a2f4c887ac7f100ab68885f509d2fc82452c251640a0d1ac9e0dcae",
+      "solution_schema": {
+        "export": "complete boolean and captured error",
+        "name": "industryor.solution.v1",
+        "objective": "candidate model objective, not a reference objective",
+        "variable_types": "flat object keyed like variables",
+        "variables": "flat object keyed by PySCIPOpt variable name; finite numeric values including zeros"
+      },
+      "sources": {
+        "industryor_question": {
+          "dataset_sha256": "5b889e49d9aa64ae5b368bc80a05ee71a1daf20d126f54efc6207c98f9095f36",
+          "path": "data/industryor/IndustryOR.json",
+          "record_id": 20
+        },
+        "orthought": {
+          "code.py": {
+            "path": "data/external/ORThought/datasets/processed/IndustryOR/prob_019/code.py",
+            "sha256": "4d4927316c828c01b7b23ff18709a14e2282e31222c0bb3ec3e45e29deb1e0a1"
+          },
+          "model.txt": {
+            "path": "data/external/ORThought/datasets/processed/IndustryOR/prob_019/model.txt",
+            "sha256": "a2b005e1c1ab2931e48ecc20285249428e42274409c487626a4cce787a1a667a"
+          },
+          "question.txt": {
+            "path": "data/external/ORThought/datasets/processed/IndustryOR/prob_019/question.txt",
+            "sha256": "69176a205a2f4c887ac7f100ab68885f509d2fc82452c251640a0d1ac9e0dcae"
+          }
+        }
+      },
+      "variable_mapping": {
+        "x1": {
+          "domain": "integer",
+          "meaning": "quantity of robots",
+          "observed_in_initial_export": true,
+          "required_for_audit": true
+        },
+        "x2": {
+          "domain": "integer",
+          "meaning": "quantity of model cars",
+          "observed_in_initial_export": true,
+          "required_for_audit": true
+        },
+        "x3": {
+          "domain": "integer",
+          "meaning": "quantity of building blocks",
+          "observed_in_initial_export": true,
+          "required_for_audit": true
+        },
+        "x4": {
+          "domain": "integer",
+          "meaning": "quantity of dolls",
+          "observed_in_initial_export": true,
+          "required_for_audit": true
+        },
+        "y1": {
+          "domain": "binary",
+          "meaning": "whether robots are manufactured",
+          "observed_in_initial_export": true,
+          "required_for_audit": true
+        },
+        "y2": {
+          "domain": "binary",
+          "meaning": "whether model cars are manufactured",
+          "observed_in_initial_export": true,
+          "required_for_audit": true
+        },
+        "y3": {
+          "domain": "binary",
+          "meaning": "whether building blocks are manufactured",
+          "observed_in_initial_export": true,
+          "required_for_audit": true
+        },
+        "y4": {
+          "domain": "binary",
+          "meaning": "whether dolls are manufactured",
+          "observed_in_initial_export": true,
+          "required_for_audit": true
+        }
+      }
+    },
+    {
+      "artifacts": {
+        "boundaries.json": "work/industryor_next_stage_v0.1/prob_021/boundaries.json",
+        "execution.json": "work/industryor_next_stage_v0.1/prob_021/execution.json",
+        "initial.py": "work/industryor_next_stage_v0.1/prob_021/initial.py",
+        "instrumented.py": "work/industryor_next_stage_v0.1/prob_021/instrumented.py",
+        "score.json": "work/industryor_next_stage_v0.1/prob_021/score.json",
+        "solution.json": "work/industryor_next_stage_v0.1/prob_021/solution.json",
+        "stderr.txt": "work/industryor_next_stage_v0.1/prob_021/stderr.txt",
+        "stdout.txt": "work/industryor_next_stage_v0.1/prob_021/stdout.txt"
+      },
+      "audit": {
+        "audit_status": "complete",
+        "blocking_reasons": [],
+        "business_correct": false,
+        "business_correct_requires": [
+          "complete export from an optimal SCIP solve",
+          "all mapped variable domains and business constraints pass",
+          "business objective recomputed from variables is independently optimal",
+          "reported model objective equals the recomputed business objective"
+        ],
+        "method": "bounded integer order enumeration; per-table costs multiplied by tables per order",
+        "optimality_target_returned_to_caller": false,
+        "qualified": true
+      },
+      "cohort": "natural_objective_error",
+      "id": 21,
+      "initial": {
+        "sha256": "93519d6f852201df05aa2a2c85e6389a028ec7e92671d8419f2d749f1484ad79",
+        "source_path": "runs/industryor/sandbox/z0__21__r1/gen.py"
+      },
+      "instrumented": {
+        "business_statements_rewritten": false,
+        "method": "AST-validated fixed append-only exporter",
+        "public_answer_injected": false,
+        "sha256": "935f3c5f7065e32ac8d81a4462ff820b4dabd2f76c14607ed347d49968d3c279"
+      },
+      "question": "A restaurant needs to order dining tables from three different suppliers, A, B, and C. The cost of ordering each dining table from Supplier A is $120, from Supplier B is $110, and from Supplier C is $100. The restaurant needs to minimize the total cost of the order.\n\nAdditionally, each order from Supplier A will include 20 tables, while each order from Suppliers B and C will include 15 tables. The number of orders must be an integer. The restaurant needs to order at least 150 tables.\n\nEach order from Supplier A will include 20 tables, and each order from Suppliers B and C will include 15 tables. The restaurant needs to order no more than 600 tables.\n\nIf the restaurant decides to order tables from Supplier A, it must also order at least 30 tables from Supplier B.\n\nAdditionally, if the restaurant decides to order tables from Supplier B, it must also order tables from Supplier C.",
+      "question_sha256": "710403b956d8a0e8ff886f7345081f874d348504ad9f638d7d5e3ac94898ac82",
+      "solution_schema": {
+        "export": "complete boolean and captured error",
+        "name": "industryor.solution.v1",
+        "objective": "candidate model objective, not a reference objective",
+        "variable_types": "flat object keyed like variables",
+        "variables": "flat object keyed by PySCIPOpt variable name; finite numeric values including zeros"
+      },
+      "sources": {
+        "industryor_question": {
+          "dataset_sha256": "5b889e49d9aa64ae5b368bc80a05ee71a1daf20d126f54efc6207c98f9095f36",
+          "path": "data/industryor/IndustryOR.json",
+          "record_id": 21
+        },
+        "orthought": {
+          "code.py": {
+            "path": "data/external/ORThought/datasets/processed/IndustryOR/prob_020/code.py",
+            "sha256": "1cd390b1847b55be96e4f6e6c762028012571493178009585d78460e78ad1c51"
+          },
+          "model.txt": {
+            "path": "data/external/ORThought/datasets/processed/IndustryOR/prob_020/model.txt",
+            "sha256": "8434d0b69e906e127fd4bfedda32f219f96920638f0d919025741a1dec9ee3fa"
+          },
+          "question.txt": {
+            "path": "data/external/ORThought/datasets/processed/IndustryOR/prob_020/question.txt",
+            "sha256": "710403b956d8a0e8ff886f7345081f874d348504ad9f638d7d5e3ac94898ac82"
+          }
+        }
+      },
+      "variable_mapping": {
+        "x_A": {
+          "domain": "integer",
+          "meaning": "table orders from A",
+          "observed_in_initial_export": true,
+          "required_for_audit": true
+        },
+        "x_B": {
+          "domain": "integer",
+          "meaning": "table orders from B",
+          "observed_in_initial_export": true,
+          "required_for_audit": true
+        },
+        "x_C": {
+          "domain": "integer",
+          "meaning": "table orders from C",
+          "observed_in_initial_export": true,
+          "required_for_audit": true
+        },
+        "y_A": {
+          "domain": "binary",
+          "meaning": "whether supplier A is used",
+          "observed_in_initial_export": true,
+          "required_for_audit": true
+        },
+        "y_B": {
+          "domain": "binary",
+          "meaning": "whether supplier B is used",
+          "observed_in_initial_export": true,
+          "required_for_audit": true
+        }
+      }
+    },
+    {
+      "artifacts": {
+        "boundaries.json": "work/industryor_next_stage_v0.1/prob_025/boundaries.json",
+        "execution.json": "work/industryor_next_stage_v0.1/prob_025/execution.json",
+        "initial.py": "work/industryor_next_stage_v0.1/prob_025/initial.py",
+        "instrumented.py": "work/industryor_next_stage_v0.1/prob_025/instrumented.py",
+        "score.json": "work/industryor_next_stage_v0.1/prob_025/score.json",
+        "solution.json": "work/industryor_next_stage_v0.1/prob_025/solution.json",
+        "stderr.txt": "work/industryor_next_stage_v0.1/prob_025/stderr.txt",
+        "stdout.txt": "work/industryor_next_stage_v0.1/prob_025/stdout.txt"
+      },
+      "audit": {
+        "audit_status": "complete",
+        "blocking_reasons": [],
+        "business_correct": false,
+        "business_correct_requires": [
+          "complete export from an optimal SCIP solve",
+          "all mapped variable domains and business constraints pass",
+          "business objective recomputed from variables is independently optimal",
+          "reported model objective equals the recomputed business objective"
+        ],
+        "method": "cash-flow audit including idle cash; independent maximum-growth bound over one- and two-year products",
+        "optimality_target_returned_to_caller": false,
+        "qualified": true
+      },
+      "cohort": "natural_objective_error",
+      "id": 25,
+      "initial": {
+        "sha256": "7040114423c56d05c13a1eeb5cdcf1ab49979659f63321a4b99ac231edca38a0",
+        "source_path": "runs/industryor/sandbox/z0__25__r1/gen.py"
+      },
+      "instrumented": {
+        "business_statements_rewritten": false,
+        "method": "AST-validated fixed append-only exporter",
+        "public_answer_injected": false,
+        "sha256": "5b75f274352c8d2bfd22b16a132e6f1de39379c3c5c692e3b5a8e05887c26df1"
+      },
+      "question": "An investor plans to invest 100,000 yuan, with two investment options to choose from. The first investment guarantees a return of 0.7 yuan for every 1 yuan invested after one year. The second investment guarantees a return of 2 yuan for every 1 yuan invested after two years, but the investment time must be in multiples of two years. In order to maximize the investor's earnings by the end of the third year, how should the investments be made? Formulate this as a linear programming problem.",
+      "question_sha256": "5e13fff6ff1bdd29fcae5f0283ef9508b09df68b9ded1fc58ef34cc99d224372",
+      "solution_schema": {
+        "export": "complete boolean and captured error",
+        "name": "industryor.solution.v1",
+        "objective": "candidate model objective, not a reference objective",
+        "variable_types": "flat object keyed like variables",
+        "variables": "flat object keyed by PySCIPOpt variable name; finite numeric values including zeros"
+      },
+      "sources": {
+        "industryor_question": {
+          "dataset_sha256": "5b889e49d9aa64ae5b368bc80a05ee71a1daf20d126f54efc6207c98f9095f36",
+          "path": "data/industryor/IndustryOR.json",
+          "record_id": 25
+        },
+        "orthought": {
+          "code.py": {
+            "path": "data/external/ORThought/datasets/processed/IndustryOR/prob_024/code.py",
+            "sha256": "1c27c3e5b3755d5ba138c812949a53a08bd21f54958a2dc76769384f9a5e6952"
+          },
+          "model.txt": {
+            "path": "data/external/ORThought/datasets/processed/IndustryOR/prob_024/model.txt",
+            "sha256": "9957e58b5998c55741a577f6137b926d2b5ddbab6ffd34f4311332a48253b551"
+          },
+          "question.txt": {
+            "path": "data/external/ORThought/datasets/processed/IndustryOR/prob_024/question.txt",
+            "sha256": "5e13fff6ff1bdd29fcae5f0283ef9508b09df68b9ded1fc58ef34cc99d224372"
+          }
+        }
+      },
+      "variable_mapping": {
+        "x1": {
+          "domain": "continuous",
+          "meaning": "option 1 invested at start of year 1",
+          "observed_in_initial_export": true,
+          "required_for_audit": true
+        },
+        "x2": {
+          "domain": "continuous",
+          "meaning": "option 2 invested at start of year 1",
+          "observed_in_initial_export": true,
+          "required_for_audit": true
+        },
+        "x3": {
+          "domain": "continuous",
+          "meaning": "option 1 invested at start of year 2",
+          "observed_in_initial_export": true,
+          "required_for_audit": true
+        },
+        "x4": {
+          "domain": "continuous",
+          "meaning": "option 2 invested at start of year 2",
+          "observed_in_initial_export": true,
+          "required_for_audit": true
+        },
+        "x5": {
+          "domain": "continuous",
+          "meaning": "option 1 invested at start of year 3",
+          "observed_in_initial_export": true,
+          "required_for_audit": true
+        }
+      }
+    },
+    {
+      "artifacts": {
+        "boundaries.json": "work/industryor_next_stage_v0.1/prob_048/boundaries.json",
+        "execution.json": "work/industryor_next_stage_v0.1/prob_048/execution.json",
+        "initial.py": "work/industryor_next_stage_v0.1/prob_048/initial.py",
+        "instrumented.py": "work/industryor_next_stage_v0.1/prob_048/instrumented.py",
+        "score.json": "work/industryor_next_stage_v0.1/prob_048/score.json",
+        "solution.json": "work/industryor_next_stage_v0.1/prob_048/solution.json",
+        "stderr.txt": "work/industryor_next_stage_v0.1/prob_048/stderr.txt",
+        "stdout.txt": "work/industryor_next_stage_v0.1/prob_048/stdout.txt"
+      },
+      "audit": {
+        "audit_status": "blocked",
+        "blocking_reasons": [
+          "The initial program has no per-product overtime quantity variables x_A_OT/x_B_OT.",
+          "A single overtime-hours variable cannot identify the per-unit profit reductions required by the question and ORThought model."
+        ],
+        "business_correct": false,
+        "business_correct_requires": [
+          "complete export from an optimal SCIP solve",
+          "all mapped variable domains and business constraints pass",
+          "business objective recomputed from variables is independently optimal",
+          "reported model objective equals the recomputed business objective"
+        ],
+        "method": "ORThought per-product overtime LP when x_A_OT/x_B_OT exist; otherwise explicitly blocked",
+        "optimality_target_returned_to_caller": false,
+        "qualified": false
+      },
+      "cohort": "natural_objective_error",
+      "id": 48,
+      "initial": {
+        "sha256": "ece1ba6ad0ade42d8856107bf4cb5dc5c9dfd15a3d7c892ced3a3e6058cd5921",
+        "source_path": "runs/industryor/sandbox/z0__48__r1/gen.py"
+      },
+      "instrumented": {
+        "business_statements_rewritten": false,
+        "method": "AST-validated fixed append-only exporter",
+        "public_answer_injected": false,
+        "sha256": "9de6aa463f5921003a51c439238efc4e87578e144cf73c9ad4b3fb550e20bee6"
+      },
+      "question": "A factory produces two models of microcomputers, A and B. Each model requires the same two processes. The processing time, sales profit, and the factory’s maximum weekly processing capacity for each model are shown in Table 3.1.\n\nTable 3.1\n\n| Process | Model | | Maximum Weekly Processing Capacity |\n| :---: | :---: | :---: | :---: |\n| | $A$ | $B$ | |\n| I (hours/unit) | 4 | 6 | 150 |\n| II (hours/unit) | 3 | 2 | 70 |\n| Profit (yuan/unit) | 300 | 450 | |\n\nGiven the factory's business goals:\n\n$p_{1}$: The total weekly profit should not be less than 10,000 yuan;\n\n$p_{2}$: Due to contract requirements, at least 10 units of model A and at least 15 units of model B must be produced each week;\n\n$p_{3}$: The processing time for Process I should be exactly 150 hours per week, and the processing time for Process II should ideally be fully utilized, with potential for appropriate overtime;\n\n$p_{4}$: If products are produced during overtime in Process II, the profit per unit is reduced by 20 yuan for model A and 25 yuan for model B, and the maximum overtime for Process II is 30 hours per week. Formulate the mathematical model for this problem.",
+      "question_sha256": "77039e0a01733be9b62b93dbe11a66836cf3e5febde995682c96ab627f4434af",
+      "solution_schema": {
+        "export": "complete boolean and captured error",
+        "name": "industryor.solution.v1",
+        "objective": "candidate model objective, not a reference objective",
+        "variable_types": "flat object keyed like variables",
+        "variables": "flat object keyed by PySCIPOpt variable name; finite numeric values including zeros"
+      },
+      "sources": {
+        "industryor_question": {
+          "dataset_sha256": "5b889e49d9aa64ae5b368bc80a05ee71a1daf20d126f54efc6207c98f9095f36",
+          "path": "data/industryor/IndustryOR.json",
+          "record_id": 48
+        },
+        "orthought": {
+          "code.py": {
+            "path": "data/external/ORThought/datasets/processed/IndustryOR/prob_047/code.py",
+            "sha256": "291b1e890190f33e682389fb788ba96e6340410842412f68d1ac63b41c4ebcb7"
+          },
+          "model.txt": {
+            "path": "data/external/ORThought/datasets/processed/IndustryOR/prob_047/model.txt",
+            "sha256": "1f4b477ffbcc9d65896ab55e4a272bd1ec6bbc6c6c0086c11b481644eae047cb"
+          },
+          "question.txt": {
+            "path": "data/external/ORThought/datasets/processed/IndustryOR/prob_047/question.txt",
+            "sha256": "77039e0a01733be9b62b93dbe11a66836cf3e5febde995682c96ab627f4434af"
+          }
+        }
+      },
+      "variable_mapping": {
+        "d1_n": {
+          "domain": "continuous",
+          "meaning": "initial goal deviation auxiliary d1_n",
+          "observed_in_initial_export": true,
+          "required_for_audit": false
+        },
+        "d1_p": {
+          "domain": "continuous",
+          "meaning": "initial goal deviation auxiliary d1_p",
+          "observed_in_initial_export": true,
+          "required_for_audit": false
+        },
+        "d2A_n": {
+          "domain": "continuous",
+          "meaning": "initial goal deviation auxiliary d2A_n",
+          "observed_in_initial_export": true,
+          "required_for_audit": false
+        },
+        "d2A_p": {
+          "domain": "continuous",
+          "meaning": "initial goal deviation auxiliary d2A_p",
+          "observed_in_initial_export": true,
+          "required_for_audit": false
+        },
+        "d2B_n": {
+          "domain": "continuous",
+          "meaning": "initial goal deviation auxiliary d2B_n",
+          "observed_in_initial_export": true,
+          "required_for_audit": false
+        },
+        "d2B_p": {
+          "domain": "continuous",
+          "meaning": "initial goal deviation auxiliary d2B_p",
+          "observed_in_initial_export": true,
+          "required_for_audit": false
+        },
+        "d3II_n": {
+          "domain": "continuous",
+          "meaning": "initial goal deviation auxiliary d3II_n",
+          "observed_in_initial_export": true,
+          "required_for_audit": false
+        },
+        "d3II_p": {
+          "domain": "continuous",
+          "meaning": "initial goal deviation auxiliary d3II_p",
+          "observed_in_initial_export": true,
+          "required_for_audit": false
+        },
+        "d3I_n": {
+          "domain": "continuous",
+          "meaning": "initial goal deviation auxiliary d3I_n",
+          "observed_in_initial_export": true,
+          "required_for_audit": false
+        },
+        "d3I_p": {
+          "domain": "continuous",
+          "meaning": "initial goal deviation auxiliary d3I_p",
+          "observed_in_initial_export": true,
+          "required_for_audit": false
+        },
+        "x_A": {
+          "domain": "continuous",
+          "meaning": "total production of model A",
+          "observed_in_initial_export": true,
+          "required_for_audit": true
+        },
+        "x_A_OT": {
+          "domain": "continuous",
+          "meaning": "model A quantity produced in Process II overtime",
+          "observed_in_initial_export": false,
+          "required_for_audit": true
+        },
+        "x_B": {
+          "domain": "continuous",
+          "meaning": "total production of model B",
+          "observed_in_initial_export": true,
+          "required_for_audit": true
+        },
+        "x_B_OT": {
+          "domain": "continuous",
+          "meaning": "model B quantity produced in Process II overtime",
+          "observed_in_initial_export": false,
+          "required_for_audit": true
+        },
+        "y": {
+          "domain": "continuous",
+          "meaning": "initial model overtime hours; insufficient for profit attribution",
+          "observed_in_initial_export": true,
+          "required_for_audit": false
+        },
+        "z": {
+          "domain": "binary",
+          "meaning": "initial model overtime indicator",
+          "observed_in_initial_export": true,
+          "required_for_audit": false
+        }
+      }
+    },
+    {
+      "artifacts": {
+        "boundaries.json": "work/industryor_next_stage_v0.1/prob_004/boundaries.json",
+        "execution.json": "work/industryor_next_stage_v0.1/prob_004/execution.json",
+        "initial.py": "work/industryor_next_stage_v0.1/prob_004/initial.py",
+        "instrumented.py": "work/industryor_next_stage_v0.1/prob_004/instrumented.py",
+        "score.json": "work/industryor_next_stage_v0.1/prob_004/score.json",
+        "solution.json": "work/industryor_next_stage_v0.1/prob_004/solution.json",
+        "stderr.txt": "work/industryor_next_stage_v0.1/prob_004/stderr.txt",
+        "stdout.txt": "work/industryor_next_stage_v0.1/prob_004/stdout.txt"
+      },
+      "audit": {
+        "audit_status": "complete",
+        "blocking_reasons": [],
+        "business_correct": true,
+        "business_correct_requires": [
+          "complete export from an optimal SCIP solve",
+          "all mapped variable domains and business constraints pass",
+          "business objective recomputed from variables is independently optimal",
+          "reported model objective equals the recomputed business objective"
+        ],
+        "method": "bounded exhaustive integer enumeration plus manure, count, and animal-limit checks",
+        "optimality_target_returned_to_caller": false,
+        "qualified": true
+      },
+      "cohort": "known_correct_control",
+      "id": 4,
+      "initial": {
+        "sha256": "0bcb12150c55950ffad28d8f34b2472dda6ad70e3e372c9ec977ddd517073bec",
+        "source_path": "runs/industryor/sandbox/z0__4__r1/gen.py"
+      },
+      "instrumented": {
+        "business_statements_rewritten": false,
+        "method": "AST-validated fixed append-only exporter",
+        "public_answer_injected": false,
+        "sha256": "0a8d9b0778ec39b0ce7153a56d2545e9a1e44f9b8f45f010b703ffe8d836a92e"
+      },
+      "question": "A farmer needs to decide how many cows, sheep, and chickens to raise in order to achieve maximum profit. The farmer can sell cows, sheep, and chickens for $500, $200, and $8 each, respectively. The feed costs for each cow, sheep, and chicken are $100, $80, and $5, respectively. The profit is the difference between the selling price and the feed cost. Each cow, sheep, and chicken produces 10, 5, and 3 units of manure per day, respectively. Due to the limited time the farm staff has for cleaning the farm each day, they can handle up to 800 units of manure. Additionally, because of the limited farm size, the farmer can raise at most 50 chickens. Furthermore, the farmer must have at least 10 cows to meet customer demand. The farmer must also raise at least 20 sheep. Finally, the total number of animals cannot exceed 100.",
+      "question_sha256": "e71955853504502bb4324809033d74388f83f29d43e53c03253e34ba66bdbdf7",
+      "solution_schema": {
+        "export": "complete boolean and captured error",
+        "name": "industryor.solution.v1",
+        "objective": "candidate model objective, not a reference objective",
+        "variable_types": "flat object keyed like variables",
+        "variables": "flat object keyed by PySCIPOpt variable name; finite numeric values including zeros"
+      },
+      "sources": {
+        "industryor_question": {
+          "dataset_sha256": "5b889e49d9aa64ae5b368bc80a05ee71a1daf20d126f54efc6207c98f9095f36",
+          "path": "data/industryor/IndustryOR.json",
+          "record_id": 4
+        },
+        "orthought": {
+          "code.py": {
+            "path": "data/external/ORThought/datasets/processed/IndustryOR/prob_003/code.py",
+            "sha256": "42d5608de09909326ff8f4c720edcfa91799f90e0516702b44895f8cfbccb0de"
+          },
+          "model.txt": {
+            "path": "data/external/ORThought/datasets/processed/IndustryOR/prob_003/model.txt",
+            "sha256": "128485a947b9e921c843272353a4900ad2aceec272369ee597ec5c42ca5d3820"
+          },
+          "question.txt": {
+            "path": "data/external/ORThought/datasets/processed/IndustryOR/prob_003/question.txt",
+            "sha256": "e71955853504502bb4324809033d74388f83f29d43e53c03253e34ba66bdbdf7"
+          }
+        }
+      },
+      "variable_mapping": {
+        "x_chickens": {
+          "domain": "integer",
+          "meaning": "number of chickens",
+          "observed_in_initial_export": true,
+          "required_for_audit": true
+        },
+        "x_cows": {
+          "domain": "integer",
+          "meaning": "number of cows",
+          "observed_in_initial_export": true,
+          "required_for_audit": true
+        },
+        "x_sheep": {
+          "domain": "integer",
+          "meaning": "number of sheep",
+          "observed_in_initial_export": true,
+          "required_for_audit": true
+        }
+      }
+    },
+    {
+      "artifacts": {
+        "boundaries.json": "work/industryor_next_stage_v0.1/prob_008/boundaries.json",
+        "execution.json": "work/industryor_next_stage_v0.1/prob_008/execution.json",
+        "initial.py": "work/industryor_next_stage_v0.1/prob_008/initial.py",
+        "instrumented.py": "work/industryor_next_stage_v0.1/prob_008/instrumented.py",
+        "score.json": "work/industryor_next_stage_v0.1/prob_008/score.json",
+        "solution.json": "work/industryor_next_stage_v0.1/prob_008/solution.json",
+        "stderr.txt": "work/industryor_next_stage_v0.1/prob_008/stderr.txt",
+        "stdout.txt": "work/industryor_next_stage_v0.1/prob_008/stdout.txt"
+      },
+      "audit": {
+        "audit_status": "complete",
+        "blocking_reasons": [],
+        "business_correct": true,
+        "business_correct_requires": [
+          "complete export from an optimal SCIP solve",
+          "all mapped variable domains and business constraints pass",
+          "business objective recomputed from variables is independently optimal",
+          "reported model objective equals the recomputed business objective"
+        ],
+        "method": "enumeration of all 5P4 worker-to-task assignments plus binary assignment checks",
+        "optimality_target_returned_to_caller": false,
+        "qualified": true
+      },
+      "cohort": "known_correct_control",
+      "id": 8,
+      "initial": {
+        "sha256": "fa2ca2dd9432387e9915b81b05bece1fc9ef21b4e4ed151d69a326e35798272c",
+        "source_path": "runs/industryor/sandbox/z0__8__r1/gen.py"
+      },
+      "instrumented": {
+        "business_statements_rewritten": false,
+        "method": "AST-validated fixed append-only exporter",
+        "public_answer_injected": false,
+        "sha256": "775ab7571d81218cc3a7661d204399ec00af1e0a381f27be82da5bd8004ff01d"
+      },
+      "question": "Now, we need to determine 4 out of 5 workers to complete one of the four tasks respectively. Due to each worker's different technical specialties, the time required for them to complete each task varies. The hours required by each worker to complete each task are shown in Table 5-2.\n\nTable 5-2\n| Worker | $A$ | $B$ | $C$ | $D$ |\n|--------|-----|-----|-----|-----|\n| I      | 9   | 4   | 3   | 7   |\n| II     | 4   | 6   | 5   | 6   |\n| III    | 5   | 4   | 7   | 5   |\n| IV     | 7   | 5   | 2   | 3   |\n| V      | 10  | 6   | 7   | 4   |\n\nTry to find a job assignment plan that minimizes the total working hours.",
+      "question_sha256": "34a71477b1725c4f712772ee053e2417c769d82e65bc4d254553d080e256320e",
+      "solution_schema": {
+        "export": "complete boolean and captured error",
+        "name": "industryor.solution.v1",
+        "objective": "candidate model objective, not a reference objective",
+        "variable_types": "flat object keyed like variables",
+        "variables": "flat object keyed by PySCIPOpt variable name; finite numeric values including zeros"
+      },
+      "sources": {
+        "industryor_question": {
+          "dataset_sha256": "5b889e49d9aa64ae5b368bc80a05ee71a1daf20d126f54efc6207c98f9095f36",
+          "path": "data/industryor/IndustryOR.json",
+          "record_id": 8
+        },
+        "orthought": {
+          "code.py": {
+            "path": "data/external/ORThought/datasets/processed/IndustryOR/prob_007/code.py",
+            "sha256": "f01d8cddfd92c6e073dc74e147c2aab3d79b9b9c7f930c124d8fafe963ee13ed"
+          },
+          "model.txt": {
+            "path": "data/external/ORThought/datasets/processed/IndustryOR/prob_007/model.txt",
+            "sha256": "71b089163d6789e3aa6c1911f4bdb263f167f3a747f334f7152d58b21e570432"
+          },
+          "question.txt": {
+            "path": "data/external/ORThought/datasets/processed/IndustryOR/prob_007/question.txt",
+            "sha256": "34a71477b1725c4f712772ee053e2417c769d82e65bc4d254553d080e256320e"
+          }
+        }
+      },
+      "variable_mapping": {
+        "x_0_0": {
+          "domain": "binary",
+          "meaning": "worker index 0 assigned to task index 0; both zero-based",
+          "observed_in_initial_export": true,
+          "required_for_audit": true
+        },
+        "x_0_1": {
+          "domain": "binary",
+          "meaning": "worker index 0 assigned to task index 1; both zero-based",
+          "observed_in_initial_export": true,
+          "required_for_audit": true
+        },
+        "x_0_2": {
+          "domain": "binary",
+          "meaning": "worker index 0 assigned to task index 2; both zero-based",
+          "observed_in_initial_export": true,
+          "required_for_audit": true
+        },
+        "x_0_3": {
+          "domain": "binary",
+          "meaning": "worker index 0 assigned to task index 3; both zero-based",
+          "observed_in_initial_export": true,
+          "required_for_audit": true
+        },
+        "x_1_0": {
+          "domain": "binary",
+          "meaning": "worker index 1 assigned to task index 0; both zero-based",
+          "observed_in_initial_export": true,
+          "required_for_audit": true
+        },
+        "x_1_1": {
+          "domain": "binary",
+          "meaning": "worker index 1 assigned to task index 1; both zero-based",
+          "observed_in_initial_export": true,
+          "required_for_audit": true
+        },
+        "x_1_2": {
+          "domain": "binary",
+          "meaning": "worker index 1 assigned to task index 2; both zero-based",
+          "observed_in_initial_export": true,
+          "required_for_audit": true
+        },
+        "x_1_3": {
+          "domain": "binary",
+          "meaning": "worker index 1 assigned to task index 3; both zero-based",
+          "observed_in_initial_export": true,
+          "required_for_audit": true
+        },
+        "x_2_0": {
+          "domain": "binary",
+          "meaning": "worker index 2 assigned to task index 0; both zero-based",
+          "observed_in_initial_export": true,
+          "required_for_audit": true
+        },
+        "x_2_1": {
+          "domain": "binary",
+          "meaning": "worker index 2 assigned to task index 1; both zero-based",
+          "observed_in_initial_export": true,
+          "required_for_audit": true
+        },
+        "x_2_2": {
+          "domain": "binary",
+          "meaning": "worker index 2 assigned to task index 2; both zero-based",
+          "observed_in_initial_export": true,
+          "required_for_audit": true
+        },
+        "x_2_3": {
+          "domain": "binary",
+          "meaning": "worker index 2 assigned to task index 3; both zero-based",
+          "observed_in_initial_export": true,
+          "required_for_audit": true
+        },
+        "x_3_0": {
+          "domain": "binary",
+          "meaning": "worker index 3 assigned to task index 0; both zero-based",
+          "observed_in_initial_export": true,
+          "required_for_audit": true
+        },
+        "x_3_1": {
+          "domain": "binary",
+          "meaning": "worker index 3 assigned to task index 1; both zero-based",
+          "observed_in_initial_export": true,
+          "required_for_audit": true
+        },
+        "x_3_2": {
+          "domain": "binary",
+          "meaning": "worker index 3 assigned to task index 2; both zero-based",
+          "observed_in_initial_export": true,
+          "required_for_audit": true
+        },
+        "x_3_3": {
+          "domain": "binary",
+          "meaning": "worker index 3 assigned to task index 3; both zero-based",
+          "observed_in_initial_export": true,
+          "required_for_audit": true
+        },
+        "x_4_0": {
+          "domain": "binary",
+          "meaning": "worker index 4 assigned to task index 0; both zero-based",
+          "observed_in_initial_export": true,
+          "required_for_audit": true
+        },
+        "x_4_1": {
+          "domain": "binary",
+          "meaning": "worker index 4 assigned to task index 1; both zero-based",
+          "observed_in_initial_export": true,
+          "required_for_audit": true
+        },
+        "x_4_2": {
+          "domain": "binary",
+          "meaning": "worker index 4 assigned to task index 2; both zero-based",
+          "observed_in_initial_export": true,
+          "required_for_audit": true
+        },
+        "x_4_3": {
+          "domain": "binary",
+          "meaning": "worker index 4 assigned to task index 3; both zero-based",
+          "observed_in_initial_export": true,
+          "required_for_audit": true
+        }
+      }
+    },
+    {
+      "artifacts": {
+        "boundaries.json": "work/industryor_next_stage_v0.1/prob_009/boundaries.json",
+        "execution.json": "work/industryor_next_stage_v0.1/prob_009/execution.json",
+        "initial.py": "work/industryor_next_stage_v0.1/prob_009/initial.py",
+        "instrumented.py": "work/industryor_next_stage_v0.1/prob_009/instrumented.py",
+        "score.json": "work/industryor_next_stage_v0.1/prob_009/score.json",
+        "solution.json": "work/industryor_next_stage_v0.1/prob_009/solution.json",
+        "stderr.txt": "work/industryor_next_stage_v0.1/prob_009/stderr.txt",
+        "stdout.txt": "work/industryor_next_stage_v0.1/prob_009/stdout.txt"
+      },
+      "audit": {
+        "audit_status": "complete",
+        "blocking_reasons": [],
+        "business_correct": true,
+        "business_correct_requires": [
+          "complete export from an optimal SCIP solve",
+          "all mapped variable domains and business constraints pass",
+          "business objective recomputed from variables is independently optimal",
+          "reported model objective equals the recomputed business objective"
+        ],
+        "method": "bounded integer enumeration with exact resource and production-logic checks",
+        "optimality_target_returned_to_caller": false,
+        "qualified": true
+      },
+      "cohort": "known_correct_control",
+      "id": 9,
+      "initial": {
+        "sha256": "ced28414950f3215ce424ef805fc2bd5518ac737a0aed4d4e73e2ac136307600",
+        "source_path": "runs/industryor/sandbox/z0__9__r1/gen.py"
+      },
+      "instrumented": {
+        "business_statements_rewritten": false,
+        "method": "AST-validated fixed append-only exporter",
+        "public_answer_injected": false,
+        "sha256": "338914c36c14d012684e4ad9db97dc912d449dd42de42d158af994bd8b1f076f"
+      },
+      "question": "Haus Toys can manufacture and sell toy trucks, toy airplanes, toy boats, and toy trains. The profit for each truck sold is $5, each airplane $10, each boat $8, and each train $7. How many types of toys should Haus Toys manufacture to maximize profits?\n\nThere are 890 units of wood available. Each truck requires 12 units, each airplane 20 units, each boat 15 units, and each train 10 units.\n\nThere are 500 units of steel available. Each airplane requires 3 units, each boat 5 units, each train 4 units, and each truck 6 units.\n\nIf Haus Toys manufactures trucks, they will not manufacture trains.\n\nHowever, if they manufacture boats, they will also manufacture airplanes.\n\nThe number of toy boats manufactured cannot exceed the number of toy trains manufactured.",
+      "question_sha256": "bc5f7c924a5574dda81b157fef88f1644f22862a2428ec0e76ebc85f95fa87d0",
+      "solution_schema": {
+        "export": "complete boolean and captured error",
+        "name": "industryor.solution.v1",
+        "objective": "candidate model objective, not a reference objective",
+        "variable_types": "flat object keyed like variables",
+        "variables": "flat object keyed by PySCIPOpt variable name; finite numeric values including zeros"
+      },
+      "sources": {
+        "industryor_question": {
+          "dataset_sha256": "5b889e49d9aa64ae5b368bc80a05ee71a1daf20d126f54efc6207c98f9095f36",
+          "path": "data/industryor/IndustryOR.json",
+          "record_id": 9
+        },
+        "orthought": {
+          "code.py": {
+            "path": "data/external/ORThought/datasets/processed/IndustryOR/prob_008/code.py",
+            "sha256": "7d8bf2c6c6c49eb524ec483842e1cf138c6150a636f835ba51857d6d2090824d"
+          },
+          "model.txt": {
+            "path": "data/external/ORThought/datasets/processed/IndustryOR/prob_008/model.txt",
+            "sha256": "9f7383d5fb3aa963009bbcdbbe6acdfe2e9d87cfd9bf72b0e2601e1581439246"
+          },
+          "question.txt": {
+            "path": "data/external/ORThought/datasets/processed/IndustryOR/prob_008/question.txt",
+            "sha256": "bc5f7c924a5574dda81b157fef88f1644f22862a2428ec0e76ebc85f95fa87d0"
+          }
+        }
+      },
+      "variable_mapping": {
+        "x1": {
+          "domain": "integer",
+          "meaning": "quantity of trucks",
+          "observed_in_initial_export": true,
+          "required_for_audit": true
+        },
+        "x2": {
+          "domain": "integer",
+          "meaning": "quantity of airplanes",
+          "observed_in_initial_export": true,
+          "required_for_audit": true
+        },
+        "x3": {
+          "domain": "integer",
+          "meaning": "quantity of boats",
+          "observed_in_initial_export": true,
+          "required_for_audit": true
+        },
+        "x4": {
+          "domain": "integer",
+          "meaning": "quantity of trains",
+          "observed_in_initial_export": true,
+          "required_for_audit": true
+        },
+        "y1": {
+          "domain": "binary",
+          "meaning": "whether trucks are manufactured",
+          "observed_in_initial_export": true,
+          "required_for_audit": true
+        },
+        "y2": {
+          "domain": "binary",
+          "meaning": "whether boats are manufactured",
+          "observed_in_initial_export": true,
+          "required_for_audit": true
+        }
+      }
+    }
+  ],
+  "qualification": {
+    "blocked_ids": [
+      48
+    ],
+    "count": 7,
+    "meaning": "A reproducible variable-level business audit exists; this is independent of whether the initial program is correct.",
+    "minimum_required": 6,
+    "qualified_ids": [
+      19,
+      20,
+      21,
+      25,
+      4,
+      8,
+      9
+    ]
+  },
+  "schema_version": "industryor.next_stage.manifest.v1"
+}

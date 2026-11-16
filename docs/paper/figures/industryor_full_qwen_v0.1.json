@@ -1,0 +1,129 @@
+{
+ "scope": "完整 IndustryOR-100",
+ "n": 100,
+ "objective_tolerance": "absolute_error_at_most_0.1",
+ "old_metrics_same_ids": {
+  "z0": {
+   "n": 100,
+   "objective_matches_abs_0_1": 35,
+   "exec_ok": 50,
+   "optimal": 49
+  },
+  "z1": {
+   "n": 100,
+   "objective_matches_abs_0_1": 60,
+   "exec_ok": 93,
+   "optimal": 92
+  },
+  "z2": {
+   "n": 100,
+   "objective_matches_abs_0_1": 74,
+   "exec_ok": 100,
+   "optimal": 99
+  }
+ },
+ "new_metrics": {
+  "n": 100,
+  "objective_matches_abs_0_1": 70,
+  "exec_ok": 99,
+  "optimal": 99
+ },
+ "business_audit": {
+  "n": 8,
+  "initial_business_correct": 0,
+  "final_business_correct": 2,
+  "unverified_or_blocked": 6,
+  "blocked": 1
+ },
+ "business_unverified": 92,
+ "derived_summary": {
+  "outcome_classes_recomputed_from_business_evidence": {
+   "business_audit_blocked": 1,
+   "business_correct": 2,
+   "crash": 1,
+   "objective_matched_business_unknown": 4,
+   "objective_matched_business_unverified": 64,
+   "objective_mismatch_business_unknown": 1,
+   "objective_mismatch_or_suboptimal": 27
+  },
+  "objective_recovered_ids": [
+   2,
+   16,
+   17,
+   22,
+   26,
+   34,
+   50,
+   51,
+   54,
+   59,
+   67,
+   82,
+   96,
+   99
+  ],
+  "objective_lost_ids": [],
+  "business_semantic_recovery_ids": [
+   19,
+   21
+  ],
+  "audit_incomplete_or_blocked_ids": [
+   4,
+   8,
+   9,
+   20,
+   25,
+   48
+  ],
+  "historical_export_errors": {
+   "ValueError: expected exactly one top-level model.optimize() call": 2
+  },
+  "historical_crash_last_lines": {
+   "TypeError: addVar() got an unexpected keyword argument 'v'": 9,
+   "KeyError: 'I'": 1,
+   "AttributeError: 'pyscipopt.scip.Model' object has no attribute 'exp'": 1,
+   "Exception: SCIP: method cannot be called at this time in solution process!": 1,
+   "KeyError: 'A'": 3,
+   "AttributeError: 'pyscipopt.scip.Model' object has no attribute 'getConsByName'": 1,
+   "KeyError: 0": 1,
+   "ValueError: Nonlinear objective functions are not supported!": 1
+  }
+ },
+ "delta_vs_z2": -4,
+ "improved_ids": [
+  16,
+  18,
+  50,
+  59
+ ],
+ "worsened_ids": [
+  12,
+  14,
+  20,
+  30,
+  47,
+  49,
+  78,
+  88
+ ],
+ "validation": {
+  "registered_n": 100,
+  "initial_responses_verified": 100,
+  "executions_verified": 135,
+  "business_scores_recomputed": 19,
+  "source_snapshots_verified": 13,
+  "retry_accounting_complete": true,
+  "analysis_sha256": "8fc94a9db2ba7d833dd4e645831bf8c98321992caf8b33788c52d8a47140dfa5",
+  "manifest_sha256": "ecd6158fd968f30e2311f9972932e66df0c73ffd6873638b58fd326729398be6"
+ },
+ "claims": {
+  "controlled_model_revision_ablation": false,
+  "sota_claim": false,
+  "general_self_evolution_claim": false
+ },
+ "sources": [
+  "work/industryor_full_qwen_v0.1/analysis.json",
+  "work/industryor_full_qwen_v0.1/comparison.json",
+  "docs/paper/industryor_full_pipeline_protocol_v0.1.md"
+ ]
+}

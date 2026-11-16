@@ -1,0 +1,30 @@
+{
+ "mechanism_id": "indicator_link",
+ "version": "0.1.0",
+ "status": "candidate",
+ "scope": {"constraint_kind": "integer_quantity_binary_indicator_equivalence"},
+ "source": {"type": "independent_reference", "reference": "quantity_indicator_definition"},
+ "validation": {
+  "question": "If a supplier is used, the dependent order is required.",
+  "clean": {"variables": {"x": 0.0, "y": 0.0}, "objective": 0.0},
+  "clean_positive": {"variables": {"x": 2.0, "y": 1.0}, "objective": 0.0},
+  "wrong_off": {"variables": {"x": 0.0, "y": 1.0}, "objective": 0.0},
+  "wrong_on": {"variables": {"x": 1.0, "y": 0.0}, "objective": 0.0},
+  "binding": {
+   "links": [{
+    "invariant_id": "supplier_indicator",
+    "quantity_path": "solution.variables.x",
+    "indicator_path": "solution.variables.y",
+    "upper_bound": 10,
+    "source_span": "If a supplier is used, the dependent order is required.",
+    "source_evidence": {
+     "type": "independent_reference",
+     "reference": "controlled_indicator_definition_v0.1",
+     "text": "use = 1 if quantity > 0; use = 0 if quantity = 0",
+     "span": "use = 1 if quantity > 0; use = 0 if quantity = 0",
+     "sha256": "53ea9b621cb4ee2069117045d07f432b11ccdabaafc0cc3e805570e6255104f0"
+    }
+   }]
+  }
+ }
+}

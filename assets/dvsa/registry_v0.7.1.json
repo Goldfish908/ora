@@ -1,0 +1,28 @@
+{
+  "registry_version": "dvsa.registry.v0.7.1",
+  "status": "frozen_reference_cohort_sealed_before_candidate_generation",
+  "base_registry": {
+    "path": "assets/dvsa/registry_v0.7.json",
+    "sha256": "45d847d27a2efdaa5adfebcec26300325d45fadb5d8596023d72473a3c32244c"
+  },
+  "experiment_configuration_changed": false,
+  "reference_summary": {
+    "path": "work/dvsa/bwor_reference/frozen/summary.json",
+    "sha256": "27afd01bd748d46c14da737f61a5556d6d198bad3458caa9b5641d2957bfee8a",
+    "eligible_n": 28,
+    "all_n": 41,
+    "eligible_ids": ["BWOR-002", "BWOR-003", "BWOR-005", "BWOR-006", "BWOR-010", "BWOR-012", "BWOR-013", "BWOR-018", "BWOR-019", "BWOR-021", "BWOR-024", "BWOR-025", "BWOR-027", "BWOR-030", "BWOR-034", "BWOR-040", "BWOR-041", "BWOR-044", "BWOR-047", "BWOR-049", "BWOR-050", "BWOR-059", "BWOR-061", "BWOR-064", "BWOR-073", "BWOR-075", "BWOR-076", "BWOR-079"],
+    "ineligible_ids": ["BWOR-007", "BWOR-008", "BWOR-026", "BWOR-028", "BWOR-032", "BWOR-035", "BWOR-038", "BWOR-045", "BWOR-051", "BWOR-057", "BWOR-074", "BWOR-081", "BWOR-082"],
+    "initial_llm_calls": 42,
+    "llm_latency_s": 3837.714,
+    "total_tokens": 414768,
+    "syntax_only_repairs": 1,
+    "manual_structural_repairs": 0
+  },
+  "cohort_selection": {
+    "selected_before_any_candidate_or_arm_output": true,
+    "based_on_method_outcomes": false,
+    "criteria": "Verbatim sources + SCIP optimal + independent audit VALID + public answer absolute error <= 0.1"
+  },
+  "sota_started": false
+}

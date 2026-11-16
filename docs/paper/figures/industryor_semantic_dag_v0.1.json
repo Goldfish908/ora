@@ -1,0 +1,121 @@
+{
+ "scope": "development_replay_not_heldout",
+ "arms": {
+  "bind_only": {
+   "n": 8,
+   "runner_errors": 0,
+   "initial_objective_matches_abs_0_1": 6,
+   "root_objective_matches_abs_0_1": 6,
+   "binding_preserved_objective": 8,
+   "root_business_correct": 3,
+   "final_business_correct": 3,
+   "business_recoveries": 0,
+   "objective_matches_abs_0_1": 6,
+   "accepted": 3,
+   "new_llm_calls": 0,
+   "logical_repair_llm_calls": 0,
+   "shared_regeneration_reuses": 0,
+   "api_attempts": 0,
+   "completion_tokens": 0,
+   "total_tokens": 0,
+   "llm_latency_s": 0,
+   "new_llm_latency_s": 0,
+   "candidate_evaluations": 8,
+   "multi_branch_cases": 0,
+   "solver_runs": 8,
+   "accepted_actions": [
+    "initial"
+   ]
+  },
+  "single_line": {
+   "n": 8,
+   "runner_errors": 0,
+   "initial_objective_matches_abs_0_1": 6,
+   "root_objective_matches_abs_0_1": 6,
+   "binding_preserved_objective": 8,
+   "root_business_correct": 3,
+   "final_business_correct": 7,
+   "business_recoveries": 4,
+   "objective_matches_abs_0_1": 7,
+   "accepted": 7,
+   "new_llm_calls": 1,
+   "logical_repair_llm_calls": 1,
+   "shared_regeneration_reuses": 0,
+   "api_attempts": 1,
+   "completion_tokens": 6154,
+   "total_tokens": 8894,
+   "llm_latency_s": 58.975,
+   "new_llm_latency_s": 58.975,
+   "candidate_evaluations": 13,
+   "multi_branch_cases": 0,
+   "solver_runs": 5,
+   "accepted_actions": [
+    "initial",
+    "local_patch"
+   ]
+  },
+  "branch_dag": {
+   "n": 8,
+   "runner_errors": 0,
+   "initial_objective_matches_abs_0_1": 6,
+   "root_objective_matches_abs_0_1": 6,
+   "binding_preserved_objective": 8,
+   "root_business_correct": 3,
+   "final_business_correct": 7,
+   "business_recoveries": 4,
+   "objective_matches_abs_0_1": 7,
+   "accepted": 7,
+   "new_llm_calls": 5,
+   "logical_repair_llm_calls": 5,
+   "shared_regeneration_reuses": 0,
+   "api_attempts": 5,
+   "completion_tokens": 19675,
+   "total_tokens": 27333,
+   "llm_latency_s": 193.9,
+   "new_llm_latency_s": 193.9,
+   "candidate_evaluations": 17,
+   "multi_branch_cases": 4,
+   "solver_runs": 9,
+   "accepted_actions": [
+    "initial",
+    "local_patch",
+    "regenerate"
+   ]
+  }
+ },
+ "dag_minus_single_business_correct": 0,
+ "dag_minus_single_new_llm_calls": 4,
+ "binding_cost": {
+  "n": 8,
+  "runner_errors": 0,
+  "binding_ready": 7,
+  "initial_business_correct": 0,
+  "rebound_business_correct": 3,
+  "objective_unchanged": 7,
+  "objective_matches_abs_0_1": 6,
+  "new_llm_calls": 8,
+  "api_attempts": 8,
+  "completion_tokens": 10905,
+  "total_tokens": 24609,
+  "llm_latency_s": 116.798,
+  "wall_seconds": 50.816,
+  "scope": "development replay; binding coverage is not proof of model semantic repair"
+ },
+ "validation": {
+  "results": 24,
+  "business_scores_recomputed": 32,
+  "source_snapshots_verified": 8,
+  "generation_records_verified": 5,
+  "analysis_sha256": "f69872c8dae3d7572e0e71ef2085a6c8a18ecfbc540b635eccadaa4b33cfb0fc"
+ },
+ "claims": {
+  "full_industryor_improvement": false,
+  "cross_family_transfer": false,
+  "outer_loop_evolution": false,
+  "heldout": false
+ },
+ "sources": [
+  "work/industryor_semantic_dag_dev_v0.1/analysis.json",
+  "work/industryor_semantic_dag_dev_v0.1/manifest.json"
+ ]
+}

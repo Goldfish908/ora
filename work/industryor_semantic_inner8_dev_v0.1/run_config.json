@@ -1,0 +1,27 @@
+{
+ "ids": [
+  4,
+  8,
+  9,
+  19,
+  20,
+  21,
+  25,
+  48
+ ],
+ "model": "Qwen3_8-27B",
+ "base_url": "https://10.46.124.101/service-large-50-1789958762589/llm/v1",
+ "exposure": "development_replay_not_heldout",
+ "binding_temperature": 0.2,
+ "reasoning_effort": "medium",
+ "max_tokens": 32768,
+ "source_analysis_sha256": "8fc94a9db2ba7d833dd4e645831bf8c98321992caf8b33788c52d8a47140dfa5",
+ "protocol_sha256": "5e74e9eb2bf63f1b4030a46829b4e808fb64333b588e6d1b6e23446649530e01",
+ "implementation_sha256": {
+  "scripts/industryor_binding_pilot.py": "e6ce15370a1c4e5e3db197e0d9cfa08656e951ea321724d661a444ab3abedc21",
+  "ora_agent/semantic_binding.py": "2b07c25f540d1f150e8bc7833ebba59129742fc36da82a8f83b301ad2c121f0d",
+  "scripts/industryor_next_stage.py": "8daba1b593668d890978337f7215a520c363e3027eb2e34587ef4738fa20d7b7",
+  "scripts/m1_pilot.py": "f687c8f2daa2c55eb22a22a91dba169c1440acab9b6a23f8d0f079cbb8c7509a",
+  "ora_agent/llm.py": "eb2b6f6ebc36813149d52ea1a109addd51cb02419c53f7427de7c7a712d7aa18"
+ }
+}

@@ -1,0 +1,69 @@
+{
+  "registry_version": "dvsa.registry.v0.2",
+  "status": "dev_candidate_not_frozen",
+  "protocol": "dvsa-bwor-v0.1",
+  "promotion": "hold_for_natural_repair_and_validation",
+  "frozen_problem_content_accessed_for_design": false,
+  "implementations": {
+    "ora_agent/dvsa.py": "0671de5ca0e85090749137d9725077286cba0b1faf44ab543576d68648cbdb82",
+    "ora_agent/dvsa_model.py": "cc30533e84a75a4d1df943641ec127b272ead0032ad7cc7027d0a30e5273ddc7",
+    "ora_agent/dvsa_templates.py": "2e6335759d38d5c7bec775d627984188d993a11a17bd82a96edb41c6bff7688f",
+    "ora_agent/dvsa_linear.py": "ec292c4f73e976219604ff1ed3dda69155a3e38068aa6d07d8dee5f93f942c1c",
+    "scripts/dvsa_binding_author.py": "5083508d5d9f1ba5166d87828ed0d0087dba8c10f0b722fc939e27f81891b25c",
+    "scripts/dvsa_binding_eval.py": "d7891c95ed92230b33c89438942f9d473485fa9b634a24c76c1cd05265d8c480",
+    "scripts/dvsa_llm_judge.py": "7923fe2504e43b712b45cb8c3b291f4a911030e871e577186539a581567d4aed",
+    "scripts/dvsa_fixed_arm_analyze.py": "5c357e7f0033f295d28d103b2a78fedba14083cf0ab97f787c20335bd772b3c5"
+  },
+  "splits": {
+    "path": "data/dvsa/splits_manifest.json",
+    "sha256": "361498953b0a87ebb933bbddb6f837dc4098289a21a1ca05650154135e1cf7a6"
+  },
+  "template_library": {
+    "path": "assets/dvsa/bwor_primitives_v0.1.json",
+    "sha256": "a875d12c862dce6216980ef9e5cd83abd081c3392f39bf3672f9196f71fd32f5",
+    "status": "candidate",
+    "templates": [
+      "bwor.resource_capacity",
+      "bwor.proportion_lower",
+      "bwor.proportion_upper",
+      "bwor.objective_recompute",
+      "bwor.linear_balance",
+      "bwor.linear_lower_bound"
+    ]
+  },
+  "reference_models": {
+    "BWOR-001": {"path": "work/dvsa/bwor_reference/dev/BWOR-001/model_r1.json", "sha256": "74708b28894e2b01121f9bf9a22daca42340fd62e816578eb550b7b18e9f7dfd", "revision": "structural_r1"},
+    "BWOR-011": {"path": "work/dvsa/bwor_reference/dev/BWOR-011/model.json", "sha256": "169ae7fe7116829819d7c90b34389067db601d8284d881a59c2806e1a83354c7", "revision": "initial"},
+    "BWOR-042": {"path": "work/dvsa/bwor_reference/dev/BWOR-042/model_syntax_r1.json", "sha256": "6a81b7a852ad74d81d6358e9438f8c7e08edc8dfe0430e4f82e09b39d9b8e30c", "revision": "syntax_r1"},
+    "BWOR-043": {"path": "work/dvsa/bwor_reference/dev/BWOR-043/model.json", "sha256": "2393bf699cd705dbe83751bf32363a5dbb8bc2bfcc90d9ffdc60ccadbb4b4967", "revision": "initial"},
+    "BWOR-062": {"path": "work/dvsa/bwor_reference/dev/BWOR-062/model_syntax_r1.json", "sha256": "c459ef76bcd53febf038a992530356bfe997c36b43d4c57250953a7d0741c317", "revision": "syntax_r1"},
+    "BWOR-066": {"path": "work/dvsa/bwor_reference/dev/BWOR-066/model.json", "sha256": "8696306abeef7ddb22af773260c7d5aa18aabe49df7b4b07cd1d68832f27fd3e", "revision": "initial"},
+    "BWOR-069": {"path": "work/dvsa/bwor_reference/dev/BWOR-069/model.json", "sha256": "730de3be2eea136c9e8f907fa762e0b7db400f447f62d2060523a06ec8cbb478", "revision": "initial"}
+  },
+  "dev_fixed_artifact_result": {
+    "path": "work/dvsa/bwor_fixed_arms_dev/analysis.json",
+    "sha256": "624139daa965c467cdc079301f6cc6ef5c81566868f6324aa15fe83a916e86c4",
+    "report": "docs/paper/dvsa_dev_fixed_arms_v0.1.md",
+    "figure": "/home/hewj13/paper_icml2027/figures/dvsa_bwor_dev_fixed_arms.png",
+    "figure_sha256": "e7f774986afe7d2fa68861506a6c087819bbd50afcb5ab8e11e9a4dcd9c40267",
+    "reference_qualified_problems": 7,
+    "total_dev_problems": 16,
+    "unique_artifacts": 51,
+    "wrong_artifacts": 44,
+    "clean_artifacts": 7,
+    "detection": {"no_memory": 38, "text_memory": 39, "dvsa": 44, "direct_legacy_witness": 0},
+    "clean_false_positive_n": {"no_memory": 0, "text_memory": 0, "dvsa": 0, "direct_legacy_witness": 0},
+    "dvsa_vs_text_mcnemar": {"dvsa_only": 5, "text_only": 0, "p": 0.0625},
+    "sota_started": false
+  },
+  "verification": {
+    "python39_tests": "156 passed; one pre-existing m2gen Python 3.9 dict|None failure",
+    "python312_m2gen": "REGRESSION OK"
+  },
+  "limitations": [
+    "All fixed-artifact metrics are conditional on shared reference variable declarations.",
+    "Only seven of sixteen dev problems currently have candidate references.",
+    "Independent binding inputs do not imply an independent model or independent human annotation.",
+    "No natural end-to-end repair, validation, frozen or SOTA result has been produced."
+  ]
+}

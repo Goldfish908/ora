@@ -1,0 +1,31 @@
+{
+ "mechanism_id": "job_precedence",
+ "version": "0.1.0",
+ "status": "candidate",
+ "scope": {
+  "constraint_kind": "two_stage_precedence_with_explicit_time_binding",
+  "relation": "ge_or_gt",
+  "strict_repair": "unsupported_without_explicit_strict_model_semantics"
+ },
+ "source": {"type": "independent_reference", "reference": "two_stage_order_and_time_binding"},
+ "validation": {
+  "question": "Each job must first finish A before B starts.",
+  "clean": {"variables": {"end_a": 5.0, "start_b": 5.0}, "objective": 0.0},
+  "clean_wait": {"variables": {"end_a": 5.0, "start_b": 9.0}, "objective": 0.0},
+  "wrong": {"variables": {"end_a": 5.0, "start_b": 4.0}, "objective": 0.0},
+  "binding": {
+   "invariant_id": "job_precedence_a_b",
+   "source_span": "first finish A before B starts",
+   "first_end_path": "solution.variables.end_a",
+   "second_start_path": "solution.variables.start_b",
+   "relation": "ge",
+   "source_evidence": {
+    "type": "independent_reference",
+    "reference": "controlled_two_stage_definition_v0.1",
+    "text": "A must finish before B starts.",
+    "span": "A must finish before B starts.",
+    "sha256": "ef806dbce5be61f1f10a79ac70bad707253ade8902055652267b8ad1710c17d3"
+   }
+  }
+ }
+}

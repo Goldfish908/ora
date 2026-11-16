@@ -1,0 +1,73 @@
+{
+  "registry_version": "dvsa.registry.v0.5",
+  "status": "retailopt_dev_complete_not_frozen",
+  "protocol": "retailopt-shared-initial-dvsa-four-arm-v0.1",
+  "implementations": {
+    "ora_agent/dvsa.py": "8224e7d15cf8a328d83b2d2c22d83d81a15b6717a10d4db22b231e601db81945",
+    "scripts/dvsa_retail_repair.py": "07c1cfda342dc42ccbcb7a11200ec119581003c97d7d99e8f0f04f5c40ee6bed",
+    "scripts/dvsa_retail_execution_recovery.py": "90de592ba6d38592bdf5b267d29943c684c7104aa82329c1da18d347c2cf96ab",
+    "scripts/dvsa_retail_repair_analyze.py": "a1180dfa3187c6c3bf9849df76c783a4b838b2b6343e7a6b980f6a58d2ca88a4",
+    "scripts/dvsa_retail_fixed_analyze.py": "1cbfd7eecaa49dd805516712cdeafe9ff30f8dbdacb6120b69d8f4c48c49c6ec",
+    "scripts/dvsa_retail_llm_judge.py": "f9c6ce82ec44e8d4ca1d90272c580bfbdf5aaa0ba239fa0d073b0dc599f6883c"
+  },
+  "assets": {
+    "retailopt.demand_substitution_balance": "1c10d4316bd2f394bf1869c5974f37066fd652bcbefb9bc2725c2e3b82769999",
+    "retailopt.initial_inventory_zero": "71ac134157bf4c90a8423a930d864d96c25dc9aa756f15e55e5566d46f3702c0"
+  },
+  "baseline": {
+    "path": "work/mem_evo/replay_gen1/m1_pilot_schema_sol_gen1.jsonl",
+    "sha256": "3c81b08c3ca5f81825446a672bb9fcb38ab836b1ac24783f81a6a81e15642551",
+    "dev_scenarios": 20,
+    "initial_business_correct": 6
+  },
+  "natural_repair": {
+    "analysis": "work/dvsa/retailopt_repair_analysis/analysis.json",
+    "sha256": "8887102b9f332fd3413bc37f153670ab6114366386b965f8721b4b7811dca9a8",
+    "figure": "/home/hewj13/paper_icml2027/figures/dvsa_retailopt_dev_repair.png",
+    "figure_sha256": "c10b925fdf13256cf684e6fe56f4a0106faf9f565c4761bbfb80f8d75c99c24f",
+    "business_correct_n": {"no_memory": 5, "text_memory": 17, "dvsa": 18, "direct_legacy_witness": 17},
+    "improved_n": {"no_memory": 0, "text_memory": 11, "dvsa": 12, "direct_legacy_witness": 11},
+    "harmed_win_n": {"no_memory": 1, "text_memory": 0, "dvsa": 0, "direct_legacy_witness": 0},
+    "llm_calls": {"no_memory": 21, "text_memory": 22, "dvsa": 15, "direct_legacy_witness": 13},
+    "total_tokens": {"no_memory": 231799, "text_memory": 260532, "dvsa": 173704, "direct_legacy_witness": 196394},
+    "dvsa_semantic_triggers": 10,
+    "dvsa_semantic_trigger_business_correct": 10,
+    "dvsa_semantic_trigger_execution_recovery": 2,
+    "dvsa_vs_text": {"dvsa_only": 1, "text_only": 0, "mcnemar_p": 1.0},
+    "dvsa_vs_legacy": {"dvsa_only": 1, "legacy_only": 0, "mcnemar_p": 1.0}
+  },
+  "fixed_artifacts": {
+    "analysis": "work/dvsa/retailopt_fixed_arms_analysis/analysis.json",
+    "sha256": "0241226c6f619c15a32a672c7222f9ba124e7f60579794cc2e70b741a077029b",
+    "figure": "/home/hewj13/paper_icml2027/figures/dvsa_retailopt_dev_fixed_arms.png",
+    "figure_sha256": "f7cf705a077def49138b08972ac14afbe6a6b1b046b614e6afed423fef8d7b90",
+    "semantic_wrong": 10,
+    "business_clean": 6,
+    "detection_n": {"no_memory": 6, "text_memory": 9, "dvsa": 10, "direct_legacy_witness": 10},
+    "false_positive_n": {"no_memory": 2, "text_memory": 2, "dvsa": 0, "direct_legacy_witness": 0},
+    "unknown": {"no_memory": 8, "text_memory": 5, "dvsa": 0, "direct_legacy_witness": 0},
+    "dvsa_vs_text_detection_p": 1.0,
+    "dvsa_vs_text_false_positive_p": 0.5,
+    "judge_decoding": "enable_thinking=false; max_tokens=8192"
+  },
+  "a3_configuration": {
+    "text_memory_plus_full_legacy_witness": true,
+    "legacy_only_sensitivity": "work/dvsa/retailopt_repair_analysis_legacy_only/analysis.json",
+    "legacy_only_sensitivity_sha256": "f6174a29602fba986716b82c0cc8ad2e608d917246840b53816ba9fbf6200137",
+    "legacy_only_not_used_as_formal_arm": true
+  },
+  "reports": [
+    "docs/paper/dvsa_retailopt_repair_v0.1.md",
+    "docs/paper/dvsa_retailopt_fixed_v0.1.md"
+  ],
+  "verification": {
+    "python39_tests": "174 passed; one pre-existing m2gen Python 3.9 dict|None failure",
+    "python312_m2gen": "REGRESSION OK"
+  },
+  "sota_started": false,
+  "limitations": [
+    "DVSA has no statistically significant business-accuracy advantage over text memory or full legacy witness.",
+    "Only two observed RetailOpt mechanisms are covered by DVSA assets.",
+    "Results are from one saved dev replay, not full dev40, multiple seeds, validation or frozen test."
+  ]
+}

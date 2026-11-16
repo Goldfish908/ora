@@ -158,6 +158,7 @@ def extract_code(text: str) -> str:
 
 
 def run_code(code: str, sandbox: Path) -> dict:
+    sandbox = sandbox.resolve()
     sandbox.mkdir(parents=True, exist_ok=True)
     script = sandbox / "gen.py"
     script.write_text(code, encoding="utf-8")
@@ -167,8 +168,18 @@ def run_code(code: str, sandbox: Path) -> dict:
                            capture_output=True, text=True,
                            timeout=EXEC_TIMEOUT_SEC)
         out, err, rc = p.stdout, p.stderr, p.returncode
-    except subprocess.TimeoutExpired:
-        return {"exec_status": "timeout", "wall_s": time.time() - t0}
+    except subprocess.TimeoutExpired as exc:
+        out, err = exc.stdout or "", exc.stderr or ""
+        if isinstance(out, bytes):
+            out = out.decode("utf-8", errors="replace")
+        if isinstance(err, bytes):
+            err = err.decode("utf-8", errors="replace")
+        (sandbox / "stdout.txt").write_text(out, encoding="utf-8")
+        (sandbox / "stderr.txt").write_text(err, encoding="utf-8")
+        return {"exec_status": "timeout", "wall_s": time.time() - t0,
+                "stdout_artifact": "stdout.txt", "stderr_artifact": "stderr.txt"}
+    (sandbox / "stdout.txt").write_text(out, encoding="utf-8")
+    (sandbox / "stderr.txt").write_text(err, encoding="utf-8")
     wall = time.time() - t0
     status_m = re.search(r"^status:\s*(\S+)", out, re.MULTILINE)
     obj_m = re.search(r"^objective:\s*([-+0-9.eE]+)", out, re.MULTILINE)
@@ -179,6 +190,7 @@ def run_code(code: str, sandbox: Path) -> dict:
         "objective": float(obj_m.group(1)) if obj_m else None,
         "stderr_tail": err[-400:] if rc != 0 else "",
         "wall_s": round(wall, 1),
+        "stdout_artifact": "stdout.txt", "stderr_artifact": "stderr.txt",
     }
 
 

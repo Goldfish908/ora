@@ -22,17 +22,23 @@
    检查 runs/consensus_trap/smoke/samples.jsonl 有 12 行，且大部分行有 grade 和 witness 字段；
    若 llm_error 占多数，停止并报告错误信息。
 
-5. 正式采样：190 个场景 × K=8（约 1520 次调用）：
+5. 分层选题（不要用 --limit；那是按名字截断，有家族偏置）：
+   python3 research/consensus_trap/select.py --n 48 --seed 0 \
+     --out runs/consensus_trap/slice48.jsonl
+   确认输出的 manifest 里 per_major 覆盖 F1–F8，且 n=48。
+
+6. 正式采样：48 题 × K=8（约 384 次调用，作为立项门槛；不必先跑满 190）：
    nohup python3 research/consensus_trap/sample.py --k 8 --workers 16 \
-     --out runs/consensus_trap/retail_k8 > runs/consensus_trap/retail_k8.log 2>&1 &
+     --scenarios-file runs/consensus_trap/slice48.jsonl \
+     --out runs/consensus_trap/retail_k8_s48 > runs/consensus_trap/retail_k8_s48.log 2>&1 &
    中断后用同一命令续跑；结束后若有 llm_error，追加 --retry-errors 重跑一次。
 
-6. 分析：
-   python3 research/consensus_trap/analyze.py --samples "runs/consensus_trap/retail_k8/samples.jsonl" \
-     --out runs/consensus_trap/retail_k8_analysis.json
-   另跑一次聚类容差敏感性：加 --rel-tol 1e-3，输出到 retail_k8_analysis_tol1e-3.json。
+7. 分析：
+   python3 research/consensus_trap/analyze.py --samples "runs/consensus_trap/retail_k8_s48/samples.jsonl" \
+     --out runs/consensus_trap/retail_k8_s48_analysis.json
+   另跑一次聚类容差敏感性：加 --rel-tol 1e-3，输出到 retail_k8_s48_analysis_tol1e-3.json。
 
-7. 回传：把 run_config.json、两个 analysis json、precheck_pilots.json，以及
+8. 回传：把 slice48_manifest.json、run_config.json、两个 analysis json、precheck_pilots.json，以及
    samples.jsonl 中 exec_status/grade/witness 的计数汇总贴回来（不需要传 sandbox）。
    报告 llm_error 数、平均每次调用延迟和总墙钟时间。
 ```
@@ -40,5 +46,4 @@
 ## 成本估计
 
 参考 IndustryOR k3：每次生成约 1.3 万 completion tokens、约 130 秒。RetailOpt 每次还要执行 MILP（上限 620 秒）。
-1520 次调用、16 并发，预计 4–8 小时。时间紧可先跑 `--k 8 --limit 60`（按场景名排序取前 60，覆盖前几个家族），
-或用 `--families` 选家族。
+48×8=384 次调用、16 并发，预计 1–3 小时。若门槛结果 borderline，再用 `select.py --n 190`（或直接不加 `--scenarios-file`）补全量。

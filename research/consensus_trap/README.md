@@ -5,10 +5,13 @@
 
 ## 文件
 
+- `select.py`：按大族（F1–F8）与亚族分层抽场景，避免 `--limit` 的名字序偏置；默认 `--n 48`，优先 `v0`，并对 F3/F7 略加权（F10 幻影更密）。
 - `sample.py`：RetailOpt 每题独立采样 K 个零样本候选（与 `scripts/m1_pilot.py --prompt-mode schema_sol` 同一生成、执行、
   witness 路径；thinking on，temperature 0.6，无先验、无修复）。需要内网 Qwen API 和 `m1_pilot.py` 里的执行环境。
 - `analyze.py`：按目标值聚类计算共识，对照标签输出多数投票正确率、多数簇标签构成、幻影富集度、共识份额 AUC、
   随 K 变化的曲线、bootstrap 置信区间。不调用 LLM。
+
+门槛实验默认 **48 题 × K=8**，不必先跑满 190。
 
 ## 标签
 
@@ -22,7 +25,7 @@
 
 ## 判定规则（跑之前定下）
 
-主指标在 RetailOpt K=8 全量上计算：
+主指标先在分层切片（默认 48 题 × K=8）上计算；结论清楚则不必补全量：
 
 - **H1 成立（共识陷阱存在）**：`phantom_enrichment_in_majority` 的 95% CI 下界 > 1，
   或强多数簇（≥ K/2）中 phantom+wrong 占比 ≥ 25%。

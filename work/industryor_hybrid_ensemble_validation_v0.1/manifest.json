@@ -1,0 +1,11 @@
+{
+ "runs": [
+  "/home/hewj13/wm/ora/work/industryor_hybrid_replicate_v0.4",
+  "/home/hewj13/wm/ora/work/industryor_hybrid_replicate_v0.5",
+  "/home/hewj13/wm/ora/work/industryor_hybrid_replicate_v0.6"
+ ],
+ "n_runs": 3,
+ "accounted_n": 100,
+ "majority_vote_created": true,
+ "public_answer_used_for_selection": false
+}

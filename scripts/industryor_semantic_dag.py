@@ -56,8 +56,9 @@ def independent_score(problem_id: int, solution: dict | None) -> dict:
 def audit_record(score: dict) -> dict:
     if score.get("audit_status") != "complete":
         unknown = score.get("blocking_reasons") or score.get("violations") or [score.get("audit_status")]
+        evidence = [item if isinstance(item, dict) else {"detail": str(item)} for item in unknown]
         return {"status": "unknown", "reason": score.get("audit_status"), "fired": False,
-                "violations": [], "unknown_evidence": unknown, "rejected": []}
+                "violations": [], "unknown_evidence": evidence, "rejected": []}
     violations = [{"rule": "independent_business", "detail": detail}
                   for detail in score.get("violations", [])]
     return {"status": "ok", "fired": bool(violations), "violations": violations,

@@ -21,9 +21,9 @@
 
 选中代码经过变量绑定、导出契约和 SCIP。8 个注册题使用独立业务审计，其余题保持 `business_unverified`。
 
-`structured` 不做额外修复。`structured_dag` 在需要时从同一父候选派生局部修复和重生成；只有 9/19/20/21 使用已有独立局部修复证据。其余 92 题仅在 crash、infeasible、unbounded、无目标或导出失败时进入执行修复，不因 optimal 而盲目重生成。
+`structured` 不做额外修复。`structured_dag` 使用与原完整管线相同的 `ProgressController` 和 `MAX_ROUNDS=3`：首轮候选之外最多进行两轮修复，每个失败子节点都会重新进入控制器，而不是只展开根节点一次。只有 9/19/20/21 使用已有独立局部修复证据；已知 SCIP sense 错误使用确定性 API 修复，其余执行或复杂语义错误交给 LLM 重生成。其余 92 题仅在 crash、infeasible、unbounded、无目标或导出失败时进入执行修复，不因 optimal 而盲目重生成。
 
-重生成后重新绑定，记录 LLM/SCIP 成本、快照、父子关系、失败和 UNKNOWN。接受要求 binding 有效、SCIP optimal 和独立业务正确；无接受时保留根候选，不按参考答案或裸目标值排序。
+重生成后重新绑定，记录控制器决策、LLM/SCIP 成本、快照、父子关系、失败和 UNKNOWN。注册题的接受要求 binding 有效、SCIP optimal 和独立业务正确；无接受时保留根候选，不按参考答案或裸目标值排序。未注册题永远不会被冒充为独立业务接受，但若根候选 crash、infeasible 或导出 incomplete，而后代已获得完整 `optimal` 执行与有限目标值，则选择成本最低的执行恢复后代，并标记 `execution_recovered_business_unverified`；若根候选已完整可执行，不根据后代目标值进行挑选。参考答案不参与任何节点选择。
 
 ## 成本与报告
 

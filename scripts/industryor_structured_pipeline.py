@@ -5,9 +5,11 @@ from __future__ import annotations
 import argparse
 import hashlib
 import json
+import math
 import sys
 import time
 from concurrent.futures import ThreadPoolExecutor
+from dataclasses import replace
 from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[1]
@@ -23,19 +25,23 @@ from ora_agent.structured_models import (
     validate_evaluation,
     validate_model,
 )
+from scripts.industryor_full_pipeline import MAX_ROUNDS
 from scripts.industryor_k3_pipeline import call_llm, costs, execute_candidate
 from scripts.industryor_semantic_dag import (
+    LOCAL_IDS,
     REGISTERED_AUDIT_IDS,
     audit_record,
     digest,
     choose_node,
+    execute_candidate as execute_semantic_candidate,
+    independent_score,
     local_proposal,
     regenerated_proposal,
 )
-from ora_agent.acceptance import can_accept
+from ora_agent.evidence_dag import DagBudget, Proposal
+from ora_agent.repair_controller import ProgressController, repair_scip_sense
 from ora_agent.semantic_dag import SemanticDAGExecutor
 from ora_agent.trigger_memory import memory_for, registry_digest
-from ora_agent.evidence_dag import DagBudget
 from scripts.m1_pilot import extract_code
 from scripts.m3_industryor import SCIP_CONTRACT, load_priors
 
@@ -45,7 +51,9 @@ ARMS = ("structured", "structured_dag", "structured_dag_trigger", "structured_da
 IMPLEMENTATION = ("scripts/industryor_structured_pipeline.py", "ora_agent/structured_models.py",
                   "scripts/industryor_k3_pipeline.py", "scripts/industryor_semantic_dag.py",
                   "ora_agent/semantic_dag.py", "ora_agent/semantic_binding.py", "ora_agent/trigger_memory.py",
-                  "scripts/industryor_next_stage.py", "scripts/m1_pilot.py", "ora_agent/llm.py")
+                  "ora_agent/repair_controller.py", "scripts/industryor_full_pipeline.py",
+                  "scripts/industryor_next_stage.py", "scripts/m1_pilot.py", "scripts/m3_industryor.py",
+                  "ora_agent/llm.py")
 
 
 def write_json(path: Path, value) -> None:
@@ -117,36 +125,126 @@ def needs_repair(problem_id: int, result: dict) -> bool:
                 or result["objective"] is None or record.get("export_error"))
 
 
+def node_objective(node) -> float | None:
+    solution = node.execution.get("solution")
+    value = solution.get("objective") if isinstance(solution, dict) else node.execution.get("objective")
+    return float(value) if isinstance(value, (int, float)) and math.isfinite(value) else None
+
+
+def execution_complete(node) -> bool:
+    solution = node.execution.get("solution")
+    return bool(node.execution.get("exec_status") == "ok"
+                and node.execution.get("solver_status") == "optimal"
+                and isinstance(solution, dict) and solution.get("solution_count", 0) >= 1
+                and (solution.get("export") or {}).get("complete") is True
+                and node_objective(node) is not None)
+
+
+def choose_integrated_node(executor: SemanticDAGExecutor, root_id: str, problem_id: int):
+    selected, reason = choose_node(executor, root_id)
+    if executor.dag.accepted() or problem_id in REGISTERED_AUDIT_IDS:
+        return selected, reason
+    root = executor.nodes[root_id]
+    if execution_complete(root):
+        return root, reason
+    recovered = [node for node in executor.nodes.values() if execution_complete(node)]
+    if not recovered:
+        return root, reason
+    selected = min(recovered, key=lambda node: (node.llm_calls, node.solver_runs, node.depth, node.node_id))
+    return selected, "execution_recovered_business_unverified"
+
+
 def run_dag(problem_id: int, question: str, result: dict, case: Path, shared: Path,
             config, memory_text: str | None = None) -> dict:
     record = result["record"]
     audit = result["audit"]
-    score = audit["score"] or {"audit_status": "business_unverified", "business_correct": False}
-    executor = SemanticDAGExecutor(DagBudget(max_nodes=6, max_depth=2, max_solver_runs=4, max_llm_calls=2),
+    score = audit["score"] or independent_score(problem_id, audit["solution"])
+    executor = SemanticDAGExecutor(DagBudget(max_nodes=6, max_depth=MAX_ROUNDS - 1, max_solver_runs=4,
+                                             max_llm_calls=2 * (MAX_ROUNDS - 1)),
                                    stop_on_accept=False)
-    root = executor.root(result["code"], "pyscipopt_code", {**record, "solution": audit["solution"]}, score,
+    root = executor.root(result["code"], "pyscipopt_code",
+                         {**record, "solution": audit["solution"], "binding_gate": audit["gate"]}, score,
                          "validated" if result["business_accepted"] else "rejected",
                          digest(json.dumps(audit["gate"]["aliases"], sort_keys=True)))
     root.solver_runs = 0
     repair_records = []
-    if result["business_accepted"]:
-        executor.dag.mark_done(root.node_id, "accepted")
-    elif not needs_repair(problem_id, result):
-        executor.dag.mark_done(root.node_id, "business_unverified")
-    else:
-        local = local_proposal(problem_id, question, result["code"], audit["gate"], case / "local", done=True)
-        regenerated, records = regenerated_proposal(problem_id, question, result["code"], audit["gate"], score,
-                                                    case / "regenerate", shared, config, True,
-                                                    record=record, memory_text=memory_text)
+    controller = ProgressController()
+    controller_trace = []
+    current = root
+    while True:
+        if current in executor.dag.accepted():
+            if not current.done:
+                executor.dag.mark_done(current.node_id, "accepted")
+            break
+        solution = current.execution.get("solution")
+        current_score = current.business_audit if solution is not None else independent_score(problem_id, None)
+        probe = {"business_accepted": False, "record": current.execution,
+                 "objective": node_objective(current)}
+        if not needs_repair(problem_id, probe):
+            executor.dag.mark_done(current.node_id, "business_unverified")
+            break
+        remaining = MAX_ROUNDS - 1 - current.depth
+        if remaining <= 0:
+            executor.dag.mark_done(current.node_id, "budget_exhausted")
+            break
+        current_audit = audit_record(current_score)
+        decision = controller.decide(current.snapshot, current.execution, current_audit, remaining)
+        trace_entry = {"node_id": current.node_id, "depth": current.depth,
+                       "decision": decision.__dict__}
+        controller_trace.append(trace_entry)
+        if decision.action == "stop":
+            executor.dag.mark_done(current.node_id, decision.reason)
+            break
+        action = decision.action
+        gate = current.execution.get("binding_gate") or audit["gate"]
+        proposal = None
+        records = []
+        directory = case / f"depth_{current.depth + 1}"
+        if action == "local_patch" and problem_id in LOCAL_IDS:
+            proposal = local_proposal(problem_id, question, current.snapshot, gate,
+                                      directory / "local", done=False)
+            if proposal is None:
+                action = "regenerate"
+        elif action == "specialized_api_repair":
+            try:
+                patched = repair_scip_sense(current.snapshot, decision.failure_signature.rsplit(":", 1)[-1])
+                proposal = Proposal(
+                    "specialized_api_repair", patched, "pyscipopt_code",
+                    lambda: execute_semantic_candidate(problem_id, patched, gate["aliases"],
+                                                       directory / "specialized")[:2],
+                    lambda value: independent_score(problem_id, value),
+                    binding_audit=lambda value: audit_record(independent_score(problem_id, value)),
+                    binding_sha256=digest(json.dumps(gate["aliases"], sort_keys=True)),
+                    solver_runs=1, llm_calls=0, done=False)
+            except (ValueError, TypeError, SyntaxError) as exc:
+                trace_entry["specialized_patch_error"] = f"{type(exc).__name__}: {exc}"
+                action = "regenerate"
+        if proposal is None:
+            action = "regenerate"
+            proposal, records = regenerated_proposal(
+                problem_id, question, current.snapshot, gate, current_score,
+                directory / "regenerate", shared, config, False,
+                record=current.execution, memory_text=memory_text)
         repair_records.extend(records)
-        executor.expand(root.node_id, ([local] if local is not None else []) + [regenerated])
-    selected, selection_reason = choose_node(executor, root.node_id)
+        effective_decision = replace(decision, action=action)
+        trace_entry["effective_action"] = action
+        added = executor.expand(current.node_id, [proposal])
+        controller.record(effective_decision, proposal.candidate)
+        if not current.done:
+            executor.dag.mark_done(current.node_id, "expanded")
+        if not added:
+            break
+        current = added[0]
+        trace_entry["next_node_id"] = current.node_id
+    selected, selection_reason = choose_integrated_node(executor, root.node_id, problem_id)
     solution = selected.execution.get("solution")
     return {"code": selected.snapshot, "record": selected.execution, "solution": solution,
-            "score": selected.business_audit, "objective": (solution or {}).get("objective"),
+            "score": selected.business_audit, "objective": node_objective(selected),
             "accepted": selected in executor.dag.accepted(), "selected_node_id": selected.node_id,
             "selection_reason": selection_reason, "dag": executor.dag.to_dict(),
-            "repair_records": repair_records}
+            "repair_records": repair_records, "controller_trace": controller.trace(),
+            "repair_decisions": controller_trace, "stop_reason": current.stop_reason,
+            "candidate_rounds": max(node.depth for node in executor.nodes.values()) + 1}
 
 
 def run_problem(row: dict, outdir: Path, config: dict, resume: bool) -> list[dict]:
@@ -199,6 +297,11 @@ def run_problem(row: dict, outdir: Path, config: dict, resume: bool) -> list[dic
         result = {"id": problem_id, "arm": arm, "run_config": config["public"],
                   "status": "completed", "selected_index": selected_index,
                   "selection_method": selection_reason, "min_confidence": minima,
+                  "selected_node_id": final.get("selected_node_id"),
+                  "stop_reason": final.get("stop_reason"),
+                  "candidate_rounds": final.get("candidate_rounds", 1),
+                  "controller_trace": final.get("controller_trace", []),
+                  "repair_decisions": final.get("repair_decisions", []),
                   "memory": memory, "memory_applied": bool(memory["text"] and repair_records),
                   "first_objective": first["objective"],
                   "first_match": first["objective"] is not None and abs(first["objective"] - reference) <= 0.1,
@@ -217,6 +320,7 @@ def run_problem(row: dict, outdir: Path, config: dict, resume: bool) -> list[dic
                   "shared_cost": costs(shared_records), "repair_cost": costs(repair_records),
                   "public_answer_used_for_selection": False}
         write_json(case / f"{arm}_result.json", result)
+        (case / f"{arm}_error.json").unlink(missing_ok=True)
         results.append(result)
     return results
 
@@ -270,6 +374,9 @@ def main() -> None:
     public = {"ids": [row["id"] for row in rows], "arms": list(ARMS), "model": llm_config.model,
               "base_url": llm_config.base_url, "exposure": "development_new_samples_not_heldout",
               "method": "COOPA-inspired structured iterative formulation; not an official COOPA run",
+              "max_candidate_rounds": MAX_ROUNDS, "max_repair_generations": MAX_ROUNDS - 1,
+              "repair_controller": "ProgressController",
+              "execution_fallback": "unregistered_only_when_root_incomplete",
               "memory_mode": "static_read_only", "memory_registry_sha256": registry_digest(),
               "dataset_sha256": hashlib.sha256(DATA.read_bytes()).hexdigest(),
               "protocol_sha256": hashlib.sha256(PROTOCOL.read_bytes()).hexdigest(),

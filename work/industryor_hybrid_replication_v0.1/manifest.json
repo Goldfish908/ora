@@ -1,0 +1,12 @@
+{
+ "runs": [
+  "work/industryor_hybrid_dev_v0.1",
+  "work/industryor_hybrid_replicate_v0.2",
+  "work/industryor_hybrid_replicate_v0.3"
+ ],
+ "n_runs": 3,
+ "n_problems_each": 100,
+ "run_configs_identical": true,
+ "public_answer_used_for_selection": false,
+ "majority_vote_created": false
+}

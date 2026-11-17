@@ -1,5 +1,6 @@
 import json
 
+from ora_agent.evidence_dag import Proposal
 from scripts.industryor_structured_pipeline import generate_formations, needs_repair, run_dag
 
 QUESTION = "Produce at most 10 chairs. Each chair yields 5 profit."
@@ -91,3 +92,67 @@ def test_runner_error_recovers_saved_request_cost(tmp_path, monkeypatch):
     assert results[0]["cost"]["api_attempts"] == 1
     assert results[0]["cost_accounting_complete"] is False
     assert results[0]["cost_source"] == "saved_artifacts"
+
+
+def crashed_selection():
+    return {"code": "m.optimize()", "objective": None,
+            "record": {"exec_status": "crash", "solver_status": None,
+                       "stderr_tail": "ValueError: bad", "export_error": None},
+            "audit": {"gate": {"status": "ready", "aliases": {}, "repair_aliases": {}},
+                      "solution": None, "score": None},
+            "business_accepted": False}
+
+
+def successful_execution(objective):
+    solution = {"objective": objective, "solution_count": 1,
+                "export": {"complete": True}, "variables": {}}
+    record = {"exec_status": "ok", "solver_status": "optimal", "status": "optimal",
+              "objective": objective, "export_error": None}
+    return record, solution
+
+
+def test_unregistered_regenerated_optimal_becomes_final_output(tmp_path, monkeypatch):
+    record, solution = successful_execution(26.0)
+
+    def fake_regenerated(*args, **kwargs):
+        proposal = Proposal("regenerate", "m.optimize() # fixed", "pyscipopt_code",
+                            lambda: (record, solution),
+                            lambda value: {"audit_status": "business_unverified",
+                                           "business_correct": False},
+                            solver_runs=1, llm_calls=1, done=False)
+        return proposal, [fake_record([], {"content": "fixed"})]
+
+    monkeypatch.setattr("scripts.industryor_structured_pipeline.regenerated_proposal", fake_regenerated)
+    result = run_dag(1, "question", crashed_selection(), tmp_path, tmp_path, None)
+    assert result["objective"] == 26.0
+    assert result["code"] == "m.optimize() # fixed"
+    assert result["selection_reason"] == "execution_recovered_business_unverified"
+    assert result["accepted"] is False
+    assert result["candidate_rounds"] == 2
+
+
+def test_failed_first_regeneration_continues_to_second_repair(tmp_path, monkeypatch):
+    calls = []
+
+    def fake_regenerated(*args, **kwargs):
+        calls.append(args[2])
+        if len(calls) == 1:
+            record = {"exec_status": "crash", "solver_status": None, "status": "error",
+                      "stderr_tail": "ValueError: bad", "export_error": None}
+            solution = None
+        else:
+            record, solution = successful_execution(35.0)
+        proposal = Proposal("regenerate", f"m.optimize() # repair {len(calls)}", "pyscipopt_code",
+                            lambda: (record, solution),
+                            lambda value: {"audit_status": "business_unverified",
+                                           "business_correct": False},
+                            solver_runs=1, llm_calls=1, done=False)
+        return proposal, [fake_record([], {"content": f"repair {len(calls)}"})]
+
+    monkeypatch.setattr("scripts.industryor_structured_pipeline.regenerated_proposal", fake_regenerated)
+    result = run_dag(1, "question", crashed_selection(), tmp_path, tmp_path, None)
+    assert len(calls) == 2
+    assert result["candidate_rounds"] == 3
+    assert result["dag"]["total_llm_calls"] == 2
+    assert result["objective"] == 35.0
+    assert result["selection_reason"] == "execution_recovered_business_unverified"

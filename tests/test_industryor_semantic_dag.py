@@ -88,3 +88,14 @@ def test_unregistered_problem_keeps_execution_feedback_without_business_acceptan
     assert "TypeError: bad API" in prompt
     assert "counterexample only" in prompt
     assert "en_answer" not in prompt
+
+
+def test_unknown_evidence_is_controller_compatible():
+    from ora_agent.repair_controller import ProgressController
+    from scripts.industryor_semantic_dag import audit_record
+
+    audit = audit_record({"audit_status": "invalid_solution",
+                          "violations": ["required variables are unavailable"]})
+    assert audit["unknown_evidence"] == [{"detail": "required variables are unavailable"}]
+    decision = ProgressController().decide("m.optimize()", {"exec_status": "ok"}, audit, 2)
+    assert decision.action == "acquire_evidence"

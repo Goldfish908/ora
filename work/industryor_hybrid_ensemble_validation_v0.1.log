@@ -1,0 +1,27 @@
+{
+ "n": 100,
+ "matches": 78,
+ "gained_vs_full_ids": [
+  59,
+  76,
+  88,
+  97
+ ],
+ "lost_vs_full_ids": [],
+ "business_correct": 7,
+ "false_business_accepts": 0,
+ "selected_sources": {
+  "raw_selected": 10,
+  "structured_full": 90
+ },
+ "selector_cost_three_replays": {
+  "logical_llm_calls": 54,
+  "new_llm_calls": 54,
+  "api_attempts": 54,
+  "completion_tokens": 252052,
+  "total_tokens": 372529,
+  "llm_latency_s": 2855.716,
+  "new_llm_latency_s": 2855.716
+ },
+ "aggregation_new_llm_calls": 0
+}

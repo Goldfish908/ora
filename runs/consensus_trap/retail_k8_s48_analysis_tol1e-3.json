@@ -1,0 +1,236 @@
+{
+ "source": "runs/consensus_trap/retail_k8_s48/samples.jsonl",
+ "rel_tol": 0.001,
+ "k_histogram": {
+  "8": 48
+ },
+ "summary": {
+  "n_problems": 48,
+  "single_sample_correct": 0.0703,
+  "majority_vote_correct": 0.125,
+  "pass_at_k_correct": 0.375,
+  "majority_cluster_label": {
+   "correct": 6,
+   "phantom": 37,
+   "unverified": 0,
+   "wrong": 0,
+   "fail": 5
+  },
+  "strong_majority_n": 3,
+  "strong_majority_label": {
+   "correct": 0,
+   "phantom": 3,
+   "unverified": 0,
+   "wrong": 0,
+   "fail": 0
+  },
+  "executed_samples": 142,
+  "label_rate_all_executed": {
+   "correct": 0.1901,
+   "phantom": 0.7958,
+   "unverified": 0.0,
+   "wrong": 0.0141,
+   "fail": 0.0
+  },
+  "label_rate_in_majority": {
+   "correct": 0.2308,
+   "phantom": 0.7692,
+   "unverified": 0.0,
+   "wrong": 0.0,
+   "fail": 0.0
+  },
+  "phantom_enrichment_in_majority": 0.967,
+  "auc_share_correct_vs_rest": 0.5734299516908212,
+  "auc_share_correct_vs_phantom": 0.5694854146181579
+ },
+ "bootstrap_95ci": {
+  "single_sample_correct": [
+   0.0417,
+   0.1016
+  ],
+  "majority_vote_correct": [
+   0.0417,
+   0.2292
+  ],
+  "phantom_enrichment_in_majority": [
+   0.771,
+   1.134
+  ]
+ },
+ "k_curve": {
+  "1": {
+   "majority_vote_correct": 0.0698,
+   "majority_vote_phantom": 0.2781
+  },
+  "2": {
+   "majority_vote_correct": 0.0958,
+   "majority_vote_phantom": 0.4604
+  },
+  "3": {
+   "majority_vote_correct": 0.1187,
+   "majority_vote_phantom": 0.5479
+  },
+  "4": {
+   "majority_vote_correct": 0.1187,
+   "majority_vote_phantom": 0.624
+  },
+  "6": {
+   "majority_vote_correct": 0.1417,
+   "majority_vote_phantom": 0.7073
+  },
+  "8": {
+   "majority_vote_correct": 0.1469,
+   "majority_vote_phantom": 0.7448
+  }
+ },
+ "wrong_majorities": [
+  {
+   "problem": "retail_f1_base_v0",
+   "k": 8,
+   "majority_size": 3,
+   "majority_label": "phantom",
+   "labels": {
+    "fail": 5,
+    "phantom": 3
+   }
+  },
+  {
+   "problem": "retail_f1_52_weeks_v0",
+   "k": 8,
+   "majority_size": 4,
+   "majority_label": "phantom",
+   "labels": {
+    "fail": 3,
+    "phantom": 4,
+    "correct": 1
+   }
+  },
+  {
+   "problem": "retail_f1_base_v2",
+   "k": 8,
+   "majority_size": 7,
+   "majority_label": "phantom",
+   "labels": {
+    "fail": 1,
+    "phantom": 7
+   }
+  },
+  {
+   "problem": "retail_f1_high_waste_v0",
+   "k": 8,
+   "majority_size": 2,
+   "majority_label": "phantom",
+   "labels": {
+    "fail": 6,
+    "phantom": 2
+   }
+  },
+  {
+   "problem": "retail_f2_cannibalization_v0",
+   "k": 8,
+   "majority_size": 2,
+   "majority_label": "phantom",
+   "labels": {
+    "phantom": 3,
+    "fail": 4,
+    "correct": 1
+   }
+  },
+  {
+   "problem": "retail_f2_no_substitution_v0",
+   "k": 8,
+   "majority_size": 3,
+   "majority_label": "phantom",
+   "labels": {
+    "fail": 3,
+    "phantom": 3,
+    "correct": 2
+   }
+  },
+  {
+   "problem": "retail_f3_volumetric_constraint_v0",
+   "k": 8,
+   "majority_size": 2,
+   "majority_label": "phantom",
+   "labels": {
+    "fail": 3,
+    "phantom": 4,
+    "correct": 1
+   }
+  },
+  {
+   "problem": "retail_f4_demand_surge_v2",
+   "k": 8,
+   "majority_size": 3,
+   "majority_label": "phantom",
+   "labels": {
+    "phantom": 5,
+    "fail": 3
+   }
+  },
+  {
+   "problem": "retail_f4_robust_variance_v0",
+   "k": 8,
+   "majority_size": 3,
+   "majority_label": "phantom",
+   "labels": {
+    "phantom": 6,
+    "fail": 1,
+    "correct": 1
+   }
+  },
+  {
+   "problem": "retail_f5_impossible_demand_v0",
+   "k": 8,
+   "majority_size": 2,
+   "majority_label": "phantom",
+   "labels": {
+    "phantom": 5,
+    "fail": 2,
+    "correct": 1
+   }
+  },
+  {
+   "problem": "retail_f5_storage_overflow_v0",
+   "k": 8,
+   "majority_size": 4,
+   "majority_label": "phantom",
+   "labels": {
+    "fail": 4,
+    "phantom": 2,
+    "correct": 2
+   }
+  },
+  {
+   "problem": "retail_f5_ultimate_stress_v0",
+   "k": 8,
+   "majority_size": 3,
+   "majority_label": "phantom",
+   "labels": {
+    "phantom": 3,
+    "correct": 2,
+    "fail": 3
+   }
+  },
+  {
+   "problem": "retail_f8_labor_constraint_v0",
+   "k": 8,
+   "majority_size": 2,
+   "majority_label": "phantom",
+   "labels": {
+    "fail": 5,
+    "phantom": 3
+   }
+  },
+  {
+   "problem": "retail_f8_reverse_logistics_v0",
+   "k": 8,
+   "majority_size": 2,
+   "majority_label": "phantom",
+   "labels": {
+    "fail": 5,
+    "phantom": 3
+   }
+  }
+ ]
+}

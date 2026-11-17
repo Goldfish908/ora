@@ -1,0 +1,844 @@
+{
+ "source": "runs/m1_pilot*/m1_pilot_schema_sol*.jsonl",
+ "rel_tol": 0.0001,
+ "k_histogram": {
+  "4": 190
+ },
+ "summary": {
+  "n_problems": 190,
+  "single_sample_correct": 0.1197,
+  "majority_vote_correct": 0.1368,
+  "pass_at_k_correct": 0.3895,
+  "majority_cluster_label": {
+   "correct": 26,
+   "phantom": 144,
+   "unverified": 0,
+   "wrong": 5,
+   "fail": 15
+  },
+  "strong_majority_n": 91,
+  "strong_majority_label": {
+   "correct": 14,
+   "phantom": 76,
+   "unverified": 0,
+   "wrong": 1,
+   "fail": 0
+  },
+  "executed_samples": 536,
+  "label_rate_all_executed": {
+   "correct": 0.1698,
+   "phantom": 0.7985,
+   "unverified": 0.0,
+   "wrong": 0.0317,
+   "fail": 0.0
+  },
+  "label_rate_in_majority": {
+   "correct": 0.1463,
+   "phantom": 0.8439,
+   "unverified": 0.0,
+   "wrong": 0.0098,
+   "fail": 0.0
+  },
+  "phantom_enrichment_in_majority": 1.057,
+  "auc_share_correct_vs_rest": 0.476700827262625,
+  "auc_share_correct_vs_phantom": 0.4705376399301633
+ },
+ "bootstrap_95ci": {
+  "single_sample_correct": [
+   0.0974,
+   0.1421
+  ],
+  "majority_vote_correct": [
+   0.0895,
+   0.1842
+  ],
+  "phantom_enrichment_in_majority": [
+   0.981,
+   1.124
+  ]
+ },
+ "k_curve": {
+  "1": {
+   "majority_vote_correct": 0.1168,
+   "majority_vote_phantom": 0.5676
+  },
+  "2": {
+   "majority_vote_correct": 0.1505,
+   "majority_vote_phantom": 0.7082
+  },
+  "3": {
+   "majority_vote_correct": 0.1368,
+   "majority_vote_phantom": 0.7561
+  },
+  "4": {
+   "majority_vote_correct": 0.1476,
+   "majority_vote_phantom": 0.7495
+  }
+ },
+ "wrong_majorities": [
+  {
+   "problem": "retail_f1_52_weeks_v0",
+   "k": 4,
+   "majority_size": 3,
+   "majority_label": "phantom",
+   "labels": {
+    "phantom": 3,
+    "correct": 1
+   }
+  },
+  {
+   "problem": "retail_f1_base_v0",
+   "k": 4,
+   "majority_size": 2,
+   "majority_label": "phantom",
+   "labels": {
+    "fail": 1,
+    "correct": 1,
+    "phantom": 2
+   }
+  },
+  {
+   "problem": "retail_f2_no_substitution_v0",
+   "k": 4,
+   "majority_size": 3,
+   "majority_label": "phantom",
+   "labels": {
+    "phantom": 3,
+    "correct": 1
+   }
+  },
+  {
+   "problem": "retail_f2_price_band_tight_v0",
+   "k": 4,
+   "majority_size": 2,
+   "majority_label": "phantom",
+   "labels": {
+    "wrong": 1,
+    "phantom": 3
+   }
+  },
+  {
+   "problem": "retail_f3_supply_bottleneck_v0",
+   "k": 4,
+   "majority_size": 2,
+   "majority_label": "phantom",
+   "labels": {
+    "phantom": 4
+   }
+  },
+  {
+   "problem": "retail_f4_robust_variance_v0",
+   "k": 4,
+   "majority_size": 2,
+   "majority_label": "phantom",
+   "labels": {
+    "correct": 1,
+    "phantom": 3
+   }
+  },
+  {
+   "problem": "retail_f4_supply_risk_v0",
+   "k": 4,
+   "majority_size": 2,
+   "majority_label": "phantom",
+   "labels": {
+    "fail": 1,
+    "phantom": 3
+   }
+  },
+  {
+   "problem": "retail_f5_storage_overflow_v0",
+   "k": 4,
+   "majority_size": 3,
+   "majority_label": "phantom",
+   "labels": {
+    "fail": 1,
+    "phantom": 3
+   }
+  },
+  {
+   "problem": "retail_f5_ultimate_stress_v0",
+   "k": 4,
+   "majority_size": 3,
+   "majority_label": "phantom",
+   "labels": {
+    "phantom": 3,
+    "correct": 1
+   }
+  },
+  {
+   "problem": "retail_f6_lead_time_v0",
+   "k": 4,
+   "majority_size": 2,
+   "majority_label": "phantom",
+   "labels": {
+    "fail": 2,
+    "phantom": 2
+   }
+  },
+  {
+   "problem": "retail_f7_budget_limit_v0",
+   "k": 4,
+   "majority_size": 2,
+   "majority_label": "phantom",
+   "labels": {
+    "phantom": 4
+   }
+  },
+  {
+   "problem": "retail_f7_transshipment_v0",
+   "k": 4,
+   "majority_size": 3,
+   "majority_label": "phantom",
+   "labels": {
+    "fail": 1,
+    "phantom": 3
+   }
+  },
+  {
+   "problem": "retail_f1_52_weeks_v1",
+   "k": 4,
+   "majority_size": 2,
+   "majority_label": "phantom",
+   "labels": {
+    "phantom": 2,
+    "correct": 2
+   }
+  },
+  {
+   "problem": "retail_f1_jit_logic_v1",
+   "k": 4,
+   "majority_size": 2,
+   "majority_label": "phantom",
+   "labels": {
+    "fail": 1,
+    "phantom": 2,
+    "correct": 1
+   }
+  },
+  {
+   "problem": "retail_f2_no_substitution_v1",
+   "k": 4,
+   "majority_size": 3,
+   "majority_label": "phantom",
+   "labels": {
+    "fail": 1,
+    "phantom": 3
+   }
+  },
+  {
+   "problem": "retail_f2_price_band_tight_v1",
+   "k": 4,
+   "majority_size": 2,
+   "majority_label": "phantom",
+   "labels": {
+    "fail": 1,
+    "phantom": 3
+   }
+  },
+  {
+   "problem": "retail_f3_storage_bottleneck_v1",
+   "k": 4,
+   "majority_size": 2,
+   "majority_label": "phantom",
+   "labels": {
+    "fail": 2,
+    "phantom": 2
+   }
+  },
+  {
+   "problem": "retail_f3_volumetric_constraint_v1",
+   "k": 4,
+   "majority_size": 2,
+   "majority_label": "phantom",
+   "labels": {
+    "phantom": 4
+   }
+  },
+  {
+   "problem": "retail_f5_storage_overflow_v1",
+   "k": 4,
+   "majority_size": 3,
+   "majority_label": "phantom",
+   "labels": {
+    "phantom": 2,
+    "fail": 1,
+    "correct": 1
+   }
+  },
+  {
+   "problem": "retail_f5_strict_service_trap_v1",
+   "k": 4,
+   "majority_size": 3,
+   "majority_label": "phantom",
+   "labels": {
+    "phantom": 3,
+    "fail": 1
+   }
+  },
+  {
+   "problem": "retail_f5_ultimate_stress_v1",
+   "k": 4,
+   "majority_size": 3,
+   "majority_label": "phantom",
+   "labels": {
+    "correct": 1,
+    "phantom": 3
+   }
+  },
+  {
+   "problem": "retail_f7_budget_limit_v1",
+   "k": 4,
+   "majority_size": 2,
+   "majority_label": "phantom",
+   "labels": {
+    "fail": 1,
+    "phantom": 3
+   }
+  },
+  {
+   "problem": "retail_f7_hub_and_spoke_v1",
+   "k": 4,
+   "majority_size": 3,
+   "majority_label": "phantom",
+   "labels": {
+    "phantom": 4
+   }
+  },
+  {
+   "problem": "retail_f7_ring_routing_v1",
+   "k": 4,
+   "majority_size": 2,
+   "majority_label": "phantom",
+   "labels": {
+    "phantom": 4
+   }
+  },
+  {
+   "problem": "retail_f8_labor_constraint_v1",
+   "k": 4,
+   "majority_size": 2,
+   "majority_label": "phantom",
+   "labels": {
+    "phantom": 2,
+    "correct": 2
+   }
+  },
+  {
+   "problem": "retail_f8_reverse_logistics_v1",
+   "k": 4,
+   "majority_size": 2,
+   "majority_label": "phantom",
+   "labels": {
+    "fail": 1,
+    "phantom": 3
+   }
+  },
+  {
+   "problem": "retail_f8_ship_from_store_v1",
+   "k": 4,
+   "majority_size": 2,
+   "majority_label": "phantom",
+   "labels": {
+    "phantom": 3,
+    "correct": 1
+   }
+  },
+  {
+   "problem": "retail_f8_sustainability_v1",
+   "k": 4,
+   "majority_size": 3,
+   "majority_label": "phantom",
+   "labels": {
+    "phantom": 3,
+    "fail": 1
+   }
+  },
+  {
+   "problem": "retail_f1_base_v2",
+   "k": 4,
+   "majority_size": 3,
+   "majority_label": "phantom",
+   "labels": {
+    "fail": 1,
+    "phantom": 3
+   }
+  },
+  {
+   "problem": "retail_f1_high_waste_v2",
+   "k": 4,
+   "majority_size": 2,
+   "majority_label": "phantom",
+   "labels": {
+    "fail": 1,
+    "phantom": 3
+   }
+  },
+  {
+   "problem": "retail_f1_jit_logic_v2",
+   "k": 4,
+   "majority_size": 2,
+   "majority_label": "phantom",
+   "labels": {
+    "fail": 1,
+    "phantom": 3
+   }
+  },
+  {
+   "problem": "retail_f2_circular_sub_v2",
+   "k": 4,
+   "majority_size": 2,
+   "majority_label": "phantom",
+   "labels": {
+    "correct": 1,
+    "phantom": 3
+   }
+  },
+  {
+   "problem": "retail_f2_ultra_fresh_v2",
+   "k": 4,
+   "majority_size": 2,
+   "majority_label": "wrong",
+   "labels": {
+    "fail": 1,
+    "wrong": 2,
+    "phantom": 1
+   }
+  },
+  {
+   "problem": "retail_f3_storage_bottleneck_v2",
+   "k": 4,
+   "majority_size": 2,
+   "majority_label": "phantom",
+   "labels": {
+    "phantom": 4
+   }
+  },
+  {
+   "problem": "retail_f3_supply_bottleneck_v2",
+   "k": 4,
+   "majority_size": 2,
+   "majority_label": "phantom",
+   "labels": {
+    "phantom": 4
+   }
+  },
+  {
+   "problem": "retail_f3_unbalanced_network_v2",
+   "k": 4,
+   "majority_size": 2,
+   "majority_label": "phantom",
+   "labels": {
+    "fail": 1,
+    "phantom": 3
+   }
+  },
+  {
+   "problem": "retail_f5_storage_overflow_v2",
+   "k": 4,
+   "majority_size": 3,
+   "majority_label": "phantom",
+   "labels": {
+    "phantom": 4
+   }
+  },
+  {
+   "problem": "retail_f5_strict_service_trap_v2",
+   "k": 4,
+   "majority_size": 2,
+   "majority_label": "phantom",
+   "labels": {
+    "fail": 1,
+    "phantom": 3
+   }
+  },
+  {
+   "problem": "retail_f5_ultimate_stress_v2",
+   "k": 4,
+   "majority_size": 3,
+   "majority_label": "phantom",
+   "labels": {
+    "phantom": 3,
+    "correct": 1
+   }
+  },
+  {
+   "problem": "retail_f7_budget_limit_v2",
+   "k": 4,
+   "majority_size": 2,
+   "majority_label": "phantom",
+   "labels": {
+    "fail": 1,
+    "phantom": 2,
+    "correct": 1
+   }
+  },
+  {
+   "problem": "retail_f7_hub_and_spoke_v2",
+   "k": 4,
+   "majority_size": 2,
+   "majority_label": "phantom",
+   "labels": {
+    "fail": 1,
+    "phantom": 3
+   }
+  },
+  {
+   "problem": "retail_f7_ring_routing_v2",
+   "k": 4,
+   "majority_size": 3,
+   "majority_label": "phantom",
+   "labels": {
+    "phantom": 3,
+    "correct": 1
+   }
+  },
+  {
+   "problem": "retail_f8_labor_constraint_v2",
+   "k": 4,
+   "majority_size": 2,
+   "majority_label": "phantom",
+   "labels": {
+    "fail": 1,
+    "phantom": 3
+   }
+  },
+  {
+   "problem": "retail_f8_sustainability_v2",
+   "k": 4,
+   "majority_size": 2,
+   "majority_label": "phantom",
+   "labels": {
+    "fail": 1,
+    "phantom": 3
+   }
+  },
+  {
+   "problem": "retail_f1_52_weeks_v3",
+   "k": 4,
+   "majority_size": 3,
+   "majority_label": "phantom",
+   "labels": {
+    "correct": 1,
+    "phantom": 3
+   }
+  },
+  {
+   "problem": "retail_f2_circular_sub_v3",
+   "k": 4,
+   "majority_size": 2,
+   "majority_label": "phantom",
+   "labels": {
+    "phantom": 3,
+    "correct": 1
+   }
+  },
+  {
+   "problem": "retail_f2_no_substitution_v3",
+   "k": 4,
+   "majority_size": 2,
+   "majority_label": "phantom",
+   "labels": {
+    "fail": 1,
+    "phantom": 2,
+    "correct": 1
+   }
+  },
+  {
+   "problem": "retail_f2_price_band_tight_v3",
+   "k": 4,
+   "majority_size": 2,
+   "majority_label": "phantom",
+   "labels": {
+    "phantom": 3,
+    "correct": 1
+   }
+  },
+  {
+   "problem": "retail_f3_storage_bottleneck_v3",
+   "k": 4,
+   "majority_size": 2,
+   "majority_label": "phantom",
+   "labels": {
+    "phantom": 4
+   }
+  },
+  {
+   "problem": "retail_f3_supply_bottleneck_v3",
+   "k": 4,
+   "majority_size": 2,
+   "majority_label": "phantom",
+   "labels": {
+    "fail": 1,
+    "phantom": 3
+   }
+  },
+  {
+   "problem": "retail_f3_volumetric_constraint_v3",
+   "k": 4,
+   "majority_size": 2,
+   "majority_label": "phantom",
+   "labels": {
+    "fail": 1,
+    "phantom": 3
+   }
+  },
+  {
+   "problem": "retail_f4_demand_surge_v3",
+   "k": 4,
+   "majority_size": 2,
+   "majority_label": "phantom",
+   "labels": {
+    "phantom": 3,
+    "fail": 1
+   }
+  },
+  {
+   "problem": "retail_f4_early_stockout_v3",
+   "k": 4,
+   "majority_size": 2,
+   "majority_label": "phantom",
+   "labels": {
+    "phantom": 4
+   }
+  },
+  {
+   "problem": "retail_f4_peak_failure_v3",
+   "k": 4,
+   "majority_size": 2,
+   "majority_label": "phantom",
+   "labels": {
+    "fail": 1,
+    "phantom": 3
+   }
+  },
+  {
+   "problem": "retail_f5_impossible_demand_v3",
+   "k": 4,
+   "majority_size": 2,
+   "majority_label": "phantom",
+   "labels": {
+    "fail": 1,
+    "phantom": 3
+   }
+  },
+  {
+   "problem": "retail_f5_strict_service_trap_v3",
+   "k": 4,
+   "majority_size": 2,
+   "majority_label": "phantom",
+   "labels": {
+    "fail": 1,
+    "phantom": 3
+   }
+  },
+  {
+   "problem": "retail_f5_ultimate_stress_v3",
+   "k": 4,
+   "majority_size": 3,
+   "majority_label": "phantom",
+   "labels": {
+    "phantom": 3,
+    "correct": 1
+   }
+  },
+  {
+   "problem": "retail_f7_transshipment_v3",
+   "k": 4,
+   "majority_size": 2,
+   "majority_label": "phantom",
+   "labels": {
+    "fail": 2,
+    "phantom": 2
+   }
+  },
+  {
+   "problem": "retail_f8_labor_constraint_v3",
+   "k": 4,
+   "majority_size": 2,
+   "majority_label": "phantom",
+   "labels": {
+    "phantom": 4
+   }
+  },
+  {
+   "problem": "retail_f8_ship_from_store_v3",
+   "k": 4,
+   "majority_size": 2,
+   "majority_label": "phantom",
+   "labels": {
+    "fail": 1,
+    "phantom": 3
+   }
+  },
+  {
+   "problem": "retail_f8_sustainability_v3",
+   "k": 4,
+   "majority_size": 2,
+   "majority_label": "phantom",
+   "labels": {
+    "fail": 1,
+    "phantom": 3
+   }
+  },
+  {
+   "problem": "retail_f1_base_v4",
+   "k": 4,
+   "majority_size": 3,
+   "majority_label": "phantom",
+   "labels": {
+    "phantom": 3,
+    "correct": 1
+   }
+  },
+  {
+   "problem": "retail_f2_circular_sub_v4",
+   "k": 4,
+   "majority_size": 2,
+   "majority_label": "phantom",
+   "labels": {
+    "fail": 1,
+    "phantom": 3
+   }
+  },
+  {
+   "problem": "retail_f2_no_substitution_v4",
+   "k": 4,
+   "majority_size": 2,
+   "majority_label": "phantom",
+   "labels": {
+    "fail": 1,
+    "phantom": 2,
+    "correct": 1
+   }
+  },
+  {
+   "problem": "retail_f2_price_band_tight_v4",
+   "k": 4,
+   "majority_size": 2,
+   "majority_label": "phantom",
+   "labels": {
+    "fail": 1,
+    "phantom": 2,
+    "wrong": 1
+   }
+  },
+  {
+   "problem": "retail_f2_promo_budget_v4",
+   "k": 4,
+   "majority_size": 3,
+   "majority_label": "phantom",
+   "labels": {
+    "fail": 1,
+    "phantom": 3
+   }
+  },
+  {
+   "problem": "retail_f3_storage_bottleneck_v4",
+   "k": 4,
+   "majority_size": 3,
+   "majority_label": "phantom",
+   "labels": {
+    "phantom": 4
+   }
+  },
+  {
+   "problem": "retail_f3_supply_bottleneck_v4",
+   "k": 4,
+   "majority_size": 2,
+   "majority_label": "phantom",
+   "labels": {
+    "fail": 1,
+    "phantom": 3
+   }
+  },
+  {
+   "problem": "retail_f3_unbalanced_network_v4",
+   "k": 4,
+   "majority_size": 2,
+   "majority_label": "phantom",
+   "labels": {
+    "phantom": 4
+   }
+  },
+  {
+   "problem": "retail_f4_demand_surge_v4",
+   "k": 4,
+   "majority_size": 2,
+   "majority_label": "phantom",
+   "labels": {
+    "fail": 1,
+    "phantom": 3
+   }
+  },
+  {
+   "problem": "retail_f4_early_stockout_v4",
+   "k": 4,
+   "majority_size": 2,
+   "majority_label": "phantom",
+   "labels": {
+    "fail": 1,
+    "phantom": 3
+   }
+  },
+  {
+   "problem": "retail_f4_quality_hold_v4",
+   "k": 4,
+   "majority_size": 2,
+   "majority_label": "phantom",
+   "labels": {
+    "phantom": 4
+   }
+  },
+  {
+   "problem": "retail_f4_supply_risk_v4",
+   "k": 4,
+   "majority_size": 3,
+   "majority_label": "phantom",
+   "labels": {
+    "fail": 1,
+    "phantom": 3
+   }
+  },
+  {
+   "problem": "retail_f7_multiechelon_chain_v4",
+   "k": 4,
+   "majority_size": 2,
+   "majority_label": "phantom",
+   "labels": {
+    "fail": 1,
+    "phantom": 2,
+    "correct": 1
+   }
+  },
+  {
+   "problem": "retail_f7_transshipment_v4",
+   "k": 4,
+   "majority_size": 2,
+   "majority_label": "phantom",
+   "labels": {
+    "fail": 1,
+    "phantom": 3
+   }
+  },
+  {
+   "problem": "retail_f8_labor_constraint_v4",
+   "k": 4,
+   "majority_size": 2,
+   "majority_label": "phantom",
+   "labels": {
+    "phantom": 4
+   }
+  },
+  {
+   "problem": "retail_f8_sustainability_v4",
+   "k": 4,
+   "majority_size": 2,
+   "majority_label": "phantom",
+   "labels": {
+    "phantom": 3,
+    "wrong": 1
+   }
+  }
+ ]
+}

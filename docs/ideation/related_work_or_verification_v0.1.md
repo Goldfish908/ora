@@ -193,7 +193,23 @@
 
 ---
 
-## 8. 参考
+## 8. 补读：自进化 × 代理假通过（2026-11-18）
+
+详见 `route_a_deep_analysis_v0.1.md`。摘要：
+
+| 工作 | 核心结论 | 占了什么 | 留给我们的 |
+|---|---|---|---|
+| Blind Curator (2607.07436) | 假通过偏差会关掉技能退役；i.i.d. 悬崖约 0.45 | “假通过伤害自进化”的机制诊断 | 内容相关的内生洗白被标为 out-of-scope；其确定性 QC 仍漏语义错误 |
+| Echo Gap (2608.00017) | 自评分通胀经记忆复利；LUCID 用固定可执行通道降分；BIRD +2.9 | 无标签记忆通胀 + 精度门槛 | 有金标准的代理漏检、修复洗白、演化验证器未做 |
+| FGSE (2611.14326) | 假说门控：范围、转移/证伪/回归探针后才写入 | 验证后再入库、不回退探针 | 假定环境验证器可信；存的是行为补丁不是检查 |
+| AutoPyVerifier (2604.22937) | 从标注开发集 DAG 搜索紧凑 Python 检查集 | “学可执行验证器” | 目标是逼近给定标签；标签错则学会错；无自进化闭环与出处否决 |
+| Prompt-opt 副作用 (2610.13287 等) | GEPA 等抬高目标指标时破坏未计分约束 | 代理优化的副作用已有实证 | 未覆盖 OR 幻影 / 语义见证器 |
+
+**通论“自进化在代理下放大错误”不宜再作主贡献。** 主贡献应收窄到：有金标准的欠定代理、内生洗白、验证知识进化与出处否决。
+
+---
+
+## 9. 参考
 
 - VeriSimpl: arXiv 2607.20474；代码 github.com/suabar/VeriSimple
 - Opt-Verifier: arXiv 2605.29556
@@ -204,3 +220,8 @@
 - XSkill: arXiv 2603.12056；代码 github.com/XSkill-Agent/XSkill
 - UMEM: arXiv 2602.10652
 - MemEvolve: arXiv 2512.18746；代码 github.com/bingreeky/MemEvolve
+- Blind Curator: arXiv 2607.07436
+- Echo Gap / Memory Reward Inflation: arXiv 2608.00017
+- FGSE: arXiv 2611.14326
+- AutoPyVerifier: arXiv 2604.22937；代码 github.com/megagonlabs/AutoPyVerifier
+- GEPA: arXiv 2507.19457；ICLR 2026 oral

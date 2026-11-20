@@ -1,0 +1,530 @@
+{
+ "status": "motivation pilot only; not a clean evolution curve or population rate",
+ "candidate_records": 63,
+ "proxy_match": 23,
+ "phantom_proxy": 23,
+ "true_correct": 0,
+ "phantom_rule_counts": {
+  "C-DEMAND": 23,
+  "C-INIT": 20
+ },
+ "phantom_family_counts": {
+  "f3": 6,
+  "f4": 9,
+  "f1": 2,
+  "f2": 6
+ },
+ "cases": [
+  {
+   "scenario_id": "retail_f3_supply_bottleneck_v2",
+   "candidate_sha256": "0b1fab4037973cbe188b6bc59330d30cba74a189292e3ac42a39ff09ba2375b3",
+   "grade": "better_than_reference",
+   "objective": 587495.4999999999,
+   "witness_rules": [
+    "C-DEMAND"
+   ],
+   "witness_details": [
+    "C-DEMAND: [SKU_Premium,DC1,1] sales+sub-lost balance 0.1500000000000341 != demand 40.75",
+    "C-DEMAND: [SKU_Premium,DC1,2] sales+sub-lost balance -38.25 != demand 38.25",
+    "C-DEMAND: [SKU_Premium,DC1,3] sales+sub-lost balance -35.75 != demand 42.0",
+    "C-DEMAND: [SKU_Premium,DC1,4] sales+sub-lost balance -52.75 != demand 43.0",
+    "C-DEMAND: [SKU_Premium,DC1,5] sales+sub-lost balance -48.5 != demand 49.0"
+   ],
+   "artifact": "work/retailopt_gepa_full_v0.1/rollouts/0b1fab4037973cbe188b6bc59330d30cba74a189292e3ac42a39ff09ba2375b3/retail_f3_supply_bottleneck_v2.json"
+  },
+  {
+   "scenario_id": "retail_f4_peak_failure_v2",
+   "candidate_sha256": "0b1fab4037973cbe188b6bc59330d30cba74a189292e3ac42a39ff09ba2375b3",
+   "grade": "better_than_reference",
+   "objective": 285898.0,
+   "witness_rules": [
+    "C-DEMAND",
+    "C-INIT"
+   ],
+   "witness_details": [
+    "C-INIT: I[SKU_Basic,DC3,1,9]=57.6 != 0",
+    "C-INIT: I[SKU_Premium,DC1,1,2]=35.75 != 0",
+    "C-INIT: I[SKU_Premium,DC1,1,3]=43.25 != 0",
+    "C-INIT: I[SKU_Premium,DC1,1,4]=50.25 != 0",
+    "C-INIT: I[SKU_Premium,DC1,1,6]=149.0 != 0",
+    "C-DEMAND: [SKU_Premium,DC1,1] sales+sub-lost balance -37.75 != demand 34.25",
+    "C-DEMAND: [SKU_Premium,DC1,2] sales+sub-lost balance -31.25 != demand 35.75",
+    "C-DEMAND: [SKU_Premium,DC1,3] sales+sub-lost balance -41.75 != demand 43.25",
+    "C-DEMAND: [SKU_Premium,DC1,4] sales+sub-lost balance -46.75 != demand 50.25",
+    "C-DEMAND: [SKU_Premium,DC1,5] sales+sub-lost balance -63.5 != demand 50.75"
+   ],
+   "artifact": "work/retailopt_gepa_full_v0.1/rollouts/0b1fab4037973cbe188b6bc59330d30cba74a189292e3ac42a39ff09ba2375b3/retail_f4_peak_failure_v2.json"
+  },
+  {
+   "scenario_id": "retail_f4_quality_hold_v1",
+   "candidate_sha256": "0b1fab4037973cbe188b6bc59330d30cba74a189292e3ac42a39ff09ba2375b3",
+   "grade": "better_than_reference",
+   "objective": 222716.0,
+   "witness_rules": [
+    "C-DEMAND",
+    "C-INIT"
+   ],
+   "witness_details": [
+    "C-INIT: I[SKU_Premium,DC1,1,2]=36.0 != 0",
+    "C-INIT: I[SKU_Premium,DC1,1,3]=86.25 != 0",
+    "C-INIT: I[SKU_Premium,DC1,1,4]=42.0 != 0",
+    "C-INIT: I[SKU_Premium,DC1,1,5]=53.0 != 0",
+    "C-INIT: I[SKU_Premium,DC1,1,7]=150.25 != 0",
+    "C-DEMAND: [SKU_Premium,DC1,1] sales+sub-lost balance -42.25 != demand 39.75",
+    "C-DEMAND: [SKU_Premium,DC1,2] sales+sub-lost balance -32.5 != demand 36.0",
+    "C-DEMAND: [SKU_Premium,DC1,3] sales+sub-lost balance -40.25 != demand 46.5",
+    "C-DEMAND: [SKU_Premium,DC1,4] sales+sub-lost balance -35.5 != demand 42.0",
+    "C-DEMAND: [SKU_Premium,DC1,5] sales+sub-lost balance -42.0 != demand 53.0"
+   ],
+   "artifact": "work/retailopt_gepa_full_v0.1/rollouts/0b1fab4037973cbe188b6bc59330d30cba74a189292e3ac42a39ff09ba2375b3/retail_f4_quality_hold_v1.json"
+  },
+  {
+   "scenario_id": "retail_f3_supply_bottleneck_v1",
+   "candidate_sha256": "0b1fab4037973cbe188b6bc59330d30cba74a189292e3ac42a39ff09ba2375b3",
+   "grade": "better_than_reference",
+   "objective": 456911.5,
+   "witness_rules": [
+    "C-DEMAND",
+    "C-INIT"
+   ],
+   "witness_details": [
+    "C-INIT: I[SKU_Basic,DC1,1,9]=34.19999999999999 != 0",
+    "C-INIT: I[SKU_Basic,DC3,1,9]=15.200000000000017 != 0",
+    "C-INIT: I[SKU_Basic,DC4,1,4]=52.6 != 0",
+    "C-INIT: I[SKU_Basic,DC4,1,8]=105.6 != 0",
+    "C-INIT: I[SKU_Basic,DC4,1,9]=120.80000000000001 != 0",
+    "C-DEMAND: [SKU_Premium,DC1,1] sales+sub-lost balance -33.75 != demand 32.0",
+    "C-DEMAND: [SKU_Premium,DC1,2] sales+sub-lost balance -24.5 != demand 43.5",
+    "C-DEMAND: [SKU_Premium,DC1,3] sales+sub-lost balance -43.25 != demand 43.75",
+    "C-DEMAND: [SKU_Premium,DC1,4] sales+sub-lost balance -38.5 != demand 42.75",
+    "C-DEMAND: [SKU_Premium,DC1,5] sales+sub-lost balance -60.75 != demand 46.5"
+   ],
+   "artifact": "work/retailopt_gepa_full_v0.1/rollouts/0b1fab4037973cbe188b6bc59330d30cba74a189292e3ac42a39ff09ba2375b3/retail_f3_supply_bottleneck_v1.json"
+  },
+  {
+   "scenario_id": "retail_f1_52_weeks_v1",
+   "candidate_sha256": "0b1fab4037973cbe188b6bc59330d30cba74a189292e3ac42a39ff09ba2375b3",
+   "grade": "better_than_reference",
+   "objective": 645356.0,
+   "witness_rules": [
+    "C-DEMAND",
+    "C-INIT"
+   ],
+   "witness_details": [
+    "C-INIT: I[SKU_Premium,DC1,1,3]=42.5 != 0",
+    "C-INIT: I[SKU_Premium,DC1,1,7]=331.25 != 0",
+    "C-DEMAND: [SKU_Premium,DC1,1] sales+sub-lost balance -33.25 != demand 39.0",
+    "C-DEMAND: [SKU_Premium,DC1,2] sales+sub-lost balance -40.5 != demand 33.0",
+    "C-DEMAND: [SKU_Premium,DC1,3] sales+sub-lost balance -42.0 != demand 42.5",
+    "C-DEMAND: [SKU_Premium,DC1,4] sales+sub-lost balance -42.0 != demand 45.0",
+    "C-DEMAND: [SKU_Premium,DC1,5] sales+sub-lost balance -61.5 != demand 49.75",
+    "C-INIT: I[SKU_Premium,DC2,1,2]=26.400000000000002 != 0",
+    "C-INIT: I[SKU_Premium,DC2,1,3]=34.0 != 0",
+    "C-INIT: I[SKU_Premium,DC2,1,4]=36.0 != 0"
+   ],
+   "artifact": "work/retailopt_gepa_full_v0.1/rollouts/0b1fab4037973cbe188b6bc59330d30cba74a189292e3ac42a39ff09ba2375b3/retail_f1_52_weeks_v1.json"
+  },
+  {
+   "scenario_id": "retail_f2_circular_sub_v3",
+   "candidate_sha256": "0b1fab4037973cbe188b6bc59330d30cba74a189292e3ac42a39ff09ba2375b3",
+   "grade": "better_than_reference",
+   "objective": 97779.09210526315,
+   "witness_rules": [
+    "C-DEMAND"
+   ],
+   "witness_details": [
+    "C-DEMAND: [SKU_Basic,DC1,1] sales+sub-lost balance 50.75 != demand 83.75",
+    "C-DEMAND: [SKU_Basic,DC1,2] sales+sub-lost balance 38.25 != demand 66.5",
+    "C-DEMAND: [SKU_Basic,DC1,3] sales+sub-lost balance 42.5 != demand 71.5",
+    "C-DEMAND: [SKU_Basic,DC1,4] sales+sub-lost balance 47.25 != demand 79.0",
+    "C-DEMAND: [SKU_Basic,DC1,5] sales+sub-lost balance 84.75 != demand 122.75"
+   ],
+   "artifact": "work/retailopt_gepa_full_v0.1/rollouts/0b1fab4037973cbe188b6bc59330d30cba74a189292e3ac42a39ff09ba2375b3/retail_f2_circular_sub_v3.json"
+  },
+  {
+   "scenario_id": "retail_f3_unbalanced_network_v3",
+   "candidate_sha256": "0b1fab4037973cbe188b6bc59330d30cba74a189292e3ac42a39ff09ba2375b3",
+   "grade": "better_than_reference",
+   "objective": 665544.5106615479,
+   "witness_rules": [
+    "C-DEMAND",
+    "C-INIT"
+   ],
+   "witness_details": [
+    "C-INIT: I[SKU_Basic,DC1,1,1]=77.74999939732515 != 0",
+    "C-INIT: I[SKU_Basic,DC2,1,4]=62.20000000000002 != 0",
+    "C-INIT: I[SKU_Basic,DC3,1,7]=62.2 != 0",
+    "C-INIT: I[SKU_Basic,DC4,1,4]=62.2 != 0",
+    "C-INIT: I[SKU_Basic,DC5,1,5]=43.16061986105746 != 0",
+    "C-DEMAND: [SKU_Premium,DC1,2] sales+sub-lost balance -35.5 != demand 33.25",
+    "C-DEMAND: [SKU_Premium,DC1,3] sales+sub-lost balance -41.75 != demand 38.5",
+    "C-DEMAND: [SKU_Premium,DC1,4] sales+sub-lost balance -37.5 != demand 43.5",
+    "C-DEMAND: [SKU_Premium,DC1,5] sales+sub-lost balance -46.5 != demand 47.0",
+    "C-DEMAND: [SKU_Premium,DC1,6] sales+sub-lost balance -90.0 != demand 67.75"
+   ],
+   "artifact": "work/retailopt_gepa_full_v0.1/rollouts/0b1fab4037973cbe188b6bc59330d30cba74a189292e3ac42a39ff09ba2375b3/retail_f3_unbalanced_network_v3.json"
+  },
+  {
+   "scenario_id": "retail_f2_cannibalization_v2",
+   "candidate_sha256": "0b1fab4037973cbe188b6bc59330d30cba74a189292e3ac42a39ff09ba2375b3",
+   "grade": "better_than_reference",
+   "objective": 252081.77480082738,
+   "witness_rules": [
+    "C-DEMAND",
+    "C-INIT"
+   ],
+   "witness_details": [
+    "C-INIT: I[SKU_Premium,DC1,1,3]=78.0 != 0",
+    "C-INIT: I[SKU_Premium,DC1,1,4]=43.0 != 0",
+    "C-INIT: I[SKU_Premium,DC1,1,6]=112.25 != 0",
+    "C-INIT: I[SKU_Premium,DC1,1,7]=125.75 != 0",
+    "C-DEMAND: [SKU_Premium,DC1,1] sales+sub-lost balance -122.75 != demand 36.5",
+    "C-DEMAND: [SKU_Premium,DC1,2] sales+sub-lost balance -107.5 != demand 37.0",
+    "C-DEMAND: [SKU_Premium,DC1,3] sales+sub-lost balance -147.25 != demand 41.0",
+    "C-DEMAND: [SKU_Premium,DC1,4] sales+sub-lost balance -154.0 != demand 43.0",
+    "C-DEMAND: [SKU_Premium,DC1,5] sales+sub-lost balance -160.75 != demand 47.0",
+    "C-INIT: I[SKU_Premium,DC2,1,4]=29.6 != 0"
+   ],
+   "artifact": "work/retailopt_gepa_full_v0.1/rollouts/0b1fab4037973cbe188b6bc59330d30cba74a189292e3ac42a39ff09ba2375b3/retail_f2_cannibalization_v2.json"
+  },
+  {
+   "scenario_id": "retail_f4_early_stockout_v2",
+   "candidate_sha256": "0b1fab4037973cbe188b6bc59330d30cba74a189292e3ac42a39ff09ba2375b3",
+   "grade": "better_than_reference",
+   "objective": 278742.99999999977,
+   "witness_rules": [
+    "C-DEMAND",
+    "C-INIT"
+   ],
+   "witness_details": [
+    "C-INIT: I[SKU_Basic,DC1,1,9]=30.999999999999943 != 0",
+    "C-INIT: I[SKU_Premium,DC1,1,2]=40.0 != 0",
+    "C-INIT: I[SKU_Premium,DC1,1,5]=41.75 != 0",
+    "C-INIT: I[SKU_Premium,DC1,1,7]=304.0 != 0",
+    "C-DEMAND: [SKU_Premium,DC1,1] sales+sub-lost balance -39.25 != demand 36.25",
+    "C-DEMAND: [SKU_Premium,DC1,2] sales+sub-lost balance -31.5 != demand 40.0",
+    "C-DEMAND: [SKU_Premium,DC1,3] sales+sub-lost balance -47.75 != demand 41.75",
+    "C-DEMAND: [SKU_Premium,DC1,4] sales+sub-lost balance -51.25 != demand 49.5",
+    "C-DEMAND: [SKU_Premium,DC1,5] sales+sub-lost balance -63.25 != demand 53.75",
+    "C-INIT: I[SKU_Premium,DC2,1,2]=32.0 != 0"
+   ],
+   "artifact": "work/retailopt_gepa_full_v0.1/rollouts/0b1fab4037973cbe188b6bc59330d30cba74a189292e3ac42a39ff09ba2375b3/retail_f4_early_stockout_v2.json"
+  },
+  {
+   "scenario_id": "retail_f4_early_stockout_v1",
+   "candidate_sha256": "0b1fab4037973cbe188b6bc59330d30cba74a189292e3ac42a39ff09ba2375b3",
+   "grade": "better_than_reference",
+   "objective": 485328.50000000047,
+   "witness_rules": [
+    "C-DEMAND"
+   ],
+   "witness_details": [
+    "C-DEMAND: [SKU_Premium,DC1,6] sales+sub-lost balance 19.075000000000003 != demand 60.75",
+    "C-DEMAND: [SKU_Premium,DC1,7] sales+sub-lost balance -92.25 != demand 78.75",
+    "C-DEMAND: [SKU_Premium,DC1,8] sales+sub-lost balance -99.50000000000001 != demand 114.75",
+    "C-DEMAND: [SKU_Premium,DC1,9] sales+sub-lost balance -164.99999999999997 != demand 129.0",
+    "C-DEMAND: [SKU_Premium,DC1,10] sales+sub-lost balance -92.50000000000006 != demand 150.75"
+   ],
+   "artifact": "work/retailopt_gepa_full_v0.1/rollouts/0b1fab4037973cbe188b6bc59330d30cba74a189292e3ac42a39ff09ba2375b3/retail_f4_early_stockout_v1.json"
+  },
+  {
+   "scenario_id": "retail_f2_ultra_fresh_v2",
+   "candidate_sha256": "0b1fab4037973cbe188b6bc59330d30cba74a189292e3ac42a39ff09ba2375b3",
+   "grade": "better_than_reference",
+   "objective": 344053.0,
+   "witness_rules": [
+    "C-DEMAND",
+    "C-INIT"
+   ],
+   "witness_details": [
+    "C-INIT: I[SKU_Basic,DC1,1,1]=79.25 != 0",
+    "C-INIT: I[SKU_Basic,DC2,1,1]=63.400000000000006 != 0",
+    "C-INIT: I[SKU_Basic,DC3,1,1]=63.400000000000006 != 0",
+    "C-INIT: I[SKU_Basic,DC4,1,1]=63.400000000000006 != 0",
+    "C-INIT: I[SKU_Basic,DC5,1,1]=47.55 != 0",
+    "C-DEMAND: [SKU_Premium,DC1,2] sales+sub-lost balance 1.75 != demand 37.25",
+    "C-DEMAND: [SKU_Premium,DC1,3] sales+sub-lost balance -14.5 != demand 35.5",
+    "C-DEMAND: [SKU_Premium,DC1,4] sales+sub-lost balance -1.25 != demand 50.0",
+    "C-DEMAND: [SKU_Premium,DC1,5] sales+sub-lost balance -21.5 != demand 51.25",
+    "C-DEMAND: [SKU_Premium,DC1,6] sales+sub-lost balance -21.5 != demand 72.75"
+   ],
+   "artifact": "work/retailopt_gepa_full_v0.1/rollouts/0b1fab4037973cbe188b6bc59330d30cba74a189292e3ac42a39ff09ba2375b3/retail_f2_ultra_fresh_v2.json"
+  },
+  {
+   "scenario_id": "retail_f1_high_waste_v2",
+   "candidate_sha256": "0b1fab4037973cbe188b6bc59330d30cba74a189292e3ac42a39ff09ba2375b3",
+   "grade": "better_than_reference",
+   "objective": 225291.0,
+   "witness_rules": [
+    "C-DEMAND",
+    "C-INIT"
+   ],
+   "witness_details": [
+    "C-INIT: I[SKU_Premium,DC1,1,2]=33.75 != 0",
+    "C-INIT: I[SKU_Premium,DC1,1,4]=89.0 != 0",
+    "C-INIT: I[SKU_Premium,DC1,1,5]=49.5 != 0",
+    "C-INIT: I[SKU_Premium,DC1,1,6]=41.25 != 0",
+    "C-INIT: I[SKU_Premium,DC1,1,7]=142.25 != 0",
+    "C-DEMAND: [SKU_Premium,DC1,1] sales+sub-lost balance -28.25 != demand 41.25",
+    "C-DEMAND: [SKU_Premium,DC1,2] sales+sub-lost balance -32.75 != demand 33.75",
+    "C-DEMAND: [SKU_Premium,DC1,3] sales+sub-lost balance -26.75 != demand 46.0",
+    "C-DEMAND: [SKU_Premium,DC1,4] sales+sub-lost balance -48.0 != demand 43.0",
+    "C-DEMAND: [SKU_Premium,DC1,5] sales+sub-lost balance -50.5 != demand 49.5"
+   ],
+   "artifact": "work/retailopt_gepa_full_v0.1/rollouts/0b1fab4037973cbe188b6bc59330d30cba74a189292e3ac42a39ff09ba2375b3/retail_f1_high_waste_v2.json"
+  },
+  {
+   "scenario_id": "retail_f3_volumetric_constraint_v2",
+   "candidate_sha256": "0b1fab4037973cbe188b6bc59330d30cba74a189292e3ac42a39ff09ba2375b3",
+   "grade": "better_than_reference",
+   "objective": 307550.7522087367,
+   "witness_rules": [
+    "C-DEMAND",
+    "C-INIT"
+   ],
+   "witness_details": [
+    "C-INIT: I[SKU_Basic,DC1,1,6]=12.894773687876011 != 0",
+    "C-INIT: I[SKU_Basic,DC1,1,7]=84.21512210868427 != 0",
+    "C-INIT: I[SKU_Basic,DC1,1,8]=93.89078063477199 != 0",
+    "C-INIT: I[SKU_Basic,DC2,1,9]=232.75685273588365 != 0",
+    "C-INIT: I[SKU_Basic,DC3,1,8]=123.87039999999999 != 0",
+    "C-DEMAND: [SKU_Premium,DC1,1] sales+sub-lost balance -36.75 != demand 34.25",
+    "C-DEMAND: [SKU_Premium,DC1,2] sales+sub-lost balance -34.5 != demand 35.0",
+    "C-DEMAND: [SKU_Premium,DC1,3] sales+sub-lost balance -48.5 != demand 40.75",
+    "C-DEMAND: [SKU_Premium,DC1,4] sales+sub-lost balance -34.0 != demand 45.75",
+    "C-DEMAND: [SKU_Premium,DC1,5] sales+sub-lost balance -56.75 != demand 62.0"
+   ],
+   "artifact": "work/retailopt_gepa_full_v0.1/rollouts/0b1fab4037973cbe188b6bc59330d30cba74a189292e3ac42a39ff09ba2375b3/retail_f3_volumetric_constraint_v2.json"
+  },
+  {
+   "scenario_id": "retail_f3_storage_bottleneck_v2",
+   "candidate_sha256": "0b1fab4037973cbe188b6bc59330d30cba74a189292e3ac42a39ff09ba2375b3",
+   "grade": "better_than_reference",
+   "objective": 255690.39302831586,
+   "witness_rules": [
+    "C-DEMAND",
+    "C-INIT"
+   ],
+   "witness_details": [
+    "C-INIT: I[SKU_Basic,DC1,1,9]=36.990041380547154 != 0",
+    "C-INIT: I[SKU_Premium,DC1,1,1]=43.25 != 0",
+    "C-INIT: I[SKU_Premium,DC1,1,5]=86.25 != 0",
+    "C-INIT: I[SKU_Premium,DC1,1,6]=53.75 != 0",
+    "C-INIT: I[SKU_Premium,DC1,1,7]=179.0 != 0",
+    "C-DEMAND: [SKU_Premium,DC1,1] sales+sub-lost balance -39.5 != demand 43.25",
+    "C-DEMAND: [SKU_Premium,DC1,2] sales+sub-lost balance -28.75 != demand 43.0",
+    "C-DEMAND: [SKU_Premium,DC1,3] sales+sub-lost balance -37.5 != demand 39.5",
+    "C-DEMAND: [SKU_Premium,DC1,4] sales+sub-lost balance -34.75 != demand 46.75",
+    "C-DEMAND: [SKU_Premium,DC1,5] sales+sub-lost balance -65.75 != demand 53.75"
+   ],
+   "artifact": "work/retailopt_gepa_full_v0.1/rollouts/0b1fab4037973cbe188b6bc59330d30cba74a189292e3ac42a39ff09ba2375b3/retail_f3_storage_bottleneck_v2.json"
+  },
+  {
+   "scenario_id": "retail_f2_circular_sub_v2",
+   "candidate_sha256": "0b1fab4037973cbe188b6bc59330d30cba74a189292e3ac42a39ff09ba2375b3",
+   "grade": "better_than_reference",
+   "objective": 86905.81458333321,
+   "witness_rules": [
+    "C-DEMAND",
+    "C-INIT"
+   ],
+   "witness_details": [
+    "C-INIT: I[SKU_Basic,DC1,1,5]=13.047916666666662 != 0",
+    "C-INIT: I[SKU_Basic,DC1,1,6]=20.952083333333338 != 0",
+    "C-DEMAND: [SKU_Basic,DC1,1] sales+sub-lost balance 53.0 != demand 80.25",
+    "C-DEMAND: [SKU_Basic,DC1,2] sales+sub-lost balance 52.0 != demand 83.5",
+    "C-DEMAND: [SKU_Basic,DC1,3] sales+sub-lost balance 40.75 != demand 74.75",
+    "C-DEMAND: [SKU_Basic,DC1,4] sales+sub-lost balance 49.0 != demand 86.0",
+    "C-DEMAND: [SKU_Basic,DC1,5] sales+sub-lost balance 60.5 != demand 108.5",
+    "C-INIT: I[SKU_Basic,DC2,1,5]=10.43833333333335 != 0",
+    "C-INIT: I[SKU_Basic,DC2,1,9]=16.761666666666653 != 0",
+    "C-INIT: I[SKU_Basic,DC3,1,5]=10.438333333333322 != 0"
+   ],
+   "artifact": "work/retailopt_gepa_full_v0.1/rollouts/0b1fab4037973cbe188b6bc59330d30cba74a189292e3ac42a39ff09ba2375b3/retail_f2_circular_sub_v2.json"
+  },
+  {
+   "scenario_id": "retail_f2_circular_sub_v0",
+   "candidate_sha256": "0b1fab4037973cbe188b6bc59330d30cba74a189292e3ac42a39ff09ba2375b3",
+   "grade": "better_than_reference",
+   "objective": 86205.54347826075,
+   "witness_rules": [
+    "C-DEMAND",
+    "C-INIT"
+   ],
+   "witness_details": [
+    "C-INIT: I[SKU_Basic,DC1,1,5]=14.163043478260857 != 0",
+    "C-INIT: I[SKU_Basic,DC1,1,6]=7.206521739130427 != 0",
+    "C-INIT: I[SKU_Basic,DC1,1,7]=10.271739130434792 != 0",
+    "C-INIT: I[SKU_Basic,DC1,1,9]=76.85869565217392 != 0",
+    "C-DEMAND: [SKU_Basic,DC1,1] sales+sub-lost balance 45.5 != demand 75.75",
+    "C-DEMAND: [SKU_Basic,DC1,2] sales+sub-lost balance 46.75 != demand 77.75",
+    "C-DEMAND: [SKU_Basic,DC1,3] sales+sub-lost balance 49.25 != demand 82.0",
+    "C-DEMAND: [SKU_Basic,DC1,4] sales+sub-lost balance 54.75 != demand 91.25",
+    "C-DEMAND: [SKU_Basic,DC1,5] sales+sub-lost balance 65.25 != demand 108.75",
+    "C-INIT: I[SKU_Basic,DC2,1,7]=25.31304347826087 != 0"
+   ],
+   "artifact": "work/retailopt_gepa_full_v0.1/rollouts/0b1fab4037973cbe188b6bc59330d30cba74a189292e3ac42a39ff09ba2375b3/retail_f2_circular_sub_v0.json"
+  },
+  {
+   "scenario_id": "retail_f4_peak_failure_v3",
+   "candidate_sha256": "0b1fab4037973cbe188b6bc59330d30cba74a189292e3ac42a39ff09ba2375b3",
+   "grade": "better_than_reference",
+   "objective": 280846.5,
+   "witness_rules": [
+    "C-DEMAND",
+    "C-INIT"
+   ],
+   "witness_details": [
+    "C-INIT: I[SKU_Premium,DC1,1,2]=42.75 != 0",
+    "C-INIT: I[SKU_Premium,DC1,1,3]=39.25 != 0",
+    "C-INIT: I[SKU_Premium,DC1,1,6]=112.25 != 0",
+    "C-INIT: I[SKU_Premium,DC1,1,7]=175.5 != 0",
+    "C-DEMAND: [SKU_Premium,DC1,1] sales+sub-lost balance -37.25 != demand 40.25",
+    "C-DEMAND: [SKU_Premium,DC1,2] sales+sub-lost balance -42.75 != demand 42.75",
+    "C-DEMAND: [SKU_Premium,DC1,3] sales+sub-lost balance -35.25 != demand 39.25",
+    "C-DEMAND: [SKU_Premium,DC1,4] sales+sub-lost balance -37.75 != demand 46.75",
+    "C-DEMAND: [SKU_Premium,DC1,5] sales+sub-lost balance -43.5 != demand 53.5",
+    "C-INIT: I[SKU_Premium,DC2,1,2]=34.2 != 0"
+   ],
+   "artifact": "work/retailopt_gepa_full_v0.1/rollouts/0b1fab4037973cbe188b6bc59330d30cba74a189292e3ac42a39ff09ba2375b3/retail_f4_peak_failure_v3.json"
+  },
+  {
+   "scenario_id": "retail_f4_supply_risk_v1",
+   "candidate_sha256": "0b1fab4037973cbe188b6bc59330d30cba74a189292e3ac42a39ff09ba2375b3",
+   "grade": "better_than_reference",
+   "objective": 233634.0,
+   "witness_rules": [
+    "C-DEMAND",
+    "C-INIT"
+   ],
+   "witness_details": [
+    "C-INIT: I[SKU_Premium,DC1,1,2]=43.25 != 0",
+    "C-INIT: I[SKU_Premium,DC1,1,3]=46.25 != 0",
+    "C-INIT: I[SKU_Premium,DC1,1,4]=42.0 != 0",
+    "C-INIT: I[SKU_Premium,DC1,1,6]=128.5 != 0",
+    "C-INIT: I[SKU_Premium,DC1,1,7]=136.0 != 0",
+    "C-DEMAND: [SKU_Premium,DC1,1] sales+sub-lost balance -28.0 != demand 41.25",
+    "C-DEMAND: [SKU_Premium,DC1,2] sales+sub-lost balance -22.75 != demand 43.25",
+    "C-DEMAND: [SKU_Premium,DC1,3] sales+sub-lost balance -46.5 != demand 46.25",
+    "C-DEMAND: [SKU_Premium,DC1,4] sales+sub-lost balance -45.5 != demand 42.0",
+    "C-DEMAND: [SKU_Premium,DC1,5] sales+sub-lost balance -48.5 != demand 51.25"
+   ],
+   "artifact": "work/retailopt_gepa_full_v0.1/rollouts/0b1fab4037973cbe188b6bc59330d30cba74a189292e3ac42a39ff09ba2375b3/retail_f4_supply_risk_v1.json"
+  },
+  {
+   "scenario_id": "retail_f4_demand_surge_v3",
+   "candidate_sha256": "0b1fab4037973cbe188b6bc59330d30cba74a189292e3ac42a39ff09ba2375b3",
+   "grade": "better_than_reference",
+   "objective": 309478.5,
+   "witness_rules": [
+    "C-DEMAND",
+    "C-INIT"
+   ],
+   "witness_details": [
+    "C-INIT: I[SKU_Basic,DC2,1,9]=58.6 != 0",
+    "C-INIT: I[SKU_Premium,DC1,1,2]=44.5 != 0",
+    "C-INIT: I[SKU_Premium,DC1,1,3]=45.75 != 0",
+    "C-INIT: I[SKU_Premium,DC1,1,5]=53.25 != 0",
+    "C-INIT: I[SKU_Premium,DC1,1,7]=251.0 != 0",
+    "C-DEMAND: [SKU_Premium,DC1,1] sales+sub-lost balance -39.0 != demand 34.25",
+    "C-DEMAND: [SKU_Premium,DC1,2] sales+sub-lost balance -25.5 != demand 44.5",
+    "C-DEMAND: [SKU_Premium,DC1,3] sales+sub-lost balance -45.75 != demand 45.75",
+    "C-DEMAND: [SKU_Premium,DC1,4] sales+sub-lost balance -44.25 != demand 48.5",
+    "C-DEMAND: [SKU_Premium,DC1,5] sales+sub-lost balance -43.75 != demand 53.25"
+   ],
+   "artifact": "work/retailopt_gepa_full_v0.1/rollouts/0b1fab4037973cbe188b6bc59330d30cba74a189292e3ac42a39ff09ba2375b3/retail_f4_demand_surge_v3.json"
+  },
+  {
+   "scenario_id": "retail_f4_early_stockout_v3",
+   "candidate_sha256": "0b1fab4037973cbe188b6bc59330d30cba74a189292e3ac42a39ff09ba2375b3",
+   "grade": "better_than_reference",
+   "objective": 275599.5,
+   "witness_rules": [
+    "C-DEMAND",
+    "C-INIT"
+   ],
+   "witness_details": [
+    "C-INIT: I[SKU_Premium,DC1,1,2]=43.5 != 0",
+    "C-INIT: I[SKU_Premium,DC1,1,3]=37.0 != 0",
+    "C-INIT: I[SKU_Premium,DC1,1,6]=74.25 != 0",
+    "C-INIT: I[SKU_Premium,DC1,1,7]=226.75 != 0",
+    "C-DEMAND: [SKU_Premium,DC1,1] sales+sub-lost balance -23.75 != demand 43.0",
+    "C-DEMAND: [SKU_Premium,DC1,2] sales+sub-lost balance -32.25 != demand 43.5",
+    "C-DEMAND: [SKU_Premium,DC1,3] sales+sub-lost balance -39.75 != demand 37.0",
+    "C-DEMAND: [SKU_Premium,DC1,4] sales+sub-lost balance -57.25 != demand 47.0",
+    "C-DEMAND: [SKU_Premium,DC1,5] sales+sub-lost balance -64.75 != demand 57.0",
+    "C-INIT: I[SKU_Premium,DC2,1,2]=34.800000000000004 != 0"
+   ],
+   "artifact": "work/retailopt_gepa_full_v0.1/rollouts/0b1fab4037973cbe188b6bc59330d30cba74a189292e3ac42a39ff09ba2375b3/retail_f4_early_stockout_v3.json"
+  },
+  {
+   "scenario_id": "retail_f4_robust_variance_v2",
+   "candidate_sha256": "0b1fab4037973cbe188b6bc59330d30cba74a189292e3ac42a39ff09ba2375b3",
+   "grade": "better_than_reference",
+   "objective": 258884.5,
+   "witness_rules": [
+    "C-DEMAND",
+    "C-INIT"
+   ],
+   "witness_details": [
+    "C-INIT: I[SKU_Basic,DC3,1,9]=78.60000000000001 != 0",
+    "C-INIT: I[SKU_Premium,DC1,1,4]=58.25 != 0",
+    "C-INIT: I[SKU_Premium,DC1,1,6]=59.5 != 0",
+    "C-INIT: I[SKU_Premium,DC1,1,7]=322.25 != 0",
+    "C-DEMAND: [SKU_Premium,DC1,1] sales+sub-lost balance -38.75 != demand 59.5",
+    "C-DEMAND: [SKU_Premium,DC1,2] sales+sub-lost balance -33.25 != demand 26.25",
+    "C-DEMAND: [SKU_Premium,DC1,3] sales+sub-lost balance -74.25 != demand 58.25",
+    "C-DEMAND: [SKU_Premium,DC1,4] sales+sub-lost balance -38.25 != demand 27.75",
+    "C-DEMAND: [SKU_Premium,DC1,5] sales+sub-lost balance -95.25 != demand 91.75",
+    "C-INIT: I[SKU_Premium,DC2,1,2]=21.0 != 0"
+   ],
+   "artifact": "work/retailopt_gepa_full_v0.1/rollouts/0b1fab4037973cbe188b6bc59330d30cba74a189292e3ac42a39ff09ba2375b3/retail_f4_robust_variance_v2.json"
+  },
+  {
+   "scenario_id": "retail_f2_ultra_fresh_v1",
+   "candidate_sha256": "0b1fab4037973cbe188b6bc59330d30cba74a189292e3ac42a39ff09ba2375b3",
+   "grade": "better_than_reference",
+   "objective": 370085.5,
+   "witness_rules": [
+    "C-DEMAND",
+    "C-INIT"
+   ],
+   "witness_details": [
+    "C-INIT: I[SKU_Basic,DC1,1,1]=66.5 != 0",
+    "C-INIT: I[SKU_Basic,DC2,1,1]=53.2 != 0",
+    "C-INIT: I[SKU_Basic,DC3,1,1]=53.2 != 0",
+    "C-INIT: I[SKU_Basic,DC4,1,1]=53.2 != 0",
+    "C-INIT: I[SKU_Basic,DC5,1,1]=39.9 != 0",
+    "C-DEMAND: [SKU_Premium,DC1,2] sales+sub-lost balance -7.5 != demand 35.25",
+    "C-DEMAND: [SKU_Premium,DC1,3] sales+sub-lost balance 3.5 != demand 42.75",
+    "C-DEMAND: [SKU_Premium,DC1,4] sales+sub-lost balance -17.5 != demand 39.25",
+    "C-DEMAND: [SKU_Premium,DC1,5] sales+sub-lost balance -5.0 != demand 56.75",
+    "C-DEMAND: [SKU_Premium,DC1,6] sales+sub-lost balance -21.5 != demand 61.75"
+   ],
+   "artifact": "work/retailopt_gepa_full_v0.1/rollouts/0b1fab4037973cbe188b6bc59330d30cba74a189292e3ac42a39ff09ba2375b3/retail_f2_ultra_fresh_v1.json"
+  },
+  {
+   "scenario_id": "retail_f3_unbalanced_network_v2",
+   "candidate_sha256": "0b1fab4037973cbe188b6bc59330d30cba74a189292e3ac42a39ff09ba2375b3",
+   "grade": "better_than_reference",
+   "objective": 726209.1705184288,
+   "witness_rules": [
+    "C-DEMAND",
+    "C-INIT"
+   ],
+   "witness_details": [
+    "C-INIT: I[SKU_Basic,DC2,1,9]=59.6 != 0",
+    "C-INIT: I[SKU_Basic,DC3,1,9]=59.6 != 0",
+    "C-INIT: I[SKU_Basic,DC4,1,8]=59.6 != 0",
+    "C-INIT: I[SKU_Basic,DC5,1,5]=37.51436228966412 != 0",
+    "C-INIT: I[SKU_Premium,DC1,1,2]=40.5 != 0",
+    "C-DEMAND: [SKU_Premium,DC1,1] sales+sub-lost balance -41.25 != demand 33.25",
+    "C-DEMAND: [SKU_Premium,DC1,2] sales+sub-lost balance -33.5 != demand 40.5",
+    "C-DEMAND: [SKU_Premium,DC1,3] sales+sub-lost balance -45.25 != demand 41.75",
+    "C-DEMAND: [SKU_Premium,DC1,4] sales+sub-lost balance -38.75 != demand 52.0",
+    "C-DEMAND: [SKU_Premium,DC1,5] sales+sub-lost balance -66.0 != demand 50.0"
+   ],
+   "artifact": "work/retailopt_gepa_full_v0.1/rollouts/0b1fab4037973cbe188b6bc59330d30cba74a189292e3ac42a39ff09ba2375b3/retail_f3_unbalanced_network_v2.json"
+  }
+ ]
+}

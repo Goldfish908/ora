@@ -1,0 +1,11 @@
+{
+ "rule": "target_improvement_with_verified_downstream_pass_v2",
+ "source_result": "repair_result.json",
+ "edge_accepted": true,
+ "edge_reasons": [],
+ "final_accept": true,
+ "final_reasons": [],
+ "official_metrics": true,
+ "status": "accepted",
+ "llm_calls": 0
+}

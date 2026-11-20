@@ -1,0 +1,3238 @@
+{
+ "scope": "Fixed saved A0 outputs; offline counterfactual only, not online A3 or new LLM sampling.",
+ "source_run": "work/retailopt_gepa_stream_a0_v0.3",
+ "authorized_checks": [
+  "L1_execution",
+  "L2_initial_inventory",
+  "L2_demand_balance"
+ ],
+ "audit_scope": "dev_archetypes_only",
+ "audit_scenario_ids": [
+  "retail_f1_52_weeks_v0",
+  "retail_f1_base_v0",
+  "retail_f1_high_waste_v0"
+ ],
+ "audit_note": "R1 prototype with prewritten execution, initial-inventory and demand checks. Full Witness separately covers more business rules; F1-only audit does not establish generalization.",
+ "r2_note": "Original R2 freezes all higher-layer verdicts for target_level=0 and requires final pass. It cannot distinguish faithful high-level repair from whitewashing.",
+ "candidate_results": [
+  {
+   "candidate_idx": 0,
+   "n": 60,
+   "a0_proxy_accept": 20,
+   "r1_final_gate_pass": 3,
+   "r1_gate_true_correct_retained": 3,
+   "r1_gate_true_correct_lost": 0,
+   "r1_gate_phantom_blocked": 17,
+   "r1_gate_false_positive_vs_full_witness": 0,
+   "governance_unknown": 40,
+   "full_witness_true_correct": 3,
+   "full_witness_phantom_proxy": 17
+  },
+  {
+   "candidate_idx": 1,
+   "n": 60,
+   "a0_proxy_accept": 57,
+   "r1_final_gate_pass": 57,
+   "r1_gate_true_correct_retained": 57,
+   "r1_gate_true_correct_lost": 0,
+   "r1_gate_phantom_blocked": 0,
+   "r1_gate_false_positive_vs_full_witness": 0,
+   "governance_unknown": 3,
+   "full_witness_true_correct": 57,
+   "full_witness_phantom_proxy": 0
+  }
+ ],
+ "transitions": [
+  {
+   "parent_candidate_idx": 0,
+   "child_candidate_idx": 1,
+   "scope": "official_discovery_minibatch",
+   "n": 3,
+   "base_proxy_improved": true,
+   "higher_verdicts_unchanged": 1,
+   "r1_final_gate_pass": 2,
+   "a3_pair_accept": 0,
+   "a3_candidate_accept": false,
+   "true_after_but_a3_rejected": 2,
+   "phantom_before_but_a3_rejected": 0,
+   "pairs": [
+    {
+     "scenario_id": "retail_f3_unbalanced_network_v3",
+     "proxy_before": false,
+     "proxy_after": true,
+     "true_before": false,
+     "true_after": true,
+     "phantom_before": false,
+     "higher_verdicts_unchanged": false,
+     "r2_reasons": [
+      "higher_check_changed:L1_execution:fail->pass",
+      "higher_check_changed:L2_initial_inventory:unknown->pass",
+      "higher_check_changed:L2_demand_balance:unknown->pass"
+     ],
+     "r1_final_gate_pass": true,
+     "r1_final_gate_reasons": [],
+     "a3_pair_accept": false
+    },
+    {
+     "scenario_id": "retail_f3_supply_bottleneck_v2",
+     "proxy_before": false,
+     "proxy_after": false,
+     "true_before": false,
+     "true_after": false,
+     "phantom_before": false,
+     "higher_verdicts_unchanged": true,
+     "r2_reasons": [],
+     "r1_final_gate_pass": false,
+     "r1_final_gate_reasons": [
+      "L1_execution:fail",
+      "L2_initial_inventory:unknown",
+      "L2_demand_balance:unknown"
+     ],
+     "a3_pair_accept": false
+    },
+    {
+     "scenario_id": "retail_f1_52_weeks_v2",
+     "proxy_before": false,
+     "proxy_after": true,
+     "true_before": false,
+     "true_after": true,
+     "phantom_before": false,
+     "higher_verdicts_unchanged": false,
+     "r2_reasons": [
+      "higher_check_changed:L1_execution:fail->pass",
+      "higher_check_changed:L2_initial_inventory:unknown->pass",
+      "higher_check_changed:L2_demand_balance:unknown->pass"
+     ],
+     "r1_final_gate_pass": true,
+     "r1_final_gate_reasons": [],
+     "a3_pair_accept": false
+    }
+   ]
+  },
+  {
+   "parent_candidate_idx": 0,
+   "child_candidate_idx": 1,
+   "scope": "full_validation_diagnostic",
+   "n": 60,
+   "base_proxy_improved": true,
+   "higher_verdicts_unchanged": 5,
+   "r1_final_gate_pass": 57,
+   "a3_pair_accept": 3,
+   "a3_candidate_accept": false,
+   "true_after_but_a3_rejected": 54,
+   "phantom_before_but_a3_rejected": 17,
+   "pairs": [
+    {
+     "scenario_id": "retail_f1_52_weeks_v1",
+     "proxy_before": true,
+     "proxy_after": true,
+     "true_before": true,
+     "true_after": true,
+     "phantom_before": false,
+     "higher_verdicts_unchanged": true,
+     "r2_reasons": [],
+     "r1_final_gate_pass": true,
+     "r1_final_gate_reasons": [],
+     "a3_pair_accept": true
+    },
+    {
+     "scenario_id": "retail_f1_52_weeks_v2",
+     "proxy_before": false,
+     "proxy_after": true,
+     "true_before": false,
+     "true_after": true,
+     "phantom_before": false,
+     "higher_verdicts_unchanged": false,
+     "r2_reasons": [
+      "higher_check_changed:L1_execution:fail->pass",
+      "higher_check_changed:L2_initial_inventory:unknown->pass",
+      "higher_check_changed:L2_demand_balance:unknown->pass"
+     ],
+     "r1_final_gate_pass": true,
+     "r1_final_gate_reasons": [],
+     "a3_pair_accept": false
+    },
+    {
+     "scenario_id": "retail_f1_52_weeks_v3",
+     "proxy_before": true,
+     "proxy_after": true,
+     "true_before": false,
+     "true_after": true,
+     "phantom_before": true,
+     "higher_verdicts_unchanged": false,
+     "r2_reasons": [
+      "higher_check_changed:L2_initial_inventory:fail->pass"
+     ],
+     "r1_final_gate_pass": true,
+     "r1_final_gate_reasons": [],
+     "a3_pair_accept": false
+    },
+    {
+     "scenario_id": "retail_f1_base_v1",
+     "proxy_before": false,
+     "proxy_after": true,
+     "true_before": false,
+     "true_after": true,
+     "phantom_before": false,
+     "higher_verdicts_unchanged": false,
+     "r2_reasons": [
+      "higher_check_changed:L1_execution:fail->pass",
+      "higher_check_changed:L2_initial_inventory:unknown->pass",
+      "higher_check_changed:L2_demand_balance:unknown->pass"
+     ],
+     "r1_final_gate_pass": true,
+     "r1_final_gate_reasons": [],
+     "a3_pair_accept": false
+    },
+    {
+     "scenario_id": "retail_f1_base_v2",
+     "proxy_before": true,
+     "proxy_after": true,
+     "true_before": true,
+     "true_after": true,
+     "phantom_before": false,
+     "higher_verdicts_unchanged": true,
+     "r2_reasons": [],
+     "r1_final_gate_pass": true,
+     "r1_final_gate_reasons": [],
+     "a3_pair_accept": true
+    },
+    {
+     "scenario_id": "retail_f1_base_v3",
+     "proxy_before": false,
+     "proxy_after": true,
+     "true_before": false,
+     "true_after": true,
+     "phantom_before": false,
+     "higher_verdicts_unchanged": false,
+     "r2_reasons": [
+      "higher_check_changed:L1_execution:fail->pass",
+      "higher_check_changed:L2_initial_inventory:unknown->pass",
+      "higher_check_changed:L2_demand_balance:unknown->pass"
+     ],
+     "r1_final_gate_pass": true,
+     "r1_final_gate_reasons": [],
+     "a3_pair_accept": false
+    },
+    {
+     "scenario_id": "retail_f1_high_waste_v1",
+     "proxy_before": true,
+     "proxy_after": true,
+     "true_before": false,
+     "true_after": true,
+     "phantom_before": true,
+     "higher_verdicts_unchanged": false,
+     "r2_reasons": [
+      "higher_check_changed:L2_initial_inventory:fail->pass"
+     ],
+     "r1_final_gate_pass": true,
+     "r1_final_gate_reasons": [],
+     "a3_pair_accept": false
+    },
+    {
+     "scenario_id": "retail_f1_high_waste_v2",
+     "proxy_before": true,
+     "proxy_after": true,
+     "true_before": false,
+     "true_after": true,
+     "phantom_before": true,
+     "higher_verdicts_unchanged": false,
+     "r2_reasons": [
+      "higher_check_changed:L2_initial_inventory:fail->pass"
+     ],
+     "r1_final_gate_pass": true,
+     "r1_final_gate_reasons": [],
+     "a3_pair_accept": false
+    },
+    {
+     "scenario_id": "retail_f1_high_waste_v3",
+     "proxy_before": false,
+     "proxy_after": true,
+     "true_before": false,
+     "true_after": true,
+     "phantom_before": false,
+     "higher_verdicts_unchanged": false,
+     "r2_reasons": [
+      "higher_check_changed:L1_execution:fail->pass",
+      "higher_check_changed:L2_initial_inventory:unknown->pass",
+      "higher_check_changed:L2_demand_balance:unknown->pass"
+     ],
+     "r1_final_gate_pass": true,
+     "r1_final_gate_reasons": [],
+     "a3_pair_accept": false
+    },
+    {
+     "scenario_id": "retail_f1_jit_logic_v1",
+     "proxy_before": false,
+     "proxy_after": true,
+     "true_before": false,
+     "true_after": true,
+     "phantom_before": false,
+     "higher_verdicts_unchanged": false,
+     "r2_reasons": [
+      "higher_check_changed:L1_execution:fail->pass",
+      "higher_check_changed:L2_initial_inventory:unknown->pass",
+      "higher_check_changed:L2_demand_balance:unknown->pass"
+     ],
+     "r1_final_gate_pass": true,
+     "r1_final_gate_reasons": [],
+     "a3_pair_accept": false
+    },
+    {
+     "scenario_id": "retail_f1_jit_logic_v2",
+     "proxy_before": true,
+     "proxy_after": true,
+     "true_before": false,
+     "true_after": true,
+     "phantom_before": true,
+     "higher_verdicts_unchanged": false,
+     "r2_reasons": [
+      "higher_check_changed:L2_initial_inventory:fail->pass"
+     ],
+     "r1_final_gate_pass": true,
+     "r1_final_gate_reasons": [],
+     "a3_pair_accept": false
+    },
+    {
+     "scenario_id": "retail_f1_jit_logic_v3",
+     "proxy_before": true,
+     "proxy_after": true,
+     "true_before": false,
+     "true_after": true,
+     "phantom_before": true,
+     "higher_verdicts_unchanged": false,
+     "r2_reasons": [
+      "higher_check_changed:L2_demand_balance:fail->pass"
+     ],
+     "r1_final_gate_pass": true,
+     "r1_final_gate_reasons": [],
+     "a3_pair_accept": false
+    },
+    {
+     "scenario_id": "retail_f2_cannibalization_v1",
+     "proxy_before": true,
+     "proxy_after": true,
+     "true_before": false,
+     "true_after": true,
+     "phantom_before": true,
+     "higher_verdicts_unchanged": false,
+     "r2_reasons": [
+      "higher_check_changed:L2_initial_inventory:fail->pass"
+     ],
+     "r1_final_gate_pass": true,
+     "r1_final_gate_reasons": [],
+     "a3_pair_accept": false
+    },
+    {
+     "scenario_id": "retail_f2_cannibalization_v2",
+     "proxy_before": false,
+     "proxy_after": true,
+     "true_before": false,
+     "true_after": true,
+     "phantom_before": false,
+     "higher_verdicts_unchanged": false,
+     "r2_reasons": [
+      "higher_check_changed:L1_execution:fail->pass",
+      "higher_check_changed:L2_initial_inventory:unknown->pass",
+      "higher_check_changed:L2_demand_balance:unknown->pass"
+     ],
+     "r1_final_gate_pass": true,
+     "r1_final_gate_reasons": [],
+     "a3_pair_accept": false
+    },
+    {
+     "scenario_id": "retail_f2_cannibalization_v3",
+     "proxy_before": true,
+     "proxy_after": true,
+     "true_before": false,
+     "true_after": true,
+     "phantom_before": true,
+     "higher_verdicts_unchanged": false,
+     "r2_reasons": [
+      "higher_check_changed:L2_demand_balance:fail->pass"
+     ],
+     "r1_final_gate_pass": true,
+     "r1_final_gate_reasons": [],
+     "a3_pair_accept": false
+    },
+    {
+     "scenario_id": "retail_f2_circular_sub_v1",
+     "proxy_before": false,
+     "proxy_after": true,
+     "true_before": false,
+     "true_after": true,
+     "phantom_before": false,
+     "higher_verdicts_unchanged": false,
+     "r2_reasons": [
+      "higher_check_changed:L1_execution:fail->pass",
+      "higher_check_changed:L2_initial_inventory:unknown->pass",
+      "higher_check_changed:L2_demand_balance:unknown->pass"
+     ],
+     "r1_final_gate_pass": true,
+     "r1_final_gate_reasons": [],
+     "a3_pair_accept": false
+    },
+    {
+     "scenario_id": "retail_f2_circular_sub_v2",
+     "proxy_before": false,
+     "proxy_after": true,
+     "true_before": false,
+     "true_after": true,
+     "phantom_before": false,
+     "higher_verdicts_unchanged": false,
+     "r2_reasons": [
+      "higher_check_changed:L1_execution:fail->pass",
+      "higher_check_changed:L2_initial_inventory:unknown->pass",
+      "higher_check_changed:L2_demand_balance:unknown->pass"
+     ],
+     "r1_final_gate_pass": true,
+     "r1_final_gate_reasons": [],
+     "a3_pair_accept": false
+    },
+    {
+     "scenario_id": "retail_f2_circular_sub_v3",
+     "proxy_before": false,
+     "proxy_after": true,
+     "true_before": false,
+     "true_after": true,
+     "phantom_before": false,
+     "higher_verdicts_unchanged": false,
+     "r2_reasons": [
+      "higher_check_changed:L1_execution:fail->pass",
+      "higher_check_changed:L2_initial_inventory:unknown->pass",
+      "higher_check_changed:L2_demand_balance:unknown->pass"
+     ],
+     "r1_final_gate_pass": true,
+     "r1_final_gate_reasons": [],
+     "a3_pair_accept": false
+    },
+    {
+     "scenario_id": "retail_f2_no_substitution_v1",
+     "proxy_before": false,
+     "proxy_after": true,
+     "true_before": false,
+     "true_after": true,
+     "phantom_before": false,
+     "higher_verdicts_unchanged": false,
+     "r2_reasons": [
+      "higher_check_changed:L1_execution:fail->pass",
+      "higher_check_changed:L2_initial_inventory:unknown->pass",
+      "higher_check_changed:L2_demand_balance:unknown->pass"
+     ],
+     "r1_final_gate_pass": true,
+     "r1_final_gate_reasons": [],
+     "a3_pair_accept": false
+    },
+    {
+     "scenario_id": "retail_f2_no_substitution_v2",
+     "proxy_before": false,
+     "proxy_after": true,
+     "true_before": false,
+     "true_after": true,
+     "phantom_before": false,
+     "higher_verdicts_unchanged": false,
+     "r2_reasons": [
+      "higher_check_changed:L1_execution:fail->pass",
+      "higher_check_changed:L2_initial_inventory:unknown->pass",
+      "higher_check_changed:L2_demand_balance:unknown->pass"
+     ],
+     "r1_final_gate_pass": true,
+     "r1_final_gate_reasons": [],
+     "a3_pair_accept": false
+    },
+    {
+     "scenario_id": "retail_f2_no_substitution_v3",
+     "proxy_before": false,
+     "proxy_after": true,
+     "true_before": false,
+     "true_after": true,
+     "phantom_before": false,
+     "higher_verdicts_unchanged": false,
+     "r2_reasons": [
+      "higher_check_changed:L1_execution:fail->pass",
+      "higher_check_changed:L2_initial_inventory:unknown->pass",
+      "higher_check_changed:L2_demand_balance:unknown->pass"
+     ],
+     "r1_final_gate_pass": true,
+     "r1_final_gate_reasons": [],
+     "a3_pair_accept": false
+    },
+    {
+     "scenario_id": "retail_f2_price_band_tight_v1",
+     "proxy_before": true,
+     "proxy_after": true,
+     "true_before": false,
+     "true_after": true,
+     "phantom_before": true,
+     "higher_verdicts_unchanged": false,
+     "r2_reasons": [
+      "higher_check_changed:L2_initial_inventory:fail->pass",
+      "higher_check_changed:L2_demand_balance:fail->pass"
+     ],
+     "r1_final_gate_pass": true,
+     "r1_final_gate_reasons": [],
+     "a3_pair_accept": false
+    },
+    {
+     "scenario_id": "retail_f2_price_band_tight_v2",
+     "proxy_before": true,
+     "proxy_after": true,
+     "true_before": true,
+     "true_after": true,
+     "phantom_before": false,
+     "higher_verdicts_unchanged": true,
+     "r2_reasons": [],
+     "r1_final_gate_pass": true,
+     "r1_final_gate_reasons": [],
+     "a3_pair_accept": true
+    },
+    {
+     "scenario_id": "retail_f2_price_band_tight_v3",
+     "proxy_before": false,
+     "proxy_after": true,
+     "true_before": false,
+     "true_after": true,
+     "phantom_before": false,
+     "higher_verdicts_unchanged": false,
+     "r2_reasons": [
+      "higher_check_changed:L1_execution:fail->pass",
+      "higher_check_changed:L2_initial_inventory:unknown->pass",
+      "higher_check_changed:L2_demand_balance:unknown->pass"
+     ],
+     "r1_final_gate_pass": true,
+     "r1_final_gate_reasons": [],
+     "a3_pair_accept": false
+    },
+    {
+     "scenario_id": "retail_f2_promo_budget_v1",
+     "proxy_before": true,
+     "proxy_after": true,
+     "true_before": false,
+     "true_after": true,
+     "phantom_before": true,
+     "higher_verdicts_unchanged": false,
+     "r2_reasons": [
+      "higher_check_changed:L2_initial_inventory:fail->pass"
+     ],
+     "r1_final_gate_pass": true,
+     "r1_final_gate_reasons": [],
+     "a3_pair_accept": false
+    },
+    {
+     "scenario_id": "retail_f2_promo_budget_v2",
+     "proxy_before": false,
+     "proxy_after": true,
+     "true_before": false,
+     "true_after": true,
+     "phantom_before": false,
+     "higher_verdicts_unchanged": false,
+     "r2_reasons": [
+      "higher_check_changed:L1_execution:fail->pass",
+      "higher_check_changed:L2_initial_inventory:unknown->pass",
+      "higher_check_changed:L2_demand_balance:unknown->pass"
+     ],
+     "r1_final_gate_pass": true,
+     "r1_final_gate_reasons": [],
+     "a3_pair_accept": false
+    },
+    {
+     "scenario_id": "retail_f2_promo_budget_v3",
+     "proxy_before": true,
+     "proxy_after": true,
+     "true_before": false,
+     "true_after": true,
+     "phantom_before": true,
+     "higher_verdicts_unchanged": false,
+     "r2_reasons": [
+      "higher_check_changed:L2_initial_inventory:fail->pass"
+     ],
+     "r1_final_gate_pass": true,
+     "r1_final_gate_reasons": [],
+     "a3_pair_accept": false
+    },
+    {
+     "scenario_id": "retail_f2_ultra_fresh_v1",
+     "proxy_before": false,
+     "proxy_after": true,
+     "true_before": false,
+     "true_after": true,
+     "phantom_before": false,
+     "higher_verdicts_unchanged": false,
+     "r2_reasons": [
+      "higher_check_changed:L1_execution:fail->pass",
+      "higher_check_changed:L2_initial_inventory:unknown->pass",
+      "higher_check_changed:L2_demand_balance:unknown->pass"
+     ],
+     "r1_final_gate_pass": true,
+     "r1_final_gate_reasons": [],
+     "a3_pair_accept": false
+    },
+    {
+     "scenario_id": "retail_f2_ultra_fresh_v2",
+     "proxy_before": false,
+     "proxy_after": true,
+     "true_before": false,
+     "true_after": true,
+     "phantom_before": false,
+     "higher_verdicts_unchanged": false,
+     "r2_reasons": [
+      "higher_check_changed:L1_execution:fail->pass",
+      "higher_check_changed:L2_initial_inventory:unknown->pass",
+      "higher_check_changed:L2_demand_balance:unknown->pass"
+     ],
+     "r1_final_gate_pass": true,
+     "r1_final_gate_reasons": [],
+     "a3_pair_accept": false
+    },
+    {
+     "scenario_id": "retail_f2_ultra_fresh_v3",
+     "proxy_before": false,
+     "proxy_after": true,
+     "true_before": false,
+     "true_after": true,
+     "phantom_before": false,
+     "higher_verdicts_unchanged": false,
+     "r2_reasons": [
+      "higher_check_changed:L1_execution:fail->pass",
+      "higher_check_changed:L2_initial_inventory:unknown->pass",
+      "higher_check_changed:L2_demand_balance:unknown->pass"
+     ],
+     "r1_final_gate_pass": true,
+     "r1_final_gate_reasons": [],
+     "a3_pair_accept": false
+    },
+    {
+     "scenario_id": "retail_f3_storage_bottleneck_v1",
+     "proxy_before": false,
+     "proxy_after": true,
+     "true_before": false,
+     "true_after": true,
+     "phantom_before": false,
+     "higher_verdicts_unchanged": false,
+     "r2_reasons": [
+      "higher_check_changed:L1_execution:fail->pass",
+      "higher_check_changed:L2_initial_inventory:unknown->pass",
+      "higher_check_changed:L2_demand_balance:unknown->pass"
+     ],
+     "r1_final_gate_pass": true,
+     "r1_final_gate_reasons": [],
+     "a3_pair_accept": false
+    },
+    {
+     "scenario_id": "retail_f3_storage_bottleneck_v2",
+     "proxy_before": false,
+     "proxy_after": true,
+     "true_before": false,
+     "true_after": true,
+     "phantom_before": false,
+     "higher_verdicts_unchanged": false,
+     "r2_reasons": [
+      "higher_check_changed:L1_execution:fail->pass",
+      "higher_check_changed:L2_initial_inventory:unknown->pass",
+      "higher_check_changed:L2_demand_balance:unknown->pass"
+     ],
+     "r1_final_gate_pass": true,
+     "r1_final_gate_reasons": [],
+     "a3_pair_accept": false
+    },
+    {
+     "scenario_id": "retail_f3_storage_bottleneck_v3",
+     "proxy_before": false,
+     "proxy_after": true,
+     "true_before": false,
+     "true_after": true,
+     "phantom_before": false,
+     "higher_verdicts_unchanged": false,
+     "r2_reasons": [
+      "higher_check_changed:L1_execution:fail->pass",
+      "higher_check_changed:L2_initial_inventory:unknown->pass",
+      "higher_check_changed:L2_demand_balance:unknown->pass"
+     ],
+     "r1_final_gate_pass": true,
+     "r1_final_gate_reasons": [],
+     "a3_pair_accept": false
+    },
+    {
+     "scenario_id": "retail_f3_supply_bottleneck_v1",
+     "proxy_before": true,
+     "proxy_after": true,
+     "true_before": false,
+     "true_after": true,
+     "phantom_before": true,
+     "higher_verdicts_unchanged": false,
+     "r2_reasons": [
+      "higher_check_changed:L2_demand_balance:fail->pass"
+     ],
+     "r1_final_gate_pass": true,
+     "r1_final_gate_reasons": [],
+     "a3_pair_accept": false
+    },
+    {
+     "scenario_id": "retail_f3_supply_bottleneck_v2",
+     "proxy_before": false,
+     "proxy_after": false,
+     "true_before": false,
+     "true_after": false,
+     "phantom_before": false,
+     "higher_verdicts_unchanged": true,
+     "r2_reasons": [],
+     "r1_final_gate_pass": false,
+     "r1_final_gate_reasons": [
+      "L1_execution:fail",
+      "L2_initial_inventory:unknown",
+      "L2_demand_balance:unknown"
+     ],
+     "a3_pair_accept": false
+    },
+    {
+     "scenario_id": "retail_f3_supply_bottleneck_v3",
+     "proxy_before": true,
+     "proxy_after": false,
+     "true_before": false,
+     "true_after": false,
+     "phantom_before": true,
+     "higher_verdicts_unchanged": false,
+     "r2_reasons": [
+      "higher_check_changed:L1_execution:pass->fail",
+      "higher_check_changed:L2_initial_inventory:fail->unknown",
+      "higher_check_changed:L2_demand_balance:pass->unknown"
+     ],
+     "r1_final_gate_pass": false,
+     "r1_final_gate_reasons": [
+      "L1_execution:fail",
+      "L2_initial_inventory:unknown",
+      "L2_demand_balance:unknown"
+     ],
+     "a3_pair_accept": false
+    },
+    {
+     "scenario_id": "retail_f3_unbalanced_network_v1",
+     "proxy_before": false,
+     "proxy_after": false,
+     "true_before": false,
+     "true_after": false,
+     "phantom_before": false,
+     "higher_verdicts_unchanged": true,
+     "r2_reasons": [],
+     "r1_final_gate_pass": false,
+     "r1_final_gate_reasons": [
+      "L1_execution:fail",
+      "L2_initial_inventory:unknown",
+      "L2_demand_balance:unknown"
+     ],
+     "a3_pair_accept": false
+    },
+    {
+     "scenario_id": "retail_f3_unbalanced_network_v2",
+     "proxy_before": false,
+     "proxy_after": true,
+     "true_before": false,
+     "true_after": true,
+     "phantom_before": false,
+     "higher_verdicts_unchanged": false,
+     "r2_reasons": [
+      "higher_check_changed:L1_execution:fail->pass",
+      "higher_check_changed:L2_initial_inventory:unknown->pass",
+      "higher_check_changed:L2_demand_balance:unknown->pass"
+     ],
+     "r1_final_gate_pass": true,
+     "r1_final_gate_reasons": [],
+     "a3_pair_accept": false
+    },
+    {
+     "scenario_id": "retail_f3_unbalanced_network_v3",
+     "proxy_before": false,
+     "proxy_after": true,
+     "true_before": false,
+     "true_after": true,
+     "phantom_before": false,
+     "higher_verdicts_unchanged": false,
+     "r2_reasons": [
+      "higher_check_changed:L1_execution:fail->pass",
+      "higher_check_changed:L2_initial_inventory:unknown->pass",
+      "higher_check_changed:L2_demand_balance:unknown->pass"
+     ],
+     "r1_final_gate_pass": true,
+     "r1_final_gate_reasons": [],
+     "a3_pair_accept": false
+    },
+    {
+     "scenario_id": "retail_f3_volumetric_constraint_v1",
+     "proxy_before": true,
+     "proxy_after": true,
+     "true_before": false,
+     "true_after": true,
+     "phantom_before": true,
+     "higher_verdicts_unchanged": false,
+     "r2_reasons": [
+      "higher_check_changed:L2_initial_inventory:fail->pass",
+      "higher_check_changed:L2_demand_balance:fail->pass"
+     ],
+     "r1_final_gate_pass": true,
+     "r1_final_gate_reasons": [],
+     "a3_pair_accept": false
+    },
+    {
+     "scenario_id": "retail_f3_volumetric_constraint_v2",
+     "proxy_before": false,
+     "proxy_after": true,
+     "true_before": false,
+     "true_after": true,
+     "phantom_before": false,
+     "higher_verdicts_unchanged": false,
+     "r2_reasons": [
+      "higher_check_changed:L1_execution:fail->pass",
+      "higher_check_changed:L2_initial_inventory:unknown->pass",
+      "higher_check_changed:L2_demand_balance:unknown->pass"
+     ],
+     "r1_final_gate_pass": true,
+     "r1_final_gate_reasons": [],
+     "a3_pair_accept": false
+    },
+    {
+     "scenario_id": "retail_f3_volumetric_constraint_v3",
+     "proxy_before": true,
+     "proxy_after": true,
+     "true_before": false,
+     "true_after": true,
+     "phantom_before": true,
+     "higher_verdicts_unchanged": false,
+     "r2_reasons": [
+      "higher_check_changed:L2_initial_inventory:fail->pass"
+     ],
+     "r1_final_gate_pass": true,
+     "r1_final_gate_reasons": [],
+     "a3_pair_accept": false
+    },
+    {
+     "scenario_id": "retail_f4_demand_surge_v1",
+     "proxy_before": false,
+     "proxy_after": true,
+     "true_before": false,
+     "true_after": true,
+     "phantom_before": false,
+     "higher_verdicts_unchanged": false,
+     "r2_reasons": [
+      "higher_check_changed:L1_execution:fail->pass",
+      "higher_check_changed:L2_initial_inventory:unknown->pass",
+      "higher_check_changed:L2_demand_balance:unknown->pass"
+     ],
+     "r1_final_gate_pass": true,
+     "r1_final_gate_reasons": [],
+     "a3_pair_accept": false
+    },
+    {
+     "scenario_id": "retail_f4_demand_surge_v2",
+     "proxy_before": false,
+     "proxy_after": true,
+     "true_before": false,
+     "true_after": true,
+     "phantom_before": false,
+     "higher_verdicts_unchanged": false,
+     "r2_reasons": [
+      "higher_check_changed:L1_execution:fail->pass",
+      "higher_check_changed:L2_initial_inventory:unknown->pass",
+      "higher_check_changed:L2_demand_balance:unknown->pass"
+     ],
+     "r1_final_gate_pass": true,
+     "r1_final_gate_reasons": [],
+     "a3_pair_accept": false
+    },
+    {
+     "scenario_id": "retail_f4_demand_surge_v3",
+     "proxy_before": false,
+     "proxy_after": true,
+     "true_before": false,
+     "true_after": true,
+     "phantom_before": false,
+     "higher_verdicts_unchanged": false,
+     "r2_reasons": [
+      "higher_check_changed:L1_execution:fail->pass",
+      "higher_check_changed:L2_initial_inventory:unknown->pass",
+      "higher_check_changed:L2_demand_balance:unknown->pass"
+     ],
+     "r1_final_gate_pass": true,
+     "r1_final_gate_reasons": [],
+     "a3_pair_accept": false
+    },
+    {
+     "scenario_id": "retail_f4_early_stockout_v1",
+     "proxy_before": false,
+     "proxy_after": true,
+     "true_before": false,
+     "true_after": true,
+     "phantom_before": false,
+     "higher_verdicts_unchanged": false,
+     "r2_reasons": [
+      "higher_check_changed:L1_execution:fail->pass",
+      "higher_check_changed:L2_initial_inventory:unknown->pass",
+      "higher_check_changed:L2_demand_balance:unknown->pass"
+     ],
+     "r1_final_gate_pass": true,
+     "r1_final_gate_reasons": [],
+     "a3_pair_accept": false
+    },
+    {
+     "scenario_id": "retail_f4_early_stockout_v2",
+     "proxy_before": true,
+     "proxy_after": true,
+     "true_before": false,
+     "true_after": true,
+     "phantom_before": true,
+     "higher_verdicts_unchanged": false,
+     "r2_reasons": [
+      "higher_check_changed:L2_initial_inventory:fail->pass"
+     ],
+     "r1_final_gate_pass": true,
+     "r1_final_gate_reasons": [],
+     "a3_pair_accept": false
+    },
+    {
+     "scenario_id": "retail_f4_early_stockout_v3",
+     "proxy_before": true,
+     "proxy_after": true,
+     "true_before": false,
+     "true_after": true,
+     "phantom_before": true,
+     "higher_verdicts_unchanged": false,
+     "r2_reasons": [
+      "higher_check_changed:L2_demand_balance:fail->pass"
+     ],
+     "r1_final_gate_pass": true,
+     "r1_final_gate_reasons": [],
+     "a3_pair_accept": false
+    },
+    {
+     "scenario_id": "retail_f4_peak_failure_v1",
+     "proxy_before": false,
+     "proxy_after": true,
+     "true_before": false,
+     "true_after": true,
+     "phantom_before": false,
+     "higher_verdicts_unchanged": false,
+     "r2_reasons": [
+      "higher_check_changed:L1_execution:fail->pass",
+      "higher_check_changed:L2_initial_inventory:unknown->pass",
+      "higher_check_changed:L2_demand_balance:unknown->pass"
+     ],
+     "r1_final_gate_pass": true,
+     "r1_final_gate_reasons": [],
+     "a3_pair_accept": false
+    },
+    {
+     "scenario_id": "retail_f4_peak_failure_v2",
+     "proxy_before": true,
+     "proxy_after": true,
+     "true_before": false,
+     "true_after": true,
+     "phantom_before": true,
+     "higher_verdicts_unchanged": false,
+     "r2_reasons": [
+      "higher_check_changed:L2_initial_inventory:fail->pass",
+      "higher_check_changed:L2_demand_balance:fail->pass"
+     ],
+     "r1_final_gate_pass": true,
+     "r1_final_gate_reasons": [],
+     "a3_pair_accept": false
+    },
+    {
+     "scenario_id": "retail_f4_peak_failure_v3",
+     "proxy_before": false,
+     "proxy_after": true,
+     "true_before": false,
+     "true_after": true,
+     "phantom_before": false,
+     "higher_verdicts_unchanged": false,
+     "r2_reasons": [
+      "higher_check_changed:L1_execution:fail->pass",
+      "higher_check_changed:L2_initial_inventory:unknown->pass",
+      "higher_check_changed:L2_demand_balance:unknown->pass"
+     ],
+     "r1_final_gate_pass": true,
+     "r1_final_gate_reasons": [],
+     "a3_pair_accept": false
+    },
+    {
+     "scenario_id": "retail_f4_quality_hold_v1",
+     "proxy_before": false,
+     "proxy_after": true,
+     "true_before": false,
+     "true_after": true,
+     "phantom_before": false,
+     "higher_verdicts_unchanged": false,
+     "r2_reasons": [
+      "higher_check_changed:L1_execution:fail->pass",
+      "higher_check_changed:L2_initial_inventory:unknown->pass",
+      "higher_check_changed:L2_demand_balance:unknown->pass"
+     ],
+     "r1_final_gate_pass": true,
+     "r1_final_gate_reasons": [],
+     "a3_pair_accept": false
+    },
+    {
+     "scenario_id": "retail_f4_quality_hold_v2",
+     "proxy_before": false,
+     "proxy_after": true,
+     "true_before": false,
+     "true_after": true,
+     "phantom_before": false,
+     "higher_verdicts_unchanged": false,
+     "r2_reasons": [
+      "higher_check_changed:L1_execution:fail->pass",
+      "higher_check_changed:L2_initial_inventory:unknown->pass",
+      "higher_check_changed:L2_demand_balance:unknown->pass"
+     ],
+     "r1_final_gate_pass": true,
+     "r1_final_gate_reasons": [],
+     "a3_pair_accept": false
+    },
+    {
+     "scenario_id": "retail_f4_quality_hold_v3",
+     "proxy_before": false,
+     "proxy_after": true,
+     "true_before": false,
+     "true_after": true,
+     "phantom_before": false,
+     "higher_verdicts_unchanged": false,
+     "r2_reasons": [
+      "higher_check_changed:L1_execution:fail->pass",
+      "higher_check_changed:L2_initial_inventory:unknown->pass",
+      "higher_check_changed:L2_demand_balance:unknown->pass"
+     ],
+     "r1_final_gate_pass": true,
+     "r1_final_gate_reasons": [],
+     "a3_pair_accept": false
+    },
+    {
+     "scenario_id": "retail_f4_robust_variance_v1",
+     "proxy_before": false,
+     "proxy_after": true,
+     "true_before": false,
+     "true_after": true,
+     "phantom_before": false,
+     "higher_verdicts_unchanged": false,
+     "r2_reasons": [
+      "higher_check_changed:L1_execution:fail->pass",
+      "higher_check_changed:L2_initial_inventory:unknown->pass",
+      "higher_check_changed:L2_demand_balance:unknown->pass"
+     ],
+     "r1_final_gate_pass": true,
+     "r1_final_gate_reasons": [],
+     "a3_pair_accept": false
+    },
+    {
+     "scenario_id": "retail_f4_robust_variance_v2",
+     "proxy_before": false,
+     "proxy_after": true,
+     "true_before": false,
+     "true_after": true,
+     "phantom_before": false,
+     "higher_verdicts_unchanged": false,
+     "r2_reasons": [
+      "higher_check_changed:L1_execution:fail->pass",
+      "higher_check_changed:L2_initial_inventory:unknown->pass",
+      "higher_check_changed:L2_demand_balance:unknown->pass"
+     ],
+     "r1_final_gate_pass": true,
+     "r1_final_gate_reasons": [],
+     "a3_pair_accept": false
+    },
+    {
+     "scenario_id": "retail_f4_robust_variance_v3",
+     "proxy_before": false,
+     "proxy_after": true,
+     "true_before": false,
+     "true_after": true,
+     "phantom_before": false,
+     "higher_verdicts_unchanged": false,
+     "r2_reasons": [
+      "higher_check_changed:L1_execution:fail->pass",
+      "higher_check_changed:L2_initial_inventory:unknown->pass",
+      "higher_check_changed:L2_demand_balance:unknown->pass"
+     ],
+     "r1_final_gate_pass": true,
+     "r1_final_gate_reasons": [],
+     "a3_pair_accept": false
+    },
+    {
+     "scenario_id": "retail_f4_supply_risk_v1",
+     "proxy_before": false,
+     "proxy_after": true,
+     "true_before": false,
+     "true_after": true,
+     "phantom_before": false,
+     "higher_verdicts_unchanged": false,
+     "r2_reasons": [
+      "higher_check_changed:L1_execution:fail->pass",
+      "higher_check_changed:L2_initial_inventory:unknown->pass",
+      "higher_check_changed:L2_demand_balance:unknown->pass"
+     ],
+     "r1_final_gate_pass": true,
+     "r1_final_gate_reasons": [],
+     "a3_pair_accept": false
+    },
+    {
+     "scenario_id": "retail_f4_supply_risk_v2",
+     "proxy_before": false,
+     "proxy_after": true,
+     "true_before": false,
+     "true_after": true,
+     "phantom_before": false,
+     "higher_verdicts_unchanged": false,
+     "r2_reasons": [
+      "higher_check_changed:L1_execution:fail->pass",
+      "higher_check_changed:L2_initial_inventory:unknown->pass",
+      "higher_check_changed:L2_demand_balance:unknown->pass"
+     ],
+     "r1_final_gate_pass": true,
+     "r1_final_gate_reasons": [],
+     "a3_pair_accept": false
+    },
+    {
+     "scenario_id": "retail_f4_supply_risk_v3",
+     "proxy_before": false,
+     "proxy_after": true,
+     "true_before": false,
+     "true_after": true,
+     "phantom_before": false,
+     "higher_verdicts_unchanged": false,
+     "r2_reasons": [
+      "higher_check_changed:L1_execution:fail->pass",
+      "higher_check_changed:L2_initial_inventory:unknown->pass",
+      "higher_check_changed:L2_demand_balance:unknown->pass"
+     ],
+     "r1_final_gate_pass": true,
+     "r1_final_gate_reasons": [],
+     "a3_pair_accept": false
+    }
+   ]
+  }
+ ],
+ "items_by_candidate": {
+  "0": [
+   {
+    "scenario_id": "retail_f1_52_weeks_v1",
+    "verdicts": {
+     "L1_execution": "pass",
+     "L2_initial_inventory": "pass",
+     "L2_demand_balance": "pass"
+    },
+    "gate_pass": true,
+    "gate_reasons": [],
+    "proxy_match": true,
+    "true_correct": true,
+    "phantom_proxy": false,
+    "full_witness": "feasible"
+   },
+   {
+    "scenario_id": "retail_f1_52_weeks_v2",
+    "verdicts": {
+     "L1_execution": "fail",
+     "L2_initial_inventory": "unknown",
+     "L2_demand_balance": "unknown"
+    },
+    "gate_pass": false,
+    "gate_reasons": [
+     "L1_execution:fail",
+     "L2_initial_inventory:unknown",
+     "L2_demand_balance:unknown"
+    ],
+    "proxy_match": false,
+    "true_correct": false,
+    "phantom_proxy": false,
+    "full_witness": "no_solution"
+   },
+   {
+    "scenario_id": "retail_f1_52_weeks_v3",
+    "verdicts": {
+     "L1_execution": "pass",
+     "L2_initial_inventory": "fail",
+     "L2_demand_balance": "pass"
+    },
+    "gate_pass": false,
+    "gate_reasons": [
+     "L2_initial_inventory:fail"
+    ],
+    "proxy_match": true,
+    "true_correct": false,
+    "phantom_proxy": true,
+    "full_witness": "infeasible"
+   },
+   {
+    "scenario_id": "retail_f1_base_v1",
+    "verdicts": {
+     "L1_execution": "fail",
+     "L2_initial_inventory": "unknown",
+     "L2_demand_balance": "unknown"
+    },
+    "gate_pass": false,
+    "gate_reasons": [
+     "L1_execution:fail",
+     "L2_initial_inventory:unknown",
+     "L2_demand_balance:unknown"
+    ],
+    "proxy_match": false,
+    "true_correct": false,
+    "phantom_proxy": false,
+    "full_witness": "no_solution"
+   },
+   {
+    "scenario_id": "retail_f1_base_v2",
+    "verdicts": {
+     "L1_execution": "pass",
+     "L2_initial_inventory": "pass",
+     "L2_demand_balance": "pass"
+    },
+    "gate_pass": true,
+    "gate_reasons": [],
+    "proxy_match": true,
+    "true_correct": true,
+    "phantom_proxy": false,
+    "full_witness": "feasible"
+   },
+   {
+    "scenario_id": "retail_f1_base_v3",
+    "verdicts": {
+     "L1_execution": "fail",
+     "L2_initial_inventory": "unknown",
+     "L2_demand_balance": "unknown"
+    },
+    "gate_pass": false,
+    "gate_reasons": [
+     "L1_execution:fail",
+     "L2_initial_inventory:unknown",
+     "L2_demand_balance:unknown"
+    ],
+    "proxy_match": false,
+    "true_correct": false,
+    "phantom_proxy": false,
+    "full_witness": "no_solution"
+   },
+   {
+    "scenario_id": "retail_f1_high_waste_v1",
+    "verdicts": {
+     "L1_execution": "pass",
+     "L2_initial_inventory": "fail",
+     "L2_demand_balance": "pass"
+    },
+    "gate_pass": false,
+    "gate_reasons": [
+     "L2_initial_inventory:fail"
+    ],
+    "proxy_match": true,
+    "true_correct": false,
+    "phantom_proxy": true,
+    "full_witness": "infeasible"
+   },
+   {
+    "scenario_id": "retail_f1_high_waste_v2",
+    "verdicts": {
+     "L1_execution": "pass",
+     "L2_initial_inventory": "fail",
+     "L2_demand_balance": "pass"
+    },
+    "gate_pass": false,
+    "gate_reasons": [
+     "L2_initial_inventory:fail"
+    ],
+    "proxy_match": true,
+    "true_correct": false,
+    "phantom_proxy": true,
+    "full_witness": "infeasible"
+   },
+   {
+    "scenario_id": "retail_f1_high_waste_v3",
+    "verdicts": {
+     "L1_execution": "fail",
+     "L2_initial_inventory": "unknown",
+     "L2_demand_balance": "unknown"
+    },
+    "gate_pass": false,
+    "gate_reasons": [
+     "L1_execution:fail",
+     "L2_initial_inventory:unknown",
+     "L2_demand_balance:unknown"
+    ],
+    "proxy_match": false,
+    "true_correct": false,
+    "phantom_proxy": false,
+    "full_witness": "no_solution"
+   },
+   {
+    "scenario_id": "retail_f1_jit_logic_v1",
+    "verdicts": {
+     "L1_execution": "fail",
+     "L2_initial_inventory": "unknown",
+     "L2_demand_balance": "unknown"
+    },
+    "gate_pass": false,
+    "gate_reasons": [
+     "L1_execution:fail",
+     "L2_initial_inventory:unknown",
+     "L2_demand_balance:unknown"
+    ],
+    "proxy_match": false,
+    "true_correct": false,
+    "phantom_proxy": false,
+    "full_witness": "no_solution"
+   },
+   {
+    "scenario_id": "retail_f1_jit_logic_v2",
+    "verdicts": {
+     "L1_execution": "pass",
+     "L2_initial_inventory": "fail",
+     "L2_demand_balance": "pass"
+    },
+    "gate_pass": false,
+    "gate_reasons": [
+     "L2_initial_inventory:fail"
+    ],
+    "proxy_match": true,
+    "true_correct": false,
+    "phantom_proxy": true,
+    "full_witness": "infeasible"
+   },
+   {
+    "scenario_id": "retail_f1_jit_logic_v3",
+    "verdicts": {
+     "L1_execution": "pass",
+     "L2_initial_inventory": "pass",
+     "L2_demand_balance": "fail"
+    },
+    "gate_pass": false,
+    "gate_reasons": [
+     "L2_demand_balance:fail"
+    ],
+    "proxy_match": true,
+    "true_correct": false,
+    "phantom_proxy": true,
+    "full_witness": "infeasible"
+   },
+   {
+    "scenario_id": "retail_f2_cannibalization_v1",
+    "verdicts": {
+     "L1_execution": "pass",
+     "L2_initial_inventory": "fail",
+     "L2_demand_balance": "pass"
+    },
+    "gate_pass": false,
+    "gate_reasons": [
+     "L2_initial_inventory:fail"
+    ],
+    "proxy_match": true,
+    "true_correct": false,
+    "phantom_proxy": true,
+    "full_witness": "infeasible"
+   },
+   {
+    "scenario_id": "retail_f2_cannibalization_v2",
+    "verdicts": {
+     "L1_execution": "fail",
+     "L2_initial_inventory": "unknown",
+     "L2_demand_balance": "unknown"
+    },
+    "gate_pass": false,
+    "gate_reasons": [
+     "L1_execution:fail",
+     "L2_initial_inventory:unknown",
+     "L2_demand_balance:unknown"
+    ],
+    "proxy_match": false,
+    "true_correct": false,
+    "phantom_proxy": false,
+    "full_witness": "no_solution"
+   },
+   {
+    "scenario_id": "retail_f2_cannibalization_v3",
+    "verdicts": {
+     "L1_execution": "pass",
+     "L2_initial_inventory": "pass",
+     "L2_demand_balance": "fail"
+    },
+    "gate_pass": false,
+    "gate_reasons": [
+     "L2_demand_balance:fail"
+    ],
+    "proxy_match": true,
+    "true_correct": false,
+    "phantom_proxy": true,
+    "full_witness": "infeasible"
+   },
+   {
+    "scenario_id": "retail_f2_circular_sub_v1",
+    "verdicts": {
+     "L1_execution": "fail",
+     "L2_initial_inventory": "unknown",
+     "L2_demand_balance": "unknown"
+    },
+    "gate_pass": false,
+    "gate_reasons": [
+     "L1_execution:fail",
+     "L2_initial_inventory:unknown",
+     "L2_demand_balance:unknown"
+    ],
+    "proxy_match": false,
+    "true_correct": false,
+    "phantom_proxy": false,
+    "full_witness": "no_solution"
+   },
+   {
+    "scenario_id": "retail_f2_circular_sub_v2",
+    "verdicts": {
+     "L1_execution": "fail",
+     "L2_initial_inventory": "unknown",
+     "L2_demand_balance": "unknown"
+    },
+    "gate_pass": false,
+    "gate_reasons": [
+     "L1_execution:fail",
+     "L2_initial_inventory:unknown",
+     "L2_demand_balance:unknown"
+    ],
+    "proxy_match": false,
+    "true_correct": false,
+    "phantom_proxy": false,
+    "full_witness": "no_solution"
+   },
+   {
+    "scenario_id": "retail_f2_circular_sub_v3",
+    "verdicts": {
+     "L1_execution": "fail",
+     "L2_initial_inventory": "unknown",
+     "L2_demand_balance": "unknown"
+    },
+    "gate_pass": false,
+    "gate_reasons": [
+     "L1_execution:fail",
+     "L2_initial_inventory:unknown",
+     "L2_demand_balance:unknown"
+    ],
+    "proxy_match": false,
+    "true_correct": false,
+    "phantom_proxy": false,
+    "full_witness": "no_solution"
+   },
+   {
+    "scenario_id": "retail_f2_no_substitution_v1",
+    "verdicts": {
+     "L1_execution": "fail",
+     "L2_initial_inventory": "unknown",
+     "L2_demand_balance": "unknown"
+    },
+    "gate_pass": false,
+    "gate_reasons": [
+     "L1_execution:fail",
+     "L2_initial_inventory:unknown",
+     "L2_demand_balance:unknown"
+    ],
+    "proxy_match": false,
+    "true_correct": false,
+    "phantom_proxy": false,
+    "full_witness": "no_solution"
+   },
+   {
+    "scenario_id": "retail_f2_no_substitution_v2",
+    "verdicts": {
+     "L1_execution": "fail",
+     "L2_initial_inventory": "unknown",
+     "L2_demand_balance": "unknown"
+    },
+    "gate_pass": false,
+    "gate_reasons": [
+     "L1_execution:fail",
+     "L2_initial_inventory:unknown",
+     "L2_demand_balance:unknown"
+    ],
+    "proxy_match": false,
+    "true_correct": false,
+    "phantom_proxy": false,
+    "full_witness": "no_solution"
+   },
+   {
+    "scenario_id": "retail_f2_no_substitution_v3",
+    "verdicts": {
+     "L1_execution": "fail",
+     "L2_initial_inventory": "unknown",
+     "L2_demand_balance": "unknown"
+    },
+    "gate_pass": false,
+    "gate_reasons": [
+     "L1_execution:fail",
+     "L2_initial_inventory:unknown",
+     "L2_demand_balance:unknown"
+    ],
+    "proxy_match": false,
+    "true_correct": false,
+    "phantom_proxy": false,
+    "full_witness": "no_solution"
+   },
+   {
+    "scenario_id": "retail_f2_price_band_tight_v1",
+    "verdicts": {
+     "L1_execution": "pass",
+     "L2_initial_inventory": "fail",
+     "L2_demand_balance": "fail"
+    },
+    "gate_pass": false,
+    "gate_reasons": [
+     "L2_initial_inventory:fail",
+     "L2_demand_balance:fail"
+    ],
+    "proxy_match": true,
+    "true_correct": false,
+    "phantom_proxy": true,
+    "full_witness": "infeasible"
+   },
+   {
+    "scenario_id": "retail_f2_price_band_tight_v2",
+    "verdicts": {
+     "L1_execution": "pass",
+     "L2_initial_inventory": "pass",
+     "L2_demand_balance": "pass"
+    },
+    "gate_pass": true,
+    "gate_reasons": [],
+    "proxy_match": true,
+    "true_correct": true,
+    "phantom_proxy": false,
+    "full_witness": "feasible"
+   },
+   {
+    "scenario_id": "retail_f2_price_band_tight_v3",
+    "verdicts": {
+     "L1_execution": "fail",
+     "L2_initial_inventory": "unknown",
+     "L2_demand_balance": "unknown"
+    },
+    "gate_pass": false,
+    "gate_reasons": [
+     "L1_execution:fail",
+     "L2_initial_inventory:unknown",
+     "L2_demand_balance:unknown"
+    ],
+    "proxy_match": false,
+    "true_correct": false,
+    "phantom_proxy": false,
+    "full_witness": "no_solution"
+   },
+   {
+    "scenario_id": "retail_f2_promo_budget_v1",
+    "verdicts": {
+     "L1_execution": "pass",
+     "L2_initial_inventory": "fail",
+     "L2_demand_balance": "pass"
+    },
+    "gate_pass": false,
+    "gate_reasons": [
+     "L2_initial_inventory:fail"
+    ],
+    "proxy_match": true,
+    "true_correct": false,
+    "phantom_proxy": true,
+    "full_witness": "infeasible"
+   },
+   {
+    "scenario_id": "retail_f2_promo_budget_v2",
+    "verdicts": {
+     "L1_execution": "fail",
+     "L2_initial_inventory": "unknown",
+     "L2_demand_balance": "unknown"
+    },
+    "gate_pass": false,
+    "gate_reasons": [
+     "L1_execution:fail",
+     "L2_initial_inventory:unknown",
+     "L2_demand_balance:unknown"
+    ],
+    "proxy_match": false,
+    "true_correct": false,
+    "phantom_proxy": false,
+    "full_witness": "no_solution"
+   },
+   {
+    "scenario_id": "retail_f2_promo_budget_v3",
+    "verdicts": {
+     "L1_execution": "pass",
+     "L2_initial_inventory": "fail",
+     "L2_demand_balance": "pass"
+    },
+    "gate_pass": false,
+    "gate_reasons": [
+     "L2_initial_inventory:fail"
+    ],
+    "proxy_match": true,
+    "true_correct": false,
+    "phantom_proxy": true,
+    "full_witness": "infeasible"
+   },
+   {
+    "scenario_id": "retail_f2_ultra_fresh_v1",
+    "verdicts": {
+     "L1_execution": "fail",
+     "L2_initial_inventory": "unknown",
+     "L2_demand_balance": "unknown"
+    },
+    "gate_pass": false,
+    "gate_reasons": [
+     "L1_execution:fail",
+     "L2_initial_inventory:unknown",
+     "L2_demand_balance:unknown"
+    ],
+    "proxy_match": false,
+    "true_correct": false,
+    "phantom_proxy": false,
+    "full_witness": "no_solution"
+   },
+   {
+    "scenario_id": "retail_f2_ultra_fresh_v2",
+    "verdicts": {
+     "L1_execution": "fail",
+     "L2_initial_inventory": "unknown",
+     "L2_demand_balance": "unknown"
+    },
+    "gate_pass": false,
+    "gate_reasons": [
+     "L1_execution:fail",
+     "L2_initial_inventory:unknown",
+     "L2_demand_balance:unknown"
+    ],
+    "proxy_match": false,
+    "true_correct": false,
+    "phantom_proxy": false,
+    "full_witness": "no_solution"
+   },
+   {
+    "scenario_id": "retail_f2_ultra_fresh_v3",
+    "verdicts": {
+     "L1_execution": "fail",
+     "L2_initial_inventory": "unknown",
+     "L2_demand_balance": "unknown"
+    },
+    "gate_pass": false,
+    "gate_reasons": [
+     "L1_execution:fail",
+     "L2_initial_inventory:unknown",
+     "L2_demand_balance:unknown"
+    ],
+    "proxy_match": false,
+    "true_correct": false,
+    "phantom_proxy": false,
+    "full_witness": "no_solution"
+   },
+   {
+    "scenario_id": "retail_f3_storage_bottleneck_v1",
+    "verdicts": {
+     "L1_execution": "fail",
+     "L2_initial_inventory": "unknown",
+     "L2_demand_balance": "unknown"
+    },
+    "gate_pass": false,
+    "gate_reasons": [
+     "L1_execution:fail",
+     "L2_initial_inventory:unknown",
+     "L2_demand_balance:unknown"
+    ],
+    "proxy_match": false,
+    "true_correct": false,
+    "phantom_proxy": false,
+    "full_witness": "no_solution"
+   },
+   {
+    "scenario_id": "retail_f3_storage_bottleneck_v2",
+    "verdicts": {
+     "L1_execution": "fail",
+     "L2_initial_inventory": "unknown",
+     "L2_demand_balance": "unknown"
+    },
+    "gate_pass": false,
+    "gate_reasons": [
+     "L1_execution:fail",
+     "L2_initial_inventory:unknown",
+     "L2_demand_balance:unknown"
+    ],
+    "proxy_match": false,
+    "true_correct": false,
+    "phantom_proxy": false,
+    "full_witness": "no_solution"
+   },
+   {
+    "scenario_id": "retail_f3_storage_bottleneck_v3",
+    "verdicts": {
+     "L1_execution": "fail",
+     "L2_initial_inventory": "unknown",
+     "L2_demand_balance": "unknown"
+    },
+    "gate_pass": false,
+    "gate_reasons": [
+     "L1_execution:fail",
+     "L2_initial_inventory:unknown",
+     "L2_demand_balance:unknown"
+    ],
+    "proxy_match": false,
+    "true_correct": false,
+    "phantom_proxy": false,
+    "full_witness": "no_solution"
+   },
+   {
+    "scenario_id": "retail_f3_supply_bottleneck_v1",
+    "verdicts": {
+     "L1_execution": "pass",
+     "L2_initial_inventory": "pass",
+     "L2_demand_balance": "fail"
+    },
+    "gate_pass": false,
+    "gate_reasons": [
+     "L2_demand_balance:fail"
+    ],
+    "proxy_match": true,
+    "true_correct": false,
+    "phantom_proxy": true,
+    "full_witness": "infeasible"
+   },
+   {
+    "scenario_id": "retail_f3_supply_bottleneck_v2",
+    "verdicts": {
+     "L1_execution": "fail",
+     "L2_initial_inventory": "unknown",
+     "L2_demand_balance": "unknown"
+    },
+    "gate_pass": false,
+    "gate_reasons": [
+     "L1_execution:fail",
+     "L2_initial_inventory:unknown",
+     "L2_demand_balance:unknown"
+    ],
+    "proxy_match": false,
+    "true_correct": false,
+    "phantom_proxy": false,
+    "full_witness": "no_solution"
+   },
+   {
+    "scenario_id": "retail_f3_supply_bottleneck_v3",
+    "verdicts": {
+     "L1_execution": "pass",
+     "L2_initial_inventory": "fail",
+     "L2_demand_balance": "pass"
+    },
+    "gate_pass": false,
+    "gate_reasons": [
+     "L2_initial_inventory:fail"
+    ],
+    "proxy_match": true,
+    "true_correct": false,
+    "phantom_proxy": true,
+    "full_witness": "infeasible"
+   },
+   {
+    "scenario_id": "retail_f3_unbalanced_network_v1",
+    "verdicts": {
+     "L1_execution": "fail",
+     "L2_initial_inventory": "unknown",
+     "L2_demand_balance": "unknown"
+    },
+    "gate_pass": false,
+    "gate_reasons": [
+     "L1_execution:fail",
+     "L2_initial_inventory:unknown",
+     "L2_demand_balance:unknown"
+    ],
+    "proxy_match": false,
+    "true_correct": false,
+    "phantom_proxy": false,
+    "full_witness": "no_solution"
+   },
+   {
+    "scenario_id": "retail_f3_unbalanced_network_v2",
+    "verdicts": {
+     "L1_execution": "fail",
+     "L2_initial_inventory": "unknown",
+     "L2_demand_balance": "unknown"
+    },
+    "gate_pass": false,
+    "gate_reasons": [
+     "L1_execution:fail",
+     "L2_initial_inventory:unknown",
+     "L2_demand_balance:unknown"
+    ],
+    "proxy_match": false,
+    "true_correct": false,
+    "phantom_proxy": false,
+    "full_witness": "no_solution"
+   },
+   {
+    "scenario_id": "retail_f3_unbalanced_network_v3",
+    "verdicts": {
+     "L1_execution": "fail",
+     "L2_initial_inventory": "unknown",
+     "L2_demand_balance": "unknown"
+    },
+    "gate_pass": false,
+    "gate_reasons": [
+     "L1_execution:fail",
+     "L2_initial_inventory:unknown",
+     "L2_demand_balance:unknown"
+    ],
+    "proxy_match": false,
+    "true_correct": false,
+    "phantom_proxy": false,
+    "full_witness": "no_solution"
+   },
+   {
+    "scenario_id": "retail_f3_volumetric_constraint_v1",
+    "verdicts": {
+     "L1_execution": "pass",
+     "L2_initial_inventory": "fail",
+     "L2_demand_balance": "fail"
+    },
+    "gate_pass": false,
+    "gate_reasons": [
+     "L2_initial_inventory:fail",
+     "L2_demand_balance:fail"
+    ],
+    "proxy_match": true,
+    "true_correct": false,
+    "phantom_proxy": true,
+    "full_witness": "infeasible"
+   },
+   {
+    "scenario_id": "retail_f3_volumetric_constraint_v2",
+    "verdicts": {
+     "L1_execution": "fail",
+     "L2_initial_inventory": "unknown",
+     "L2_demand_balance": "unknown"
+    },
+    "gate_pass": false,
+    "gate_reasons": [
+     "L1_execution:fail",
+     "L2_initial_inventory:unknown",
+     "L2_demand_balance:unknown"
+    ],
+    "proxy_match": false,
+    "true_correct": false,
+    "phantom_proxy": false,
+    "full_witness": "no_solution"
+   },
+   {
+    "scenario_id": "retail_f3_volumetric_constraint_v3",
+    "verdicts": {
+     "L1_execution": "pass",
+     "L2_initial_inventory": "fail",
+     "L2_demand_balance": "pass"
+    },
+    "gate_pass": false,
+    "gate_reasons": [
+     "L2_initial_inventory:fail"
+    ],
+    "proxy_match": true,
+    "true_correct": false,
+    "phantom_proxy": true,
+    "full_witness": "infeasible"
+   },
+   {
+    "scenario_id": "retail_f4_demand_surge_v1",
+    "verdicts": {
+     "L1_execution": "fail",
+     "L2_initial_inventory": "unknown",
+     "L2_demand_balance": "unknown"
+    },
+    "gate_pass": false,
+    "gate_reasons": [
+     "L1_execution:fail",
+     "L2_initial_inventory:unknown",
+     "L2_demand_balance:unknown"
+    ],
+    "proxy_match": false,
+    "true_correct": false,
+    "phantom_proxy": false,
+    "full_witness": "no_solution"
+   },
+   {
+    "scenario_id": "retail_f4_demand_surge_v2",
+    "verdicts": {
+     "L1_execution": "fail",
+     "L2_initial_inventory": "unknown",
+     "L2_demand_balance": "unknown"
+    },
+    "gate_pass": false,
+    "gate_reasons": [
+     "L1_execution:fail",
+     "L2_initial_inventory:unknown",
+     "L2_demand_balance:unknown"
+    ],
+    "proxy_match": false,
+    "true_correct": false,
+    "phantom_proxy": false,
+    "full_witness": "no_solution"
+   },
+   {
+    "scenario_id": "retail_f4_demand_surge_v3",
+    "verdicts": {
+     "L1_execution": "fail",
+     "L2_initial_inventory": "unknown",
+     "L2_demand_balance": "unknown"
+    },
+    "gate_pass": false,
+    "gate_reasons": [
+     "L1_execution:fail",
+     "L2_initial_inventory:unknown",
+     "L2_demand_balance:unknown"
+    ],
+    "proxy_match": false,
+    "true_correct": false,
+    "phantom_proxy": false,
+    "full_witness": "no_solution"
+   },
+   {
+    "scenario_id": "retail_f4_early_stockout_v1",
+    "verdicts": {
+     "L1_execution": "fail",
+     "L2_initial_inventory": "unknown",
+     "L2_demand_balance": "unknown"
+    },
+    "gate_pass": false,
+    "gate_reasons": [
+     "L1_execution:fail",
+     "L2_initial_inventory:unknown",
+     "L2_demand_balance:unknown"
+    ],
+    "proxy_match": false,
+    "true_correct": false,
+    "phantom_proxy": false,
+    "full_witness": "no_solution"
+   },
+   {
+    "scenario_id": "retail_f4_early_stockout_v2",
+    "verdicts": {
+     "L1_execution": "pass",
+     "L2_initial_inventory": "fail",
+     "L2_demand_balance": "pass"
+    },
+    "gate_pass": false,
+    "gate_reasons": [
+     "L2_initial_inventory:fail"
+    ],
+    "proxy_match": true,
+    "true_correct": false,
+    "phantom_proxy": true,
+    "full_witness": "infeasible"
+   },
+   {
+    "scenario_id": "retail_f4_early_stockout_v3",
+    "verdicts": {
+     "L1_execution": "pass",
+     "L2_initial_inventory": "pass",
+     "L2_demand_balance": "fail"
+    },
+    "gate_pass": false,
+    "gate_reasons": [
+     "L2_demand_balance:fail"
+    ],
+    "proxy_match": true,
+    "true_correct": false,
+    "phantom_proxy": true,
+    "full_witness": "infeasible"
+   },
+   {
+    "scenario_id": "retail_f4_peak_failure_v1",
+    "verdicts": {
+     "L1_execution": "fail",
+     "L2_initial_inventory": "unknown",
+     "L2_demand_balance": "unknown"
+    },
+    "gate_pass": false,
+    "gate_reasons": [
+     "L1_execution:fail",
+     "L2_initial_inventory:unknown",
+     "L2_demand_balance:unknown"
+    ],
+    "proxy_match": false,
+    "true_correct": false,
+    "phantom_proxy": false,
+    "full_witness": "no_solution"
+   },
+   {
+    "scenario_id": "retail_f4_peak_failure_v2",
+    "verdicts": {
+     "L1_execution": "pass",
+     "L2_initial_inventory": "fail",
+     "L2_demand_balance": "fail"
+    },
+    "gate_pass": false,
+    "gate_reasons": [
+     "L2_initial_inventory:fail",
+     "L2_demand_balance:fail"
+    ],
+    "proxy_match": true,
+    "true_correct": false,
+    "phantom_proxy": true,
+    "full_witness": "infeasible"
+   },
+   {
+    "scenario_id": "retail_f4_peak_failure_v3",
+    "verdicts": {
+     "L1_execution": "fail",
+     "L2_initial_inventory": "unknown",
+     "L2_demand_balance": "unknown"
+    },
+    "gate_pass": false,
+    "gate_reasons": [
+     "L1_execution:fail",
+     "L2_initial_inventory:unknown",
+     "L2_demand_balance:unknown"
+    ],
+    "proxy_match": false,
+    "true_correct": false,
+    "phantom_proxy": false,
+    "full_witness": "no_solution"
+   },
+   {
+    "scenario_id": "retail_f4_quality_hold_v1",
+    "verdicts": {
+     "L1_execution": "fail",
+     "L2_initial_inventory": "unknown",
+     "L2_demand_balance": "unknown"
+    },
+    "gate_pass": false,
+    "gate_reasons": [
+     "L1_execution:fail",
+     "L2_initial_inventory:unknown",
+     "L2_demand_balance:unknown"
+    ],
+    "proxy_match": false,
+    "true_correct": false,
+    "phantom_proxy": false,
+    "full_witness": "no_solution"
+   },
+   {
+    "scenario_id": "retail_f4_quality_hold_v2",
+    "verdicts": {
+     "L1_execution": "fail",
+     "L2_initial_inventory": "unknown",
+     "L2_demand_balance": "unknown"
+    },
+    "gate_pass": false,
+    "gate_reasons": [
+     "L1_execution:fail",
+     "L2_initial_inventory:unknown",
+     "L2_demand_balance:unknown"
+    ],
+    "proxy_match": false,
+    "true_correct": false,
+    "phantom_proxy": false,
+    "full_witness": "no_solution"
+   },
+   {
+    "scenario_id": "retail_f4_quality_hold_v3",
+    "verdicts": {
+     "L1_execution": "fail",
+     "L2_initial_inventory": "unknown",
+     "L2_demand_balance": "unknown"
+    },
+    "gate_pass": false,
+    "gate_reasons": [
+     "L1_execution:fail",
+     "L2_initial_inventory:unknown",
+     "L2_demand_balance:unknown"
+    ],
+    "proxy_match": false,
+    "true_correct": false,
+    "phantom_proxy": false,
+    "full_witness": "no_solution"
+   },
+   {
+    "scenario_id": "retail_f4_robust_variance_v1",
+    "verdicts": {
+     "L1_execution": "fail",
+     "L2_initial_inventory": "unknown",
+     "L2_demand_balance": "unknown"
+    },
+    "gate_pass": false,
+    "gate_reasons": [
+     "L1_execution:fail",
+     "L2_initial_inventory:unknown",
+     "L2_demand_balance:unknown"
+    ],
+    "proxy_match": false,
+    "true_correct": false,
+    "phantom_proxy": false,
+    "full_witness": "no_solution"
+   },
+   {
+    "scenario_id": "retail_f4_robust_variance_v2",
+    "verdicts": {
+     "L1_execution": "fail",
+     "L2_initial_inventory": "unknown",
+     "L2_demand_balance": "unknown"
+    },
+    "gate_pass": false,
+    "gate_reasons": [
+     "L1_execution:fail",
+     "L2_initial_inventory:unknown",
+     "L2_demand_balance:unknown"
+    ],
+    "proxy_match": false,
+    "true_correct": false,
+    "phantom_proxy": false,
+    "full_witness": "no_solution"
+   },
+   {
+    "scenario_id": "retail_f4_robust_variance_v3",
+    "verdicts": {
+     "L1_execution": "fail",
+     "L2_initial_inventory": "unknown",
+     "L2_demand_balance": "unknown"
+    },
+    "gate_pass": false,
+    "gate_reasons": [
+     "L1_execution:fail",
+     "L2_initial_inventory:unknown",
+     "L2_demand_balance:unknown"
+    ],
+    "proxy_match": false,
+    "true_correct": false,
+    "phantom_proxy": false,
+    "full_witness": "no_solution"
+   },
+   {
+    "scenario_id": "retail_f4_supply_risk_v1",
+    "verdicts": {
+     "L1_execution": "fail",
+     "L2_initial_inventory": "unknown",
+     "L2_demand_balance": "unknown"
+    },
+    "gate_pass": false,
+    "gate_reasons": [
+     "L1_execution:fail",
+     "L2_initial_inventory:unknown",
+     "L2_demand_balance:unknown"
+    ],
+    "proxy_match": false,
+    "true_correct": false,
+    "phantom_proxy": false,
+    "full_witness": "no_solution"
+   },
+   {
+    "scenario_id": "retail_f4_supply_risk_v2",
+    "verdicts": {
+     "L1_execution": "fail",
+     "L2_initial_inventory": "unknown",
+     "L2_demand_balance": "unknown"
+    },
+    "gate_pass": false,
+    "gate_reasons": [
+     "L1_execution:fail",
+     "L2_initial_inventory:unknown",
+     "L2_demand_balance:unknown"
+    ],
+    "proxy_match": false,
+    "true_correct": false,
+    "phantom_proxy": false,
+    "full_witness": "no_solution"
+   },
+   {
+    "scenario_id": "retail_f4_supply_risk_v3",
+    "verdicts": {
+     "L1_execution": "fail",
+     "L2_initial_inventory": "unknown",
+     "L2_demand_balance": "unknown"
+    },
+    "gate_pass": false,
+    "gate_reasons": [
+     "L1_execution:fail",
+     "L2_initial_inventory:unknown",
+     "L2_demand_balance:unknown"
+    ],
+    "proxy_match": false,
+    "true_correct": false,
+    "phantom_proxy": false,
+    "full_witness": "no_solution"
+   }
+  ],
+  "1": [
+   {
+    "scenario_id": "retail_f1_52_weeks_v1",
+    "verdicts": {
+     "L1_execution": "pass",
+     "L2_initial_inventory": "pass",
+     "L2_demand_balance": "pass"
+    },
+    "gate_pass": true,
+    "gate_reasons": [],
+    "proxy_match": true,
+    "true_correct": true,
+    "phantom_proxy": false,
+    "full_witness": "feasible"
+   },
+   {
+    "scenario_id": "retail_f1_52_weeks_v2",
+    "verdicts": {
+     "L1_execution": "pass",
+     "L2_initial_inventory": "pass",
+     "L2_demand_balance": "pass"
+    },
+    "gate_pass": true,
+    "gate_reasons": [],
+    "proxy_match": true,
+    "true_correct": true,
+    "phantom_proxy": false,
+    "full_witness": "feasible"
+   },
+   {
+    "scenario_id": "retail_f1_52_weeks_v3",
+    "verdicts": {
+     "L1_execution": "pass",
+     "L2_initial_inventory": "pass",
+     "L2_demand_balance": "pass"
+    },
+    "gate_pass": true,
+    "gate_reasons": [],
+    "proxy_match": true,
+    "true_correct": true,
+    "phantom_proxy": false,
+    "full_witness": "feasible"
+   },
+   {
+    "scenario_id": "retail_f1_base_v1",
+    "verdicts": {
+     "L1_execution": "pass",
+     "L2_initial_inventory": "pass",
+     "L2_demand_balance": "pass"
+    },
+    "gate_pass": true,
+    "gate_reasons": [],
+    "proxy_match": true,
+    "true_correct": true,
+    "phantom_proxy": false,
+    "full_witness": "feasible"
+   },
+   {
+    "scenario_id": "retail_f1_base_v2",
+    "verdicts": {
+     "L1_execution": "pass",
+     "L2_initial_inventory": "pass",
+     "L2_demand_balance": "pass"
+    },
+    "gate_pass": true,
+    "gate_reasons": [],
+    "proxy_match": true,
+    "true_correct": true,
+    "phantom_proxy": false,
+    "full_witness": "feasible"
+   },
+   {
+    "scenario_id": "retail_f1_base_v3",
+    "verdicts": {
+     "L1_execution": "pass",
+     "L2_initial_inventory": "pass",
+     "L2_demand_balance": "pass"
+    },
+    "gate_pass": true,
+    "gate_reasons": [],
+    "proxy_match": true,
+    "true_correct": true,
+    "phantom_proxy": false,
+    "full_witness": "feasible"
+   },
+   {
+    "scenario_id": "retail_f1_high_waste_v1",
+    "verdicts": {
+     "L1_execution": "pass",
+     "L2_initial_inventory": "pass",
+     "L2_demand_balance": "pass"
+    },
+    "gate_pass": true,
+    "gate_reasons": [],
+    "proxy_match": true,
+    "true_correct": true,
+    "phantom_proxy": false,
+    "full_witness": "feasible"
+   },
+   {
+    "scenario_id": "retail_f1_high_waste_v2",
+    "verdicts": {
+     "L1_execution": "pass",
+     "L2_initial_inventory": "pass",
+     "L2_demand_balance": "pass"
+    },
+    "gate_pass": true,
+    "gate_reasons": [],
+    "proxy_match": true,
+    "true_correct": true,
+    "phantom_proxy": false,
+    "full_witness": "feasible"
+   },
+   {
+    "scenario_id": "retail_f1_high_waste_v3",
+    "verdicts": {
+     "L1_execution": "pass",
+     "L2_initial_inventory": "pass",
+     "L2_demand_balance": "pass"
+    },
+    "gate_pass": true,
+    "gate_reasons": [],
+    "proxy_match": true,
+    "true_correct": true,
+    "phantom_proxy": false,
+    "full_witness": "feasible"
+   },
+   {
+    "scenario_id": "retail_f1_jit_logic_v1",
+    "verdicts": {
+     "L1_execution": "pass",
+     "L2_initial_inventory": "pass",
+     "L2_demand_balance": "pass"
+    },
+    "gate_pass": true,
+    "gate_reasons": [],
+    "proxy_match": true,
+    "true_correct": true,
+    "phantom_proxy": false,
+    "full_witness": "feasible"
+   },
+   {
+    "scenario_id": "retail_f1_jit_logic_v2",
+    "verdicts": {
+     "L1_execution": "pass",
+     "L2_initial_inventory": "pass",
+     "L2_demand_balance": "pass"
+    },
+    "gate_pass": true,
+    "gate_reasons": [],
+    "proxy_match": true,
+    "true_correct": true,
+    "phantom_proxy": false,
+    "full_witness": "feasible"
+   },
+   {
+    "scenario_id": "retail_f1_jit_logic_v3",
+    "verdicts": {
+     "L1_execution": "pass",
+     "L2_initial_inventory": "pass",
+     "L2_demand_balance": "pass"
+    },
+    "gate_pass": true,
+    "gate_reasons": [],
+    "proxy_match": true,
+    "true_correct": true,
+    "phantom_proxy": false,
+    "full_witness": "feasible"
+   },
+   {
+    "scenario_id": "retail_f2_cannibalization_v1",
+    "verdicts": {
+     "L1_execution": "pass",
+     "L2_initial_inventory": "pass",
+     "L2_demand_balance": "pass"
+    },
+    "gate_pass": true,
+    "gate_reasons": [],
+    "proxy_match": true,
+    "true_correct": true,
+    "phantom_proxy": false,
+    "full_witness": "feasible"
+   },
+   {
+    "scenario_id": "retail_f2_cannibalization_v2",
+    "verdicts": {
+     "L1_execution": "pass",
+     "L2_initial_inventory": "pass",
+     "L2_demand_balance": "pass"
+    },
+    "gate_pass": true,
+    "gate_reasons": [],
+    "proxy_match": true,
+    "true_correct": true,
+    "phantom_proxy": false,
+    "full_witness": "feasible"
+   },
+   {
+    "scenario_id": "retail_f2_cannibalization_v3",
+    "verdicts": {
+     "L1_execution": "pass",
+     "L2_initial_inventory": "pass",
+     "L2_demand_balance": "pass"
+    },
+    "gate_pass": true,
+    "gate_reasons": [],
+    "proxy_match": true,
+    "true_correct": true,
+    "phantom_proxy": false,
+    "full_witness": "feasible"
+   },
+   {
+    "scenario_id": "retail_f2_circular_sub_v1",
+    "verdicts": {
+     "L1_execution": "pass",
+     "L2_initial_inventory": "pass",
+     "L2_demand_balance": "pass"
+    },
+    "gate_pass": true,
+    "gate_reasons": [],
+    "proxy_match": true,
+    "true_correct": true,
+    "phantom_proxy": false,
+    "full_witness": "feasible"
+   },
+   {
+    "scenario_id": "retail_f2_circular_sub_v2",
+    "verdicts": {
+     "L1_execution": "pass",
+     "L2_initial_inventory": "pass",
+     "L2_demand_balance": "pass"
+    },
+    "gate_pass": true,
+    "gate_reasons": [],
+    "proxy_match": true,
+    "true_correct": true,
+    "phantom_proxy": false,
+    "full_witness": "feasible"
+   },
+   {
+    "scenario_id": "retail_f2_circular_sub_v3",
+    "verdicts": {
+     "L1_execution": "pass",
+     "L2_initial_inventory": "pass",
+     "L2_demand_balance": "pass"
+    },
+    "gate_pass": true,
+    "gate_reasons": [],
+    "proxy_match": true,
+    "true_correct": true,
+    "phantom_proxy": false,
+    "full_witness": "feasible"
+   },
+   {
+    "scenario_id": "retail_f2_no_substitution_v1",
+    "verdicts": {
+     "L1_execution": "pass",
+     "L2_initial_inventory": "pass",
+     "L2_demand_balance": "pass"
+    },
+    "gate_pass": true,
+    "gate_reasons": [],
+    "proxy_match": true,
+    "true_correct": true,
+    "phantom_proxy": false,
+    "full_witness": "feasible"
+   },
+   {
+    "scenario_id": "retail_f2_no_substitution_v2",
+    "verdicts": {
+     "L1_execution": "pass",
+     "L2_initial_inventory": "pass",
+     "L2_demand_balance": "pass"
+    },
+    "gate_pass": true,
+    "gate_reasons": [],
+    "proxy_match": true,
+    "true_correct": true,
+    "phantom_proxy": false,
+    "full_witness": "feasible"
+   },
+   {
+    "scenario_id": "retail_f2_no_substitution_v3",
+    "verdicts": {
+     "L1_execution": "pass",
+     "L2_initial_inventory": "pass",
+     "L2_demand_balance": "pass"
+    },
+    "gate_pass": true,
+    "gate_reasons": [],
+    "proxy_match": true,
+    "true_correct": true,
+    "phantom_proxy": false,
+    "full_witness": "feasible"
+   },
+   {
+    "scenario_id": "retail_f2_price_band_tight_v1",
+    "verdicts": {
+     "L1_execution": "pass",
+     "L2_initial_inventory": "pass",
+     "L2_demand_balance": "pass"
+    },
+    "gate_pass": true,
+    "gate_reasons": [],
+    "proxy_match": true,
+    "true_correct": true,
+    "phantom_proxy": false,
+    "full_witness": "feasible"
+   },
+   {
+    "scenario_id": "retail_f2_price_band_tight_v2",
+    "verdicts": {
+     "L1_execution": "pass",
+     "L2_initial_inventory": "pass",
+     "L2_demand_balance": "pass"
+    },
+    "gate_pass": true,
+    "gate_reasons": [],
+    "proxy_match": true,
+    "true_correct": true,
+    "phantom_proxy": false,
+    "full_witness": "feasible"
+   },
+   {
+    "scenario_id": "retail_f2_price_band_tight_v3",
+    "verdicts": {
+     "L1_execution": "pass",
+     "L2_initial_inventory": "pass",
+     "L2_demand_balance": "pass"
+    },
+    "gate_pass": true,
+    "gate_reasons": [],
+    "proxy_match": true,
+    "true_correct": true,
+    "phantom_proxy": false,
+    "full_witness": "feasible"
+   },
+   {
+    "scenario_id": "retail_f2_promo_budget_v1",
+    "verdicts": {
+     "L1_execution": "pass",
+     "L2_initial_inventory": "pass",
+     "L2_demand_balance": "pass"
+    },
+    "gate_pass": true,
+    "gate_reasons": [],
+    "proxy_match": true,
+    "true_correct": true,
+    "phantom_proxy": false,
+    "full_witness": "feasible"
+   },
+   {
+    "scenario_id": "retail_f2_promo_budget_v2",
+    "verdicts": {
+     "L1_execution": "pass",
+     "L2_initial_inventory": "pass",
+     "L2_demand_balance": "pass"
+    },
+    "gate_pass": true,
+    "gate_reasons": [],
+    "proxy_match": true,
+    "true_correct": true,
+    "phantom_proxy": false,
+    "full_witness": "feasible"
+   },
+   {
+    "scenario_id": "retail_f2_promo_budget_v3",
+    "verdicts": {
+     "L1_execution": "pass",
+     "L2_initial_inventory": "pass",
+     "L2_demand_balance": "pass"
+    },
+    "gate_pass": true,
+    "gate_reasons": [],
+    "proxy_match": true,
+    "true_correct": true,
+    "phantom_proxy": false,
+    "full_witness": "feasible"
+   },
+   {
+    "scenario_id": "retail_f2_ultra_fresh_v1",
+    "verdicts": {
+     "L1_execution": "pass",
+     "L2_initial_inventory": "pass",
+     "L2_demand_balance": "pass"
+    },
+    "gate_pass": true,
+    "gate_reasons": [],
+    "proxy_match": true,
+    "true_correct": true,
+    "phantom_proxy": false,
+    "full_witness": "feasible"
+   },
+   {
+    "scenario_id": "retail_f2_ultra_fresh_v2",
+    "verdicts": {
+     "L1_execution": "pass",
+     "L2_initial_inventory": "pass",
+     "L2_demand_balance": "pass"
+    },
+    "gate_pass": true,
+    "gate_reasons": [],
+    "proxy_match": true,
+    "true_correct": true,
+    "phantom_proxy": false,
+    "full_witness": "feasible"
+   },
+   {
+    "scenario_id": "retail_f2_ultra_fresh_v3",
+    "verdicts": {
+     "L1_execution": "pass",
+     "L2_initial_inventory": "pass",
+     "L2_demand_balance": "pass"
+    },
+    "gate_pass": true,
+    "gate_reasons": [],
+    "proxy_match": true,
+    "true_correct": true,
+    "phantom_proxy": false,
+    "full_witness": "feasible"
+   },
+   {
+    "scenario_id": "retail_f3_storage_bottleneck_v1",
+    "verdicts": {
+     "L1_execution": "pass",
+     "L2_initial_inventory": "pass",
+     "L2_demand_balance": "pass"
+    },
+    "gate_pass": true,
+    "gate_reasons": [],
+    "proxy_match": true,
+    "true_correct": true,
+    "phantom_proxy": false,
+    "full_witness": "feasible"
+   },
+   {
+    "scenario_id": "retail_f3_storage_bottleneck_v2",
+    "verdicts": {
+     "L1_execution": "pass",
+     "L2_initial_inventory": "pass",
+     "L2_demand_balance": "pass"
+    },
+    "gate_pass": true,
+    "gate_reasons": [],
+    "proxy_match": true,
+    "true_correct": true,
+    "phantom_proxy": false,
+    "full_witness": "feasible"
+   },
+   {
+    "scenario_id": "retail_f3_storage_bottleneck_v3",
+    "verdicts": {
+     "L1_execution": "pass",
+     "L2_initial_inventory": "pass",
+     "L2_demand_balance": "pass"
+    },
+    "gate_pass": true,
+    "gate_reasons": [],
+    "proxy_match": true,
+    "true_correct": true,
+    "phantom_proxy": false,
+    "full_witness": "feasible"
+   },
+   {
+    "scenario_id": "retail_f3_supply_bottleneck_v1",
+    "verdicts": {
+     "L1_execution": "pass",
+     "L2_initial_inventory": "pass",
+     "L2_demand_balance": "pass"
+    },
+    "gate_pass": true,
+    "gate_reasons": [],
+    "proxy_match": true,
+    "true_correct": true,
+    "phantom_proxy": false,
+    "full_witness": "feasible"
+   },
+   {
+    "scenario_id": "retail_f3_supply_bottleneck_v2",
+    "verdicts": {
+     "L1_execution": "fail",
+     "L2_initial_inventory": "unknown",
+     "L2_demand_balance": "unknown"
+    },
+    "gate_pass": false,
+    "gate_reasons": [
+     "L1_execution:fail",
+     "L2_initial_inventory:unknown",
+     "L2_demand_balance:unknown"
+    ],
+    "proxy_match": false,
+    "true_correct": false,
+    "phantom_proxy": false,
+    "full_witness": "no_solution"
+   },
+   {
+    "scenario_id": "retail_f3_supply_bottleneck_v3",
+    "verdicts": {
+     "L1_execution": "fail",
+     "L2_initial_inventory": "unknown",
+     "L2_demand_balance": "unknown"
+    },
+    "gate_pass": false,
+    "gate_reasons": [
+     "L1_execution:fail",
+     "L2_initial_inventory:unknown",
+     "L2_demand_balance:unknown"
+    ],
+    "proxy_match": false,
+    "true_correct": false,
+    "phantom_proxy": false,
+    "full_witness": "no_solution"
+   },
+   {
+    "scenario_id": "retail_f3_unbalanced_network_v1",
+    "verdicts": {
+     "L1_execution": "fail",
+     "L2_initial_inventory": "unknown",
+     "L2_demand_balance": "unknown"
+    },
+    "gate_pass": false,
+    "gate_reasons": [
+     "L1_execution:fail",
+     "L2_initial_inventory:unknown",
+     "L2_demand_balance:unknown"
+    ],
+    "proxy_match": false,
+    "true_correct": false,
+    "phantom_proxy": false,
+    "full_witness": "no_solution"
+   },
+   {
+    "scenario_id": "retail_f3_unbalanced_network_v2",
+    "verdicts": {
+     "L1_execution": "pass",
+     "L2_initial_inventory": "pass",
+     "L2_demand_balance": "pass"
+    },
+    "gate_pass": true,
+    "gate_reasons": [],
+    "proxy_match": true,
+    "true_correct": true,
+    "phantom_proxy": false,
+    "full_witness": "feasible"
+   },
+   {
+    "scenario_id": "retail_f3_unbalanced_network_v3",
+    "verdicts": {
+     "L1_execution": "pass",
+     "L2_initial_inventory": "pass",
+     "L2_demand_balance": "pass"
+    },
+    "gate_pass": true,
+    "gate_reasons": [],
+    "proxy_match": true,
+    "true_correct": true,
+    "phantom_proxy": false,
+    "full_witness": "feasible"
+   },
+   {
+    "scenario_id": "retail_f3_volumetric_constraint_v1",
+    "verdicts": {
+     "L1_execution": "pass",
+     "L2_initial_inventory": "pass",
+     "L2_demand_balance": "pass"
+    },
+    "gate_pass": true,
+    "gate_reasons": [],
+    "proxy_match": true,
+    "true_correct": true,
+    "phantom_proxy": false,
+    "full_witness": "feasible"
+   },
+   {
+    "scenario_id": "retail_f3_volumetric_constraint_v2",
+    "verdicts": {
+     "L1_execution": "pass",
+     "L2_initial_inventory": "pass",
+     "L2_demand_balance": "pass"
+    },
+    "gate_pass": true,
+    "gate_reasons": [],
+    "proxy_match": true,
+    "true_correct": true,
+    "phantom_proxy": false,
+    "full_witness": "feasible"
+   },
+   {
+    "scenario_id": "retail_f3_volumetric_constraint_v3",
+    "verdicts": {
+     "L1_execution": "pass",
+     "L2_initial_inventory": "pass",
+     "L2_demand_balance": "pass"
+    },
+    "gate_pass": true,
+    "gate_reasons": [],
+    "proxy_match": true,
+    "true_correct": true,
+    "phantom_proxy": false,
+    "full_witness": "feasible"
+   },
+   {
+    "scenario_id": "retail_f4_demand_surge_v1",
+    "verdicts": {
+     "L1_execution": "pass",
+     "L2_initial_inventory": "pass",
+     "L2_demand_balance": "pass"
+    },
+    "gate_pass": true,
+    "gate_reasons": [],
+    "proxy_match": true,
+    "true_correct": true,
+    "phantom_proxy": false,
+    "full_witness": "feasible"
+   },
+   {
+    "scenario_id": "retail_f4_demand_surge_v2",
+    "verdicts": {
+     "L1_execution": "pass",
+     "L2_initial_inventory": "pass",
+     "L2_demand_balance": "pass"
+    },
+    "gate_pass": true,
+    "gate_reasons": [],
+    "proxy_match": true,
+    "true_correct": true,
+    "phantom_proxy": false,
+    "full_witness": "feasible"
+   },
+   {
+    "scenario_id": "retail_f4_demand_surge_v3",
+    "verdicts": {
+     "L1_execution": "pass",
+     "L2_initial_inventory": "pass",
+     "L2_demand_balance": "pass"
+    },
+    "gate_pass": true,
+    "gate_reasons": [],
+    "proxy_match": true,
+    "true_correct": true,
+    "phantom_proxy": false,
+    "full_witness": "feasible"
+   },
+   {
+    "scenario_id": "retail_f4_early_stockout_v1",
+    "verdicts": {
+     "L1_execution": "pass",
+     "L2_initial_inventory": "pass",
+     "L2_demand_balance": "pass"
+    },
+    "gate_pass": true,
+    "gate_reasons": [],
+    "proxy_match": true,
+    "true_correct": true,
+    "phantom_proxy": false,
+    "full_witness": "feasible"
+   },
+   {
+    "scenario_id": "retail_f4_early_stockout_v2",
+    "verdicts": {
+     "L1_execution": "pass",
+     "L2_initial_inventory": "pass",
+     "L2_demand_balance": "pass"
+    },
+    "gate_pass": true,
+    "gate_reasons": [],
+    "proxy_match": true,
+    "true_correct": true,
+    "phantom_proxy": false,
+    "full_witness": "feasible"
+   },
+   {
+    "scenario_id": "retail_f4_early_stockout_v3",
+    "verdicts": {
+     "L1_execution": "pass",
+     "L2_initial_inventory": "pass",
+     "L2_demand_balance": "pass"
+    },
+    "gate_pass": true,
+    "gate_reasons": [],
+    "proxy_match": true,
+    "true_correct": true,
+    "phantom_proxy": false,
+    "full_witness": "feasible"
+   },
+   {
+    "scenario_id": "retail_f4_peak_failure_v1",
+    "verdicts": {
+     "L1_execution": "pass",
+     "L2_initial_inventory": "pass",
+     "L2_demand_balance": "pass"
+    },
+    "gate_pass": true,
+    "gate_reasons": [],
+    "proxy_match": true,
+    "true_correct": true,
+    "phantom_proxy": false,
+    "full_witness": "feasible"
+   },
+   {
+    "scenario_id": "retail_f4_peak_failure_v2",
+    "verdicts": {
+     "L1_execution": "pass",
+     "L2_initial_inventory": "pass",
+     "L2_demand_balance": "pass"
+    },
+    "gate_pass": true,
+    "gate_reasons": [],
+    "proxy_match": true,
+    "true_correct": true,
+    "phantom_proxy": false,
+    "full_witness": "feasible"
+   },
+   {
+    "scenario_id": "retail_f4_peak_failure_v3",
+    "verdicts": {
+     "L1_execution": "pass",
+     "L2_initial_inventory": "pass",
+     "L2_demand_balance": "pass"
+    },
+    "gate_pass": true,
+    "gate_reasons": [],
+    "proxy_match": true,
+    "true_correct": true,
+    "phantom_proxy": false,
+    "full_witness": "feasible"
+   },
+   {
+    "scenario_id": "retail_f4_quality_hold_v1",
+    "verdicts": {
+     "L1_execution": "pass",
+     "L2_initial_inventory": "pass",
+     "L2_demand_balance": "pass"
+    },
+    "gate_pass": true,
+    "gate_reasons": [],
+    "proxy_match": true,
+    "true_correct": true,
+    "phantom_proxy": false,
+    "full_witness": "feasible"
+   },
+   {
+    "scenario_id": "retail_f4_quality_hold_v2",
+    "verdicts": {
+     "L1_execution": "pass",
+     "L2_initial_inventory": "pass",
+     "L2_demand_balance": "pass"
+    },
+    "gate_pass": true,
+    "gate_reasons": [],
+    "proxy_match": true,
+    "true_correct": true,
+    "phantom_proxy": false,
+    "full_witness": "feasible"
+   },
+   {
+    "scenario_id": "retail_f4_quality_hold_v3",
+    "verdicts": {
+     "L1_execution": "pass",
+     "L2_initial_inventory": "pass",
+     "L2_demand_balance": "pass"
+    },
+    "gate_pass": true,
+    "gate_reasons": [],
+    "proxy_match": true,
+    "true_correct": true,
+    "phantom_proxy": false,
+    "full_witness": "feasible"
+   },
+   {
+    "scenario_id": "retail_f4_robust_variance_v1",
+    "verdicts": {
+     "L1_execution": "pass",
+     "L2_initial_inventory": "pass",
+     "L2_demand_balance": "pass"
+    },
+    "gate_pass": true,
+    "gate_reasons": [],
+    "proxy_match": true,
+    "true_correct": true,
+    "phantom_proxy": false,
+    "full_witness": "feasible"
+   },
+   {
+    "scenario_id": "retail_f4_robust_variance_v2",
+    "verdicts": {
+     "L1_execution": "pass",
+     "L2_initial_inventory": "pass",
+     "L2_demand_balance": "pass"
+    },
+    "gate_pass": true,
+    "gate_reasons": [],
+    "proxy_match": true,
+    "true_correct": true,
+    "phantom_proxy": false,
+    "full_witness": "feasible"
+   },
+   {
+    "scenario_id": "retail_f4_robust_variance_v3",
+    "verdicts": {
+     "L1_execution": "pass",
+     "L2_initial_inventory": "pass",
+     "L2_demand_balance": "pass"
+    },
+    "gate_pass": true,
+    "gate_reasons": [],
+    "proxy_match": true,
+    "true_correct": true,
+    "phantom_proxy": false,
+    "full_witness": "feasible"
+   },
+   {
+    "scenario_id": "retail_f4_supply_risk_v1",
+    "verdicts": {
+     "L1_execution": "pass",
+     "L2_initial_inventory": "pass",
+     "L2_demand_balance": "pass"
+    },
+    "gate_pass": true,
+    "gate_reasons": [],
+    "proxy_match": true,
+    "true_correct": true,
+    "phantom_proxy": false,
+    "full_witness": "feasible"
+   },
+   {
+    "scenario_id": "retail_f4_supply_risk_v2",
+    "verdicts": {
+     "L1_execution": "pass",
+     "L2_initial_inventory": "pass",
+     "L2_demand_balance": "pass"
+    },
+    "gate_pass": true,
+    "gate_reasons": [],
+    "proxy_match": true,
+    "true_correct": true,
+    "phantom_proxy": false,
+    "full_witness": "feasible"
+   },
+   {
+    "scenario_id": "retail_f4_supply_risk_v3",
+    "verdicts": {
+     "L1_execution": "pass",
+     "L2_initial_inventory": "pass",
+     "L2_demand_balance": "pass"
+    },
+    "gate_pass": true,
+    "gate_reasons": [],
+    "proxy_match": true,
+    "true_correct": true,
+    "phantom_proxy": false,
+    "full_witness": "feasible"
+   }
+  ]
+ },
+ "new_llm_calls": 0,
+ "new_completion_tokens": 0,
+ "offline_wall_seconds": 0.765,
+ "governor": {
+  "frozen": true,
+  "events": [
+   {
+    "action": "registered_hint_only",
+    "check_id": "L1_execution",
+    "parent_id": null,
+    "at": "2026-11-19T01:59:15.530493+00:00"
+   },
+   {
+    "action": "veto_enabled",
+    "check_id": "L1_execution",
+    "reasons": [],
+    "at": "2026-11-19T01:59:15.530587+00:00"
+   },
+   {
+    "action": "registered_hint_only",
+    "check_id": "L2_initial_inventory",
+    "parent_id": null,
+    "at": "2026-11-19T01:59:15.531614+00:00"
+   },
+   {
+    "action": "veto_enabled",
+    "check_id": "L2_initial_inventory",
+    "reasons": [],
+    "at": "2026-11-19T01:59:15.532486+00:00"
+   },
+   {
+    "action": "registered_hint_only",
+    "check_id": "L2_demand_balance",
+    "parent_id": null,
+    "at": "2026-11-19T01:59:15.534649+00:00"
+   },
+   {
+    "action": "veto_enabled",
+    "check_id": "L2_demand_balance",
+    "reasons": [],
+    "at": "2026-11-19T01:59:15.566336+00:00"
+   }
+  ],
+  "checks": [
+   {
+    "check_id": "L1_execution",
+    "level": 1,
+    "parent_id": null,
+    "status": "veto_enabled",
+    "code_sha256": "4b548ad1517ab822d7d6035b30c1abd8ef3e3a8801274e9c42082feab42cc80a",
+    "source_kind": "validated_convention",
+    "audits": [
+     {
+      "records": [
+       {
+        "case_id": "exec_clean_0",
+        "expected": "pass",
+        "observed": "pass",
+        "evidence": "execution completed with an objective"
+       },
+       {
+        "case_id": "exec_wrong_0",
+        "expected": "fail",
+        "observed": "fail",
+        "evidence": "execution or objective is unavailable"
+       },
+       {
+        "case_id": "exec_clean_1",
+        "expected": "pass",
+        "observed": "pass",
+        "evidence": "execution completed with an objective"
+       },
+       {
+        "case_id": "exec_wrong_1",
+        "expected": "fail",
+        "observed": "fail",
+        "evidence": "execution or objective is unavailable"
+       },
+       {
+        "case_id": "exec_clean_2",
+        "expected": "pass",
+        "observed": "pass",
+        "evidence": "execution completed with an objective"
+       },
+       {
+        "case_id": "exec_wrong_2",
+        "expected": "fail",
+        "observed": "fail",
+        "evidence": "execution or objective is unavailable"
+       }
+      ],
+      "n_clean": 3,
+      "n_wrong": 3,
+      "tp": 3,
+      "fn": 0,
+      "fp": 0,
+      "tn": 3,
+      "unknown": 0,
+      "precision": 1.0,
+      "detection": 1.0,
+      "passed": true,
+      "reasons": [],
+      "at": "2026-11-19T01:59:15.530580+00:00"
+     }
+    ]
+   },
+   {
+    "check_id": "L2_initial_inventory",
+    "level": 2,
+    "parent_id": null,
+    "status": "veto_enabled",
+    "code_sha256": "7eeb2cd01b0e2fe8950226f4a9d49a7a51a22e14d22ba0b613b6465f73bcae7c",
+    "source_kind": "validated_convention",
+    "audits": [
+     {
+      "records": [
+       {
+        "case_id": "retail_f1_52_weeks_v0:clean",
+        "expected": "pass",
+        "observed": "pass",
+        "evidence": "all pre-fresh initial buckets are zero"
+       },
+       {
+        "case_id": "retail_f1_52_weeks_v0:wrong_initial",
+        "expected": "fail",
+        "observed": "fail",
+        "evidence": "I[SKU_Basic,DC1,1,9]=1.0 != 0"
+       },
+       {
+        "case_id": "retail_f1_base_v0:clean",
+        "expected": "pass",
+        "observed": "pass",
+        "evidence": "all pre-fresh initial buckets are zero"
+       },
+       {
+        "case_id": "retail_f1_base_v0:wrong_initial",
+        "expected": "fail",
+        "observed": "fail",
+        "evidence": "I[SKU_Basic,DC1,1,9]=1.0 != 0"
+       },
+       {
+        "case_id": "retail_f1_high_waste_v0:clean",
+        "expected": "pass",
+        "observed": "pass",
+        "evidence": "all pre-fresh initial buckets are zero"
+       },
+       {
+        "case_id": "retail_f1_high_waste_v0:wrong_initial",
+        "expected": "fail",
+        "observed": "fail",
+        "evidence": "I[SKU_Basic,DC1,1,9]=1.0 != 0"
+       }
+      ],
+      "n_clean": 3,
+      "n_wrong": 3,
+      "tp": 3,
+      "fn": 0,
+      "fp": 0,
+      "tn": 3,
+      "unknown": 0,
+      "precision": 1.0,
+      "detection": 1.0,
+      "passed": true,
+      "reasons": [],
+      "at": "2026-11-19T01:59:15.532479+00:00"
+     }
+    ]
+   },
+   {
+    "check_id": "L2_demand_balance",
+    "level": 2,
+    "parent_id": null,
+    "status": "veto_enabled",
+    "code_sha256": "9997412605dd640d5baed200ea80c310f3992629109240ec11edc68486e1b6ff",
+    "source_kind": "verbatim_problem",
+    "audits": [
+     {
+      "records": [
+       {
+        "case_id": "retail_f1_52_weeks_v0:clean",
+        "expected": "pass",
+        "observed": "pass",
+        "evidence": "all demand balances hold"
+       },
+       {
+        "case_id": "retail_f1_52_weeks_v0:wrong_demand",
+        "expected": "fail",
+        "observed": "fail",
+        "evidence": "[SKU_Basic,DC1,1] balance 76.75 != demand 75.75"
+       },
+       {
+        "case_id": "retail_f1_base_v0:clean",
+        "expected": "pass",
+        "observed": "pass",
+        "evidence": "all demand balances hold"
+       },
+       {
+        "case_id": "retail_f1_base_v0:wrong_demand",
+        "expected": "fail",
+        "observed": "fail",
+        "evidence": "[SKU_Basic,DC1,1] balance 76.75 != demand 75.75"
+       },
+       {
+        "case_id": "retail_f1_high_waste_v0:clean",
+        "expected": "pass",
+        "observed": "pass",
+        "evidence": "all demand balances hold"
+       },
+       {
+        "case_id": "retail_f1_high_waste_v0:wrong_demand",
+        "expected": "fail",
+        "observed": "fail",
+        "evidence": "[SKU_Basic,DC1,1] balance 76.75 != demand 75.75"
+       }
+      ],
+      "n_clean": 3,
+      "n_wrong": 3,
+      "tp": 3,
+      "fn": 0,
+      "fp": 0,
+      "tn": 3,
+      "unknown": 0,
+      "precision": 1.0,
+      "detection": 1.0,
+      "passed": true,
+      "reasons": [],
+      "at": "2026-11-19T01:59:15.566327+00:00"
+     }
+    ]
+   }
+  ]
+ }
+}

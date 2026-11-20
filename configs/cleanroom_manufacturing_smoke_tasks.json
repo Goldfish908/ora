@@ -1,0 +1,9 @@
+{
+  "version": "cleanroom_manufacturing_smoke_v0.1",
+  "tasks": [
+    {"name": "additive_microfactory_order_planning", "domain": "manufacturing", "split": "dev"},
+    {"name": "industrial_supply_planning", "domain": "manufacturing", "split": "dev"},
+    {"name": "carbon_aware_compute_scheduling", "domain": "manufacturing", "split": "dev"},
+    {"name": "electric_medical_waste_lrp", "domain": "manufacturing", "split": "transfer"}
+  ]
+}

@@ -136,6 +136,70 @@ def _normalize_tool_calls(raw) -> list[dict]:
     return calls
 
 
+def _read_sse_payload(response, request_started: float, on_chunk) -> tuple[str, int, float]:
+    content = []
+    tool_calls = {}
+    finish_reason = None
+    model = None
+    usage = {}
+    chunks = 0
+    first_chunk_s = None
+    done_received = False
+    while True:
+        raw_line = response.readline()
+        if not raw_line:
+            break
+        line = raw_line.decode("utf-8", errors="replace").strip()
+        if not line.startswith("data:"):
+            continue
+        data = line[5:].strip()
+        if data == "[DONE]":
+            done_received = True
+            break
+        try:
+            payload = json.loads(data)
+        except json.JSONDecodeError as exc:
+            raise LLMRequestError(f"LLM stream response was not valid JSON: {data[:300]!r}") from exc
+        if payload.get("error"):
+            raise LLMRequestError(f"LLM stream returned an error payload: {str(payload['error'])[:300]}")
+        chunks += 1
+        if first_chunk_s is None:
+            first_chunk_s = time.monotonic() - request_started
+        on_chunk()
+        model = payload.get("model") or model
+        usage = payload.get("usage") or usage
+        choices = payload.get("choices") or []
+        if not choices:
+            continue
+        choice = choices[0]
+        delta = choice.get("delta") or {}
+        content.append(_normalize_content(delta.get("content")))
+        finish_reason = choice.get("finish_reason") or finish_reason
+        for call in delta.get("tool_calls") or []:
+            index = call.get("index", 0)
+            accumulated = tool_calls.setdefault(index, {
+                "id": "", "type": "function", "function": {"name": "", "arguments": ""}})
+            if call.get("id"):
+                accumulated["id"] = call["id"]
+            if call.get("type"):
+                accumulated["type"] = call["type"]
+            function = call.get("function") or {}
+            accumulated["function"]["name"] += function.get("name") or ""
+            accumulated["function"]["arguments"] += function.get("arguments") or ""
+    if finish_reason is None and not done_received:
+        raise LLMRequestError("LLM stream ended before a finish reason or [DONE] marker")
+    raw = {
+        "model": model,
+        "choices": [{
+            "finish_reason": finish_reason,
+            "message": {"content": "".join(content),
+                        "tool_calls": [tool_calls[index] for index in sorted(tool_calls)]},
+        }],
+        "usage": usage,
+    }
+    return json.dumps(raw), chunks, first_chunk_s
+
+
 def chat(messages: list[dict], *, max_tokens: int = 8192, temperature: float = 0.6,
          extra: dict | None = None, config: LLMConfig | None = None,
          opener=None, sleep_fn=time.sleep) -> dict:
@@ -155,6 +219,9 @@ def chat(messages: list[dict], *, max_tokens: int = 8192, temperature: float = 0
     ``extra`` is merged into the request body (e.g. {"tools": [...]}).
     Network-layer failures and retryable HTTP statuses are retried up to
     MAX_RETRIES times with exponential backoff; other HTTP errors fail loud.
+    With ``stream=True``, SSE deltas are accumulated into the same return shape.
+    A stream is not retried after its first valid chunk, preventing duplicate
+    long generations. Usage requires the endpoint's stream usage option.
     Every request attempt is returned in ``request_attempts`` or attached to
     the raised ``LLMRequestError``; no network retry is hidden from callers.
     """
@@ -171,10 +238,14 @@ def chat(messages: list[dict], *, max_tokens: int = 8192, temperature: float = 0
     url = config.base_url + "/chat/completions"
     if opener is None:
         opener = _build_opener(config.insecure)
+    stream = bool(body.get("stream"))
 
     request_started = time.monotonic()
     attempts = []
     last_error: Exception | None = None
+    stream_received = False
+    stream_chunks = 0
+    time_to_first_chunk_s = None
     for attempt in range(MAX_RETRIES + 1):
         request = urllib.request.Request(
             url,
@@ -186,12 +257,23 @@ def chat(messages: list[dict], *, max_tokens: int = 8192, temperature: float = 0
             method="POST",
         )
         started = time.monotonic()
+
+        def mark_stream_received():
+            nonlocal stream_received
+            stream_received = True
+
         try:
             with opener.open(request, timeout=REQUEST_TIMEOUT_SEC) as resp:
-                raw = resp.read().decode("utf-8", errors="replace")
+                if stream:
+                    raw, stream_chunks, time_to_first_chunk_s = _read_sse_payload(
+                        resp, started, mark_stream_received)
+                else:
+                    raw = resp.read().decode("utf-8", errors="replace")
             latency_s = time.monotonic() - started
             attempts.append({"attempt": attempt + 1, "outcome": "success",
-                             "latency_s": round(latency_s, 3)})
+                             "latency_s": round(latency_s, 3),
+                             "time_to_first_chunk_s": time_to_first_chunk_s,
+                             "stream_chunks": stream_chunks})
             break
         except urllib.error.HTTPError as e:
             # Read the body for diagnostics; never includes our headers.
@@ -202,13 +284,16 @@ def chat(messages: list[dict], *, max_tokens: int = 8192, temperature: float = 0
             last_error = LLMRequestError(
                 f"LLM request failed with HTTP {e.code}: {snippet}", status=e.code
             )
+        except LLMRequestError as e:
+            last_error = e
         except (urllib.error.URLError, TimeoutError, OSError) as e:
             last_error = LLMRequestError(f"LLM request network error: {e}")
         attempts.append({"attempt": attempt + 1, "outcome": "error",
                          "latency_s": round(time.monotonic() - started, 3),
                          "error": str(last_error)})
         last_error.request_attempts = list(attempts)
-        retryable = last_error.status is None or last_error.status in _RETRYABLE_HTTP_STATUSES
+        retryable = not stream_received and (
+            last_error.status is None or last_error.status in _RETRYABLE_HTTP_STATUSES)
         if not retryable or attempt >= MAX_RETRIES:
             raise last_error
         sleep_fn(min(2.0 * (2 ** attempt), 30.0))
@@ -238,4 +323,7 @@ def chat(messages: list[dict], *, max_tokens: int = 8192, temperature: float = 0
         "request_attempts": attempts,
         "retry_count": len(attempts) - 1,
         "finish_reason": choice.get("finish_reason"),
+        "streamed": stream,
+        "stream_chunks": stream_chunks,
+        "time_to_first_chunk_s": time_to_first_chunk_s,
     }

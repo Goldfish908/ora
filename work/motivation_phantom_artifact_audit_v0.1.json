@@ -1,0 +1,607 @@
+{
+ "summary": {
+  "total_marked": 23,
+  "verified": 23,
+  "code_matches": 23,
+  "solution_exists": 23,
+  "status_counts": {
+   "code=True,solution=True,rules=True,verified=True": 23
+  },
+  "verified_ids": [
+   "retail_f3_supply_bottleneck_v2",
+   "retail_f4_peak_failure_v2",
+   "retail_f4_quality_hold_v1",
+   "retail_f3_supply_bottleneck_v1",
+   "retail_f1_52_weeks_v1",
+   "retail_f2_circular_sub_v3",
+   "retail_f3_unbalanced_network_v3",
+   "retail_f2_cannibalization_v2",
+   "retail_f4_early_stockout_v2",
+   "retail_f4_early_stockout_v1",
+   "retail_f2_ultra_fresh_v2",
+   "retail_f1_high_waste_v2",
+   "retail_f3_volumetric_constraint_v2",
+   "retail_f3_storage_bottleneck_v2",
+   "retail_f2_circular_sub_v2",
+   "retail_f2_circular_sub_v0",
+   "retail_f4_peak_failure_v3",
+   "retail_f4_supply_risk_v1",
+   "retail_f4_demand_surge_v3",
+   "retail_f4_early_stockout_v3",
+   "retail_f4_robust_variance_v2",
+   "retail_f2_ultra_fresh_v1",
+   "retail_f3_unbalanced_network_v2"
+  ]
+ },
+ "records": [
+  {
+   "scenario_id": "retail_f3_supply_bottleneck_v2",
+   "code_matches_record": true,
+   "solution_exists": true,
+   "record_rules": [
+    "C-DEMAND"
+   ],
+   "artifact": "work/retailopt_gepa_full_v0.1/rollouts/0b1fab4037973cbe188b6bc59330d30cba74a189292e3ac42a39ff09ba2375b3/retail_f3_supply_bottleneck_v2.json",
+   "replay_verdict": "infeasible",
+   "replay_rules": [
+    "C-DEMAND"
+   ],
+   "replay_details": [
+    "C-DEMAND: [SKU_Premium,DC1,1] sales+sub-lost balance 0.1500000000000341 != demand 40.75",
+    "C-DEMAND: [SKU_Premium,DC1,2] sales+sub-lost balance -38.25 != demand 38.25",
+    "C-DEMAND: [SKU_Premium,DC1,3] sales+sub-lost balance -35.75 != demand 42.0",
+    "C-DEMAND: [SKU_Premium,DC1,4] sales+sub-lost balance -52.75 != demand 43.0",
+    "C-DEMAND: [SKU_Premium,DC1,5] sales+sub-lost balance -48.5 != demand 49.0"
+   ],
+   "rules_match": true,
+   "objective_matches": true,
+   "verified": true
+  },
+  {
+   "scenario_id": "retail_f4_peak_failure_v2",
+   "code_matches_record": true,
+   "solution_exists": true,
+   "record_rules": [
+    "C-DEMAND",
+    "C-INIT"
+   ],
+   "artifact": "work/retailopt_gepa_full_v0.1/rollouts/0b1fab4037973cbe188b6bc59330d30cba74a189292e3ac42a39ff09ba2375b3/retail_f4_peak_failure_v2.json",
+   "replay_verdict": "infeasible",
+   "replay_rules": [
+    "C-DEMAND",
+    "C-INIT"
+   ],
+   "replay_details": [
+    "C-INIT: I[SKU_Basic,DC3,1,9]=57.6 != 0",
+    "C-INIT: I[SKU_Premium,DC1,1,2]=35.75 != 0",
+    "C-INIT: I[SKU_Premium,DC1,1,3]=43.25 != 0",
+    "C-INIT: I[SKU_Premium,DC1,1,4]=50.25 != 0",
+    "C-INIT: I[SKU_Premium,DC1,1,6]=149.0 != 0"
+   ],
+   "rules_match": true,
+   "objective_matches": true,
+   "verified": true
+  },
+  {
+   "scenario_id": "retail_f4_quality_hold_v1",
+   "code_matches_record": true,
+   "solution_exists": true,
+   "record_rules": [
+    "C-DEMAND",
+    "C-INIT"
+   ],
+   "artifact": "work/retailopt_gepa_full_v0.1/rollouts/0b1fab4037973cbe188b6bc59330d30cba74a189292e3ac42a39ff09ba2375b3/retail_f4_quality_hold_v1.json",
+   "replay_verdict": "infeasible",
+   "replay_rules": [
+    "C-DEMAND",
+    "C-INIT"
+   ],
+   "replay_details": [
+    "C-INIT: I[SKU_Premium,DC1,1,2]=36.0 != 0",
+    "C-INIT: I[SKU_Premium,DC1,1,3]=86.25 != 0",
+    "C-INIT: I[SKU_Premium,DC1,1,4]=42.0 != 0",
+    "C-INIT: I[SKU_Premium,DC1,1,5]=53.0 != 0",
+    "C-INIT: I[SKU_Premium,DC1,1,7]=150.25 != 0"
+   ],
+   "rules_match": true,
+   "objective_matches": true,
+   "verified": true
+  },
+  {
+   "scenario_id": "retail_f3_supply_bottleneck_v1",
+   "code_matches_record": true,
+   "solution_exists": true,
+   "record_rules": [
+    "C-DEMAND",
+    "C-INIT"
+   ],
+   "artifact": "work/retailopt_gepa_full_v0.1/rollouts/0b1fab4037973cbe188b6bc59330d30cba74a189292e3ac42a39ff09ba2375b3/retail_f3_supply_bottleneck_v1.json",
+   "replay_verdict": "infeasible",
+   "replay_rules": [
+    "C-DEMAND",
+    "C-INIT"
+   ],
+   "replay_details": [
+    "C-INIT: I[SKU_Basic,DC1,1,9]=34.19999999999999 != 0",
+    "C-INIT: I[SKU_Basic,DC3,1,9]=15.200000000000017 != 0",
+    "C-INIT: I[SKU_Basic,DC4,1,4]=52.6 != 0",
+    "C-INIT: I[SKU_Basic,DC4,1,8]=105.6 != 0",
+    "C-INIT: I[SKU_Basic,DC4,1,9]=120.80000000000001 != 0"
+   ],
+   "rules_match": true,
+   "objective_matches": true,
+   "verified": true
+  },
+  {
+   "scenario_id": "retail_f1_52_weeks_v1",
+   "code_matches_record": true,
+   "solution_exists": true,
+   "record_rules": [
+    "C-DEMAND",
+    "C-INIT"
+   ],
+   "artifact": "work/retailopt_gepa_full_v0.1/rollouts/0b1fab4037973cbe188b6bc59330d30cba74a189292e3ac42a39ff09ba2375b3/retail_f1_52_weeks_v1.json",
+   "replay_verdict": "infeasible",
+   "replay_rules": [
+    "C-DEMAND",
+    "C-INIT"
+   ],
+   "replay_details": [
+    "C-INIT: I[SKU_Premium,DC1,1,3]=42.5 != 0",
+    "C-INIT: I[SKU_Premium,DC1,1,7]=331.25 != 0",
+    "C-DEMAND: [SKU_Premium,DC1,1] sales+sub-lost balance -33.25 != demand 39.0",
+    "C-DEMAND: [SKU_Premium,DC1,2] sales+sub-lost balance -40.5 != demand 33.0",
+    "C-DEMAND: [SKU_Premium,DC1,3] sales+sub-lost balance -42.0 != demand 42.5"
+   ],
+   "rules_match": true,
+   "objective_matches": true,
+   "verified": true
+  },
+  {
+   "scenario_id": "retail_f2_circular_sub_v3",
+   "code_matches_record": true,
+   "solution_exists": true,
+   "record_rules": [
+    "C-DEMAND"
+   ],
+   "artifact": "work/retailopt_gepa_full_v0.1/rollouts/0b1fab4037973cbe188b6bc59330d30cba74a189292e3ac42a39ff09ba2375b3/retail_f2_circular_sub_v3.json",
+   "replay_verdict": "infeasible",
+   "replay_rules": [
+    "C-DEMAND"
+   ],
+   "replay_details": [
+    "C-DEMAND: [SKU_Basic,DC1,1] sales+sub-lost balance 50.75 != demand 83.75",
+    "C-DEMAND: [SKU_Basic,DC1,2] sales+sub-lost balance 38.25 != demand 66.5",
+    "C-DEMAND: [SKU_Basic,DC1,3] sales+sub-lost balance 42.5 != demand 71.5",
+    "C-DEMAND: [SKU_Basic,DC1,4] sales+sub-lost balance 47.25 != demand 79.0",
+    "C-DEMAND: [SKU_Basic,DC1,5] sales+sub-lost balance 84.75 != demand 122.75"
+   ],
+   "rules_match": true,
+   "objective_matches": true,
+   "verified": true
+  },
+  {
+   "scenario_id": "retail_f3_unbalanced_network_v3",
+   "code_matches_record": true,
+   "solution_exists": true,
+   "record_rules": [
+    "C-DEMAND",
+    "C-INIT"
+   ],
+   "artifact": "work/retailopt_gepa_full_v0.1/rollouts/0b1fab4037973cbe188b6bc59330d30cba74a189292e3ac42a39ff09ba2375b3/retail_f3_unbalanced_network_v3.json",
+   "replay_verdict": "infeasible",
+   "replay_rules": [
+    "C-DEMAND",
+    "C-INIT"
+   ],
+   "replay_details": [
+    "C-INIT: I[SKU_Basic,DC1,1,1]=77.74999939732515 != 0",
+    "C-INIT: I[SKU_Basic,DC2,1,4]=62.20000000000002 != 0",
+    "C-INIT: I[SKU_Basic,DC3,1,7]=62.2 != 0",
+    "C-INIT: I[SKU_Basic,DC4,1,4]=62.2 != 0",
+    "C-INIT: I[SKU_Basic,DC5,1,5]=43.16061986105746 != 0"
+   ],
+   "rules_match": true,
+   "objective_matches": true,
+   "verified": true
+  },
+  {
+   "scenario_id": "retail_f2_cannibalization_v2",
+   "code_matches_record": true,
+   "solution_exists": true,
+   "record_rules": [
+    "C-DEMAND",
+    "C-INIT"
+   ],
+   "artifact": "work/retailopt_gepa_full_v0.1/rollouts/0b1fab4037973cbe188b6bc59330d30cba74a189292e3ac42a39ff09ba2375b3/retail_f2_cannibalization_v2.json",
+   "replay_verdict": "infeasible",
+   "replay_rules": [
+    "C-DEMAND",
+    "C-INIT"
+   ],
+   "replay_details": [
+    "C-INIT: I[SKU_Premium,DC1,1,3]=78.0 != 0",
+    "C-INIT: I[SKU_Premium,DC1,1,4]=43.0 != 0",
+    "C-INIT: I[SKU_Premium,DC1,1,6]=112.25 != 0",
+    "C-INIT: I[SKU_Premium,DC1,1,7]=125.75 != 0",
+    "C-DEMAND: [SKU_Premium,DC1,1] sales+sub-lost balance -122.75 != demand 36.5"
+   ],
+   "rules_match": true,
+   "objective_matches": true,
+   "verified": true
+  },
+  {
+   "scenario_id": "retail_f4_early_stockout_v2",
+   "code_matches_record": true,
+   "solution_exists": true,
+   "record_rules": [
+    "C-DEMAND",
+    "C-INIT"
+   ],
+   "artifact": "work/retailopt_gepa_full_v0.1/rollouts/0b1fab4037973cbe188b6bc59330d30cba74a189292e3ac42a39ff09ba2375b3/retail_f4_early_stockout_v2.json",
+   "replay_verdict": "infeasible",
+   "replay_rules": [
+    "C-DEMAND",
+    "C-INIT"
+   ],
+   "replay_details": [
+    "C-INIT: I[SKU_Basic,DC1,1,9]=30.999999999999943 != 0",
+    "C-INIT: I[SKU_Premium,DC1,1,2]=40.0 != 0",
+    "C-INIT: I[SKU_Premium,DC1,1,5]=41.75 != 0",
+    "C-INIT: I[SKU_Premium,DC1,1,7]=304.0 != 0",
+    "C-DEMAND: [SKU_Premium,DC1,1] sales+sub-lost balance -39.25 != demand 36.25"
+   ],
+   "rules_match": true,
+   "objective_matches": true,
+   "verified": true
+  },
+  {
+   "scenario_id": "retail_f4_early_stockout_v1",
+   "code_matches_record": true,
+   "solution_exists": true,
+   "record_rules": [
+    "C-DEMAND"
+   ],
+   "artifact": "work/retailopt_gepa_full_v0.1/rollouts/0b1fab4037973cbe188b6bc59330d30cba74a189292e3ac42a39ff09ba2375b3/retail_f4_early_stockout_v1.json",
+   "replay_verdict": "infeasible",
+   "replay_rules": [
+    "C-DEMAND"
+   ],
+   "replay_details": [
+    "C-DEMAND: [SKU_Premium,DC1,6] sales+sub-lost balance 19.075000000000003 != demand 60.75",
+    "C-DEMAND: [SKU_Premium,DC1,7] sales+sub-lost balance -92.25 != demand 78.75",
+    "C-DEMAND: [SKU_Premium,DC1,8] sales+sub-lost balance -99.50000000000001 != demand 114.75",
+    "C-DEMAND: [SKU_Premium,DC1,9] sales+sub-lost balance -164.99999999999997 != demand 129.0",
+    "C-DEMAND: [SKU_Premium,DC1,10] sales+sub-lost balance -92.50000000000006 != demand 150.75"
+   ],
+   "rules_match": true,
+   "objective_matches": true,
+   "verified": true
+  },
+  {
+   "scenario_id": "retail_f2_ultra_fresh_v2",
+   "code_matches_record": true,
+   "solution_exists": true,
+   "record_rules": [
+    "C-DEMAND",
+    "C-INIT"
+   ],
+   "artifact": "work/retailopt_gepa_full_v0.1/rollouts/0b1fab4037973cbe188b6bc59330d30cba74a189292e3ac42a39ff09ba2375b3/retail_f2_ultra_fresh_v2.json",
+   "replay_verdict": "infeasible",
+   "replay_rules": [
+    "C-DEMAND",
+    "C-INIT"
+   ],
+   "replay_details": [
+    "C-INIT: I[SKU_Basic,DC1,1,1]=79.25 != 0",
+    "C-INIT: I[SKU_Basic,DC2,1,1]=63.400000000000006 != 0",
+    "C-INIT: I[SKU_Basic,DC3,1,1]=63.400000000000006 != 0",
+    "C-INIT: I[SKU_Basic,DC4,1,1]=63.400000000000006 != 0",
+    "C-INIT: I[SKU_Basic,DC5,1,1]=47.55 != 0"
+   ],
+   "rules_match": true,
+   "objective_matches": true,
+   "verified": true
+  },
+  {
+   "scenario_id": "retail_f1_high_waste_v2",
+   "code_matches_record": true,
+   "solution_exists": true,
+   "record_rules": [
+    "C-DEMAND",
+    "C-INIT"
+   ],
+   "artifact": "work/retailopt_gepa_full_v0.1/rollouts/0b1fab4037973cbe188b6bc59330d30cba74a189292e3ac42a39ff09ba2375b3/retail_f1_high_waste_v2.json",
+   "replay_verdict": "infeasible",
+   "replay_rules": [
+    "C-DEMAND",
+    "C-INIT"
+   ],
+   "replay_details": [
+    "C-INIT: I[SKU_Premium,DC1,1,2]=33.75 != 0",
+    "C-INIT: I[SKU_Premium,DC1,1,4]=89.0 != 0",
+    "C-INIT: I[SKU_Premium,DC1,1,5]=49.5 != 0",
+    "C-INIT: I[SKU_Premium,DC1,1,6]=41.25 != 0",
+    "C-INIT: I[SKU_Premium,DC1,1,7]=142.25 != 0"
+   ],
+   "rules_match": true,
+   "objective_matches": true,
+   "verified": true
+  },
+  {
+   "scenario_id": "retail_f3_volumetric_constraint_v2",
+   "code_matches_record": true,
+   "solution_exists": true,
+   "record_rules": [
+    "C-DEMAND",
+    "C-INIT"
+   ],
+   "artifact": "work/retailopt_gepa_full_v0.1/rollouts/0b1fab4037973cbe188b6bc59330d30cba74a189292e3ac42a39ff09ba2375b3/retail_f3_volumetric_constraint_v2.json",
+   "replay_verdict": "infeasible",
+   "replay_rules": [
+    "C-DEMAND",
+    "C-INIT"
+   ],
+   "replay_details": [
+    "C-INIT: I[SKU_Basic,DC1,1,6]=12.894773687876011 != 0",
+    "C-INIT: I[SKU_Basic,DC1,1,7]=84.21512210868427 != 0",
+    "C-INIT: I[SKU_Basic,DC1,1,8]=93.89078063477199 != 0",
+    "C-INIT: I[SKU_Basic,DC2,1,9]=232.75685273588365 != 0",
+    "C-INIT: I[SKU_Basic,DC3,1,8]=123.87039999999999 != 0"
+   ],
+   "rules_match": true,
+   "objective_matches": true,
+   "verified": true
+  },
+  {
+   "scenario_id": "retail_f3_storage_bottleneck_v2",
+   "code_matches_record": true,
+   "solution_exists": true,
+   "record_rules": [
+    "C-DEMAND",
+    "C-INIT"
+   ],
+   "artifact": "work/retailopt_gepa_full_v0.1/rollouts/0b1fab4037973cbe188b6bc59330d30cba74a189292e3ac42a39ff09ba2375b3/retail_f3_storage_bottleneck_v2.json",
+   "replay_verdict": "infeasible",
+   "replay_rules": [
+    "C-DEMAND",
+    "C-INIT"
+   ],
+   "replay_details": [
+    "C-INIT: I[SKU_Basic,DC1,1,9]=36.990041380547154 != 0",
+    "C-INIT: I[SKU_Premium,DC1,1,1]=43.25 != 0",
+    "C-INIT: I[SKU_Premium,DC1,1,5]=86.25 != 0",
+    "C-INIT: I[SKU_Premium,DC1,1,6]=53.75 != 0",
+    "C-INIT: I[SKU_Premium,DC1,1,7]=179.0 != 0"
+   ],
+   "rules_match": true,
+   "objective_matches": true,
+   "verified": true
+  },
+  {
+   "scenario_id": "retail_f2_circular_sub_v2",
+   "code_matches_record": true,
+   "solution_exists": true,
+   "record_rules": [
+    "C-DEMAND",
+    "C-INIT"
+   ],
+   "artifact": "work/retailopt_gepa_full_v0.1/rollouts/0b1fab4037973cbe188b6bc59330d30cba74a189292e3ac42a39ff09ba2375b3/retail_f2_circular_sub_v2.json",
+   "replay_verdict": "infeasible",
+   "replay_rules": [
+    "C-DEMAND",
+    "C-INIT"
+   ],
+   "replay_details": [
+    "C-INIT: I[SKU_Basic,DC1,1,5]=13.047916666666662 != 0",
+    "C-INIT: I[SKU_Basic,DC1,1,6]=20.952083333333338 != 0",
+    "C-DEMAND: [SKU_Basic,DC1,1] sales+sub-lost balance 53.0 != demand 80.25",
+    "C-DEMAND: [SKU_Basic,DC1,2] sales+sub-lost balance 52.0 != demand 83.5",
+    "C-DEMAND: [SKU_Basic,DC1,3] sales+sub-lost balance 40.75 != demand 74.75"
+   ],
+   "rules_match": true,
+   "objective_matches": true,
+   "verified": true
+  },
+  {
+   "scenario_id": "retail_f2_circular_sub_v0",
+   "code_matches_record": true,
+   "solution_exists": true,
+   "record_rules": [
+    "C-DEMAND",
+    "C-INIT"
+   ],
+   "artifact": "work/retailopt_gepa_full_v0.1/rollouts/0b1fab4037973cbe188b6bc59330d30cba74a189292e3ac42a39ff09ba2375b3/retail_f2_circular_sub_v0.json",
+   "replay_verdict": "infeasible",
+   "replay_rules": [
+    "C-DEMAND",
+    "C-INIT"
+   ],
+   "replay_details": [
+    "C-INIT: I[SKU_Basic,DC1,1,5]=14.163043478260857 != 0",
+    "C-INIT: I[SKU_Basic,DC1,1,6]=7.206521739130427 != 0",
+    "C-INIT: I[SKU_Basic,DC1,1,7]=10.271739130434792 != 0",
+    "C-INIT: I[SKU_Basic,DC1,1,9]=76.85869565217392 != 0",
+    "C-DEMAND: [SKU_Basic,DC1,1] sales+sub-lost balance 45.5 != demand 75.75"
+   ],
+   "rules_match": true,
+   "objective_matches": true,
+   "verified": true
+  },
+  {
+   "scenario_id": "retail_f4_peak_failure_v3",
+   "code_matches_record": true,
+   "solution_exists": true,
+   "record_rules": [
+    "C-DEMAND",
+    "C-INIT"
+   ],
+   "artifact": "work/retailopt_gepa_full_v0.1/rollouts/0b1fab4037973cbe188b6bc59330d30cba74a189292e3ac42a39ff09ba2375b3/retail_f4_peak_failure_v3.json",
+   "replay_verdict": "infeasible",
+   "replay_rules": [
+    "C-DEMAND",
+    "C-INIT"
+   ],
+   "replay_details": [
+    "C-INIT: I[SKU_Premium,DC1,1,2]=42.75 != 0",
+    "C-INIT: I[SKU_Premium,DC1,1,3]=39.25 != 0",
+    "C-INIT: I[SKU_Premium,DC1,1,6]=112.25 != 0",
+    "C-INIT: I[SKU_Premium,DC1,1,7]=175.5 != 0",
+    "C-DEMAND: [SKU_Premium,DC1,1] sales+sub-lost balance -37.25 != demand 40.25"
+   ],
+   "rules_match": true,
+   "objective_matches": true,
+   "verified": true
+  },
+  {
+   "scenario_id": "retail_f4_supply_risk_v1",
+   "code_matches_record": true,
+   "solution_exists": true,
+   "record_rules": [
+    "C-DEMAND",
+    "C-INIT"
+   ],
+   "artifact": "work/retailopt_gepa_full_v0.1/rollouts/0b1fab4037973cbe188b6bc59330d30cba74a189292e3ac42a39ff09ba2375b3/retail_f4_supply_risk_v1.json",
+   "replay_verdict": "infeasible",
+   "replay_rules": [
+    "C-DEMAND",
+    "C-INIT"
+   ],
+   "replay_details": [
+    "C-INIT: I[SKU_Premium,DC1,1,2]=43.25 != 0",
+    "C-INIT: I[SKU_Premium,DC1,1,3]=46.25 != 0",
+    "C-INIT: I[SKU_Premium,DC1,1,4]=42.0 != 0",
+    "C-INIT: I[SKU_Premium,DC1,1,6]=128.5 != 0",
+    "C-INIT: I[SKU_Premium,DC1,1,7]=136.0 != 0"
+   ],
+   "rules_match": true,
+   "objective_matches": true,
+   "verified": true
+  },
+  {
+   "scenario_id": "retail_f4_demand_surge_v3",
+   "code_matches_record": true,
+   "solution_exists": true,
+   "record_rules": [
+    "C-DEMAND",
+    "C-INIT"
+   ],
+   "artifact": "work/retailopt_gepa_full_v0.1/rollouts/0b1fab4037973cbe188b6bc59330d30cba74a189292e3ac42a39ff09ba2375b3/retail_f4_demand_surge_v3.json",
+   "replay_verdict": "infeasible",
+   "replay_rules": [
+    "C-DEMAND",
+    "C-INIT"
+   ],
+   "replay_details": [
+    "C-INIT: I[SKU_Basic,DC2,1,9]=58.6 != 0",
+    "C-INIT: I[SKU_Premium,DC1,1,2]=44.5 != 0",
+    "C-INIT: I[SKU_Premium,DC1,1,3]=45.75 != 0",
+    "C-INIT: I[SKU_Premium,DC1,1,5]=53.25 != 0",
+    "C-INIT: I[SKU_Premium,DC1,1,7]=251.0 != 0"
+   ],
+   "rules_match": true,
+   "objective_matches": true,
+   "verified": true
+  },
+  {
+   "scenario_id": "retail_f4_early_stockout_v3",
+   "code_matches_record": true,
+   "solution_exists": true,
+   "record_rules": [
+    "C-DEMAND",
+    "C-INIT"
+   ],
+   "artifact": "work/retailopt_gepa_full_v0.1/rollouts/0b1fab4037973cbe188b6bc59330d30cba74a189292e3ac42a39ff09ba2375b3/retail_f4_early_stockout_v3.json",
+   "replay_verdict": "infeasible",
+   "replay_rules": [
+    "C-DEMAND",
+    "C-INIT"
+   ],
+   "replay_details": [
+    "C-INIT: I[SKU_Premium,DC1,1,2]=43.5 != 0",
+    "C-INIT: I[SKU_Premium,DC1,1,3]=37.0 != 0",
+    "C-INIT: I[SKU_Premium,DC1,1,6]=74.25 != 0",
+    "C-INIT: I[SKU_Premium,DC1,1,7]=226.75 != 0",
+    "C-DEMAND: [SKU_Premium,DC1,1] sales+sub-lost balance -23.75 != demand 43.0"
+   ],
+   "rules_match": true,
+   "objective_matches": true,
+   "verified": true
+  },
+  {
+   "scenario_id": "retail_f4_robust_variance_v2",
+   "code_matches_record": true,
+   "solution_exists": true,
+   "record_rules": [
+    "C-DEMAND",
+    "C-INIT"
+   ],
+   "artifact": "work/retailopt_gepa_full_v0.1/rollouts/0b1fab4037973cbe188b6bc59330d30cba74a189292e3ac42a39ff09ba2375b3/retail_f4_robust_variance_v2.json",
+   "replay_verdict": "infeasible",
+   "replay_rules": [
+    "C-DEMAND",
+    "C-INIT"
+   ],
+   "replay_details": [
+    "C-INIT: I[SKU_Basic,DC3,1,9]=78.60000000000001 != 0",
+    "C-INIT: I[SKU_Premium,DC1,1,4]=58.25 != 0",
+    "C-INIT: I[SKU_Premium,DC1,1,6]=59.5 != 0",
+    "C-INIT: I[SKU_Premium,DC1,1,7]=322.25 != 0",
+    "C-DEMAND: [SKU_Premium,DC1,1] sales+sub-lost balance -38.75 != demand 59.5"
+   ],
+   "rules_match": true,
+   "objective_matches": true,
+   "verified": true
+  },
+  {
+   "scenario_id": "retail_f2_ultra_fresh_v1",
+   "code_matches_record": true,
+   "solution_exists": true,
+   "record_rules": [
+    "C-DEMAND",
+    "C-INIT"
+   ],
+   "artifact": "work/retailopt_gepa_full_v0.1/rollouts/0b1fab4037973cbe188b6bc59330d30cba74a189292e3ac42a39ff09ba2375b3/retail_f2_ultra_fresh_v1.json",
+   "replay_verdict": "infeasible",
+   "replay_rules": [
+    "C-DEMAND",
+    "C-INIT"
+   ],
+   "replay_details": [
+    "C-INIT: I[SKU_Basic,DC1,1,1]=66.5 != 0",
+    "C-INIT: I[SKU_Basic,DC2,1,1]=53.2 != 0",
+    "C-INIT: I[SKU_Basic,DC3,1,1]=53.2 != 0",
+    "C-INIT: I[SKU_Basic,DC4,1,1]=53.2 != 0",
+    "C-INIT: I[SKU_Basic,DC5,1,1]=39.9 != 0"
+   ],
+   "rules_match": true,
+   "objective_matches": true,
+   "verified": true
+  },
+  {
+   "scenario_id": "retail_f3_unbalanced_network_v2",
+   "code_matches_record": true,
+   "solution_exists": true,
+   "record_rules": [
+    "C-DEMAND",
+    "C-INIT"
+   ],
+   "artifact": "work/retailopt_gepa_full_v0.1/rollouts/0b1fab4037973cbe188b6bc59330d30cba74a189292e3ac42a39ff09ba2375b3/retail_f3_unbalanced_network_v2.json",
+   "replay_verdict": "infeasible",
+   "replay_rules": [
+    "C-DEMAND",
+    "C-INIT"
+   ],
+   "replay_details": [
+    "C-INIT: I[SKU_Basic,DC2,1,9]=59.6 != 0",
+    "C-INIT: I[SKU_Basic,DC3,1,9]=59.6 != 0",
+    "C-INIT: I[SKU_Basic,DC4,1,8]=59.6 != 0",
+    "C-INIT: I[SKU_Basic,DC5,1,5]=37.51436228966412 != 0",
+    "C-INIT: I[SKU_Premium,DC1,1,2]=40.5 != 0"
+   ],
+   "rules_match": true,
+   "objective_matches": true,
+   "verified": true
+  }
+ ]
+}

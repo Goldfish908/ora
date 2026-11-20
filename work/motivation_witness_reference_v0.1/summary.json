@@ -1,0 +1,22 @@
+{
+ "scope": "F1-F4 dev40 + gapcheck60; reference/Witness consistency only, not independent semantic validation",
+ "n": 100,
+ "reference_status": {
+  "optimal": 100
+ },
+ "grade": {
+  "match": 95,
+  "better_than_reference": 5
+ },
+ "witness": {
+  "feasible": 100
+ },
+ "non_feasible_ids": [],
+ "non_match_ids": [
+  "retail_f2_circular_sub_v0",
+  "retail_f2_circular_sub_v4",
+  "retail_f2_circular_sub_v1",
+  "retail_f2_circular_sub_v2",
+  "retail_f2_circular_sub_v3"
+ ]
+}

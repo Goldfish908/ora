@@ -1,0 +1,153 @@
+[
+ {
+  "parent_candidate_idx": 0,
+  "child_candidate_idx": 1,
+  "n": 60,
+  "transitions": {
+   "new_true_win": {
+    "n": 54,
+    "scenario_ids": [
+     "retail_f1_52_weeks_v2",
+     "retail_f1_52_weeks_v3",
+     "retail_f1_base_v1",
+     "retail_f1_base_v3",
+     "retail_f1_high_waste_v1",
+     "retail_f1_high_waste_v2",
+     "retail_f1_high_waste_v3",
+     "retail_f1_jit_logic_v1",
+     "retail_f1_jit_logic_v2",
+     "retail_f1_jit_logic_v3",
+     "retail_f2_cannibalization_v1",
+     "retail_f2_cannibalization_v2",
+     "retail_f2_cannibalization_v3",
+     "retail_f2_circular_sub_v1",
+     "retail_f2_circular_sub_v2",
+     "retail_f2_circular_sub_v3",
+     "retail_f2_no_substitution_v1",
+     "retail_f2_no_substitution_v2",
+     "retail_f2_no_substitution_v3",
+     "retail_f2_price_band_tight_v1",
+     "retail_f2_price_band_tight_v3",
+     "retail_f2_promo_budget_v1",
+     "retail_f2_promo_budget_v2",
+     "retail_f2_promo_budget_v3",
+     "retail_f2_ultra_fresh_v1",
+     "retail_f2_ultra_fresh_v2",
+     "retail_f2_ultra_fresh_v3",
+     "retail_f3_storage_bottleneck_v1",
+     "retail_f3_storage_bottleneck_v2",
+     "retail_f3_storage_bottleneck_v3",
+     "retail_f3_supply_bottleneck_v1",
+     "retail_f3_unbalanced_network_v2",
+     "retail_f3_unbalanced_network_v3",
+     "retail_f3_volumetric_constraint_v1",
+     "retail_f3_volumetric_constraint_v2",
+     "retail_f3_volumetric_constraint_v3",
+     "retail_f4_demand_surge_v1",
+     "retail_f4_demand_surge_v2",
+     "retail_f4_demand_surge_v3",
+     "retail_f4_early_stockout_v1",
+     "retail_f4_early_stockout_v2",
+     "retail_f4_early_stockout_v3",
+     "retail_f4_peak_failure_v1",
+     "retail_f4_peak_failure_v2",
+     "retail_f4_peak_failure_v3",
+     "retail_f4_quality_hold_v1",
+     "retail_f4_quality_hold_v2",
+     "retail_f4_quality_hold_v3",
+     "retail_f4_robust_variance_v1",
+     "retail_f4_robust_variance_v2",
+     "retail_f4_robust_variance_v3",
+     "retail_f4_supply_risk_v1",
+     "retail_f4_supply_risk_v2",
+     "retail_f4_supply_risk_v3"
+    ]
+   },
+   "lost_true_win": {
+    "n": 0,
+    "scenario_ids": []
+   },
+   "new_proxy_pass": {
+    "n": 38,
+    "scenario_ids": [
+     "retail_f1_52_weeks_v2",
+     "retail_f1_base_v1",
+     "retail_f1_base_v3",
+     "retail_f1_high_waste_v3",
+     "retail_f1_jit_logic_v1",
+     "retail_f2_cannibalization_v2",
+     "retail_f2_circular_sub_v1",
+     "retail_f2_circular_sub_v2",
+     "retail_f2_circular_sub_v3",
+     "retail_f2_no_substitution_v1",
+     "retail_f2_no_substitution_v2",
+     "retail_f2_no_substitution_v3",
+     "retail_f2_price_band_tight_v3",
+     "retail_f2_promo_budget_v2",
+     "retail_f2_ultra_fresh_v1",
+     "retail_f2_ultra_fresh_v2",
+     "retail_f2_ultra_fresh_v3",
+     "retail_f3_storage_bottleneck_v1",
+     "retail_f3_storage_bottleneck_v2",
+     "retail_f3_storage_bottleneck_v3",
+     "retail_f3_unbalanced_network_v2",
+     "retail_f3_unbalanced_network_v3",
+     "retail_f3_volumetric_constraint_v2",
+     "retail_f4_demand_surge_v1",
+     "retail_f4_demand_surge_v2",
+     "retail_f4_demand_surge_v3",
+     "retail_f4_early_stockout_v1",
+     "retail_f4_peak_failure_v1",
+     "retail_f4_peak_failure_v3",
+     "retail_f4_quality_hold_v1",
+     "retail_f4_quality_hold_v2",
+     "retail_f4_quality_hold_v3",
+     "retail_f4_robust_variance_v1",
+     "retail_f4_robust_variance_v2",
+     "retail_f4_robust_variance_v3",
+     "retail_f4_supply_risk_v1",
+     "retail_f4_supply_risk_v2",
+     "retail_f4_supply_risk_v3"
+    ]
+   },
+   "lost_proxy_pass": {
+    "n": 1,
+    "scenario_ids": [
+     "retail_f3_supply_bottleneck_v3"
+    ]
+   },
+   "new_phantom_proxy": {
+    "n": 0,
+    "scenario_ids": []
+   },
+   "fixed_phantom_proxy": {
+    "n": 17,
+    "scenario_ids": [
+     "retail_f1_52_weeks_v3",
+     "retail_f1_high_waste_v1",
+     "retail_f1_high_waste_v2",
+     "retail_f1_jit_logic_v2",
+     "retail_f1_jit_logic_v3",
+     "retail_f2_cannibalization_v1",
+     "retail_f2_cannibalization_v3",
+     "retail_f2_price_band_tight_v1",
+     "retail_f2_promo_budget_v1",
+     "retail_f2_promo_budget_v3",
+     "retail_f3_supply_bottleneck_v1",
+     "retail_f3_supply_bottleneck_v3",
+     "retail_f3_volumetric_constraint_v1",
+     "retail_f3_volumetric_constraint_v3",
+     "retail_f4_early_stockout_v2",
+     "retail_f4_early_stockout_v3",
+     "retail_f4_peak_failure_v2"
+    ]
+   },
+   "phantom_proxy_retained": {
+    "n": 0,
+    "scenario_ids": []
+   }
+  },
+  "phantom_proxy_mcnemar_exact_p": 1.52587890625e-05,
+  "true_win_mcnemar_exact_p": 1.1102230246251565e-16
+ }
+]

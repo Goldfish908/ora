@@ -1,0 +1,240 @@
+{
+ "seed": {
+  "candidate_idx": 0,
+  "candidate_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+  "parents": [
+   null
+  ],
+  "discovery_eval_count": 0,
+  "official_proxy_mean": 0.3333333333333333,
+  "n": 60,
+  "records": 60,
+  "missing_records": 0,
+  "generation_errors": 0,
+  "infrastructure_errors": 0,
+  "runner_errors": 0,
+  "observed": 60,
+  "evaluable": 60,
+  "truth_unknown": 40,
+  "executable": 20,
+  "proxy_match": 20,
+  "true_correct": 3,
+  "phantom": 17,
+  "phantom_proxy": 17,
+  "new_llm_calls": 60,
+  "completion_tokens": 688196,
+  "total_tokens": 796940,
+  "llm_latency_s": 24502.149
+ },
+ "accepted": {
+  "candidate_idx": 1,
+  "candidate_sha256": "341fb2c5d4c9d600a29cf2835f8ada9a8ec19dbaddd315ac0de2910a99b4339d",
+  "parents": [
+   0
+  ],
+  "discovery_eval_count": 78,
+  "official_proxy_mean": 0.95,
+  "n": 60,
+  "records": 60,
+  "missing_records": 0,
+  "generation_errors": 0,
+  "infrastructure_errors": 0,
+  "runner_errors": 0,
+  "observed": 60,
+  "evaluable": 60,
+  "truth_unknown": 3,
+  "executable": 57,
+  "proxy_match": 57,
+  "true_correct": 57,
+  "phantom": 0,
+  "phantom_proxy": 0,
+  "new_llm_calls": 60,
+  "completion_tokens": 492887,
+  "total_tokens": 712779,
+  "llm_latency_s": 18745.642
+ },
+ "transitions": {
+  "true_to_true": 3,
+  "unknown_to_true": 38,
+  "phantom_to_true": 16,
+  "unknown_to_unknown": 2,
+  "phantom_to_unknown": 1
+ },
+ "transition_ids": {
+  "true_to_true": [
+   "retail_f1_52_weeks_v1",
+   "retail_f1_base_v2",
+   "retail_f2_price_band_tight_v2"
+  ],
+  "unknown_to_true": [
+   "retail_f1_52_weeks_v2",
+   "retail_f1_base_v1",
+   "retail_f1_base_v3",
+   "retail_f1_high_waste_v3",
+   "retail_f1_jit_logic_v1",
+   "retail_f2_cannibalization_v2",
+   "retail_f2_circular_sub_v1",
+   "retail_f2_circular_sub_v2",
+   "retail_f2_circular_sub_v3",
+   "retail_f2_no_substitution_v1",
+   "retail_f2_no_substitution_v2",
+   "retail_f2_no_substitution_v3",
+   "retail_f2_price_band_tight_v3",
+   "retail_f2_promo_budget_v2",
+   "retail_f2_ultra_fresh_v1",
+   "retail_f2_ultra_fresh_v2",
+   "retail_f2_ultra_fresh_v3",
+   "retail_f3_storage_bottleneck_v1",
+   "retail_f3_storage_bottleneck_v2",
+   "retail_f3_storage_bottleneck_v3",
+   "retail_f3_unbalanced_network_v2",
+   "retail_f3_unbalanced_network_v3",
+   "retail_f3_volumetric_constraint_v2",
+   "retail_f4_demand_surge_v1",
+   "retail_f4_demand_surge_v2",
+   "retail_f4_demand_surge_v3",
+   "retail_f4_early_stockout_v1",
+   "retail_f4_peak_failure_v1",
+   "retail_f4_peak_failure_v3",
+   "retail_f4_quality_hold_v1",
+   "retail_f4_quality_hold_v2",
+   "retail_f4_quality_hold_v3",
+   "retail_f4_robust_variance_v1",
+   "retail_f4_robust_variance_v2",
+   "retail_f4_robust_variance_v3",
+   "retail_f4_supply_risk_v1",
+   "retail_f4_supply_risk_v2",
+   "retail_f4_supply_risk_v3"
+  ],
+  "phantom_to_true": [
+   "retail_f1_52_weeks_v3",
+   "retail_f1_high_waste_v1",
+   "retail_f1_high_waste_v2",
+   "retail_f1_jit_logic_v2",
+   "retail_f1_jit_logic_v3",
+   "retail_f2_cannibalization_v1",
+   "retail_f2_cannibalization_v3",
+   "retail_f2_price_band_tight_v1",
+   "retail_f2_promo_budget_v1",
+   "retail_f2_promo_budget_v3",
+   "retail_f3_supply_bottleneck_v1",
+   "retail_f3_volumetric_constraint_v1",
+   "retail_f3_volumetric_constraint_v3",
+   "retail_f4_early_stockout_v2",
+   "retail_f4_early_stockout_v3",
+   "retail_f4_peak_failure_v2"
+  ],
+  "unknown_to_unknown": [
+   "retail_f3_supply_bottleneck_v2",
+   "retail_f3_unbalanced_network_v1"
+  ],
+  "phantom_to_unknown": [
+   "retail_f3_supply_bottleneck_v3"
+  ]
+ },
+ "case": {
+  "scenario_id": "retail_f3_storage_bottleneck_v2",
+  "candidate_sha256": "0b1fab4037973cbe188b6bc59330d30cba74a189292e3ac42a39ff09ba2375b3",
+  "grade": "better_than_reference",
+  "objective": 255690.39302831586,
+  "witness_rules": [
+   "C-DEMAND",
+   "C-INIT"
+  ],
+  "witness_details": [
+   "C-INIT: I[SKU_Basic,DC1,1,9]=36.990041380547154 != 0",
+   "C-INIT: I[SKU_Premium,DC1,1,1]=43.25 != 0",
+   "C-INIT: I[SKU_Premium,DC1,1,5]=86.25 != 0",
+   "C-INIT: I[SKU_Premium,DC1,1,6]=53.75 != 0",
+   "C-INIT: I[SKU_Premium,DC1,1,7]=179.0 != 0",
+   "C-DEMAND: [SKU_Premium,DC1,1] sales+sub-lost balance -39.5 != demand 43.25",
+   "C-DEMAND: [SKU_Premium,DC1,2] sales+sub-lost balance -28.75 != demand 43.0",
+   "C-DEMAND: [SKU_Premium,DC1,3] sales+sub-lost balance -37.5 != demand 39.5",
+   "C-DEMAND: [SKU_Premium,DC1,4] sales+sub-lost balance -34.75 != demand 46.75",
+   "C-DEMAND: [SKU_Premium,DC1,5] sales+sub-lost balance -65.75 != demand 53.75"
+  ],
+  "artifact": "work/retailopt_gepa_full_v0.1/rollouts/0b1fab4037973cbe188b6bc59330d30cba74a189292e3ac42a39ff09ba2375b3/retail_f3_storage_bottleneck_v2.json"
+ },
+ "case_reference_objective": 405046.03,
+ "evalplus": [
+  {
+   "candidate_idx": 0,
+   "candidate_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+   "parents": [
+    null
+   ],
+   "discovery_eval_count": 0,
+   "official_proxy_mean": 1.0,
+   "n": 60,
+   "records": 60,
+   "runner_errors": 0,
+   "executable": 60,
+   "proxy_match": 60,
+   "true_correct": 57,
+   "phantom": 3,
+   "phantom_proxy": 3,
+   "new_llm_calls": 60,
+   "completion_tokens": 45835,
+   "total_tokens": 55906,
+   "llm_latency_s": 956.966
+  },
+  {
+   "candidate_idx": 1,
+   "candidate_sha256": "594cecf9c43b57143fd1c3b20f2c7ef2aebd2c02cf90423812d881e21fd6eab1",
+   "parents": [
+    0
+   ],
+   "discovery_eval_count": 90,
+   "official_proxy_mean": 1.0,
+   "n": 60,
+   "records": 60,
+   "runner_errors": 0,
+   "executable": 60,
+   "proxy_match": 60,
+   "true_correct": 57,
+   "phantom": 3,
+   "phantom_proxy": 3,
+   "new_llm_calls": 60,
+   "completion_tokens": 49444,
+   "total_tokens": 83275,
+   "llm_latency_s": 1007.263
+  }
+ ],
+ "audit": {
+  "scope": "F1-F4 dev40 + gapcheck60; reference/Witness consistency only, not independent semantic validation",
+  "n": 100,
+  "reference_status": {
+   "optimal": 100
+  },
+  "grade": {
+   "match": 95,
+   "better_than_reference": 5
+  },
+  "witness": {
+   "feasible": 100
+  },
+  "non_feasible_ids": [],
+  "non_match_ids": [
+   "retail_f2_circular_sub_v0",
+   "retail_f2_circular_sub_v4",
+   "retail_f2_circular_sub_v1",
+   "retail_f2_circular_sub_v2",
+   "retail_f2_circular_sub_v3"
+  ]
+ },
+ "pilot": {
+  "candidate_records": 63,
+  "proxy_match": 23,
+  "phantom_proxy": 23,
+  "phantom_rule_counts": {
+   "C-DEMAND": 23,
+   "C-INIT": 20
+  }
+ },
+ "sources": [
+  "work/retailopt_gepa_stream_a0_v0.3/analysis.json",
+  "work/motivation_phantom_cases_v0.1.json",
+  "work/evalplus_gepa_full_v0.1/analysis.json",
+  "work/motivation_witness_reference_v0.1/summary.json"
+ ]
+}

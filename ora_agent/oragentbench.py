@@ -1,0 +1,327 @@
+"""Clean-room ORAgentBench public packets, artifact generation and isolated execution."""
+from __future__ import annotations
+
+import hashlib
+import json
+import os
+import shutil
+import subprocess
+import uuid
+from dataclasses import dataclass
+from pathlib import Path
+
+from . import llm as llm_mod
+
+BASE_IMAGE = "oragentbench-base:py311-scip"
+SUBMIT_TOOL = {
+    "type": "function",
+    "function": {
+        "name": "submit_artifacts",
+        "description": "Submit a complete OR modeling document and executable PySCIPOpt solver.",
+        "parameters": {
+            "type": "object",
+            "properties": {
+                "model_md": {"type": "string", "description": "Complete mathematical model in Markdown."},
+                "solve_py": {"type": "string", "description": "Complete executable Python/PySCIPOpt solver."},
+                "solve_log_md": {"type": "string", "description": "Honest execution and validation log template."},
+            },
+            "required": ["model_md", "solve_py", "solve_log_md"],
+        },
+    },
+}
+
+
+def write_json(path: Path, value) -> None:
+    path.parent.mkdir(parents=True, exist_ok=True)
+    path.write_text(json.dumps(value, ensure_ascii=False, indent=1) + "\n")
+
+
+def read_json(path: Path) -> dict:
+    return json.loads(path.read_text())
+
+
+@dataclass(frozen=True)
+class TaskPacket:
+    root: Path
+    name: str
+    domain: str
+    split: str
+    instruction: str
+    problem_statement: str
+    public_files: dict[str, str]
+
+    @property
+    def app_dir(self) -> Path:
+        return self.root / "environment/app"
+
+    @property
+    def scope(self) -> dict:
+        return {"dataset": "oragentbench", "domain": self.domain}
+
+    @classmethod
+    def load(cls, root: Path, domain: str, split: str, max_public_chars: int = 180_000) -> "TaskPacket":
+        root = root.resolve()
+        app = root / "environment/app"
+        instruction = (root / "instruction.md").read_text()
+        problem = (app / "PROBLEM_STATEMENT.md").read_text()
+        public = {}
+        total = 0
+        for path in sorted(app.rglob("*")):
+            if not path.is_file():
+                continue
+            relative = str(path.relative_to(app))
+            text = path.read_text()
+            total += len(text)
+            if total > max_public_chars:
+                raise ValueError(f"public task packet exceeds {max_public_chars} characters: {root.name}")
+            public[relative] = text
+        return cls(root, root.name, domain, split, instruction, problem, public)
+
+    def prompt(self, specification: str, repair: dict | None = None,
+               tool_name: str = "submit_artifacts") -> list[dict]:
+        packet = "\n\n".join(f"### PUBLIC FILE: {name}\n{content}"
+                             for name, content in self.public_files.items())
+        system = (
+            f"You are an expert operations-research modeler. Use exactly one {tool_name} tool call. "
+            "Produce a complete mathematical model and a complete executable PySCIPOpt solver. "
+            "Use only the public task packet and the supplied specification. Do not use the internet, "
+            "hidden evaluators, reference solutions, package registries, or external files. "
+            "The solver must run from scratch as `python /app/submissions/solve.py`, read the public data, "
+            "use SCIP gap 0.0005, respect ORCLAW_SOLVE_TIME_LIMIT_SECONDS when set, and write the required "
+            "decision artifact with the exact public schema. Do not fabricate solver results."
+        )
+        if specification.strip():
+            system += "\n\nSHARED MODELING SPECIFICATION:\n" + specification.strip()
+        if repair is not None:
+            system += (
+                "\n\nTARGETED REPAIR: revise the previous artifacts to address the target while preserving "
+                "all unrelated business requirements. Do not merely describe changes; return complete files."
+            )
+            packet += "\n\n### PREVIOUS ARTIFACTS\n" + json.dumps(repair["artifacts"], ensure_ascii=False)
+            packet += "\n\n### OBSERVED EVIDENCE\n" + json.dumps(repair["evidence"], ensure_ascii=False)
+        return [{"role": "system", "content": system},
+                {"role": "user", "content": f"Task: {self.name}\n\n{self.instruction}\n\n{packet}"}]
+
+
+def parse_artifacts(response: dict) -> dict:
+    if response.get("finish_reason") in {"length", "max_tokens"}:
+        raise ValueError("artifact generation was truncated")
+    calls = response.get("tool_calls") or []
+    if len(calls) != 1 or calls[0]["function"]["name"] != "submit_artifacts":
+        raise ValueError("expected exactly one submit_artifacts tool call")
+    artifacts = json.loads(calls[0]["function"]["arguments"])
+    for key in ("model_md", "solve_py", "solve_log_md"):
+        if not isinstance(artifacts.get(key), str) or not artifacts[key].strip():
+            raise ValueError(f"missing artifact: {key}")
+    return artifacts
+
+
+def _phase_tool(phase: str) -> dict:
+    if phase == "model":
+        name = "submit_model"
+        properties = {"model_md": {"type": "string", "description": "Concise complete mathematical model in Markdown."}}
+        required = ["model_md"]
+    else:
+        name = "submit_solver"
+        properties = {
+            "solve_py": {"type": "string", "description": "Complete executable Python/PySCIPOpt solver."},
+            "solve_log_md": {"type": "string", "description": "Honest execution and validation log template."},
+        }
+        required = ["solve_py", "solve_log_md"]
+    return {"type": "function", "function": {"name": name,
+            "description": f"Submit the {phase} artifacts.", "parameters": {
+                "type": "object", "properties": properties, "required": required}}}
+
+
+def _call_artifact_tool(phase: str, messages: list[dict], config: llm_mod.LLMConfig,
+                        max_tokens: int, reasoning: str, seed: int,
+                        disable_thinking: bool) -> tuple[dict, dict]:
+    tool = _phase_tool(phase)
+    name = tool["function"]["name"]
+    extra = {"reasoning_effort": reasoning, "seed": seed, "tools": [tool],
+             "tool_choice": {"type": "function", "function": {"name": name}}}
+    if disable_thinking:
+        extra["chat_template_kwargs"] = {"enable_thinking": False}
+    response = None
+    try:
+        response = llm_mod.chat(messages, max_tokens=max_tokens, temperature=0.6,
+                                extra=extra, config=config)
+        if response.get("model") != config.model:
+            raise ValueError("returned model differs from requested model")
+        if response.get("finish_reason") in {"length", "max_tokens"}:
+            raise ValueError(f"{phase} generation was truncated")
+        calls = response.get("tool_calls") or []
+        if len(calls) != 1 or calls[0]["function"]["name"] != name:
+            raise ValueError(f"expected exactly one {name} tool call")
+        return response, json.loads(calls[0]["function"]["arguments"])
+    except Exception as exc:
+        if response is not None:
+            exc.response = response
+        raise
+
+
+def generate_artifacts(packet: TaskPacket, specification: str, config: llm_mod.LLMConfig,
+                       outdir: Path, run_seed: int = 0, repair: dict | None = None) -> dict:
+    response = None
+    phase = "model"
+    max_tokens = int(os.environ.get("ORA_CLEANROOM_MAX_TOKENS", "32768"))
+    model_tokens = int(os.environ.get("ORA_CLEANROOM_MODEL_TOKENS", "4096"))
+    reasoning = os.environ.get("ORA_CLEANROOM_REASONING", "medium")
+    model_reasoning = os.environ.get("ORA_CLEANROOM_MODEL_REASONING", reasoning)
+    solver_reasoning = os.environ.get("ORA_CLEANROOM_SOLVER_REASONING", reasoning)
+    default_disable = os.environ.get("ORA_CLEANROOM_DISABLE_THINKING") == "1"
+    model_disable = os.environ.get("ORA_CLEANROOM_MODEL_DISABLE_THINKING",
+                                   "1" if default_disable else "0") == "1"
+    solver_disable = os.environ.get("ORA_CLEANROOM_SOLVER_DISABLE_THINKING",
+                                    "1" if default_disable else "0") == "1"
+    model_words = os.environ.get("ORA_CLEANROOM_MODEL_WORDS", "1800")
+    request = {"solver_max_tokens": max_tokens, "model_max_tokens": model_tokens,
+               "model_reasoning_effort": model_reasoning, "solver_reasoning_effort": solver_reasoning,
+               "model_disable_thinking": model_disable, "solver_disable_thinking": solver_disable,
+               "model_max_words": int(model_words), "temperature": 0.6, "stream": False,
+               "protocol": "two_phase_model_then_solver_v1"}
+    try:
+        model_messages = packet.prompt(specification, repair, tool_name="submit_model")
+        model_messages[0]["content"] += f"\nKeep model.md concise (at most {model_words} words); do not include solver code."
+        prompt_hash = hashlib.sha256(json.dumps(model_messages).encode()).hexdigest()
+        response, model = _call_artifact_tool("model", model_messages, config, model_tokens,
+                                              model_reasoning, run_seed ^ int(prompt_hash[:8], 16),
+                                              model_disable)
+        write_json(outdir / "model_generation.json", {"messages": model_messages,
+                   "response": response, "request": request})
+        if not model.get("model_md", "").strip():
+            raise ValueError("missing artifact: model_md")
+
+        phase = "solver"
+        solver_messages = packet.prompt(specification, repair, tool_name="submit_solver")
+        solver_messages.append({"role": "assistant", "content": (
+            "Implement the following mathematical model; return only the solver artifacts now.\n\n"
+            + model["model_md"])})
+        prompt_hash = hashlib.sha256(json.dumps(solver_messages).encode()).hexdigest()
+        response, solver = _call_artifact_tool("solver", solver_messages, config, max_tokens,
+                                               solver_reasoning, (run_seed + 1) ^ int(prompt_hash[:8], 16),
+                                               solver_disable)
+        for key in ("solve_py", "solve_log_md"):
+            if not solver.get(key, "").strip():
+                raise ValueError(f"missing artifact: {key}")
+        write_json(outdir / "solver_generation.json", {"messages": solver_messages,
+                   "response": response, "request": request})
+        artifacts = {"model_md": model["model_md"], **solver}
+        error = None
+    except Exception as exc:
+        response = getattr(exc, "response", None) or response or {
+            "request_attempts": getattr(exc, "request_attempts", []), "usage": {}}
+        artifacts = None
+        error = f"{type(exc).__name__}: {exc}"
+        write_json(outdir / f"{phase}_generation.json", {"response": response,
+                   "request": request, "error": error})
+    write_json(outdir / "generation.json", {
+        "task": packet.name, "specification_sha256": hashlib.sha256(specification.encode()).hexdigest(),
+        "repair": repair is not None, "request": request, "response": response, "error": error})
+    if error:
+        raise RuntimeError(error)
+    write_json(outdir / "artifacts.json", artifacts)
+    return artifacts
+
+
+def prepare_workspace(packet: TaskPacket, workspace: Path, artifacts: dict) -> None:
+    if workspace.exists() and any(workspace.iterdir()):
+        raise ValueError(f"workspace is not empty: {workspace}")
+    workspace.parent.mkdir(parents=True, exist_ok=True)
+    shutil.copytree(packet.app_dir, workspace, dirs_exist_ok=True)
+    submissions = workspace / "submissions"
+    submissions.mkdir(exist_ok=True)
+    (submissions / "model.md").write_text(artifacts["model_md"])
+    (submissions / "solve.py").write_text(artifacts["solve_py"])
+    (submissions / "solve_log.md").write_text(artifacts["solve_log_md"])
+
+
+def _docker(name: str, mounts: list[tuple[Path, str, bool]], command: list[str],
+            timeout: int, workdir: str = "/app") -> dict:
+    container = f"cleanroom-{name}-{uuid.uuid4().hex[:10]}"
+    args = ["docker", "run", "--rm", "--network", "none", "--name", container,
+            "--user", f"{os.getuid()}:{os.getgid()}", "--cpus", "4", "--memory", "8g",
+            "-w", workdir, "-e", "ORCLAW_SOLVE_TIME_LIMIT_SECONDS=300", "-e", "ORCLAW_SCIP_GAP=0.0005"]
+    for host, target, readonly in mounts:
+        args += ["-v", f"{host.resolve()}:{target}{':ro' if readonly else ''}"]
+    args += [BASE_IMAGE, *command]
+    process = subprocess.Popen(args, stdout=subprocess.PIPE, stderr=subprocess.PIPE, text=True)
+    timed_out = False
+    try:
+        stdout, stderr = process.communicate(timeout=timeout)
+    except subprocess.TimeoutExpired:
+        timed_out = True
+        subprocess.run(["docker", "rm", "-f", container], capture_output=True, text=True, timeout=30)
+        stdout, stderr = process.communicate(timeout=30)
+    return {"return_code": process.returncode, "stdout": stdout, "stderr": stderr,
+            "timed_out": timed_out, "command": command}
+
+
+def execute_solver(workspace: Path, outdir: Path, timeout: int = 330) -> dict:
+    outdir.mkdir(parents=True, exist_ok=True)
+    result = _docker("solve", [(workspace, "/app", False)],
+                     ["python", "/app/submissions/solve.py"], timeout)
+    (outdir / "stdout.txt").write_text(result["stdout"])
+    (outdir / "stderr.txt").write_text(result["stderr"])
+    write_json(outdir / "execution.json", {**result, "stdout": None, "stderr": None,
+                                          "stdout_file": "stdout.txt", "stderr_file": "stderr.txt"})
+    return result
+
+
+def official_evaluate(packet: TaskPacket, workspace: Path, outdir: Path, timeout: int = 400) -> dict:
+    outdir.mkdir(parents=True, exist_ok=True)
+    logs = outdir / "logs"
+    logs.mkdir(parents=True, exist_ok=True)
+    result = _docker("verify", [(workspace, "/app", False), (packet.root / "tests", "/tests", True),
+                                (logs, "/logs", False)], ["bash", "/tests/test.sh"], timeout)
+    verifier = logs / "verifier"
+    evaluation = read_json(verifier / "evaluation.json") if (verifier / "evaluation.json").exists() else {
+        "feasible": False, "errors": ["official evaluator did not produce evaluation.json"]}
+    reward = read_json(verifier / "reward.json") if (verifier / "reward.json").exists() else {
+        "feasibility": 0.0, "quality": 0.0}
+    details = read_json(verifier / "reward_details.json") if (verifier / "reward_details.json").exists() else {}
+    payload = {"evaluation": evaluation, "reward": reward, "reward_details": details,
+               "runner": {key: result[key] for key in ("return_code", "timed_out")}}
+    write_json(outdir / "official_evaluation.json", payload)
+    return payload
+
+
+def official_objective(evaluation: dict) -> float | None:
+    payload = evaluation["evaluation"]
+    for key in ("objective", "profit", "score", "total_cost"):
+        value = payload.get(key)
+        if isinstance(value, (int, float)):
+            return float(value)
+    return None
+
+
+def official_metrics(evaluation: dict) -> dict:
+    reward = evaluation["reward"]
+    feasible = bool(reward.get("feasibility", 0.0))
+    quality = float(reward.get("quality", 0.0) or 0.0)
+    return {"feasible": feasible, "quality": quality,
+            "true_correct": feasible and quality > 0.4,
+            "objective": official_objective(evaluation)}
+
+
+def probe_pyscipopt_api(outdir: Path) -> dict:
+    code = ("from pyscipopt import Model, quicksum; import inspect\n"
+            "def show(name):\n"
+            " try: print(name, inspect.signature(getattr(Model, name)))\n"
+            " except Exception as exc: print(name, type(exc).__name__)\n"
+            "names=['addVar','addCons','setObjective','setMinimize','setRealParam','setParam',"
+            "'getBestSol','getSols','getSolTime','getObjVal','getObjval','getStatus',"
+            "'getOrigStatus','getOrigTime','getVarVal','chgCoeff','getNSols','getNsolns','getVal','free']; "
+            "[show(name) for name in names]; print('quicksum', inspect.signature(quicksum))")
+    result = _docker("api-probe", [], ["python", "-c", code], timeout=60)
+    write_json(outdir / "api_probe.json", result)
+    return result
+
+
+def run_oracle(packet: TaskPacket, workspace: Path, timeout: int = 400) -> dict:
+    prepare_workspace(packet, workspace, {"model_md": "oracle", "solve_py": "oracle", "solve_log_md": "oracle"})
+    result = _docker("oracle", [(workspace, "/app", False), (packet.root / "solution", "/solution", True)],
+                     ["bash", "/solution/solve.sh"], timeout)
+    evaluation = official_evaluate(packet, workspace, workspace / "oracle_evaluation")
+    return {"runner": {key: result[key] for key in ("return_code", "timed_out", "stdout", "stderr")},
+            "official": evaluation, "metrics": official_metrics(evaluation)}

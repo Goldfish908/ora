@@ -1,0 +1,53 @@
+{
+ "curves": [
+  {
+   "candidate_idx": 0,
+   "candidate_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+   "parents": [
+    null
+   ],
+   "official_proxy_mean": 0.0,
+   "n": 1,
+   "executable": 0,
+   "feasible": 0,
+   "proxy_match": 0,
+   "true_correct": 0,
+   "phantom_proxy": 0,
+   "unknown": 1,
+   "generation_errors": 1,
+   "mean_quality": 0.0
+  },
+  {
+   "candidate_idx": 1,
+   "candidate_sha256": "a7b7b1ebd86b5c250bab6316b3d30a8f6aa0961d9a0b3404b18997b302536657",
+   "parents": [
+    0
+   ],
+   "official_proxy_mean": 0.0,
+   "n": 1,
+   "executable": 0,
+   "feasible": 0,
+   "proxy_match": 0,
+   "true_correct": 0,
+   "phantom_proxy": 0,
+   "unknown": 1,
+   "generation_errors": 1,
+   "mean_quality": 0.0
+  }
+ ],
+ "n_candidates": 2,
+ "witness_errors_used_for_reflection": false,
+ "official_reference_values_used_for_reflection": false,
+ "model": "Qwen3_8-27B",
+ "official_gepa_commit": "ce5b0d6e3d6af6c6dbec6de2c54536bbb961d309",
+ "wall_seconds": 3561.331,
+ "total_metric_calls": 26,
+ "train_ids": [
+  "additive_microfactory_order_planning",
+  "industrial_supply_planning",
+  "carbon_aware_compute_scheduling"
+ ],
+ "val_ids": [
+  "electric_medical_waste_lrp"
+ ]
+}

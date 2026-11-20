@@ -1,0 +1,51 @@
+{
+ "accepted_iteration": {
+  "iteration_id": "30457edf",
+  "trace_i": 2,
+  "accepted": true,
+  "parent_iteration_ids": [
+   "seed"
+  ],
+  "candidate_idx": 1,
+  "subsample_ids": [
+   0,
+   2,
+   1
+  ],
+  "subsample_scores_before": [
+   0.0,
+   0.0,
+   0.0
+  ],
+  "subsample_scores_after": [
+   0.0,
+   1.0,
+   0.0
+  ],
+  "avg_val_score": 0.0,
+  "num_val_scored": 1,
+  "metric_calls_to_discover": 19
+ },
+ "case": {
+  "task": "carbon_aware_compute_scheduling",
+  "proxy_match": true,
+  "true_correct": false,
+  "feasible": false,
+  "quality": 0.0,
+  "objective": 0.0,
+  "official_errors": [
+   "Missing assignment for wl001",
+   "Missing assignment for wl002",
+   "Missing assignment for wl003",
+   "Missing assignment for wl004",
+   "Missing assignment for wl005",
+   "Missing assignment for wl006",
+   "Missing assignment for wl007",
+   "Missing assignment for wl008",
+   "Missing assignment for wl009",
+   "Missing assignment for wl010"
+  ]
+ },
+ "memory_status": "not_promoted_incomplete_transfer",
+ "interpretation": "A dev proxy success that is not official business success; not a complete transfer evolution curve."
+}

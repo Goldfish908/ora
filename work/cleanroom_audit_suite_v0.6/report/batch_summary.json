@@ -1,0 +1,1236 @@
+{
+ "expected_tasks": [
+  "industrial_water_reuse_blending",
+  "mass_timber_panel_cutting_plan"
+ ],
+ "arms": [
+  {
+   "arm": "B0_empty_specification",
+   "n_expected": 2,
+   "direct": {
+    "n": 2,
+    "expected_tasks": 2,
+    "coverage": 1.0,
+    "feasible": 0,
+    "proxy_match": 1,
+    "true_correct": 0,
+    "phantom_proxy": 1,
+    "unknown": 0,
+    "unresolved_non_phantom": 1,
+    "mean_quality": 0.0,
+    "failure_counts": {
+     "execution_error": 1,
+     "phantom_proxy": 1
+    },
+    "api_guard_modified": 0,
+    "cost": {
+     "llm_calls": 4,
+     "missing_usage_calls": 0,
+     "llm_latency_seconds": 114.07605,
+     "prompt_tokens": 169864,
+     "completion_tokens": 7514,
+     "reasoning_tokens": 0,
+     "total_tokens": 177378,
+     "solver_execution_time": {
+      "recorded_calls": 2,
+      "missing_calls": 0,
+      "seconds": 39.571463
+     },
+     "official_evaluation_time": {
+      "recorded_calls": 2,
+      "missing_calls": 0,
+      "seconds": 50.362654
+     }
+    },
+    "tasks": [
+     {
+      "task": "industrial_water_reuse_blending",
+      "split": "audit",
+      "candidate_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "attempt": 0,
+      "feasible": false,
+      "quality": 0.0,
+      "true_correct": false,
+      "objective": null,
+      "proxy_match": false,
+      "phantom_proxy": false,
+      "failure_class": "execution_error",
+      "execution_return_code": 1,
+      "generation_error": null,
+      "cost": {
+       "llm_calls": 2,
+       "missing_usage_calls": 0,
+       "llm_latency_seconds": 62.581968,
+       "prompt_tokens": 8923,
+       "completion_tokens": 4643,
+       "reasoning_tokens": 0,
+       "total_tokens": 13566
+      },
+      "execution_wall_seconds": 15.681176,
+      "evaluation_wall_seconds": 21.125838,
+      "api_guard_repairs": 0,
+      "public_contract_repairs": 0,
+      "stderr_tail": "KeyError: 'SCIP: the parameter with the given name was not found!'"
+     },
+     {
+      "task": "mass_timber_panel_cutting_plan",
+      "split": "audit",
+      "candidate_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "attempt": 0,
+      "feasible": false,
+      "quality": 0.0,
+      "true_correct": false,
+      "objective": 0.0,
+      "proxy_match": true,
+      "phantom_proxy": true,
+      "failure_class": "phantom_proxy",
+      "execution_return_code": 0,
+      "generation_error": null,
+      "cost": {
+       "llm_calls": 2,
+       "missing_usage_calls": 0,
+       "llm_latency_seconds": 51.494082,
+       "prompt_tokens": 160941,
+       "completion_tokens": 2871,
+       "reasoning_tokens": 0,
+       "total_tokens": 163812
+      },
+      "execution_wall_seconds": 23.890287,
+      "evaluation_wall_seconds": 29.236816,
+      "api_guard_repairs": 0,
+      "public_contract_repairs": 0,
+      "stderr_tail": null
+     }
+    ]
+   },
+   "final": {
+    "n": 2,
+    "expected_tasks": 2,
+    "coverage": 1.0,
+    "feasible": 0,
+    "proxy_match": 1,
+    "true_correct": 0,
+    "phantom_proxy": 1,
+    "unknown": 0,
+    "unresolved_non_phantom": 1,
+    "mean_quality": 0.0,
+    "failure_counts": {
+     "execution_error": 1,
+     "phantom_proxy": 1
+    },
+    "api_guard_modified": 0,
+    "cost": {
+     "llm_calls": 4,
+     "missing_usage_calls": 0,
+     "llm_latency_seconds": 114.07605,
+     "prompt_tokens": 169864,
+     "completion_tokens": 7514,
+     "reasoning_tokens": 0,
+     "total_tokens": 177378,
+     "solver_execution_time": {
+      "recorded_calls": 2,
+      "missing_calls": 0,
+      "seconds": 39.571463
+     },
+     "official_evaluation_time": {
+      "recorded_calls": 2,
+      "missing_calls": 0,
+      "seconds": 50.362654
+     }
+    },
+    "tasks": [
+     {
+      "task": "industrial_water_reuse_blending",
+      "split": "audit",
+      "candidate_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "attempt": 0,
+      "feasible": false,
+      "quality": 0.0,
+      "true_correct": false,
+      "objective": null,
+      "proxy_match": false,
+      "phantom_proxy": false,
+      "failure_class": "execution_error",
+      "execution_return_code": 1,
+      "generation_error": null,
+      "cost": {
+       "llm_calls": 2,
+       "missing_usage_calls": 0,
+       "llm_latency_seconds": 62.581968,
+       "prompt_tokens": 8923,
+       "completion_tokens": 4643,
+       "reasoning_tokens": 0,
+       "total_tokens": 13566
+      },
+      "execution_wall_seconds": 15.681176,
+      "evaluation_wall_seconds": 21.125838,
+      "api_guard_repairs": 0,
+      "public_contract_repairs": 0,
+      "stderr_tail": "KeyError: 'SCIP: the parameter with the given name was not found!'"
+     },
+     {
+      "task": "mass_timber_panel_cutting_plan",
+      "split": "audit",
+      "candidate_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "attempt": 0,
+      "feasible": false,
+      "quality": 0.0,
+      "true_correct": false,
+      "objective": 0.0,
+      "proxy_match": true,
+      "phantom_proxy": true,
+      "failure_class": "phantom_proxy",
+      "execution_return_code": 0,
+      "generation_error": null,
+      "cost": {
+       "llm_calls": 2,
+       "missing_usage_calls": 0,
+       "llm_latency_seconds": 51.494082,
+       "prompt_tokens": 160941,
+       "completion_tokens": 2871,
+       "reasoning_tokens": 0,
+       "total_tokens": 163812
+      },
+      "execution_wall_seconds": 23.890287,
+      "evaluation_wall_seconds": 29.236816,
+      "api_guard_repairs": 0,
+      "public_contract_repairs": 0,
+      "stderr_tail": null
+     }
+    ]
+   },
+   "pair_win_safe": {
+    "paired_tasks": 2,
+    "missing_tasks": [],
+    "gained_true_correct": [],
+    "lost_true_correct": [],
+    "gained_phantom": [],
+    "removed_phantom": [],
+    "win_safe": true
+   },
+   "cost": {
+    "llm_calls": 4,
+    "missing_usage_calls": 0,
+    "llm_latency_seconds": 114.07605,
+    "prompt_tokens": 169864,
+    "completion_tokens": 7514,
+    "reasoning_tokens": 0,
+    "total_tokens": 177378,
+    "solver_execution_time": {
+     "recorded_calls": 2,
+     "missing_calls": 0,
+     "seconds": 39.571463
+    },
+    "official_evaluation_time": {
+     "recorded_calls": 2,
+     "missing_calls": 0,
+     "seconds": 50.362654
+    }
+   },
+   "tasks": [
+    {
+     "task": "industrial_water_reuse_blending",
+     "direct": {
+      "task": "industrial_water_reuse_blending",
+      "split": "audit",
+      "candidate_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "attempt": 0,
+      "feasible": false,
+      "quality": 0.0,
+      "true_correct": false,
+      "objective": null,
+      "proxy_match": false,
+      "phantom_proxy": false,
+      "failure_class": "execution_error",
+      "execution_return_code": 1,
+      "generation_error": null,
+      "cost": {
+       "llm_calls": 2,
+       "missing_usage_calls": 0,
+       "llm_latency_seconds": 62.581968,
+       "prompt_tokens": 8923,
+       "completion_tokens": 4643,
+       "reasoning_tokens": 0,
+       "total_tokens": 13566
+      },
+      "execution_wall_seconds": 15.681176,
+      "evaluation_wall_seconds": 21.125838,
+      "api_guard_repairs": 0,
+      "public_contract_repairs": 0,
+      "stderr_tail": "KeyError: 'SCIP: the parameter with the given name was not found!'"
+     },
+     "final": {
+      "task": "industrial_water_reuse_blending",
+      "split": "audit",
+      "candidate_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "attempt": 0,
+      "feasible": false,
+      "quality": 0.0,
+      "true_correct": false,
+      "objective": null,
+      "proxy_match": false,
+      "phantom_proxy": false,
+      "failure_class": "execution_error",
+      "execution_return_code": 1,
+      "generation_error": null,
+      "cost": {
+       "llm_calls": 2,
+       "missing_usage_calls": 0,
+       "llm_latency_seconds": 62.581968,
+       "prompt_tokens": 8923,
+       "completion_tokens": 4643,
+       "reasoning_tokens": 0,
+       "total_tokens": 13566
+      },
+      "execution_wall_seconds": 15.681176,
+      "evaluation_wall_seconds": 21.125838,
+      "api_guard_repairs": 0,
+      "public_contract_repairs": 0,
+      "stderr_tail": "KeyError: 'SCIP: the parameter with the given name was not found!'"
+     },
+     "repair_status": "not_applicable",
+     "attempts_used": 0,
+     "cost": {
+      "llm_calls": 2,
+      "missing_usage_calls": 0,
+      "llm_latency_seconds": 62.581968,
+      "prompt_tokens": 8923,
+      "completion_tokens": 4643,
+      "reasoning_tokens": 0,
+      "total_tokens": 13566,
+      "solver_execution_time": {
+       "recorded_calls": 1,
+       "missing_calls": 0,
+       "seconds": 15.681176
+      },
+      "official_evaluation_time": {
+       "recorded_calls": 1,
+       "missing_calls": 0,
+       "seconds": 21.125838
+      }
+     }
+    },
+    {
+     "task": "mass_timber_panel_cutting_plan",
+     "direct": {
+      "task": "mass_timber_panel_cutting_plan",
+      "split": "audit",
+      "candidate_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "attempt": 0,
+      "feasible": false,
+      "quality": 0.0,
+      "true_correct": false,
+      "objective": 0.0,
+      "proxy_match": true,
+      "phantom_proxy": true,
+      "failure_class": "phantom_proxy",
+      "execution_return_code": 0,
+      "generation_error": null,
+      "cost": {
+       "llm_calls": 2,
+       "missing_usage_calls": 0,
+       "llm_latency_seconds": 51.494082,
+       "prompt_tokens": 160941,
+       "completion_tokens": 2871,
+       "reasoning_tokens": 0,
+       "total_tokens": 163812
+      },
+      "execution_wall_seconds": 23.890287,
+      "evaluation_wall_seconds": 29.236816,
+      "api_guard_repairs": 0,
+      "public_contract_repairs": 0,
+      "stderr_tail": null
+     },
+     "final": {
+      "task": "mass_timber_panel_cutting_plan",
+      "split": "audit",
+      "candidate_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "attempt": 0,
+      "feasible": false,
+      "quality": 0.0,
+      "true_correct": false,
+      "objective": 0.0,
+      "proxy_match": true,
+      "phantom_proxy": true,
+      "failure_class": "phantom_proxy",
+      "execution_return_code": 0,
+      "generation_error": null,
+      "cost": {
+       "llm_calls": 2,
+       "missing_usage_calls": 0,
+       "llm_latency_seconds": 51.494082,
+       "prompt_tokens": 160941,
+       "completion_tokens": 2871,
+       "reasoning_tokens": 0,
+       "total_tokens": 163812
+      },
+      "execution_wall_seconds": 23.890287,
+      "evaluation_wall_seconds": 29.236816,
+      "api_guard_repairs": 0,
+      "public_contract_repairs": 0,
+      "stderr_tail": null
+     },
+     "repair_status": "not_applicable",
+     "attempts_used": 0,
+     "cost": {
+      "llm_calls": 2,
+      "missing_usage_calls": 0,
+      "llm_latency_seconds": 51.494082,
+      "prompt_tokens": 160941,
+      "completion_tokens": 2871,
+      "reasoning_tokens": 0,
+      "total_tokens": 163812,
+      "solver_execution_time": {
+       "recorded_calls": 1,
+       "missing_calls": 0,
+       "seconds": 23.890287
+      },
+      "official_evaluation_time": {
+       "recorded_calls": 1,
+       "missing_calls": 0,
+       "seconds": 29.236816
+      }
+     }
+    }
+   ],
+   "provenance": "frozen_replay",
+   "specification_sha256": {
+    "industrial_water_reuse_blending": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "mass_timber_panel_cutting_plan": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+   },
+   "implementation": {
+    "path": "/home/hewj13/wm/ora/work/cleanroom_audit_suite_v0.6/B0/run.json",
+    "sha256": "fd28aef45b2070d6afb72d6a651d3d8b4102a3ad9e3a3e9ef2a7eed957add27e"
+   },
+   "repair_inputs": []
+  },
+  {
+   "arm": "B1_gepa_specification",
+   "n_expected": 2,
+   "direct": {
+    "n": 2,
+    "expected_tasks": 2,
+    "coverage": 1.0,
+    "feasible": 1,
+    "proxy_match": 2,
+    "true_correct": 1,
+    "phantom_proxy": 1,
+    "unknown": 0,
+    "unresolved_non_phantom": 0,
+    "mean_quality": 1.0,
+    "failure_counts": {
+     "phantom_proxy": 1,
+     "true_correct": 1
+    },
+    "api_guard_modified": 0,
+    "cost": {
+     "llm_calls": 4,
+     "missing_usage_calls": 0,
+     "llm_latency_seconds": 138.089065,
+     "prompt_tokens": 177103,
+     "completion_tokens": 9088,
+     "reasoning_tokens": 0,
+     "total_tokens": 186191,
+     "solver_execution_time": {
+      "recorded_calls": 2,
+      "missing_calls": 0,
+      "seconds": 40.914797
+     },
+     "official_evaluation_time": {
+      "recorded_calls": 2,
+      "missing_calls": 0,
+      "seconds": 33.691836
+     }
+    },
+    "tasks": [
+     {
+      "task": "industrial_water_reuse_blending",
+      "split": "audit",
+      "candidate_sha256": "61c8e9c32aa28d042547f571f6c0b8e771c8bec7c4f071da02e5a9cbdb636d45",
+      "attempt": 0,
+      "feasible": false,
+      "quality": 0.0,
+      "true_correct": false,
+      "objective": 1203.866818796961,
+      "proxy_match": true,
+      "phantom_proxy": true,
+      "failure_class": "phantom_proxy",
+      "execution_return_code": 0,
+      "generation_error": null,
+      "cost": {
+       "llm_calls": 2,
+       "missing_usage_calls": 0,
+       "llm_latency_seconds": 63.937746,
+       "prompt_tokens": 12356,
+       "completion_tokens": 4579,
+       "reasoning_tokens": 0,
+       "total_tokens": 16935
+      },
+      "execution_wall_seconds": 24.973166,
+      "evaluation_wall_seconds": 15.452998,
+      "api_guard_repairs": 0,
+      "public_contract_repairs": 0,
+      "stderr_tail": null
+     },
+     {
+      "task": "mass_timber_panel_cutting_plan",
+      "split": "audit",
+      "candidate_sha256": "61c8e9c32aa28d042547f571f6c0b8e771c8bec7c4f071da02e5a9cbdb636d45",
+      "attempt": 0,
+      "feasible": true,
+      "quality": 2.0,
+      "true_correct": true,
+      "objective": 343541.32913979195,
+      "proxy_match": true,
+      "phantom_proxy": false,
+      "failure_class": "true_correct",
+      "execution_return_code": 0,
+      "generation_error": null,
+      "cost": {
+       "llm_calls": 2,
+       "missing_usage_calls": 0,
+       "llm_latency_seconds": 74.151319,
+       "prompt_tokens": 164747,
+       "completion_tokens": 4509,
+       "reasoning_tokens": 0,
+       "total_tokens": 169256
+      },
+      "execution_wall_seconds": 15.941631,
+      "evaluation_wall_seconds": 18.238838,
+      "api_guard_repairs": 0,
+      "public_contract_repairs": 0,
+      "stderr_tail": null
+     }
+    ]
+   },
+   "final": {
+    "n": 2,
+    "expected_tasks": 2,
+    "coverage": 1.0,
+    "feasible": 1,
+    "proxy_match": 2,
+    "true_correct": 1,
+    "phantom_proxy": 1,
+    "unknown": 0,
+    "unresolved_non_phantom": 0,
+    "mean_quality": 1.0,
+    "failure_counts": {
+     "phantom_proxy": 1,
+     "true_correct": 1
+    },
+    "api_guard_modified": 0,
+    "cost": {
+     "llm_calls": 4,
+     "missing_usage_calls": 0,
+     "llm_latency_seconds": 138.089065,
+     "prompt_tokens": 177103,
+     "completion_tokens": 9088,
+     "reasoning_tokens": 0,
+     "total_tokens": 186191,
+     "solver_execution_time": {
+      "recorded_calls": 2,
+      "missing_calls": 0,
+      "seconds": 40.914797
+     },
+     "official_evaluation_time": {
+      "recorded_calls": 2,
+      "missing_calls": 0,
+      "seconds": 33.691836
+     }
+    },
+    "tasks": [
+     {
+      "task": "industrial_water_reuse_blending",
+      "split": "audit",
+      "candidate_sha256": "61c8e9c32aa28d042547f571f6c0b8e771c8bec7c4f071da02e5a9cbdb636d45",
+      "attempt": 0,
+      "feasible": false,
+      "quality": 0.0,
+      "true_correct": false,
+      "objective": 1203.866818796961,
+      "proxy_match": true,
+      "phantom_proxy": true,
+      "failure_class": "phantom_proxy",
+      "execution_return_code": 0,
+      "generation_error": null,
+      "cost": {
+       "llm_calls": 2,
+       "missing_usage_calls": 0,
+       "llm_latency_seconds": 63.937746,
+       "prompt_tokens": 12356,
+       "completion_tokens": 4579,
+       "reasoning_tokens": 0,
+       "total_tokens": 16935
+      },
+      "execution_wall_seconds": 24.973166,
+      "evaluation_wall_seconds": 15.452998,
+      "api_guard_repairs": 0,
+      "public_contract_repairs": 0,
+      "stderr_tail": null
+     },
+     {
+      "task": "mass_timber_panel_cutting_plan",
+      "split": "audit",
+      "candidate_sha256": "61c8e9c32aa28d042547f571f6c0b8e771c8bec7c4f071da02e5a9cbdb636d45",
+      "attempt": 0,
+      "feasible": true,
+      "quality": 2.0,
+      "true_correct": true,
+      "objective": 343541.32913979195,
+      "proxy_match": true,
+      "phantom_proxy": false,
+      "failure_class": "true_correct",
+      "execution_return_code": 0,
+      "generation_error": null,
+      "cost": {
+       "llm_calls": 2,
+       "missing_usage_calls": 0,
+       "llm_latency_seconds": 74.151319,
+       "prompt_tokens": 164747,
+       "completion_tokens": 4509,
+       "reasoning_tokens": 0,
+       "total_tokens": 169256
+      },
+      "execution_wall_seconds": 15.941631,
+      "evaluation_wall_seconds": 18.238838,
+      "api_guard_repairs": 0,
+      "public_contract_repairs": 0,
+      "stderr_tail": null
+     }
+    ]
+   },
+   "pair_win_safe": {
+    "paired_tasks": 2,
+    "missing_tasks": [],
+    "gained_true_correct": [],
+    "lost_true_correct": [],
+    "gained_phantom": [],
+    "removed_phantom": [],
+    "win_safe": true
+   },
+   "cost": {
+    "llm_calls": 4,
+    "missing_usage_calls": 0,
+    "llm_latency_seconds": 138.089065,
+    "prompt_tokens": 177103,
+    "completion_tokens": 9088,
+    "reasoning_tokens": 0,
+    "total_tokens": 186191,
+    "solver_execution_time": {
+     "recorded_calls": 2,
+     "missing_calls": 0,
+     "seconds": 40.914797
+    },
+    "official_evaluation_time": {
+     "recorded_calls": 2,
+     "missing_calls": 0,
+     "seconds": 33.691836
+    }
+   },
+   "tasks": [
+    {
+     "task": "industrial_water_reuse_blending",
+     "direct": {
+      "task": "industrial_water_reuse_blending",
+      "split": "audit",
+      "candidate_sha256": "61c8e9c32aa28d042547f571f6c0b8e771c8bec7c4f071da02e5a9cbdb636d45",
+      "attempt": 0,
+      "feasible": false,
+      "quality": 0.0,
+      "true_correct": false,
+      "objective": 1203.866818796961,
+      "proxy_match": true,
+      "phantom_proxy": true,
+      "failure_class": "phantom_proxy",
+      "execution_return_code": 0,
+      "generation_error": null,
+      "cost": {
+       "llm_calls": 2,
+       "missing_usage_calls": 0,
+       "llm_latency_seconds": 63.937746,
+       "prompt_tokens": 12356,
+       "completion_tokens": 4579,
+       "reasoning_tokens": 0,
+       "total_tokens": 16935
+      },
+      "execution_wall_seconds": 24.973166,
+      "evaluation_wall_seconds": 15.452998,
+      "api_guard_repairs": 0,
+      "public_contract_repairs": 0,
+      "stderr_tail": null
+     },
+     "final": {
+      "task": "industrial_water_reuse_blending",
+      "split": "audit",
+      "candidate_sha256": "61c8e9c32aa28d042547f571f6c0b8e771c8bec7c4f071da02e5a9cbdb636d45",
+      "attempt": 0,
+      "feasible": false,
+      "quality": 0.0,
+      "true_correct": false,
+      "objective": 1203.866818796961,
+      "proxy_match": true,
+      "phantom_proxy": true,
+      "failure_class": "phantom_proxy",
+      "execution_return_code": 0,
+      "generation_error": null,
+      "cost": {
+       "llm_calls": 2,
+       "missing_usage_calls": 0,
+       "llm_latency_seconds": 63.937746,
+       "prompt_tokens": 12356,
+       "completion_tokens": 4579,
+       "reasoning_tokens": 0,
+       "total_tokens": 16935
+      },
+      "execution_wall_seconds": 24.973166,
+      "evaluation_wall_seconds": 15.452998,
+      "api_guard_repairs": 0,
+      "public_contract_repairs": 0,
+      "stderr_tail": null
+     },
+     "repair_status": "not_applicable",
+     "attempts_used": 0,
+     "cost": {
+      "llm_calls": 2,
+      "missing_usage_calls": 0,
+      "llm_latency_seconds": 63.937746,
+      "prompt_tokens": 12356,
+      "completion_tokens": 4579,
+      "reasoning_tokens": 0,
+      "total_tokens": 16935,
+      "solver_execution_time": {
+       "recorded_calls": 1,
+       "missing_calls": 0,
+       "seconds": 24.973166
+      },
+      "official_evaluation_time": {
+       "recorded_calls": 1,
+       "missing_calls": 0,
+       "seconds": 15.452998
+      }
+     }
+    },
+    {
+     "task": "mass_timber_panel_cutting_plan",
+     "direct": {
+      "task": "mass_timber_panel_cutting_plan",
+      "split": "audit",
+      "candidate_sha256": "61c8e9c32aa28d042547f571f6c0b8e771c8bec7c4f071da02e5a9cbdb636d45",
+      "attempt": 0,
+      "feasible": true,
+      "quality": 2.0,
+      "true_correct": true,
+      "objective": 343541.32913979195,
+      "proxy_match": true,
+      "phantom_proxy": false,
+      "failure_class": "true_correct",
+      "execution_return_code": 0,
+      "generation_error": null,
+      "cost": {
+       "llm_calls": 2,
+       "missing_usage_calls": 0,
+       "llm_latency_seconds": 74.151319,
+       "prompt_tokens": 164747,
+       "completion_tokens": 4509,
+       "reasoning_tokens": 0,
+       "total_tokens": 169256
+      },
+      "execution_wall_seconds": 15.941631,
+      "evaluation_wall_seconds": 18.238838,
+      "api_guard_repairs": 0,
+      "public_contract_repairs": 0,
+      "stderr_tail": null
+     },
+     "final": {
+      "task": "mass_timber_panel_cutting_plan",
+      "split": "audit",
+      "candidate_sha256": "61c8e9c32aa28d042547f571f6c0b8e771c8bec7c4f071da02e5a9cbdb636d45",
+      "attempt": 0,
+      "feasible": true,
+      "quality": 2.0,
+      "true_correct": true,
+      "objective": 343541.32913979195,
+      "proxy_match": true,
+      "phantom_proxy": false,
+      "failure_class": "true_correct",
+      "execution_return_code": 0,
+      "generation_error": null,
+      "cost": {
+       "llm_calls": 2,
+       "missing_usage_calls": 0,
+       "llm_latency_seconds": 74.151319,
+       "prompt_tokens": 164747,
+       "completion_tokens": 4509,
+       "reasoning_tokens": 0,
+       "total_tokens": 169256
+      },
+      "execution_wall_seconds": 15.941631,
+      "evaluation_wall_seconds": 18.238838,
+      "api_guard_repairs": 0,
+      "public_contract_repairs": 0,
+      "stderr_tail": null
+     },
+     "repair_status": "not_applicable",
+     "attempts_used": 0,
+     "cost": {
+      "llm_calls": 2,
+      "missing_usage_calls": 0,
+      "llm_latency_seconds": 74.151319,
+      "prompt_tokens": 164747,
+      "completion_tokens": 4509,
+      "reasoning_tokens": 0,
+      "total_tokens": 169256,
+      "solver_execution_time": {
+       "recorded_calls": 1,
+       "missing_calls": 0,
+       "seconds": 15.941631
+      },
+      "official_evaluation_time": {
+       "recorded_calls": 1,
+       "missing_calls": 0,
+       "seconds": 18.238838
+      }
+     }
+    }
+   ],
+   "provenance": "subsequent_disjoint_replay",
+   "specification_sha256": {
+    "industrial_water_reuse_blending": "61c8e9c32aa28d042547f571f6c0b8e771c8bec7c4f071da02e5a9cbdb636d45",
+    "mass_timber_panel_cutting_plan": "61c8e9c32aa28d042547f571f6c0b8e771c8bec7c4f071da02e5a9cbdb636d45"
+   },
+   "implementation": {
+    "path": "/home/hewj13/wm/ora/work/cleanroom_audit_suite_v0.6/B1/run.json",
+    "sha256": "cd4a917536af8d9a727cdbe8446869970084c0f9f5fe4e6a2906030fa9d69970"
+   },
+   "repair_inputs": []
+  },
+  {
+   "arm": "B2_gepa_residual_dag",
+   "n_expected": 2,
+   "direct": {
+    "n": 2,
+    "expected_tasks": 2,
+    "coverage": 1.0,
+    "feasible": 1,
+    "proxy_match": 2,
+    "true_correct": 1,
+    "phantom_proxy": 1,
+    "unknown": 0,
+    "unresolved_non_phantom": 0,
+    "mean_quality": 1.0,
+    "failure_counts": {
+     "phantom_proxy": 1,
+     "true_correct": 1
+    },
+    "api_guard_modified": 0,
+    "cost": {
+     "llm_calls": 4,
+     "missing_usage_calls": 0,
+     "llm_latency_seconds": 138.089065,
+     "prompt_tokens": 177103,
+     "completion_tokens": 9088,
+     "reasoning_tokens": 0,
+     "total_tokens": 186191,
+     "solver_execution_time": {
+      "recorded_calls": 2,
+      "missing_calls": 0,
+      "seconds": 40.914797
+     },
+     "official_evaluation_time": {
+      "recorded_calls": 2,
+      "missing_calls": 0,
+      "seconds": 33.691836
+     }
+    },
+    "tasks": [
+     {
+      "task": "industrial_water_reuse_blending",
+      "split": "audit",
+      "candidate_sha256": "61c8e9c32aa28d042547f571f6c0b8e771c8bec7c4f071da02e5a9cbdb636d45",
+      "attempt": 0,
+      "feasible": false,
+      "quality": 0.0,
+      "true_correct": false,
+      "objective": 1203.866818796961,
+      "proxy_match": true,
+      "phantom_proxy": true,
+      "failure_class": "phantom_proxy",
+      "execution_return_code": 0,
+      "generation_error": null,
+      "cost": {
+       "llm_calls": 2,
+       "missing_usage_calls": 0,
+       "llm_latency_seconds": 63.937746,
+       "prompt_tokens": 12356,
+       "completion_tokens": 4579,
+       "reasoning_tokens": 0,
+       "total_tokens": 16935
+      },
+      "execution_wall_seconds": 24.973166,
+      "evaluation_wall_seconds": 15.452998,
+      "api_guard_repairs": 0,
+      "public_contract_repairs": 0,
+      "stderr_tail": null
+     },
+     {
+      "task": "mass_timber_panel_cutting_plan",
+      "split": "audit",
+      "candidate_sha256": "61c8e9c32aa28d042547f571f6c0b8e771c8bec7c4f071da02e5a9cbdb636d45",
+      "attempt": 0,
+      "feasible": true,
+      "quality": 2.0,
+      "true_correct": true,
+      "objective": 343541.32913979195,
+      "proxy_match": true,
+      "phantom_proxy": false,
+      "failure_class": "true_correct",
+      "execution_return_code": 0,
+      "generation_error": null,
+      "cost": {
+       "llm_calls": 2,
+       "missing_usage_calls": 0,
+       "llm_latency_seconds": 74.151319,
+       "prompt_tokens": 164747,
+       "completion_tokens": 4509,
+       "reasoning_tokens": 0,
+       "total_tokens": 169256
+      },
+      "execution_wall_seconds": 15.941631,
+      "evaluation_wall_seconds": 18.238838,
+      "api_guard_repairs": 0,
+      "public_contract_repairs": 0,
+      "stderr_tail": null
+     }
+    ]
+   },
+   "final": {
+    "n": 2,
+    "expected_tasks": 2,
+    "coverage": 1.0,
+    "feasible": 2,
+    "proxy_match": 2,
+    "true_correct": 2,
+    "phantom_proxy": 0,
+    "unknown": 0,
+    "unresolved_non_phantom": 0,
+    "mean_quality": 2.0,
+    "failure_counts": {
+     "true_correct": 2
+    },
+    "api_guard_modified": 0,
+    "cost": {
+     "llm_calls": 4,
+     "missing_usage_calls": 0,
+     "llm_latency_seconds": 141.058519,
+     "prompt_tokens": 187609,
+     "completion_tokens": 9341,
+     "reasoning_tokens": 0,
+     "total_tokens": 196950,
+     "solver_execution_time": {
+      "recorded_calls": 2,
+      "missing_calls": 0,
+      "seconds": 37.68925
+     },
+     "official_evaluation_time": {
+      "recorded_calls": 2,
+      "missing_calls": 0,
+      "seconds": 48.252647
+     }
+    },
+    "tasks": [
+     {
+      "task": "industrial_water_reuse_blending",
+      "split": "audit",
+      "candidate_sha256": "61c8e9c32aa28d042547f571f6c0b8e771c8bec7c4f071da02e5a9cbdb636d45",
+      "attempt": 1,
+      "feasible": true,
+      "quality": 2.0,
+      "true_correct": true,
+      "objective": 6011.5448483809205,
+      "proxy_match": true,
+      "phantom_proxy": false,
+      "failure_class": "true_correct",
+      "execution_return_code": 0,
+      "generation_error": null,
+      "cost": {
+       "llm_calls": 2,
+       "missing_usage_calls": 0,
+       "llm_latency_seconds": 66.9072,
+       "prompt_tokens": 22862,
+       "completion_tokens": 4832,
+       "reasoning_tokens": 0,
+       "total_tokens": 27694
+      },
+      "execution_wall_seconds": 21.747619,
+      "evaluation_wall_seconds": 30.013809,
+      "api_guard_repairs": 0,
+      "public_contract_repairs": 0,
+      "stderr_tail": null
+     },
+     {
+      "task": "mass_timber_panel_cutting_plan",
+      "split": "audit",
+      "candidate_sha256": "61c8e9c32aa28d042547f571f6c0b8e771c8bec7c4f071da02e5a9cbdb636d45",
+      "attempt": 0,
+      "feasible": true,
+      "quality": 2.0,
+      "true_correct": true,
+      "objective": 343541.32913979195,
+      "proxy_match": true,
+      "phantom_proxy": false,
+      "failure_class": "true_correct",
+      "execution_return_code": 0,
+      "generation_error": null,
+      "cost": {
+       "llm_calls": 2,
+       "missing_usage_calls": 0,
+       "llm_latency_seconds": 74.151319,
+       "prompt_tokens": 164747,
+       "completion_tokens": 4509,
+       "reasoning_tokens": 0,
+       "total_tokens": 169256
+      },
+      "execution_wall_seconds": 15.941631,
+      "evaluation_wall_seconds": 18.238838,
+      "api_guard_repairs": 0,
+      "public_contract_repairs": 0,
+      "stderr_tail": null
+     }
+    ]
+   },
+   "pair_win_safe": {
+    "paired_tasks": 2,
+    "missing_tasks": [],
+    "gained_true_correct": [
+     "industrial_water_reuse_blending"
+    ],
+    "lost_true_correct": [],
+    "gained_phantom": [],
+    "removed_phantom": [
+     "industrial_water_reuse_blending"
+    ],
+    "win_safe": true
+   },
+   "cost": {
+    "llm_calls": 6,
+    "missing_usage_calls": 0,
+    "llm_latency_seconds": 204.996265,
+    "prompt_tokens": 199965,
+    "completion_tokens": 13920,
+    "reasoning_tokens": 0,
+    "total_tokens": 213885,
+    "solver_execution_time": {
+     "recorded_calls": 3,
+     "missing_calls": 0,
+     "seconds": 62.662416
+    },
+    "official_evaluation_time": {
+     "recorded_calls": 3,
+     "missing_calls": 0,
+     "seconds": 63.705645
+    }
+   },
+   "tasks": [
+    {
+     "task": "industrial_water_reuse_blending",
+     "direct": {
+      "task": "industrial_water_reuse_blending",
+      "split": "audit",
+      "candidate_sha256": "61c8e9c32aa28d042547f571f6c0b8e771c8bec7c4f071da02e5a9cbdb636d45",
+      "attempt": 0,
+      "feasible": false,
+      "quality": 0.0,
+      "true_correct": false,
+      "objective": 1203.866818796961,
+      "proxy_match": true,
+      "phantom_proxy": true,
+      "failure_class": "phantom_proxy",
+      "execution_return_code": 0,
+      "generation_error": null,
+      "cost": {
+       "llm_calls": 2,
+       "missing_usage_calls": 0,
+       "llm_latency_seconds": 63.937746,
+       "prompt_tokens": 12356,
+       "completion_tokens": 4579,
+       "reasoning_tokens": 0,
+       "total_tokens": 16935
+      },
+      "execution_wall_seconds": 24.973166,
+      "evaluation_wall_seconds": 15.452998,
+      "api_guard_repairs": 0,
+      "public_contract_repairs": 0,
+      "stderr_tail": null
+     },
+     "final": {
+      "task": "industrial_water_reuse_blending",
+      "split": "audit",
+      "candidate_sha256": "61c8e9c32aa28d042547f571f6c0b8e771c8bec7c4f071da02e5a9cbdb636d45",
+      "attempt": 1,
+      "feasible": true,
+      "quality": 2.0,
+      "true_correct": true,
+      "objective": 6011.5448483809205,
+      "proxy_match": true,
+      "phantom_proxy": false,
+      "failure_class": "true_correct",
+      "execution_return_code": 0,
+      "generation_error": null,
+      "cost": {
+       "llm_calls": 2,
+       "missing_usage_calls": 0,
+       "llm_latency_seconds": 66.9072,
+       "prompt_tokens": 22862,
+       "completion_tokens": 4832,
+       "reasoning_tokens": 0,
+       "total_tokens": 27694
+      },
+      "execution_wall_seconds": 21.747619,
+      "evaluation_wall_seconds": 30.013809,
+      "api_guard_repairs": 0,
+      "public_contract_repairs": 0,
+      "stderr_tail": null
+     },
+     "repair_status": "accepted",
+     "attempts_used": 1,
+     "cost": {
+      "llm_calls": 4,
+      "missing_usage_calls": 0,
+      "llm_latency_seconds": 130.844946,
+      "prompt_tokens": 35218,
+      "completion_tokens": 9411,
+      "reasoning_tokens": 0,
+      "total_tokens": 44629,
+      "solver_execution_time": {
+       "recorded_calls": 2,
+       "missing_calls": 0,
+       "seconds": 46.720785
+      },
+      "official_evaluation_time": {
+       "recorded_calls": 2,
+       "missing_calls": 0,
+       "seconds": 45.466807
+      }
+     }
+    },
+    {
+     "task": "mass_timber_panel_cutting_plan",
+     "direct": {
+      "task": "mass_timber_panel_cutting_plan",
+      "split": "audit",
+      "candidate_sha256": "61c8e9c32aa28d042547f571f6c0b8e771c8bec7c4f071da02e5a9cbdb636d45",
+      "attempt": 0,
+      "feasible": true,
+      "quality": 2.0,
+      "true_correct": true,
+      "objective": 343541.32913979195,
+      "proxy_match": true,
+      "phantom_proxy": false,
+      "failure_class": "true_correct",
+      "execution_return_code": 0,
+      "generation_error": null,
+      "cost": {
+       "llm_calls": 2,
+       "missing_usage_calls": 0,
+       "llm_latency_seconds": 74.151319,
+       "prompt_tokens": 164747,
+       "completion_tokens": 4509,
+       "reasoning_tokens": 0,
+       "total_tokens": 169256
+      },
+      "execution_wall_seconds": 15.941631,
+      "evaluation_wall_seconds": 18.238838,
+      "api_guard_repairs": 0,
+      "public_contract_repairs": 0,
+      "stderr_tail": null
+     },
+     "final": {
+      "task": "mass_timber_panel_cutting_plan",
+      "split": "audit",
+      "candidate_sha256": "61c8e9c32aa28d042547f571f6c0b8e771c8bec7c4f071da02e5a9cbdb636d45",
+      "attempt": 0,
+      "feasible": true,
+      "quality": 2.0,
+      "true_correct": true,
+      "objective": 343541.32913979195,
+      "proxy_match": true,
+      "phantom_proxy": false,
+      "failure_class": "true_correct",
+      "execution_return_code": 0,
+      "generation_error": null,
+      "cost": {
+       "llm_calls": 2,
+       "missing_usage_calls": 0,
+       "llm_latency_seconds": 74.151319,
+       "prompt_tokens": 164747,
+       "completion_tokens": 4509,
+       "reasoning_tokens": 0,
+       "total_tokens": 169256
+      },
+      "execution_wall_seconds": 15.941631,
+      "evaluation_wall_seconds": 18.238838,
+      "api_guard_repairs": 0,
+      "public_contract_repairs": 0,
+      "stderr_tail": null
+     },
+     "repair_status": "preserved_win",
+     "attempts_used": 0,
+     "cost": {
+      "llm_calls": 2,
+      "missing_usage_calls": 0,
+      "llm_latency_seconds": 74.151319,
+      "prompt_tokens": 164747,
+      "completion_tokens": 4509,
+      "reasoning_tokens": 0,
+      "total_tokens": 169256,
+      "solver_execution_time": {
+       "recorded_calls": 1,
+       "missing_calls": 0,
+       "seconds": 15.941631
+      },
+      "official_evaluation_time": {
+       "recorded_calls": 1,
+       "missing_calls": 0,
+       "seconds": 18.238838
+      }
+     }
+    }
+   ],
+   "provenance": "subsequent_disjoint_replay",
+   "specification_sha256": {
+    "industrial_water_reuse_blending": "61c8e9c32aa28d042547f571f6c0b8e771c8bec7c4f071da02e5a9cbdb636d45",
+    "mass_timber_panel_cutting_plan": "61c8e9c32aa28d042547f571f6c0b8e771c8bec7c4f071da02e5a9cbdb636d45"
+   },
+   "implementation": {
+    "path": "/home/hewj13/wm/ora/work/cleanroom_audit_suite_v0.6/B1/run.json",
+    "sha256": "cd4a917536af8d9a727cdbe8446869970084c0f9f5fe4e6a2906030fa9d69970"
+   },
+   "repair_inputs": [
+    "/home/hewj13/wm/ora/work/cleanroom_audit_suite_v0.6/B2/industrial_water_reuse_blending/repair_result.json",
+    "/home/hewj13/wm/ora/work/cleanroom_audit_suite_v0.6/B2/mass_timber_panel_cutting_plan/repair_result.json"
+   ]
+  },
+  {
+   "arm": "B3_verified_memory",
+   "status": "not_run"
+  }
+ ],
+ "b0_to_b1": {
+  "paired_tasks": 2,
+  "missing_tasks": [],
+  "gained_true_correct": [
+   "mass_timber_panel_cutting_plan"
+  ],
+  "lost_true_correct": [],
+  "gained_phantom": [
+   "industrial_water_reuse_blending"
+  ],
+  "removed_phantom": [
+   "mass_timber_panel_cutting_plan"
+  ],
+  "win_safe": true
+ },
+ "b3_same_generator_specification_as_b1": false,
+ "memory_interpretation": "Compare only equal task coverage and record the authorized memory scope.",
+ "selection_or_heldout": "Read each arm's provenance; this report does not relabel selection tasks as held-out."
+}

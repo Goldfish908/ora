@@ -181,3 +181,19 @@ memory 审查没有只看汇总增益：因为水回用出现**新增幻影**，
 - `work/cleanroom_audit_suite_v0.6/memory_review/promotion_summary.json`
 
 B2 随后只针对失败/幻影任务进行有界修复，原本正确的木板材解必须保留。其增量与 GEPA 直接生成收益分开报告。
+
+
+## 独立审计 B2 最终结果
+
+| Arm | 覆盖 | 直接真正确 | 直接幻影 | 修复后真正确 | 修复后幻影 | UNKNOWN | 新增/丢失真实 win | Tokens |
+|---|---:|---:|---:|---:|---:|---:|---|---:|
+| B0 空规范 | 2/2 | 0 | 1 | 0 | 1 | 0 | +0/−0 | 177,378 |
+| B1 GEPA | 2/2 | 1 | 1 | 1 | 1 | 0 | +0/−0 | 186,191 |
+| B2 GEPA+残余 DAG | 2/2 | 1 | 1 | 2 | 0 | 0 | +1/−0 | 213,885 |
+| B3 验证 memory | not_run | — | — | — | — | — | — | — |
+
+- 水回用第一次修复被接受：`feasible=true、quality=2.0、true=true、objective=6011.5448483809205`，幻影消失；木板材 `preserved_win`，没有额外 LLM 修复调用。
+- B2 总计 6 次 LLM 调用、213,885 tokens、204.996 秒 LLM 延迟；求解与官方评价 wall time 分别为 62.662 和 63.706 秒。增量修复只新增水回用的 2 次生成调用和 27,694 tokens，其他是 B1 直接生成成本。
+- memory 拒绝发生在 B2 之前，原因是 B1 新增水回用幻影。B2 消除该幻影不 retroactively 改写这次拒绝，也不自动构成 memory 晋升或跨任务记忆收益。
+- 报告：`work/cleanroom_audit_suite_v0.6/report/report.md` 和 `batch_summary.json`。报告 CLI 参数名与 Witness 重复初始化问题已修复，恢复过程没有重复 LLM 生成或求解。
+- 后续 transfer 使用 `--skip-memory-review` 保留该拒绝决定，不在另一批任务上反复尝试直到晋升。此选项仅记录 `review_skipped_by_protocol`，B3 仍为 not_run；B0/B1/B2 的真实结果另行报告。

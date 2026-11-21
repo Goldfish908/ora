@@ -116,12 +116,15 @@ def main() -> None:
     parser.add_argument("--out", required=True)
     parser.add_argument("--witness-source")
     parser.add_argument("--memory-source")
+    parser.add_argument("--skip-memory-review", action="store_true")
     parser.add_argument("--workers", type=int, default=1)
     parser.add_argument("--seed", type=int, default=0)
     parser.add_argument("--max-attempts", type=int, choices=(1, 2, 3), default=3)
     parser.add_argument("--llm-timeout", type=float, default=600)
     parser.add_argument("--resume", action="store_true")
     args = parser.parse_args()
+    if args.memory_source and args.skip_memory_review:
+        parser.error("--memory-source and --skip-memory-review are mutually exclusive")
     args.gepa_run = (ROOT / args.gepa_run).resolve()
     args.dev_tasks = (ROOT / args.dev_tasks).resolve()
     args.audit_tasks = (ROOT / args.audit_tasks).resolve()
@@ -169,7 +172,11 @@ def main() -> None:
 
     b0_manifest = replay(args, "B0")
     b1_manifest = replay(args, "B1", result_path, candidate, b0_manifest)
-    if args.memory_source:
+    memory_path = None
+    if args.skip_memory_review:
+        memory_summary = {"specification_status": "not_run", "independent_replay": False,
+                          "review_skipped_by_protocol": True}
+    elif args.memory_source:
         memory_path = args.memory_source
         memory_summary = verified_promotion(memory_path)
     else:
@@ -201,6 +208,7 @@ def main() -> None:
     command(args, "scripts/cleanroom_batch_report.py", *report_args)
     write_json(args.out / "suite_result.json", {
         "candidate": candidate, "memory_promoted": promoted,
+        "memory_review": memory_summary, "memory_source": str(memory_path) if memory_path else None,
         "b0": str(b0_manifest), "b1": str(b1_manifest),
         "b2_repairs": [str(path) for path in b2_repairs],
         "b3": str(b3_manifest) if b3_manifest else "not_run",

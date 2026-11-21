@@ -63,3 +63,20 @@ def test_batch_report_does_not_zero_fill_missing_repairs(tmp_path):
     assert result["arms"][2]["final"]["coverage"] == 0.5
     assert not result["arms"][2]["pair_win_safe"]["win_safe"]
     assert result["arms"][3]["status"] == "not_run"
+
+
+def test_batch_report_cli_uses_argparse_singular_destinations(tmp_path, monkeypatch):
+    import sys
+    from scripts.cleanroom_batch_report import main
+
+    calls = {}
+    def fake_build(*args):
+        calls["args"] = args
+        return {}
+    monkeypatch.setattr("scripts.cleanroom_batch_report.build", fake_build)
+    monkeypatch.setattr(sys, "argv", ["cleanroom_batch_report.py", "--b0", "b0", "--b1", "b1",
+                                     "--b2", "b1", "--b2-repair", "r1", "--b2-repair", "r2",
+                                     "--b3", "b3", "--b3-repair", "r3", "--out", "out"])
+    main()
+    assert len(calls["args"][3]) == 2
+    assert len(calls["args"][5]) == 1

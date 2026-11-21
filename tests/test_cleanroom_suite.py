@@ -133,3 +133,50 @@ def test_suite_uses_external_memory_for_b3_without_repromotion(tmp_path, monkeyp
     result = json.loads((out / "suite_result.json").read_text())
     assert result["memory_promoted"]
     assert result["b3"] != "not_run"
+
+
+def test_suite_skip_memory_review_does_not_repromote_or_run_b3(tmp_path, monkeypatch):
+    import hashlib
+    import sys
+
+    dev_config = tmp_path / "dev.json"
+    dev_config.write_text(json.dumps({"tasks": [
+        {"name": "additive_microfactory_order_planning", "domain": "manufacturing", "split": "dev"}]}))
+    audit_config = tmp_path / "audit.json"
+    audit_config.write_text(json.dumps({"tasks": [
+        {"name": "ev_battery_recycling_network", "domain": "manufacturing", "split": "transfer"}]}))
+    gepa = tmp_path / "gepa"
+    gepa.mkdir()
+    (gepa / "gepa_result.json").write_text(json.dumps({
+        "candidates": [{"conventions": ""}, {"conventions": "spec"}]}))
+    (gepa / "analysis.json").write_text(json.dumps({
+        "train_ids": [], "curves": [{"candidate_idx": 0, "official_proxy_mean": 0.0},
+                                     {"candidate_idx": 1, "official_proxy_mean": 1.0}]}))
+    (gepa / "implementation.json").write_text(json.dumps({
+        "tasks_sha256": hashlib.sha256(dev_config.read_bytes()).hexdigest()}))
+    monkeypatch.setattr(cleanroom_suite, "replay", lambda args, arm, source=None, candidate=None,
+                        compare_to=None: args.out / arm / "run.json")
+    repairs = []
+    def fake_repairs(args, arm, packets, spec_source, candidate=None):
+        repairs.append(arm)
+        return [args.out / f"{arm}_repair.json"]
+    monkeypatch.setattr(cleanroom_suite, "repair_batch", fake_repairs)
+    commands = []
+    def fake_command(args, script, *arguments):
+        commands.append(script)
+        if script == "scripts/cleanroom_batch_report.py":
+            (args.out / "report").mkdir()
+            (args.out / "report/batch_summary.json").write_text("{}")
+            (args.out / "report/report.md").write_text("report")
+    monkeypatch.setattr(cleanroom_suite, "command", fake_command)
+    out = tmp_path / "suite"
+    monkeypatch.setattr(sys, "argv", ["cleanroom_suite.py", "--gepa-run", str(gepa),
+                                     "--dev-tasks", str(dev_config), "--audit-tasks", str(audit_config),
+                                     "--out", str(out), "--skip-memory-review"])
+    cleanroom_suite.main()
+    assert repairs == ["B2"]
+    assert "scripts/cleanroom_memory.py" not in commands
+    result = json.loads((out / "suite_result.json").read_text())
+    assert not result["memory_promoted"]
+    assert result["memory_review"]["review_skipped_by_protocol"]
+    assert result["b3"] == "not_run"

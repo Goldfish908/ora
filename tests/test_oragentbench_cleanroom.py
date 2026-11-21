@@ -72,3 +72,18 @@ def test_activation_findings_become_explicit_repair_requirements():
     assert "REQUIRED ACTIVATION CONTRACT" in system
     assert "use_plant_dc" in system
     assert "min_shipment * activation" in system
+
+
+def test_wrong_workspace_mutation_is_idempotent(tmp_path):
+    from ora_agent.cleanroom_witness import _wrong_workspace
+
+    source = tmp_path / "source"
+    (source / "submissions").mkdir(parents=True)
+    (source / "submissions/solution.csv").write_text("valid,header\n1,2\n")
+    destination = tmp_path / "wrong"
+    _wrong_workspace(source, destination, "missing_solution")
+    _wrong_workspace(source, destination, "missing_solution")
+    assert not (destination / "submissions/solution.csv").exists()
+    _wrong_workspace(source, destination, "invalid_schema")
+    _wrong_workspace(source, destination, "invalid_schema")
+    assert (destination / "submissions/solution.csv").read_text() == "wrong,columns\n1,2,3\n"

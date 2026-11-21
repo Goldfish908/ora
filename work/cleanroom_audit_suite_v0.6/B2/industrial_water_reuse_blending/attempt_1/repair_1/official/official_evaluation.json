@@ -1,0 +1,70 @@
+{
+ "evaluation": {
+  "environment": "industrial_water_reuse_blending",
+  "error_count": 0,
+  "errors": [],
+  "feasible": true,
+  "objective": 6011.5448483809205,
+  "total_cost": 6011.5448483809205
+ },
+ "reward": {
+  "feasibility": 1.0,
+  "quality": 2.0
+ },
+ "reward_details": {
+  "agent_objective": 6011.5448483809205,
+  "agent_objective_source": "objective",
+  "best_bound": 6011.5448483809305,
+  "bound_sense": "lower",
+  "evaluation_diagnostics": {
+   "error_count": 0,
+   "objective": 6011.5448483809205,
+   "profit": null,
+   "score": null,
+   "total_cost": 6011.5448483809205
+  },
+  "fallback_mip_gap": 0.0005,
+  "fallback_reference_scale": 6011.544848380947,
+  "feasibility": 1.0,
+  "formula": "clip(2 + d if d >= -1 else 1.5 + 0.5*d, 0, 2), d = (R - O) / (max(abs(R), 1e-8) * mip_gap)",
+  "objective_sense": "minimize",
+  "quality": 2.0,
+  "quality_status": "bound_gap_below_mip_gap",
+  "reference_metrics": {
+   "best_bound": 6011.5448483809305,
+   "best_bound_source": "best_bound",
+   "bound_sense": "lower",
+   "evaluation_summary": {
+    "error_count": 0,
+    "feasible": true,
+    "objective": 6011.544848380947,
+    "total_cost": 6011.544848380947
+   },
+   "generated_at": "2026-05-18T12:03:49.257431+00:00",
+   "mip_gap": 0.0005,
+   "objective_sense": "minimize",
+   "quality_formula": "clip(1 + (R - O) / (R - B), 0, 2) if B exists and R - B >= max(abs(R), 1e-8) * mip_gap; otherwise let d=(R - O)/(max(abs(R), 1e-8)*mip_gap), quality=clip(2+d if d>=-1 else 1.5+0.5*d, 0, 2); if no R, quality = 2",
+   "reference_objective": 6011.544848380947,
+   "reference_objective_source": "objective",
+   "solution_path": "reference_solutions/industrial_water_reuse_blending_reference_solution.csv",
+   "solver_summary": {
+    "best_bound": 6011.5448483809305,
+    "evaluation_objective": 6011.544848380947,
+    "mip_gap": 0.0,
+    "objective": 6011.5448483809305,
+    "solution": "reference_solutions/industrial_water_reuse_blending_reference_solution.csv",
+    "status": "optimal"
+   },
+   "task_name": "industrial_water_reuse_blending",
+   "time_limit_seconds": 300.0
+  },
+  "reference_objective": 6011.544848380947,
+  "scalar_reward": 1.0,
+  "scalar_reward_formula": "(feasibility + quality) / 3.0"
+ },
+ "runner": {
+  "return_code": 0,
+  "timed_out": false,
+  "wall_seconds": 30.013809
+ }
+}

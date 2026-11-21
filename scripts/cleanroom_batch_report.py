@@ -171,13 +171,13 @@ def main() -> None:
     parser.add_argument("--b3-repair", action="append", default=[])
     parser.add_argument("--out", required=True)
     args = parser.parse_args()
-    if bool(args.b2) != bool(args.b2_repairs):
+    if bool(args.b2) != bool(args.b2_repair):
         parser.error("--b2 and at least one --b2-repair must be supplied together")
-    if bool(args.b3) != bool(args.b3_repairs):
+    if bool(args.b3) != bool(args.b3_repair):
         parser.error("--b3 and at least one --b3-repair must be supplied together")
     result = build(ROOT / args.b0, ROOT / args.b1,
-                   ROOT / args.b2 if args.b2 else None, args.b2_repairs,
-                   ROOT / args.b3 if args.b3 else None, args.b3_repairs, ROOT / args.out)
+                   ROOT / args.b2 if args.b2 else None, args.b2_repair,
+                   ROOT / args.b3 if args.b3 else None, args.b3_repair, ROOT / args.out)
     print(json.dumps(result, ensure_ascii=False, indent=1))
 
 

@@ -78,7 +78,7 @@ def evaluate_witness(memory: EvidenceMemory, packet: TaskPacket, workspace: Path
 
 
 def _wrong_workspace(source: Path, destination: Path, mutation: str) -> Path:
-    shutil.copytree(source, destination)
+    shutil.copytree(source, destination, dirs_exist_ok=True)
     submissions = destination / "submissions"
     solution = submissions / "solution.csv"
     if mutation == "missing_solution":

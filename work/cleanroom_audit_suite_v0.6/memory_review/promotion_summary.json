@@ -1,0 +1,14 @@
+{
+ "best_candidate_idx": 1,
+ "independent_replay": false,
+ "specification_status": "rejected",
+ "specification_scope": {
+  "dataset": "oragentbench",
+  "domain": "manufacturing"
+ },
+ "audit": {
+  "changed_features_covered": false,
+  "scope_confirmed": false,
+  "coverage_note": "Independent replay did not justify an audit call."
+ }
+}

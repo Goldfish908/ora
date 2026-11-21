@@ -1,0 +1,20 @@
+{
+ "script_sha256": "f816d8670708a32df6c42d17cfaaea491d5ccbe066b3446add718115d46fa27c",
+ "gepa_implementation_sha256": "bf5eda0654e51ea7f5c40cff3522cefdd7606764a3d3b88fe5c5ebb60f81d82b",
+ "dev_tasks_sha256": "74c7c8c12eaf7623657fba4ee0f3e01e19860b2fd998d9021c55efa5d21252b7",
+ "audit_tasks_sha256": "ce6102220f3ffed9b7385e2cd53fe9af6dee275d2eff75ec68117b73533a094e",
+ "memory_source_sha256": null,
+ "arguments": {
+  "gepa_run": "/home/hewj13/wm/ora/work/cleanroom_gepa_guarded_assist_v0.6",
+  "dev_tasks": "/home/hewj13/wm/ora/configs/cleanroom_formal_dev_v0.6.json",
+  "audit_tasks": "/home/hewj13/wm/ora/configs/cleanroom_independent_audit_v0.6.json",
+  "out": "/home/hewj13/wm/ora/work/cleanroom_audit_suite_v0.6",
+  "witness_source": "/home/hewj13/wm/ora/work/cleanroom_dag_repair_smoke_v0.3/witness",
+  "memory_source": null,
+  "workers": 1,
+  "seed": 0,
+  "max_attempts": 3,
+  "llm_timeout": 600.0,
+  "resume": false
+ }
+}

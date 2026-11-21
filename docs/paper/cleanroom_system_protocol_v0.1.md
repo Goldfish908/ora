@@ -160,3 +160,24 @@ PYTHONPATH="$PWD" /home/hewj13/wm/ext/py312/bin/python scripts/cleanroom_suite.p
 - 这一结果支持“共享规范可在部分 dev 任务上产生可归因增益”，但不支持“GEPA 已迁移”或“memory 已晋升”。独立审计和后续迁移由两批次 suite 决定。
 - 图件：`work/cleanroom_gepa_guarded_assist_v0.6_report/gepa_candidates.png`；逐提议历史与失败类型：同目录 `candidate_analysis.json` 和 `report.md`。
 - 独立 suite 的 `candidate_selection.json` 已确认选择 C1，dev 代理均值为 0.3333333333333333。B0/B1、memory 审查、B2/B3 结果在运行完成后另报，不以设计或中间状态代替结果。
+
+
+## 独立审计 B0/B1 与 memory 审查结果
+
+独立批次为 `industrial_water_reuse_blending` 和 `mass_timber_panel_cutting_plan`，未参与 GEPA train/validation。B0/B1 使用与 GEPA 相同的生成、执行与 guard 实现，`implementation_matches=true`。
+
+| 任务 | B0 直接结果 | B1 直接结果 | 归因 |
+|---|---|---|---|
+| 水回用 | 执行错误：`gaprel` 参数不存在 | `proxy=true、true=false`，12 个需求平衡错误，objective=1203.866818796961 | 执行失败变为新的代理幻影 |
+| 木板材切割 | `proxy=true、true=false`，48 个构件需求未满足，total_cost=0 | `proxy=true、true=true、quality=2.0`，objective=343541.32913979195 | 幻影变为真实正确解 |
+
+汇总：B0 `proxy=1/2、true=0/2、phantom=1/2、UNKNOWN=0/2`；B1 `proxy=2/2、true=1/2、phantom=1/2、UNKNOWN=0/2`。配对结果为新增真实正确 1、丢失真实正确 0、新增幻影 1、移除幻影 1，`win_safe=true`。
+
+memory 审查没有只看汇总增益：因为水回用出现**新增幻影**，独立晋升条件失败，`specification_status=rejected`。这证明实现和任务覆盖一致，但不满足“不得新增幻影”的授权门槛；B3 在该批次不运行。证据为：
+
+- `work/cleanroom_audit_suite_v0.6/B0/replay_result.json`
+- `work/cleanroom_audit_suite_v0.6/B1/replay_result.json`
+- `work/cleanroom_audit_suite_v0.6/memory_review/independent_replay_evidence.json`
+- `work/cleanroom_audit_suite_v0.6/memory_review/promotion_summary.json`
+
+B2 随后只针对失败/幻影任务进行有界修复，原本正确的木板材解必须保留。其增量与 GEPA 直接生成收益分开报告。

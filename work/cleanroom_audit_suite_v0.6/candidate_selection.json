@@ -1,0 +1,19 @@
+{
+ "candidate_idx": 1,
+ "candidate_sha256": "61c8e9c32aa28d042547f571f6c0b8e771c8bec7c4f071da02e5a9cbdb636d45",
+ "parents": [
+  0
+ ],
+ "official_proxy_mean": 0.0,
+ "n": 1,
+ "executable": 0,
+ "feasible": 0,
+ "proxy_match": 0,
+ "true_correct": 0,
+ "phantom_proxy": 0,
+ "unknown": 0,
+ "generation_errors": 1,
+ "mean_quality": 0.0,
+ "dev_proxy_mean": 0.3333333333333333,
+ "selection_rule": "transfer_proxy_desc_dev_proxy_desc_candidate_idx_asc"
+}

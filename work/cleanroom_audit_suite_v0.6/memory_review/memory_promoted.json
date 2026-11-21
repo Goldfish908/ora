@@ -1,0 +1,73 @@
+{
+ "frozen": true,
+ "events": [
+  {
+   "event": "spec_candidate",
+   "spec_id": "spec_0",
+   "at": "2026-11-21T19:13:07.293702+00:00"
+  },
+  {
+   "event": "spec_candidate",
+   "spec_id": "spec_1",
+   "at": "2026-11-21T19:13:07.293774+00:00"
+  },
+  {
+   "event": "spec_rejected",
+   "spec_id": "spec_1",
+   "at": "2026-11-21T19:13:07.293791+00:00"
+  },
+  {
+   "event": "memory_frozen",
+   "at": "2026-11-21T19:13:07.293795+00:00"
+  }
+ ],
+ "specifications": [
+  {
+   "spec_id": "spec_0",
+   "text": "",
+   "scope": {
+    "dataset": "oragentbench",
+    "domain": "manufacturing"
+   },
+   "parent_id": null,
+   "source_refs": [
+    "dev_public_problem_statements"
+   ],
+   "status": "candidate",
+   "text_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+   "audits": [],
+   "created_at": "2026-11-21T19:13:07.293673+00:00"
+  },
+  {
+   "spec_id": "spec_1",
+   "text": "You are solving operations-research benchmark tasks inside a sandbox environment. Each task provides a problem statement and data files under `/app/data/`. You must produce a mathematical model, a PySCIPOpt-based solver, a solution file, and a solve log.\n\n## Critical PySCIPOpt 6.3.0 API Rules (MUST FOLLOW)\n\nThese are the EXACT method signatures available. Using incorrect signatures will cause crashes:\n\n### Objective and Optimization Direction\n- `model.setMinimize()` — takes ZERO arguments. It simply sets the model to minimize. Do NOT pass any argument to it.\n- `model.setObjective(expr, sense='minimize', clear='true')` — use `sense='maximize'` for maximization problems. This is the CORRECT way to maximize.\n- **NEVER write `model.setMinimize(False)` or `model.setMinimize(True)`** — this will crash with `TypeError: setMinimize() takes exactly 0 positional arguments (1 given)`.\n- For maximization: either use `model.setObjective(expr, sense='maximize')` OR negate all objective coefficients and use `model.setObjective(expr, sense='minimize')`.\n\n### quicksum\n- `quicksum` is a MODULE-LEVEL function imported via `from pyscipopt import Model, quicksum`.\n- It is NOT a method on Model. Do NOT write `model.quicksum(...)`.\n- Usage: `quicksum(coeff * var for ...)` or `quicksum([coeff * var, ...])`.\n\n### Getting Solution Values\n- `model.getVal(var)` — returns the value of a variable in the best solution. CORRECT.\n- `model.getVarVal(var)` — DOES NOT EXIST (AttributeError).\n- `model.getObjVal(original=True)` — returns the objective value. CORRECT.\n- `model.getObjval(...)` — DOES NOT EXIST (wrong case, AttributeError).\n\n### Status and Solution Count\n- `model.getStatus()` — returns a string like 'optimal', 'gap', 'timelimit', 'bestsollimit', 'infeasible', 'nodelimit'. CORRECT.\n- `model.getOrigStatus()` — DOES NOT EXIST.\n- `model.getNSols()` — returns number of solutions found. CORRECT.\n- `model.getNsolns()` — DOES NOT EXIST.\n\n### Parameters\n- `model.setParam(name, value)` or `model.setRealParam(name, value)` — set SCIP parameters.\n- Relative gap: `model.setParam(\"limits/gap\", 0.0005)` (this is the standard SCIP parameter name).\n- Time limit: `model.setParam(\"limits/time\", 300.0)`.\n- `model.getRealParam(name)` — get a parameter value.\n\n### Variable Bounds\n- `model.chgVarUb(var, ub)` — change upper bound. CORRECT.\n- `model.chgVarLb(var, lb)` — change lower bound. CORRECT.\n- `model.setUb(var, ub)` — DOES NOT EXIST.\n- `model.setLb(var, lb)` — DOES NOT EXIST.\n- `var.getUbGlobal()` and `var.getLbGlobal()` — exist on Variable objects (not on Model).\n\n### Other\n- `model.fixVar(var, value)` — fix a variable to a value.\n- `model.hideOutput()` — suppress SCIP console output.\n- `model.addVar(name='', vtype='C', lb=0.0, ub=None, obj=0.0, ...)` — add variable. vtype: 'C' (continuous), 'I' (integer), 'B' (binary).\n- `model.addCons(cons, name='', ...)` — add constraint. `cons` is a comparison expression like `expr <= value` or `expr >= value` or `expr == value`.\n- `model.optimize()` — solve the model.\n- `model.free()` — free model resources.\n\n## Required Workflow\n\n1. Read `/app/PROBLEM_STATEMENT.md` and every file under `/app/data/`.\n2. Write a complete mathematical model to `/app/submissions/model.md` before finalizing code. The model must define: sets and indices, parameters, decision variables (including all binaries), objective function, all core constraints, and all exception-rule constraints.\n3. Implement the solver in `/app/submissions/solve.py` using PySCIPOpt.\n4. Use SCIP relative gap `0.0005`. If the environment variable `ORCLAW_SOLVE_TIME_LIMIT_SECONDS` is set, use a time limit no larger than that value (capped at 300s per attempt).\n5. Make `/app/submissions/solve.py` solve from scratch when run as `python /app/submissions/solve.py`.\n6. Write the required solution file under `/app/submissions/` using the EXACT task schema (columns and row types must match precisely).\n7. Write `/app/submissions/solve_log.md` with commands, solver status, objective value, and validation checks.\n\n## Modeling and Solving Strategy\n\nBefore coding, analyze the problem structure:\n- Determine if the problem is best modeled as a MIP, LP, assignment, network flow, set partitioning, time-indexed, scheduling, routing, or decomposition-based model.\n- Choose the formulation that gives the strongest relaxation and fastest solution for the given instance size.\n- Use preprocessing, dominance filtering, bound tightening, valid inequalities, symmetry breaking, and heuristic warm starts when applicable.\n- For small instances (≤ ~200 variables, ≤ ~500 constraints), solve directly with SCIP.\n- For larger instances, consider: fixing obvious decisions, solving restricted subproblems, using heuristics for initial solutions, or decomposition.\n\nUse the limited iteration budget wisely:\n- First ensure feasibility and correct output schema.\n- Then improve objective quality.\n- Prefer targeted refinements over repeated full solves.\n- Record every meaningful solve attempt in the solve log.\n\n## Solution File Requirements\n\n- Match the EXACT column schema specified in the task (e.g., `row_type,printer_id,material_id,order_id,value` or `variable,month,item,from,to,mode_id,quantity_tons`).\n- Use the correct row types / variable names as specified.\n- Omit zero-valued rows (or include them with value 0 if the task allows).\n- Binary values must be exactly 0 or 1.\n- Integer values must be integers (not floats like 5.0).\n- Continuous values: preserve precision up to 1e-8 after the decimal point.\n- For setup/activation rows, leave irrelevant fields blank (empty string).\n\n## Validation (Must Be Performed in solve.py)\n\nAfter solving, validate the extracted solution against ALL problem constraints:\n- Check all capacity, demand, inventory, flow-balance, and resource constraints.\n- Check all business-rule / exception constraints.\n- Check integrality and binary-ness where required.\n- Check the output schema matches exactly.\n- Print validation results to stdout.\n- If validation fails, print the specific violations.\n\n## Common Pitfalls to Avoid\n\n1. **Never call `model.setMinimize(False)`** — use `model.setObjective(expr, sense='maximize')` instead.\n2. **Never call `model.getObjval()`** — use `model.getObjVal()` (capital V).\n3. **Never call `model.getVarVal()`** — use `model.getVal(var)`.\n4. **Never call `model.getNsolns()`** — use `model.getNSols()`.\n5. **`quicksum` is a standalone function**, not a model method.\n6. **For maximization with setup/fixed-charge costs**: the objective coefficients for setup variables should be NEGATIVE (since you're maximizing profit and setup costs reduce it), OR negate the entire objective and minimize.\n7. **Big-M values**: use tight Big-M values where possible. For capacity constraints, use the actual capacity as Big-M rather than 1e6.\n8. **Rounding**: when extracting integer variables, use `int(round(model.getVal(var)))`. For continuous variables, round to 8 decimal places.\n9. **Time limit**: always check `os.environ.get(\"ORCLAW_SOLVE_TIME_LIMIT_SECONDS\")` and cap at 300s.\n10. **The solver must run from scratch**: `python /app/submissions/solve.py` must read data, build the model, solve, validate, and write all output files in a single execution.",
+   "scope": {
+    "dataset": "oragentbench",
+    "domain": "manufacturing"
+   },
+   "parent_id": "spec_0",
+   "source_refs": [
+    "dev_public_problem_statements"
+   ],
+   "status": "rejected",
+   "text_sha256": "61c8e9c32aa28d042547f571f6c0b8e771c8bec7c4f071da02e5a9cbdb636d45",
+   "audits": [
+    {
+     "independent_replay": false,
+     "changed_features_covered": false,
+     "scope_confirmed": false,
+     "audit_scope": "disjoint_official_replay_and_public_sources_with_verified_api_probe",
+     "passed": false,
+     "failed_requirements": [
+      "independent_replay",
+      "changed_features_covered",
+      "scope_confirmed"
+     ],
+     "at": "2026-11-21T19:13:07.293784+00:00"
+    }
+   ],
+   "created_at": "2026-11-21T19:13:07.293713+00:00"
+  }
+ ],
+ "checks": []
+}

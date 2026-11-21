@@ -1,0 +1,27 @@
+{
+ "files": {
+  "ora_agent/cleanroom.py": "c33b21414dc230fb1862cbfdefb42d4652759236af9401f77d8f10c0bd2ad2a5",
+  "ora_agent/cleanroom_witness.py": "90a86aa439b8a5e4806da34a72f41a74a4a8cd2c38ff4bfe14296a7a4dfb6cc5",
+  "ora_agent/cleanroom_analysis.py": "f83f9035757136e00af167467d9ea97dc448740cce8fef47abae779a225d770b",
+  "ora_agent/oragentbench.py": "c44b984fa04b1c0344d5e54a3625797fd986eb01d14f193c5b5d8a3905ceb78d",
+  "ora_agent/api_guard.py": "bbe01a6a7fa84d83bb07ffd8af19884e1e032cd8a7f3494efa4eb41b44f423cb",
+  "scripts/cleanroom_repair.py": "13443711cf0c7ba8c3c5120f6e979af065751738f7f6163a70d0cbb52447caee"
+ },
+ "tasks_sha256": "b3d74b728d63101b75cc0e865c5e2bfffdbb31e70e16d0654e984ea7b55df679",
+ "source_record_sha256": "c1fe1290ce36e73f96d3a8b1196123ff4c000cd197d1ec273a5dfdc17c1102df",
+ "spec_source_sha256": null,
+ "model": "Qwen3_8-27B",
+ "arguments": {
+  "mode": "repair",
+  "tasks": "configs/cleanroom_manufacturing_smoke_tasks.json",
+  "run_dir": "work/cleanroom_bounded_b0_additive_v0.6.1",
+  "record": "work/cleanroom_gepa_guarded_smoke_v0.5/rollouts/e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855/additive_microfactory_order_planning/attempt_0/record.json",
+  "spec_source": null,
+  "spec_id": null,
+  "seed": 0,
+  "max_attempts": 3,
+  "llm_timeout": 600.0,
+  "witness_source": "work/cleanroom_dag_repair_smoke_v0.3/witness",
+  "api_guard": true
+ }
+}

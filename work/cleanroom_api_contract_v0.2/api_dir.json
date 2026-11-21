@@ -1,0 +1,11 @@
+{
+ "return_code": 0,
+ "stdout": "version 6.3.0\naddCoefKnapsack\naddCoefLinear\naddCoefLogicor\naddConsCoeff\naddObjoffset\nchgCoefLinear\nchgReoptObjective\nchgVarObjDive\nchgVarObjProbing\ndelCoefLinear\ngetAvgDualbound\ngetAvgLowerbound\ngetBestboundNode\ngetCutoffbound\ngetDualbound\ngetDualboundRoot\ngetFirstPrimalBound\ngetLPObjVal\ngetLowerbound\ngetLowerboundRoot\ngetNObjlimLeaves\ngetNlRowActivityBounds\ngetObjVal\ngetObjective\ngetObjectiveSense\ngetObjlimit\ngetObjoffset\ngetPrimalbound\ngetRowObjParallelism\ngetSolObjVal\ngetUpperbound\nisObjChangedProbing\nisObjIntegral\nsetObjIntegral\nsetObjective\nsetObjlimit\nupdateBendersLowerbounds\nupdateNodeLowerbound\n",
+ "stderr": "",
+ "timed_out": false,
+ "command": [
+  "python",
+  "-c",
+  "from pyscipopt import Model; import pyscipopt,inspect\nprint(\"version\",pyscipopt.__version__)\nprint(\"\\n\".join(name for name in dir(Model) if any(part in name.lower() for part in (\"coef\",\"obj\",\"bound\",\"sum\"))))"
+ ]
+}

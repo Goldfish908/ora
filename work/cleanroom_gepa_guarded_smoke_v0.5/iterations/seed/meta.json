@@ -1,0 +1,11 @@
+{
+  "iteration_id": "seed",
+  "is_seed": true,
+  "accepted": true,
+  "candidate_idx": 0,
+  "parent_iteration_ids": [],
+  "avg_val_score": 0.0,
+  "num_val_scored": 1,
+  "metric_calls_so_far": 0,
+  "objective_scores": {}
+}

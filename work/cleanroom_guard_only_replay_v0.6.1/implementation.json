@@ -1,0 +1,14 @@
+{
+ "files": {
+  "ora_agent/api_guard.py": "bbe01a6a7fa84d83bb07ffd8af19884e1e032cd8a7f3494efa4eb41b44f423cb",
+  "ora_agent/oragentbench.py": "4e5191db655c2b583a9c81fc4c03559671ae017824df1552ed37deb072690d90",
+  "ora_agent/cleanroom_analysis.py": "81246b4a5f2e4564d42e54e773cc098c4dac0d9c76f29373d528cca67737ff51",
+  "scripts/cleanroom_guard_replay.py": "4c99f1699332301a8b3ccf751f902e6b2d0cd6a6c5ef6dd3f454d60893c80b68"
+ },
+ "tasks_sha256": "b3d74b728d63101b75cc0e865c5e2bfffdbb31e70e16d0654e984ea7b55df679",
+ "source_records": [
+  "/home/hewj13/wm/ora/work/cleanroom_gepa_guarded_smoke_v0.5/rollouts/abdd040d09dfc3831b3762ed3d6863e0c1455eabb51f2af8959d7a0e676b248a/carbon_aware_compute_scheduling/attempt_0/record.json",
+  "/home/hewj13/wm/ora/work/cleanroom_gepa_guarded_smoke_v0.5/rollouts/abdd040d09dfc3831b3762ed3d6863e0c1455eabb51f2af8959d7a0e676b248a/additive_microfactory_order_planning/attempt_0/record.json"
+ ],
+ "llm_used": false
+}

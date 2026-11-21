@@ -1,0 +1,33 @@
+{
+  "schema_version": 3,
+  "iteration": 7,
+  "total_metric_calls": 50,
+  "num_full_val_evals": 2,
+  "frontier_type": "instance",
+  "component_names": [
+    "conventions"
+  ],
+  "summary": {
+    "num_iterations": 2,
+    "best_iteration_id": "seed",
+    "best_avg_score": 0.0,
+    "pareto_front_iteration_ids": [
+      "691d3481",
+      "seed"
+    ],
+    "hardest_examples": [
+      {
+        "val_id": "0",
+        "best_score": 0.0,
+        "best_iteration_ids": [
+          "691d3481",
+          "seed"
+        ]
+      }
+    ]
+  },
+  "layout": {
+    "iterations_dir": "iterations/",
+    "pareto_dir": "pareto/"
+  }
+}

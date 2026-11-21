@@ -1,0 +1,46 @@
+presolving:
+(round 1, fast)       0 del vars, 1 del conss, 0 add conss, 0 chg bounds, 0 chg sides, 0 chg coeffs, 0 upgd conss, 0 impls, 0 clqs, 0 implints
+(round 2, fast)       0 del vars, 1 del conss, 0 add conss, 54 chg bounds, 0 chg sides, 0 chg coeffs, 0 upgd conss, 0 impls, 0 clqs, 0 implints
+(round 3, fast)       7 del vars, 11 del conss, 0 add conss, 54 chg bounds, 0 chg sides, 54 chg coeffs, 0 upgd conss, 0 impls, 0 clqs, 0 implints
+(round 4, fast)       7 del vars, 17 del conss, 0 add conss, 54 chg bounds, 0 chg sides, 54 chg coeffs, 0 upgd conss, 0 impls, 0 clqs, 0 implints
+(round 5, exhaustive) 7 del vars, 30 del conss, 0 add conss, 54 chg bounds, 0 chg sides, 54 chg coeffs, 0 upgd conss, 0 impls, 0 clqs, 0 implints
+(round 6, exhaustive) 7 del vars, 30 del conss, 0 add conss, 54 chg bounds, 0 chg sides, 54 chg coeffs, 57 upgd conss, 0 impls, 0 clqs, 0 implints
+   (0.0s) probing cycle finished: starting next cycle
+(round 7, exhaustive) 8 del vars, 30 del conss, 0 add conss, 54 chg bounds, 0 chg sides, 54 chg coeffs, 57 upgd conss, 89 impls, 5 clqs, 0 implints
+(round 8, fast)       8 del vars, 34 del conss, 0 add conss, 54 chg bounds, 0 chg sides, 54 chg coeffs, 57 upgd conss, 89 impls, 5 clqs, 0 implints
+   (0.0s) probing cycle finished: starting next cycle
+   (0.0s) symmetry computation started: requiring (bin +, int +, cont +), (fixed: bin -, int -, cont -)
+   (0.0s) no symmetry present (symcode time: 0.00)
+presolving (9 rounds: 9 fast, 4 medium, 4 exhaustive):
+ 8 deleted vars, 34 deleted constraints, 0 added constraints, 54 tightened bounds, 0 added holes, 0 changed sides, 54 changed coefficients
+ 89 implications, 5 cliques, 0 implied integral variables (0 bin, 0 int, 0 cont)
+presolved problem has 63 variables (14 bin, 49 int, 0 cont) and 72 constraints
+     53 constraints of type <varbound>
+     19 constraints of type <linear>
+Presolving Time: 0.02
+
+ time | node  | left  |LP iter|LP it/n|mem/heur|mdpt |vars |cons |rows |cuts |sepa|confs|strbr|  dualbound   | primalbound  |  gap   | compl. 
+  0.0s|     1 |     0 |    28 |     - |  1723k |   0 |  63 |  72 |  72 |   0 |  0 |   1 |   0 | 9.939762e+03 |      --      |    Inf | unknown
+* 0.2s|     1 |     0 |    37 |     - |    LP  |   0 |  63 |  72 |  72 |   0 |  0 |   1 |   0 | 9.939762e+03 | 1.041058e+04 |   4.74%| unknown
+  0.2s|     1 |     0 |    40 |     - |  1808k |   0 |  63 |  72 |  75 |   3 |  1 |   1 |   0 | 9.939768e+03 | 1.041058e+04 |   4.74%| unknown
+i 0.2s|     1 |     0 |    40 |     - |  oneopt|   0 |  63 |  72 |  75 |   3 |  1 |   1 |   0 | 9.939768e+03 | 1.013969e+04 |   2.01%| unknown
+r 0.2s|     1 |     0 |    41 |     - |shifting|   0 |  63 |  72 |  75 |   3 |  1 |   1 |   0 | 9.939768e+03 | 9.997879e+03 |   0.58%| unknown
+  0.2s|     1 |     0 |    43 |     - |  1857k |   0 |  63 |  72 |  77 |   5 |  2 |   1 |   0 | 9.939768e+03 | 9.997879e+03 |   0.58%| unknown
+i 0.2s|     1 |     0 |    43 |     - |  oneopt|   0 |  63 |  72 |  49 |   5 |  2 |   1 |   0 | 9.939768e+03 | 9.942249e+03 |   0.02%| unknown
+  0.2s|     1 |     0 |    43 |     - |  1861k |   0 |  63 |  72 |  49 |   5 |  2 |   1 |   0 | 9.939768e+03 | 9.942249e+03 |   0.02%| unknown
+
+SCIP Status        : solving was interrupted [gap limit reached]
+Solving Time (sec) : 0.20
+Solving Nodes      : 1
+Primal Bound       : +9.94224908924532e+03 (5 solutions)
+Dual Bound         : +9.93976770862815e+03
+Gap                : 0.02 %
+Solver status: gaplimit
+Elapsed: 0.20s
+Wrote 41 rows to /app/submissions/solution.csv
+
+--- Validation ---
+All validation checks passed.
+
+Objective (contribution profit): 9942.2491
+Done.

@@ -1,0 +1,169 @@
+{
+ "frozen": true,
+ "events": [
+  {
+   "event": "check_hint_only",
+   "check_id": "execution_contract",
+   "at": "2026-11-21T17:27:06.389232+00:00"
+  },
+  {
+   "event": "check_veto_enabled",
+   "check_id": "execution_contract",
+   "at": "2026-11-21T17:27:06.389675+00:00"
+  },
+  {
+   "event": "check_hint_only",
+   "check_id": "manufacturing_official_task_pass",
+   "at": "2026-11-21T17:27:06.389723+00:00"
+  },
+  {
+   "event": "check_veto_enabled",
+   "check_id": "manufacturing_official_task_pass",
+   "at": "2026-11-21T17:27:06.391953+00:00"
+  },
+  {
+   "event": "memory_frozen",
+   "at": "2026-11-21T17:27:06.393782+00:00"
+  }
+ ],
+ "specifications": [],
+ "checks": [
+  {
+   "check_id": "execution_contract",
+   "scope": {
+    "dataset": "oragentbench"
+   },
+   "source_quote": "required solution file",
+   "status": "veto_enabled",
+   "code_sha256": "33313c9e545a8882759f100e329ae937be21d5d3b74e1248cd451c08058d118d",
+   "audits": [
+    {
+     "records": [
+      {
+       "case_id": "exec_clean_0",
+       "expected": "pass",
+       "observed": "pass"
+      },
+      {
+       "case_id": "exec_wrong_0",
+       "expected": "fail",
+       "observed": "fail"
+      },
+      {
+       "case_id": "exec_clean_1",
+       "expected": "pass",
+       "observed": "pass"
+      },
+      {
+       "case_id": "exec_wrong_1",
+       "expected": "fail",
+       "observed": "fail"
+      },
+      {
+       "case_id": "exec_clean_2",
+       "expected": "pass",
+       "observed": "pass"
+      },
+      {
+       "case_id": "exec_wrong_2",
+       "expected": "fail",
+       "observed": "fail"
+      }
+     ],
+     "n_clean": 3,
+     "n_wrong": 3,
+     "precision": 1.0,
+     "detection": 1.0,
+     "unknown": 0,
+     "passed": true,
+     "reasons": [],
+     "at": "2026-11-21T17:27:06.389664+00:00"
+    }
+   ]
+  },
+  {
+   "check_id": "manufacturing_official_task_pass",
+   "scope": {
+    "dataset": "oragentbench",
+    "domain": "manufacturing"
+   },
+   "source_quote": "required solution file",
+   "status": "veto_enabled",
+   "code_sha256": "d9a3808c96074d855b34d3fc8c6f915d1dd456f26a2e13eee8388c4a477f194c",
+   "audits": [
+    {
+     "records": [
+      {
+       "case_id": "additive_microfactory_order_planning:clean",
+       "expected": "pass",
+       "observed": "pass"
+      },
+      {
+       "case_id": "additive_microfactory_order_planning:missing_solution",
+       "expected": "fail",
+       "observed": "fail"
+      },
+      {
+       "case_id": "additive_microfactory_order_planning:invalid_schema",
+       "expected": "fail",
+       "observed": "fail"
+      },
+      {
+       "case_id": "additive_microfactory_order_planning:empty_solution",
+       "expected": "fail",
+       "observed": "fail"
+      },
+      {
+       "case_id": "industrial_supply_planning:clean",
+       "expected": "pass",
+       "observed": "pass"
+      },
+      {
+       "case_id": "industrial_supply_planning:missing_solution",
+       "expected": "fail",
+       "observed": "fail"
+      },
+      {
+       "case_id": "industrial_supply_planning:invalid_schema",
+       "expected": "fail",
+       "observed": "fail"
+      },
+      {
+       "case_id": "industrial_supply_planning:empty_solution",
+       "expected": "fail",
+       "observed": "fail"
+      },
+      {
+       "case_id": "carbon_aware_compute_scheduling:clean",
+       "expected": "pass",
+       "observed": "pass"
+      },
+      {
+       "case_id": "carbon_aware_compute_scheduling:missing_solution",
+       "expected": "fail",
+       "observed": "fail"
+      },
+      {
+       "case_id": "carbon_aware_compute_scheduling:invalid_schema",
+       "expected": "fail",
+       "observed": "fail"
+      },
+      {
+       "case_id": "carbon_aware_compute_scheduling:empty_solution",
+       "expected": "fail",
+       "observed": "fail"
+      }
+     ],
+     "n_clean": 3,
+     "n_wrong": 9,
+     "precision": 1.0,
+     "detection": 1.0,
+     "unknown": 0,
+     "passed": true,
+     "reasons": [],
+     "at": "2026-11-21T17:27:06.391934+00:00"
+    }
+   ]
+  }
+ ]
+}

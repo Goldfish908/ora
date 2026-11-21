@@ -1,0 +1,190 @@
+{
+ "status": "rejected",
+ "target": "manufacturing_official_task_pass",
+ "before": {
+  "execution_contract": "pass",
+  "manufacturing_official_task_pass": "fail"
+ },
+ "after": {
+  "execution_contract": "pass",
+  "manufacturing_official_task_pass": "fail"
+ },
+ "node_id": "root/repair:1",
+ "edge_accepted": false,
+ "edge_reasons": [
+  "target_not_improved:manufacturing_official_task_pass:fail->fail"
+ ],
+ "final_accept": false,
+ "final_reasons": [
+  "manufacturing_official_task_pass:fail"
+ ],
+ "record": {
+  "task": "additive_microfactory_order_planning",
+  "domain": "manufacturing",
+  "split": "dev",
+  "candidate_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+  "attempt": 1,
+  "problem": {
+   "instruction": "You are solving an operations-research benchmark task inside a sandbox.\n\nWork only inside `/app`. Do not use the internet, hidden evaluator files, reference models, package registries, or remote data.\n\nRequired workflow:\n1. Read `/app/PROBLEM_STATEMENT.md` and every file under `/app/data/`.\n2. Write a complete mathematical model to `/app/submissions/model.md` before finalizing code.\n3. Implement the solver in `/app/submissions/solve.py` using PySCIPOpt.\n4. Use SCIP relative gap `0.0005`. If `ORCLAW_SOLVE_TIME_LIMIT_SECONDS` is set, use a time limit no larger than that value. Preserve solution values with precision up to `1e-8` after the decimal point.\n5. Make `/app/submissions/solve.py` solve from scratch when run as `python /app/submissions/solve.py`.\n6. Write the required solution file under `/app/submissions/` using the task schema.\n7. Write `/app/submissions/solve_log.md` with commands, solver status, objective or score if available, and validation checks.\n\nNote:\nYou may improve the modeling and solving strategy based on preliminary results, but each individual solve attempt is limited to 5 minutes. The whole workflow is also time-limited, so do not perform unlimited full solve-and-iterate cycles.\n\nBefore running expensive solves, reason about the problem structure and choose an efficient approach. You may:\n1. Use stronger mathematical formulations and more sophisticated modeling strategies tailored to the structure, special properties, and scale of the given problem instance.\n2. Solve directly with SCIP when the model is tractable.\n3. Design effective heuristic, local-search, repair, or rounding methods when exact optimization is too slow.\n4. Combine heuristics with SCIP, for example by generating an initial feasible solution, fixing or relaxing selected variables, using warm starts if supported, or solving restricted subproblems.\n5. Run short diagnostic solves to estimate difficulty, then refine the model or solution method.\n\nDo not default to a naive formulation. Before coding, explicitly analyze whether the problem is better represented as an assignment model, network flow model, set partitioning model, time-indexed model, interval/order-based scheduling model, routing model, or decomposition-based model and so on. Choose the formulation that is likely to give the strongest relaxation and fastest solution for the given instance size. Use preprocessing, dominance filtering, bound tightening, valid inequalities, symmetry breaking, and heuristic warm starts whenever applicable.\n\nUse the limited iteration budget wisely:\n- First ensure feasibility and correct output schema.\n- Then improve objective quality.\n- Prefer targeted refinements over repeated full solves.\n- Stop iterating when additional improvements are unlikely within the remaining time.\n- Record every meaningful solve attempt and validation result in `/app/submissions/solve_log.md`.\n\nThe final submission should prioritize correctness, feasibility, and robust execution from scratch under the time limit.\n",
+   "problem_statement": "# Additive Microfactory Order Planning\n\nA distributed additive-manufacturing microfactory must decide which near-term customer orders to produce during the current planning horizon. The plan is an aggregate production commitment over the horizon, not a day-by-day machine schedule. Printers differ by technology, available production hours, compatible materials, speed, operating cost, setup burden, and medical certification. Materials are limited to the qualified on-site inventory listed in the data.\n\nChoose which printer-material setups to activate and how many parts of each order to print on each eligible printer. The objective is to maximize contribution profit from shipped parts after printing costs, material consumption including expected scrap, and setup costs. Orders may be split across compatible printers, but production quantities are integer part counts and no order may be produced above its requested quantity.\n\n## Planning Rules\n\n- A printer may produce an order only when the order's required material is listed as eligible for that printer.\n- A printer-material setup row is required before any positive production using that printer and material. Setup decisions are binary: either the printer is prepared for that material or it is not.\n- Each active setup consumes setup hours and setup cost according to the printer-material eligibility table.\n- Production consumes printer hours based on the order's nominal print time and the compatible printer-material speed multiplier.\n- Production consumes material based on the order's material requirement per part, adjusted for the scrap rate of the printer-material pair.\n- The total setup and production hours assigned to a printer must fit within that printer's available hours.\n- The total material consumed from each material must not exceed its qualified inventory.\n- Regulated orders may only be produced on medically certified printers.\n- Every order has a minimum fill rate. The shipped quantity for that order must be at least that fraction of the requested parts, and no more than the requested parts.\n- Profit credits revenue for every produced part and subtracts variable print cost, material cost, and setup cost.\n\n## Data\n\n- `config.json`: planning-horizon context and numerical feasibility tolerances.\n- `printers.csv`: printer identifier, cell, technology, available hours, and medical-certification flag.\n- `materials.csv`: material family, qualified inventory, and material cost.\n- `orders.csv`: customer segment, required material, requested parts, print hours per part, material per part, due-day context, regulated-order flag, revenue, and minimum fill rate.\n- `printer_material_eligibility.csv`: compatible printer-material pairs with speed multiplier, variable print cost, setup hours, setup cost, and scrap rate.\n\n## Submission\n\nWrite `/app/submissions/model.md`, `/app/submissions/solve.py`, `/app/submissions/solve_log.md`, and `/app/submissions/solution.csv`.\n\nThe solution file must use exactly these columns:\n\n```csv\nrow_type,printer_id,material_id,order_id,value\n```\n\nUse `setup` rows to declare active printer-material setups. A setup row must leave `order_id` blank and use value `1`. Use `produce` rows for integer part counts produced for an order on a compatible printer. The `material_id` on a `produce` row must match the order's required material. Omit zero-valued rows.\n",
+   "public_files": {
+    "PROBLEM_STATEMENT.md": "# Additive Microfactory Order Planning\n\nA distributed additive-manufacturing microfactory must decide which near-term customer orders to produce during the current planning horizon. The plan is an aggregate production commitment over the horizon, not a day-by-day machine schedule. Printers differ by technology, available production hours, compatible materials, speed, operating cost, setup burden, and medical certification. Materials are limited to the qualified on-site inventory listed in the data.\n\nChoose which printer-material setups to activate and how many parts of each order to print on each eligible printer. The objective is to maximize contribution profit from shipped parts after printing costs, material consumption including expected scrap, and setup costs. Orders may be split across compatible printers, but production quantities are integer part counts and no order may be produced above its requested quantity.\n\n## Planning Rules\n\n- A printer may produce an order only when the order's required material is listed as eligible for that printer.\n- A printer-material setup row is required before any positive production using that printer and material. Setup decisions are binary: either the printer is prepared for that material or it is not.\n- Each active setup consumes setup hours and setup cost according to the printer-material eligibility table.\n- Production consumes printer hours based on the order's nominal print time and the compatible printer-material speed multiplier.\n- Production consumes material based on the order's material requirement per part, adjusted for the scrap rate of the printer-material pair.\n- The total setup and production hours assigned to a printer must fit within that printer's available hours.\n- The total material consumed from each material must not exceed its qualified inventory.\n- Regulated orders may only be produced on medically certified printers.\n- Every order has a minimum fill rate. The shipped quantity for that order must be at least that fraction of the requested parts, and no more than the requested parts.\n- Profit credits revenue for every produced part and subtracts variable print cost, material cost, and setup cost.\n\n## Data\n\n- `config.json`: planning-horizon context and numerical feasibility tolerances.\n- `printers.csv`: printer identifier, cell, technology, available hours, and medical-certification flag.\n- `materials.csv`: material family, qualified inventory, and material cost.\n- `orders.csv`: customer segment, required material, requested parts, print hours per part, material per part, due-day context, regulated-order flag, revenue, and minimum fill rate.\n- `printer_material_eligibility.csv`: compatible printer-material pairs with speed multiplier, variable print cost, setup hours, setup cost, and scrap rate.\n\n## Submission\n\nWrite `/app/submissions/model.md`, `/app/submissions/solve.py`, `/app/submissions/solve_log.md`, and `/app/submissions/solution.csv`.\n\nThe solution file must use exactly these columns:\n\n```csv\nrow_type,printer_id,material_id,order_id,value\n```\n\nUse `setup` rows to declare active printer-material setups. A setup row must leave `order_id` blank and use value `1`. Use `produce` rows for integer part counts produced for an order on a compatible printer. The `material_id` on a `produce` row must match the order's required material. Omit zero-valued rows.\n",
+    "data/config.json": "{\n  \"feasibility_tolerance\": 1e-05,\n  \"integer_tolerance\": 1e-05,\n  \"planning_days\": 5,\n  \"priority_service_floor\": 0.82,\n  \"regulated_service_floor\": 0.9\n}\n",
+    "data/materials.csv": "material_id,family,inventory_kg,material_cost_per_kg\nM01,nylon_pa12,34.7,58.40\nM02,bio_resin,22.9,74.15\nM03,flex_tpu,18.6,63.75\nM04,dental_resin,15.8,91.30\nM05,carbon_nylon,20.4,86.45\n",
+    "data/orders.csv": "order_id,customer_segment,material_id,requested_parts,print_hours_per_part,material_kg_per_part,due_day,regulated,revenue_per_part,minimum_fill_rate\nO01,clinic,M04,34,0.420,0.072,2,1,43.80,0.90\nO02,robotics,M05,28,0.580,0.118,4,0,56.20,0.78\nO03,retail_spares,M01,76,0.180,0.041,5,0,16.90,0.42\nO04,orthotics,M03,41,0.360,0.084,3,1,31.70,0.84\nO05,lab_tools,M02,52,0.290,0.055,4,0,24.50,0.55\nO06,clinic,M04,22,0.470,0.079,1,1,45.60,0.95\nO07,drone_parts,M05,35,0.510,0.126,5,0,49.80,0.62\nO08,microfluidics,M02,44,0.330,0.049,2,1,38.40,0.86\nO09,fixtures,M01,88,0.160,0.037,5,0,13.80,0.35\nO10,wearables,M03,57,0.310,0.071,4,0,28.60,0.58\nO11,clinic,M04,27,0.450,0.075,3,1,44.90,0.90\nO12,robotics,M05,31,0.550,0.121,3,0,54.50,0.82\nO13,retail_spares,M01,64,0.200,0.046,4,0,17.40,0.45\nO14,lab_tools,M02,39,0.300,0.053,5,0,25.80,0.50\nO15,orthotics,M03,36,0.390,0.088,2,1,33.20,0.88\nO16,fixtures,M01,71,0.170,0.040,3,0,14.60,0.38\nO17,microfluidics,M02,26,0.350,0.052,1,1,39.10,0.92\nO18,drone_parts,M05,24,0.620,0.132,4,0,52.70,0.60\nO19,wearables,M03,48,0.340,0.074,5,0,29.40,0.56\nO20,clinic,M04,18,0.490,0.081,2,1,47.20,0.94\n",
+    "data/printer_material_eligibility.csv": "printer_id,material_id,speed_multiplier,variable_cost_per_hour,setup_hours,setup_cost,scrap_rate\nP01,M01,1.070,18.40,1.15,49.25,0.042\nP01,M03,0.910,21.70,1.30,48.23,0.055\nP01,M05,0.840,24.60,1.45,64.54,0.063\nP02,M02,1.030,16.50,0.95,69.31,0.038\nP02,M04,0.960,20.80,1.10,42.51,0.046\nP02,M03,0.780,19.60,1.25,59.42,0.052\nP03,M01,1.180,22.20,1.35,68.17,0.049\nP03,M03,1.020,23.10,1.42,51.54,0.058\nP03,M05,0.930,27.50,1.55,58.93,0.069\nP04,M01,1.070,18.40,1.15,56.35,0.042\nP04,M03,0.910,21.70,1.30,56.80,0.055\nP04,M05,0.840,24.60,1.45,46.04,0.063\nP05,M02,1.030,16.50,0.95,64.36,0.038\nP05,M04,0.960,20.80,1.10,47.02,0.046\nP05,M03,0.780,19.60,1.25,55.63,0.052\n",
+    "data/printers.csv": "printer_id,cell,technology,available_hours,medical_certified\nP01,north,SLS,47.6,1\nP02,north,SLA,42.3,1\nP03,central,MJF,51.8,0\nP04,central,SLS,39.7,0\nP05,south,SLA,45.4,1\n",
+    "submissions/solution_template.csv": "row_type,printer_id,material_id,order_id,value\n"
+   }
+  },
+  "artifacts": {
+   "model_md": "# Additive Microfactory Order Planning — Mathematical Model\n\n## Sets\n- P: printers (P01–P05)\n- M: materials (M01–M05)\n- O: orders (O01–O20)\n- E ⊆ P×M: eligible printer-material pairs (from eligibility table)\n- R ⊆ O: regulated orders\n\n## Parameters\n- H_p: available hours of printer p\n- Inv_m: qualified inventory (kg) of material m\n- c_m: material cost per kg\n- q_o: requested parts of order o\n- t_o: nominal print hours per part\n- w_o: material kg per part\n- reg_o ∈ {0,1}: regulated flag\n- rev_o: revenue per part\n- f_o: minimum fill rate\n- For (p,m) ∈ E: s_pm speed multiplier, v_pm variable cost/hour, sh_pm setup hours, sc_pm setup cost, r_pm scrap rate\n- med_p ∈ {0,1}: medical certification\n\n## Decision variables\n- y_{p,m} ∈ {0,1}: setup activated for printer p with material m, (p,m) ∈ E\n- x_{p,o} ∈ ℤ_{≥0}: integer parts of order o produced on printer p, for (p, m_o) ∈ E and (reg_o=0 or med_p=1)\n\n## Objective (maximize contribution profit)\nFor (p,o) with m = m_o:\n- production hours: t_o·x_{p,o}/s_{p,m}\n- material consumed: w_o·x_{p,o}·(1+r_{p,m})\n- per-part contribution: π_{p,o} = rev_o − v_{p,m}·(t_o/s_{p,m}) − c_m·w_o·(1+r_{p,m})\n\nMaximize: Σ_{p,o} π_{p,o}·x_{p,o} − Σ_{(p,m)∈E} sc_{p,m}·y_{p,m}\n\n## Constraints\n1. Setup linkage: x_{p,o} ≤ q_o·y_{p,m_o}\n2. Printer hours: Σ_m sh_{p,m}·y_{p,m} + Σ_o (t_o/s_{p,m_o})·x_{p,o} ≤ H_p\n3. Material inventory: Σ_{o: m_o=m} w_o(1+r_{p,m})·x_{p,o} ≤ Inv_m\n4. Order capacity: Σ_p x_{p,o} ≤ q_o\n5. Minimum fill: Σ_p x_{p,o} ≥ ⌈f_o·q_o⌉ (integer lower bound)\n6. Regulated: x_{p,o}=0 if reg_o=1 and med_p=0 (enforced by domain restriction)\n\n## Solver\n- PySCIPOpt, relative gap 0.0005, time limit from ORCLAW_SOLVE_TIME_LIMIT_SECONDS if set.\n- Output solution.csv: setup rows (value 1, order_id blank) and produce rows (integer counts); zeros omitted.\n",
+   "solve_log_md": "# Solve Log — additive_microfactory_order_planning\n\n## Commands\n- `python /app/submissions/solve.py`\n\n## Model\n- MIP with binary setup variables y[p,m] and integer production variables x[p,o].\n- Objective: maximize contribution profit (revenue - variable print cost - material cost incl. scrap - setup cost).\n- Constraints: setup linkage, printer hours (setup + production), material inventory, order capacity, minimum fill (ceil of fill rate * requested), regulated orders only on certified printers.\n\n## Solver settings\n- PySCIPOpt, relative mip gap 0.0005.\n- Time limit: respects ORCLAW_SOLVE_TIME_LIMIT_SECONDS if set.\n\n## Results\n- Status: gaplimit (gap 0.02% at 0.25s, well within required 0.0005 relative gap).\n- Objective (contribution profit): 9942.2491.\n- 41 rows written to /app/submissions/solution.csv.\n\n## Validation\n- All minimum fill rates met (integer ceil).\n- No order exceeds requested quantity.\n- Printer hours within available hours.\n- Material consumption within inventory.\n- Regulated orders only on certified printers.\n- Setup rows present for all active printer-material pairs.\n- Errors: 0\n\n## Output\n- /app/submissions/solution.csv with exact schema: row_type,printer_id,material_id,order_id,value",
+   "solve_py": "#!/usr/bin/env python3\n\"\"\"\nAdditive Microfactory Order Planning - PySCIPOpt solver.\n\nReads data from /app/data/, solves MIP, writes /app/submissions/solution.csv.\n\"\"\"\n\nimport os\nimport sys\nimport csv\nimport math\nimport json\nimport time\n\n# --- Read data ---\nDATA_DIR = \"/app/data\"\nSUB_DIR = \"/app/submissions\"\nos.makedirs(SUB_DIR, exist_ok=True)\n\ndef read_csv(path):\n    with open(path, newline=\"\") as f:\n        return list(csv.DictReader(f))\n\nconfig = json.load(open(os.path.join(DATA_DIR, \"config.json\")))\nprinters = read_csv(os.path.join(DATA_DIR, \"printers.csv\"))\nmaterials = read_csv(os.path.join(DATA_DIR, \"materials.csv\"))\norders = read_csv(os.path.join(DATA_DIR, \"orders.csv\"))\neligibility = read_csv(os.path.join(DATA_DIR, \"printer_material_eligibility.csv\"))\n\n# --- Build parameter dicts ---\nP = [p[\"printer_id\"] for p in printers]\nM = [m[\"material_id\"] for m in materials]\nO = [o[\"order_id\"] for o in orders]\n\nprinter_info = {p[\"printer_id\"]: p for p in printers}\nmaterial_info = {m[\"material_id\"]: m for m in materials}\norder_info = {o[\"order_id\"]: o for o in orders}\n\n# Eligible pairs\nelig = {}  # (p, m) -> dict\nfor row in eligibility:\n    key = (row[\"printer_id\"], row[\"material_id\"])\n    elig[key] = {\n        \"speed\": float(row[\"speed_multiplier\"]),\n        \"var_cost\": float(row[\"variable_cost_per_hour\"]),\n        \"setup_hours\": float(row[\"setup_hours\"]),\n        \"setup_cost\": float(row[\"setup_cost\"]),\n        \"scrap\": float(row[\"scrap_rate\"]),\n    }\n\n# Order eligibility: for each order, which printers can produce it\norder_printers = {}  # o -> list of p\nfor o in O:\n    oi = order_info[o]\n    m = oi[\"material_id\"]\n    reg = int(oi[\"regulated\"])\n    plist = []\n    for p in P:\n        if (p, m) not in elig:\n            continue\n        if reg == 1 and int(printer_info[p][\"medical_certified\"]) == 0:\n            continue\n        plist.append(p)\n    order_printers[o] = plist\n\n# --- Build SCIP model ---\ntry:\n    from pyscipopt import Model, quicksum\nexcept ImportError:\n    print(\"ERROR: pyscipopt not installed\", file=sys.stderr)\n    sys.exit(1)\n\nmodel = Model(\"microfactory\")\nmodel.setParam(\"gaprel\", 0.0005)\n\n# Time limit\ntime_limit = None\nenv_tl = os.environ.get(\"ORCLAW_SOLVE_TIME_LIMIT_SECONDS\")\nif env_tl:\n    time_limit = float(env_tl)\n    model.setParam(\"limits/time\", time_limit)\n\n# Decision variables\n# y[p, m] for eligible pairs\ny_vars = {}\nfor (p, m), e in elig.items():\n    y_vars[(p, m)] = model.addVar(name=f\"y_{p}_{m}\", vtype=\"B\", lb=0.0, ub=1.0, obj=-e[\"setup_cost\"])\n\n# x[p, o] for eligible (p, o)\nx_vars = {}\nfor o in O:\n    oi = order_info[o]\n    m = oi[\"material_id\"]\n    q = int(oi[\"requested_parts\"])\n    t = float(oi[\"print_hours_per_part\"])\n    w = float(oi[\"material_kg_per_part\"])\n    rev = float(oi[\"revenue_per_part\"])\n    c_m = float(material_info[m][\"material_cost_per_kg\"])\n    for p in order_printers[o]:\n        e = elig[(p, m)]\n        s = e[\"speed\"]\n        # per-part contribution: revenue - var_cost*(t/s) - c_m*w*(1+scrap)\n        pi = rev - e[\"var_cost\"] * (t / s) - c_m * w * (1.0 + e[\"scrap\"])\n        x_vars[(p, o)] = model.addVar(name=f\"x_{p}_{o}\", vtype=\"I\", lb=0.0, ub=float(q), obj=pi)\n\n# --- Constraints ---\n\n# 1. Setup linkage: x[p,o] <= q_o * y[p, m_o]\nfor o in O:\n    oi = order_info[o]\n    m = oi[\"material_id\"]\n    q = int(oi[\"requested_parts\"])\n    for p in order_printers[o]:\n        model.addCons(x_vars[(p, o)] <= q * y_vars[(p, m)], name=f\"link_{p}_{o}\")\n\n# 2. Printer hours: setup hours + production hours <= available\nfor p in P:\n    H = float(printer_info[p][\"available_hours\"])\n    terms = []\n    for (pp, mm), e in elig.items():\n        if pp == p:\n            terms.append(e[\"setup_hours\"] * y_vars[(pp, mm)])\n    for o in O:\n        oi = order_info[o]\n        m = oi[\"material_id\"]\n        if (p, m) in elig and (p, o) in x_vars:\n            t = float(oi[\"print_hours_per_part\"])\n            s = elig[(p, m)][\"speed\"]\n            terms.append((t / s) * x_vars[(p, o)])\n    model.addCons(quicksum(terms) <= H, name=f\"hours_{p}\")\n\n# 3. Material inventory\nfor m in M:\n    Inv = float(material_info[m][\"inventory_kg\"])\n    terms = []\n    for o in O:\n        oi = order_info[o]\n        if oi[\"material_id\"] != m:\n            continue\n        w = float(oi[\"material_kg_per_part\"])\n        for p in order_printers[o]:\n            e = elig[(p, m)]\n            terms.append(w * (1.0 + e[\"scrap\"]) * x_vars[(p, o)])\n    model.addCons(quicksum(terms) <= Inv, name=f\"mat_{m}\")\n\n# 4. Order capacity: sum_p x[p,o] <= q_o\nfor o in O:\n    q = int(order_info[o][\"requested_parts\"])\n    plist = order_printers[o]\n    if plist:\n        model.addCons(quicksum(x_vars[(p, o)] for p in plist) <= q, name=f\"cap_{o}\")\n\n# 5. Minimum fill: sum_p x[p,o] >= ceil(f_o * q_o)\nfor o in O:\n    oi = order_info[o]\n    q = int(oi[\"requested_parts\"])\n    f = float(oi[\"minimum_fill_rate\"])\n    min_fill = math.ceil(f * q - 1e-9)\n    min_fill = max(0, min_fill)\n    plist = order_printers[o]\n    if plist:\n        model.addCons(quicksum(x_vars[(p, o)] for p in plist) >= min_fill, name=f\"fill_{o}\")\n\n# --- Solve ---\nt0 = time.time()\nmodel.optimize()\nelapsed = time.time() - t0\n\nstatus = model.getStatus()\nprint(f\"Solver status: {status}\")\nprint(f\"Elapsed: {elapsed:.2f}s\")\n\nif status not in (\"optimal\", \"gap\", \"timelimit\", \"bestsollimit\", \"gaplimit\"):\n    print(f\"WARNING: unexpected status {status}, attempting to extract best solution\")\n\n# --- Extract solution ---\nsolution_rows = []\n\n# Setup rows\nfor (p, m), var in y_vars.items():\n    val = model.getVal(var)\n    if val > 0.5:\n        solution_rows.append((\"setup\", p, m, \"\", \"1\"))\n\n# Produce rows\nfor (p, o), var in x_vars.items():\n    val = model.getVal(var)\n    if val > 0.5:\n        int_val = int(round(val))\n        solution_rows.append((\"produce\", p, order_info[o][\"material_id\"], o, str(int_val)))\n\n# --- Write solution.csv ---\nsol_path = os.path.join(SUB_DIR, \"solution.csv\")\nwith open(sol_path, \"w\", newline=\"\") as f:\n    writer = csv.writer(f)\n    writer.writerow([\"row_type\", \"printer_id\", \"material_id\", \"order_id\", \"value\"])\n    for row in solution_rows:\n        writer.writerow(row)\n\nprint(f\"Wrote {len(solution_rows)} rows to {sol_path}\")\n\n# --- Validation ---\nprint(\"\\n--- Validation ---\")\nerrors = []\n\n# Check minimum fill\nfor o in O:\n    oi = order_info[o]\n    q = int(oi[\"requested_parts\"])\n    f = float(oi[\"minimum_fill_rate\"])\n    min_fill = max(0, math.ceil(f * q - 1e-9))\n    total = sum(int(round(model.getVal(x_vars[(p, o)]))) for p in order_printers[o] if (p, o) in x_vars)\n    if total < min_fill:\n        errors.append(f\"Order {o}: produced {total} < min fill {min_fill}\")\n    if total > q:\n        errors.append(f\"Order {o}: produced {total} > requested {q}\")\n\n# Check printer hours\nfor p in P:\n    H = float(printer_info[p][\"available_hours\"])\n    used = 0.0\n    for (pp, mm), e in elig.items():\n        if pp == p and model.getVal(y_vars[(pp, mm)]) > 0.5:\n            used += e[\"setup_hours\"]\n    for o in O:\n        oi = order_info[o]\n        m = oi[\"material_id\"]\n        if (p, m) in elig and (p, o) in x_vars:\n            t = float(oi[\"print_hours_per_part\"])\n            s = elig[(p, m)][\"speed\"]\n            used += (t / s) * model.getVal(x_vars[(p, o)])\n    if used > H + 1e-5:\n        errors.append(f\"Printer {p}: hours {used:.4f} > available {H}\")\n\n# Check material inventory\nfor m in M:\n    Inv = float(material_info[m][\"inventory_kg\"])\n    used = 0.0\n    for o in O:\n        oi = order_info[o]\n        if oi[\"material_id\"] != m:\n            continue\n        w = float(oi[\"material_kg_per_part\"])\n        for p in order_printers[o]:\n            e = elig[(p, m)]\n            used += w * (1.0 + e[\"scrap\"]) * model.getVal(x_vars[(p, o)])\n    if used > Inv + 1e-5:\n        errors.append(f\"Material {m}: used {used:.4f} > inventory {Inv}\")\n\n# Check regulated\nfor o in O:\n    oi = order_info[o]\n    if int(oi[\"regulated\"]) == 1:\n        for p in order_printers[o]:\n            if model.getVal(x_vars[(p, o)]) > 0.5:\n                if int(printer_info[p][\"medical_certified\"]) == 0:\n                    errors.append(f\"Regulated order {o} on non-certified printer {p}\")\n\nif errors:\n    print(\"VALIDATION ERRORS:\")\n    for e in errors:\n        print(f\"  {e}\")\nelse:\n    print(\"All validation checks passed.\")\n\n# Objective\nobj = model.getObjVal()\nprint(f\"\\nObjective (contribution profit): {obj:.4f}\")\n\n# Write model.md\nmodel_md = \"\"\"# Additive Microfactory Order Planning — Mathematical Model\n\n## Sets\n- P: printers (P01–P05)\n- M: materials (M01–M05)\n- O: orders (O01–O20)\n- E ⊆ P×M: eligible printer-material pairs\n- R ⊆ O: regulated orders\n\n## Parameters\n- H_p: available hours of printer p\n- Inv_m: qualified inventory (kg) of material m\n- c_m: material cost per kg\n- q_o: requested parts of order o\n- t_o: nominal print hours per part\n- w_o: material kg per part\n- reg_o ∈ {0,1}: regulated flag\n- rev_o: revenue per part\n- f_o: minimum fill rate\n- For (p,m) ∈ E: s_pm speed multiplier, v_pm variable cost/hour, sh_pm setup hours, sc_pm setup cost, r_pm scrap rate\n- med_p ∈ {0,1}: medical certification\n\n## Variables\n- y_{p,m} ∈ {0,1}: setup activated for printer p with material m\n- x_{p,o} ∈ ℤ_{≥0}: integer parts of order o produced on printer p\n\n## Objective (maximize)\nΣ_{p,o} [rev_o − v_{p,m_o}·(t_o/s_{p,m_o}) − c_{m_o}·w_o·(1+r_{p,m_o})]·x_{p,o} − Σ_{(p,m)∈E} sc_{p,m}·y_{p,m}\n\n## Constraints\n1. Setup linkage: x_{p,o} ≤ q_o·y_{p,m_o}\n2. Printer hours: Σ_m sh_{p,m}·y_{p,m} + Σ_o (t_o/s_{p,m_o})·x_{p,o} ≤ H_p\n3. Material inventory: Σ_{o: m_o=m} w_o(1+r_{p,m})·x_{p,o} ≤ Inv_m\n4. Order capacity: Σ_p x_{p,o} ≤ q_o\n5. Minimum fill: Σ_p x_{p,o} ≥ ⌈f_o·q_o⌉\n6. Regulated: x_{p,o} = 0 if reg_o=1 and med_p=0\n\"\"\"\nwith open(os.path.join(SUB_DIR, \"model.md\"), \"w\") as f:\n    f.write(model_md)\n\n# Write solve_log.md\nlog_md = f\"\"\"# Solve Log — additive_microfactory_order_planning\n\n## Commands\n- `python /app/submissions/solve.py`\n\n## Model\n- MIP with binary setup variables y[p,m] and integer production variables x[p,o].\n- Objective: maximize contribution profit (revenue - variable print cost - material cost incl. scrap - setup cost).\n- Constraints: setup linkage, printer hours (setup + production), material inventory, order capacity, minimum fill (ceil of fill rate * requested), regulated orders only on certified printers.\n\n## Solver settings\n- PySCIPOpt, relative mip gap 0.0005.\n- Time limit: respects ORCLAW_SOLVE_TIME_LIMIT_SECONDS if set.\n\n## Results\n- Status: {status}\n- Elapsed: {elapsed:.2f}s\n- Objective (contribution profit): {obj:.4f}\n\n## Validation\n- All minimum fill rates met (integer ceil).\n- No order exceeds requested quantity.\n- Printer hours within available hours.\n- Material consumption within inventory.\n- Regulated orders only on certified printers.\n- Setup rows present for all active printer-material pairs.\n- Errors: {len(errors)}\n\n## Output\n- /app/submissions/solution.csv with exact schema: row_type,printer_id,material_id,order_id,value\n- {len(solution_rows)} rows written.\n\"\"\"\nwith open(os.path.join(SUB_DIR, \"solve_log.md\"), \"w\") as f:\n    f.write(log_md)\n\nprint(\"Done.\")"
+  },
+  "execution": {
+   "return_code": 0,
+   "stdout": "presolving:\n(round 1, fast)       0 del vars, 1 del conss, 0 add conss, 0 chg bounds, 0 chg sides, 0 chg coeffs, 0 upgd conss, 0 impls, 0 clqs, 0 implints\n(round 2, fast)       0 del vars, 1 del conss, 0 add conss, 54 chg bounds, 0 chg sides, 0 chg coeffs, 0 upgd conss, 0 impls, 0 clqs, 0 implints\n(round 3, fast)       7 del vars, 11 del conss, 0 add conss, 54 chg bounds, 0 chg sides, 54 chg coeffs, 0 upgd conss, 0 impls, 0 clqs, 0 implints\n(round 4, fast)       7 del vars, 17 del conss, 0 add conss, 54 chg bounds, 0 chg sides, 54 chg coeffs, 0 upgd conss, 0 impls, 0 clqs, 0 implints\n(round 5, exhaustive) 7 del vars, 30 del conss, 0 add conss, 54 chg bounds, 0 chg sides, 54 chg coeffs, 0 upgd conss, 0 impls, 0 clqs, 0 implints\n(round 6, exhaustive) 7 del vars, 30 del conss, 0 add conss, 54 chg bounds, 0 chg sides, 54 chg coeffs, 57 upgd conss, 0 impls, 0 clqs, 0 implints\n   (0.0s) probing cycle finished: starting next cycle\n(round 7, exhaustive) 8 del vars, 30 del conss, 0 add conss, 54 chg bounds, 0 chg sides, 54 chg coeffs, 57 upgd conss, 89 impls, 5 clqs, 0 implints\n(round 8, fast)       8 del vars, 34 del conss, 0 add conss, 54 chg bounds, 0 chg sides, 54 chg coeffs, 57 upgd conss, 89 impls, 5 clqs, 0 implints\n   (0.0s) probing cycle finished: starting next cycle\n   (0.0s) symmetry computation started: requiring (bin +, int +, cont +), (fixed: bin -, int -, cont -)\n   (0.0s) no symmetry present (symcode time: 0.00)\npresolving (9 rounds: 9 fast, 4 medium, 4 exhaustive):\n 8 deleted vars, 34 deleted constraints, 0 added constraints, 54 tightened bounds, 0 added holes, 0 changed sides, 54 changed coefficients\n 89 implications, 5 cliques, 0 implied integral variables (0 bin, 0 int, 0 cont)\npresolved problem has 63 variables (14 bin, 49 int, 0 cont) and 72 constraints\n     53 constraints of type <varbound>\n     19 constraints of type <linear>\nPresolving Time: 0.02\n\n time | node  | left  |LP iter|LP it/n|mem/heur|mdpt |vars |cons |rows |cuts |sepa|confs|strbr|  dualbound   | primalbound  |  gap   | compl. \n  0.0s|     1 |     0 |    28 |     - |  1723k |   0 |  63 |  72 |  72 |   0 |  0 |   1 |   0 | 9.939762e+03 |      --      |    Inf | unknown\n* 0.2s|     1 |     0 |    37 |     - |    LP  |   0 |  63 |  72 |  72 |   0 |  0 |   1 |   0 | 9.939762e+03 | 1.041058e+04 |   4.74%| unknown\n  0.2s|     1 |     0 |    40 |     - |  1808k |   0 |  63 |  72 |  75 |   3 |  1 |   1 |   0 | 9.939768e+03 | 1.041058e+04 |   4.74%| unknown\ni 0.2s|     1 |     0 |    40 |     - |  oneopt|   0 |  63 |  72 |  75 |   3 |  1 |   1 |   0 | 9.939768e+03 | 1.013969e+04 |   2.01%| unknown\nr 0.2s|     1 |     0 |    41 |     - |shifting|   0 |  63 |  72 |  75 |   3 |  1 |   1 |   0 | 9.939768e+03 | 9.997879e+03 |   0.58%| unknown\n  0.2s|     1 |     0 |    43 |     - |  1857k |   0 |  63 |  72 |  77 |   5 |  2 |   1 |   0 | 9.939768e+03 | 9.997879e+03 |   0.58%| unknown\ni 0.2s|     1 |     0 |    43 |     - |  oneopt|   0 |  63 |  72 |  49 |   5 |  2 |   1 |   0 | 9.939768e+03 | 9.942249e+03 |   0.02%| unknown\n  0.2s|     1 |     0 |    43 |     - |  1861k |   0 |  63 |  72 |  49 |   5 |  2 |   1 |   0 | 9.939768e+03 | 9.942249e+03 |   0.02%| unknown\n\nSCIP Status        : solving was interrupted [gap limit reached]\nSolving Time (sec) : 0.20\nSolving Nodes      : 1\nPrimal Bound       : +9.94224908924532e+03 (5 solutions)\nDual Bound         : +9.93976770862815e+03\nGap                : 0.02 %\nSolver status: gaplimit\nElapsed: 0.20s\nWrote 41 rows to /app/submissions/solution.csv\n\n--- Validation ---\nAll validation checks passed.\n\nObjective (contribution profit): 9942.2491\nDone.\n",
+   "stderr": "",
+   "timed_out": false,
+   "wall_seconds": 26.770405,
+   "command": [
+    "python",
+    "/app/submissions/solve.py"
+   ]
+  },
+  "official": {
+   "evaluation": {
+    "active_setups": 15,
+    "environment": "additive_microfactory_order_planning",
+    "error_count": 0,
+    "errors": [],
+    "feasible": true,
+    "produced_parts": 537.0,
+    "profit": 9942.24908924532
+   },
+   "reward": {
+    "feasibility": 1.0,
+    "quality": 0.0
+   },
+   "reward_details": {
+    "agent_objective": 9942.24908924532,
+    "agent_objective_source": "profit",
+    "best_bound": 11693.747321712866,
+    "bound_improvement": 5.6564363420257,
+    "bound_sense": "upper",
+    "evaluation_diagnostics": {
+     "error_count": 0,
+     "objective": null,
+     "profit": 9942.24908924532,
+     "score": null,
+     "total_cost": null
+    },
+    "fallback_mip_gap": 0.0005,
+    "fallback_reference_scale": 11688.09088537084,
+    "feasibility": 1.0,
+    "formula": "clip(2 + d if d >= -1 else 1.5 + 0.5*d, 0, 2), d = (O - R) / (max(abs(R), 1e-8) * mip_gap)",
+    "objective_sense": "maximize",
+    "quality": 0.0,
+    "quality_scale_width": 5.84404544268542,
+    "quality_status": "bound_gap_below_mip_gap",
+    "reference_metrics": {
+     "best_bound": 11693.747321712866,
+     "best_bound_source": "best_bound",
+     "bound_sense": "upper",
+     "evaluation_summary": {
+      "error_count": 0,
+      "feasible": true,
+      "profit": 11688.09088537084
+     },
+     "generated_at": "2026-05-19T06:29:46.567709+00:00",
+     "mip_gap": 0.0005,
+     "objective_sense": "maximize",
+     "quality_formula": "clip(1 + (O - R) / (B - R), 0, 2) if B exists and B - R >= max(abs(R), 1e-8) * mip_gap; otherwise let d=(O - R)/(max(abs(R), 1e-8)*mip_gap), quality=clip(2+d if d>=-1 else 1.5+0.5*d, 0, 2); if no R, quality = 2",
+     "reference_objective": 11688.09088537084,
+     "reference_objective_source": "profit",
+     "solution_path": "reference_solutions/additive_microfactory_order_planning_reference_solution.csv",
+     "solver_summary": {
+      "best_bound": 11693.747321712866,
+      "evaluation_profit": 11688.09088537084,
+      "mip_gap": 0.00048394869594221775,
+      "objective": 11688.090885370837,
+      "solution": "reference_solutions/additive_microfactory_order_planning_reference_solution.csv",
+      "status": "gaplimit"
+     },
+     "task_name": "additive_microfactory_order_planning",
+     "time_limit_seconds": 300.0
+    },
+    "reference_objective": 11688.09088537084,
+    "scalar_reward": 0.3333333333333333,
+    "scalar_reward_formula": "(feasibility + quality) / 3.0",
+    "signed_improvement": -1745.84179612552
+   },
+   "runner": {
+    "return_code": 0,
+    "timed_out": false,
+    "wall_seconds": 19.921832
+   }
+  },
+  "feasible": true,
+  "quality": 0.0,
+  "true_correct": false,
+  "objective": 9942.24908924532,
+  "proxy_match": false,
+  "api_guard": {
+   "repairs": [
+    {
+     "category": "gap_parameter",
+     "from": "setParam(\"gaprel\"",
+     "to": "setRealParam(\"limits/gap\""
+    }
+   ],
+   "public_contract_repairs": [],
+   "original_sha256": "0cc798a43d4b2de2fce32442bbae43f0010ac29c012af92f1496543a5d343562",
+   "repaired_sha256": "93c7d9b8192e7649d097d51cde1b335f2f18ae02464891acfafec5126671ae59"
+  },
+  "phantom_proxy": false,
+  "unknown": false,
+  "generation_error": null,
+  "proxy_score": 0.0,
+  "feedback": "Execution return code: 0; timed out: False; proxy objective match: False. Improve the formulation and solver to increase the proxy score. Do not assume that a solution file alone proves business correctness.",
+  "workspace": "/home/hewj13/wm/ora/work/cleanroom_bounded_b0_additive_v0.6.1/attempt_1/repair_1/app",
+  "evaluation_unknown": false
+ },
+ "record_path": "/home/hewj13/wm/ora/work/cleanroom_bounded_b0_additive_v0.6.1/attempt_1/repair_1/record.json",
+ "dag": {
+  "nodes": [
+   {
+    "node_id": "root",
+    "parent_id": null,
+    "code_sha256": "291ed553d2b26b418b7eb14689c7fb01f0986e1cc2d1e8437b53aa9a037c7208",
+    "target_check": null,
+    "before": {},
+    "after": {
+     "execution_contract": "pass",
+     "manufacturing_official_task_pass": "fail"
+    },
+    "accepted": true,
+    "reasons": []
+   },
+   {
+    "node_id": "root/repair:1",
+    "parent_id": "root",
+    "code_sha256": "0cc798a43d4b2de2fce32442bbae43f0010ac29c012af92f1496543a5d343562",
+    "target_check": "manufacturing_official_task_pass",
+    "before": {
+     "execution_contract": "pass",
+     "manufacturing_official_task_pass": "fail"
+    },
+    "after": {
+     "execution_contract": "pass",
+     "manufacturing_official_task_pass": "fail"
+    },
+    "accepted": false,
+    "reasons": [
+     "target_not_improved:manufacturing_official_task_pass:fail->fail"
+    ]
+   }
+  ]
+ }
+}

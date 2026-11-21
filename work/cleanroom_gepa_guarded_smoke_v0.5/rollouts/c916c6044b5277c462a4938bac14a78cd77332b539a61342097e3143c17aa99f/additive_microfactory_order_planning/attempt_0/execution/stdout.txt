@@ -1,0 +1,4 @@
+status=gaplimit nsols=100
+objective=11688.090885 recomputed=11688.090885 valid=True
+wrote /app/submissions/solution.csv with 31 rows
+done

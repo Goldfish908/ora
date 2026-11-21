@@ -1,0 +1,22 @@
+{
+ "evaluation": {
+  "feasible": false,
+  "errors": [
+   "No solution file found."
+  ],
+  "error_count": 1
+ },
+ "reward": {
+  "feasibility": 0.0,
+  "quality": 0.0
+ },
+ "reward_details": {
+  "feasibility": 0.0,
+  "quality": 0.0,
+  "quality_status": "missing_solution"
+ },
+ "runner": {
+  "return_code": 0,
+  "timed_out": false
+ }
+}

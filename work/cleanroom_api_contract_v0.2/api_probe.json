@@ -1,0 +1,11 @@
+{
+ "return_code": 0,
+ "stdout": "quicksum AttributeError\nchgCoeff AttributeError\nchgVarObj AttributeError\nsetObjCoeff AttributeError\nsetUb AttributeError\nsetLb AttributeError\nchgVarUb (self, var, ub)\nchgVarLb (self, var, lb)\nsetRealParam (self, name, value)\nsetParam (self, name, value)\nmodule quicksum (termlist)\n",
+ "stderr": "",
+ "timed_out": false,
+ "command": [
+  "python",
+  "-c",
+  "from pyscipopt import Model, quicksum; import inspect\nnames=[\"quicksum\",\"chgCoeff\",\"chgVarObj\",\"setObjCoeff\",\"setUb\",\"setLb\",\"chgVarUb\",\"chgVarLb\",\"setRealParam\",\"setParam\"]\nfor name in names:\n try: print(name, inspect.signature(getattr(Model,name)))\n except Exception as exc: print(name, type(exc).__name__)\nprint(\"module quicksum\",inspect.signature(quicksum))"
+ ]
+}

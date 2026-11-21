@@ -1,0 +1,102 @@
+{
+ "n": 2,
+ "expected_tasks": 2,
+ "coverage": 1.0,
+ "feasible": 1,
+ "proxy_match": 0,
+ "true_correct": 0,
+ "phantom_proxy": 0,
+ "unknown": 0,
+ "unresolved_non_phantom": 2,
+ "mean_quality": 0.0,
+ "failure_counts": {
+  "execution_error": 1,
+  "quality_shortfall": 1
+ },
+ "api_guard_modified": 2,
+ "cost": {
+  "llm_calls": 0,
+  "missing_usage_calls": 0,
+  "llm_latency_seconds": 0.0,
+  "prompt_tokens": 0,
+  "completion_tokens": 0,
+  "reasoning_tokens": 0,
+  "total_tokens": 0,
+  "solver_execution_time": {
+   "recorded_calls": 2,
+   "missing_calls": 0,
+   "seconds": 42.670903
+  },
+  "official_evaluation_time": {
+   "recorded_calls": 2,
+   "missing_calls": 0,
+   "seconds": 14.4583
+  }
+ },
+ "tasks": [
+  {
+   "task": "carbon_aware_compute_scheduling",
+   "split": "dev",
+   "candidate_sha256": "abdd040d09dfc3831b3762ed3d6863e0c1455eabb51f2af8959d7a0e676b248a",
+   "attempt": 0,
+   "feasible": true,
+   "quality": 0.0,
+   "true_correct": false,
+   "objective": 1019.8939535999999,
+   "proxy_match": false,
+   "phantom_proxy": false,
+   "failure_class": "quality_shortfall",
+   "execution_return_code": 0,
+   "generation_error": null,
+   "cost": {
+    "llm_calls": 0,
+    "missing_usage_calls": 0,
+    "llm_latency_seconds": 0.0,
+    "prompt_tokens": 0,
+    "completion_tokens": 0,
+    "reasoning_tokens": 0,
+    "total_tokens": 0
+   },
+   "execution_wall_seconds": 17.013746,
+   "evaluation_wall_seconds": 8.801909,
+   "api_guard_repairs": 4,
+   "public_contract_repairs": 0,
+   "stderr_tail": null
+  },
+  {
+   "task": "additive_microfactory_order_planning",
+   "split": "dev",
+   "candidate_sha256": "abdd040d09dfc3831b3762ed3d6863e0c1455eabb51f2af8959d7a0e676b248a",
+   "attempt": 0,
+   "feasible": false,
+   "quality": 0.0,
+   "true_correct": false,
+   "objective": 0.0,
+   "proxy_match": false,
+   "phantom_proxy": false,
+   "failure_class": "execution_error",
+   "execution_return_code": 1,
+   "generation_error": null,
+   "cost": {
+    "llm_calls": 0,
+    "missing_usage_calls": 0,
+    "llm_latency_seconds": 0.0,
+    "prompt_tokens": 0,
+    "completion_tokens": 0,
+    "reasoning_tokens": 0,
+    "total_tokens": 0
+   },
+   "execution_wall_seconds": 25.657157,
+   "evaluation_wall_seconds": 5.656391,
+   "api_guard_repairs": 4,
+   "public_contract_repairs": 0,
+   "stderr_tail": null
+  }
+ ],
+ "llm_calls": 0,
+ "mode": "deterministic_guard_replay",
+ "no_evolution": true,
+ "original_candidate_sha256": [
+  "abdd040d09dfc3831b3762ed3d6863e0c1455eabb51f2af8959d7a0e676b248a"
+ ]
+}

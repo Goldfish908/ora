@@ -1,0 +1,51 @@
+{
+ "candidates": [
+  {
+   "conventions": ""
+  },
+  {
+   "conventions": "You are solving an operations-research benchmark task inside a sandbox.\n\nWork only inside `/app`. Do not use the internet, hidden evaluator files, reference models, package registries, or remote data.\n\n## Critical Implementation Requirements\n\n1. **Use `pyscipopt` exclusively** — import with `from pyscipopt import Model, quicksum`. NEVER use `pysis`, `scipy.optimize.linprog`, or any other solver library for the MIP. If `pyscipopt` is not available, the task cannot be completed.\n\n2. **Set optimization direction explicitly** — call `model.setMinimize()` or `model.setMaximize()` immediately after creating the Model. SCIP defaults to minimization; if your problem is a maximization, you MUST call `model.setMaximize()` or negate all objective coefficients.\n\n3. **Set solver parameters correctly:**\n   - `model.setParam(\"limits/gap\", 0.0005)` for relative MIP gap\n   - If `ORCLAW_SOLVE_TIME_LIMIT_SECONDS` env var is set, use `model.setParam(\"limits/time\", min(300, float(value)))`\n   - Use `model.setParam(\"display/verblevel\", 1)` for minimal output\n\n4. **Extract solution values correctly:**\n   - Use `model.getVal(var)` to get the solution value of a variable\n   - Use `model.getStatus()` to check solve status (returns string like \"optimal\", \"gap\", \"timelimit\", \"bestsollimit\")\n   - Use `model.getObjVal()` for the objective value\n   - Check `model.getNSols() > 0` before extracting values\n   - For binary variables, threshold at 0.5; for integer variables, use `int(round(val))`\n\n5. **Preserve precision to 1e-8** — when writing continuous values to the solution file, use `round(val, 8)`.\n\n## Required Workflow\n\n1. Read `/app/PROBLEM_STATEMENT.md` and every file under `/app/data/`.\n2. Write a complete mathematical model to `/app/submissions/model.md` before finalizing code. The model must define: sets/indices, all parameters with their source files, all decision variables (including types and bounds), the objective function, and every constraint (including exception/business rules).\n3. Implement the solver in `/app/submissions/solve.py` using PySCIPOpt.\n4. Make `/app/submissions/solve.py` solve from scratch when run as `python /app/submissions/solve.py`.\n5. Write the required solution file under `/app/submissions/` using the exact task schema (column names, row types, value formats).\n6. Write `/app/submissions/solve_log.md` with commands run, solver status, objective value, and validation checks performed.\n\n## Modeling Strategy\n\nBefore coding, analyze the problem structure:\n\n- **Small MIPs (≤500 binary vars):** Solve directly with SCIP.\n- **Medium MIPs (500–5000 binary vars):** Use strong formulations, valid inequalities, and SCIP's presolve. Consider fixing obvious variables before solving.\n- **Large MIPs (>5000 binary vars):** Consider decomposition (Benders, Lagrangian), heuristic warm starts, or solving a relaxed problem first then repairing. You may combine: generate a feasible solution heuristically, feed it as a start solution to SCIP, then let SCIP improve.\n\n**Formulation tips:**\n- Prefer formulations with tighter LP relaxations (e.g., network flow over set partitioning when applicable).\n- Use Big-M carefully — set M as tight as possible.\n- Add symmetry-breaking constraints when the problem has symmetric structures.\n- For scheduling problems, time-indexed formulations with linking constraints (z = sum of covering y's) are standard.\n- For production-distribution, consider whether a BOM-based flow formulation or a campaign-based formulation is tighter.\n- Preprocess: remove dominated options, tighten bounds, identify forced decisions.\n\n**Heuristic strategies (when exact solve is too slow):**\n- Greedy assignment by cost/profit ratio.\n- Local search / tabu search on the assignment structure.\n- Solve LP relaxation, then round with repair.\n- Fix a subset of binary variables, solve the remainder, iterate.\n- Column generation for set-partitioning formulations.\n\n## Common Pitfalls to Avoid\n\n- **Wrong import:** `pysis` does not exist. Use `pyscipopt`.\n- **Missing `setMaximize()`:** If the problem is a maximization and you forget this, SCIP minimizes the (positive) objective, giving the worst solution.\n- **Objective sign errors:** In a maximization, setup costs should have negative coefficients (or you negate the whole objective for minimization).\n- **Big-M too large:** Use the tightest valid upper bound to avoid numerical issues.\n- **Missing constraints:** Re-read the problem statement for every business rule, exception table, and service-level requirement. Each one maps to a constraint.\n- **Integer vs. continuous:** Production counts, part counts, and setup decisions are typically integer/binary. Flow quantities (tons, kWh) are continuous.\n- **Feasibility tolerance:** Use the tolerance from `config.json` (typically 1e-5) in validation checks.\n- **Output schema:** Match the exact column names and row types specified. Omit zero-valued rows unless the schema says otherwise.\n- **Data edge cases:** Some (entity, period) combinations may not appear in data files. Use `.get()` with defaults or check membership before accessing.\n\n## Validation (Mandatory Before Writing Solution)\n\nAfter solving, programmatically verify:\n1. All assignment/coverage constraints are satisfied.\n2. All capacity/resource constraints are within bounds (within feasibility tolerance).\n3. All business rules (minimum fill, service levels, exclusions, share rules, etc.) are met.\n4. The objective value matches what you compute independently from the solution variables.\n5. The output file has the correct schema, correct number of rows, and no missing entities.\n\nIf validation fails, do NOT write the solution file. Debug and re-solve.\n\n## Iteration Budget\n\n- First ensure feasibility and correct output schema.\n- Then improve objective quality.\n- Prefer targeted refinements (fixing a few variables, adding a valid inequality) over repeated full solves.\n- Stop iterating when additional improvements are unlikely within remaining time.\n- Record every meaningful solve attempt and validation result in `/app/submissions/solve_log.md`.\n\nThe final submission should prioritize **correctness**, **feasibility**, and **robust execution from scratch** under the time limit. A correct suboptimal solution scores far better than an infeasible or incorrectly-formatted \"optimal\" one."
+  }
+ ],
+ "parents": [
+  [
+   null
+  ],
+  [
+   0
+  ]
+ ],
+ "val_aggregate_scores": [
+  0.0,
+  0.0
+ ],
+ "val_subscores": [
+  {
+   "0": 0.0
+  },
+  {
+   "0": 0.0
+  }
+ ],
+ "best_outputs_valset": null,
+ "per_val_instance_best_candidates": {
+  "0": [
+   0,
+   1
+  ]
+ },
+ "val_aggregate_subscores": null,
+ "per_objective_best_candidates": null,
+ "objective_pareto_front": null,
+ "discovery_eval_counts": [
+  0,
+  37
+ ],
+ "total_metric_calls": 50,
+ "num_full_val_evals": 2,
+ "run_dir": "/home/hewj13/wm/ora/work/cleanroom_gepa_guarded_smoke_v0.5",
+ "seed": 0,
+ "_str_candidate_key": null,
+ "best_idx": 0,
+ "validation_schema_version": 2
+}

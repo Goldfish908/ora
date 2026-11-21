@@ -1,0 +1,298 @@
+{
+ "aerospace_composite_autoclave_scheduling": {
+  "runner": {
+   "return_code": 1,
+   "timed_out": false,
+   "stdout": "",
+   "stderr": "Traceback (most recent call last):\n  File \"/solution/solve_reference.py\", line 456, in <module>\n    raise SystemExit(main())\n                     ^^^^^^\n  File \"/solution/solve_reference.py\", line 447, in main\n    solution, summary = build_solution(data, args.env_dir, args.time_limit)\n                        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"/solution/solve_reference.py\", line 423, in build_solution\n    raise RuntimeError(\"No feasible heuristic schedule found\")\nRuntimeError: No feasible heuristic schedule found\n"
+  },
+  "official": {
+   "evaluation": {
+    "feasible": false,
+    "errors": [
+     "No solution file found."
+    ],
+    "error_count": 1
+   },
+   "reward": {
+    "feasibility": 0.0,
+    "quality": 0.0
+   },
+   "reward_details": {
+    "feasibility": 0.0,
+    "quality": 0.0,
+    "quality_status": "missing_solution"
+   },
+   "runner": {
+    "return_code": 0,
+    "timed_out": false,
+    "wall_seconds": 18.133729
+   }
+  },
+  "metrics": {
+   "feasible": false,
+   "quality": 0.0,
+   "true_correct": false,
+   "objective": null,
+   "evaluation_unknown": false
+  }
+ },
+ "mass_timber_panel_cutting_plan": {
+  "runner": {
+   "return_code": 0,
+   "timed_out": false,
+   "stdout": "{\n  \"best_bound\": 343541.329142698,\n  \"evaluation_total_cost\": 343541.3291427039,\n  \"mip_gap\": 0.0,\n  \"objective\": 343541.329142698,\n  \"panels_used\": 1133.2032134191995,\n  \"solution\": \"/app/submissions/solution.csv\",\n  \"status\": \"optimal\"\n}\n",
+   "stderr": ""
+  },
+  "official": {
+   "evaluation": {
+    "environment": "mass_timber_panel_cutting_plan",
+    "error_count": 0,
+    "errors": [],
+    "feasible": true,
+    "overage_pieces": 1.400024984832271e-09,
+    "panels_used": 1133.2032134191995,
+    "patterns_used": 50,
+    "total_cost": 343541.3291427039
+   },
+   "reward": {
+    "feasibility": 1.0,
+    "quality": 2.0
+   },
+   "reward_details": {
+    "agent_objective": 343541.3291427039,
+    "agent_objective_source": "total_cost",
+    "best_bound": 343541.329142698,
+    "bound_improvement": 5.878973752260208e-09,
+    "bound_sense": "lower",
+    "evaluation_diagnostics": {
+     "error_count": 0,
+     "objective": null,
+     "profit": null,
+     "score": null,
+     "total_cost": 343541.3291427039
+    },
+    "fallback_mip_gap": 0.0005,
+    "fallback_reference_scale": 343541.3291427039,
+    "feasibility": 1.0,
+    "formula": "clip(2 + d if d >= -1 else 1.5 + 0.5*d, 0, 2), d = (R - O) / (max(abs(R), 1e-8) * mip_gap)",
+    "objective_sense": "minimize",
+    "quality": 2.0,
+    "quality_scale_width": 171.77066457135194,
+    "quality_status": "bound_gap_below_mip_gap",
+    "reference_metrics": {
+     "best_bound": 343541.329142698,
+     "best_bound_source": "best_bound",
+     "bound_sense": "lower",
+     "evaluation_summary": {
+      "error_count": 0,
+      "feasible": true,
+      "total_cost": 343541.3291427039
+     },
+     "generated_at": "2026-05-19T09:13:00.274789+00:00",
+     "mip_gap": 0.0005,
+     "objective_sense": "minimize",
+     "quality_formula": "clip(1 + (R - O) / (R - B), 0, 2) if B exists and R - B >= max(abs(R), 1e-8) * mip_gap; otherwise let d=(R - O)/(max(abs(R), 1e-8)*mip_gap), quality=clip(2+d if d>=-1 else 1.5+0.5*d, 0, 2); if no R, quality = 2",
+     "reference_objective": 343541.3291427039,
+     "reference_objective_source": "total_cost",
+     "solution_path": "reference_solutions/mass_timber_panel_cutting_plan_reference_solution.csv",
+     "solver_summary": {
+      "best_bound": 343541.329142698,
+      "evaluation_total_cost": 343541.3291427039,
+      "mip_gap": 0.0,
+      "objective": 343541.329142698,
+      "panels_used": 1133.2032134191995,
+      "solution": "reference_solutions/mass_timber_panel_cutting_plan_reference_solution.csv",
+      "status": "optimal"
+     },
+     "task_name": "mass_timber_panel_cutting_plan",
+     "time_limit_seconds": 120.0
+    },
+    "reference_objective": 343541.3291427039,
+    "scalar_reward": 1.0,
+    "scalar_reward_formula": "(feasibility + quality) / 3.0",
+    "signed_improvement": 0.0
+   },
+   "runner": {
+    "return_code": 0,
+    "timed_out": false,
+    "wall_seconds": 30.262106
+   }
+  },
+  "metrics": {
+   "feasible": true,
+   "quality": 2.0,
+   "true_correct": true,
+   "objective": 343541.3291427039,
+   "evaluation_unknown": false
+  }
+ },
+ "ev_battery_recycling_network": {
+  "runner": {
+   "return_code": 0,
+   "timed_out": false,
+   "stdout": "{\n  \"best_bound\": 445497.29493813415,\n  \"evaluation\": {\n    \"chemistry_summary\": {\n      \"lfp\": {\n        \"disposal\": 0.0,\n        \"high_value\": 700.4760000000001,\n        \"hydromet\": 186.09715999999997,\n        \"pyromet\": 88.619,\n        \"recycling\": 429.324,\n        \"second_life\": 700.4760000000001,\n        \"total\": 1129.8\n      },\n      \"nmc\": {\n        \"disposal\": 0.0,\n        \"high_value\": 624.3439999999999,\n        \"hydromet\": 313.95584,\n        \"pyromet\": 0.0,\n        \"recycling\": 490.55600000000004,\n        \"second_life\": 281.84399999999994,\n        \"total\": 1114.8999999999999\n      }\n    },\n    \"error_count\": 0,\n    \"errors\": [],\n    \"feasible\": true,\n    \"objective\": 445497.29493813484,\n    \"objective_sense\": \"minimize\",\n    \"open_collection_hubs\": [\n      \"C01\",\n      \"C02\",\n      \"C04\",\n      \"C05\",\n      \"C06\"\n    ],\n    \"open_testing_centers\": [\n      \"T01\",\n      \"T02\",\n      \"T03\",\n      \"T04\",\n      \"T05\"\n    ],\n    \"total_cost\": 445497.29493813484,\n    \"total_emissions_kg\": 71826.20347566999\n  },\n  \"mip_gap\": 0.0005,\n  \"objective\": 445497.29493813484,\n  \"solution_path\": \"/app/submissions/solution.csv\",\n  \"status\": \"optimal\",\n  \"time_limit_seconds\": 300.0,\n  \"total_cost\": 445497.29493813484,\n  \"total_emissions_kg\": 71826.20347566999\n}\n",
+   "stderr": ""
+  },
+  "official": {
+   "evaluation": {
+    "chemistry_summary": {
+     "lfp": {
+      "disposal": 0.0,
+      "high_value": 700.4760000000001,
+      "hydromet": 186.09715999999997,
+      "pyromet": 88.619,
+      "recycling": 429.324,
+      "second_life": 700.4760000000001,
+      "total": 1129.8
+     },
+     "nmc": {
+      "disposal": 0.0,
+      "high_value": 624.3439999999999,
+      "hydromet": 313.95584,
+      "pyromet": 0.0,
+      "recycling": 490.55600000000004,
+      "second_life": 281.84399999999994,
+      "total": 1114.8999999999999
+     }
+    },
+    "error_count": 0,
+    "errors": [],
+    "feasible": true,
+    "objective": 445497.29493813484,
+    "objective_sense": "minimize",
+    "open_collection_hubs": [
+     "C01",
+     "C02",
+     "C04",
+     "C05",
+     "C06"
+    ],
+    "open_testing_centers": [
+     "T01",
+     "T02",
+     "T03",
+     "T04",
+     "T05"
+    ],
+    "total_cost": 445497.29493813484,
+    "total_emissions_kg": 71826.20347566999
+   },
+   "reward": {
+    "feasibility": 1.0,
+    "quality": 2.0
+   },
+   "reward_details": {
+    "agent_objective": 445497.29493813484,
+    "agent_objective_source": "objective",
+    "best_bound": 445497.29493813415,
+    "bound_improvement": 6.984919309616089e-10,
+    "bound_sense": "lower",
+    "evaluation_diagnostics": {
+     "error_count": 0,
+     "objective": 445497.29493813484,
+     "profit": null,
+     "score": null,
+     "total_cost": 445497.29493813484
+    },
+    "fallback_mip_gap": 0.0005,
+    "fallback_reference_scale": 445497.29493813484,
+    "feasibility": 1.0,
+    "formula": "clip(2 + d if d >= -1 else 1.5 + 0.5*d, 0, 2), d = (R - O) / (max(abs(R), 1e-8) * mip_gap)",
+    "objective_sense": "minimize",
+    "quality": 2.0,
+    "quality_scale_width": 222.74864746906744,
+    "quality_status": "bound_gap_below_mip_gap",
+    "reference_metrics": {
+     "best_bound": 445497.29493813415,
+     "best_bound_source": "best_bound",
+     "bound_sense": "lower",
+     "evaluation_summary": {
+      "error_count": 0,
+      "feasible": true,
+      "objective": 445497.29493813484,
+      "total_cost": 445497.29493813484
+     },
+     "generated_at": "2026-05-19T06:21:30.663287+00:00",
+     "mip_gap": 0.0005,
+     "objective_sense": "minimize",
+     "quality_formula": "clip(1 + (R - O) / (R - B), 0, 2) if B exists and R - B >= max(abs(R), 1e-8) * mip_gap; otherwise let d=(R - O)/(max(abs(R), 1e-8)*mip_gap), quality=clip(2+d if d>=-1 else 1.5+0.5*d, 0, 2); if no R, quality = 2",
+     "reference_objective": 445497.29493813484,
+     "reference_objective_source": "objective",
+     "solution_path": "reference_solutions/ev_battery_recycling_network_reference_solution.csv",
+     "solver_summary": {
+      "best_bound": 445497.29493813415,
+      "evaluation": {
+       "chemistry_summary": {
+        "lfp": {
+         "disposal": 0.0,
+         "high_value": 700.4760000000001,
+         "hydromet": 186.09715999999997,
+         "pyromet": 88.619,
+         "recycling": 429.324,
+         "second_life": 700.4760000000001,
+         "total": 1129.8
+        },
+        "nmc": {
+         "disposal": 0.0,
+         "high_value": 624.3439999999999,
+         "hydromet": 313.95584,
+         "pyromet": 0.0,
+         "recycling": 490.55600000000004,
+         "second_life": 281.84399999999994,
+         "total": 1114.8999999999999
+        }
+       },
+       "error_count": 0,
+       "errors": [],
+       "feasible": true,
+       "objective": 445497.29493813484,
+       "objective_sense": "minimize",
+       "open_collection_hubs": [
+        "C01",
+        "C02",
+        "C04",
+        "C05",
+        "C06"
+       ],
+       "open_testing_centers": [
+        "T01",
+        "T02",
+        "T03",
+        "T04",
+        "T05"
+       ],
+       "total_cost": 445497.29493813484,
+       "total_emissions_kg": 71826.20347566999
+      },
+      "mip_gap": 0.0005,
+      "objective": 445497.29493813484,
+      "solution_path": "reference_solutions/ev_battery_recycling_network_reference_solution.csv",
+      "status": "optimal",
+      "time_limit_seconds": 300.0,
+      "total_cost": 445497.29493813484,
+      "total_emissions_kg": 71826.20347566999
+     },
+     "task_name": "ev_battery_recycling_network",
+     "time_limit_seconds": 300.0
+    },
+    "reference_objective": 445497.29493813484,
+    "scalar_reward": 1.0,
+    "scalar_reward_formula": "(feasibility + quality) / 3.0",
+    "signed_improvement": 0.0
+   },
+   "runner": {
+    "return_code": 0,
+    "timed_out": false,
+    "wall_seconds": 19.345448
+   }
+  },
+  "metrics": {
+   "feasible": true,
+   "quality": 2.0,
+   "true_correct": true,
+   "objective": 445497.29493813484,
+   "evaluation_unknown": false
+  }
+ }
+}

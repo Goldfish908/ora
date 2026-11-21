@@ -1,0 +1,495 @@
+{
+ "recycled_paper_furnish_planning_lp": {
+  "runner": {
+   "return_code": 1,
+   "timed_out": false,
+   "stdout": "",
+   "stderr": "Traceback (most recent call last):\n  File \"/solution/solve_reference.py\", line 196, in <module>\n    main()\n  File \"/solution/solve_reference.py\", line 180, in main\n    raise RuntimeError(f\"No solution found; status={model.getStatus()}\")\nRuntimeError: No solution found; status=timelimit\n"
+  },
+  "official": {
+   "evaluation": {
+    "feasible": false,
+    "errors": [
+     "No solution file found."
+    ],
+    "error_count": 1
+   },
+   "reward": {
+    "feasibility": 0.0,
+    "quality": 0.0
+   },
+   "reward_details": {
+    "feasibility": 0.0,
+    "quality": 0.0,
+    "quality_status": "missing_solution"
+   },
+   "runner": {
+    "return_code": 0,
+    "timed_out": false,
+    "wall_seconds": 25.624174
+   }
+  },
+  "metrics": {
+   "feasible": false,
+   "quality": 0.0,
+   "true_correct": false,
+   "objective": null,
+   "evaluation_unknown": false
+  }
+ },
+ "second_life_battery_pack_assembly": {
+  "runner": {
+   "return_code": 0,
+   "timed_out": false,
+   "stdout": "{\n  \"best_bound\": 76048.51514279468,\n  \"evaluation_profit\": 76022.0295675,\n  \"mip_gap\": 0.00034839342550270995,\n  \"objective\": 76022.0295675,\n  \"solution\": \"/app/submissions/solution.csv\",\n  \"status\": \"gaplimit\"\n}\n",
+   "stderr": ""
+  },
+  "official": {
+   "evaluation": {
+    "active_setups": 12,
+    "built_packs": 153.0,
+    "environment": "second_life_battery_pack_assembly",
+    "error_count": 0,
+    "errors": [],
+    "feasible": true,
+    "profit": 76022.0295675
+   },
+   "reward": {
+    "feasibility": 1.0,
+    "quality": 2.0
+   },
+   "reward_details": {
+    "agent_objective": 76022.0295675,
+    "agent_objective_source": "profit",
+    "best_bound": 76048.51514279468,
+    "bound_improvement": 26.485575294689625,
+    "bound_sense": "upper",
+    "evaluation_diagnostics": {
+     "error_count": 0,
+     "objective": null,
+     "profit": 76022.0295675,
+     "score": null,
+     "total_cost": null
+    },
+    "fallback_mip_gap": 0.0005,
+    "fallback_reference_scale": 76022.0295675,
+    "feasibility": 1.0,
+    "formula": "clip(2 + d if d >= -1 else 1.5 + 0.5*d, 0, 2), d = (O - R) / (max(abs(R), 1e-8) * mip_gap)",
+    "objective_sense": "maximize",
+    "quality": 2.0,
+    "quality_scale_width": 38.01101478375,
+    "quality_status": "bound_gap_below_mip_gap",
+    "reference_metrics": {
+     "best_bound": 76048.51514279468,
+     "best_bound_source": "best_bound",
+     "bound_sense": "upper",
+     "evaluation_summary": {
+      "error_count": 0,
+      "feasible": true,
+      "profit": 76022.0295675
+     },
+     "generated_at": "2026-05-19T06:41:25.963289+00:00",
+     "mip_gap": 0.0005,
+     "objective_sense": "maximize",
+     "quality_formula": "clip(1 + (O - R) / (B - R), 0, 2) if B exists and B - R >= max(abs(R), 1e-8) * mip_gap; otherwise let d=(O - R)/(max(abs(R), 1e-8)*mip_gap), quality=clip(2+d if d>=-1 else 1.5+0.5*d, 0, 2); if no R, quality = 2",
+     "reference_objective": 76022.0295675,
+     "reference_objective_source": "profit",
+     "solution_path": "reference_solutions/second_life_battery_pack_assembly_reference_solution.csv",
+     "solver_summary": {
+      "best_bound": 76048.51514279468,
+      "evaluation_profit": 76022.0295675,
+      "mip_gap": 0.00034839342550270995,
+      "objective": 76022.0295675,
+      "solution": "reference_solutions/second_life_battery_pack_assembly_reference_solution.csv",
+      "status": "gaplimit"
+     },
+     "task_name": "second_life_battery_pack_assembly",
+     "time_limit_seconds": 300.0
+    },
+    "reference_objective": 76022.0295675,
+    "scalar_reward": 1.0,
+    "scalar_reward_formula": "(feasibility + quality) / 3.0",
+    "signed_improvement": 0.0
+   },
+   "runner": {
+    "return_code": 0,
+    "timed_out": false,
+    "wall_seconds": 14.605159
+   }
+  },
+  "metrics": {
+   "feasible": true,
+   "quality": 2.0,
+   "true_correct": true,
+   "objective": 76022.0295675,
+   "evaluation_unknown": false
+  }
+ },
+ "industrial_water_reuse_blending": {
+  "runner": {
+   "return_code": 0,
+   "timed_out": false,
+   "stdout": "{\n  \"best_bound\": 6011.5448483809305,\n  \"evaluation_objective\": 6011.544848380947,\n  \"mip_gap\": 0.0,\n  \"objective\": 6011.5448483809305,\n  \"solution\": \"/app/submissions/solution.csv\",\n  \"status\": \"optimal\"\n}\n",
+   "stderr": ""
+  },
+  "official": {
+   "evaluation": {
+    "environment": "industrial_water_reuse_blending",
+    "error_count": 0,
+    "errors": [],
+    "feasible": true,
+    "objective": 6011.544848380947,
+    "total_cost": 6011.544848380947
+   },
+   "reward": {
+    "feasibility": 1.0,
+    "quality": 2.0
+   },
+   "reward_details": {
+    "agent_objective": 6011.544848380947,
+    "agent_objective_source": "objective",
+    "best_bound": 6011.5448483809305,
+    "bound_sense": "lower",
+    "evaluation_diagnostics": {
+     "error_count": 0,
+     "objective": 6011.544848380947,
+     "profit": null,
+     "score": null,
+     "total_cost": 6011.544848380947
+    },
+    "fallback_mip_gap": 0.0005,
+    "fallback_reference_scale": 6011.544848380947,
+    "feasibility": 1.0,
+    "formula": "clip(2 + d if d >= -1 else 1.5 + 0.5*d, 0, 2), d = (R - O) / (max(abs(R), 1e-8) * mip_gap)",
+    "objective_sense": "minimize",
+    "quality": 2.0,
+    "quality_status": "bound_gap_below_mip_gap",
+    "reference_metrics": {
+     "best_bound": 6011.5448483809305,
+     "best_bound_source": "best_bound",
+     "bound_sense": "lower",
+     "evaluation_summary": {
+      "error_count": 0,
+      "feasible": true,
+      "objective": 6011.544848380947,
+      "total_cost": 6011.544848380947
+     },
+     "generated_at": "2026-05-18T12:03:49.257431+00:00",
+     "mip_gap": 0.0005,
+     "objective_sense": "minimize",
+     "quality_formula": "clip(1 + (R - O) / (R - B), 0, 2) if B exists and R - B >= max(abs(R), 1e-8) * mip_gap; otherwise let d=(R - O)/(max(abs(R), 1e-8)*mip_gap), quality=clip(2+d if d>=-1 else 1.5+0.5*d, 0, 2); if no R, quality = 2",
+     "reference_objective": 6011.544848380947,
+     "reference_objective_source": "objective",
+     "solution_path": "reference_solutions/industrial_water_reuse_blending_reference_solution.csv",
+     "solver_summary": {
+      "best_bound": 6011.5448483809305,
+      "evaluation_objective": 6011.544848380947,
+      "mip_gap": 0.0,
+      "objective": 6011.5448483809305,
+      "solution": "reference_solutions/industrial_water_reuse_blending_reference_solution.csv",
+      "status": "optimal"
+     },
+     "task_name": "industrial_water_reuse_blending",
+     "time_limit_seconds": 300.0
+    },
+    "reference_objective": 6011.544848380947,
+    "scalar_reward": 1.0,
+    "scalar_reward_formula": "(feasibility + quality) / 3.0"
+   },
+   "runner": {
+    "return_code": 0,
+    "timed_out": false,
+    "wall_seconds": 27.635226
+   }
+  },
+  "metrics": {
+   "feasible": true,
+   "quality": 2.0,
+   "true_correct": true,
+   "objective": 6011.544848380947,
+   "evaluation_unknown": false
+  }
+ },
+ "recycling_mrf_stochastic_sorting_plan": {
+  "runner": {
+   "return_code": 0,
+   "timed_out": false,
+   "stdout": "{\n  \"best_bound\": -87178.60893622907,\n  \"evaluation_objective\": -94209.00986016524,\n  \"mip_gap\": 0.08064377617614037,\n  \"objective\": -94209.0211626296,\n  \"open_lines\": 7.0,\n  \"solution\": \"/app/submissions/solution.csv\",\n  \"status\": \"timelimit\",\n  \"total_labor_hours\": 105.520531,\n  \"total_qc_tests\": 14.0\n}\n",
+   "stderr": ""
+  },
+  "official": {
+   "evaluation": {
+    "environment": "recycling_mrf_stochastic_sorting_plan",
+    "error_count": 0,
+    "errors": [],
+    "expected_margin_before_first_stage": -43628.347215215246,
+    "feasible": true,
+    "first_stage_cost": 45578.2795595,
+    "fixed_cost": 33265.0,
+    "labor_cost": 7861.279559500001,
+    "objective": -94209.00986016524,
+    "open_lines": 7.0,
+    "profit": -94209.00986016524,
+    "qc_cost": 4452.0,
+    "scenario_details": {
+     "S01": {
+      "contract_penalty": 14574.284085889998,
+      "margin": -42218.198995419596,
+      "priority_shortfall": 20.665517019999996,
+      "processed_cost": 14241.529999999997,
+      "processed_tons": 227.5,
+      "residue_cost": 12413.236968921598,
+      "revenue": 20443.952059392,
+      "unprocessed_penalty": 21433.100000000002
+     },
+     "S02": {
+      "contract_penalty": 11469.27248087,
+      "margin": -39400.011964766796,
+      "priority_shortfall": 12.064525229999997,
+      "processed_cost": 15710.610000000002,
+      "processed_tons": 249.4,
+      "residue_cost": 12964.419155020798,
+      "revenue": 24134.489671124004,
+      "unprocessed_penalty": 23390.2
+     },
+     "S03": {
+      "contract_penalty": 14976.078363,
+      "margin": -47841.9373761754,
+      "priority_shortfall": 20.06833247,
+      "processed_cost": 17240.38,
+      "processed_tons": 272.4,
+      "residue_cost": 15298.3080013824,
+      "revenue": 23782.428988207,
+      "unprocessed_penalty": 24109.600000000002
+     },
+     "S04": {
+      "contract_penalty": 15964.345963720003,
+      "margin": -40372.0762859838,
+      "priority_shortfall": 24.75512825,
+      "processed_cost": 14055.750000000002,
+      "processed_tons": 223.10000000000002,
+      "residue_cost": 11927.164864396796,
+      "revenue": 21298.084542133,
+      "unprocessed_penalty": 19722.899999999998
+     },
+     "S05": {
+      "contract_penalty": 17678.500312540004,
+      "margin": -53460.5447645482,
+      "priority_shortfall": 25.70281801000001,
+      "processed_cost": 16636.730000000003,
+      "processed_tons": 268.2,
+      "residue_cost": 15369.228713923196,
+      "revenue": 22006.614261915,
+      "unprocessed_penalty": 25782.7
+     },
+     "S06": {
+      "contract_penalty": 9584.974341509998,
+      "margin": -35136.678264641,
+      "priority_shortfall": 7.436778059999996,
+      "processed_cost": 15463.279999999999,
+      "processed_tons": 244.8,
+      "residue_cost": 12423.77734752,
+      "revenue": 24008.053424389003,
+      "unprocessed_penalty": 21672.700000000004
+     },
+     "S07": {
+      "contract_penalty": 16846.638524050002,
+      "margin": -54363.52404603479,
+      "priority_shortfall": 24.23573633,
+      "processed_cost": 18412.74,
+      "processed_tons": 290.0,
+      "residue_cost": 16893.462078844797,
+      "revenue": 23961.016556860002,
+      "unprocessed_penalty": 26171.699999999997
+     },
+     "S08": {
+      "contract_penalty": 15228.710491930004,
+      "margin": -40099.994555542005,
+      "priority_shortfall": 22.811368580000007,
+      "processed_cost": 13708.61,
+      "processed_tons": 218.70000000000005,
+      "residue_cost": 11574.304177536002,
+      "revenue": 20584.030113924,
+      "unprocessed_penalty": 20172.399999999998
+     },
+     "S09": {
+      "contract_penalty": 14880.21701551,
+      "margin": -44788.430061794796,
+      "priority_shortfall": 19.908375030000002,
+      "processed_cost": 16086.87,
+      "processed_tons": 254.90000000000003,
+      "residue_cost": 13858.485410380797,
+      "revenue": 23195.042364096,
+      "unprocessed_penalty": 23157.899999999998
+     },
+     "S10": {
+      "contract_penalty": 9104.8304016,
+      "margin": -43604.862603707006,
+      "priority_shortfall": 6.20345075,
+      "processed_cost": 16958.370000000003,
+      "processed_tons": 270.9,
+      "residue_cost": 15131.567884848,
+      "revenue": 23345.105682741,
+      "unprocessed_penalty": 25755.199999999997
+     },
+     "S11": {
+      "contract_penalty": 16506.561588170007,
+      "margin": -42270.883362077606,
+      "priority_shortfall": 24.688868650000014,
+      "processed_cost": 15209.070000000002,
+      "processed_tons": 241.0,
+      "residue_cost": 12556.168422585599,
+      "revenue": 23543.916648678,
+      "unprocessed_penalty": 21543.0
+     },
+     "S12": {
+      "contract_penalty": 12591.246115150003,
+      "margin": -41144.206085353006,
+      "priority_shortfall": 16.154347280000003,
+      "processed_cost": 15779.580000000002,
+      "processed_tons": 249.7,
+      "residue_cost": 13532.685980160002,
+      "revenue": 23330.006009957,
+      "unprocessed_penalty": 22570.7
+     },
+     "S13": {
+      "contract_penalty": 17906.52076988,
+      "margin": -54802.22203225401,
+      "priority_shortfall": 27.039908569999994,
+      "processed_cost": 17914.949999999997,
+      "processed_tons": 284.8,
+      "residue_cost": 16565.564044896004,
+      "revenue": 23774.112782521996,
+      "unprocessed_penalty": 26189.300000000003
+     },
+     "S14": {
+      "contract_penalty": 15087.051686570003,
+      "margin": -37589.5881327234,
+      "priority_shortfall": 21.408499190000008,
+      "processed_cost": 12169.959999999997,
+      "processed_tons": 193.29999999999998,
+      "residue_cost": 9460.0890459744,
+      "revenue": 19068.512599821,
+      "unprocessed_penalty": 19940.999999999996
+     }
+    },
+    "tail_cost": 5002.383085449999,
+    "total_labor_hours": 105.520531,
+    "total_profit": -94209.00986016524,
+    "total_qc_tests": 14.0,
+    "worst_priority_shortfall": 27.039908569999994
+   },
+   "reward": {
+    "feasibility": 1.0,
+    "quality": 0.0
+   },
+   "reward_details": {
+    "agent_objective": -94209.00986016524,
+    "agent_objective_source": "profit",
+    "best_bound": -87311.57547105922,
+    "bound_improvement": 35.38993294960528,
+    "bound_sense": "upper",
+    "evaluation_diagnostics": {
+     "error_count": 0,
+     "objective": -94209.00986016524,
+     "profit": -94209.00986016524,
+     "score": null,
+     "total_cost": null
+    },
+    "fallback_mip_gap": 0.0005,
+    "fallback_reference_scale": 87346.96540400882,
+    "feasibility": 1.0,
+    "formula": "clip(2 + d if d >= -1 else 1.5 + 0.5*d, 0, 2), d = (O - R) / (max(abs(R), 1e-8) * mip_gap)",
+    "objective_sense": "maximize",
+    "quality": 0.0,
+    "quality_scale_width": 43.673482702004414,
+    "quality_status": "bound_gap_below_mip_gap",
+    "reference_metrics": {
+     "best_bound": -87311.57547105922,
+     "best_bound_source": "best_bound",
+     "bound_sense": "upper",
+     "evaluation_summary": {
+      "error_count": 0,
+      "feasible": true,
+      "objective": -87346.96540400882,
+      "profit": -87346.96540400882
+     },
+     "generated_at": "2026-05-22T02:08:56.421034+00:00",
+     "mip_gap": 0.0005,
+     "objective_sense": "maximize",
+     "quality_formula": "clip(1 + (O - R) / (B - R), 0, 2) if B exists and B - R >= max(abs(R), 1e-8) * mip_gap; otherwise let d=(O - R)/(max(abs(R), 1e-8)*mip_gap), quality=clip(2+d if d>=-1 else 1.5+0.5*d, 0, 2); if no R, quality = 2",
+     "reference_objective": -87346.96540400882,
+     "reference_objective_source": "profit",
+     "solution_path": "reference_solutions/recycling_mrf_stochastic_sorting_plan_reference_solution.csv",
+     "solver_summary": {
+      "best_bound": -87311.57547105922,
+      "evaluation_objective": -87346.96540400882,
+      "mip_gap": 0.00040532925959724475,
+      "objective": -87346.96540729917,
+      "open_lines": 6.0,
+      "solution": "reference_solutions/recycling_mrf_stochastic_sorting_plan_reference_solution.csv",
+      "status": "gaplimit",
+      "total_labor_hours": 97.813709,
+      "total_qc_tests": 9.0
+     },
+     "task_name": "recycling_mrf_stochastic_sorting_plan",
+     "time_limit_seconds": 300.0
+    },
+    "reference_objective": -87346.96540400882,
+    "scalar_reward": 0.3333333333333333,
+    "scalar_reward_formula": "(feasibility + quality) / 3.0",
+    "signed_improvement": -6862.044456156422
+   },
+   "runner": {
+    "return_code": 0,
+    "timed_out": false,
+    "wall_seconds": 20.332573
+   }
+  },
+  "metrics": {
+   "feasible": true,
+   "quality": 0.0,
+   "true_correct": false,
+   "objective": -94209.00986016524,
+   "evaluation_unknown": false
+  }
+ },
+ "steel_scc_ladle_energy_reschedule": {
+  "runner": {
+   "return_code": 137,
+   "timed_out": true,
+   "stdout": "",
+   "stderr": ""
+  },
+  "official": {
+   "evaluation": {
+    "feasible": false,
+    "errors": [
+     "No solution file found."
+    ],
+    "error_count": 1
+   },
+   "reward": {
+    "feasibility": 0.0,
+    "quality": 0.0
+   },
+   "reward_details": {
+    "feasibility": 0.0,
+    "quality": 0.0,
+    "quality_status": "missing_solution"
+   },
+   "runner": {
+    "return_code": 0,
+    "timed_out": false,
+    "wall_seconds": 24.40825
+   }
+  },
+  "metrics": {
+   "feasible": false,
+   "quality": 0.0,
+   "true_correct": false,
+   "objective": null,
+   "evaluation_unknown": false
+  }
+ }
+}

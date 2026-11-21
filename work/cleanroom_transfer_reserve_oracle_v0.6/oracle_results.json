@@ -1,0 +1,40 @@
+{
+ "semiconductor_ion_implant_scheduling": {
+  "runner": {
+   "return_code": 137,
+   "timed_out": true,
+   "stdout": "",
+   "stderr": ""
+  },
+  "official": {
+   "evaluation": {
+    "feasible": false,
+    "errors": [
+     "No solution file found."
+    ],
+    "error_count": 1
+   },
+   "reward": {
+    "feasibility": 0.0,
+    "quality": 0.0
+   },
+   "reward_details": {
+    "feasibility": 0.0,
+    "quality": 0.0,
+    "quality_status": "missing_solution"
+   },
+   "runner": {
+    "return_code": 0,
+    "timed_out": false,
+    "wall_seconds": 21.834009
+   }
+  },
+  "metrics": {
+   "feasible": false,
+   "quality": 0.0,
+   "true_correct": false,
+   "objective": null,
+   "evaluation_unknown": false
+  }
+ }
+}

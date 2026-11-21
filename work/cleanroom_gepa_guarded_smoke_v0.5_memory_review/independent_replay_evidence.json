@@ -1,0 +1,23 @@
+{
+ "reason": "missing_disjoint_replay",
+ "candidate_idx": 1,
+ "candidate_selection": {
+  "candidate_idx": 1,
+  "candidate_sha256": "c916c6044b5277c462a4938bac14a78cd77332b539a61342097e3143c17aa99f",
+  "parents": [
+   0
+  ],
+  "official_proxy_mean": 0.0,
+  "n": 1,
+  "executable": 0,
+  "feasible": 0,
+  "proxy_match": 0,
+  "true_correct": 0,
+  "phantom_proxy": 0,
+  "unknown": 1,
+  "generation_errors": 1,
+  "mean_quality": 0.0,
+  "dev_proxy_mean": 0.3333333333333333,
+  "selection_rule": "transfer_proxy_desc_dev_proxy_desc_candidate_idx_asc"
+ }
+}

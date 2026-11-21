@@ -1,0 +1,32 @@
+{
+ "original": "from pyscipopt import Model\nm=Model()\nx=m.addVar(vtype=\"B\")\ny=m.addVar(vtype=\"B\")\nm.setObjective(0)\nm.changeCoeff(x, 2.5)\nm.changeCoeff(y, 4.0)\nm.addCons(m.quicksum([x,y]) <= 2)\nm.setMaximize()\nm.optimize()\nassert abs(m.getObjVal()-6.5)<1e-8\nassert m.getVal(x)>0.99 and m.getVal(y)>0.99\nprint(\"objective\",m.getObjVal(),\"status\",m.getStatus())",
+ "repaired": "from pyscipopt import Model\nfrom pyscipopt import quicksum\nm = Model()\nx = m.addVar(vtype='B')\ny = m.addVar(vtype='B')\nm.setObjective(0)\nm.setObjective(m.getObjective() + 2.5 * x)\nm.setObjective(m.getObjective() + 4.0 * y)\nm.addCons(quicksum([x, y]) <= 2)\nm.setMaximize()\nm.optimize()\nassert abs(m.getObjVal() - 6.5) < 1e-08\nassert m.getVal(x) > 0.99 and m.getVal(y) > 0.99\nprint('objective', m.getObjVal(), 'status', m.getStatus())",
+ "applied": [
+  {
+   "category": "objective_coefficient",
+   "from": "changeCoeff(variable, coefficient)",
+   "to": "setObjective(getObjective() + coefficient * variable)"
+  },
+  {
+   "category": "objective_coefficient",
+   "from": "changeCoeff(variable, coefficient)",
+   "to": "setObjective(getObjective() + coefficient * variable)"
+  },
+  {
+   "category": "module_quicksum",
+   "from": ".quicksum(",
+   "to": "quicksum("
+  }
+ ],
+ "result": {
+  "return_code": 0,
+  "stdout": "feasible solution found by trivial heuristic after 0.0 seconds, objective value 6.500000e+00\npresolving:\npresolving (1 rounds: 1 fast, 0 medium, 0 exhaustive):\n 0 deleted vars, 0 deleted constraints, 0 added constraints, 0 tightened bounds, 0 added holes, 0 changed sides, 0 changed coefficients\n 0 implications, 0 cliques, 0 implied integral variables (0 bin, 0 int, 0 cont)\ntransformed 2/2 original solutions to the transformed problem space\npresolving solved problem\nPresolving Time: 0.00\n\nSCIP Status        : problem is solved [optimal solution found]\nSolving Time (sec) : 0.00\nSolving Nodes      : 0\nPrimal Bound       : +6.50000000000000e+00 (2 solutions)\nDual Bound         : +6.50000000000000e+00\nGap                : 0.00 %\nobjective 6.5 status optimal\n",
+  "stderr": "",
+  "timed_out": false,
+  "command": [
+   "python",
+   "-c",
+   "from pyscipopt import Model\nfrom pyscipopt import quicksum\nm = Model()\nx = m.addVar(vtype='B')\ny = m.addVar(vtype='B')\nm.setObjective(0)\nm.setObjective(m.getObjective() + 2.5 * x)\nm.setObjective(m.getObjective() + 4.0 * y)\nm.addCons(quicksum([x, y]) <= 2)\nm.setMaximize()\nm.optimize()\nassert abs(m.getObjVal() - 6.5) < 1e-08\nassert m.getVal(x) > 0.99 and m.getVal(y) > 0.99\nprint('objective', m.getObjVal(), 'status', m.getStatus())"
+  ]
+ }
+}

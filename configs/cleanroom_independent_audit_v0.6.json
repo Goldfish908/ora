@@ -1,0 +1,8 @@
+{
+  "version": "cleanroom_independent_audit_v0.6",
+  "selection_basis": "Healthy public manufacturing tasks not used in GEPA train/validation; used only for independent replay and memory review, not subsequent transfer scoring.",
+  "tasks": [
+    {"name": "industrial_water_reuse_blending", "domain": "manufacturing", "split": "audit"},
+    {"name": "mass_timber_panel_cutting_plan", "domain": "manufacturing", "split": "audit"}
+  ]
+}

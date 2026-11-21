@@ -1,0 +1,9 @@
+{
+  "version": "cleanroom_transfer_candidates_v0.6",
+  "selection_basis": "Unseen public manufacturing scenarios, packet-size budget and mechanism diversity; inclusion requires healthy oracle/official evaluation.",
+  "tasks": [
+    {"name": "aerospace_composite_autoclave_scheduling", "domain": "manufacturing", "split": "audit"},
+    {"name": "mass_timber_panel_cutting_plan", "domain": "manufacturing", "split": "audit"},
+    {"name": "ev_battery_recycling_network", "domain": "manufacturing", "split": "audit"}
+  ]
+}

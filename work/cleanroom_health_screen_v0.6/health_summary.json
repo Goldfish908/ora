@@ -1,0 +1,120 @@
+{
+  "schema_version": 1,
+  "selection_basis": "Public scenario, mechanism diversity, packet-size limit, historical exclusion and oracle/official health. Qwen scores were not used.",
+  "maximum_public_characters": 180000,
+  "tasks": [
+    {
+      "name": "additive_microfactory_order_planning",
+      "assigned_split": "dev",
+      "domain": "manufacturing",
+      "oracle_feasible": true,
+      "oracle_quality": 2.0,
+      "decision": "included",
+      "evidence": "work/cleanroom_dag_repair_smoke_v0.3/witness/additive_microfactory_order_planning/oracle/result.json"
+    },
+    {
+      "name": "industrial_supply_planning",
+      "assigned_split": "dev",
+      "domain": "manufacturing",
+      "oracle_feasible": true,
+      "oracle_quality": 0.7887453155029561,
+      "decision": "included",
+      "evidence": "work/cleanroom_dag_repair_smoke_v0.3/witness/industrial_supply_planning/oracle/result.json"
+    },
+    {
+      "name": "second_life_battery_pack_assembly",
+      "assigned_split": "dev",
+      "domain": "manufacturing",
+      "public_characters": 8112,
+      "oracle_feasible": true,
+      "oracle_quality": 2.0,
+      "decision": "included",
+      "evidence": "work/cleanroom_expansion_oracle_v0.6.1/second_life_battery_pack_assembly/oracle/app/oracle_evaluation/official_evaluation.json"
+    },
+    {
+      "name": "carbon_aware_compute_scheduling",
+      "assigned_split": "transfer",
+      "domain": "compute_scheduling",
+      "decision": "selection_task_not_heldout",
+      "evidence": "configs/cleanroom_formal_dev_v0.6.json"
+    },
+    {
+      "name": "industrial_water_reuse_blending",
+      "assigned_split": "audit",
+      "domain": "manufacturing",
+      "public_characters": 4485,
+      "oracle_feasible": true,
+      "oracle_quality": 2.0,
+      "decision": "included",
+      "evidence": "work/cleanroom_expansion_oracle_v0.6.1/industrial_water_reuse_blending/oracle/app/oracle_evaluation/official_evaluation.json"
+    },
+    {
+      "name": "recycled_paper_furnish_planning_lp",
+      "public_characters": 137372,
+      "oracle_feasible": false,
+      "oracle_quality": 0.0,
+      "decision": "excluded_oracle_no_solution",
+      "evidence": "work/cleanroom_expansion_oracle_v0.6.1/recycled_paper_furnish_planning_lp/oracle/app/oracle_evaluation/official_evaluation.json"
+    },
+    {
+      "name": "recycling_mrf_stochastic_sorting_plan",
+      "public_characters": 47789,
+      "oracle_feasible": true,
+      "oracle_quality": 0.0,
+      "decision": "excluded_oracle_quality_below_threshold",
+      "evidence": "work/cleanroom_expansion_oracle_v0.6.1/recycling_mrf_stochastic_sorting_plan/oracle/app/oracle_evaluation/official_evaluation.json"
+    },
+    {
+      "name": "maritime_fueleu_bunker_blending_lp",
+      "public_characters": 697629,
+      "decision": "excluded_public_packet_too_large_not_truncated",
+      "evidence": "configs/cleanroom_expansion_candidates_v0.6.json"
+    },
+    {
+      "name": "steel_scc_ladle_energy_reschedule",
+      "public_characters": 25471,
+      "oracle_feasible": false,
+      "oracle_quality": 0.0,
+      "decision": "excluded_oracle_infeasible",
+      "evidence": "work/cleanroom_expansion_oracle_v0.6.1/steel_scc_ladle_energy_reschedule/oracle/app/oracle_evaluation/official_evaluation.json"
+    },
+    {
+      "name": "aerospace_composite_autoclave_scheduling",
+      "domain": "manufacturing",
+      "public_characters": 17387,
+      "oracle_feasible": false,
+      "oracle_quality": 0.0,
+      "decision": "excluded_oracle_infeasible",
+      "evidence": "work/cleanroom_transfer_oracle_v0.6/aerospace_composite_autoclave_scheduling/oracle/app/oracle_evaluation/official_evaluation.json"
+    },
+    {
+      "name": "mass_timber_panel_cutting_plan",
+      "assigned_split": "audit",
+      "domain": "manufacturing",
+      "public_characters": 87147,
+      "oracle_feasible": true,
+      "oracle_quality": 2.0,
+      "decision": "included",
+      "evidence": "work/cleanroom_transfer_oracle_v0.6/mass_timber_panel_cutting_plan/oracle/app/oracle_evaluation/official_evaluation.json"
+    },
+    {
+      "name": "ev_battery_recycling_network",
+      "assigned_split": "transfer",
+      "domain": "manufacturing",
+      "public_characters": 14122,
+      "oracle_feasible": true,
+      "oracle_quality": 2.0,
+      "decision": "included",
+      "evidence": "work/cleanroom_transfer_oracle_v0.6/ev_battery_recycling_network/oracle/app/oracle_evaluation/official_evaluation.json"
+    },
+    {
+      "name": "semiconductor_ion_implant_scheduling",
+      "domain": "manufacturing",
+      "public_characters": 59555,
+      "oracle_feasible": false,
+      "oracle_quality": 0.0,
+      "decision": "excluded_oracle_infeasible",
+      "evidence": "work/cleanroom_transfer_reserve_oracle_v0.6/semiconductor_ion_implant_scheduling/oracle/app/oracle_evaluation/official_evaluation.json"
+    }
+  ]
+}

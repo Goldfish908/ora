@@ -111,6 +111,37 @@ GEPA无提升、memory零晋升、DAG无增益、Witness覆盖不足或跨族失
 - `recycled_paper_furnish_planning_lp`：oracle 未产生解，排除。
 - `recycling_mrf_stochastic_sorting_plan`：oracle 可行但 `quality=0`，不作为 clean/参考健康任务。
 - `maritime_fueleu_bunker_blending_lp`：公开包 697,629 字符，超过 180,000 字符上限，明确排除而不截断。
-- `steel_scc_ladle_energy_reschedule`：待健康检查完成后再决定是否进入独立批次。
+- `steel_scc_ladle_energy_reschedule`：oracle `feasible=false、quality=0`，排除，不进入独立批次。
+- 后续健康检查中，`aerospace_composite_autoclave_scheduling` oracle 未通过而排除；`mass_timber_panel_cutting_plan` 和 `ev_battery_recycling_network` 均为 `feasible=true、quality=2.0`，分别进入独立审计与后续迁移。`semiconductor_ion_implant_scheduling` oracle 同样未通过，未纳入。最终迁移 pilot 为 `configs/cleanroom_transfer_v0.6.json` 中的电池回收网络一题，明确不作泛化准确率声明。
 
 冻结的 v0.6 开发配置为 `configs/cleanroom_formal_dev_v0.6.json`：增材、工业供应、电池装配为 manufacturing/dev，碳调度为 compute_scheduling/transfer。新运行使用真实 stdout/stderr 反思、容器 API 证据、源码保留式 guard 和统一 UNKNOWN/成本口径。运行期间不修改核心实现。
+
+
+## 两批次 suite 执行入口
+
+`scripts/cleanroom_suite.py` 将独立重放、晋升、残余修复和报告串联起来。第一批只使用未参与 GEPA train/validation 的 audit 任务：
+
+```bash
+PYTHONPATH="$PWD" /home/hewj13/wm/ext/py312/bin/python scripts/cleanroom_suite.py \
+  --gepa-run work/<completed_gepa_run> \
+  --dev-tasks configs/cleanroom_formal_dev_v0.6.json \
+  --audit-tasks configs/cleanroom_independent_audit_v0.6.json \
+  --witness-source work/cleanroom_dag_repair_smoke_v0.3/witness \
+  --out work/cleanroom_audit_suite_v0.6 \
+  --workers 1 --max-attempts 3 --llm-timeout 600
+```
+
+该批次依次执行 B0、B1、独立 memory 审查和 B2；只有真实晋升时才执行同批 B3，且不得把同批结果称为后续迁移。随后在未参与晋升的 transfer 批次上只读使用 memory：
+
+```bash
+PYTHONPATH="$PWD" /home/hewj13/wm/ext/py312/bin/python scripts/cleanroom_suite.py \
+  --gepa-run work/<completed_gepa_run> \
+  --dev-tasks configs/cleanroom_formal_dev_v0.6.json \
+  --audit-tasks configs/cleanroom_transfer_v0.6.json \
+  --memory-source work/cleanroom_audit_suite_v0.6/memory_review/memory_promoted.json \
+  --witness-source work/cleanroom_dag_repair_smoke_v0.3/witness \
+  --out work/cleanroom_transfer_suite_v0.6 \
+  --workers 1 --max-attempts 3 --llm-timeout 600
+```
+
+第二批重新测量 B0/B1/B2，再与 B3 对照，不重新执行晋升。`verified_promotion` 要求独立重放、出处审计和实际 promoted 资产同时存在。`--resume` 只复用已完成且输入哈希一致的阶段；部分修复不会自动重试。`test_cleanroom_suite.py` 覆盖规范传递、registry 冻结、外部 memory 校验和 B2/B3 编排，真实执行结果仍以最终官方评价为准。

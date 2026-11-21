@@ -1,0 +1,7 @@
+{
+  "version": "cleanroom_transfer_reserve_candidates_v0.6",
+  "selection_basis": "Public semiconductor manufacturing scenario; no domain relabelling for sample size and no Qwen-score selection.",
+  "tasks": [
+    {"name": "semiconductor_ion_implant_scheduling", "domain": "manufacturing", "split": "audit"}
+  ]
+}

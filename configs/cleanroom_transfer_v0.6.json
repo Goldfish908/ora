@@ -1,0 +1,8 @@
+{
+  "version": "cleanroom_transfer_v0.6",
+  "selection_basis": "Healthy public manufacturing task, disjoint from GEPA selection and the independent memory-promotion audit batch.",
+  "heldout_note": "One-task subsequent transfer pilot. It supports mechanism inspection, not a generalized accuracy claim.",
+  "tasks": [
+    {"name": "ev_battery_recycling_network", "domain": "manufacturing", "split": "transfer"}
+  ]
+}

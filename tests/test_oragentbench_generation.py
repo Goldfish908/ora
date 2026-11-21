@@ -4,7 +4,7 @@ from pathlib import Path
 import pytest
 
 from ora_agent import llm as llm_mod
-from ora_agent.oragentbench import TaskPacket, generate_artifacts, parse_artifacts
+from ora_agent.oragentbench import TaskPacket, generate_artifacts, parse_artifacts, validate_solver_code
 
 ROOT = Path(__file__).resolve().parents[1]
 
@@ -20,7 +20,9 @@ def test_two_phase_artifact_generation(tmp_path, monkeypatch):
         if name == "submit_model":
             args = {"model_md": "# Model"}
         else:
-            args = {"solve_py": "print(1)", "solve_log_md": "# Log"}
+            code = ("from pyscipopt import Model\nm = Model()\nm.optimize()\n"
+                    "sol_path = '/app/submissions/solution.csv'\n" + "#" * 500)
+            args = {"solve_py": code, "solve_log_md": "# Log"}
         return {"model": "test-model", "finish_reason": "stop",
                 "tool_calls": [{"function": {"name": name, "arguments": json.dumps(args)}}]}
 
@@ -29,7 +31,7 @@ def test_two_phase_artifact_generation(tmp_path, monkeypatch):
     artifacts = generate_artifacts(packet, "spec", config, tmp_path)
     assert calls == ["submit_model", "submit_solver"]
     assert artifacts["model_md"] == "# Model"
-    assert artifacts["solve_py"] == "print(1)"
+    assert artifacts["solve_py"].endswith("#" * 500)
     assert (tmp_path / "model_generation.json").exists()
     assert (tmp_path / "solver_generation.json").exists()
 
@@ -37,3 +39,21 @@ def test_two_phase_artifact_generation(tmp_path, monkeypatch):
 def test_truncated_artifact_is_explicit_failure():
     with pytest.raises(ValueError, match="truncated"):
         parse_artifacts({"finish_reason": "length", "tool_calls": []})
+
+
+def test_stub_is_not_accepted_as_complete_solver():
+    with pytest.raises(ValueError, match="incomplete_artifact"):
+        validate_solver_code("from pypcipopt import *  # placeholder")
+
+
+def test_exception_pass_is_not_an_empty_function():
+    code = ("from pyscipopt import Model\n"
+            "def solve():\n"
+            "    m = Model()\n"
+            "    try:\n"
+            "        m.optimize()\n"
+            "    except ValueError:\n"
+            "        pass\n"
+            "    with open('/app/submissions/solution.csv', 'w') as handle:\n"
+            "        handle.write('')\n" + "#" * 500)
+    validate_solver_code(code)

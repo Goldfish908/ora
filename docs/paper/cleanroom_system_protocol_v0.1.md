@@ -48,8 +48,69 @@
 
 每个节点保存规范版本、代码哈希、求解状态、目标值、逐层verdict、修复目标、LLM/token/求解成本和接受原因。主曲线绑定数据、模型、规范、Witness、参考目标和评价器版本。
 
-制品生成采用两段协议：先提交精炼 `model.md`，再提交完整 `solve.py` 与日志。`finish_reason=length/max_tokens` 明确记为生成截断失败，不得当作缺失代码、空输出或业务错误。单阶段与两阶段结果不得混入同一比较曲线。内网Qwen通过 `chat_template_kwargs.enable_thinking=false` 控制长生成时，须在所有比较臂一致记录和使用。
+制品生成采用两段协议：先提交精炼 `model.md`，再提交完整 `solve.py` 与日志。`finish_reason=length/max_tokens` 明确记为生成截断失败，不得当作缺失代码、空输出或业务错误。确定性API guard仅使用真实容器已验证的兼容规则，并在完整性检查之前执行，保存原始与修复后代码哈希及全部替换。求解代码还须通过完整性检查：包含求解调用、决策文件输出，且不得含占位符或空函数体；异常处理中的合法 `pass` 不误杀。不满足记为 `incomplete_artifact`，不得进入SCIP或GEPA评分。单阶段与两阶段结果不得混入同一比较曲线。内网Qwen通过 `chat_template_kwargs.enable_thinking=false` 控制长生成时，须在所有比较臂一致记录和使用。
 
 ## 负结果
 
 GEPA无提升、memory零晋升、DAG无增益、Witness覆盖不足或跨族失败均如实报告。不得为获得正结果而移动分母、降低授权门槛、改写UNKNOWN或根据最终测试调参。
+
+
+## v0.6 实施修订（仅适用于后续新实验）
+
+以下修订不回溯改写成 v0.5 的预注册内容。旧运行保留 `implementation.json` 和 `source_snapshot/`；新运行使用新的实现哈希。
+
+### 重放、晋升与冻结
+
+- `scripts/cleanroom_replay.py` 显式选择候选编号和规范哈希，在同一后续批次执行 B0/B1，不产生 GEPA 反思或反馈写回。默认拒绝把 GEPA train/val 任务标为后续独立批次；显式选择集重放必须标为 `selection_set_replay`。
+- `scripts/cleanroom_memory.py` 需要 `--independent-replay` 与同批 `--independent-baseline`。候选规范、GEPA 来源文件、实现哈希、任务集合、官方逐题结果必须匹配；空规范到候选规范不得丢失真实 win、增加幻影或产生评价 UNKNOWN。没有这些证据时，memory 拒绝晋升。
+- 出处审计同时读取公开题面和真实容器 API 探测。后者来自 `inspect.signature`，不包含参考答案或隐藏评价逻辑；与探测矛盾的 API 规则不得晋升。
+- 晋升规范绑定实际开发域并冻结。新域只继承初始化模板，不自动继承检查否决权。若 B3 与 B1 使用相同规范且没有新增的已验证修复资产，二者是同一生成条件，不能把相同结果称为 memory 的增量收益。
+- 测试批次不得写回 registry。当前 `repair_bounded` 只允许 dev/audit/transfer；final 不允许把官方错误反馈给修复模型。要在 final 测量 B2，必须先实现由公开题面初始化、与官方评价器实现独立的检查，不能依靠当前 `<domain>_official_task_pass` 冒充独立 Witness。
+
+### 有界修复与成本
+
+- `repair_bounded` 对每题最多进行三次目标修复，使用同一个 RepairDAG 保存父子边。原本正确的输出不修复；重复代码、无证据变化或无授权检查会停止；只有最终门禁通过才替换直接基线，否则回退。
+- 每次尝试保存原始制品、guard 后代码、公开 stdout/stderr、官方结果、前后 verdict、目标检查、接受原因与代码哈希。失败生成也按 generation 日志计入 LLM 成本；求解与官方评价分别记录实际 wall time。
+- 新诊断将 `UNKNOWN` 限定为官方评价无法给出确定结果。制品不完整、执行错误、业务不可行、质量不足、幻影和评价 UNKNOWN 分开统计。旧记录中的广义 `unknown=not feasible and not phantom` 不能与新 UNKNOWN 直接比较。
+
+### Guard 的工程边界
+
+- 通用 API guard 与题面输出契约修复分离。后者只在指定任务和公开字段出处同时匹配时执行，不能作为跨域 API 能力。
+- API 转换必须保持原始源码文本，只局部替换已验证的调用。初版 AST 整体重写曾在 Python 3.11 中引入 f-string 语法错误；该失败保留在 `work/cleanroom_guard_only_replay_v0.6`，修复后的复验在 `work/cleanroom_guard_only_replay_v0.6.1`。
+- guard-only 复验不调用 LLM、不反馈给 GEPA。它只衡量 guard 对既有制品的增量，不能归功于 GEPA。
+
+### 运行中工程观察（历史记录，最终结果见下节）
+
+- v0.5 空规范 seed 的 4 题中，1 题业务可行但质量不足、2 题执行错误、1 题制品不完整，真正确为 0；首个 GEPA 候选已被拒绝。完整候选曲线在运行结束后再报告。
+- guard-only 的两道 dev 复验中，碳调度题从执行错误变为 `feasible=true`，但质量仍不足；增材题求得 profit=11688.043683670838，却因生成代码未接受真实求解状态 `gaplimit` 而输出空解。因此两题真正确仍为 0。这是执行可评估性改善，不是语义正确率提升。
+- 当前 4 题共用 `manufacturing` 标签只是早期技术冒烟分组，包含调度和医疗路由，不能作为同族或跨域证据。后续正式配置必须按公开场景重新标域，并重新初始化适用范围。
+- 相关新增测试已覆盖候选哈希、数据隔离、独立晋升、API 转换、源码兼容、反馈隔离、成本统计、win-safe、重复停止与已有正确解保护；全量回归仍需在最终交付前重新执行。
+
+
+## v0.5 最终结果与后续健康筛选
+
+`work/cleanroom_gepa_guarded_smoke_v0.5/analysis.json` 已完成：50 次 metric calls，wall time 4372.952 秒，2 个接受候选（含 seed）。下表的 dev 和 transfer 都参与了 GEPA 训练或验证，**不是最终 held-out**。
+
+| 候选 | Dev proxy | Dev 真正确 | Transfer proxy | Transfer 真正确 | Transfer 幻影 | Transfer 制品生成失败 |
+|---|---:|---:|---:|---:|---:|---:|
+| B0/seed | 0/3 | 0/3 | 0/1 | 0/1 | 0/1 | 1/1 |
+| C1（接受） | 1/3 | 1/3 | 0/1 | 0/1 | 0/1 | 1/1 |
+
+- C1 在增材 dev 题上为 `feasible=true、quality=1.9999999999996887、profit=11688.090885370839`，seed 同题为 `profit=9942.24908924532、quality=0`。候选规范包含显式 `setMaximize()`、正确 PySCIPOpt 导入和输出检查；在没有单项消融时，不把这些组件分别称为已证明的因果贡献。
+- 接受候选没有解决工业供应、碳调度或医疗路由；医疗路由仍因不含 `optimize()` 被制品门禁拒绝。dev 单题增益不能称为迁移增益。
+- seed/C1 在两个选择集上的生成成本分别为 323,613 和 337,355 tokens，未记录的旧求解 wall time 不补零。图件为 `work/cleanroom_gepa_guarded_smoke_v0.5_report/gepa_candidates.png`，逐题证据为同目录 `candidate_analysis.json`。
+- `work/cleanroom_gepa_guarded_smoke_v0.5_memory_review` 按平局规则选择 C1，但因没有独立重放而拒绝晋升。生成器随后升级到 v0.6，因此不能用不同实现的重放补写 v0.5 的 memory 晋升。
+- 真实有界 B0 修复冒烟 `work/cleanroom_bounded_b0_additive_v0.6.1` 在一次无证据改善后停止并回退：真正确不增不减，win-safe=true；含基线生成共 4 次 LLM 调用、38,971 tokens。这是停止/回退证据，不是修复有效率证据。
+
+### 新任务健康检查
+
+候选来源仅为公开工业场景、机制覆盖、包大小与 oracle/评价器健康，不使用 Qwen 成绩筛题。当前结果：
+
+- `second_life_battery_pack_assembly`：官方 `feasible=true、quality=2.0`，可作为 dev/audit。
+- `industrial_water_reuse_blending`：官方 `feasible=true、quality=2.0`，可作为独立重放任务。
+- `recycled_paper_furnish_planning_lp`：oracle 未产生解，排除。
+- `recycling_mrf_stochastic_sorting_plan`：oracle 可行但 `quality=0`，不作为 clean/参考健康任务。
+- `maritime_fueleu_bunker_blending_lp`：公开包 697,629 字符，超过 180,000 字符上限，明确排除而不截断。
+- `steel_scc_ladle_energy_reschedule`：待健康检查完成后再决定是否进入独立批次。
+
+冻结的 v0.6 开发配置为 `configs/cleanroom_formal_dev_v0.6.json`：增材、工业供应、电池装配为 manufacturing/dev，碳调度为 compute_scheduling/transfer。新运行使用真实 stdout/stderr 反思、容器 API 证据、源码保留式 guard 和统一 UNKNOWN/成本口径。运行期间不修改核心实现。

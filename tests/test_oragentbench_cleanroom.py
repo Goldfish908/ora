@@ -3,7 +3,7 @@ from pathlib import Path
 import pytest
 
 from ora_agent.cleanroom import FAIL, PASS
-from ora_agent.cleanroom_witness import ExecutionContract, OfficialTaskPass
+from ora_agent.cleanroom_witness import ExecutionContract, OfficialTaskPass, semantic_findings
 from ora_agent.oragentbench import TaskPacket, official_metrics, parse_artifacts
 
 ROOT = Path(__file__).resolve().parents[1]
@@ -45,3 +45,30 @@ def test_witness_evaluators_do_not_confuse_execution_with_business_pass(tmp_path
     failing = {"evaluation": {"profit": 2.0}, "reward": {"feasibility": 0.0, "quality": 0.0}}
     assert OfficialTaskPass()({"official": passing}).status == PASS
     assert OfficialTaskPass()({"official": failing}).status == FAIL
+
+
+def test_semantic_findings_distinguish_model_and_output_activation_missing(tmp_path):
+    record = {"official": {"evaluation": {"errors": ["Inbound lane capacity/activation violated"]}},
+              "artifacts": {"solve_py": "x = 1"}}
+    findings = semantic_findings(record, tmp_path)
+    assert {item["type"] for item in findings} == {
+        "missing_activation_variable_in_model_and_output",
+        "missing_activation_variable_in_model_and_output"}
+    record["artifacts"]["solve_py"] = "use_plant_dc = 1"
+    (tmp_path / "submissions").mkdir()
+    (tmp_path / "submissions/solution.csv").write_text("variable,month,item,from,to,mode_id,quantity_tons\n")
+    findings = semantic_findings(record, tmp_path)
+    assert findings[0]["type"] == "missing_activation_row_in_output"
+    assert findings[1]["type"] == "missing_activation_variable_in_model_and_output"
+
+
+def test_activation_findings_become_explicit_repair_requirements():
+    packet = TaskPacket.load(ROOT / "ORAgentBench/harbor_tasks/additive_microfactory_order_planning",
+                             "manufacturing", "dev")
+    messages = packet.prompt("", repair={
+        "artifacts": {"solve_py": "x = 1"},
+        "evidence": {"semantic_findings": [{"variable": "use_plant_dc", "type": "missing"}]}})
+    system = messages[0]["content"]
+    assert "REQUIRED ACTIVATION CONTRACT" in system
+    assert "use_plant_dc" in system
+    assert "min_shipment * activation" in system

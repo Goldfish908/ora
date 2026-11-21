@@ -1,0 +1,11 @@
+{
+  "version": "cleanroom_formal_dev_v0.6",
+  "selection_basis": "Public industrial scenarios, healthy oracle/official evaluation, packet-size budget and mechanism coverage. No Qwen score was used for selection.",
+  "heldout": false,
+  "tasks": [
+    {"name": "additive_microfactory_order_planning", "domain": "manufacturing", "split": "dev"},
+    {"name": "industrial_supply_planning", "domain": "manufacturing", "split": "dev"},
+    {"name": "second_life_battery_pack_assembly", "domain": "manufacturing", "split": "dev"},
+    {"name": "carbon_aware_compute_scheduling", "domain": "compute_scheduling", "split": "transfer"}
+  ]
+}

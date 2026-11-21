@@ -1,16 +1,19 @@
 """Clean-room ORAgentBench public packets, artifact generation and isolated execution."""
 from __future__ import annotations
 
+import ast
 import hashlib
 import json
 import os
 import shutil
 import subprocess
+import time
 import uuid
 from dataclasses import dataclass
 from pathlib import Path
 
 from . import llm as llm_mod
+from .api_guard import repair_known_api_errors, repair_public_output_contract
 
 BASE_IMAGE = "oragentbench-base:py311-scip"
 SUBMIT_TOOL = {
@@ -88,7 +91,10 @@ class TaskPacket:
             "hidden evaluators, reference solutions, package registries, or external files. "
             "The solver must run from scratch as `python /app/submissions/solve.py`, read the public data, "
             "use SCIP gap 0.0005, respect ORCLAW_SOLVE_TIME_LIMIT_SECONDS when set, and write the required "
-            "decision artifact with the exact public schema. Do not fabricate solver results."
+            "decision artifact with the exact public schema. Do not fabricate solver results. "
+            "Use module-level quicksum imported from pyscipopt, never model.quicksum. Set objective "
+            "coefficients through addVar(obj=...) or setObjective with a valid expression. "
+            "Do not return placeholders, TODOs, abbreviated code, or comments about writing the rest later."
         )
         if specification.strip():
             system += "\n\nSHARED MODELING SPECIFICATION:\n" + specification.strip()
@@ -97,6 +103,19 @@ class TaskPacket:
                 "\n\nTARGETED REPAIR: revise the previous artifacts to address the target while preserving "
                 "all unrelated business requirements. Do not merely describe changes; return complete files."
             )
+            findings = repair["evidence"].get("semantic_findings") or []
+            if findings:
+                variables = sorted({finding["variable"] for finding in findings})
+                system += (
+                    "\n\nREQUIRED ACTIVATION CONTRACT:\n"
+                    "The following required activation variables are missing or omitted: "
+                    + ", ".join(variables)
+                    + ". Define each as a binary decision variable. For every lane, link positive shipment "
+                      "to its activation variable with BOTH flow <= capacity * activation AND "
+                      "flow >= min_shipment * activation. Write every activation variable to the decision "
+                      "artifact. Do not merely rename existing flows. Address all reported business errors, "
+                      "including CO2 budget violations."
+                )
             packet += "\n\n### PREVIOUS ARTIFACTS\n" + json.dumps(repair["artifacts"], ensure_ascii=False)
             packet += "\n\n### OBSERVED EVIDENCE\n" + json.dumps(repair["evidence"], ensure_ascii=False)
         return [{"role": "system", "content": system},
@@ -114,6 +133,27 @@ def parse_artifacts(response: dict) -> dict:
         if not isinstance(artifacts.get(key), str) or not artifacts[key].strip():
             raise ValueError(f"missing artifact: {key}")
     return artifacts
+
+
+def validate_solver_code(code: str) -> None:
+    if len(code.strip()) < 500:
+        raise ValueError("incomplete_artifact: solver is too short to be a complete model")
+    if "placeholder" in code.lower():
+        raise ValueError("incomplete_artifact: placeholder marker found")
+    try:
+        tree = ast.parse(code)
+    except SyntaxError as exc:
+        raise ValueError("incomplete_artifact: solver is not valid Python") from exc
+    empty_functions = [node for node in ast.walk(tree)
+                       if isinstance(node, (ast.FunctionDef, ast.AsyncFunctionDef))
+                       and all(isinstance(statement, (ast.Pass, ast.Ellipsis))
+                               for statement in node.body)]
+    if empty_functions:
+        raise ValueError("incomplete_artifact: empty function body found")
+    if "optimize(" not in code:
+        raise ValueError("incomplete_artifact: no solver optimize call")
+    if not any(marker in code for marker in ("solution.csv", "solution.json", "solution_path", "sol_path")):
+        raise ValueError("incomplete_artifact: no decision artifact output")
 
 
 def _phase_tool(phase: str) -> dict:
@@ -224,7 +264,8 @@ def generate_artifacts(packet: TaskPacket, specification: str, config: llm_mod.L
     return artifacts
 
 
-def prepare_workspace(packet: TaskPacket, workspace: Path, artifacts: dict) -> None:
+def prepare_workspace(packet: TaskPacket, workspace: Path, artifacts: dict,
+                      api_guard: bool = False, validate: bool = True) -> None:
     if workspace.exists() and any(workspace.iterdir()):
         raise ValueError(f"workspace is not empty: {workspace}")
     workspace.parent.mkdir(parents=True, exist_ok=True)
@@ -232,7 +273,19 @@ def prepare_workspace(packet: TaskPacket, workspace: Path, artifacts: dict) -> N
     submissions = workspace / "submissions"
     submissions.mkdir(exist_ok=True)
     (submissions / "model.md").write_text(artifacts["model_md"])
-    (submissions / "solve.py").write_text(artifacts["solve_py"])
+    solve_py = artifacts["solve_py"]
+    if api_guard:
+        solve_py, repairs = repair_known_api_errors(solve_py)
+        solve_py, contract_repairs = repair_public_output_contract(
+            solve_py, packet.name, packet.instruction + "\n" + packet.problem_statement)
+        if repairs or contract_repairs:
+            write_json(workspace / "api_guard.json", {
+                "repairs": repairs, "public_contract_repairs": contract_repairs,
+                "original_sha256": hashlib.sha256(artifacts["solve_py"].encode()).hexdigest(),
+                "repaired_sha256": hashlib.sha256(solve_py.encode()).hexdigest()})
+    if validate:
+        validate_solver_code(solve_py)
+    (submissions / "solve.py").write_text(solve_py)
     (submissions / "solve_log.md").write_text(artifacts["solve_log_md"])
 
 
@@ -245,6 +298,7 @@ def _docker(name: str, mounts: list[tuple[Path, str, bool]], command: list[str],
     for host, target, readonly in mounts:
         args += ["-v", f"{host.resolve()}:{target}{':ro' if readonly else ''}"]
     args += [BASE_IMAGE, *command]
+    started = time.monotonic()
     process = subprocess.Popen(args, stdout=subprocess.PIPE, stderr=subprocess.PIPE, text=True)
     timed_out = False
     try:
@@ -254,7 +308,8 @@ def _docker(name: str, mounts: list[tuple[Path, str, bool]], command: list[str],
         subprocess.run(["docker", "rm", "-f", container], capture_output=True, text=True, timeout=30)
         stdout, stderr = process.communicate(timeout=30)
     return {"return_code": process.returncode, "stdout": stdout, "stderr": stderr,
-            "timed_out": timed_out, "command": command}
+            "timed_out": timed_out, "wall_seconds": round(time.monotonic() - started, 6),
+            "command": command}
 
 
 def execute_solver(workspace: Path, outdir: Path, timeout: int = 330) -> dict:
@@ -281,7 +336,7 @@ def official_evaluate(packet: TaskPacket, workspace: Path, outdir: Path, timeout
         "feasibility": 0.0, "quality": 0.0}
     details = read_json(verifier / "reward_details.json") if (verifier / "reward_details.json").exists() else {}
     payload = {"evaluation": evaluation, "reward": reward, "reward_details": details,
-               "runner": {key: result[key] for key in ("return_code", "timed_out")}}
+               "runner": {key: result[key] for key in ("return_code", "timed_out", "wall_seconds")}}
     write_json(outdir / "official_evaluation.json", payload)
     return payload
 
@@ -295,31 +350,60 @@ def official_objective(evaluation: dict) -> float | None:
     return None
 
 
+def evaluation_unknown(evaluation: dict) -> bool:
+    if not evaluation or (evaluation.get("runner") or {}).get("return_code") not in {0, None}:
+        return True
+    errors = (evaluation.get("evaluation") or {}).get("errors") or []
+    return any("official evaluator did not produce" in str(error) for error in errors)
+
+
 def official_metrics(evaluation: dict) -> dict:
     reward = evaluation["reward"]
     feasible = bool(reward.get("feasibility", 0.0))
     quality = float(reward.get("quality", 0.0) or 0.0)
     return {"feasible": feasible, "quality": quality,
             "true_correct": feasible and quality > 0.4,
-            "objective": official_objective(evaluation)}
+            "objective": official_objective(evaluation),
+            "evaluation_unknown": evaluation_unknown(evaluation)}
+
+
+def proxy_match(packet: TaskPacket, evaluation: dict) -> bool | None:
+    reference_path = packet.root / "tests/reference_metrics.json"
+    if not reference_path.exists():
+        return None
+    reference = read_json(reference_path)
+    target = reference.get("reference_objective")
+    objective = official_metrics(evaluation)["objective"]
+    if target is None or objective is None:
+        return False
+    tolerance = abs(float(target)) * 0.001
+    if reference.get("objective_sense", "minimize") == "maximize":
+        return objective >= float(target) - tolerance
+    return objective <= float(target) + tolerance
 
 
 def probe_pyscipopt_api(outdir: Path) -> dict:
-    code = ("from pyscipopt import Model, quicksum; import inspect\n"
+    code = ("from pyscipopt import Model, quicksum; import inspect, pyscipopt\n"
+            "print('PySCIPOpt version', pyscipopt.__version__)\n"
             "def show(name):\n"
             " try: print(name, inspect.signature(getattr(Model, name)))\n"
             " except Exception as exc: print(name, type(exc).__name__)\n"
             "names=['addVar','addCons','setObjective','setMinimize','setRealParam','setParam',"
             "'getBestSol','getSols','getSolTime','getObjVal','getObjval','getStatus',"
-            "'getOrigStatus','getOrigTime','getVarVal','chgCoeff','getNSols','getNsolns','getVal','free']; "
-            "[show(name) for name in names]; print('quicksum', inspect.signature(quicksum))")
+            "'getOrigStatus','getOrigTime','getVarVal','getNSols','getNsolns','getVal','free',"
+            "'setUb','setLb','chgVarUb','chgVarLb','getUbGlobal','getLbGlobal',"
+            "'quicksum','changeCoeff','chgCoefLinear','chgVarObj','setObjCoeff']; "
+            "[show(name) for name in names]; print('module quicksum', inspect.signature(quicksum)); "
+            "from pyscipopt import Variable; "
+            "print('Variable.getUbGlobal', inspect.signature(Variable.getUbGlobal)); "
+            "print('Variable.getLbGlobal', inspect.signature(Variable.getLbGlobal))")
     result = _docker("api-probe", [], ["python", "-c", code], timeout=60)
     write_json(outdir / "api_probe.json", result)
     return result
 
 
 def run_oracle(packet: TaskPacket, workspace: Path, timeout: int = 400) -> dict:
-    prepare_workspace(packet, workspace, {"model_md": "oracle", "solve_py": "oracle", "solve_log_md": "oracle"})
+    prepare_workspace(packet, workspace, {"model_md": "oracle", "solve_py": "oracle", "solve_log_md": "oracle"}, validate=False)
     result = _docker("oracle", [(workspace, "/app", False), (packet.root / "solution", "/solution", True)],
                      ["bash", "/solution/solve.sh"], timeout)
     evaluation = official_evaluate(packet, workspace, workspace / "oracle_evaluation")

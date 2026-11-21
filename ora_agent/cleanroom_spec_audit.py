@@ -29,20 +29,27 @@ SPEC_AUDIT_TOOL = {
 
 
 def audit_specification(packets: list[TaskPacket], parent_spec: str, candidate_spec: str,
-                        config: llm_mod.LLMConfig, outdir: Path) -> dict:
+                        config: llm_mod.LLMConfig, outdir: Path,
+                        environment_contract: str | None = None) -> dict:
     public_documents = "\n\n".join(
         f"TASK {packet.name}\n{packet.instruction}\n{packet.problem_statement}" for packet in packets)
+    evidence = f"PUBLIC DOCUMENTS\n{public_documents}"
+    if environment_contract:
+        evidence += ("\n\nVERIFIED CONTAINER API PROBE\nThis is output from inspect.signature in the actual "
+                     "container. AttributeError means that the Model method does not exist. It is environment "
+                     "evidence, not a hidden task answer. Treat claims contradicted by this probe as ungrounded.\n"
+                     + environment_contract)
     messages = [
         {"role": "system", "content": (
             "You are a provenance auditor. Compare parent and candidate modeling specifications against "
-            "the public task documents. Check added, removed and semantically changed rules, not merely "
-            "formatting. changed_features_covered is true only when every changed business/API rule has "
-            "an explicit public source or a precise justification in the supplied documents. "
-            "scope_confirmed is true only if the candidate is restricted to the demonstrated task domain. "
-            "Do not infer missing business rules and do not use hidden answers. Return one submit_spec_audit call.")},
+            "the public task documents and any supplied verified environment probe. Check added, removed "
+            "and semantically changed rules, not merely formatting. changed_features_covered is true only "
+            "when every changed business/API rule has an explicit public source or a precise justification "
+            "in the supplied evidence. scope_confirmed is true only if the candidate is restricted to the "
+            "demonstrated task domain. Do not infer missing business rules and do not use hidden answers. "
+            "Return one submit_spec_audit call.")},
         {"role": "user", "content": (
-            f"PARENT SPECIFICATION\n{parent_spec}\n\nCANDIDATE SPECIFICATION\n{candidate_spec}\n\n"
-            f"PUBLIC DOCUMENTS\n{public_documents}")},
+            f"PARENT SPECIFICATION\n{parent_spec}\n\nCANDIDATE SPECIFICATION\n{candidate_spec}\n\n{evidence}")},
     ]
     response = None
     try:

@@ -1,6 +1,7 @@
 """Witness initialization and target-aware residual repair for clean ORAgentBench runs."""
 from __future__ import annotations
 
+import csv
 import json
 import shutil
 from pathlib import Path
@@ -25,6 +26,7 @@ from .oragentbench import (
     official_metrics,
     prepare_workspace,
     probe_pyscipopt_api,
+    proxy_match,
     read_json,
     run_oracle,
     write_json,
@@ -164,64 +166,192 @@ def initialize_witness(memory: EvidenceMemory, packets: list[TaskPacket], outdir
     return {"execution_audit": execution_audit, "official_audit": official_audit}
 
 
+def semantic_findings(record: dict, workspace: Path) -> list[dict]:
+    errors = record.get("official", {}).get("evaluation", {}).get("errors") or []
+    if "activation violated" not in " ".join(errors):
+        return []
+    variables = set()
+    solution_path = workspace / "submissions/solution.csv"
+    if solution_path.exists():
+        with solution_path.open(newline="") as handle:
+            variables = {row["variable"] for row in csv.DictReader(handle)}
+    code = record["artifacts"]["solve_py"]
+    findings = []
+    for variable in ("use_plant_dc", "use_dc_customer"):
+        if variable not in code:
+            findings.append({"type": "missing_activation_variable_in_model_and_output",
+                             "variable": variable})
+        elif variable not in variables:
+            findings.append({"type": "missing_activation_row_in_output", "variable": variable})
+    return findings
+
+
 def repair_once(memory: EvidenceMemory, packet: TaskPacket, record: dict, specification: str,
-                config: llm_mod.LLMConfig, outdir: Path, run_seed: int = 0) -> dict:
+                config: llm_mod.LLMConfig, outdir: Path, run_seed: int = 0,
+                api_guard: bool = False, dag: RepairDAG | None = None,
+                parent_id: str = "root", attempt: int = 1) -> dict:
     if record["true_correct"]:
         return {"status": "preserved_win", "record": record}
     if packet.split not in {"dev", "audit", "transfer"}:
         raise ValueError("Witness feedback repair is not allowed on final evaluation tasks")
+    if not record.get("artifacts"):
+        return {"status": "no_artifact", "record": record}
     execution = record["execution"]
     root_workspace = Path(record["workspace"])
     before = evaluate_witness(memory, packet, root_workspace, execution,
                               record.get("official"), outdir / "before")
     if not before:
         return {"status": "no_authorized_check", "before": before}
-    execution_check = before.get("execution_contract")
-    if execution_check == FAIL:
-        target = "execution_contract"
-    else:
-        target = f"{packet.domain}_official_task_pass"
+    target = "execution_contract" if before.get("execution_contract") == FAIL \
+        else f"{packet.domain}_official_task_pass"
     if target not in before:
         return {"status": "no_authorized_target", "target": target, "before": before}
 
-    controller = TrustController(memory)
-    dag = RepairDAG(controller)
-    dag.add_root(record["artifacts"]["solve_py"], before)
+    if dag is None:
+        dag = RepairDAG(TrustController(memory))
+    if not dag.nodes:
+        dag.add_root(record["artifacts"]["solve_py"], before)
+    controller = dag.controller
     execution_diagnostics = dict(execution)
-    stderr_path = root_workspace.parent / "execution/stderr.txt"
-    if stderr_path.exists():
-        execution_diagnostics["stderr_tail"] = stderr_path.read_text(errors="replace")[-4000:]
+    for stream in ("stderr", "stdout"):
+        path = root_workspace.parent / f"execution/{stream}.txt"
+        if path.exists():
+            execution_diagnostics[f"{stream}_tail"] = path.read_text(errors="replace")[-4000:]
     if "pyscipopt" in execution_diagnostics.get("stderr_tail", "").lower():
-        evidence_api = probe_pyscipopt_api(outdir)
+        evidence_api = probe_pyscipopt_api(outdir / "api_probe")
         execution_diagnostics["api_contract"] = evidence_api["stdout"]
     evidence = {
         "target_check": target,
         "execution": execution_diagnostics,
         "witness_verdicts": before,
         "official_errors": (record.get("official", {}).get("evaluation", {}).get("errors") or [])[:20],
+        "semantic_findings": semantic_findings(record, root_workspace),
     }
     base = outdir / "repair_1"
-    artifacts = generate_artifacts(packet, specification, config, base / "generation", run_seed,
-                                   repair={"artifacts": record["artifacts"], "evidence": evidence})
-    workspace = base / "app"
-    prepare_workspace(packet, workspace, artifacts)
-    child_execution = execute_solver(workspace, base / "execution")
-    child_official = official_evaluate(packet, workspace, base / "official")
-    after = evaluate_witness(memory, packet, workspace, child_execution, child_official, base / "after")
+    phase = "generation"
     try:
-        node = dag.add_repair("root", artifacts["solve_py"], target, before, after, packet.scope)
+        artifacts = generate_artifacts(packet, specification, config, base / "generation", run_seed,
+                                       repair={"artifacts": record["artifacts"], "evidence": evidence})
+        phase = "workspace"
+        workspace = base / "app"
+        prepare_workspace(packet, workspace, artifacts, api_guard=api_guard)
+        phase = "execution"
+        child_execution = execute_solver(workspace, base / "execution")
+        phase = "official_evaluation"
+        child_official = official_evaluate(packet, workspace, base / "official")
+    except Exception as exc:
+        result = {"status": "repair_failed", "phase": phase,
+                  "error": f"{type(exc).__name__}: {exc}", "before": before,
+                  "dag": dag.to_dict()}
+        write_json(outdir / "repair_result.json", result)
+        return result
+    after = evaluate_witness(memory, packet, workspace, child_execution, child_official, base / "after")
+    metrics = official_metrics(child_official)
+    proxy = proxy_match(packet, child_official)
+    guard_path = workspace / "api_guard.json"
+    child_record = {**record, "attempt": attempt, "artifacts": artifacts, "execution": child_execution,
+                    "official": child_official, **metrics, "workspace": str(workspace),
+                    "proxy_match": proxy, "phantom_proxy": bool(proxy) and not metrics["true_correct"],
+                    "unknown": metrics["evaluation_unknown"],
+                    "api_guard": read_json(guard_path) if guard_path.exists() else None,
+                    "generation_error": None}
+    write_json(base / "record.json", child_record)
+    try:
+        node = dag.add_repair(parent_id, artifacts["solve_py"], target, before, after, packet.scope)
     except ValueError as exc:
-        result = {"status": "duplicate_repair", "error": str(exc), "before": before, "after": after}
+        result = {"status": "duplicate_repair", "error": str(exc), "before": before, "after": after,
+                  "record": child_record, "dag": dag.to_dict()}
         write_json(outdir / "repair_result.json", result)
         return result
     final_accept, final_reasons = controller.final_accept(packet.scope, after)
-    metrics = official_metrics(child_official)
-    child_record = {**record, "attempt": 1, "artifacts": artifacts, "execution": child_execution,
-                    "official": child_official, **metrics, "workspace": str(workspace)}
-    result = {"status": "accepted" if node.accepted and final_accept else "rejected",
+    result = {"status": "accepted" if node.accepted and final_accept
+              else "partial_progress" if node.accepted else "rejected",
               "target": target, "before": before, "after": after,
-              "edge_accepted": node.accepted, "edge_reasons": node.reasons,
+              "node_id": node.node_id, "edge_accepted": node.accepted, "edge_reasons": node.reasons,
               "final_accept": final_accept, "final_reasons": final_reasons,
-              "record": child_record, "dag": dag.to_dict()}
+              "record": child_record, "record_path": str(base / "record.json"), "dag": dag.to_dict()}
+    write_json(outdir / "repair_result.json", result)
+    return result
+
+
+def repair_bounded(memory: EvidenceMemory, packet: TaskPacket, record: dict, specification: str,
+                   config: llm_mod.LLMConfig, outdir: Path, run_seed: int = 0,
+                   max_attempts: int = 3, api_guard: bool = False) -> dict:
+    from .cleanroom_analysis import USAGE_KEYS, generation_cost, pair_win_safe, summarize_records
+
+    if not 1 <= max_attempts <= 3:
+        raise ValueError("repair budget must be between one and three attempts")
+    if record["true_correct"]:
+        result = {"status": "preserved_win", "record": record, "attempts_used": 0,
+                  "win_safe": True, "final_accept": True}
+        write_json(outdir / "repair_result.json", result)
+        return result
+    if packet.split not in {"dev", "audit", "transfer"}:
+        raise ValueError("Witness feedback repair is not allowed on final evaluation tasks")
+    memory.freeze()
+    baseline = record
+    current = record
+    before = evaluate_witness(memory, packet, Path(record["workspace"]), record["execution"],
+                              record.get("official"), outdir / "root")
+    dag = RepairDAG(TrustController(memory))
+    if record.get("artifacts"):
+        dag.add_root(record["artifacts"]["solve_py"], before)
+    history = []
+    attempt_records = []
+    parent_id = "root"
+    final_record = baseline
+    final_verdicts = before
+    stop_reason = "bounded_failure"
+    for attempt in range(1, max_attempts + 1):
+        result = repair_once(memory, packet, current, specification, config,
+                             outdir / f"attempt_{attempt}", run_seed + attempt - 1,
+                             api_guard=api_guard, dag=dag, parent_id=parent_id, attempt=attempt)
+        history.append({key: value for key, value in result.items() if key not in {"record", "dag"}})
+        child = result.get("record")
+        if child is not None and child["workspace"] != current["workspace"]:
+            attempt_records.append(child)
+        if result["status"] == "accepted":
+            final_record = result["record"]
+            final_verdicts = result["after"]
+            stop_reason = "accepted"
+            break
+        if result["status"] in {"preserved_win", "no_artifact", "no_authorized_check",
+                                "no_authorized_target", "duplicate_repair"}:
+            stop_reason = result["status"]
+            break
+        if result["status"] == "repair_failed":
+            stop_reason = result["status"]
+            continue
+        child = result["record"]
+        same_evidence = (
+            result["before"] == result["after"]
+            and child["execution"].get("return_code") == current["execution"].get("return_code")
+            and child.get("objective") == current.get("objective")
+            and child.get("quality") == current.get("quality")
+            and (child["official"].get("evaluation", {}).get("errors") or [])
+            == (current["official"].get("evaluation", {}).get("errors") or []))
+        if same_evidence:
+            stop_reason = "no_verified_progress"
+            break
+        current = child
+        parent_id = result["node_id"]
+    accepted = stop_reason == "accepted"
+    generation_costs = [generation_cost(baseline)]
+    generation_costs += [generation_cost({"workspace": outdir / f"attempt_{index}/repair_1/app"})
+                         for index in range(1, len(history) + 1)]
+    cost = summarize_records([baseline, *attempt_records])["cost"]
+    for key in ("llm_calls", "missing_usage_calls", "llm_latency_seconds", *USAGE_KEYS):
+        cost[key] = sum(part[key] for part in generation_costs)
+    cost["llm_latency_seconds"] = round(cost["llm_latency_seconds"], 6)
+    comparison = pair_win_safe([baseline], [final_record])
+    result = {"status": stop_reason, "record": final_record, "before": before, "after": final_verdicts,
+              "final_accept": accepted, "edge_accepted": history[-1].get("edge_accepted", False)
+              if history else False,
+              "attempts_used": len(history), "max_attempts": max_attempts,
+              "history": history,
+              "attempt_record_paths": [str(Path(path["workspace"]).parent / "record.json")
+                                       for path in attempt_records],
+              "pair_win_safe": comparison, "win_safe": comparison["win_safe"], "cost": cost,
+              "memory_frozen": memory.frozen, "dag": dag.to_dict()}
     write_json(outdir / "repair_result.json", result)
     return result

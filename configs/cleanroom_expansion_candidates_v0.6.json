@@ -1,0 +1,14 @@
+{
+  "version": "cleanroom_expansion_candidates_v0.6",
+  "selection_basis": "Public industrial scenario and mechanism coverage only; not Qwen scores. Requires oracle health and historical-exclusion checks.",
+  "tasks": [
+    {"name": "recycled_paper_furnish_planning_lp", "domain": "manufacturing", "split": "dev"},
+    {"name": "second_life_battery_pack_assembly", "domain": "manufacturing", "split": "audit"},
+    {"name": "industrial_water_reuse_blending", "domain": "manufacturing", "split": "audit"},
+    {"name": "recycling_mrf_stochastic_sorting_plan", "domain": "manufacturing", "split": "audit"},
+    {"name": "steel_scc_ladle_energy_reschedule", "domain": "manufacturing", "split": "transfer"}
+  ],
+  "excluded": [
+    {"name": "maritime_fueleu_bunker_blending_lp", "reason": "public packet has 697629 characters, above the frozen 180000-character adapter limit; not truncated"}
+  ]
+}

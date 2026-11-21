@@ -26,6 +26,7 @@ from ora_agent.oragentbench import (
     official_metrics,
     prepare_workspace,
     probe_pyscipopt_api,
+    proxy_match,
     read_json,
     run_oracle,
     write_json,
@@ -49,7 +50,7 @@ def load_tasks(config_path: Path) -> list[TaskPacket]:
 
 def record_implementation(outdir: Path, args: argparse.Namespace, config: llm_mod.LLMConfig,
                           resume: bool) -> None:
-    files = ["ora_agent/llm.py", "ora_agent/cleanroom.py", "ora_agent/oragentbench.py",
+    files = ["ora_agent/llm.py", "ora_agent/cleanroom.py", "ora_agent/oragentbench.py", "ora_agent/api_guard.py",
              "ora_agent/cleanroom_witness.py", "ora_agent/cleanroom_spec_audit.py",
              "scripts/cleanroom_experiment.py", "scripts/cleanroom_repair.py", "scripts/cleanroom_memory.py"]
     payload = {"files": {name: hashlib.sha256((ROOT / name).read_bytes()).hexdigest() for name in files},
@@ -66,6 +67,9 @@ def record_implementation(outdir: Path, args: argparse.Namespace, config: llm_mo
                                                                         os.environ.get("ORA_CLEANROOM_DISABLE_THINKING", "0")) == "1",
                               "solver_disable_thinking": os.environ.get("ORA_CLEANROOM_SOLVER_DISABLE_THINKING",
                                                                          os.environ.get("ORA_CLEANROOM_DISABLE_THINKING", "0")) == "1",
+                              "model_max_tokens": int(os.environ.get("ORA_CLEANROOM_MODEL_TOKENS", "4096")),
+                              "model_max_words": int(os.environ.get("ORA_CLEANROOM_MODEL_WORDS", "1800")),
+                              "temperature": 0.6, "protocol": "two_phase_model_then_solver_v1",
                               "stream": False},
                "arguments": vars(args)}
     path = outdir / "implementation.json"
@@ -77,31 +81,17 @@ def record_implementation(outdir: Path, args: argparse.Namespace, config: llm_mo
     write_json(path, payload)
 
 
-def proxy_match(packet: TaskPacket, evaluation: dict) -> bool | None:
-    reference_path = packet.root / "tests/reference_metrics.json"
-    if not reference_path.exists():
-        return None
-    reference = read_json(reference_path)
-    target = reference.get("reference_objective")
-    objective = official_metrics(evaluation)["objective"]
-    if target is None or objective is None:
-        return False
-    tolerance = abs(float(target)) * 0.001
-    if reference.get("objective_sense", "minimize") == "maximize":
-        return objective >= float(target) - tolerance
-    return objective <= float(target) + tolerance
-
-
 class CleanroomAdapter:
     propose_new_texts = None
 
     def __init__(self, outdir: Path, workers: int, seed: int, config: llm_mod.LLMConfig,
-                 api_assist: bool = False):
+                 api_assist: bool = False, api_guard: bool = False):
         self.outdir = outdir
         self.workers = workers
         self.seed = seed
         self.config = config
         self.api_assist = api_assist
+        self.api_guard = api_guard
         self._api_contract = None
 
     def _rollout(self, packet: TaskPacket, candidate: dict[str, str]) -> dict:
@@ -122,7 +112,7 @@ class CleanroomAdapter:
         try:
             artifacts = generate_artifacts(packet, specification, self.config, base / "generation",
                                            run_seed=self.seed)
-            prepare_workspace(packet, workspace, artifacts)
+            prepare_workspace(packet, workspace, artifacts, api_guard=self.api_guard)
             execution = execute_solver(workspace, base / "execution")
         except Exception as exc:
             execution = {"return_code": -1, "timed_out": False,
@@ -139,11 +129,18 @@ class CleanroomAdapter:
         proxy = proxy_match(packet, official)
         true_correct = metrics["true_correct"]
         phantom_proxy = bool(proxy) and not true_correct
-        unknown = not metrics["feasible"] and not phantom_proxy
+        unknown = metrics["evaluation_unknown"]
         feedback = (f"Execution return code: {execution.get('return_code')}; "
-                    f"timed out: {execution.get('timed_out')}; proxy objective match: {proxy}. "
-                    "Improve the formulation and solver to increase the proxy score. "
-                    "Do not assume that a solution file alone proves business correctness.")
+                    f"timed out: {execution.get('timed_out')}; proxy objective match: {proxy}. ")
+        if execution.get("error"):
+            feedback += f"Public artifact/validation diagnostic: {execution['error']}. "
+        elif execution.get("return_code") != 0:
+            if execution.get("stderr_tail"):
+                feedback += f"Public execution stderr tail:\n{execution['stderr_tail']}\n"
+            if execution.get("stdout_tail"):
+                feedback += f"Public execution stdout tail:\n{execution['stdout_tail']}\n"
+        feedback += ("Improve the formulation and solver to increase the proxy score. "
+                     "Do not assume that a solution file alone proves business correctness.")
         record = {
             "task": packet.name, "domain": packet.domain, "split": packet.split,
             "candidate_sha256": candidate_hash, "attempt": 0,
@@ -153,6 +150,7 @@ class CleanroomAdapter:
             "artifacts": artifacts, "execution": {key: value for key, value in execution.items()
                                                    if key not in {"stdout", "stderr"}},
             "official": official, **metrics, "proxy_match": proxy,
+            "api_guard": read_json(workspace / "api_guard.json") if (workspace / "api_guard.json").exists() else None,
             "true_correct": true_correct, "phantom_proxy": phantom_proxy,
             "unknown": unknown, "generation_error": generation_error,
             "proxy_score": float(bool(proxy)), "feedback": feedback,
@@ -226,6 +224,7 @@ def main() -> None:
     parser.add_argument("--spec-source")
     parser.add_argument("--spec-id")
     parser.add_argument("--api-assist", action="store_true")
+    parser.add_argument("--api-guard", action="store_true")
     args = parser.parse_args()
     llm_mod.REQUEST_TIMEOUT_SEC = args.llm_timeout
     config = llm_mod.load_config()
@@ -237,7 +236,8 @@ def main() -> None:
     packets = load_tasks(ROOT / args.tasks)
     trainset = [packet for packet in packets if packet.split == "dev"]
     valset = [packet for packet in packets if packet.split == "transfer"]
-    adapter = CleanroomAdapter(outdir, args.workers, args.seed, config, api_assist=args.api_assist)
+    adapter = CleanroomAdapter(outdir, args.workers, args.seed, config,
+                               api_assist=args.api_assist, api_guard=args.api_guard)
     started = time.monotonic()
 
     if args.mode == "oracle":

@@ -1,0 +1,5 @@
+Status: gaplimit
+Objective: 11688.043683670836
+NSols: 100
+Violations: 0
+Solution rows: 31

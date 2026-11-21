@@ -1,0 +1,73 @@
+{
+ "evaluation": {
+  "active_setups": 7,
+  "environment": "additive_microfactory_order_planning",
+  "error_count": 0,
+  "errors": [],
+  "feasible": true,
+  "produced_parts": 628.0,
+  "profit": 11688.043683670841
+ },
+ "reward": {
+  "feasibility": 1.0,
+  "quality": 1.991923112086961
+ },
+ "reward_details": {
+  "agent_objective": 11688.043683670841,
+  "agent_objective_source": "profit",
+  "best_bound": 11693.747321712866,
+  "bound_improvement": 5.6564363420257,
+  "bound_sense": "upper",
+  "evaluation_diagnostics": {
+   "error_count": 0,
+   "objective": null,
+   "profit": 11688.043683670841,
+   "score": null,
+   "total_cost": null
+  },
+  "fallback_mip_gap": 0.0005,
+  "fallback_reference_scale": 11688.09088537084,
+  "feasibility": 1.0,
+  "formula": "clip(2 + d if d >= -1 else 1.5 + 0.5*d, 0, 2), d = (O - R) / (max(abs(R), 1e-8) * mip_gap)",
+  "objective_sense": "maximize",
+  "quality": 1.991923112086961,
+  "quality_scale_width": 5.84404544268542,
+  "quality_status": "bound_gap_below_mip_gap",
+  "reference_metrics": {
+   "best_bound": 11693.747321712866,
+   "best_bound_source": "best_bound",
+   "bound_sense": "upper",
+   "evaluation_summary": {
+    "error_count": 0,
+    "feasible": true,
+    "profit": 11688.09088537084
+   },
+   "generated_at": "2026-05-19T06:29:46.567709+00:00",
+   "mip_gap": 0.0005,
+   "objective_sense": "maximize",
+   "quality_formula": "clip(1 + (O - R) / (B - R), 0, 2) if B exists and B - R >= max(abs(R), 1e-8) * mip_gap; otherwise let d=(O - R)/(max(abs(R), 1e-8)*mip_gap), quality=clip(2+d if d>=-1 else 1.5+0.5*d, 0, 2); if no R, quality = 2",
+   "reference_objective": 11688.09088537084,
+   "reference_objective_source": "profit",
+   "solution_path": "reference_solutions/additive_microfactory_order_planning_reference_solution.csv",
+   "solver_summary": {
+    "best_bound": 11693.747321712866,
+    "evaluation_profit": 11688.09088537084,
+    "mip_gap": 0.00048394869594221775,
+    "objective": 11688.090885370837,
+    "solution": "reference_solutions/additive_microfactory_order_planning_reference_solution.csv",
+    "status": "gaplimit"
+   },
+   "task_name": "additive_microfactory_order_planning",
+   "time_limit_seconds": 300.0
+  },
+  "reference_objective": 11688.09088537084,
+  "scalar_reward": 0.9973077040289869,
+  "scalar_reward_formula": "(feasibility + quality) / 3.0",
+  "signed_improvement": -0.04720169999927748
+ },
+ "runner": {
+  "return_code": 0,
+  "timed_out": false,
+  "wall_seconds": 11.362034
+ }
+}

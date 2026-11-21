@@ -145,3 +145,18 @@ PYTHONPATH="$PWD" /home/hewj13/wm/ext/py312/bin/python scripts/cleanroom_suite.p
 ```
 
 第二批重新测量 B0/B1/B2，再与 B3 对照，不重新执行晋升。`verified_promotion` 要求独立重放、出处审计和实际 promoted 资产同时存在。`--resume` 只复用已完成且输入哈希一致的阶段；部分修复不会自动重试。`test_cleanroom_suite.py` 覆盖规范传递、registry 冻结、外部 memory 校验和 B2/B3 编排，真实执行结果仍以最终官方评价为准。
+
+
+## v0.6 GEPA 最终结果
+
+`work/cleanroom_gepa_guarded_assist_v0.6/analysis.json` 已完成：50 次 metric calls，wall time 4354.188 秒，2 个接受候选（含 seed），7 个被拒绝提议。选择候选 `61c8e9c32aa28d042547f571f6c0b8e771c8bec7c4f071da02e5a9cbdb636d45`，平局规则为 transfer 代理优先、dev 代理次之、候选序号稳定排序。
+
+| 候选 | Dev proxy | Dev 真正确 | Transfer proxy | Transfer 真正确 | Transfer 幻影 | 两选择集 tokens |
+|---|---:|---:|---:|---:|---:|---:|
+| seed | 0/3 | 0/3 | 0/1 | 0/1 | 0/1 | 122,981 |
+| C1（接受） | 1/3 | 1/3 | 0/1 | 0/1 | 0/1 | 146,383 |
+
+- C1 在增材 dev 题达到 `proxy=true、true=true、quality=1.9919`，相比 seed 的 0/3 是实际 dev 增益；工业供应和电池装配仍失败，碳调度 transfer 也未通过。
+- 这一结果支持“共享规范可在部分 dev 任务上产生可归因增益”，但不支持“GEPA 已迁移”或“memory 已晋升”。独立审计和后续迁移由两批次 suite 决定。
+- 图件：`work/cleanroom_gepa_guarded_assist_v0.6_report/gepa_candidates.png`；逐提议历史与失败类型：同目录 `candidate_analysis.json` 和 `report.md`。
+- 独立 suite 的 `candidate_selection.json` 已确认选择 C1，dev 代理均值为 0.3333333333333333。B0/B1、memory 审查、B2/B3 结果在运行完成后另报，不以设计或中间状态代替结果。

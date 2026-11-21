@@ -1,0 +1,2276 @@
+{
+ "candidates": [
+  {
+   "candidate_idx": 0,
+   "candidate_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+   "parents": [
+    null
+   ],
+   "accepted_meta": {
+    "iteration_id": "seed",
+    "is_seed": true,
+    "accepted": true,
+    "candidate_idx": 0,
+    "parent_iteration_ids": [],
+    "avg_val_score": 0.0,
+    "num_val_scored": 1,
+    "metric_calls_so_far": 0,
+    "objective_scores": {}
+   },
+   "dev": {
+    "n": 3,
+    "expected_tasks": 3,
+    "coverage": 1.0,
+    "feasible": 0,
+    "proxy_match": 0,
+    "true_correct": 0,
+    "phantom_proxy": 0,
+    "unknown": 0,
+    "unresolved_non_phantom": 3,
+    "mean_quality": 0.0,
+    "failure_counts": {
+     "business_infeasible": 1,
+     "execution_error": 2
+    },
+    "api_guard_modified": 2,
+    "cost": {
+     "llm_calls": 6,
+     "missing_usage_calls": 0,
+     "llm_latency_seconds": 301.909901,
+     "prompt_tokens": 62141,
+     "completion_tokens": 22638,
+     "reasoning_tokens": 0,
+     "total_tokens": 84779,
+     "solver_execution_time": {
+      "recorded_calls": 3,
+      "missing_calls": 0,
+      "seconds": 141.410051
+     },
+     "official_evaluation_time": {
+      "recorded_calls": 3,
+      "missing_calls": 0,
+      "seconds": 73.052298
+     }
+    },
+    "tasks": [
+     {
+      "task": "additive_microfactory_order_planning",
+      "split": "dev",
+      "candidate_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "attempt": 0,
+      "feasible": false,
+      "quality": 0.0,
+      "true_correct": false,
+      "objective": null,
+      "proxy_match": false,
+      "phantom_proxy": false,
+      "failure_class": "execution_error",
+      "execution_return_code": 1,
+      "generation_error": null,
+      "cost": {
+       "llm_calls": 2,
+       "missing_usage_calls": 0,
+       "llm_latency_seconds": 63.031629,
+       "prompt_tokens": 8078,
+       "completion_tokens": 4578,
+       "reasoning_tokens": 0,
+       "total_tokens": 12656
+      },
+      "execution_wall_seconds": 22.025829,
+      "evaluation_wall_seconds": 32.830674,
+      "api_guard_repairs": 0,
+      "public_contract_repairs": 0,
+      "stderr_tail": "TypeError: setMinimize() takes exactly 0 positional arguments (1 given)"
+     },
+     {
+      "task": "industrial_supply_planning",
+      "split": "dev",
+      "candidate_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "attempt": 0,
+      "feasible": false,
+      "quality": 0.0,
+      "true_correct": false,
+      "objective": null,
+      "proxy_match": false,
+      "phantom_proxy": false,
+      "failure_class": "business_infeasible",
+      "execution_return_code": 0,
+      "generation_error": null,
+      "cost": {
+       "llm_calls": 2,
+       "missing_usage_calls": 0,
+       "llm_latency_seconds": 173.049269,
+       "prompt_tokens": 42258,
+       "completion_tokens": 13158,
+       "reasoning_tokens": 0,
+       "total_tokens": 55416
+      },
+      "execution_wall_seconds": 82.660768,
+      "evaluation_wall_seconds": 15.11604,
+      "api_guard_repairs": 3,
+      "public_contract_repairs": 1,
+      "stderr_tail": null
+     },
+     {
+      "task": "second_life_battery_pack_assembly",
+      "split": "dev",
+      "candidate_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "attempt": 0,
+      "feasible": false,
+      "quality": 0.0,
+      "true_correct": false,
+      "objective": null,
+      "proxy_match": false,
+      "phantom_proxy": false,
+      "failure_class": "execution_error",
+      "execution_return_code": 1,
+      "generation_error": null,
+      "cost": {
+       "llm_calls": 2,
+       "missing_usage_calls": 0,
+       "llm_latency_seconds": 65.829003,
+       "prompt_tokens": 11805,
+       "completion_tokens": 4902,
+       "reasoning_tokens": 0,
+       "total_tokens": 16707
+      },
+      "execution_wall_seconds": 36.723454,
+      "evaluation_wall_seconds": 25.105584,
+      "api_guard_repairs": 1,
+      "public_contract_repairs": 0,
+      "stderr_tail": "TypeError: setMinimize() takes exactly 0 positional arguments (1 given)"
+     }
+    ]
+   },
+   "transfer": {
+    "n": 1,
+    "expected_tasks": 1,
+    "coverage": 1.0,
+    "feasible": 0,
+    "proxy_match": 0,
+    "true_correct": 0,
+    "phantom_proxy": 0,
+    "unknown": 0,
+    "unresolved_non_phantom": 1,
+    "mean_quality": 0.0,
+    "failure_counts": {
+     "execution_error": 1
+    },
+    "api_guard_modified": 1,
+    "cost": {
+     "llm_calls": 2,
+     "missing_usage_calls": 0,
+     "llm_latency_seconds": 59.433223,
+     "prompt_tokens": 33836,
+     "completion_tokens": 4366,
+     "reasoning_tokens": 0,
+     "total_tokens": 38202,
+     "solver_execution_time": {
+      "recorded_calls": 1,
+      "missing_calls": 0,
+      "seconds": 13.534241
+     },
+     "official_evaluation_time": {
+      "recorded_calls": 1,
+      "missing_calls": 0,
+      "seconds": 7.536258
+     }
+    },
+    "tasks": [
+     {
+      "task": "carbon_aware_compute_scheduling",
+      "split": "transfer",
+      "candidate_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "attempt": 0,
+      "feasible": false,
+      "quality": 0.0,
+      "true_correct": false,
+      "objective": null,
+      "proxy_match": false,
+      "phantom_proxy": false,
+      "failure_class": "execution_error",
+      "execution_return_code": 1,
+      "generation_error": null,
+      "cost": {
+       "llm_calls": 2,
+       "missing_usage_calls": 0,
+       "llm_latency_seconds": 59.433223,
+       "prompt_tokens": 33836,
+       "completion_tokens": 4366,
+       "reasoning_tokens": 0,
+       "total_tokens": 38202
+      },
+      "execution_wall_seconds": 13.534241,
+      "evaluation_wall_seconds": 7.536258,
+      "api_guard_repairs": 1,
+      "public_contract_repairs": 0,
+      "stderr_tail": "Warning: No solution available"
+     }
+    ]
+   },
+   "cost": {
+    "llm_calls": 8,
+    "missing_usage_calls": 0,
+    "llm_latency_seconds": 361.343124,
+    "prompt_tokens": 95977,
+    "completion_tokens": 27004,
+    "reasoning_tokens": 0,
+    "total_tokens": 122981,
+    "solver_execution_time": {
+     "recorded_calls": 4,
+     "missing_calls": 0,
+     "seconds": 154.94429200000002
+    },
+    "official_evaluation_time": {
+     "recorded_calls": 4,
+     "missing_calls": 0,
+     "seconds": 80.588556
+    }
+   }
+  },
+  {
+   "candidate_idx": 1,
+   "candidate_sha256": "61c8e9c32aa28d042547f571f6c0b8e771c8bec7c4f071da02e5a9cbdb636d45",
+   "parents": [
+    0
+   ],
+   "accepted_meta": {
+    "iteration_id": "579fd526",
+    "trace_i": 7,
+    "accepted": true,
+    "parent_iteration_ids": [
+     "seed"
+    ],
+    "candidate_idx": 1,
+    "subsample_ids": [
+     0,
+     1,
+     2
+    ],
+    "subsample_scores_before": [
+     0.0,
+     0.0,
+     0.0
+    ],
+    "subsample_scores_after": [
+     1.0,
+     0.0,
+     0.0
+    ],
+    "avg_val_score": 0.0,
+    "num_val_scored": 1,
+    "metric_calls_to_discover": 49
+   },
+   "dev": {
+    "n": 3,
+    "expected_tasks": 3,
+    "coverage": 1.0,
+    "feasible": 1,
+    "proxy_match": 1,
+    "true_correct": 1,
+    "phantom_proxy": 0,
+    "unknown": 0,
+    "unresolved_non_phantom": 2,
+    "mean_quality": 0.6639743706956537,
+    "failure_counts": {
+     "execution_error": 2,
+     "true_correct": 1
+    },
+    "api_guard_modified": 0,
+    "cost": {
+     "llm_calls": 6,
+     "missing_usage_calls": 0,
+     "llm_latency_seconds": 398.138982,
+     "prompt_tokens": 73889,
+     "completion_tokens": 29763,
+     "reasoning_tokens": 0,
+     "total_tokens": 103652,
+     "solver_execution_time": {
+      "recorded_calls": 3,
+      "missing_calls": 0,
+      "seconds": 62.143792
+     },
+     "official_evaluation_time": {
+      "recorded_calls": 3,
+      "missing_calls": 0,
+      "seconds": 39.56428
+     }
+    },
+    "tasks": [
+     {
+      "task": "additive_microfactory_order_planning",
+      "split": "dev",
+      "candidate_sha256": "61c8e9c32aa28d042547f571f6c0b8e771c8bec7c4f071da02e5a9cbdb636d45",
+      "attempt": 0,
+      "feasible": true,
+      "quality": 1.991923112086961,
+      "true_correct": true,
+      "objective": 11688.043683670841,
+      "proxy_match": true,
+      "phantom_proxy": false,
+      "failure_class": "true_correct",
+      "execution_return_code": 0,
+      "generation_error": null,
+      "cost": {
+       "llm_calls": 2,
+       "missing_usage_calls": 0,
+       "llm_latency_seconds": 77.736112,
+       "prompt_tokens": 11601,
+       "completion_tokens": 5722,
+       "reasoning_tokens": 0,
+       "total_tokens": 17323
+      },
+      "execution_wall_seconds": 16.105987,
+      "evaluation_wall_seconds": 11.362034,
+      "api_guard_repairs": 0,
+      "public_contract_repairs": 0,
+      "stderr_tail": null
+     },
+     {
+      "task": "industrial_supply_planning",
+      "split": "dev",
+      "candidate_sha256": "61c8e9c32aa28d042547f571f6c0b8e771c8bec7c4f071da02e5a9cbdb636d45",
+      "attempt": 0,
+      "feasible": false,
+      "quality": 0.0,
+      "true_correct": false,
+      "objective": null,
+      "proxy_match": false,
+      "phantom_proxy": false,
+      "failure_class": "execution_error",
+      "execution_return_code": 1,
+      "generation_error": null,
+      "cost": {
+       "llm_calls": 2,
+       "missing_usage_calls": 0,
+       "llm_latency_seconds": 249.789852,
+       "prompt_tokens": 46710,
+       "completion_tokens": 18836,
+       "reasoning_tokens": 0,
+       "total_tokens": 65546
+      },
+      "execution_wall_seconds": 23.984482,
+      "evaluation_wall_seconds": 3.503727,
+      "api_guard_repairs": 0,
+      "public_contract_repairs": 1,
+      "stderr_tail": "KeyError: ('D_CHICAGO', 'C_KANSAS_CITY', 'BINDER_STD', 'TRUCK', '2026-01')"
+     },
+     {
+      "task": "second_life_battery_pack_assembly",
+      "split": "dev",
+      "candidate_sha256": "61c8e9c32aa28d042547f571f6c0b8e771c8bec7c4f071da02e5a9cbdb636d45",
+      "attempt": 0,
+      "feasible": false,
+      "quality": 0.0,
+      "true_correct": false,
+      "objective": null,
+      "proxy_match": false,
+      "phantom_proxy": false,
+      "failure_class": "execution_error",
+      "execution_return_code": 1,
+      "generation_error": null,
+      "cost": {
+       "llm_calls": 2,
+       "missing_usage_calls": 0,
+       "llm_latency_seconds": 70.613018,
+       "prompt_tokens": 15578,
+       "completion_tokens": 5205,
+       "reasoning_tokens": 0,
+       "total_tokens": 20783
+      },
+      "execution_wall_seconds": 22.053323,
+      "evaluation_wall_seconds": 24.698519,
+      "api_guard_repairs": 0,
+      "public_contract_repairs": 0,
+      "stderr_tail": "RuntimeError: No solution found; status=infeasible"
+     }
+    ]
+   },
+   "transfer": {
+    "n": 1,
+    "expected_tasks": 1,
+    "coverage": 1.0,
+    "feasible": 0,
+    "proxy_match": 0,
+    "true_correct": 0,
+    "phantom_proxy": 0,
+    "unknown": 0,
+    "unresolved_non_phantom": 1,
+    "mean_quality": 0.0,
+    "failure_counts": {
+     "incomplete_artifact": 1
+    },
+    "api_guard_modified": 0,
+    "cost": {
+     "llm_calls": 2,
+     "missing_usage_calls": 0,
+     "llm_latency_seconds": 64.537518,
+     "prompt_tokens": 37997,
+     "completion_tokens": 4734,
+     "reasoning_tokens": 0,
+     "total_tokens": 42731,
+     "solver_execution_time": {
+      "recorded_calls": 0,
+      "missing_calls": 1,
+      "seconds": null
+     },
+     "official_evaluation_time": {
+      "recorded_calls": 1,
+      "missing_calls": 0,
+      "seconds": 16.108593
+     }
+    },
+    "tasks": [
+     {
+      "task": "carbon_aware_compute_scheduling",
+      "split": "transfer",
+      "candidate_sha256": "61c8e9c32aa28d042547f571f6c0b8e771c8bec7c4f071da02e5a9cbdb636d45",
+      "attempt": 0,
+      "feasible": false,
+      "quality": 0.0,
+      "true_correct": false,
+      "objective": null,
+      "proxy_match": false,
+      "phantom_proxy": false,
+      "failure_class": "incomplete_artifact",
+      "execution_return_code": -1,
+      "generation_error": "ValueError: incomplete_artifact: API guard could not parse solver code",
+      "cost": {
+       "llm_calls": 2,
+       "missing_usage_calls": 0,
+       "llm_latency_seconds": 64.537518,
+       "prompt_tokens": 37997,
+       "completion_tokens": 4734,
+       "reasoning_tokens": 0,
+       "total_tokens": 42731
+      },
+      "execution_wall_seconds": null,
+      "evaluation_wall_seconds": 16.108593,
+      "api_guard_repairs": 0,
+      "public_contract_repairs": 0,
+      "stderr_tail": null
+     }
+    ]
+   },
+   "cost": {
+    "llm_calls": 8,
+    "missing_usage_calls": 0,
+    "llm_latency_seconds": 462.67650000000003,
+    "prompt_tokens": 111886,
+    "completion_tokens": 34497,
+    "reasoning_tokens": 0,
+    "total_tokens": 146383,
+    "solver_execution_time": {
+     "recorded_calls": 3,
+     "missing_calls": 1,
+     "seconds": 62.143792
+    },
+    "official_evaluation_time": {
+     "recorded_calls": 4,
+     "missing_calls": 0,
+     "seconds": 55.672872999999996
+    }
+   }
+  }
+ ],
+ "dev_ids": [
+  "additive_microfactory_order_planning",
+  "industrial_supply_planning",
+  "second_life_battery_pack_assembly"
+ ],
+ "transfer_ids": [
+  "carbon_aware_compute_scheduling"
+ ],
+ "proposal_history": [
+  {
+   "iteration_id": "seed",
+   "trace_i": null,
+   "accepted": true,
+   "candidate_idx": 0,
+   "parent_iteration_ids": [],
+   "subsample_ids": [],
+   "subsample_scores_before": [],
+   "subsample_scores_after": [],
+   "avg_val_score": 0.0,
+   "metric_calls_to_discover": null,
+   "candidate_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+   "candidate_text_saved": true,
+   "dev_evaluation": {
+    "n": 3,
+    "expected_tasks": 3,
+    "coverage": 1.0,
+    "feasible": 0,
+    "proxy_match": 0,
+    "true_correct": 0,
+    "phantom_proxy": 0,
+    "unknown": 0,
+    "unresolved_non_phantom": 3,
+    "mean_quality": 0.0,
+    "failure_counts": {
+     "business_infeasible": 1,
+     "execution_error": 2
+    },
+    "api_guard_modified": 2,
+    "cost": {
+     "llm_calls": 6,
+     "missing_usage_calls": 0,
+     "llm_latency_seconds": 301.909901,
+     "prompt_tokens": 62141,
+     "completion_tokens": 22638,
+     "reasoning_tokens": 0,
+     "total_tokens": 84779,
+     "solver_execution_time": {
+      "recorded_calls": 3,
+      "missing_calls": 0,
+      "seconds": 141.410051
+     },
+     "official_evaluation_time": {
+      "recorded_calls": 3,
+      "missing_calls": 0,
+      "seconds": 73.052298
+     }
+    },
+    "tasks": [
+     {
+      "task": "additive_microfactory_order_planning",
+      "split": "dev",
+      "candidate_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "attempt": 0,
+      "feasible": false,
+      "quality": 0.0,
+      "true_correct": false,
+      "objective": null,
+      "proxy_match": false,
+      "phantom_proxy": false,
+      "failure_class": "execution_error",
+      "execution_return_code": 1,
+      "generation_error": null,
+      "cost": {
+       "llm_calls": 2,
+       "missing_usage_calls": 0,
+       "llm_latency_seconds": 63.031629,
+       "prompt_tokens": 8078,
+       "completion_tokens": 4578,
+       "reasoning_tokens": 0,
+       "total_tokens": 12656
+      },
+      "execution_wall_seconds": 22.025829,
+      "evaluation_wall_seconds": 32.830674,
+      "api_guard_repairs": 0,
+      "public_contract_repairs": 0,
+      "stderr_tail": "TypeError: setMinimize() takes exactly 0 positional arguments (1 given)"
+     },
+     {
+      "task": "industrial_supply_planning",
+      "split": "dev",
+      "candidate_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "attempt": 0,
+      "feasible": false,
+      "quality": 0.0,
+      "true_correct": false,
+      "objective": null,
+      "proxy_match": false,
+      "phantom_proxy": false,
+      "failure_class": "business_infeasible",
+      "execution_return_code": 0,
+      "generation_error": null,
+      "cost": {
+       "llm_calls": 2,
+       "missing_usage_calls": 0,
+       "llm_latency_seconds": 173.049269,
+       "prompt_tokens": 42258,
+       "completion_tokens": 13158,
+       "reasoning_tokens": 0,
+       "total_tokens": 55416
+      },
+      "execution_wall_seconds": 82.660768,
+      "evaluation_wall_seconds": 15.11604,
+      "api_guard_repairs": 3,
+      "public_contract_repairs": 1,
+      "stderr_tail": null
+     },
+     {
+      "task": "second_life_battery_pack_assembly",
+      "split": "dev",
+      "candidate_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "attempt": 0,
+      "feasible": false,
+      "quality": 0.0,
+      "true_correct": false,
+      "objective": null,
+      "proxy_match": false,
+      "phantom_proxy": false,
+      "failure_class": "execution_error",
+      "execution_return_code": 1,
+      "generation_error": null,
+      "cost": {
+       "llm_calls": 2,
+       "missing_usage_calls": 0,
+       "llm_latency_seconds": 65.829003,
+       "prompt_tokens": 11805,
+       "completion_tokens": 4902,
+       "reasoning_tokens": 0,
+       "total_tokens": 16707
+      },
+      "execution_wall_seconds": 36.723454,
+      "evaluation_wall_seconds": 25.105584,
+      "api_guard_repairs": 1,
+      "public_contract_repairs": 0,
+      "stderr_tail": "TypeError: setMinimize() takes exactly 0 positional arguments (1 given)"
+     }
+    ],
+    "status": "complete",
+    "not_run_tasks": []
+   },
+   "transfer_evaluation": {
+    "n": 1,
+    "expected_tasks": 1,
+    "coverage": 1.0,
+    "feasible": 0,
+    "proxy_match": 0,
+    "true_correct": 0,
+    "phantom_proxy": 0,
+    "unknown": 0,
+    "unresolved_non_phantom": 1,
+    "mean_quality": 0.0,
+    "failure_counts": {
+     "execution_error": 1
+    },
+    "api_guard_modified": 1,
+    "cost": {
+     "llm_calls": 2,
+     "missing_usage_calls": 0,
+     "llm_latency_seconds": 59.433223,
+     "prompt_tokens": 33836,
+     "completion_tokens": 4366,
+     "reasoning_tokens": 0,
+     "total_tokens": 38202,
+     "solver_execution_time": {
+      "recorded_calls": 1,
+      "missing_calls": 0,
+      "seconds": 13.534241
+     },
+     "official_evaluation_time": {
+      "recorded_calls": 1,
+      "missing_calls": 0,
+      "seconds": 7.536258
+     }
+    },
+    "tasks": [
+     {
+      "task": "carbon_aware_compute_scheduling",
+      "split": "transfer",
+      "candidate_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "attempt": 0,
+      "feasible": false,
+      "quality": 0.0,
+      "true_correct": false,
+      "objective": null,
+      "proxy_match": false,
+      "phantom_proxy": false,
+      "failure_class": "execution_error",
+      "execution_return_code": 1,
+      "generation_error": null,
+      "cost": {
+       "llm_calls": 2,
+       "missing_usage_calls": 0,
+       "llm_latency_seconds": 59.433223,
+       "prompt_tokens": 33836,
+       "completion_tokens": 4366,
+       "reasoning_tokens": 0,
+       "total_tokens": 38202
+      },
+      "execution_wall_seconds": 13.534241,
+      "evaluation_wall_seconds": 7.536258,
+      "api_guard_repairs": 1,
+      "public_contract_repairs": 0,
+      "stderr_tail": "Warning: No solution available"
+     }
+    ],
+    "status": "complete",
+    "not_run_tasks": []
+   }
+  },
+  {
+   "iteration_id": "d8ec455a",
+   "trace_i": 0,
+   "accepted": false,
+   "candidate_idx": null,
+   "parent_iteration_ids": [
+    "seed"
+   ],
+   "subsample_ids": [
+    2,
+    0,
+    1
+   ],
+   "subsample_scores_before": [
+    0.0,
+    0.0,
+    0.0
+   ],
+   "subsample_scores_after": [
+    0.0,
+    0.0,
+    0.0
+   ],
+   "avg_val_score": null,
+   "metric_calls_to_discover": null,
+   "candidate_sha256": "944f80ce8381dc4370d884bc1d3c81f72bf170cd02721bb4bc6883f1e3dae88b",
+   "candidate_text_saved": true,
+   "dev_evaluation": {
+    "n": 3,
+    "expected_tasks": 3,
+    "coverage": 1.0,
+    "feasible": 0,
+    "proxy_match": 0,
+    "true_correct": 0,
+    "phantom_proxy": 0,
+    "unknown": 0,
+    "unresolved_non_phantom": 3,
+    "mean_quality": 0.0,
+    "failure_counts": {
+     "execution_error": 2,
+     "incomplete_artifact": 1
+    },
+    "api_guard_modified": 0,
+    "cost": {
+     "llm_calls": 6,
+     "missing_usage_calls": 0,
+     "llm_latency_seconds": 343.651767,
+     "prompt_tokens": 74156,
+     "completion_tokens": 24110,
+     "reasoning_tokens": 0,
+     "total_tokens": 98266,
+     "solver_execution_time": {
+      "recorded_calls": 2,
+      "missing_calls": 1,
+      "seconds": 51.454607
+     },
+     "official_evaluation_time": {
+      "recorded_calls": 3,
+      "missing_calls": 0,
+      "seconds": 51.911881
+     }
+    },
+    "tasks": [
+     {
+      "task": "additive_microfactory_order_planning",
+      "split": "dev",
+      "candidate_sha256": "944f80ce8381dc4370d884bc1d3c81f72bf170cd02721bb4bc6883f1e3dae88b",
+      "attempt": 0,
+      "feasible": false,
+      "quality": 0.0,
+      "true_correct": false,
+      "objective": null,
+      "proxy_match": false,
+      "phantom_proxy": false,
+      "failure_class": "execution_error",
+      "execution_return_code": 1,
+      "generation_error": null,
+      "cost": {
+       "llm_calls": 2,
+       "missing_usage_calls": 0,
+       "llm_latency_seconds": 76.433014,
+       "prompt_tokens": 12616,
+       "completion_tokens": 5263,
+       "reasoning_tokens": 0,
+       "total_tokens": 17879
+      },
+      "execution_wall_seconds": 29.910741,
+      "evaluation_wall_seconds": 13.907655,
+      "api_guard_repairs": 0,
+      "public_contract_repairs": 0,
+      "stderr_tail": null
+     },
+     {
+      "task": "industrial_supply_planning",
+      "split": "dev",
+      "candidate_sha256": "944f80ce8381dc4370d884bc1d3c81f72bf170cd02721bb4bc6883f1e3dae88b",
+      "attempt": 0,
+      "feasible": false,
+      "quality": 0.0,
+      "true_correct": false,
+      "objective": null,
+      "proxy_match": false,
+      "phantom_proxy": false,
+      "failure_class": "incomplete_artifact",
+      "execution_return_code": -1,
+      "generation_error": "ValueError: incomplete_artifact: API guard could not parse solver code",
+      "cost": {
+       "llm_calls": 2,
+       "missing_usage_calls": 0,
+       "llm_latency_seconds": 180.025183,
+       "prompt_tokens": 45430,
+       "completion_tokens": 12761,
+       "reasoning_tokens": 0,
+       "total_tokens": 58191
+      },
+      "execution_wall_seconds": null,
+      "evaluation_wall_seconds": 27.794441,
+      "api_guard_repairs": 0,
+      "public_contract_repairs": 0,
+      "stderr_tail": null
+     },
+     {
+      "task": "second_life_battery_pack_assembly",
+      "split": "dev",
+      "candidate_sha256": "944f80ce8381dc4370d884bc1d3c81f72bf170cd02721bb4bc6883f1e3dae88b",
+      "attempt": 0,
+      "feasible": false,
+      "quality": 0.0,
+      "true_correct": false,
+      "objective": null,
+      "proxy_match": false,
+      "phantom_proxy": false,
+      "failure_class": "execution_error",
+      "execution_return_code": 1,
+      "generation_error": null,
+      "cost": {
+       "llm_calls": 2,
+       "missing_usage_calls": 0,
+       "llm_latency_seconds": 87.19357,
+       "prompt_tokens": 16110,
+       "completion_tokens": 6086,
+       "reasoning_tokens": 0,
+       "total_tokens": 22196
+      },
+      "execution_wall_seconds": 21.543866,
+      "evaluation_wall_seconds": 10.209785,
+      "api_guard_repairs": 0,
+      "public_contract_repairs": 0,
+      "stderr_tail": "ValueError: not enough values to unpack (expected 3, got 1)"
+     }
+    ],
+    "status": "complete",
+    "not_run_tasks": []
+   },
+   "transfer_evaluation": {
+    "n": 0,
+    "expected_tasks": 1,
+    "coverage": 0.0,
+    "feasible": 0,
+    "proxy_match": 0,
+    "true_correct": 0,
+    "phantom_proxy": 0,
+    "unknown": 0,
+    "unresolved_non_phantom": 0,
+    "mean_quality": 0.0,
+    "failure_counts": {},
+    "api_guard_modified": 0,
+    "cost": {
+     "llm_calls": 0,
+     "missing_usage_calls": 0,
+     "llm_latency_seconds": 0,
+     "prompt_tokens": 0,
+     "completion_tokens": 0,
+     "reasoning_tokens": 0,
+     "total_tokens": 0,
+     "solver_execution_time": {
+      "recorded_calls": 0,
+      "missing_calls": 0,
+      "seconds": null
+     },
+     "official_evaluation_time": {
+      "recorded_calls": 0,
+      "missing_calls": 0,
+      "seconds": null
+     }
+    },
+    "tasks": [],
+    "status": "not_run",
+    "not_run_tasks": [
+     "carbon_aware_compute_scheduling"
+    ]
+   }
+  },
+  {
+   "iteration_id": "ac709c68",
+   "trace_i": 1,
+   "accepted": false,
+   "candidate_idx": null,
+   "parent_iteration_ids": [
+    "seed"
+   ],
+   "subsample_ids": [
+    0,
+    1,
+    2
+   ],
+   "subsample_scores_before": [
+    0.0,
+    0.0,
+    0.0
+   ],
+   "subsample_scores_after": [
+    0.0,
+    0.0,
+    0.0
+   ],
+   "avg_val_score": null,
+   "metric_calls_to_discover": null,
+   "candidate_sha256": "8dc0b2d0108bfd49a9b35e32d152abc8972434821a55052fa4f6c7103454b567",
+   "candidate_text_saved": true,
+   "dev_evaluation": {
+    "n": 3,
+    "expected_tasks": 3,
+    "coverage": 1.0,
+    "feasible": 0,
+    "proxy_match": 0,
+    "true_correct": 0,
+    "phantom_proxy": 0,
+    "unknown": 0,
+    "unresolved_non_phantom": 3,
+    "mean_quality": 0.0,
+    "failure_counts": {
+     "execution_error": 3
+    },
+    "api_guard_modified": 0,
+    "cost": {
+     "llm_calls": 6,
+     "missing_usage_calls": 0,
+     "llm_latency_seconds": 284.138652,
+     "prompt_tokens": 72798,
+     "completion_tokens": 20513,
+     "reasoning_tokens": 0,
+     "total_tokens": 93311,
+     "solver_execution_time": {
+      "recorded_calls": 3,
+      "missing_calls": 0,
+      "seconds": 74.266381
+     },
+     "official_evaluation_time": {
+      "recorded_calls": 3,
+      "missing_calls": 0,
+      "seconds": 26.86421
+     }
+    },
+    "tasks": [
+     {
+      "task": "additive_microfactory_order_planning",
+      "split": "dev",
+      "candidate_sha256": "8dc0b2d0108bfd49a9b35e32d152abc8972434821a55052fa4f6c7103454b567",
+      "attempt": 0,
+      "feasible": false,
+      "quality": 0.0,
+      "true_correct": false,
+      "objective": null,
+      "proxy_match": false,
+      "phantom_proxy": false,
+      "failure_class": "execution_error",
+      "execution_return_code": 1,
+      "generation_error": null,
+      "cost": {
+       "llm_calls": 2,
+       "missing_usage_calls": 0,
+       "llm_latency_seconds": 73.15711,
+       "prompt_tokens": 11894,
+       "completion_tokens": 5184,
+       "reasoning_tokens": 0,
+       "total_tokens": 17078
+      },
+      "execution_wall_seconds": 27.691898,
+      "evaluation_wall_seconds": 10.921849,
+      "api_guard_repairs": 0,
+      "public_contract_repairs": 0,
+      "stderr_tail": "AttributeError: 'pyscipopt.scip.Model' object has no attribute 'chgVarObj'. Did you mean: 'chgVarLb'?"
+     },
+     {
+      "task": "industrial_supply_planning",
+      "split": "dev",
+      "candidate_sha256": "8dc0b2d0108bfd49a9b35e32d152abc8972434821a55052fa4f6c7103454b567",
+      "attempt": 0,
+      "feasible": false,
+      "quality": 0.0,
+      "true_correct": false,
+      "objective": null,
+      "proxy_match": false,
+      "phantom_proxy": false,
+      "failure_class": "execution_error",
+      "execution_return_code": 1,
+      "generation_error": null,
+      "cost": {
+       "llm_calls": 2,
+       "missing_usage_calls": 0,
+       "llm_latency_seconds": 133.559242,
+       "prompt_tokens": 44672,
+       "completion_tokens": 9394,
+       "reasoning_tokens": 0,
+       "total_tokens": 54066
+      },
+      "execution_wall_seconds": 23.775163,
+      "evaluation_wall_seconds": 11.763843,
+      "api_guard_repairs": 0,
+      "public_contract_repairs": 1,
+      "stderr_tail": "UnboundLocalError: cannot access local variable 'p' where it is not associated with a value"
+     },
+     {
+      "task": "second_life_battery_pack_assembly",
+      "split": "dev",
+      "candidate_sha256": "8dc0b2d0108bfd49a9b35e32d152abc8972434821a55052fa4f6c7103454b567",
+      "attempt": 0,
+      "feasible": false,
+      "quality": 0.0,
+      "true_correct": false,
+      "objective": null,
+      "proxy_match": false,
+      "phantom_proxy": false,
+      "failure_class": "execution_error",
+      "execution_return_code": 1,
+      "generation_error": null,
+      "cost": {
+       "llm_calls": 2,
+       "missing_usage_calls": 0,
+       "llm_latency_seconds": 77.4223,
+       "prompt_tokens": 16232,
+       "completion_tokens": 5935,
+       "reasoning_tokens": 0,
+       "total_tokens": 22167
+      },
+      "execution_wall_seconds": 22.79932,
+      "evaluation_wall_seconds": 4.178518,
+      "api_guard_repairs": 0,
+      "public_contract_repairs": 0,
+      "stderr_tail": "ValueError: too many values to unpack (expected 2)"
+     }
+    ],
+    "status": "complete",
+    "not_run_tasks": []
+   },
+   "transfer_evaluation": {
+    "n": 0,
+    "expected_tasks": 1,
+    "coverage": 0.0,
+    "feasible": 0,
+    "proxy_match": 0,
+    "true_correct": 0,
+    "phantom_proxy": 0,
+    "unknown": 0,
+    "unresolved_non_phantom": 0,
+    "mean_quality": 0.0,
+    "failure_counts": {},
+    "api_guard_modified": 0,
+    "cost": {
+     "llm_calls": 0,
+     "missing_usage_calls": 0,
+     "llm_latency_seconds": 0,
+     "prompt_tokens": 0,
+     "completion_tokens": 0,
+     "reasoning_tokens": 0,
+     "total_tokens": 0,
+     "solver_execution_time": {
+      "recorded_calls": 0,
+      "missing_calls": 0,
+      "seconds": null
+     },
+     "official_evaluation_time": {
+      "recorded_calls": 0,
+      "missing_calls": 0,
+      "seconds": null
+     }
+    },
+    "tasks": [],
+    "status": "not_run",
+    "not_run_tasks": [
+     "carbon_aware_compute_scheduling"
+    ]
+   }
+  },
+  {
+   "iteration_id": "f061653c",
+   "trace_i": 2,
+   "accepted": false,
+   "candidate_idx": null,
+   "parent_iteration_ids": [
+    "seed"
+   ],
+   "subsample_ids": [
+    0,
+    2,
+    1
+   ],
+   "subsample_scores_before": [
+    0.0,
+    0.0,
+    0.0
+   ],
+   "subsample_scores_after": [
+    0.0,
+    0.0,
+    0.0
+   ],
+   "avg_val_score": null,
+   "metric_calls_to_discover": null,
+   "candidate_sha256": "d31e1475500f8e63b5a71ab14e72ce092189a614be162afd43b0f72f6947d701",
+   "candidate_text_saved": true,
+   "dev_evaluation": {
+    "n": 3,
+    "expected_tasks": 3,
+    "coverage": 1.0,
+    "feasible": 0,
+    "proxy_match": 0,
+    "true_correct": 0,
+    "phantom_proxy": 0,
+    "unknown": 0,
+    "unresolved_non_phantom": 3,
+    "mean_quality": 0.0,
+    "failure_counts": {
+     "business_infeasible": 1,
+     "execution_error": 2
+    },
+    "api_guard_modified": 3,
+    "cost": {
+     "llm_calls": 6,
+     "missing_usage_calls": 0,
+     "llm_latency_seconds": 284.803219,
+     "prompt_tokens": 70863,
+     "completion_tokens": 23379,
+     "reasoning_tokens": 0,
+     "total_tokens": 94242,
+     "solver_execution_time": {
+      "recorded_calls": 3,
+      "missing_calls": 0,
+      "seconds": 93.191188
+     },
+     "official_evaluation_time": {
+      "recorded_calls": 3,
+      "missing_calls": 0,
+      "seconds": 50.630277
+     }
+    },
+    "tasks": [
+     {
+      "task": "additive_microfactory_order_planning",
+      "split": "dev",
+      "candidate_sha256": "d31e1475500f8e63b5a71ab14e72ce092189a614be162afd43b0f72f6947d701",
+      "attempt": 0,
+      "feasible": false,
+      "quality": 0.0,
+      "true_correct": false,
+      "objective": null,
+      "proxy_match": false,
+      "phantom_proxy": false,
+      "failure_class": "execution_error",
+      "execution_return_code": 1,
+      "generation_error": null,
+      "cost": {
+       "llm_calls": 2,
+       "missing_usage_calls": 0,
+       "llm_latency_seconds": 55.398849,
+       "prompt_tokens": 10974,
+       "completion_tokens": 4207,
+       "reasoning_tokens": 0,
+       "total_tokens": 15181
+      },
+      "execution_wall_seconds": 15.890993,
+      "evaluation_wall_seconds": 10.916028,
+      "api_guard_repairs": 1,
+      "public_contract_repairs": 0,
+      "stderr_tail": "AttributeError: 'pyscipopt.scip.Model' object has no attribute 'getVarObj'. Did you mean: 'getVars'?"
+     },
+     {
+      "task": "industrial_supply_planning",
+      "split": "dev",
+      "candidate_sha256": "d31e1475500f8e63b5a71ab14e72ce092189a614be162afd43b0f72f6947d701",
+      "attempt": 0,
+      "feasible": false,
+      "quality": 0.0,
+      "true_correct": false,
+      "objective": null,
+      "proxy_match": false,
+      "phantom_proxy": false,
+      "failure_class": "business_infeasible",
+      "execution_return_code": 0,
+      "generation_error": null,
+      "cost": {
+       "llm_calls": 2,
+       "missing_usage_calls": 0,
+       "llm_latency_seconds": 172.365638,
+       "prompt_tokens": 45183,
+       "completion_tokens": 14339,
+       "reasoning_tokens": 0,
+       "total_tokens": 59522
+      },
+      "execution_wall_seconds": 55.623313,
+      "evaluation_wall_seconds": 13.870976,
+      "api_guard_repairs": 1,
+      "public_contract_repairs": 1,
+      "stderr_tail": null
+     },
+     {
+      "task": "second_life_battery_pack_assembly",
+      "split": "dev",
+      "candidate_sha256": "d31e1475500f8e63b5a71ab14e72ce092189a614be162afd43b0f72f6947d701",
+      "attempt": 0,
+      "feasible": false,
+      "quality": 0.0,
+      "true_correct": false,
+      "objective": null,
+      "proxy_match": false,
+      "phantom_proxy": false,
+      "failure_class": "execution_error",
+      "execution_return_code": 1,
+      "generation_error": null,
+      "cost": {
+       "llm_calls": 2,
+       "missing_usage_calls": 0,
+       "llm_latency_seconds": 57.038732,
+       "prompt_tokens": 14706,
+       "completion_tokens": 4833,
+       "reasoning_tokens": 0,
+       "total_tokens": 19539
+      },
+      "execution_wall_seconds": 21.676882,
+      "evaluation_wall_seconds": 25.843273,
+      "api_guard_repairs": 1,
+      "public_contract_repairs": 0,
+      "stderr_tail": "AttributeError: 'pyscipopt.scip.Model' object has no attribute 'chgVarObj'. Did you mean: 'chgVarLb'?"
+     }
+    ],
+    "status": "complete",
+    "not_run_tasks": []
+   },
+   "transfer_evaluation": {
+    "n": 0,
+    "expected_tasks": 1,
+    "coverage": 0.0,
+    "feasible": 0,
+    "proxy_match": 0,
+    "true_correct": 0,
+    "phantom_proxy": 0,
+    "unknown": 0,
+    "unresolved_non_phantom": 0,
+    "mean_quality": 0.0,
+    "failure_counts": {},
+    "api_guard_modified": 0,
+    "cost": {
+     "llm_calls": 0,
+     "missing_usage_calls": 0,
+     "llm_latency_seconds": 0,
+     "prompt_tokens": 0,
+     "completion_tokens": 0,
+     "reasoning_tokens": 0,
+     "total_tokens": 0,
+     "solver_execution_time": {
+      "recorded_calls": 0,
+      "missing_calls": 0,
+      "seconds": null
+     },
+     "official_evaluation_time": {
+      "recorded_calls": 0,
+      "missing_calls": 0,
+      "seconds": null
+     }
+    },
+    "tasks": [],
+    "status": "not_run",
+    "not_run_tasks": [
+     "carbon_aware_compute_scheduling"
+    ]
+   }
+  },
+  {
+   "iteration_id": "efcaf7eb",
+   "trace_i": 3,
+   "accepted": false,
+   "candidate_idx": null,
+   "parent_iteration_ids": [
+    "seed"
+   ],
+   "subsample_ids": [
+    1,
+    0,
+    2
+   ],
+   "subsample_scores_before": [
+    0.0,
+    0.0,
+    0.0
+   ],
+   "subsample_scores_after": [
+    0.0,
+    0.0,
+    0.0
+   ],
+   "avg_val_score": null,
+   "metric_calls_to_discover": null,
+   "candidate_sha256": "ad87d9ef5defcad0bf0b8810c3e0c997945a03b657e707807f480f0b6d57bef1",
+   "candidate_text_saved": true,
+   "dev_evaluation": {
+    "n": 3,
+    "expected_tasks": 3,
+    "coverage": 1.0,
+    "feasible": 1,
+    "proxy_match": 0,
+    "true_correct": 0,
+    "phantom_proxy": 0,
+    "unknown": 0,
+    "unresolved_non_phantom": 3,
+    "mean_quality": 0.0,
+    "failure_counts": {
+     "execution_error": 1,
+     "incomplete_artifact": 1,
+     "quality_shortfall": 1
+    },
+    "api_guard_modified": 2,
+    "cost": {
+     "llm_calls": 6,
+     "missing_usage_calls": 0,
+     "llm_latency_seconds": 273.497265,
+     "prompt_tokens": 71734,
+     "completion_tokens": 21617,
+     "reasoning_tokens": 0,
+     "total_tokens": 93351,
+     "solver_execution_time": {
+      "recorded_calls": 2,
+      "missing_calls": 1,
+      "seconds": 42.07743
+     },
+     "official_evaluation_time": {
+      "recorded_calls": 3,
+      "missing_calls": 0,
+      "seconds": 53.619598
+     }
+    },
+    "tasks": [
+     {
+      "task": "additive_microfactory_order_planning",
+      "split": "dev",
+      "candidate_sha256": "ad87d9ef5defcad0bf0b8810c3e0c997945a03b657e707807f480f0b6d57bef1",
+      "attempt": 0,
+      "feasible": false,
+      "quality": 0.0,
+      "true_correct": false,
+      "objective": null,
+      "proxy_match": false,
+      "phantom_proxy": false,
+      "failure_class": "execution_error",
+      "execution_return_code": 1,
+      "generation_error": null,
+      "cost": {
+       "llm_calls": 2,
+       "missing_usage_calls": 0,
+       "llm_latency_seconds": 68.890313,
+       "prompt_tokens": 11538,
+       "completion_tokens": 5450,
+       "reasoning_tokens": 0,
+       "total_tokens": 16988
+      },
+      "execution_wall_seconds": 16.340436,
+      "evaluation_wall_seconds": 12.669301,
+      "api_guard_repairs": 1,
+      "public_contract_repairs": 0,
+      "stderr_tail": "AttributeError: 'pyscipopt.scip.Model' object has no attribute 'chgVarObj'. Did you mean: 'chgVarLb'?"
+     },
+     {
+      "task": "industrial_supply_planning",
+      "split": "dev",
+      "candidate_sha256": "ad87d9ef5defcad0bf0b8810c3e0c997945a03b657e707807f480f0b6d57bef1",
+      "attempt": 0,
+      "feasible": false,
+      "quality": 0.0,
+      "true_correct": false,
+      "objective": null,
+      "proxy_match": false,
+      "phantom_proxy": false,
+      "failure_class": "incomplete_artifact",
+      "execution_return_code": -1,
+      "generation_error": "ValueError: incomplete_artifact: API guard could not parse solver code",
+      "cost": {
+       "llm_calls": 2,
+       "missing_usage_calls": 0,
+       "llm_latency_seconds": 135.625468,
+       "prompt_tokens": 44707,
+       "completion_tokens": 10787,
+       "reasoning_tokens": 0,
+       "total_tokens": 55494
+      },
+      "execution_wall_seconds": null,
+      "evaluation_wall_seconds": 15.293395,
+      "api_guard_repairs": 0,
+      "public_contract_repairs": 0,
+      "stderr_tail": null
+     },
+     {
+      "task": "second_life_battery_pack_assembly",
+      "split": "dev",
+      "candidate_sha256": "ad87d9ef5defcad0bf0b8810c3e0c997945a03b657e707807f480f0b6d57bef1",
+      "attempt": 0,
+      "feasible": true,
+      "quality": 0.0,
+      "true_correct": false,
+      "objective": 71861.79824249995,
+      "proxy_match": false,
+      "phantom_proxy": false,
+      "failure_class": "quality_shortfall",
+      "execution_return_code": 0,
+      "generation_error": null,
+      "cost": {
+       "llm_calls": 2,
+       "missing_usage_calls": 0,
+       "llm_latency_seconds": 68.981484,
+       "prompt_tokens": 15489,
+       "completion_tokens": 5380,
+       "reasoning_tokens": 0,
+       "total_tokens": 20869
+      },
+      "execution_wall_seconds": 25.736994,
+      "evaluation_wall_seconds": 25.656902,
+      "api_guard_repairs": 1,
+      "public_contract_repairs": 0,
+      "stderr_tail": null
+     }
+    ],
+    "status": "complete",
+    "not_run_tasks": []
+   },
+   "transfer_evaluation": {
+    "n": 0,
+    "expected_tasks": 1,
+    "coverage": 0.0,
+    "feasible": 0,
+    "proxy_match": 0,
+    "true_correct": 0,
+    "phantom_proxy": 0,
+    "unknown": 0,
+    "unresolved_non_phantom": 0,
+    "mean_quality": 0.0,
+    "failure_counts": {},
+    "api_guard_modified": 0,
+    "cost": {
+     "llm_calls": 0,
+     "missing_usage_calls": 0,
+     "llm_latency_seconds": 0,
+     "prompt_tokens": 0,
+     "completion_tokens": 0,
+     "reasoning_tokens": 0,
+     "total_tokens": 0,
+     "solver_execution_time": {
+      "recorded_calls": 0,
+      "missing_calls": 0,
+      "seconds": null
+     },
+     "official_evaluation_time": {
+      "recorded_calls": 0,
+      "missing_calls": 0,
+      "seconds": null
+     }
+    },
+    "tasks": [],
+    "status": "not_run",
+    "not_run_tasks": [
+     "carbon_aware_compute_scheduling"
+    ]
+   }
+  },
+  {
+   "iteration_id": "80c8ae16",
+   "trace_i": 4,
+   "accepted": false,
+   "candidate_idx": null,
+   "parent_iteration_ids": [
+    "seed"
+   ],
+   "subsample_ids": [
+    2,
+    0,
+    1
+   ],
+   "subsample_scores_before": [
+    0.0,
+    0.0,
+    0.0
+   ],
+   "subsample_scores_after": [
+    0.0,
+    0.0,
+    0.0
+   ],
+   "avg_val_score": null,
+   "metric_calls_to_discover": null,
+   "candidate_sha256": "76bc96d6e6842b4ab87fc3edd408b71f2c6bf04d5de785ddc2e308d3c370c703",
+   "candidate_text_saved": true,
+   "dev_evaluation": {
+    "n": 3,
+    "expected_tasks": 3,
+    "coverage": 1.0,
+    "feasible": 1,
+    "proxy_match": 0,
+    "true_correct": 0,
+    "phantom_proxy": 0,
+    "unknown": 0,
+    "unresolved_non_phantom": 3,
+    "mean_quality": 0.0,
+    "failure_counts": {
+     "execution_error": 1,
+     "incomplete_artifact": 1,
+     "quality_shortfall": 1
+    },
+    "api_guard_modified": 1,
+    "cost": {
+     "llm_calls": 6,
+     "missing_usage_calls": 0,
+     "llm_latency_seconds": 299.001462,
+     "prompt_tokens": 73071,
+     "completion_tokens": 22659,
+     "reasoning_tokens": 0,
+     "total_tokens": 95730,
+     "solver_execution_time": {
+      "recorded_calls": 2,
+      "missing_calls": 1,
+      "seconds": 69.92647
+     },
+     "official_evaluation_time": {
+      "recorded_calls": 3,
+      "missing_calls": 0,
+      "seconds": 40.031474
+     }
+    },
+    "tasks": [
+     {
+      "task": "additive_microfactory_order_planning",
+      "split": "dev",
+      "candidate_sha256": "76bc96d6e6842b4ab87fc3edd408b71f2c6bf04d5de785ddc2e308d3c370c703",
+      "attempt": 0,
+      "feasible": false,
+      "quality": 0.0,
+      "true_correct": false,
+      "objective": null,
+      "proxy_match": false,
+      "phantom_proxy": false,
+      "failure_class": "incomplete_artifact",
+      "execution_return_code": -1,
+      "generation_error": "ValueError: incomplete_artifact: placeholder marker found",
+      "cost": {
+       "llm_calls": 2,
+       "missing_usage_calls": 0,
+       "llm_latency_seconds": 56.669959,
+       "prompt_tokens": 11899,
+       "completion_tokens": 4222,
+       "reasoning_tokens": 0,
+       "total_tokens": 16121
+      },
+      "execution_wall_seconds": null,
+      "evaluation_wall_seconds": 8.427986,
+      "api_guard_repairs": 0,
+      "public_contract_repairs": 0,
+      "stderr_tail": null
+     },
+     {
+      "task": "industrial_supply_planning",
+      "split": "dev",
+      "candidate_sha256": "76bc96d6e6842b4ab87fc3edd408b71f2c6bf04d5de785ddc2e308d3c370c703",
+      "attempt": 0,
+      "feasible": false,
+      "quality": 0.0,
+      "true_correct": false,
+      "objective": null,
+      "proxy_match": false,
+      "phantom_proxy": false,
+      "failure_class": "execution_error",
+      "execution_return_code": 1,
+      "generation_error": null,
+      "cost": {
+       "llm_calls": 2,
+       "missing_usage_calls": 0,
+       "llm_latency_seconds": 152.431992,
+       "prompt_tokens": 45316,
+       "completion_tokens": 11509,
+       "reasoning_tokens": 0,
+       "total_tokens": 56825
+      },
+      "execution_wall_seconds": 47.292005,
+      "evaluation_wall_seconds": 16.915707,
+      "api_guard_repairs": 1,
+      "public_contract_repairs": 1,
+      "stderr_tail": "TypeError: unsupported operand type(s) for +=: 'pyscipopt.scip.Expr' and 'pyscipopt.scip.Term'"
+     },
+     {
+      "task": "second_life_battery_pack_assembly",
+      "split": "dev",
+      "candidate_sha256": "76bc96d6e6842b4ab87fc3edd408b71f2c6bf04d5de785ddc2e308d3c370c703",
+      "attempt": 0,
+      "feasible": true,
+      "quality": 0.0,
+      "true_correct": false,
+      "objective": 73431.56006449998,
+      "proxy_match": false,
+      "phantom_proxy": false,
+      "failure_class": "quality_shortfall",
+      "execution_return_code": 0,
+      "generation_error": null,
+      "cost": {
+       "llm_calls": 2,
+       "missing_usage_calls": 0,
+       "llm_latency_seconds": 89.899511,
+       "prompt_tokens": 15856,
+       "completion_tokens": 6928,
+       "reasoning_tokens": 0,
+       "total_tokens": 22784
+      },
+      "execution_wall_seconds": 22.634465,
+      "evaluation_wall_seconds": 14.687781,
+      "api_guard_repairs": 0,
+      "public_contract_repairs": 0,
+      "stderr_tail": null
+     }
+    ],
+    "status": "complete",
+    "not_run_tasks": []
+   },
+   "transfer_evaluation": {
+    "n": 0,
+    "expected_tasks": 1,
+    "coverage": 0.0,
+    "feasible": 0,
+    "proxy_match": 0,
+    "true_correct": 0,
+    "phantom_proxy": 0,
+    "unknown": 0,
+    "unresolved_non_phantom": 0,
+    "mean_quality": 0.0,
+    "failure_counts": {},
+    "api_guard_modified": 0,
+    "cost": {
+     "llm_calls": 0,
+     "missing_usage_calls": 0,
+     "llm_latency_seconds": 0,
+     "prompt_tokens": 0,
+     "completion_tokens": 0,
+     "reasoning_tokens": 0,
+     "total_tokens": 0,
+     "solver_execution_time": {
+      "recorded_calls": 0,
+      "missing_calls": 0,
+      "seconds": null
+     },
+     "official_evaluation_time": {
+      "recorded_calls": 0,
+      "missing_calls": 0,
+      "seconds": null
+     }
+    },
+    "tasks": [],
+    "status": "not_run",
+    "not_run_tasks": [
+     "carbon_aware_compute_scheduling"
+    ]
+   }
+  },
+  {
+   "iteration_id": "5b1ec8e9",
+   "trace_i": 5,
+   "accepted": false,
+   "candidate_idx": null,
+   "parent_iteration_ids": [
+    "seed"
+   ],
+   "subsample_ids": [
+    0,
+    1,
+    2
+   ],
+   "subsample_scores_before": [
+    0.0,
+    0.0,
+    0.0
+   ],
+   "subsample_scores_after": [
+    0.0,
+    0.0,
+    0.0
+   ],
+   "avg_val_score": null,
+   "metric_calls_to_discover": null,
+   "candidate_sha256": "bd22eea697292774751e76a674cda476e577997844b6d47951e6d26d570aa732",
+   "candidate_text_saved": true,
+   "dev_evaluation": {
+    "n": 3,
+    "expected_tasks": 3,
+    "coverage": 1.0,
+    "feasible": 1,
+    "proxy_match": 0,
+    "true_correct": 0,
+    "phantom_proxy": 0,
+    "unknown": 0,
+    "unresolved_non_phantom": 3,
+    "mean_quality": 0.0,
+    "failure_counts": {
+     "execution_error": 1,
+     "incomplete_artifact": 1,
+     "quality_shortfall": 1
+    },
+    "api_guard_modified": 0,
+    "cost": {
+     "llm_calls": 6,
+     "missing_usage_calls": 0,
+     "llm_latency_seconds": 334.911776,
+     "prompt_tokens": 74488,
+     "completion_tokens": 24795,
+     "reasoning_tokens": 0,
+     "total_tokens": 99283,
+     "solver_execution_time": {
+      "recorded_calls": 2,
+      "missing_calls": 1,
+      "seconds": 46.410553
+     },
+     "official_evaluation_time": {
+      "recorded_calls": 3,
+      "missing_calls": 0,
+      "seconds": 42.743896
+     }
+    },
+    "tasks": [
+     {
+      "task": "additive_microfactory_order_planning",
+      "split": "dev",
+      "candidate_sha256": "bd22eea697292774751e76a674cda476e577997844b6d47951e6d26d570aa732",
+      "attempt": 0,
+      "feasible": false,
+      "quality": 0.0,
+      "true_correct": false,
+      "objective": null,
+      "proxy_match": false,
+      "phantom_proxy": false,
+      "failure_class": "execution_error",
+      "execution_return_code": 1,
+      "generation_error": null,
+      "cost": {
+       "llm_calls": 2,
+       "missing_usage_calls": 0,
+       "llm_latency_seconds": 56.858427,
+       "prompt_tokens": 12129,
+       "completion_tokens": 4213,
+       "reasoning_tokens": 0,
+       "total_tokens": 16342
+      },
+      "execution_wall_seconds": 29.120118,
+      "evaluation_wall_seconds": 11.226456,
+      "api_guard_repairs": 0,
+      "public_contract_repairs": 0,
+      "stderr_tail": "AttributeError: 'pyscipopt.scip.Variable' object has no attribute 'setObj'. Did you mean: 'getObj'?"
+     },
+     {
+      "task": "industrial_supply_planning",
+      "split": "dev",
+      "candidate_sha256": "bd22eea697292774751e76a674cda476e577997844b6d47951e6d26d570aa732",
+      "attempt": 0,
+      "feasible": false,
+      "quality": 0.0,
+      "true_correct": false,
+      "objective": null,
+      "proxy_match": false,
+      "phantom_proxy": false,
+      "failure_class": "incomplete_artifact",
+      "execution_return_code": -1,
+      "generation_error": "ValueError: incomplete_artifact: placeholder marker found",
+      "cost": {
+       "llm_calls": 2,
+       "missing_usage_calls": 0,
+       "llm_latency_seconds": 212.014832,
+       "prompt_tokens": 46088,
+       "completion_tokens": 15563,
+       "reasoning_tokens": 0,
+       "total_tokens": 61651
+      },
+      "execution_wall_seconds": null,
+      "evaluation_wall_seconds": 11.542957,
+      "api_guard_repairs": 0,
+      "public_contract_repairs": 0,
+      "stderr_tail": null
+     },
+     {
+      "task": "second_life_battery_pack_assembly",
+      "split": "dev",
+      "candidate_sha256": "bd22eea697292774751e76a674cda476e577997844b6d47951e6d26d570aa732",
+      "attempt": 0,
+      "feasible": true,
+      "quality": 0.0,
+      "true_correct": false,
+      "objective": 72526.8297325,
+      "proxy_match": false,
+      "phantom_proxy": false,
+      "failure_class": "quality_shortfall",
+      "execution_return_code": 0,
+      "generation_error": null,
+      "cost": {
+       "llm_calls": 2,
+       "missing_usage_calls": 0,
+       "llm_latency_seconds": 66.038517,
+       "prompt_tokens": 16271,
+       "completion_tokens": 5019,
+       "reasoning_tokens": 0,
+       "total_tokens": 21290
+      },
+      "execution_wall_seconds": 17.290435,
+      "evaluation_wall_seconds": 19.974483,
+      "api_guard_repairs": 0,
+      "public_contract_repairs": 0,
+      "stderr_tail": null
+     }
+    ],
+    "status": "complete",
+    "not_run_tasks": []
+   },
+   "transfer_evaluation": {
+    "n": 0,
+    "expected_tasks": 1,
+    "coverage": 0.0,
+    "feasible": 0,
+    "proxy_match": 0,
+    "true_correct": 0,
+    "phantom_proxy": 0,
+    "unknown": 0,
+    "unresolved_non_phantom": 0,
+    "mean_quality": 0.0,
+    "failure_counts": {},
+    "api_guard_modified": 0,
+    "cost": {
+     "llm_calls": 0,
+     "missing_usage_calls": 0,
+     "llm_latency_seconds": 0,
+     "prompt_tokens": 0,
+     "completion_tokens": 0,
+     "reasoning_tokens": 0,
+     "total_tokens": 0,
+     "solver_execution_time": {
+      "recorded_calls": 0,
+      "missing_calls": 0,
+      "seconds": null
+     },
+     "official_evaluation_time": {
+      "recorded_calls": 0,
+      "missing_calls": 0,
+      "seconds": null
+     }
+    },
+    "tasks": [],
+    "status": "not_run",
+    "not_run_tasks": [
+     "carbon_aware_compute_scheduling"
+    ]
+   }
+  },
+  {
+   "iteration_id": "a9f2bb4b",
+   "trace_i": 6,
+   "accepted": false,
+   "candidate_idx": null,
+   "parent_iteration_ids": [
+    "seed"
+   ],
+   "subsample_ids": [
+    2,
+    0,
+    1
+   ],
+   "subsample_scores_before": [
+    0.0,
+    0.0,
+    0.0
+   ],
+   "subsample_scores_after": [
+    0.0,
+    0.0,
+    0.0
+   ],
+   "avg_val_score": null,
+   "metric_calls_to_discover": null,
+   "candidate_sha256": "cbc7968c0a4efec5c225cadb7827e69c3cbb7b9ef404d676ab063bff58f09b9c",
+   "candidate_text_saved": true,
+   "dev_evaluation": {
+    "n": 3,
+    "expected_tasks": 3,
+    "coverage": 1.0,
+    "feasible": 0,
+    "proxy_match": 0,
+    "true_correct": 0,
+    "phantom_proxy": 0,
+    "unknown": 0,
+    "unresolved_non_phantom": 3,
+    "mean_quality": 0.0,
+    "failure_counts": {
+     "execution_error": 2,
+     "incomplete_artifact": 1
+    },
+    "api_guard_modified": 1,
+    "cost": {
+     "llm_calls": 6,
+     "missing_usage_calls": 0,
+     "llm_latency_seconds": 249.62069,
+     "prompt_tokens": 70660,
+     "completion_tokens": 18927,
+     "reasoning_tokens": 0,
+     "total_tokens": 89587,
+     "solver_execution_time": {
+      "recorded_calls": 2,
+      "missing_calls": 1,
+      "seconds": 43.535802
+     },
+     "official_evaluation_time": {
+      "recorded_calls": 3,
+      "missing_calls": 0,
+      "seconds": 65.107137
+     }
+    },
+    "tasks": [
+     {
+      "task": "additive_microfactory_order_planning",
+      "split": "dev",
+      "candidate_sha256": "cbc7968c0a4efec5c225cadb7827e69c3cbb7b9ef404d676ab063bff58f09b9c",
+      "attempt": 0,
+      "feasible": false,
+      "quality": 0.0,
+      "true_correct": false,
+      "objective": null,
+      "proxy_match": false,
+      "phantom_proxy": false,
+      "failure_class": "incomplete_artifact",
+      "execution_return_code": -1,
+      "generation_error": "ValueError: incomplete_artifact: placeholder marker found",
+      "cost": {
+       "llm_calls": 2,
+       "missing_usage_calls": 0,
+       "llm_latency_seconds": 62.122648,
+       "prompt_tokens": 11125,
+       "completion_tokens": 4551,
+       "reasoning_tokens": 0,
+       "total_tokens": 15676
+      },
+      "execution_wall_seconds": null,
+      "evaluation_wall_seconds": 41.135159,
+      "api_guard_repairs": 0,
+      "public_contract_repairs": 0,
+      "stderr_tail": null
+     },
+     {
+      "task": "industrial_supply_planning",
+      "split": "dev",
+      "candidate_sha256": "cbc7968c0a4efec5c225cadb7827e69c3cbb7b9ef404d676ab063bff58f09b9c",
+      "attempt": 0,
+      "feasible": false,
+      "quality": 0.0,
+      "true_correct": false,
+      "objective": null,
+      "proxy_match": false,
+      "phantom_proxy": false,
+      "failure_class": "execution_error",
+      "execution_return_code": 1,
+      "generation_error": null,
+      "cost": {
+       "llm_calls": 2,
+       "missing_usage_calls": 0,
+       "llm_latency_seconds": 136.425581,
+       "prompt_tokens": 44640,
+       "completion_tokens": 10634,
+       "reasoning_tokens": 0,
+       "total_tokens": 55274
+      },
+      "execution_wall_seconds": 20.504954,
+      "evaluation_wall_seconds": 8.58092,
+      "api_guard_repairs": 0,
+      "public_contract_repairs": 0,
+      "stderr_tail": "UnboundLocalError: cannot access local variable 'q' where it is not associated with a value"
+     },
+     {
+      "task": "second_life_battery_pack_assembly",
+      "split": "dev",
+      "candidate_sha256": "cbc7968c0a4efec5c225cadb7827e69c3cbb7b9ef404d676ab063bff58f09b9c",
+      "attempt": 0,
+      "feasible": false,
+      "quality": 0.0,
+      "true_correct": false,
+      "objective": null,
+      "proxy_match": false,
+      "phantom_proxy": false,
+      "failure_class": "execution_error",
+      "execution_return_code": 1,
+      "generation_error": null,
+      "cost": {
+       "llm_calls": 2,
+       "missing_usage_calls": 0,
+       "llm_latency_seconds": 51.072461,
+       "prompt_tokens": 14895,
+       "completion_tokens": 3742,
+       "reasoning_tokens": 0,
+       "total_tokens": 18637
+      },
+      "execution_wall_seconds": 23.030848,
+      "evaluation_wall_seconds": 15.391058,
+      "api_guard_repairs": 1,
+      "public_contract_repairs": 0,
+      "stderr_tail": "AttributeError: 'pyscipopt.scip.Model' object has no attribute 'chgVarObj'. Did you mean: 'chgVarLb'?"
+     }
+    ],
+    "status": "complete",
+    "not_run_tasks": []
+   },
+   "transfer_evaluation": {
+    "n": 0,
+    "expected_tasks": 1,
+    "coverage": 0.0,
+    "feasible": 0,
+    "proxy_match": 0,
+    "true_correct": 0,
+    "phantom_proxy": 0,
+    "unknown": 0,
+    "unresolved_non_phantom": 0,
+    "mean_quality": 0.0,
+    "failure_counts": {},
+    "api_guard_modified": 0,
+    "cost": {
+     "llm_calls": 0,
+     "missing_usage_calls": 0,
+     "llm_latency_seconds": 0,
+     "prompt_tokens": 0,
+     "completion_tokens": 0,
+     "reasoning_tokens": 0,
+     "total_tokens": 0,
+     "solver_execution_time": {
+      "recorded_calls": 0,
+      "missing_calls": 0,
+      "seconds": null
+     },
+     "official_evaluation_time": {
+      "recorded_calls": 0,
+      "missing_calls": 0,
+      "seconds": null
+     }
+    },
+    "tasks": [],
+    "status": "not_run",
+    "not_run_tasks": [
+     "carbon_aware_compute_scheduling"
+    ]
+   }
+  },
+  {
+   "iteration_id": "579fd526",
+   "trace_i": 7,
+   "accepted": true,
+   "candidate_idx": 1,
+   "parent_iteration_ids": [
+    "seed"
+   ],
+   "subsample_ids": [
+    0,
+    1,
+    2
+   ],
+   "subsample_scores_before": [
+    0.0,
+    0.0,
+    0.0
+   ],
+   "subsample_scores_after": [
+    1.0,
+    0.0,
+    0.0
+   ],
+   "avg_val_score": 0.0,
+   "metric_calls_to_discover": 49,
+   "candidate_sha256": "61c8e9c32aa28d042547f571f6c0b8e771c8bec7c4f071da02e5a9cbdb636d45",
+   "candidate_text_saved": true,
+   "dev_evaluation": {
+    "n": 3,
+    "expected_tasks": 3,
+    "coverage": 1.0,
+    "feasible": 1,
+    "proxy_match": 1,
+    "true_correct": 1,
+    "phantom_proxy": 0,
+    "unknown": 0,
+    "unresolved_non_phantom": 2,
+    "mean_quality": 0.6639743706956537,
+    "failure_counts": {
+     "execution_error": 2,
+     "true_correct": 1
+    },
+    "api_guard_modified": 0,
+    "cost": {
+     "llm_calls": 6,
+     "missing_usage_calls": 0,
+     "llm_latency_seconds": 398.138982,
+     "prompt_tokens": 73889,
+     "completion_tokens": 29763,
+     "reasoning_tokens": 0,
+     "total_tokens": 103652,
+     "solver_execution_time": {
+      "recorded_calls": 3,
+      "missing_calls": 0,
+      "seconds": 62.143792
+     },
+     "official_evaluation_time": {
+      "recorded_calls": 3,
+      "missing_calls": 0,
+      "seconds": 39.56428
+     }
+    },
+    "tasks": [
+     {
+      "task": "additive_microfactory_order_planning",
+      "split": "dev",
+      "candidate_sha256": "61c8e9c32aa28d042547f571f6c0b8e771c8bec7c4f071da02e5a9cbdb636d45",
+      "attempt": 0,
+      "feasible": true,
+      "quality": 1.991923112086961,
+      "true_correct": true,
+      "objective": 11688.043683670841,
+      "proxy_match": true,
+      "phantom_proxy": false,
+      "failure_class": "true_correct",
+      "execution_return_code": 0,
+      "generation_error": null,
+      "cost": {
+       "llm_calls": 2,
+       "missing_usage_calls": 0,
+       "llm_latency_seconds": 77.736112,
+       "prompt_tokens": 11601,
+       "completion_tokens": 5722,
+       "reasoning_tokens": 0,
+       "total_tokens": 17323
+      },
+      "execution_wall_seconds": 16.105987,
+      "evaluation_wall_seconds": 11.362034,
+      "api_guard_repairs": 0,
+      "public_contract_repairs": 0,
+      "stderr_tail": null
+     },
+     {
+      "task": "industrial_supply_planning",
+      "split": "dev",
+      "candidate_sha256": "61c8e9c32aa28d042547f571f6c0b8e771c8bec7c4f071da02e5a9cbdb636d45",
+      "attempt": 0,
+      "feasible": false,
+      "quality": 0.0,
+      "true_correct": false,
+      "objective": null,
+      "proxy_match": false,
+      "phantom_proxy": false,
+      "failure_class": "execution_error",
+      "execution_return_code": 1,
+      "generation_error": null,
+      "cost": {
+       "llm_calls": 2,
+       "missing_usage_calls": 0,
+       "llm_latency_seconds": 249.789852,
+       "prompt_tokens": 46710,
+       "completion_tokens": 18836,
+       "reasoning_tokens": 0,
+       "total_tokens": 65546
+      },
+      "execution_wall_seconds": 23.984482,
+      "evaluation_wall_seconds": 3.503727,
+      "api_guard_repairs": 0,
+      "public_contract_repairs": 1,
+      "stderr_tail": "KeyError: ('D_CHICAGO', 'C_KANSAS_CITY', 'BINDER_STD', 'TRUCK', '2026-01')"
+     },
+     {
+      "task": "second_life_battery_pack_assembly",
+      "split": "dev",
+      "candidate_sha256": "61c8e9c32aa28d042547f571f6c0b8e771c8bec7c4f071da02e5a9cbdb636d45",
+      "attempt": 0,
+      "feasible": false,
+      "quality": 0.0,
+      "true_correct": false,
+      "objective": null,
+      "proxy_match": false,
+      "phantom_proxy": false,
+      "failure_class": "execution_error",
+      "execution_return_code": 1,
+      "generation_error": null,
+      "cost": {
+       "llm_calls": 2,
+       "missing_usage_calls": 0,
+       "llm_latency_seconds": 70.613018,
+       "prompt_tokens": 15578,
+       "completion_tokens": 5205,
+       "reasoning_tokens": 0,
+       "total_tokens": 20783
+      },
+      "execution_wall_seconds": 22.053323,
+      "evaluation_wall_seconds": 24.698519,
+      "api_guard_repairs": 0,
+      "public_contract_repairs": 0,
+      "stderr_tail": "RuntimeError: No solution found; status=infeasible"
+     }
+    ],
+    "status": "complete",
+    "not_run_tasks": []
+   },
+   "transfer_evaluation": {
+    "n": 1,
+    "expected_tasks": 1,
+    "coverage": 1.0,
+    "feasible": 0,
+    "proxy_match": 0,
+    "true_correct": 0,
+    "phantom_proxy": 0,
+    "unknown": 0,
+    "unresolved_non_phantom": 1,
+    "mean_quality": 0.0,
+    "failure_counts": {
+     "incomplete_artifact": 1
+    },
+    "api_guard_modified": 0,
+    "cost": {
+     "llm_calls": 2,
+     "missing_usage_calls": 0,
+     "llm_latency_seconds": 64.537518,
+     "prompt_tokens": 37997,
+     "completion_tokens": 4734,
+     "reasoning_tokens": 0,
+     "total_tokens": 42731,
+     "solver_execution_time": {
+      "recorded_calls": 0,
+      "missing_calls": 1,
+      "seconds": null
+     },
+     "official_evaluation_time": {
+      "recorded_calls": 1,
+      "missing_calls": 0,
+      "seconds": 16.108593
+     }
+    },
+    "tasks": [
+     {
+      "task": "carbon_aware_compute_scheduling",
+      "split": "transfer",
+      "candidate_sha256": "61c8e9c32aa28d042547f571f6c0b8e771c8bec7c4f071da02e5a9cbdb636d45",
+      "attempt": 0,
+      "feasible": false,
+      "quality": 0.0,
+      "true_correct": false,
+      "objective": null,
+      "proxy_match": false,
+      "phantom_proxy": false,
+      "failure_class": "incomplete_artifact",
+      "execution_return_code": -1,
+      "generation_error": "ValueError: incomplete_artifact: API guard could not parse solver code",
+      "cost": {
+       "llm_calls": 2,
+       "missing_usage_calls": 0,
+       "llm_latency_seconds": 64.537518,
+       "prompt_tokens": 37997,
+       "completion_tokens": 4734,
+       "reasoning_tokens": 0,
+       "total_tokens": 42731
+      },
+      "execution_wall_seconds": null,
+      "evaluation_wall_seconds": 16.108593,
+      "api_guard_repairs": 0,
+      "public_contract_repairs": 0,
+      "stderr_tail": null
+     }
+    ],
+    "status": "complete",
+    "not_run_tasks": []
+   }
+  }
+ ],
+ "n_rejected_proposals": 7,
+ "total_metric_calls": 50,
+ "wall_seconds": 4354.188,
+ "implementation_sha256": "bf5eda0654e51ea7f5c40cff3522cefdd7606764a3d3b88fe5c5ebb60f81d82b",
+ "evaluation_boundary": "Both sets participated in GEPA train/validation. Neither is a final held-out set."
+}

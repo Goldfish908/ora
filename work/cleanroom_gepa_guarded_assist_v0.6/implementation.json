@@ -1,0 +1,45 @@
+{
+ "files": {
+  "ora_agent/llm.py": "ced54d7b87414e73e0ed7c572cba9f1118c9f850b67516d5b1f9834c9555a1d9",
+  "ora_agent/cleanroom.py": "c33b21414dc230fb1862cbfdefb42d4652759236af9401f77d8f10c0bd2ad2a5",
+  "ora_agent/oragentbench.py": "c44b984fa04b1c0344d5e54a3625797fd986eb01d14f193c5b5d8a3905ceb78d",
+  "ora_agent/api_guard.py": "bbe01a6a7fa84d83bb07ffd8af19884e1e032cd8a7f3494efa4eb41b44f423cb",
+  "ora_agent/cleanroom_witness.py": "90a86aa439b8a5e4806da34a72f41a74a4a8cd2c38ff4bfe14296a7a4dfb6cc5",
+  "ora_agent/cleanroom_spec_audit.py": "c0551fbd49d8db6832714de221f1332e207705f7fcf21c1db730331951ad4097",
+  "scripts/cleanroom_experiment.py": "4a54a4a56bcdf342fbccd22fad728c20a58a7bc0b6107eb0ebed0801fe9da329",
+  "scripts/cleanroom_repair.py": "13443711cf0c7ba8c3c5120f6e979af065751738f7f6163a70d0cbb52447caee",
+  "scripts/cleanroom_memory.py": "12afa65d7c0c5002f99ef86d117c0748066311803d21f82cf169642313f84f7e"
+ },
+ "tasks_sha256": "74c7c8c12eaf7623657fba4ee0f3e01e19860b2fd998d9021c55efa5d21252b7",
+ "model": "Qwen3_8-27B",
+ "gepa_commit": "ce5b0d6e3d6af6c6dbec6de2c54536bbb961d309",
+ "generation": {
+  "max_tokens": 16384,
+  "reasoning_effort": "low",
+  "disable_thinking": true,
+  "model_reasoning_effort": "low",
+  "solver_reasoning_effort": "low",
+  "model_disable_thinking": true,
+  "solver_disable_thinking": true,
+  "model_max_tokens": 4096,
+  "model_max_words": 1800,
+  "temperature": 0.6,
+  "protocol": "two_phase_model_then_solver_v1",
+  "stream": false
+ },
+ "arguments": {
+  "tasks": "configs/cleanroom_formal_dev_v0.6.json",
+  "run_dir": "work/cleanroom_gepa_guarded_assist_v0.6",
+  "mode": "gepa",
+  "max_metric_calls": 48,
+  "workers": 1,
+  "seed": 0,
+  "llm_timeout": 600.0,
+  "resume": false,
+  "task_name": null,
+  "spec_source": null,
+  "spec_id": null,
+  "api_assist": true,
+  "api_guard": true
+ }
+}

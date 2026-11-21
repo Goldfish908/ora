@@ -98,7 +98,7 @@ GEPA无提升、memory零晋升、DAG无增益、Witness覆盖不足或跨族失
 
 - C1 在增材 dev 题上为 `feasible=true、quality=1.9999999999996887、profit=11688.090885370839`，seed 同题为 `profit=9942.24908924532、quality=0`。候选规范包含显式 `setMaximize()`、正确 PySCIPOpt 导入和输出检查；在没有单项消融时，不把这些组件分别称为已证明的因果贡献。
 - 接受候选没有解决工业供应、碳调度或医疗路由；医疗路由仍因不含 `optimize()` 被制品门禁拒绝。dev 单题增益不能称为迁移增益。
-- seed/C1 在两个选择集上的生成成本分别为 323,613 和 337,355 tokens，未记录的旧求解 wall time 不补零。图件为 `work/cleanroom_gepa_guarded_smoke_v0.5_report/gepa_candidates.png`，逐题证据为同目录 `candidate_analysis.json`。
+- seed/C1 在两个选择集上的生成成本分别为 323,613 和 337,355 tokens，未记录的旧求解 wall time 不补零。图件为 `work/cleanroom_gepa_guarded_smoke_v0.5_report_v3/gepa_candidates.png`，逐题证据为同目录 `candidate_analysis.json`。
 - `work/cleanroom_gepa_guarded_smoke_v0.5_memory_review` 按平局规则选择 C1，但因没有独立重放而拒绝晋升。生成器随后升级到 v0.6，因此不能用不同实现的重放补写 v0.5 的 memory 晋升。
 - 真实有界 B0 修复冒烟 `work/cleanroom_bounded_b0_additive_v0.6.1` 在一次无证据改善后停止并回退：真正确不增不减，win-safe=true；含基线生成共 4 次 LLM 调用、38,971 tokens。这是停止/回退证据，不是修复有效率证据。
 

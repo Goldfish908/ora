@@ -37,9 +37,20 @@ def test_gepa_report_covers_dev_transfer_and_sums_costs(tmp_path):
     for spec in ("", "spec"):
         write_record(run, spec, "dev", True)
         write_record(run, spec, "transfer", False)
+    (run / "iterations/rejected").mkdir()
+    (run / "iterations/rejected/meta.json").write_text(json.dumps({
+        "iteration_id": "rejected", "trace_i": 2, "accepted": False,
+        "subsample_scores_before": [0.0], "subsample_scores_after": [0.0]}))
     result = build_analysis(run)
+    assert result["n_rejected_proposals"] == 1
+    assert result["proposal_history"][-1]["candidate_sha256"] is None
     assert result["candidates"][1]["dev"]["true_correct"] == 1
     assert result["candidates"][1]["transfer"]["true_correct"] == 0
     assert result["candidates"][1]["cost"]["total_tokens"] == 20
     assert result["candidates"][1]["accepted_meta"]["accepted"]
     assert "Neither" in result["evaluation_boundary"]
+    from scripts.cleanroom_gepa_report import evaluation_for_hash
+    missing = evaluation_for_hash(run, digest("not_evaluated"), ["transfer"])
+    assert missing["status"] == "not_run"
+    assert missing["n"] == 0
+    assert missing["not_run_tasks"] == ["transfer"]

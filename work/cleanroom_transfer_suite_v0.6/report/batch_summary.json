@@ -1,0 +1,796 @@
+{
+ "expected_tasks": [
+  "ev_battery_recycling_network"
+ ],
+ "arms": [
+  {
+   "arm": "B0_empty_specification",
+   "n_expected": 1,
+   "direct": {
+    "n": 1,
+    "expected_tasks": 1,
+    "coverage": 1.0,
+    "feasible": 0,
+    "proxy_match": 0,
+    "true_correct": 0,
+    "phantom_proxy": 0,
+    "unknown": 0,
+    "unresolved_non_phantom": 1,
+    "mean_quality": 0.0,
+    "failure_counts": {
+     "generation_failure": 1
+    },
+    "api_guard_modified": 0,
+    "cost": {
+     "llm_calls": 2,
+     "missing_usage_calls": 0,
+     "llm_latency_seconds": 264.473086,
+     "prompt_tokens": 20077,
+     "completion_tokens": 19030,
+     "reasoning_tokens": 0,
+     "total_tokens": 39107,
+     "solver_execution_time": {
+      "recorded_calls": 0,
+      "missing_calls": 1,
+      "seconds": null
+     },
+     "official_evaluation_time": {
+      "recorded_calls": 0,
+      "missing_calls": 1,
+      "seconds": null
+     }
+    },
+    "tasks": [
+     {
+      "task": "ev_battery_recycling_network",
+      "split": "transfer",
+      "candidate_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "attempt": 0,
+      "feasible": false,
+      "quality": 0.0,
+      "true_correct": false,
+      "objective": null,
+      "proxy_match": false,
+      "phantom_proxy": false,
+      "failure_class": "generation_failure",
+      "execution_return_code": -1,
+      "generation_error": "RuntimeError: ValueError: solver generation was truncated",
+      "cost": {
+       "llm_calls": 2,
+       "missing_usage_calls": 0,
+       "llm_latency_seconds": 264.473086,
+       "prompt_tokens": 20077,
+       "completion_tokens": 19030,
+       "reasoning_tokens": 0,
+       "total_tokens": 39107
+      },
+      "execution_wall_seconds": null,
+      "evaluation_wall_seconds": null,
+      "api_guard_repairs": 0,
+      "public_contract_repairs": 0,
+      "stderr_tail": null
+     }
+    ]
+   },
+   "final": {
+    "n": 1,
+    "expected_tasks": 1,
+    "coverage": 1.0,
+    "feasible": 0,
+    "proxy_match": 0,
+    "true_correct": 0,
+    "phantom_proxy": 0,
+    "unknown": 0,
+    "unresolved_non_phantom": 1,
+    "mean_quality": 0.0,
+    "failure_counts": {
+     "generation_failure": 1
+    },
+    "api_guard_modified": 0,
+    "cost": {
+     "llm_calls": 2,
+     "missing_usage_calls": 0,
+     "llm_latency_seconds": 264.473086,
+     "prompt_tokens": 20077,
+     "completion_tokens": 19030,
+     "reasoning_tokens": 0,
+     "total_tokens": 39107,
+     "solver_execution_time": {
+      "recorded_calls": 0,
+      "missing_calls": 1,
+      "seconds": null
+     },
+     "official_evaluation_time": {
+      "recorded_calls": 0,
+      "missing_calls": 1,
+      "seconds": null
+     }
+    },
+    "tasks": [
+     {
+      "task": "ev_battery_recycling_network",
+      "split": "transfer",
+      "candidate_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "attempt": 0,
+      "feasible": false,
+      "quality": 0.0,
+      "true_correct": false,
+      "objective": null,
+      "proxy_match": false,
+      "phantom_proxy": false,
+      "failure_class": "generation_failure",
+      "execution_return_code": -1,
+      "generation_error": "RuntimeError: ValueError: solver generation was truncated",
+      "cost": {
+       "llm_calls": 2,
+       "missing_usage_calls": 0,
+       "llm_latency_seconds": 264.473086,
+       "prompt_tokens": 20077,
+       "completion_tokens": 19030,
+       "reasoning_tokens": 0,
+       "total_tokens": 39107
+      },
+      "execution_wall_seconds": null,
+      "evaluation_wall_seconds": null,
+      "api_guard_repairs": 0,
+      "public_contract_repairs": 0,
+      "stderr_tail": null
+     }
+    ]
+   },
+   "pair_win_safe": {
+    "paired_tasks": 1,
+    "missing_tasks": [],
+    "gained_true_correct": [],
+    "lost_true_correct": [],
+    "gained_phantom": [],
+    "removed_phantom": [],
+    "win_safe": true
+   },
+   "cost": {
+    "llm_calls": 2,
+    "missing_usage_calls": 0,
+    "llm_latency_seconds": 264.473086,
+    "prompt_tokens": 20077,
+    "completion_tokens": 19030,
+    "reasoning_tokens": 0,
+    "total_tokens": 39107,
+    "solver_execution_time": {
+     "recorded_calls": 0,
+     "missing_calls": 1,
+     "seconds": null
+    },
+    "official_evaluation_time": {
+     "recorded_calls": 0,
+     "missing_calls": 1,
+     "seconds": null
+    }
+   },
+   "tasks": [
+    {
+     "task": "ev_battery_recycling_network",
+     "direct": {
+      "task": "ev_battery_recycling_network",
+      "split": "transfer",
+      "candidate_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "attempt": 0,
+      "feasible": false,
+      "quality": 0.0,
+      "true_correct": false,
+      "objective": null,
+      "proxy_match": false,
+      "phantom_proxy": false,
+      "failure_class": "generation_failure",
+      "execution_return_code": -1,
+      "generation_error": "RuntimeError: ValueError: solver generation was truncated",
+      "cost": {
+       "llm_calls": 2,
+       "missing_usage_calls": 0,
+       "llm_latency_seconds": 264.473086,
+       "prompt_tokens": 20077,
+       "completion_tokens": 19030,
+       "reasoning_tokens": 0,
+       "total_tokens": 39107
+      },
+      "execution_wall_seconds": null,
+      "evaluation_wall_seconds": null,
+      "api_guard_repairs": 0,
+      "public_contract_repairs": 0,
+      "stderr_tail": null
+     },
+     "final": {
+      "task": "ev_battery_recycling_network",
+      "split": "transfer",
+      "candidate_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "attempt": 0,
+      "feasible": false,
+      "quality": 0.0,
+      "true_correct": false,
+      "objective": null,
+      "proxy_match": false,
+      "phantom_proxy": false,
+      "failure_class": "generation_failure",
+      "execution_return_code": -1,
+      "generation_error": "RuntimeError: ValueError: solver generation was truncated",
+      "cost": {
+       "llm_calls": 2,
+       "missing_usage_calls": 0,
+       "llm_latency_seconds": 264.473086,
+       "prompt_tokens": 20077,
+       "completion_tokens": 19030,
+       "reasoning_tokens": 0,
+       "total_tokens": 39107
+      },
+      "execution_wall_seconds": null,
+      "evaluation_wall_seconds": null,
+      "api_guard_repairs": 0,
+      "public_contract_repairs": 0,
+      "stderr_tail": null
+     },
+     "repair_status": "not_applicable",
+     "attempts_used": 0,
+     "cost": {
+      "llm_calls": 2,
+      "missing_usage_calls": 0,
+      "llm_latency_seconds": 264.473086,
+      "prompt_tokens": 20077,
+      "completion_tokens": 19030,
+      "reasoning_tokens": 0,
+      "total_tokens": 39107,
+      "solver_execution_time": {
+       "recorded_calls": 0,
+       "missing_calls": 1,
+       "seconds": null
+      },
+      "official_evaluation_time": {
+       "recorded_calls": 0,
+       "missing_calls": 1,
+       "seconds": null
+      }
+     }
+    }
+   ],
+   "provenance": "frozen_replay",
+   "specification_sha256": {
+    "ev_battery_recycling_network": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+   },
+   "implementation": {
+    "path": "/home/hewj13/wm/ora/work/cleanroom_transfer_suite_v0.6/B0/run.json",
+    "sha256": "a1f241f670d9dd6a92c1f102c0e063292378e1cbd0ea95bcc98aed09f9edc48b"
+   },
+   "repair_inputs": []
+  },
+  {
+   "arm": "B1_gepa_specification",
+   "n_expected": 1,
+   "direct": {
+    "n": 1,
+    "expected_tasks": 1,
+    "coverage": 1.0,
+    "feasible": 0,
+    "proxy_match": 0,
+    "true_correct": 0,
+    "phantom_proxy": 0,
+    "unknown": 0,
+    "unresolved_non_phantom": 1,
+    "mean_quality": 0.0,
+    "failure_counts": {
+     "business_infeasible": 1
+    },
+    "api_guard_modified": 0,
+    "cost": {
+     "llm_calls": 2,
+     "missing_usage_calls": 0,
+     "llm_latency_seconds": 119.450406,
+     "prompt_tokens": 22752,
+     "completion_tokens": 9375,
+     "reasoning_tokens": 0,
+     "total_tokens": 32127,
+     "solver_execution_time": {
+      "recorded_calls": 1,
+      "missing_calls": 0,
+      "seconds": 46.173379
+     },
+     "official_evaluation_time": {
+      "recorded_calls": 1,
+      "missing_calls": 0,
+      "seconds": 21.611637
+     }
+    },
+    "tasks": [
+     {
+      "task": "ev_battery_recycling_network",
+      "split": "transfer",
+      "candidate_sha256": "61c8e9c32aa28d042547f571f6c0b8e771c8bec7c4f071da02e5a9cbdb636d45",
+      "attempt": 0,
+      "feasible": false,
+      "quality": 0.0,
+      "true_correct": false,
+      "objective": null,
+      "proxy_match": false,
+      "phantom_proxy": false,
+      "failure_class": "business_infeasible",
+      "execution_return_code": 0,
+      "generation_error": null,
+      "cost": {
+       "llm_calls": 2,
+       "missing_usage_calls": 0,
+       "llm_latency_seconds": 119.450406,
+       "prompt_tokens": 22752,
+       "completion_tokens": 9375,
+       "reasoning_tokens": 0,
+       "total_tokens": 32127
+      },
+      "execution_wall_seconds": 46.173379,
+      "evaluation_wall_seconds": 21.611637,
+      "api_guard_repairs": 0,
+      "public_contract_repairs": 0,
+      "stderr_tail": null
+     }
+    ]
+   },
+   "final": {
+    "n": 1,
+    "expected_tasks": 1,
+    "coverage": 1.0,
+    "feasible": 0,
+    "proxy_match": 0,
+    "true_correct": 0,
+    "phantom_proxy": 0,
+    "unknown": 0,
+    "unresolved_non_phantom": 1,
+    "mean_quality": 0.0,
+    "failure_counts": {
+     "business_infeasible": 1
+    },
+    "api_guard_modified": 0,
+    "cost": {
+     "llm_calls": 2,
+     "missing_usage_calls": 0,
+     "llm_latency_seconds": 119.450406,
+     "prompt_tokens": 22752,
+     "completion_tokens": 9375,
+     "reasoning_tokens": 0,
+     "total_tokens": 32127,
+     "solver_execution_time": {
+      "recorded_calls": 1,
+      "missing_calls": 0,
+      "seconds": 46.173379
+     },
+     "official_evaluation_time": {
+      "recorded_calls": 1,
+      "missing_calls": 0,
+      "seconds": 21.611637
+     }
+    },
+    "tasks": [
+     {
+      "task": "ev_battery_recycling_network",
+      "split": "transfer",
+      "candidate_sha256": "61c8e9c32aa28d042547f571f6c0b8e771c8bec7c4f071da02e5a9cbdb636d45",
+      "attempt": 0,
+      "feasible": false,
+      "quality": 0.0,
+      "true_correct": false,
+      "objective": null,
+      "proxy_match": false,
+      "phantom_proxy": false,
+      "failure_class": "business_infeasible",
+      "execution_return_code": 0,
+      "generation_error": null,
+      "cost": {
+       "llm_calls": 2,
+       "missing_usage_calls": 0,
+       "llm_latency_seconds": 119.450406,
+       "prompt_tokens": 22752,
+       "completion_tokens": 9375,
+       "reasoning_tokens": 0,
+       "total_tokens": 32127
+      },
+      "execution_wall_seconds": 46.173379,
+      "evaluation_wall_seconds": 21.611637,
+      "api_guard_repairs": 0,
+      "public_contract_repairs": 0,
+      "stderr_tail": null
+     }
+    ]
+   },
+   "pair_win_safe": {
+    "paired_tasks": 1,
+    "missing_tasks": [],
+    "gained_true_correct": [],
+    "lost_true_correct": [],
+    "gained_phantom": [],
+    "removed_phantom": [],
+    "win_safe": true
+   },
+   "cost": {
+    "llm_calls": 2,
+    "missing_usage_calls": 0,
+    "llm_latency_seconds": 119.450406,
+    "prompt_tokens": 22752,
+    "completion_tokens": 9375,
+    "reasoning_tokens": 0,
+    "total_tokens": 32127,
+    "solver_execution_time": {
+     "recorded_calls": 1,
+     "missing_calls": 0,
+     "seconds": 46.173379
+    },
+    "official_evaluation_time": {
+     "recorded_calls": 1,
+     "missing_calls": 0,
+     "seconds": 21.611637
+    }
+   },
+   "tasks": [
+    {
+     "task": "ev_battery_recycling_network",
+     "direct": {
+      "task": "ev_battery_recycling_network",
+      "split": "transfer",
+      "candidate_sha256": "61c8e9c32aa28d042547f571f6c0b8e771c8bec7c4f071da02e5a9cbdb636d45",
+      "attempt": 0,
+      "feasible": false,
+      "quality": 0.0,
+      "true_correct": false,
+      "objective": null,
+      "proxy_match": false,
+      "phantom_proxy": false,
+      "failure_class": "business_infeasible",
+      "execution_return_code": 0,
+      "generation_error": null,
+      "cost": {
+       "llm_calls": 2,
+       "missing_usage_calls": 0,
+       "llm_latency_seconds": 119.450406,
+       "prompt_tokens": 22752,
+       "completion_tokens": 9375,
+       "reasoning_tokens": 0,
+       "total_tokens": 32127
+      },
+      "execution_wall_seconds": 46.173379,
+      "evaluation_wall_seconds": 21.611637,
+      "api_guard_repairs": 0,
+      "public_contract_repairs": 0,
+      "stderr_tail": null
+     },
+     "final": {
+      "task": "ev_battery_recycling_network",
+      "split": "transfer",
+      "candidate_sha256": "61c8e9c32aa28d042547f571f6c0b8e771c8bec7c4f071da02e5a9cbdb636d45",
+      "attempt": 0,
+      "feasible": false,
+      "quality": 0.0,
+      "true_correct": false,
+      "objective": null,
+      "proxy_match": false,
+      "phantom_proxy": false,
+      "failure_class": "business_infeasible",
+      "execution_return_code": 0,
+      "generation_error": null,
+      "cost": {
+       "llm_calls": 2,
+       "missing_usage_calls": 0,
+       "llm_latency_seconds": 119.450406,
+       "prompt_tokens": 22752,
+       "completion_tokens": 9375,
+       "reasoning_tokens": 0,
+       "total_tokens": 32127
+      },
+      "execution_wall_seconds": 46.173379,
+      "evaluation_wall_seconds": 21.611637,
+      "api_guard_repairs": 0,
+      "public_contract_repairs": 0,
+      "stderr_tail": null
+     },
+     "repair_status": "not_applicable",
+     "attempts_used": 0,
+     "cost": {
+      "llm_calls": 2,
+      "missing_usage_calls": 0,
+      "llm_latency_seconds": 119.450406,
+      "prompt_tokens": 22752,
+      "completion_tokens": 9375,
+      "reasoning_tokens": 0,
+      "total_tokens": 32127,
+      "solver_execution_time": {
+       "recorded_calls": 1,
+       "missing_calls": 0,
+       "seconds": 46.173379
+      },
+      "official_evaluation_time": {
+       "recorded_calls": 1,
+       "missing_calls": 0,
+       "seconds": 21.611637
+      }
+     }
+    }
+   ],
+   "provenance": "subsequent_disjoint_replay",
+   "specification_sha256": {
+    "ev_battery_recycling_network": "61c8e9c32aa28d042547f571f6c0b8e771c8bec7c4f071da02e5a9cbdb636d45"
+   },
+   "implementation": {
+    "path": "/home/hewj13/wm/ora/work/cleanroom_transfer_suite_v0.6/B1/run.json",
+    "sha256": "590b5518afba15b1619040364af6563a3caf1fe12e9415515c718921f9197476"
+   },
+   "repair_inputs": []
+  },
+  {
+   "arm": "B2_gepa_residual_dag",
+   "n_expected": 1,
+   "direct": {
+    "n": 1,
+    "expected_tasks": 1,
+    "coverage": 1.0,
+    "feasible": 0,
+    "proxy_match": 0,
+    "true_correct": 0,
+    "phantom_proxy": 0,
+    "unknown": 0,
+    "unresolved_non_phantom": 1,
+    "mean_quality": 0.0,
+    "failure_counts": {
+     "business_infeasible": 1
+    },
+    "api_guard_modified": 0,
+    "cost": {
+     "llm_calls": 2,
+     "missing_usage_calls": 0,
+     "llm_latency_seconds": 119.450406,
+     "prompt_tokens": 22752,
+     "completion_tokens": 9375,
+     "reasoning_tokens": 0,
+     "total_tokens": 32127,
+     "solver_execution_time": {
+      "recorded_calls": 1,
+      "missing_calls": 0,
+      "seconds": 46.173379
+     },
+     "official_evaluation_time": {
+      "recorded_calls": 1,
+      "missing_calls": 0,
+      "seconds": 21.611637
+     }
+    },
+    "tasks": [
+     {
+      "task": "ev_battery_recycling_network",
+      "split": "transfer",
+      "candidate_sha256": "61c8e9c32aa28d042547f571f6c0b8e771c8bec7c4f071da02e5a9cbdb636d45",
+      "attempt": 0,
+      "feasible": false,
+      "quality": 0.0,
+      "true_correct": false,
+      "objective": null,
+      "proxy_match": false,
+      "phantom_proxy": false,
+      "failure_class": "business_infeasible",
+      "execution_return_code": 0,
+      "generation_error": null,
+      "cost": {
+       "llm_calls": 2,
+       "missing_usage_calls": 0,
+       "llm_latency_seconds": 119.450406,
+       "prompt_tokens": 22752,
+       "completion_tokens": 9375,
+       "reasoning_tokens": 0,
+       "total_tokens": 32127
+      },
+      "execution_wall_seconds": 46.173379,
+      "evaluation_wall_seconds": 21.611637,
+      "api_guard_repairs": 0,
+      "public_contract_repairs": 0,
+      "stderr_tail": null
+     }
+    ]
+   },
+   "final": {
+    "n": 1,
+    "expected_tasks": 1,
+    "coverage": 1.0,
+    "feasible": 0,
+    "proxy_match": 0,
+    "true_correct": 0,
+    "phantom_proxy": 0,
+    "unknown": 0,
+    "unresolved_non_phantom": 1,
+    "mean_quality": 0.0,
+    "failure_counts": {
+     "business_infeasible": 1
+    },
+    "api_guard_modified": 0,
+    "cost": {
+     "llm_calls": 2,
+     "missing_usage_calls": 0,
+     "llm_latency_seconds": 119.450406,
+     "prompt_tokens": 22752,
+     "completion_tokens": 9375,
+     "reasoning_tokens": 0,
+     "total_tokens": 32127,
+     "solver_execution_time": {
+      "recorded_calls": 1,
+      "missing_calls": 0,
+      "seconds": 46.173379
+     },
+     "official_evaluation_time": {
+      "recorded_calls": 1,
+      "missing_calls": 0,
+      "seconds": 21.611637
+     }
+    },
+    "tasks": [
+     {
+      "task": "ev_battery_recycling_network",
+      "split": "transfer",
+      "candidate_sha256": "61c8e9c32aa28d042547f571f6c0b8e771c8bec7c4f071da02e5a9cbdb636d45",
+      "attempt": 0,
+      "feasible": false,
+      "quality": 0.0,
+      "true_correct": false,
+      "objective": null,
+      "proxy_match": false,
+      "phantom_proxy": false,
+      "failure_class": "business_infeasible",
+      "execution_return_code": 0,
+      "generation_error": null,
+      "cost": {
+       "llm_calls": 2,
+       "missing_usage_calls": 0,
+       "llm_latency_seconds": 119.450406,
+       "prompt_tokens": 22752,
+       "completion_tokens": 9375,
+       "reasoning_tokens": 0,
+       "total_tokens": 32127
+      },
+      "execution_wall_seconds": 46.173379,
+      "evaluation_wall_seconds": 21.611637,
+      "api_guard_repairs": 0,
+      "public_contract_repairs": 0,
+      "stderr_tail": null
+     }
+    ]
+   },
+   "pair_win_safe": {
+    "paired_tasks": 1,
+    "missing_tasks": [],
+    "gained_true_correct": [],
+    "lost_true_correct": [],
+    "gained_phantom": [],
+    "removed_phantom": [],
+    "win_safe": true
+   },
+   "cost": {
+    "llm_calls": 8,
+    "missing_usage_calls": 0,
+    "llm_latency_seconds": 505.375148,
+    "prompt_tokens": 164834,
+    "completion_tokens": 39810,
+    "reasoning_tokens": 0,
+    "total_tokens": 204644,
+    "solver_execution_time": {
+     "recorded_calls": 4,
+     "missing_calls": 0,
+     "seconds": 112.025161
+    },
+    "official_evaluation_time": {
+     "recorded_calls": 4,
+     "missing_calls": 0,
+     "seconds": 55.108051
+    }
+   },
+   "tasks": [
+    {
+     "task": "ev_battery_recycling_network",
+     "direct": {
+      "task": "ev_battery_recycling_network",
+      "split": "transfer",
+      "candidate_sha256": "61c8e9c32aa28d042547f571f6c0b8e771c8bec7c4f071da02e5a9cbdb636d45",
+      "attempt": 0,
+      "feasible": false,
+      "quality": 0.0,
+      "true_correct": false,
+      "objective": null,
+      "proxy_match": false,
+      "phantom_proxy": false,
+      "failure_class": "business_infeasible",
+      "execution_return_code": 0,
+      "generation_error": null,
+      "cost": {
+       "llm_calls": 2,
+       "missing_usage_calls": 0,
+       "llm_latency_seconds": 119.450406,
+       "prompt_tokens": 22752,
+       "completion_tokens": 9375,
+       "reasoning_tokens": 0,
+       "total_tokens": 32127
+      },
+      "execution_wall_seconds": 46.173379,
+      "evaluation_wall_seconds": 21.611637,
+      "api_guard_repairs": 0,
+      "public_contract_repairs": 0,
+      "stderr_tail": null
+     },
+     "final": {
+      "task": "ev_battery_recycling_network",
+      "split": "transfer",
+      "candidate_sha256": "61c8e9c32aa28d042547f571f6c0b8e771c8bec7c4f071da02e5a9cbdb636d45",
+      "attempt": 0,
+      "feasible": false,
+      "quality": 0.0,
+      "true_correct": false,
+      "objective": null,
+      "proxy_match": false,
+      "phantom_proxy": false,
+      "failure_class": "business_infeasible",
+      "execution_return_code": 0,
+      "generation_error": null,
+      "cost": {
+       "llm_calls": 2,
+       "missing_usage_calls": 0,
+       "llm_latency_seconds": 119.450406,
+       "prompt_tokens": 22752,
+       "completion_tokens": 9375,
+       "reasoning_tokens": 0,
+       "total_tokens": 32127
+      },
+      "execution_wall_seconds": 46.173379,
+      "evaluation_wall_seconds": 21.611637,
+      "api_guard_repairs": 0,
+      "public_contract_repairs": 0,
+      "stderr_tail": null
+     },
+     "repair_status": "bounded_failure",
+     "attempts_used": 3,
+     "cost": {
+      "llm_calls": 8,
+      "missing_usage_calls": 0,
+      "llm_latency_seconds": 505.375148,
+      "prompt_tokens": 164834,
+      "completion_tokens": 39810,
+      "reasoning_tokens": 0,
+      "total_tokens": 204644,
+      "solver_execution_time": {
+       "recorded_calls": 4,
+       "missing_calls": 0,
+       "seconds": 112.025161
+      },
+      "official_evaluation_time": {
+       "recorded_calls": 4,
+       "missing_calls": 0,
+       "seconds": 55.108051
+      }
+     }
+    }
+   ],
+   "provenance": "subsequent_disjoint_replay",
+   "specification_sha256": {
+    "ev_battery_recycling_network": "61c8e9c32aa28d042547f571f6c0b8e771c8bec7c4f071da02e5a9cbdb636d45"
+   },
+   "implementation": {
+    "path": "/home/hewj13/wm/ora/work/cleanroom_transfer_suite_v0.6/B1/run.json",
+    "sha256": "590b5518afba15b1619040364af6563a3caf1fe12e9415515c718921f9197476"
+   },
+   "repair_inputs": [
+    "/home/hewj13/wm/ora/work/cleanroom_transfer_suite_v0.6/B2/ev_battery_recycling_network/repair_result.json"
+   ]
+  },
+  {
+   "arm": "B3_verified_memory",
+   "status": "not_run"
+  }
+ ],
+ "b0_to_b1": {
+  "paired_tasks": 1,
+  "missing_tasks": [],
+  "gained_true_correct": [],
+  "lost_true_correct": [],
+  "gained_phantom": [],
+  "removed_phantom": [],
+  "win_safe": true
+ },
+ "b3_same_generator_specification_as_b1": false,
+ "memory_interpretation": "Compare only equal task coverage and record the authorized memory scope.",
+ "selection_or_heldout": "Read each arm's provenance; this report does not relabel selection tasks as held-out."
+}

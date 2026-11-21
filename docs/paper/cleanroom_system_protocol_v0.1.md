@@ -197,3 +197,25 @@ B2 随后只针对失败/幻影任务进行有界修复，原本正确的木板�
 - memory 拒绝发生在 B2 之前，原因是 B1 新增水回用幻影。B2 消除该幻影不 retroactively 改写这次拒绝，也不自动构成 memory 晋升或跨任务记忆收益。
 - 报告：`work/cleanroom_audit_suite_v0.6/report/report.md` 和 `batch_summary.json`。报告 CLI 参数名与 Witness 重复初始化问题已修复，恢复过程没有重复 LLM 生成或求解。
 - 后续 transfer 使用 `--skip-memory-review` 保留该拒绝决定，不在另一批任务上反复尝试直到晋升。此选项仅记录 `review_skipped_by_protocol`，B3 仍为 not_run；B0/B1/B2 的真实结果另行报告。
+
+
+## 后续 transfer 最终结果与失败归因
+
+后续批次只有 `ev_battery_recycling_network` 一题，未参与 GEPA train/validation，也未参与前一批 memory 晋升审查。该批次是机制检查 pilot，不支持泛化准确率声明。
+
+| Arm | 覆盖 | 直接真正确 | 修复后真正确 | 修复后幻影 | UNKNOWN | 修复尝试 | Tokens |
+|---|---:|---:|---:|---:|---:|---:|---:|
+| B0 空规范 | 1/1 | 0 | 0 | 0 | 0 | 0 | 39,107 |
+| B1 GEPA | 1/1 | 0 | 0 | 0 | 0 | 0 | 32,127 |
+| B2 GEPA+残余 DAG | 1/1 | 0 | 0 | 0 | 0 | 3 | 204,644 |
+| B3 验证 memory | not_run | — | — | — | — | — | — |
+
+- B0：`solver finish_reason=length`，达到 16,384 completion tokens，制品不完整，未进入 SCIP。当前协议没有中途扩大 token 预算。
+- B1：可执行但业务不可行，包含 `M10/nmc/C01` hub 流量不平衡，以及 NMC hydromet share 低于公开下限。
+- 第一次修复：引入 `KeyError('M01', 'M01')`，执行 `pass→fail`，业务仍为 fail，拒绝该边。
+- 第二次修复：执行恢复为 pass，但业务仍 fail，仅为 `partial_progress`，不能作为最终输出。
+- 第三次修复：仍有 `M07/nmc/C01`、`M10/nmc/C01` hub 流量不平衡和 NMC hydromet share 错误。最终为 `bounded_failure`，回退到 B1 直接结果，没有将部分进展计入真正确率。
+- B2 共 8 次 LLM 调用、204,644 tokens、505.375 秒 LLM 延迟；求解和评价 wall time 分别为 112.025 和 55.108 秒。相对 B1 直接生成增加 172,517 tokens，但没有真实正确率增益。
+- B3 仍因前一批 B1 新增幻影而未获授权，`--skip-memory-review` 保留拒绝决定，没有重复晋升。没有现有真实 win 被修坏，最终回退满足 win-safe。
+
+汇总报告：`work/cleanroom_transfer_suite_v0.6/report/report.md` 和 `batch_summary.json`。审计与 transfer 的统一结果图为 `work/cleanroom_b0_b3_results.png`，区分直接真正确、修复后真正确、幻影和 UNKNOWN。

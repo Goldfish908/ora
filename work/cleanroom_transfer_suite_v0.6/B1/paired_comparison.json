@@ -1,0 +1,9 @@
+{
+ "paired_tasks": 1,
+ "missing_tasks": [],
+ "gained_true_correct": [],
+ "lost_true_correct": [],
+ "gained_phantom": [],
+ "removed_phantom": [],
+ "win_safe": true
+}

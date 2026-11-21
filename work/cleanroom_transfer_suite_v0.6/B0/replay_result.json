@@ -1,0 +1,75 @@
+{
+ "n": 1,
+ "expected_tasks": 1,
+ "coverage": 1.0,
+ "feasible": 0,
+ "proxy_match": 0,
+ "true_correct": 0,
+ "phantom_proxy": 0,
+ "unknown": 0,
+ "unresolved_non_phantom": 1,
+ "mean_quality": 0.0,
+ "failure_counts": {
+  "generation_failure": 1
+ },
+ "api_guard_modified": 0,
+ "cost": {
+  "llm_calls": 2,
+  "missing_usage_calls": 0,
+  "llm_latency_seconds": 264.473086,
+  "prompt_tokens": 20077,
+  "completion_tokens": 19030,
+  "reasoning_tokens": 0,
+  "total_tokens": 39107,
+  "solver_execution_time": {
+   "recorded_calls": 0,
+   "missing_calls": 1,
+   "seconds": null
+  },
+  "official_evaluation_time": {
+   "recorded_calls": 0,
+   "missing_calls": 1,
+   "seconds": null
+  }
+ },
+ "tasks": [
+  {
+   "task": "ev_battery_recycling_network",
+   "split": "transfer",
+   "candidate_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+   "attempt": 0,
+   "feasible": false,
+   "quality": 0.0,
+   "true_correct": false,
+   "objective": null,
+   "proxy_match": false,
+   "phantom_proxy": false,
+   "failure_class": "generation_failure",
+   "execution_return_code": -1,
+   "generation_error": "RuntimeError: ValueError: solver generation was truncated",
+   "cost": {
+    "llm_calls": 2,
+    "missing_usage_calls": 0,
+    "llm_latency_seconds": 264.473086,
+    "prompt_tokens": 20077,
+    "completion_tokens": 19030,
+    "reasoning_tokens": 0,
+    "total_tokens": 39107
+   },
+   "execution_wall_seconds": null,
+   "evaluation_wall_seconds": null,
+   "api_guard_repairs": 0,
+   "public_contract_repairs": 0,
+   "stderr_tail": null
+  }
+ ],
+ "arm": "B0_empty_specification",
+ "provenance": "frozen_replay",
+ "evolution_performed": false,
+ "feedback_returned_to_generator": false,
+ "candidate_idx": null,
+ "specification_sha256": {
+  "ev_battery_recycling_network": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+ },
+ "wall_seconds": 264.576
+}

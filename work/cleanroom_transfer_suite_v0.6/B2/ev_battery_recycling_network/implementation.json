@@ -1,0 +1,7 @@
+{
+ "task": "ev_battery_recycling_network",
+ "specification_sha256": "61c8e9c32aa28d042547f571f6c0b8e771c8bec7c4f071da02e5a9cbdb636d45",
+ "memory_source_sha256": "3b11e44bb8fe6b7f4cd6981181c6c269d4a9b333b1a1f552b752877cf5d91333",
+ "model": "Qwen3_8-27B",
+ "max_attempts": 3
+}

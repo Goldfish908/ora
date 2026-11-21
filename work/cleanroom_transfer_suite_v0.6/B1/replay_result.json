@@ -1,0 +1,84 @@
+{
+ "n": 1,
+ "expected_tasks": 1,
+ "coverage": 1.0,
+ "feasible": 0,
+ "proxy_match": 0,
+ "true_correct": 0,
+ "phantom_proxy": 0,
+ "unknown": 0,
+ "unresolved_non_phantom": 1,
+ "mean_quality": 0.0,
+ "failure_counts": {
+  "business_infeasible": 1
+ },
+ "api_guard_modified": 0,
+ "cost": {
+  "llm_calls": 2,
+  "missing_usage_calls": 0,
+  "llm_latency_seconds": 119.450406,
+  "prompt_tokens": 22752,
+  "completion_tokens": 9375,
+  "reasoning_tokens": 0,
+  "total_tokens": 32127,
+  "solver_execution_time": {
+   "recorded_calls": 1,
+   "missing_calls": 0,
+   "seconds": 46.173379
+  },
+  "official_evaluation_time": {
+   "recorded_calls": 1,
+   "missing_calls": 0,
+   "seconds": 21.611637
+  }
+ },
+ "tasks": [
+  {
+   "task": "ev_battery_recycling_network",
+   "split": "transfer",
+   "candidate_sha256": "61c8e9c32aa28d042547f571f6c0b8e771c8bec7c4f071da02e5a9cbdb636d45",
+   "attempt": 0,
+   "feasible": false,
+   "quality": 0.0,
+   "true_correct": false,
+   "objective": null,
+   "proxy_match": false,
+   "phantom_proxy": false,
+   "failure_class": "business_infeasible",
+   "execution_return_code": 0,
+   "generation_error": null,
+   "cost": {
+    "llm_calls": 2,
+    "missing_usage_calls": 0,
+    "llm_latency_seconds": 119.450406,
+    "prompt_tokens": 22752,
+    "completion_tokens": 9375,
+    "reasoning_tokens": 0,
+    "total_tokens": 32127
+   },
+   "execution_wall_seconds": 46.173379,
+   "evaluation_wall_seconds": 21.611637,
+   "api_guard_repairs": 0,
+   "public_contract_repairs": 0,
+   "stderr_tail": null
+  }
+ ],
+ "arm": "B1_gepa_specification",
+ "provenance": "subsequent_disjoint_replay",
+ "evolution_performed": false,
+ "feedback_returned_to_generator": false,
+ "candidate_idx": 1,
+ "specification_sha256": {
+  "ev_battery_recycling_network": "61c8e9c32aa28d042547f571f6c0b8e771c8bec7c4f071da02e5a9cbdb636d45"
+ },
+ "wall_seconds": 187.41,
+ "paired_comparison": {
+  "paired_tasks": 1,
+  "missing_tasks": [],
+  "gained_true_correct": [],
+  "lost_true_correct": [],
+  "gained_phantom": [],
+  "removed_phantom": [],
+  "win_safe": true
+ }
+}

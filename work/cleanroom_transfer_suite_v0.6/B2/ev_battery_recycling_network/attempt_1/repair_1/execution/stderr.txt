@@ -1,0 +1,7 @@
+Traceback (most recent call last):
+  File "/app/submissions/solve.py", line 521, in <module>
+    main()
+  File "/app/submissions/solve.py", line 497, in main
+    L = lane1[(m, h)]
+        ~~~~~^^^^^^^^
+KeyError: ('M01', 'M01')

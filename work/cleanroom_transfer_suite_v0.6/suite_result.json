@@ -1,0 +1,36 @@
+{
+ "candidate": {
+  "candidate_idx": 1,
+  "candidate_sha256": "61c8e9c32aa28d042547f571f6c0b8e771c8bec7c4f071da02e5a9cbdb636d45",
+  "parents": [
+   0
+  ],
+  "official_proxy_mean": 0.0,
+  "n": 1,
+  "executable": 0,
+  "feasible": 0,
+  "proxy_match": 0,
+  "true_correct": 0,
+  "phantom_proxy": 0,
+  "unknown": 0,
+  "generation_errors": 1,
+  "mean_quality": 0.0,
+  "dev_proxy_mean": 0.3333333333333333,
+  "selection_rule": "transfer_proxy_desc_dev_proxy_desc_candidate_idx_asc"
+ },
+ "memory_promoted": false,
+ "memory_review": {
+  "specification_status": "not_run",
+  "independent_replay": false,
+  "review_skipped_by_protocol": true
+ },
+ "memory_source": null,
+ "b0": "/home/hewj13/wm/ora/work/cleanroom_transfer_suite_v0.6/B0/run.json",
+ "b1": "/home/hewj13/wm/ora/work/cleanroom_transfer_suite_v0.6/B1/run.json",
+ "b2_repairs": [
+  "/home/hewj13/wm/ora/work/cleanroom_transfer_suite_v0.6/B2/ev_battery_recycling_network/repair_result.json"
+ ],
+ "b3": "not_run",
+ "b3_repairs": [],
+ "report": "/home/hewj13/wm/ora/work/cleanroom_transfer_suite_v0.6/report/batch_summary.json"
+}

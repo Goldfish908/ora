@@ -1,0 +1,123 @@
+{
+ "evaluation": {
+  "error_count": 3,
+  "errors": [
+   "Hub balance M07/nmc/C01: inbound 0.000000 != outbound 19.543000",
+   "Hub balance M10/nmc/C01: inbound 0.000000 != outbound 16.896307",
+   "nmc: hydromet share 0.187860 is below required floor"
+  ],
+  "feasible": false,
+  "objective": null,
+  "objective_sense": "minimize",
+  "total_cost": null,
+  "total_emissions_kg": 71837.50000000001
+ },
+ "reward": {
+  "feasibility": 0.0,
+  "quality": 0.0
+ },
+ "reward_details": {
+  "agent_objective": null,
+  "agent_objective_source": null,
+  "best_bound": 445497.29493813415,
+  "bound_improvement": null,
+  "bound_sense": "lower",
+  "evaluation_diagnostics": {
+   "error_count": 3,
+   "objective": null,
+   "profit": null,
+   "score": null,
+   "total_cost": null
+  },
+  "fallback_mip_gap": null,
+  "fallback_reference_scale": null,
+  "feasibility": 0.0,
+  "formula": "clip(1 + (R - O) / (R - B), 0, 2) when B exists and R - B >= max(abs(R), 1e-8) * mip_gap",
+  "objective_sense": "minimize",
+  "quality": 0.0,
+  "quality_scale_width": null,
+  "quality_status": "infeasible",
+  "reference_metrics": {
+   "best_bound": 445497.29493813415,
+   "best_bound_source": "best_bound",
+   "bound_sense": "lower",
+   "evaluation_summary": {
+    "error_count": 0,
+    "feasible": true,
+    "objective": 445497.29493813484,
+    "total_cost": 445497.29493813484
+   },
+   "generated_at": "2026-05-19T06:21:30.663287+00:00",
+   "mip_gap": 0.0005,
+   "objective_sense": "minimize",
+   "quality_formula": "clip(1 + (R - O) / (R - B), 0, 2) if B exists and R - B >= max(abs(R), 1e-8) * mip_gap; otherwise let d=(R - O)/(max(abs(R), 1e-8)*mip_gap), quality=clip(2+d if d>=-1 else 1.5+0.5*d, 0, 2); if no R, quality = 2",
+   "reference_objective": 445497.29493813484,
+   "reference_objective_source": "objective",
+   "solution_path": "reference_solutions/ev_battery_recycling_network_reference_solution.csv",
+   "solver_summary": {
+    "best_bound": 445497.29493813415,
+    "evaluation": {
+     "chemistry_summary": {
+      "lfp": {
+       "disposal": 0.0,
+       "high_value": 700.4760000000001,
+       "hydromet": 186.09715999999997,
+       "pyromet": 88.619,
+       "recycling": 429.324,
+       "second_life": 700.4760000000001,
+       "total": 1129.8
+      },
+      "nmc": {
+       "disposal": 0.0,
+       "high_value": 624.3439999999999,
+       "hydromet": 313.95584,
+       "pyromet": 0.0,
+       "recycling": 490.55600000000004,
+       "second_life": 281.84399999999994,
+       "total": 1114.8999999999999
+      }
+     },
+     "error_count": 0,
+     "errors": [],
+     "feasible": true,
+     "objective": 445497.29493813484,
+     "objective_sense": "minimize",
+     "open_collection_hubs": [
+      "C01",
+      "C02",
+      "C04",
+      "C05",
+      "C06"
+     ],
+     "open_testing_centers": [
+      "T01",
+      "T02",
+      "T03",
+      "T04",
+      "T05"
+     ],
+     "total_cost": 445497.29493813484,
+     "total_emissions_kg": 71826.20347566999
+    },
+    "mip_gap": 0.0005,
+    "objective": 445497.29493813484,
+    "solution_path": "reference_solutions/ev_battery_recycling_network_reference_solution.csv",
+    "status": "optimal",
+    "time_limit_seconds": 300.0,
+    "total_cost": 445497.29493813484,
+    "total_emissions_kg": 71826.20347566999
+   },
+   "task_name": "ev_battery_recycling_network",
+   "time_limit_seconds": 300.0
+  },
+  "reference_objective": 445497.29493813484,
+  "scalar_reward": 0.0,
+  "scalar_reward_formula": "(feasibility + quality) / 3.0",
+  "signed_improvement": null
+ },
+ "runner": {
+  "return_code": 0,
+  "timed_out": false,
+  "wall_seconds": 7.713729
+ }
+}

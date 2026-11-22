@@ -1,0 +1,177 @@
+{
+ "frozen": true,
+ "events": [
+  {
+   "event": "check_hint_only",
+   "check_id": "execution_contract",
+   "at": "2026-11-22T03:41:19.502476+00:00"
+  },
+  {
+   "event": "check_veto_enabled",
+   "check_id": "execution_contract",
+   "at": "2026-11-22T03:41:19.503034+00:00"
+  },
+  {
+   "event": "check_hint_only",
+   "check_id": "manufacturing_official_task_pass",
+   "at": "2026-11-22T03:41:19.503085+00:00"
+  },
+  {
+   "event": "check_veto_enabled",
+   "check_id": "manufacturing_official_task_pass",
+   "at": "2026-11-22T03:42:16.791838+00:00"
+  },
+  {
+   "event": "memory_frozen",
+   "at": "2026-11-22T03:42:16.793974+00:00"
+  },
+  {
+   "event": "memory_frozen",
+   "at": "2026-11-22T03:43:36.695918+00:00"
+  },
+  {
+   "event": "memory_frozen",
+   "at": "2026-11-22T03:52:48.810510+00:00"
+  }
+ ],
+ "specifications": [],
+ "checks": [
+  {
+   "check_id": "execution_contract",
+   "scope": {
+    "dataset": "oragentbench"
+   },
+   "source_quote": "required solution file",
+   "status": "veto_enabled",
+   "code_sha256": "f439bdcda9e44fdf500fa76a721d16b99c7c08a216b85cf235d16e65c8e8e8a3",
+   "audits": [
+    {
+     "records": [
+      {
+       "case_id": "exec_clean_0",
+       "expected": "pass",
+       "observed": "pass"
+      },
+      {
+       "case_id": "exec_wrong_0",
+       "expected": "fail",
+       "observed": "fail"
+      },
+      {
+       "case_id": "exec_clean_1",
+       "expected": "pass",
+       "observed": "pass"
+      },
+      {
+       "case_id": "exec_wrong_1",
+       "expected": "fail",
+       "observed": "fail"
+      },
+      {
+       "case_id": "exec_clean_2",
+       "expected": "pass",
+       "observed": "pass"
+      },
+      {
+       "case_id": "exec_wrong_2",
+       "expected": "fail",
+       "observed": "fail"
+      }
+     ],
+     "n_clean": 3,
+     "n_wrong": 3,
+     "precision": 1.0,
+     "detection": 1.0,
+     "unknown": 0,
+     "passed": true,
+     "reasons": [],
+     "at": "2026-11-22T03:41:19.503022+00:00"
+    }
+   ]
+  },
+  {
+   "check_id": "manufacturing_official_task_pass",
+   "scope": {
+    "dataset": "oragentbench",
+    "domain": "manufacturing"
+   },
+   "source_quote": "required solution file",
+   "status": "veto_enabled",
+   "code_sha256": "96322c5bedee72dbecdf42405d86b158f34d1e2f01bbb00d8ad318a9d7c5d0a6",
+   "audits": [
+    {
+     "records": [
+      {
+       "case_id": "additive_microfactory_order_planning:clean",
+       "expected": "pass",
+       "observed": "pass"
+      },
+      {
+       "case_id": "additive_microfactory_order_planning:missing_solution",
+       "expected": "fail",
+       "observed": "fail"
+      },
+      {
+       "case_id": "additive_microfactory_order_planning:invalid_schema",
+       "expected": "fail",
+       "observed": "fail"
+      },
+      {
+       "case_id": "additive_microfactory_order_planning:empty_solution",
+       "expected": "fail",
+       "observed": "fail"
+      },
+      {
+       "case_id": "industrial_supply_planning:clean",
+       "expected": "pass",
+       "observed": "pass"
+      },
+      {
+       "case_id": "industrial_supply_planning:missing_solution",
+       "expected": "fail",
+       "observed": "fail"
+      },
+      {
+       "case_id": "industrial_supply_planning:invalid_schema",
+       "expected": "fail",
+       "observed": "fail"
+      },
+      {
+       "case_id": "industrial_supply_planning:empty_solution",
+       "expected": "fail",
+       "observed": "fail"
+      },
+      {
+       "case_id": "second_life_battery_pack_assembly:clean",
+       "expected": "pass",
+       "observed": "pass"
+      },
+      {
+       "case_id": "second_life_battery_pack_assembly:missing_solution",
+       "expected": "fail",
+       "observed": "fail"
+      },
+      {
+       "case_id": "second_life_battery_pack_assembly:invalid_schema",
+       "expected": "fail",
+       "observed": "fail"
+      },
+      {
+       "case_id": "second_life_battery_pack_assembly:empty_solution",
+       "expected": "fail",
+       "observed": "fail"
+      }
+     ],
+     "n_clean": 3,
+     "n_wrong": 9,
+     "precision": 1.0,
+     "detection": 1.0,
+     "unknown": 0,
+     "passed": true,
+     "reasons": [],
+     "at": "2026-11-22T03:42:16.791818+00:00"
+    }
+   ]
+  }
+ ]
+}

@@ -284,3 +284,59 @@ B3 新增作用域裁剪：即使制造域 memory 晋升，packing_logistics 的
 v0.7.1 的两组 B0 已真实完成，源代码版本为 `576f6b7`，生成与评价文件哈希见各自 `implementation.json`。审计批为 2/4 真正确、0 幻影、0 UNKNOWN、106,398 tokens：smart building 和 hybrid telehealth 保持真实 win，robust microgrid 为 incomplete artifact，fuel tanker 为 `addCons()` 重复 `name` 参数。后续 transfer 为 1/4 真正确、0 幻影、0 UNKNOWN、232,124 tokens：水回用直接达到 `quality=2.0、objective=6011.5448483809205`，木板材、EV 和 real-world 3D packing 均为执行错误。
 
 本轮证据为 `work/cleanroom_expanded_audit_suite_v0.7.1/B0/` 与 `work/cleanroom_expanded_transfer_suite_v0.7.1/B0/` 下的 `run.json`、`replay_result.json`、`driver.log` 和逐题 `record.json`，提交为 `085c96f`。水回用从前一轮的幻影变为本轮真实 win，而实现中的直接生成逻辑没有变化，说明单次 LLM 采样有波动；不得把跨轮差异计作 GEPA 增益。后续 B1/B2 只与本轮 B0 配对，水回用及其他已有 win 必须保持 win-safe。
+
+
+## v0.7.1 最终实验结果
+
+### GEPA 候选与 dev 语义增益
+
+`work/cleanroom_gepa_dev_feedback_v0.7.1` 已完成，实际为 51 次 metric calls（最后一批越过预设的 48，按真实计数报告）、5,825.857 秒、3 个接受候选和 6 个拒绝提议。候选均从空规范进化，dev-only 官方违规坐标可进入训练反思，validation 和后续 transfer 不接收这些坐标。
+
+| 候选 | Dev 真正确 | Dev 幻影 | Validation 真正确 | Dev+validation tokens |
+|---|---:|---:|---:|---:|
+| seed | 0/3 | 0/3 | 0/1 | 121,852 |
+| C1 | 1/3 | 0/3 | 0/1 | 135,442 |
+| C2 | 2/3 | 0/3 | 0/1 | 144,033 |
+
+C1 首先恢复增材真正确；C2 同时实现增材 `quality=1.7319` 和电池装配 `quality=1.6699` 的真正确，没有新增幻影。C2 哈希为 `08f95083f60719b0681fcca6cfad453b3faf28577335b466265903e2a11fe190`，按 transfer 代理优先、dev 代理次之、候选序号稳定排序的规则被选择。第八轮也有增材和电池两项真实 win，但 dev 总分只是持平，因此没有替代 C2。结果支持共享规范在 dev 上产生真实语义增益，不支持 validation 迁移结论。
+
+候选报告为 `work/cleanroom_gepa_dev_feedback_v0.7.1_report_v1/report.md`，图件为同目录 `gepa_candidates.png`，逐提议接受和拒绝历史、成本及实现哈希均已保存。
+
+### 独立审计与 memory 拒绝
+
+B0/B1 在同一四题独立审计批上的真正确均为 2/4，UNKNOWN 均为 0；B1 没有新增或丢失真实 win，但新增 robust microgrid 幻影。由于独立重放没有真正确增益且新增幻影，`memory_review/specification_status=rejected`，没有执行出处审计 LLM 调用，也没有晋升 memory。
+
+| Arm | 覆盖 | 直接真正确 | 修复后真正确 | 幻影 | UNKNOWN | 修复尝试 | Tokens |
+|---|---|---:|---:|---:|---:|---:|---:|
+| B0 | 4/4 | 2 | 2 | 0 | 0 | 0 | 106,398 |
+| B1 | 4/4 | 2 | 2 | 1 | 0 | 0 | 127,706 |
+| B2（分域 Witness） | 3/4 | 2 | 1 | 1 | 0 | 3 | 317,446 |
+| B3 | not_run | — | — | — | — | — | — |
+
+smart building 为 `preserved_win`；robust microgrid 第二次生成重复代码，以 `duplicate_repair` 停止，幻影未消除；fuel tanker 第一次仍为同一执行错误，以 `no_verified_progress` 停止。医疗域没有三个健康同域任务，hybrid telehealth 的 B2 明确 not_run。B2 的 3/4 覆盖不能写成全覆盖，也不能把缺少 hybrid 解释为修坏；B0→B2 的完整 win-safe 因覆盖缺口和新增幻影为 false。报告为 `work/cleanroom_expanded_audit_suite_v0.7.1/report/report.md` 和 `batch_summary.json`。
+
+### 四题后续 transfer 的 B0/B1/B2
+
+| Arm | 覆盖 | 直接真正确 | 修复后真正确 | 修复后幻影 | UNKNOWN | 修复尝试 | Tokens |
+|---|---|---:|---:|---:|---:|---:|---:|
+| B0 | 4/4 | 1 | 1 | 0 | 0 | 0 | 232,124 |
+| B1 | 4/4 | 1 | 1 | 1 | 0 | 0 | 249,413 |
+| B2 | 4/4 | 1 | 1 | 1 | 0 | 6 | 562,189 |
+| B3 | not_run | — | — | — | — | — | — |
+
+| 任务 | B0 | B1 | B2 最终与停止原因 | B2 tokens |
+|---|---|---|---|---:|
+| 水回用 | 真正确，quality=2.0 | 幻影 | 幻影；第一次需求平衡错误不变，`no_verified_progress` | 42,158 |
+| 木板材 | 执行错误 | 真正确，quality=2.0 | 真正确；`preserved_win`，0 次修复 | 170,344 |
+| EV 回收网络 | 执行错误 | 业务不可行 | 业务不可行；第三次重复，`duplicate_repair` | 223,208 |
+| real-world 3D packing | 执行错误 | 制品不完整 | 制品不完整；第二次重复，`duplicate_repair` | 126,479 |
+
+B0→B1 和 B0→B2 都是新增木板材真实 win、丢失水回用真实 win、增加水回用幻影，端到端 `win_safe=false`。B1→B2 局部比较没有新增或丢失真实 win、没有新增幻影，`win_safe=true`。两种口径都保留，不能用局部回退保护掩盖相对 B0 的水回用损失。
+
+EV 第一次修复消除了三个 outlet 容量错误，只剩 hydromet share 下限；第二次引入市场供需和测试比例错误并被拒绝；第三次重复第二次代码后停止。real-world 只有通用执行检查，没有本域业务 Witness，其执行层修复同样未形成真正确。详细逐题记录、成本和失败坐标见 `work/cleanroom_expanded_transfer_suite_v0.7.1/report/`。
+
+### 结论、边界与图件
+
+本轮至少获得一个可复核的 dev 语义增益，但 B2 后续 transfer 的真正确率没有超过 B0 或 B1，故这是**完整负迁移结果**，不是 SOTA 或 memory 泛化成功。停止规则能够防止重复代码、部分进展和幻影被接受，却仍不能可靠生成不同且语义正确的修复。memory 的拒绝发生在 B2 之前，后续修复没有 retroactively 改写拒绝决定。
+
+统一结果图为 `work/cleanroom_expanded_b0_b3_results_v0.7.1.png`，显示直接/修复后真正确、幻影、UNKNOWN、最终覆盖和端到端 win-safe。官方 Witness 与官方评价器同源的限制仍然存在；它提供任务内一致性检查，不等同于完全独立的业务真值。12 个冻结角色的健康证据见 `work/cleanroom_frozen_health_v0.7/health_summary.json`。

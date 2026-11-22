@@ -30,6 +30,10 @@ def draw(summary: dict, axis, title: str) -> None:
     for index, arm in enumerate(ARMS):
         if "final" not in by_arm[arm]:
             axis.text(index, 0.06, "not_run", ha="center", va="bottom", fontsize=8, color="#666666")
+        else:
+            final = by_arm[arm]["final"]
+            axis.text(index, 0.12, f"final n={final['n']}/{by_arm[arm]['n_expected']}",
+                      ha="center", va="bottom", fontsize=7, color="#555555")
     axis.set_xticks(x, ("B0", "B1", "B2", "B3"))
     axis.set_ylabel("Tasks")
     axis.set_title(title)
@@ -50,11 +54,14 @@ def main() -> None:
     fig, axes = plt.subplots(1, 2, figsize=(10.2, 4.4), sharey=False)
     draw(audit, axes[0], f"Independent audit (n={len(audit['expected_tasks'])})")
     draw(transfer, axes[1], f"Subsequent transfer pilot (n={len(transfer['expected_tasks'])})")
-    axes[0].legend(frameon=False, fontsize=8, loc="upper left")
+    handles, labels = axes[0].get_legend_handles_labels()
+    fig.legend(handles, labels, frameon=False, fontsize=8, loc="upper center",
+               bbox_to_anchor=(0.5, 0.94), ncol=4)
     fig.suptitle("Official outcomes after bounded residual repair")
-    fig.text(0.5, 0.01, "True: official feasible && quality > 0.4; B3 not_run without promoted memory",
-             ha="center", fontsize=9)
-    fig.tight_layout(rect=(0, 0.06, 1, 0.94))
+    safety = (f"True: official feasible && quality > 0.4; end-to-end B0→B2 win-safe: "
+              f"audit={audit['b0_to_b2'].get('win_safe')}, transfer={transfer['b0_to_b2'].get('win_safe')}")
+    fig.text(0.5, 0.01, safety, ha="center", fontsize=9)
+    fig.tight_layout(rect=(0, 0.06, 1, 0.86))
     out = (ROOT / args.out).resolve()
     out.parent.mkdir(parents=True, exist_ok=True)
     fig.savefig(out, dpi=220, bbox_inches="tight")

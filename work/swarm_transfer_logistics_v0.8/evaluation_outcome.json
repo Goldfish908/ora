@@ -1,0 +1,15 @@
+{
+  "goal_met": false,
+  "reason": "B2 true_correct equals B0 (1/4), not strictly greater; three new phantom proxies remain. End-to-end win_safe is true but the no-new-phantom requirement fails.",
+  "b0_true_correct": 1,
+  "b1_true_correct": 1,
+  "b2_true_correct": 1,
+  "b0_to_b2_win_safe": true,
+  "b0_to_b2_gained_phantom": [
+    "autonomous_lab_courier_tsptw",
+    "flood_relief_multimodal_routing",
+    "shared_drone_base_delivery_assignment"
+  ],
+  "b3": "not_run",
+  "next_protocol": "Use these analyzed tasks only for engineering. Improve first-no-progress branching, then evaluate on new untouched transfer tasks."
+}

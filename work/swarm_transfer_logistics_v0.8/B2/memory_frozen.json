@@ -1,0 +1,177 @@
+{
+ "frozen": true,
+ "events": [
+  {
+   "event": "check_hint_only",
+   "check_id": "execution_contract",
+   "at": "2026-11-22T05:48:53.369656+00:00"
+  },
+  {
+   "event": "check_veto_enabled",
+   "check_id": "execution_contract",
+   "at": "2026-11-22T05:48:53.370154+00:00"
+  },
+  {
+   "event": "check_hint_only",
+   "check_id": "logistics_official_task_pass",
+   "at": "2026-11-22T05:48:53.370197+00:00"
+  },
+  {
+   "event": "check_veto_enabled",
+   "check_id": "logistics_official_task_pass",
+   "at": "2026-11-22T05:51:33.849224+00:00"
+  },
+  {
+   "event": "memory_frozen",
+   "at": "2026-11-22T05:51:33.851865+00:00"
+  },
+  {
+   "event": "memory_frozen",
+   "at": "2026-11-22T05:53:31.851747+00:00"
+  },
+  {
+   "event": "memory_frozen",
+   "at": "2026-11-22T05:55:32.482478+00:00"
+  }
+ ],
+ "specifications": [],
+ "checks": [
+  {
+   "check_id": "execution_contract",
+   "scope": {
+    "dataset": "oragentbench"
+   },
+   "source_quote": "required solution file",
+   "status": "veto_enabled",
+   "code_sha256": "0f31a84b734042e1cb8e11918e9df4a7a3024f54ded57e94590966379b66ee17",
+   "audits": [
+    {
+     "records": [
+      {
+       "case_id": "exec_clean_0",
+       "expected": "pass",
+       "observed": "pass"
+      },
+      {
+       "case_id": "exec_wrong_0",
+       "expected": "fail",
+       "observed": "fail"
+      },
+      {
+       "case_id": "exec_clean_1",
+       "expected": "pass",
+       "observed": "pass"
+      },
+      {
+       "case_id": "exec_wrong_1",
+       "expected": "fail",
+       "observed": "fail"
+      },
+      {
+       "case_id": "exec_clean_2",
+       "expected": "pass",
+       "observed": "pass"
+      },
+      {
+       "case_id": "exec_wrong_2",
+       "expected": "fail",
+       "observed": "fail"
+      }
+     ],
+     "n_clean": 3,
+     "n_wrong": 3,
+     "precision": 1.0,
+     "detection": 1.0,
+     "unknown": 0,
+     "passed": true,
+     "reasons": [],
+     "at": "2026-11-22T05:48:53.370142+00:00"
+    }
+   ]
+  },
+  {
+   "check_id": "logistics_official_task_pass",
+   "scope": {
+    "dataset": "oragentbench",
+    "domain": "logistics"
+   },
+   "source_quote": "required solution file",
+   "status": "veto_enabled",
+   "code_sha256": "0a60b01d0a28a7e110730e771b867dd2e89779b85a807a63c441813bae6eb9f3",
+   "audits": [
+    {
+     "records": [
+      {
+       "case_id": "precision_ag_sprayer_tanker_routing:clean",
+       "expected": "pass",
+       "observed": "pass"
+      },
+      {
+       "case_id": "precision_ag_sprayer_tanker_routing:missing_solution",
+       "expected": "fail",
+       "observed": "fail"
+      },
+      {
+       "case_id": "precision_ag_sprayer_tanker_routing:invalid_schema",
+       "expected": "fail",
+       "observed": "fail"
+      },
+      {
+       "case_id": "precision_ag_sprayer_tanker_routing:empty_solution",
+       "expected": "fail",
+       "observed": "fail"
+      },
+      {
+       "case_id": "railway_disruption_recovery:clean",
+       "expected": "pass",
+       "observed": "pass"
+      },
+      {
+       "case_id": "railway_disruption_recovery:missing_solution",
+       "expected": "fail",
+       "observed": "fail"
+      },
+      {
+       "case_id": "railway_disruption_recovery:invalid_schema",
+       "expected": "fail",
+       "observed": "fail"
+      },
+      {
+       "case_id": "railway_disruption_recovery:empty_solution",
+       "expected": "fail",
+       "observed": "fail"
+      },
+      {
+       "case_id": "front_distribution_center_robust_inventory:clean",
+       "expected": "pass",
+       "observed": "pass"
+      },
+      {
+       "case_id": "front_distribution_center_robust_inventory:missing_solution",
+       "expected": "fail",
+       "observed": "fail"
+      },
+      {
+       "case_id": "front_distribution_center_robust_inventory:invalid_schema",
+       "expected": "fail",
+       "observed": "fail"
+      },
+      {
+       "case_id": "front_distribution_center_robust_inventory:empty_solution",
+       "expected": "fail",
+       "observed": "fail"
+      }
+     ],
+     "n_clean": 3,
+     "n_wrong": 9,
+     "precision": 1.0,
+     "detection": 1.0,
+     "unknown": 0,
+     "passed": true,
+     "reasons": [],
+     "at": "2026-11-22T05:51:33.849201+00:00"
+    }
+   ]
+  }
+ ]
+}

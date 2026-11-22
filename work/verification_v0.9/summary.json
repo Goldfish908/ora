@@ -1,0 +1,8 @@
+{
+ "git_commit": "94005e63040142a04703479e3d6cc294b696f35e",
+ "pytest_log_sha256": "c205b7aac00ffc316f24515acd411f3a031ce68fdda9aefba094f46ef31669e9",
+ "m2gen_log_sha256": "25ee81ef0e419ad1a46ab419c2ee90b31f41d787b7acdd90859144d751dcd644",
+ "pytest": "570 passed, 3 skipped",
+ "m2gen": "REGRESSION OK",
+ "note": "Counts verified from pytest.log; source includes exact local patch, binding guards and repair-failure feedback."
+}

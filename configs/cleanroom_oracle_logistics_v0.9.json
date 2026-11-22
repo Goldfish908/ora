@@ -1,0 +1,10 @@
+{
+  "version": "cleanroom_oracle_logistics_v0.9.1",
+  "selection_basis": "Public logistics scenario, complete single-step packet, bounded public input, no use in specification learning or engineering trials. This audit-role configuration is solely for reference/official health checks; Qwen outcomes are not used for selection. Multi-step packages without the clean-room instruction contract are excluded.",
+  "tasks": [
+    {"name": "synchromodal_freight_recovery", "domain": "logistics", "split": "audit"},
+    {"name": "electric_medical_waste_lrp", "domain": "logistics", "split": "audit"},
+    {"name": "container_gate_dro_appointment_planning", "domain": "logistics", "split": "audit"},
+    {"name": "medical_supply_dro_response", "domain": "logistics", "split": "audit"}
+  ]
+}

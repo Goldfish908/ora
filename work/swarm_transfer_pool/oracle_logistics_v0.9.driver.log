@@ -1,0 +1,19 @@
+Traceback (most recent call last):
+  File "/home/hewj13/wm/ora/scripts/cleanroom_experiment.py", line 325, in <module>
+    main()
+  File "/home/hewj13/wm/ora/scripts/cleanroom_experiment.py", line 254, in main
+    packets = load_tasks(ROOT / args.tasks)
+              ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/hewj13/wm/ora/scripts/cleanroom_experiment.py", line 47, in load_tasks
+    packets.append(TaskPacket.load(root, item["domain"], item["split"]))
+                   ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/hewj13/wm/ora/ora_agent/oragentbench.py", line 68, in load
+    instruction = (root / "instruction.md").read_text()
+                  ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/lib/python3.12/pathlib.py", line 1029, in read_text
+    with self.open(mode='r', encoding=encoding, errors=errors) as f:
+         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/lib/python3.12/pathlib.py", line 1015, in open
+    return io.open(self, mode, buffering, encoding, errors, newline)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+FileNotFoundError: [Errno 2] No such file or directory: '/home/hewj13/wm/ora/ORAgentBench/harbor_tasks/dynamic_cold_chain_vaccine_replanning/instruction.md'

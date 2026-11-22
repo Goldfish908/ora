@@ -1,0 +1,1617 @@
+{
+ "candidates": [
+  {
+   "candidate_idx": 0,
+   "candidate_sha256": "08f95083f60719b0681fcca6cfad453b3faf28577335b466265903e2a11fe190",
+   "parents": [
+    null
+   ],
+   "accepted_meta": {
+    "iteration_id": "seed",
+    "is_seed": true,
+    "accepted": true,
+    "candidate_idx": 0,
+    "parent_iteration_ids": [],
+    "avg_val_score": 0.0,
+    "num_val_scored": 1,
+    "metric_calls_so_far": 0,
+    "objective_scores": {}
+   },
+   "dev": {
+    "n": 3,
+    "expected_tasks": 3,
+    "coverage": 1.0,
+    "feasible": 0,
+    "proxy_match": 2,
+    "true_correct": 0,
+    "phantom_proxy": 2,
+    "unknown": 0,
+    "unresolved_non_phantom": 1,
+    "mean_quality": 0.0,
+    "failure_counts": {
+     "execution_error": 1,
+     "phantom_proxy": 2
+    },
+    "api_guard_modified": 3,
+    "cost": {
+     "llm_calls": 6,
+     "missing_usage_calls": 0,
+     "llm_latency_seconds": 234.846421,
+     "prompt_tokens": 115738,
+     "completion_tokens": 16843,
+     "reasoning_tokens": 0,
+     "total_tokens": 132581,
+     "solver_execution_time": {
+      "recorded_calls": 3,
+      "missing_calls": 0,
+      "seconds": 85.345281
+     },
+     "official_evaluation_time": {
+      "recorded_calls": 3,
+      "missing_calls": 0,
+      "seconds": 68.545236
+     }
+    },
+    "tasks": [
+     {
+      "task": "shared_drone_base_delivery_assignment",
+      "split": "dev",
+      "candidate_sha256": "08f95083f60719b0681fcca6cfad453b3faf28577335b466265903e2a11fe190",
+      "attempt": 0,
+      "feasible": false,
+      "quality": 0.0,
+      "true_correct": false,
+      "objective": 0.0,
+      "proxy_match": true,
+      "phantom_proxy": true,
+      "failure_class": "phantom_proxy",
+      "execution_return_code": 0,
+      "generation_error": null,
+      "cost": {
+       "llm_calls": 2,
+       "missing_usage_calls": 0,
+       "llm_latency_seconds": 59.814121,
+       "prompt_tokens": 76662,
+       "completion_tokens": 3797,
+       "reasoning_tokens": 0,
+       "total_tokens": 80459
+      },
+      "execution_wall_seconds": 30.985797,
+      "evaluation_wall_seconds": 25.926816,
+      "api_guard_repairs": 1,
+      "public_contract_repairs": 0,
+      "stderr_tail": null
+     },
+     {
+      "task": "autonomous_lab_courier_tsptw",
+      "split": "dev",
+      "candidate_sha256": "08f95083f60719b0681fcca6cfad453b3faf28577335b466265903e2a11fe190",
+      "attempt": 0,
+      "feasible": false,
+      "quality": 0.0,
+      "true_correct": false,
+      "objective": 189.459,
+      "proxy_match": true,
+      "phantom_proxy": true,
+      "failure_class": "phantom_proxy",
+      "execution_return_code": 0,
+      "generation_error": null,
+      "cost": {
+       "llm_calls": 2,
+       "missing_usage_calls": 0,
+       "llm_latency_seconds": 70.720657,
+       "prompt_tokens": 20983,
+       "completion_tokens": 4958,
+       "reasoning_tokens": 0,
+       "total_tokens": 25941
+      },
+      "execution_wall_seconds": 21.141202,
+      "evaluation_wall_seconds": 26.83634,
+      "api_guard_repairs": 1,
+      "public_contract_repairs": 0,
+      "stderr_tail": null
+     },
+     {
+      "task": "flood_relief_multimodal_routing",
+      "split": "dev",
+      "candidate_sha256": "08f95083f60719b0681fcca6cfad453b3faf28577335b466265903e2a11fe190",
+      "attempt": 0,
+      "feasible": false,
+      "quality": 0.0,
+      "true_correct": false,
+      "objective": null,
+      "proxy_match": false,
+      "phantom_proxy": false,
+      "failure_class": "execution_error",
+      "execution_return_code": 1,
+      "generation_error": null,
+      "cost": {
+       "llm_calls": 2,
+       "missing_usage_calls": 0,
+       "llm_latency_seconds": 104.311643,
+       "prompt_tokens": 18093,
+       "completion_tokens": 8088,
+       "reasoning_tokens": 0,
+       "total_tokens": 26181
+      },
+      "execution_wall_seconds": 33.218282,
+      "evaluation_wall_seconds": 15.78208,
+      "api_guard_repairs": 1,
+      "public_contract_repairs": 0,
+      "stderr_tail": "Warning: Without a solution, method can only be called in stage SOLVING."
+     }
+    ]
+   },
+   "transfer": {
+    "n": 1,
+    "expected_tasks": 1,
+    "coverage": 1.0,
+    "feasible": 0,
+    "proxy_match": 0,
+    "true_correct": 0,
+    "phantom_proxy": 0,
+    "unknown": 0,
+    "unresolved_non_phantom": 1,
+    "mean_quality": 0.0,
+    "failure_counts": {
+     "execution_error": 1
+    },
+    "api_guard_modified": 1,
+    "cost": {
+     "llm_calls": 2,
+     "missing_usage_calls": 0,
+     "llm_latency_seconds": 67.849714,
+     "prompt_tokens": 40168,
+     "completion_tokens": 5063,
+     "reasoning_tokens": 0,
+     "total_tokens": 45231,
+     "solver_execution_time": {
+      "recorded_calls": 1,
+      "missing_calls": 0,
+      "seconds": 19.931101
+     },
+     "official_evaluation_time": {
+      "recorded_calls": 1,
+      "missing_calls": 0,
+      "seconds": 24.428733
+     }
+    },
+    "tasks": [
+     {
+      "task": "carbon_aware_compute_scheduling",
+      "split": "transfer",
+      "candidate_sha256": "08f95083f60719b0681fcca6cfad453b3faf28577335b466265903e2a11fe190",
+      "attempt": 0,
+      "feasible": false,
+      "quality": 0.0,
+      "true_correct": false,
+      "objective": null,
+      "proxy_match": false,
+      "phantom_proxy": false,
+      "failure_class": "execution_error",
+      "execution_return_code": 1,
+      "generation_error": null,
+      "cost": {
+       "llm_calls": 2,
+       "missing_usage_calls": 0,
+       "llm_latency_seconds": 67.849714,
+       "prompt_tokens": 40168,
+       "completion_tokens": 5063,
+       "reasoning_tokens": 0,
+       "total_tokens": 45231
+      },
+      "execution_wall_seconds": 19.931101,
+      "evaluation_wall_seconds": 24.428733,
+      "api_guard_repairs": 1,
+      "public_contract_repairs": 0,
+      "stderr_tail": "AttributeError: 'pyscipopt.scip.Model' object has no attribute 'getNCons'. Did you mean: 'getNConss'?"
+     }
+    ]
+   },
+   "cost": {
+    "llm_calls": 8,
+    "missing_usage_calls": 0,
+    "llm_latency_seconds": 302.696135,
+    "prompt_tokens": 155906,
+    "completion_tokens": 21906,
+    "reasoning_tokens": 0,
+    "total_tokens": 177812,
+    "solver_execution_time": {
+     "recorded_calls": 4,
+     "missing_calls": 0,
+     "seconds": 105.276382
+    },
+    "official_evaluation_time": {
+     "recorded_calls": 4,
+     "missing_calls": 0,
+     "seconds": 92.97396900000001
+    }
+   }
+  }
+ ],
+ "dev_ids": [
+  "shared_drone_base_delivery_assignment",
+  "autonomous_lab_courier_tsptw",
+  "flood_relief_multimodal_routing"
+ ],
+ "transfer_ids": [
+  "carbon_aware_compute_scheduling"
+ ],
+ "proposal_history": [
+  {
+   "iteration_id": "seed",
+   "trace_i": null,
+   "accepted": true,
+   "candidate_idx": 0,
+   "parent_iteration_ids": [],
+   "subsample_ids": [],
+   "subsample_scores_before": [],
+   "subsample_scores_after": [],
+   "avg_val_score": 0.0,
+   "metric_calls_to_discover": null,
+   "candidate_sha256": "08f95083f60719b0681fcca6cfad453b3faf28577335b466265903e2a11fe190",
+   "candidate_text_saved": true,
+   "dev_evaluation": {
+    "n": 3,
+    "expected_tasks": 3,
+    "coverage": 1.0,
+    "feasible": 0,
+    "proxy_match": 2,
+    "true_correct": 0,
+    "phantom_proxy": 2,
+    "unknown": 0,
+    "unresolved_non_phantom": 1,
+    "mean_quality": 0.0,
+    "failure_counts": {
+     "execution_error": 1,
+     "phantom_proxy": 2
+    },
+    "api_guard_modified": 3,
+    "cost": {
+     "llm_calls": 6,
+     "missing_usage_calls": 0,
+     "llm_latency_seconds": 234.846421,
+     "prompt_tokens": 115738,
+     "completion_tokens": 16843,
+     "reasoning_tokens": 0,
+     "total_tokens": 132581,
+     "solver_execution_time": {
+      "recorded_calls": 3,
+      "missing_calls": 0,
+      "seconds": 85.345281
+     },
+     "official_evaluation_time": {
+      "recorded_calls": 3,
+      "missing_calls": 0,
+      "seconds": 68.545236
+     }
+    },
+    "tasks": [
+     {
+      "task": "shared_drone_base_delivery_assignment",
+      "split": "dev",
+      "candidate_sha256": "08f95083f60719b0681fcca6cfad453b3faf28577335b466265903e2a11fe190",
+      "attempt": 0,
+      "feasible": false,
+      "quality": 0.0,
+      "true_correct": false,
+      "objective": 0.0,
+      "proxy_match": true,
+      "phantom_proxy": true,
+      "failure_class": "phantom_proxy",
+      "execution_return_code": 0,
+      "generation_error": null,
+      "cost": {
+       "llm_calls": 2,
+       "missing_usage_calls": 0,
+       "llm_latency_seconds": 59.814121,
+       "prompt_tokens": 76662,
+       "completion_tokens": 3797,
+       "reasoning_tokens": 0,
+       "total_tokens": 80459
+      },
+      "execution_wall_seconds": 30.985797,
+      "evaluation_wall_seconds": 25.926816,
+      "api_guard_repairs": 1,
+      "public_contract_repairs": 0,
+      "stderr_tail": null
+     },
+     {
+      "task": "autonomous_lab_courier_tsptw",
+      "split": "dev",
+      "candidate_sha256": "08f95083f60719b0681fcca6cfad453b3faf28577335b466265903e2a11fe190",
+      "attempt": 0,
+      "feasible": false,
+      "quality": 0.0,
+      "true_correct": false,
+      "objective": 189.459,
+      "proxy_match": true,
+      "phantom_proxy": true,
+      "failure_class": "phantom_proxy",
+      "execution_return_code": 0,
+      "generation_error": null,
+      "cost": {
+       "llm_calls": 2,
+       "missing_usage_calls": 0,
+       "llm_latency_seconds": 70.720657,
+       "prompt_tokens": 20983,
+       "completion_tokens": 4958,
+       "reasoning_tokens": 0,
+       "total_tokens": 25941
+      },
+      "execution_wall_seconds": 21.141202,
+      "evaluation_wall_seconds": 26.83634,
+      "api_guard_repairs": 1,
+      "public_contract_repairs": 0,
+      "stderr_tail": null
+     },
+     {
+      "task": "flood_relief_multimodal_routing",
+      "split": "dev",
+      "candidate_sha256": "08f95083f60719b0681fcca6cfad453b3faf28577335b466265903e2a11fe190",
+      "attempt": 0,
+      "feasible": false,
+      "quality": 0.0,
+      "true_correct": false,
+      "objective": null,
+      "proxy_match": false,
+      "phantom_proxy": false,
+      "failure_class": "execution_error",
+      "execution_return_code": 1,
+      "generation_error": null,
+      "cost": {
+       "llm_calls": 2,
+       "missing_usage_calls": 0,
+       "llm_latency_seconds": 104.311643,
+       "prompt_tokens": 18093,
+       "completion_tokens": 8088,
+       "reasoning_tokens": 0,
+       "total_tokens": 26181
+      },
+      "execution_wall_seconds": 33.218282,
+      "evaluation_wall_seconds": 15.78208,
+      "api_guard_repairs": 1,
+      "public_contract_repairs": 0,
+      "stderr_tail": "Warning: Without a solution, method can only be called in stage SOLVING."
+     }
+    ],
+    "status": "complete",
+    "not_run_tasks": []
+   },
+   "transfer_evaluation": {
+    "n": 1,
+    "expected_tasks": 1,
+    "coverage": 1.0,
+    "feasible": 0,
+    "proxy_match": 0,
+    "true_correct": 0,
+    "phantom_proxy": 0,
+    "unknown": 0,
+    "unresolved_non_phantom": 1,
+    "mean_quality": 0.0,
+    "failure_counts": {
+     "execution_error": 1
+    },
+    "api_guard_modified": 1,
+    "cost": {
+     "llm_calls": 2,
+     "missing_usage_calls": 0,
+     "llm_latency_seconds": 67.849714,
+     "prompt_tokens": 40168,
+     "completion_tokens": 5063,
+     "reasoning_tokens": 0,
+     "total_tokens": 45231,
+     "solver_execution_time": {
+      "recorded_calls": 1,
+      "missing_calls": 0,
+      "seconds": 19.931101
+     },
+     "official_evaluation_time": {
+      "recorded_calls": 1,
+      "missing_calls": 0,
+      "seconds": 24.428733
+     }
+    },
+    "tasks": [
+     {
+      "task": "carbon_aware_compute_scheduling",
+      "split": "transfer",
+      "candidate_sha256": "08f95083f60719b0681fcca6cfad453b3faf28577335b466265903e2a11fe190",
+      "attempt": 0,
+      "feasible": false,
+      "quality": 0.0,
+      "true_correct": false,
+      "objective": null,
+      "proxy_match": false,
+      "phantom_proxy": false,
+      "failure_class": "execution_error",
+      "execution_return_code": 1,
+      "generation_error": null,
+      "cost": {
+       "llm_calls": 2,
+       "missing_usage_calls": 0,
+       "llm_latency_seconds": 67.849714,
+       "prompt_tokens": 40168,
+       "completion_tokens": 5063,
+       "reasoning_tokens": 0,
+       "total_tokens": 45231
+      },
+      "execution_wall_seconds": 19.931101,
+      "evaluation_wall_seconds": 24.428733,
+      "api_guard_repairs": 1,
+      "public_contract_repairs": 0,
+      "stderr_tail": "AttributeError: 'pyscipopt.scip.Model' object has no attribute 'getNCons'. Did you mean: 'getNConss'?"
+     }
+    ],
+    "status": "complete",
+    "not_run_tasks": []
+   }
+  },
+  {
+   "iteration_id": "74c74299",
+   "trace_i": 0,
+   "accepted": false,
+   "candidate_idx": null,
+   "parent_iteration_ids": [
+    "seed"
+   ],
+   "subsample_ids": [
+    2,
+    0,
+    1
+   ],
+   "subsample_scores_before": [
+    0.0,
+    1.0,
+    1.0
+   ],
+   "subsample_scores_after": [
+    0.0,
+    0.0,
+    0.0
+   ],
+   "avg_val_score": null,
+   "metric_calls_to_discover": null,
+   "candidate_sha256": "f50b01fe47c9f2f7aeb1ae4636f64fb0c54f97d23e84ed10456a4fda04005a76",
+   "candidate_text_saved": true,
+   "dev_evaluation": {
+    "n": 3,
+    "expected_tasks": 3,
+    "coverage": 1.0,
+    "feasible": 0,
+    "proxy_match": 0,
+    "true_correct": 0,
+    "phantom_proxy": 0,
+    "unknown": 0,
+    "unresolved_non_phantom": 3,
+    "mean_quality": 0.0,
+    "failure_counts": {
+     "business_infeasible": 1,
+     "execution_error": 2
+    },
+    "api_guard_modified": 3,
+    "cost": {
+     "llm_calls": 6,
+     "missing_usage_calls": 0,
+     "llm_latency_seconds": 239.501565,
+     "prompt_tokens": 121475,
+     "completion_tokens": 15466,
+     "reasoning_tokens": 0,
+     "total_tokens": 136941,
+     "solver_execution_time": {
+      "recorded_calls": 3,
+      "missing_calls": 0,
+      "seconds": 380.595313
+     },
+     "official_evaluation_time": {
+      "recorded_calls": 3,
+      "missing_calls": 0,
+      "seconds": 58.120981
+     }
+    },
+    "tasks": [
+     {
+      "task": "shared_drone_base_delivery_assignment",
+      "split": "dev",
+      "candidate_sha256": "f50b01fe47c9f2f7aeb1ae4636f64fb0c54f97d23e84ed10456a4fda04005a76",
+      "attempt": 0,
+      "feasible": false,
+      "quality": 0.0,
+      "true_correct": false,
+      "objective": null,
+      "proxy_match": false,
+      "phantom_proxy": false,
+      "failure_class": "execution_error",
+      "execution_return_code": 1,
+      "generation_error": null,
+      "cost": {
+       "llm_calls": 2,
+       "missing_usage_calls": 0,
+       "llm_latency_seconds": 58.445342,
+       "prompt_tokens": 78854,
+       "completion_tokens": 4115,
+       "reasoning_tokens": 0,
+       "total_tokens": 82969
+      },
+      "execution_wall_seconds": 27.817493,
+      "evaluation_wall_seconds": 11.89187,
+      "api_guard_repairs": 1,
+      "public_contract_repairs": 0,
+      "stderr_tail": "Warning: No solution available"
+     },
+     {
+      "task": "autonomous_lab_courier_tsptw",
+      "split": "dev",
+      "candidate_sha256": "f50b01fe47c9f2f7aeb1ae4636f64fb0c54f97d23e84ed10456a4fda04005a76",
+      "attempt": 0,
+      "feasible": false,
+      "quality": 0.0,
+      "true_correct": false,
+      "objective": null,
+      "proxy_match": false,
+      "phantom_proxy": false,
+      "failure_class": "execution_error",
+      "execution_return_code": 1,
+      "generation_error": null,
+      "cost": {
+       "llm_calls": 2,
+       "missing_usage_calls": 0,
+       "llm_latency_seconds": 42.497159,
+       "prompt_tokens": 22876,
+       "completion_tokens": 3213,
+       "reasoning_tokens": 0,
+       "total_tokens": 26089
+      },
+      "execution_wall_seconds": 25.399708,
+      "evaluation_wall_seconds": 25.429694,
+      "api_guard_repairs": 1,
+      "public_contract_repairs": 0,
+      "stderr_tail": "KeyError: ('LAB_A', 'LAB_A')"
+     },
+     {
+      "task": "flood_relief_multimodal_routing",
+      "split": "dev",
+      "candidate_sha256": "f50b01fe47c9f2f7aeb1ae4636f64fb0c54f97d23e84ed10456a4fda04005a76",
+      "attempt": 0,
+      "feasible": false,
+      "quality": 0.0,
+      "true_correct": false,
+      "objective": 15302.160000000003,
+      "proxy_match": false,
+      "phantom_proxy": false,
+      "failure_class": "business_infeasible",
+      "execution_return_code": 0,
+      "generation_error": null,
+      "cost": {
+       "llm_calls": 2,
+       "missing_usage_calls": 0,
+       "llm_latency_seconds": 138.559064,
+       "prompt_tokens": 19745,
+       "completion_tokens": 8138,
+       "reasoning_tokens": 0,
+       "total_tokens": 27883
+      },
+      "execution_wall_seconds": 327.378112,
+      "evaluation_wall_seconds": 20.799417,
+      "api_guard_repairs": 1,
+      "public_contract_repairs": 0,
+      "stderr_tail": null
+     }
+    ],
+    "status": "complete",
+    "not_run_tasks": []
+   },
+   "transfer_evaluation": {
+    "n": 0,
+    "expected_tasks": 1,
+    "coverage": 0.0,
+    "feasible": 0,
+    "proxy_match": 0,
+    "true_correct": 0,
+    "phantom_proxy": 0,
+    "unknown": 0,
+    "unresolved_non_phantom": 0,
+    "mean_quality": 0.0,
+    "failure_counts": {},
+    "api_guard_modified": 0,
+    "cost": {
+     "llm_calls": 0,
+     "missing_usage_calls": 0,
+     "llm_latency_seconds": 0,
+     "prompt_tokens": 0,
+     "completion_tokens": 0,
+     "reasoning_tokens": 0,
+     "total_tokens": 0,
+     "solver_execution_time": {
+      "recorded_calls": 0,
+      "missing_calls": 0,
+      "seconds": null
+     },
+     "official_evaluation_time": {
+      "recorded_calls": 0,
+      "missing_calls": 0,
+      "seconds": null
+     }
+    },
+    "tasks": [],
+    "status": "not_run",
+    "not_run_tasks": [
+     "carbon_aware_compute_scheduling"
+    ]
+   }
+  },
+  {
+   "iteration_id": "10df62dd",
+   "trace_i": 1,
+   "accepted": false,
+   "candidate_idx": null,
+   "parent_iteration_ids": [
+    "seed"
+   ],
+   "subsample_ids": [
+    0,
+    1,
+    2
+   ],
+   "subsample_scores_before": [
+    1.0,
+    1.0,
+    0.0
+   ],
+   "subsample_scores_after": [
+    0.0,
+    1.0,
+    0.0
+   ],
+   "avg_val_score": null,
+   "metric_calls_to_discover": null,
+   "candidate_sha256": "e2f3ce8c063d0a9749930d4a51b70dcedc5c91a50a30dcf3a3312f937aecfbc7",
+   "candidate_text_saved": true,
+   "dev_evaluation": {
+    "n": 3,
+    "expected_tasks": 3,
+    "coverage": 1.0,
+    "feasible": 0,
+    "proxy_match": 1,
+    "true_correct": 0,
+    "phantom_proxy": 1,
+    "unknown": 0,
+    "unresolved_non_phantom": 2,
+    "mean_quality": 0.0,
+    "failure_counts": {
+     "execution_error": 1,
+     "incomplete_artifact": 1,
+     "phantom_proxy": 1
+    },
+    "api_guard_modified": 2,
+    "cost": {
+     "llm_calls": 6,
+     "missing_usage_calls": 0,
+     "llm_latency_seconds": 292.436207,
+     "prompt_tokens": 123594,
+     "completion_tokens": 21324,
+     "reasoning_tokens": 0,
+     "total_tokens": 144918,
+     "solver_execution_time": {
+      "recorded_calls": 2,
+      "missing_calls": 1,
+      "seconds": 44.844465
+     },
+     "official_evaluation_time": {
+      "recorded_calls": 3,
+      "missing_calls": 0,
+      "seconds": 38.868021
+     }
+    },
+    "tasks": [
+     {
+      "task": "shared_drone_base_delivery_assignment",
+      "split": "dev",
+      "candidate_sha256": "e2f3ce8c063d0a9749930d4a51b70dcedc5c91a50a30dcf3a3312f937aecfbc7",
+      "attempt": 0,
+      "feasible": false,
+      "quality": 0.0,
+      "true_correct": false,
+      "objective": null,
+      "proxy_match": false,
+      "phantom_proxy": false,
+      "failure_class": "execution_error",
+      "execution_return_code": 1,
+      "generation_error": null,
+      "cost": {
+       "llm_calls": 2,
+       "missing_usage_calls": 0,
+       "llm_latency_seconds": 80.487005,
+       "prompt_tokens": 79179,
+       "completion_tokens": 5931,
+       "reasoning_tokens": 0,
+       "total_tokens": 85110
+      },
+      "execution_wall_seconds": 22.542675,
+      "evaluation_wall_seconds": 12.128321,
+      "api_guard_repairs": 1,
+      "public_contract_repairs": 0,
+      "stderr_tail": "NameError: name 'az' is not defined. Did you mean: 'z'?"
+     },
+     {
+      "task": "autonomous_lab_courier_tsptw",
+      "split": "dev",
+      "candidate_sha256": "e2f3ce8c063d0a9749930d4a51b70dcedc5c91a50a30dcf3a3312f937aecfbc7",
+      "attempt": 0,
+      "feasible": false,
+      "quality": 0.0,
+      "true_correct": false,
+      "objective": 0.0,
+      "proxy_match": true,
+      "phantom_proxy": true,
+      "failure_class": "phantom_proxy",
+      "execution_return_code": 0,
+      "generation_error": null,
+      "cost": {
+       "llm_calls": 2,
+       "missing_usage_calls": 0,
+       "llm_latency_seconds": 52.655642,
+       "prompt_tokens": 23405,
+       "completion_tokens": 3717,
+       "reasoning_tokens": 0,
+       "total_tokens": 27122
+      },
+      "execution_wall_seconds": 22.30179,
+      "evaluation_wall_seconds": 18.151058,
+      "api_guard_repairs": 1,
+      "public_contract_repairs": 0,
+      "stderr_tail": null
+     },
+     {
+      "task": "flood_relief_multimodal_routing",
+      "split": "dev",
+      "candidate_sha256": "e2f3ce8c063d0a9749930d4a51b70dcedc5c91a50a30dcf3a3312f937aecfbc7",
+      "attempt": 0,
+      "feasible": false,
+      "quality": 0.0,
+      "true_correct": false,
+      "objective": null,
+      "proxy_match": false,
+      "phantom_proxy": false,
+      "failure_class": "incomplete_artifact",
+      "execution_return_code": -1,
+      "generation_error": "ValueError: incomplete_artifact: API guard could not parse solver code",
+      "cost": {
+       "llm_calls": 2,
+       "missing_usage_calls": 0,
+       "llm_latency_seconds": 159.29356,
+       "prompt_tokens": 21010,
+       "completion_tokens": 11676,
+       "reasoning_tokens": 0,
+       "total_tokens": 32686
+      },
+      "execution_wall_seconds": null,
+      "evaluation_wall_seconds": 8.588642,
+      "api_guard_repairs": 0,
+      "public_contract_repairs": 0,
+      "stderr_tail": null
+     }
+    ],
+    "status": "complete",
+    "not_run_tasks": []
+   },
+   "transfer_evaluation": {
+    "n": 0,
+    "expected_tasks": 1,
+    "coverage": 0.0,
+    "feasible": 0,
+    "proxy_match": 0,
+    "true_correct": 0,
+    "phantom_proxy": 0,
+    "unknown": 0,
+    "unresolved_non_phantom": 0,
+    "mean_quality": 0.0,
+    "failure_counts": {},
+    "api_guard_modified": 0,
+    "cost": {
+     "llm_calls": 0,
+     "missing_usage_calls": 0,
+     "llm_latency_seconds": 0,
+     "prompt_tokens": 0,
+     "completion_tokens": 0,
+     "reasoning_tokens": 0,
+     "total_tokens": 0,
+     "solver_execution_time": {
+      "recorded_calls": 0,
+      "missing_calls": 0,
+      "seconds": null
+     },
+     "official_evaluation_time": {
+      "recorded_calls": 0,
+      "missing_calls": 0,
+      "seconds": null
+     }
+    },
+    "tasks": [],
+    "status": "not_run",
+    "not_run_tasks": [
+     "carbon_aware_compute_scheduling"
+    ]
+   }
+  },
+  {
+   "iteration_id": "6ecd3bc6",
+   "trace_i": 2,
+   "accepted": false,
+   "candidate_idx": null,
+   "parent_iteration_ids": [
+    "seed"
+   ],
+   "subsample_ids": [
+    0,
+    2,
+    1
+   ],
+   "subsample_scores_before": [
+    1.0,
+    0.0,
+    1.0
+   ],
+   "subsample_scores_after": [
+    0.0,
+    0.0,
+    0.0
+   ],
+   "avg_val_score": null,
+   "metric_calls_to_discover": null,
+   "candidate_sha256": "4572fabc7d87e55d2969b7d563be5db0adbba5d52bc5f18a0464623fdc0cf128",
+   "candidate_text_saved": true,
+   "dev_evaluation": {
+    "n": 3,
+    "expected_tasks": 3,
+    "coverage": 1.0,
+    "feasible": 0,
+    "proxy_match": 0,
+    "true_correct": 0,
+    "phantom_proxy": 0,
+    "unknown": 0,
+    "unresolved_non_phantom": 3,
+    "mean_quality": 0.0,
+    "failure_counts": {
+     "execution_error": 3
+    },
+    "api_guard_modified": 1,
+    "cost": {
+     "llm_calls": 6,
+     "missing_usage_calls": 0,
+     "llm_latency_seconds": 213.868446,
+     "prompt_tokens": 98168,
+     "completion_tokens": 15128,
+     "reasoning_tokens": 0,
+     "total_tokens": 113296,
+     "solver_execution_time": {
+      "recorded_calls": 3,
+      "missing_calls": 0,
+      "seconds": 77.291372
+     },
+     "official_evaluation_time": {
+      "recorded_calls": 3,
+      "missing_calls": 0,
+      "seconds": 41.770592
+     }
+    },
+    "tasks": [
+     {
+      "task": "shared_drone_base_delivery_assignment",
+      "split": "dev",
+      "candidate_sha256": "4572fabc7d87e55d2969b7d563be5db0adbba5d52bc5f18a0464623fdc0cf128",
+      "attempt": 0,
+      "feasible": false,
+      "quality": 0.0,
+      "true_correct": false,
+      "objective": null,
+      "proxy_match": false,
+      "phantom_proxy": false,
+      "failure_class": "execution_error",
+      "execution_return_code": 1,
+      "generation_error": null,
+      "cost": {
+       "llm_calls": 2,
+       "missing_usage_calls": 0,
+       "llm_latency_seconds": 68.374298,
+       "prompt_tokens": 71125,
+       "completion_tokens": 5023,
+       "reasoning_tokens": 0,
+       "total_tokens": 76148
+      },
+      "execution_wall_seconds": 18.353902,
+      "evaluation_wall_seconds": 14.956851,
+      "api_guard_repairs": 0,
+      "public_contract_repairs": 0,
+      "stderr_tail": "Warning: Without a solution, method can only be called in stage SOLVING."
+     },
+     {
+      "task": "autonomous_lab_courier_tsptw",
+      "split": "dev",
+      "candidate_sha256": "4572fabc7d87e55d2969b7d563be5db0adbba5d52bc5f18a0464623fdc0cf128",
+      "attempt": 0,
+      "feasible": false,
+      "quality": 0.0,
+      "true_correct": false,
+      "objective": null,
+      "proxy_match": false,
+      "phantom_proxy": false,
+      "failure_class": "execution_error",
+      "execution_return_code": 1,
+      "generation_error": null,
+      "cost": {
+       "llm_calls": 2,
+       "missing_usage_calls": 0,
+       "llm_latency_seconds": 49.087616,
+       "prompt_tokens": 15683,
+       "completion_tokens": 3338,
+       "reasoning_tokens": 0,
+       "total_tokens": 19021
+      },
+      "execution_wall_seconds": 26.991915,
+      "evaluation_wall_seconds": 14.968432,
+      "api_guard_repairs": 0,
+      "public_contract_repairs": 0,
+      "stderr_tail": "IndexError: list index out of range"
+     },
+     {
+      "task": "flood_relief_multimodal_routing",
+      "split": "dev",
+      "candidate_sha256": "4572fabc7d87e55d2969b7d563be5db0adbba5d52bc5f18a0464623fdc0cf128",
+      "attempt": 0,
+      "feasible": false,
+      "quality": 0.0,
+      "true_correct": false,
+      "objective": null,
+      "proxy_match": false,
+      "phantom_proxy": false,
+      "failure_class": "execution_error",
+      "execution_return_code": 1,
+      "generation_error": null,
+      "cost": {
+       "llm_calls": 2,
+       "missing_usage_calls": 0,
+       "llm_latency_seconds": 96.406532,
+       "prompt_tokens": 11360,
+       "completion_tokens": 6767,
+       "reasoning_tokens": 0,
+       "total_tokens": 18127
+      },
+      "execution_wall_seconds": 31.945555,
+      "evaluation_wall_seconds": 11.845309,
+      "api_guard_repairs": 2,
+      "public_contract_repairs": 0,
+      "stderr_tail": "KeyError: ('H12', 'S02', 1)"
+     }
+    ],
+    "status": "complete",
+    "not_run_tasks": []
+   },
+   "transfer_evaluation": {
+    "n": 0,
+    "expected_tasks": 1,
+    "coverage": 0.0,
+    "feasible": 0,
+    "proxy_match": 0,
+    "true_correct": 0,
+    "phantom_proxy": 0,
+    "unknown": 0,
+    "unresolved_non_phantom": 0,
+    "mean_quality": 0.0,
+    "failure_counts": {},
+    "api_guard_modified": 0,
+    "cost": {
+     "llm_calls": 0,
+     "missing_usage_calls": 0,
+     "llm_latency_seconds": 0,
+     "prompt_tokens": 0,
+     "completion_tokens": 0,
+     "reasoning_tokens": 0,
+     "total_tokens": 0,
+     "solver_execution_time": {
+      "recorded_calls": 0,
+      "missing_calls": 0,
+      "seconds": null
+     },
+     "official_evaluation_time": {
+      "recorded_calls": 0,
+      "missing_calls": 0,
+      "seconds": null
+     }
+    },
+    "tasks": [],
+    "status": "not_run",
+    "not_run_tasks": [
+     "carbon_aware_compute_scheduling"
+    ]
+   }
+  },
+  {
+   "iteration_id": "1ba4e1e4",
+   "trace_i": 3,
+   "accepted": false,
+   "candidate_idx": null,
+   "parent_iteration_ids": [
+    "seed"
+   ],
+   "subsample_ids": [
+    1,
+    0,
+    2
+   ],
+   "subsample_scores_before": [
+    1.0,
+    1.0,
+    0.0
+   ],
+   "subsample_scores_after": [
+    0.0,
+    0.0,
+    1.0
+   ],
+   "avg_val_score": null,
+   "metric_calls_to_discover": null,
+   "candidate_sha256": "2f822aa02756cb1310f5de9730e9e99b6ab1d2ee5410475c8de4d0273f58f1e3",
+   "candidate_text_saved": true,
+   "dev_evaluation": {
+    "n": 3,
+    "expected_tasks": 3,
+    "coverage": 1.0,
+    "feasible": 1,
+    "proxy_match": 1,
+    "true_correct": 0,
+    "phantom_proxy": 1,
+    "unknown": 0,
+    "unresolved_non_phantom": 2,
+    "mean_quality": 0.0,
+    "failure_counts": {
+     "incomplete_artifact": 1,
+     "phantom_proxy": 1,
+     "quality_shortfall": 1
+    },
+    "api_guard_modified": 3,
+    "cost": {
+     "llm_calls": 6,
+     "missing_usage_calls": 0,
+     "llm_latency_seconds": 304.149299,
+     "prompt_tokens": 122729,
+     "completion_tokens": 19714,
+     "reasoning_tokens": 0,
+     "total_tokens": 142443,
+     "solver_execution_time": {
+      "recorded_calls": 2,
+      "missing_calls": 1,
+      "seconds": 656.95899
+     },
+     "official_evaluation_time": {
+      "recorded_calls": 3,
+      "missing_calls": 0,
+      "seconds": 58.959303
+     }
+    },
+    "tasks": [
+     {
+      "task": "shared_drone_base_delivery_assignment",
+      "split": "dev",
+      "candidate_sha256": "2f822aa02756cb1310f5de9730e9e99b6ab1d2ee5410475c8de4d0273f58f1e3",
+      "attempt": 0,
+      "feasible": true,
+      "quality": 0.0,
+      "true_correct": false,
+      "objective": 40656.48240000002,
+      "proxy_match": false,
+      "phantom_proxy": false,
+      "failure_class": "quality_shortfall",
+      "execution_return_code": 0,
+      "generation_error": null,
+      "cost": {
+       "llm_calls": 2,
+       "missing_usage_calls": 0,
+       "llm_latency_seconds": 82.931874,
+       "prompt_tokens": 79359,
+       "completion_tokens": 5829,
+       "reasoning_tokens": 0,
+       "total_tokens": 85188
+      },
+      "execution_wall_seconds": 319.867886,
+      "evaluation_wall_seconds": 27.633721,
+      "api_guard_repairs": 1,
+      "public_contract_repairs": 0,
+      "stderr_tail": null
+     },
+     {
+      "task": "autonomous_lab_courier_tsptw",
+      "split": "dev",
+      "candidate_sha256": "2f822aa02756cb1310f5de9730e9e99b6ab1d2ee5410475c8de4d0273f58f1e3",
+      "attempt": 0,
+      "feasible": false,
+      "quality": 0.0,
+      "true_correct": false,
+      "objective": null,
+      "proxy_match": false,
+      "phantom_proxy": false,
+      "failure_class": "incomplete_artifact",
+      "execution_return_code": -1,
+      "generation_error": "ValueError: incomplete_artifact: placeholder marker found",
+      "cost": {
+       "llm_calls": 2,
+       "missing_usage_calls": 0,
+       "llm_latency_seconds": 77.256281,
+       "prompt_tokens": 23994,
+       "completion_tokens": 5179,
+       "reasoning_tokens": 0,
+       "total_tokens": 29173
+      },
+      "execution_wall_seconds": null,
+      "evaluation_wall_seconds": 15.702746,
+      "api_guard_repairs": 1,
+      "public_contract_repairs": 0,
+      "stderr_tail": null
+     },
+     {
+      "task": "flood_relief_multimodal_routing",
+      "split": "dev",
+      "candidate_sha256": "2f822aa02756cb1310f5de9730e9e99b6ab1d2ee5410475c8de4d0273f58f1e3",
+      "attempt": 0,
+      "feasible": false,
+      "quality": 0.0,
+      "true_correct": false,
+      "objective": 9926.7166,
+      "proxy_match": true,
+      "phantom_proxy": true,
+      "failure_class": "phantom_proxy",
+      "execution_return_code": 0,
+      "generation_error": null,
+      "cost": {
+       "llm_calls": 2,
+       "missing_usage_calls": 0,
+       "llm_latency_seconds": 143.961144,
+       "prompt_tokens": 19376,
+       "completion_tokens": 8706,
+       "reasoning_tokens": 0,
+       "total_tokens": 28082
+      },
+      "execution_wall_seconds": 337.091104,
+      "evaluation_wall_seconds": 15.622836,
+      "api_guard_repairs": 1,
+      "public_contract_repairs": 0,
+      "stderr_tail": null
+     }
+    ],
+    "status": "complete",
+    "not_run_tasks": []
+   },
+   "transfer_evaluation": {
+    "n": 0,
+    "expected_tasks": 1,
+    "coverage": 0.0,
+    "feasible": 0,
+    "proxy_match": 0,
+    "true_correct": 0,
+    "phantom_proxy": 0,
+    "unknown": 0,
+    "unresolved_non_phantom": 0,
+    "mean_quality": 0.0,
+    "failure_counts": {},
+    "api_guard_modified": 0,
+    "cost": {
+     "llm_calls": 0,
+     "missing_usage_calls": 0,
+     "llm_latency_seconds": 0,
+     "prompt_tokens": 0,
+     "completion_tokens": 0,
+     "reasoning_tokens": 0,
+     "total_tokens": 0,
+     "solver_execution_time": {
+      "recorded_calls": 0,
+      "missing_calls": 0,
+      "seconds": null
+     },
+     "official_evaluation_time": {
+      "recorded_calls": 0,
+      "missing_calls": 0,
+      "seconds": null
+     }
+    },
+    "tasks": [],
+    "status": "not_run",
+    "not_run_tasks": [
+     "carbon_aware_compute_scheduling"
+    ]
+   }
+  },
+  {
+   "iteration_id": "f9b5d608",
+   "trace_i": 4,
+   "accepted": false,
+   "candidate_idx": null,
+   "parent_iteration_ids": [
+    "seed"
+   ],
+   "subsample_ids": [
+    2,
+    0,
+    1
+   ],
+   "subsample_scores_before": [
+    0.0,
+    1.0,
+    1.0
+   ],
+   "subsample_scores_after": [
+    0.0,
+    0.0,
+    1.0
+   ],
+   "avg_val_score": null,
+   "metric_calls_to_discover": null,
+   "candidate_sha256": "7a74784b82e3893ef59439e88e3ab325584a6acd0e18ebd73a2e2fdbe262b987",
+   "candidate_text_saved": true,
+   "dev_evaluation": {
+    "n": 3,
+    "expected_tasks": 3,
+    "coverage": 1.0,
+    "feasible": 0,
+    "proxy_match": 1,
+    "true_correct": 0,
+    "phantom_proxy": 1,
+    "unknown": 0,
+    "unresolved_non_phantom": 2,
+    "mean_quality": 0.0,
+    "failure_counts": {
+     "business_infeasible": 1,
+     "incomplete_artifact": 1,
+     "phantom_proxy": 1
+    },
+    "api_guard_modified": 3,
+    "cost": {
+     "llm_calls": 6,
+     "missing_usage_calls": 0,
+     "llm_latency_seconds": 285.939855,
+     "prompt_tokens": 120037,
+     "completion_tokens": 18080,
+     "reasoning_tokens": 0,
+     "total_tokens": 138117,
+     "solver_execution_time": {
+      "recorded_calls": 2,
+      "missing_calls": 1,
+      "seconds": 39.48997
+     },
+     "official_evaluation_time": {
+      "recorded_calls": 3,
+      "missing_calls": 0,
+      "seconds": 28.205066
+     }
+    },
+    "tasks": [
+     {
+      "task": "shared_drone_base_delivery_assignment",
+      "split": "dev",
+      "candidate_sha256": "7a74784b82e3893ef59439e88e3ab325584a6acd0e18ebd73a2e2fdbe262b987",
+      "attempt": 0,
+      "feasible": false,
+      "quality": 0.0,
+      "true_correct": false,
+      "objective": 172480.0,
+      "proxy_match": false,
+      "phantom_proxy": false,
+      "failure_class": "business_infeasible",
+      "execution_return_code": 0,
+      "generation_error": null,
+      "cost": {
+       "llm_calls": 2,
+       "missing_usage_calls": 0,
+       "llm_latency_seconds": 81.546975,
+       "prompt_tokens": 77917,
+       "completion_tokens": 4936,
+       "reasoning_tokens": 0,
+       "total_tokens": 82853
+      },
+      "execution_wall_seconds": 25.151725,
+      "evaluation_wall_seconds": 7.854311,
+      "api_guard_repairs": 1,
+      "public_contract_repairs": 0,
+      "stderr_tail": null
+     },
+     {
+      "task": "autonomous_lab_courier_tsptw",
+      "split": "dev",
+      "candidate_sha256": "7a74784b82e3893ef59439e88e3ab325584a6acd0e18ebd73a2e2fdbe262b987",
+      "attempt": 0,
+      "feasible": false,
+      "quality": 0.0,
+      "true_correct": false,
+      "objective": 0.0,
+      "proxy_match": true,
+      "phantom_proxy": true,
+      "failure_class": "phantom_proxy",
+      "execution_return_code": 0,
+      "generation_error": null,
+      "cost": {
+       "llm_calls": 2,
+       "missing_usage_calls": 0,
+       "llm_latency_seconds": 63.675737,
+       "prompt_tokens": 22581,
+       "completion_tokens": 4122,
+       "reasoning_tokens": 0,
+       "total_tokens": 26703
+      },
+      "execution_wall_seconds": 14.338245,
+      "evaluation_wall_seconds": 15.095519,
+      "api_guard_repairs": 1,
+      "public_contract_repairs": 0,
+      "stderr_tail": null
+     },
+     {
+      "task": "flood_relief_multimodal_routing",
+      "split": "dev",
+      "candidate_sha256": "7a74784b82e3893ef59439e88e3ab325584a6acd0e18ebd73a2e2fdbe262b987",
+      "attempt": 0,
+      "feasible": false,
+      "quality": 0.0,
+      "true_correct": false,
+      "objective": null,
+      "proxy_match": false,
+      "phantom_proxy": false,
+      "failure_class": "incomplete_artifact",
+      "execution_return_code": -1,
+      "generation_error": "ValueError: incomplete_artifact: placeholder marker found",
+      "cost": {
+       "llm_calls": 2,
+       "missing_usage_calls": 0,
+       "llm_latency_seconds": 140.717143,
+       "prompt_tokens": 19539,
+       "completion_tokens": 9022,
+       "reasoning_tokens": 0,
+       "total_tokens": 28561
+      },
+      "execution_wall_seconds": null,
+      "evaluation_wall_seconds": 5.255236,
+      "api_guard_repairs": 1,
+      "public_contract_repairs": 0,
+      "stderr_tail": null
+     }
+    ],
+    "status": "complete",
+    "not_run_tasks": []
+   },
+   "transfer_evaluation": {
+    "n": 0,
+    "expected_tasks": 1,
+    "coverage": 0.0,
+    "feasible": 0,
+    "proxy_match": 0,
+    "true_correct": 0,
+    "phantom_proxy": 0,
+    "unknown": 0,
+    "unresolved_non_phantom": 0,
+    "mean_quality": 0.0,
+    "failure_counts": {},
+    "api_guard_modified": 0,
+    "cost": {
+     "llm_calls": 0,
+     "missing_usage_calls": 0,
+     "llm_latency_seconds": 0,
+     "prompt_tokens": 0,
+     "completion_tokens": 0,
+     "reasoning_tokens": 0,
+     "total_tokens": 0,
+     "solver_execution_time": {
+      "recorded_calls": 0,
+      "missing_calls": 0,
+      "seconds": null
+     },
+     "official_evaluation_time": {
+      "recorded_calls": 0,
+      "missing_calls": 0,
+      "seconds": null
+     }
+    },
+    "tasks": [],
+    "status": "not_run",
+    "not_run_tasks": [
+     "carbon_aware_compute_scheduling"
+    ]
+   }
+  },
+  {
+   "iteration_id": "c38a620b",
+   "trace_i": 5,
+   "accepted": false,
+   "candidate_idx": null,
+   "parent_iteration_ids": [
+    "seed"
+   ],
+   "subsample_ids": [
+    0,
+    1,
+    2
+   ],
+   "subsample_scores_before": [
+    1.0,
+    1.0,
+    0.0
+   ],
+   "subsample_scores_after": [
+    1.0,
+    1.0,
+    0.0
+   ],
+   "avg_val_score": null,
+   "metric_calls_to_discover": null,
+   "candidate_sha256": "29d2573949a4400b18af63e7131ef5eda84e414a719d5ec9b5785fe502dcaf02",
+   "candidate_text_saved": true,
+   "dev_evaluation": {
+    "n": 3,
+    "expected_tasks": 3,
+    "coverage": 1.0,
+    "feasible": 1,
+    "proxy_match": 2,
+    "true_correct": 1,
+    "phantom_proxy": 1,
+    "unknown": 0,
+    "unresolved_non_phantom": 1,
+    "mean_quality": 0.6666666666666666,
+    "failure_counts": {
+     "execution_error": 1,
+     "phantom_proxy": 1,
+     "true_correct": 1
+    },
+    "api_guard_modified": 3,
+    "cost": {
+     "llm_calls": 6,
+     "missing_usage_calls": 0,
+     "llm_latency_seconds": 268.626198,
+     "prompt_tokens": 126152,
+     "completion_tokens": 17221,
+     "reasoning_tokens": 0,
+     "total_tokens": 143373,
+     "solver_execution_time": {
+      "recorded_calls": 3,
+      "missing_calls": 0,
+      "seconds": 72.700728
+     },
+     "official_evaluation_time": {
+      "recorded_calls": 3,
+      "missing_calls": 0,
+      "seconds": 52.074672
+     }
+    },
+    "tasks": [
+     {
+      "task": "shared_drone_base_delivery_assignment",
+      "split": "dev",
+      "candidate_sha256": "29d2573949a4400b18af63e7131ef5eda84e414a719d5ec9b5785fe502dcaf02",
+      "attempt": 0,
+      "feasible": false,
+      "quality": 0.0,
+      "true_correct": false,
+      "objective": 0.0,
+      "proxy_match": true,
+      "phantom_proxy": true,
+      "failure_class": "phantom_proxy",
+      "execution_return_code": 0,
+      "generation_error": null,
+      "cost": {
+       "llm_calls": 2,
+       "missing_usage_calls": 0,
+       "llm_latency_seconds": 98.655963,
+       "prompt_tokens": 80308,
+       "completion_tokens": 6005,
+       "reasoning_tokens": 0,
+       "total_tokens": 86313
+      },
+      "execution_wall_seconds": 34.046614,
+      "evaluation_wall_seconds": 23.538102,
+      "api_guard_repairs": 1,
+      "public_contract_repairs": 0,
+      "stderr_tail": "Warning: No solution available"
+     },
+     {
+      "task": "autonomous_lab_courier_tsptw",
+      "split": "dev",
+      "candidate_sha256": "29d2573949a4400b18af63e7131ef5eda84e414a719d5ec9b5785fe502dcaf02",
+      "attempt": 0,
+      "feasible": true,
+      "quality": 2.0,
+      "true_correct": true,
+      "objective": 191.31400000000002,
+      "proxy_match": true,
+      "phantom_proxy": false,
+      "failure_class": "true_correct",
+      "execution_return_code": 0,
+      "generation_error": null,
+      "cost": {
+       "llm_calls": 2,
+       "missing_usage_calls": 0,
+       "llm_latency_seconds": 74.473492,
+       "prompt_tokens": 24781,
+       "completion_tokens": 4797,
+       "reasoning_tokens": 0,
+       "total_tokens": 29578
+      },
+      "execution_wall_seconds": 21.506476,
+      "evaluation_wall_seconds": 14.611096,
+      "api_guard_repairs": 1,
+      "public_contract_repairs": 0,
+      "stderr_tail": null
+     },
+     {
+      "task": "flood_relief_multimodal_routing",
+      "split": "dev",
+      "candidate_sha256": "29d2573949a4400b18af63e7131ef5eda84e414a719d5ec9b5785fe502dcaf02",
+      "attempt": 0,
+      "feasible": false,
+      "quality": 0.0,
+      "true_correct": false,
+      "objective": null,
+      "proxy_match": false,
+      "phantom_proxy": false,
+      "failure_class": "execution_error",
+      "execution_return_code": 1,
+      "generation_error": null,
+      "cost": {
+       "llm_calls": 2,
+       "missing_usage_calls": 0,
+       "llm_latency_seconds": 95.496743,
+       "prompt_tokens": 21063,
+       "completion_tokens": 6419,
+       "reasoning_tokens": 0,
+       "total_tokens": 27482
+      },
+      "execution_wall_seconds": 17.147638,
+      "evaluation_wall_seconds": 13.925474,
+      "api_guard_repairs": 3,
+      "public_contract_repairs": 0,
+      "stderr_tail": "AttributeError: 'pyscipopt.scip.Variable' object has no attribute 'chgVarLb'"
+     }
+    ],
+    "status": "complete",
+    "not_run_tasks": []
+   },
+   "transfer_evaluation": {
+    "n": 0,
+    "expected_tasks": 1,
+    "coverage": 0.0,
+    "feasible": 0,
+    "proxy_match": 0,
+    "true_correct": 0,
+    "phantom_proxy": 0,
+    "unknown": 0,
+    "unresolved_non_phantom": 0,
+    "mean_quality": 0.0,
+    "failure_counts": {},
+    "api_guard_modified": 0,
+    "cost": {
+     "llm_calls": 0,
+     "missing_usage_calls": 0,
+     "llm_latency_seconds": 0,
+     "prompt_tokens": 0,
+     "completion_tokens": 0,
+     "reasoning_tokens": 0,
+     "total_tokens": 0,
+     "solver_execution_time": {
+      "recorded_calls": 0,
+      "missing_calls": 0,
+      "seconds": null
+     },
+     "official_evaluation_time": {
+      "recorded_calls": 0,
+      "missing_calls": 0,
+      "seconds": null
+     }
+    },
+    "tasks": [],
+    "status": "not_run",
+    "not_run_tasks": [
+     "carbon_aware_compute_scheduling"
+    ]
+   }
+  }
+ ],
+ "n_rejected_proposals": 6,
+ "total_metric_calls": 37,
+ "wall_seconds": 4252.127,
+ "implementation_sha256": "b39faa8fd86e6fb409f0eca8af50011524e0c83b94524023dd68ecc222bd9a8f",
+ "evaluation_boundary": "Both sets participated in GEPA train/validation. Neither is a final held-out set."
+}

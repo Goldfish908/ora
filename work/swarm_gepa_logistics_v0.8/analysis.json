@@ -1,0 +1,36 @@
+{
+ "curves": [
+  {
+   "candidate_idx": 0,
+   "candidate_sha256": "08f95083f60719b0681fcca6cfad453b3faf28577335b466265903e2a11fe190",
+   "parents": [
+    null
+   ],
+   "official_proxy_mean": 0.0,
+   "n": 1,
+   "executable": 0,
+   "feasible": 0,
+   "proxy_match": 0,
+   "true_correct": 0,
+   "phantom_proxy": 0,
+   "unknown": 0,
+   "generation_errors": 0,
+   "mean_quality": 0.0
+  }
+ ],
+ "n_candidates": 1,
+ "witness_errors_used_for_reflection": false,
+ "official_reference_values_used_for_reflection": false,
+ "model": "Qwen3_8-27B",
+ "official_gepa_commit": "ce5b0d6e3d6af6c6dbec6de2c54536bbb961d309",
+ "wall_seconds": 4252.127,
+ "total_metric_calls": 37,
+ "train_ids": [
+  "shared_drone_base_delivery_assignment",
+  "autonomous_lab_courier_tsptw",
+  "flood_relief_multimodal_routing"
+ ],
+ "val_ids": [
+  "carbon_aware_compute_scheduling"
+ ]
+}

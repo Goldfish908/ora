@@ -1,0 +1,10 @@
+{
+  "version": "cleanroom_oracle_logistics_v0.10",
+  "selection_basis": "Reserve-only health checks selected before the third transfer outcome is known. Complete single-step public packet, bounded input, logistics domain, no use in specification learning, Qwen engineering or memory promotion. No task will be selected or rejected by Qwen score.",
+  "tasks": [
+    {"name": "home_healthcare_routing", "domain": "logistics", "split": "audit"},
+    {"name": "airport_gate_assignment", "domain": "logistics", "split": "audit"},
+    {"name": "circular_packaging_replenishment", "domain": "logistics", "split": "audit"},
+    {"name": "coastal_aquaculture_feed_oxygen_planning", "domain": "logistics", "split": "audit"}
+  ]
+}

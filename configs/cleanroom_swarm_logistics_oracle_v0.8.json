@@ -1,0 +1,15 @@
+{
+  "version": "cleanroom_swarm_logistics_oracle_v0.8",
+  "selection_basis": "Previously unused public logistics tasks only. Exclude all tasks used by earlier dev/audit/transfer/memory/guard work and known unhealthy tasks. Selection uses public scenario, packet budget and oracle/official health, never Qwen scores.",
+  "tasks": [
+    {"name": "precision_ag_sprayer_tanker_routing", "domain": "logistics", "split": "audit"},
+    {"name": "synchromodal_freight_recovery", "domain": "logistics", "split": "audit"},
+    {"name": "railway_disruption_recovery", "domain": "logistics", "split": "audit"},
+    {"name": "front_distribution_center_robust_inventory", "domain": "logistics", "split": "audit"},
+    {"name": "shared_drone_base_delivery_assignment", "domain": "logistics", "split": "audit"},
+    {"name": "autonomous_lab_courier_tsptw", "domain": "logistics", "split": "audit"},
+    {"name": "flood_relief_multimodal_routing", "domain": "logistics", "split": "audit"},
+    {"name": "curbside_delivery_slot_coordination", "domain": "logistics", "split": "audit"},
+    {"name": "container_gate_dro_appointment_planning", "domain": "logistics", "split": "audit"}
+  ]
+}

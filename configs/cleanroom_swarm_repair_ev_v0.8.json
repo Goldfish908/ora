@@ -1,0 +1,10 @@
+{
+  "version": "cleanroom_swarm_repair_ev_v0.8",
+  "selection_basis": "Engineering-only replay on the previously analyzed EV transfer. This task is contaminated for final independent evaluation and will not be reused as new evidence.",
+  "tasks": [
+    {"name": "additive_microfactory_order_planning", "domain": "manufacturing", "split": "dev"},
+    {"name": "industrial_supply_planning", "domain": "manufacturing", "split": "dev"},
+    {"name": "second_life_battery_pack_assembly", "domain": "manufacturing", "split": "dev"},
+    {"name": "ev_battery_recycling_network", "domain": "manufacturing", "split": "transfer"}
+  ]
+}

@@ -274,6 +274,31 @@ def repair_once(memory: EvidenceMemory, packet: TaskPacket, record: dict, specif
     return result
 
 
+def _evidence_transition(current: dict, child: dict) -> str:
+    def errors(record):
+        return (record.get("official", {}).get("evaluation", {}).get("errors") or [])
+
+    comparisons = (
+        (bool(current.get("true_correct")), bool(child.get("true_correct"))),
+        (current.get("execution", {}).get("return_code") == 0,
+         child.get("execution", {}).get("return_code") == 0),
+        (bool(current.get("feasible")), bool(child.get("feasible"))),
+        (not current.get("phantom_proxy"), not child.get("phantom_proxy")),
+        (not (current.get("unknown") or current.get("evaluation_unknown")),
+         not (child.get("unknown") or child.get("evaluation_unknown"))),
+    )
+    if any(old and not new for old, new in comparisons):
+        return "regression"
+    old_errors, new_errors = len(errors(current)), len(errors(child))
+    old_quality, new_quality = current.get("quality") or 0.0, child.get("quality") or 0.0
+    if new_errors > old_errors or new_quality < old_quality:
+        return "regression"
+    if any(new and not old for old, new in comparisons) \
+            or new_errors < old_errors or new_quality > old_quality:
+        return "progress"
+    return "unchanged"
+
+
 def repair_bounded(memory: EvidenceMemory, packet: TaskPacket, record: dict, specification: str,
                    config: llm_mod.LLMConfig, outdir: Path, run_seed: int = 0,
                    max_attempts: int = 3, api_guard: bool = False) -> dict:
@@ -311,6 +336,7 @@ def repair_bounded(memory: EvidenceMemory, packet: TaskPacket, record: dict, spe
         if child is not None and child["workspace"] != current["workspace"]:
             attempt_records.append(child)
         if result["status"] == "accepted":
+            history[-1]["evidence_transition"] = _evidence_transition(current, child)
             final_record = result["record"]
             final_verdicts = result["after"]
             stop_reason = "accepted"
@@ -323,18 +349,17 @@ def repair_bounded(memory: EvidenceMemory, packet: TaskPacket, record: dict, spe
             stop_reason = result["status"]
             continue
         child = result["record"]
-        same_evidence = (
-            result["before"] == result["after"]
-            and child["execution"].get("return_code") == current["execution"].get("return_code")
-            and child.get("objective") == current.get("objective")
-            and child.get("quality") == current.get("quality")
-            and (child["official"].get("evaluation", {}).get("errors") or [])
-            == (current["official"].get("evaluation", {}).get("errors") or []))
-        if same_evidence:
+        transition = _evidence_transition(current, child)
+        history[-1]["evidence_transition"] = transition
+        if transition == "unchanged":
             stop_reason = "no_verified_progress"
             break
+        if transition == "regression":
+            stop_reason = "rejected_regression"
+            continue
         current = child
         parent_id = result["node_id"]
+        stop_reason = "bounded_failure"
     accepted = stop_reason == "accepted"
     generation_costs = [generation_cost(baseline)]
     generation_costs += [generation_cost({"workspace": outdir / f"attempt_{index}/repair_1/app"})

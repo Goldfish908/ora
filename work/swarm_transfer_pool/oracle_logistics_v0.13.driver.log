@@ -1,0 +1,30 @@
+{
+ "federated_learning_cohort_selection": {
+  "feasible": true,
+  "quality": 1.9999999999966767,
+  "true_correct": true,
+  "objective": 6020.689909999994,
+  "evaluation_unknown": false
+ },
+ "cold_chain_locker_capacity_planning": {
+  "feasible": true,
+  "quality": 2.0,
+  "true_correct": true,
+  "objective": 16274.213377400003,
+  "evaluation_unknown": false
+ },
+ "cycling_network_design": {
+  "feasible": true,
+  "quality": 2.0,
+  "true_correct": true,
+  "objective": 216495021.89352,
+  "evaluation_unknown": false
+ },
+ "nurse_rostering": {
+  "feasible": true,
+  "quality": 2.0,
+  "true_correct": true,
+  "objective": 353.0,
+  "evaluation_unknown": false
+ }
+}

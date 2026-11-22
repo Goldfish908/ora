@@ -1,0 +1,13 @@
+{
+  "version": "cleanroom_swarm_frozen_logistics_v0.13",
+  "selection_basis": "Frozen role allocation before any Qwen run on these tasks. Existing audit packets calibrate only the domain Witness. Transfer tasks are disjoint from GEPA, Qwen engineering and memory promotion; selection uses public contracts and oracle/official health only.",
+  "tasks": [
+    {"name": "air_cargo_stochastic_order_allocation", "domain": "logistics", "split": "audit", "role": "witness_calibration"},
+    {"name": "wildfire_bus_evacuation_planning", "domain": "logistics", "split": "audit", "role": "witness_calibration"},
+    {"name": "heatwave_cooling_center_resource_plan", "domain": "logistics", "split": "audit", "role": "witness_calibration"},
+    {"name": "federated_learning_cohort_selection", "domain": "logistics", "split": "transfer", "role": "subsequent_transfer"},
+    {"name": "cold_chain_locker_capacity_planning", "domain": "logistics", "split": "transfer", "role": "subsequent_transfer"},
+    {"name": "cycling_network_design", "domain": "logistics", "split": "transfer", "role": "subsequent_transfer"},
+    {"name": "nurse_rostering", "domain": "logistics", "split": "transfer", "role": "subsequent_transfer"}
+  ]
+}

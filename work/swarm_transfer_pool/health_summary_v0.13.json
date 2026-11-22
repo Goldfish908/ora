@@ -1,0 +1,94 @@
+{
+ "version": "cleanroom_swarm_frozen_logistics_v0.13",
+ "n_tasks": 7,
+ "n_healthy": 7,
+ "all_true_correct": true,
+ "roles_sha256": "2843b01591c3c4ef44098d39a88fa62bafac68bbf30eb2841d8ffba93b7a033a",
+ "tasks": [
+  {
+   "task": "air_cargo_stochastic_order_allocation",
+   "domain": "logistics",
+   "split": "audit",
+   "role": "witness_calibration",
+   "feasible": true,
+   "quality": 1.0,
+   "objective": 8716.543824000004,
+   "source": "/home/hewj13/wm/ora/work/swarm_transfer_pool/oracle_logistics_v0.8.2/oracle_results.json",
+   "source_sha256": "89b623f324a3cc4b69c747c40ef43912b86b117728c28617b5218e3173231b7b",
+   "implementation_sha256": "12e12091de43209364121eb7300c82e1eb79aea78091c26c16fa05e1eedf524d"
+  },
+  {
+   "task": "wildfire_bus_evacuation_planning",
+   "domain": "logistics",
+   "split": "audit",
+   "role": "witness_calibration",
+   "feasible": true,
+   "quality": 2.0,
+   "objective": 860886.0992884045,
+   "source": "/home/hewj13/wm/ora/work/swarm_transfer_pool/oracle_logistics_v0.8.2/oracle_results.json",
+   "source_sha256": "89b623f324a3cc4b69c747c40ef43912b86b117728c28617b5218e3173231b7b",
+   "implementation_sha256": "12e12091de43209364121eb7300c82e1eb79aea78091c26c16fa05e1eedf524d"
+  },
+  {
+   "task": "heatwave_cooling_center_resource_plan",
+   "domain": "logistics",
+   "split": "audit",
+   "role": "witness_calibration",
+   "feasible": true,
+   "quality": 2.0,
+   "objective": 273011.26,
+   "source": "/home/hewj13/wm/ora/work/swarm_transfer_pool/oracle_logistics_v0.8.2/oracle_results.json",
+   "source_sha256": "89b623f324a3cc4b69c747c40ef43912b86b117728c28617b5218e3173231b7b",
+   "implementation_sha256": "12e12091de43209364121eb7300c82e1eb79aea78091c26c16fa05e1eedf524d"
+  },
+  {
+   "task": "federated_learning_cohort_selection",
+   "domain": "logistics",
+   "split": "transfer",
+   "role": "subsequent_transfer",
+   "feasible": true,
+   "quality": 1.9999999999966767,
+   "objective": 6020.689909999994,
+   "source": "/home/hewj13/wm/ora/work/swarm_transfer_pool/oracle_logistics_v0.13/oracle_results.json",
+   "source_sha256": "2fd91ef83eec26f1d3947c3f5df525328ca185711991fc55bfe9fa57a47c249d",
+   "implementation_sha256": "244243ed78295a096b3ec0fd4c619813e8ff93408c7e2e74b0b550e1c48cbb70"
+  },
+  {
+   "task": "cold_chain_locker_capacity_planning",
+   "domain": "logistics",
+   "split": "transfer",
+   "role": "subsequent_transfer",
+   "feasible": true,
+   "quality": 2.0,
+   "objective": 16274.213377400003,
+   "source": "/home/hewj13/wm/ora/work/swarm_transfer_pool/oracle_logistics_v0.13/oracle_results.json",
+   "source_sha256": "2fd91ef83eec26f1d3947c3f5df525328ca185711991fc55bfe9fa57a47c249d",
+   "implementation_sha256": "244243ed78295a096b3ec0fd4c619813e8ff93408c7e2e74b0b550e1c48cbb70"
+  },
+  {
+   "task": "cycling_network_design",
+   "domain": "logistics",
+   "split": "transfer",
+   "role": "subsequent_transfer",
+   "feasible": true,
+   "quality": 2.0,
+   "objective": 216495021.89352,
+   "source": "/home/hewj13/wm/ora/work/swarm_transfer_pool/oracle_logistics_v0.13/oracle_results.json",
+   "source_sha256": "2fd91ef83eec26f1d3947c3f5df525328ca185711991fc55bfe9fa57a47c249d",
+   "implementation_sha256": "244243ed78295a096b3ec0fd4c619813e8ff93408c7e2e74b0b550e1c48cbb70"
+  },
+  {
+   "task": "nurse_rostering",
+   "domain": "logistics",
+   "split": "transfer",
+   "role": "subsequent_transfer",
+   "feasible": true,
+   "quality": 2.0,
+   "objective": 353.0,
+   "source": "/home/hewj13/wm/ora/work/swarm_transfer_pool/oracle_logistics_v0.13/oracle_results.json",
+   "source_sha256": "2fd91ef83eec26f1d3947c3f5df525328ca185711991fc55bfe9fa57a47c249d",
+   "implementation_sha256": "244243ed78295a096b3ec0fd4c619813e8ff93408c7e2e74b0b550e1c48cbb70"
+  }
+ ],
+ "evidence_note": "Original oracle/official health only; Qwen outcomes were not used to select these tasks."
+}

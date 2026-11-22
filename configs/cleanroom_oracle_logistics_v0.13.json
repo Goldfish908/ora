@@ -1,0 +1,10 @@
+{
+  "version": "cleanroom_oracle_logistics_v0.13",
+  "selection_basis": "New independent health checks for a later aligned-pipeline comparison. Complete bounded single-step packets, no specification learning, Qwen engineering or memory promotion. petroleum_terminal_dro_inventory is excluded for exceeding the public packet limit. Selection uses only public contracts and oracle/official health, never Qwen scores.",
+  "tasks": [
+    {"name": "federated_learning_cohort_selection", "domain": "logistics", "split": "audit"},
+    {"name": "cold_chain_locker_capacity_planning", "domain": "logistics", "split": "audit"},
+    {"name": "cycling_network_design", "domain": "logistics", "split": "audit"},
+    {"name": "nurse_rostering", "domain": "logistics", "split": "audit"}
+  ]
+}

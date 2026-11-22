@@ -1,0 +1,10 @@
+{
+  "version": "cleanroom_swarm_transfer_logistics_v0.13",
+  "selection_basis": "Four new subsequent-transfer candidates with true-correct oracle/official health and complete bounded single-step packets. None has participated in specification learning, Qwen engineering or memory promotion. The aligned decision-repair experiment will start only after its engineering validation is complete.",
+  "tasks": [
+    {"name": "federated_learning_cohort_selection", "domain": "logistics", "split": "transfer"},
+    {"name": "cold_chain_locker_capacity_planning", "domain": "logistics", "split": "transfer"},
+    {"name": "cycling_network_design", "domain": "logistics", "split": "transfer"},
+    {"name": "nurse_rostering", "domain": "logistics", "split": "transfer"}
+  ]
+}

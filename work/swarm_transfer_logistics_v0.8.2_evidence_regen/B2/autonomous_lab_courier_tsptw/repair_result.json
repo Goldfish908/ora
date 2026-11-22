@@ -1,0 +1,281 @@
+{
+ "status": "accepted",
+ "record": {
+  "task": "autonomous_lab_courier_tsptw",
+  "domain": "logistics",
+  "split": "transfer",
+  "candidate_sha256": "08f95083f60719b0681fcca6cfad453b3faf28577335b466265903e2a11fe190",
+  "attempt": 2,
+  "problem": {
+   "instruction": "You are solving an operations-research benchmark task inside a sandbox.\n\nWork only inside `/app`. Do not use the internet, hidden evaluator files, reference models, package registries, or remote data.\n\nRequired workflow:\n1. Read `/app/PROBLEM_STATEMENT.md`, and every file under `/app/data/`.\n2. Write a complete mathematical model to `/app/submissions/model.md` before finalizing code.\n3. Implement the solver in `/app/submissions/solve.py` using PySCIPOpt.\n4. Use SCIP relative gap `0.0005`. If `ORCLAW_SOLVE_TIME_LIMIT_SECONDS` is set, use a time limit no larger than that value. Preserve solution values with precision up to `1e-8` after the decimal point.\n5. Make `/app/submissions/solve.py` solve from scratch when run as `python /app/submissions/solve.py`.\n6. Write the required solution file under `/app/submissions/` using the task schema.\n7. Write `/app/submissions/solve_log.md` with commands, solver status, objective or score if available, and validation checks.\n\nNote:\nYou may improve the modeling and solving strategy based on preliminary results, but each individual solve attempt is limited to 5 minutes. The whole workflow is also time-limited, so do not perform unlimited full solve-and-iterate cycles.\n\nBefore running expensive solves, reason about the problem structure and choose an efficient approach. You may:\n1. Use stronger mathematical formulations and more sophisticated modeling strategies tailored to the structure, special properties, and scale of the given problem instance.\n2. Solve directly with SCIP when the model is tractable.\n3. Design effective heuristic, local-search, repair, or rounding methods when exact optimization is too slow.\n4. Combine heuristics with SCIP, for example by generating an initial feasible solution, fixing or relaxing selected variables, using warm starts if supported, or solving restricted subproblems.\n5. Run short diagnostic solves to estimate difficulty, then refine the model or solution method.\n\nDo not default to a naive formulation. Before coding, explicitly analyze whether the problem is better represented as an assignment model, network flow model, set partitioning model, time-indexed model, interval/order-based scheduling model, routing model, or decomposition-based model and so on. Choose the formulation that is likely to give the strongest relaxation and fastest solution for the given instance size. Use preprocessing, dominance filtering, bound tightening, valid inequalities, symmetry breaking, and heuristic warm starts whenever applicable.\n\nUse the limited iteration budget wisely:\n- First ensure feasibility and correct output schema.\n- Then improve objective quality.\n- Prefer targeted refinements over repeated full solves.\n- Stop iterating when additional improvements are unlikely within the remaining time.\n- Record every meaningful solve attempt and validation result in `/app/submissions/solve_log.md`.\n\nThe final submission should prioritize correctness, feasibility, and robust execution from scratch under the time limit.\n",
+   "problem_statement": "# Autonomous Lab Courier TSPTW\n\nA hospital campus is using one autonomous courier to visit laboratory, clinic, and pharmacy stops during a short operating wave. The courier starts at the hub, must visit every non-depot stop exactly once, respect each stop's service time window, and return to the hub before the deadline.\n\nThe planning goal is to minimize total travel cost while producing an auditable route schedule. Waiting is allowed when the courier arrives before a stop opens, but the recorded service arrival and departure times must be consistent with travel times, service times, and the listed windows.\n\nYou are helping a hospital campus schedule one autonomous courier route with stop time windows. Read `/app/PROBLEM_STATEMENT.md` and every file under `/app/data/`, build an optimization model, and submit all required files under `/app/submissions`. Use PySCIPOpt for the optimization step. The final CSV should list the visit order and service timing for every non-depot stop.\n\n\n## Data\n\n- `config.json`: depot, start time, return deadline, and feasibility tolerance.\n- `stops.csv`: stop type, time window, and service duration. The depot row is included for reference and should not appear as a customer visit in the submission.\n- `travel_times.csv`: directed travel time and travel cost between every pair of stops.\n\n## Rules\n\nThe route starts at the depot at the listed start time. Visit each non-depot stop exactly once. Consecutive submitted visits must allow enough directed travel time from the previous stop and enough service time before departure. Arrival times must fall inside the stop's time window. After the last stop, the courier must have enough time to return to the depot by the return deadline.\n\n## Submission Schema\n\nWrite `/app/submissions/solution.csv` with columns:\n\n`route_order,stop_id,arrival_min,departure_min`\n\nUse route orders `1, 2, ...` with one row for each non-depot stop. Do not include the depot row.\n",
+   "public_files": {
+    "PROBLEM_STATEMENT.md": "# Autonomous Lab Courier TSPTW\n\nA hospital campus is using one autonomous courier to visit laboratory, clinic, and pharmacy stops during a short operating wave. The courier starts at the hub, must visit every non-depot stop exactly once, respect each stop's service time window, and return to the hub before the deadline.\n\nThe planning goal is to minimize total travel cost while producing an auditable route schedule. Waiting is allowed when the courier arrives before a stop opens, but the recorded service arrival and departure times must be consistent with travel times, service times, and the listed windows.\n\nYou are helping a hospital campus schedule one autonomous courier route with stop time windows. Read `/app/PROBLEM_STATEMENT.md` and every file under `/app/data/`, build an optimization model, and submit all required files under `/app/submissions`. Use PySCIPOpt for the optimization step. The final CSV should list the visit order and service timing for every non-depot stop.\n\n\n## Data\n\n- `config.json`: depot, start time, return deadline, and feasibility tolerance.\n- `stops.csv`: stop type, time window, and service duration. The depot row is included for reference and should not appear as a customer visit in the submission.\n- `travel_times.csv`: directed travel time and travel cost between every pair of stops.\n\n## Rules\n\nThe route starts at the depot at the listed start time. Visit each non-depot stop exactly once. Consecutive submitted visits must allow enough directed travel time from the previous stop and enough service time before departure. Arrival times must fall inside the stop's time window. After the last stop, the courier must have enough time to return to the depot by the return deadline.\n\n## Submission Schema\n\nWrite `/app/submissions/solution.csv` with columns:\n\n`route_order,stop_id,arrival_min,departure_min`\n\nUse route orders `1, 2, ...` with one row for each non-depot stop. Do not include the depot row.\n",
+    "data/config.json": "{\n  \"depot_stop_id\": \"HUB\",\n  \"feasibility_tolerance\": 1e-05,\n  \"return_deadline_min\": 335.0,\n  \"start_time_min\": 0.0\n}\n",
+    "data/stops.csv": "stop_id,stop_name,stop_type,earliest_min,latest_min,service_min\nHUB,Autonomous Courier Hub,depot,0.0,0.0,0.0\nLAB_A,Lab A,sample_pickup,0.0,47.9,7.5\nBIOBANK,Biobank,sample_pickup,18.3,58.8,8.2\nCLINIC_N,Clinic N,medicine_drop,33.3,82.5,10.1\nIMAGING,Imaging,sample_pickup,47.2,93.9,6.0\nPHARMACY,Pharmacy,sample_pickup,57.6,132.8,8.2\nSTERILE,Sterile,medicine_drop,87.7,133.8,8.3\nWARD_E,Ward E,sample_pickup,102.2,161.0,10.3\nDIALYSIS,Dialysis,sample_pickup,117.0,175.7,6.3\nLAB_B,Lab B,medicine_drop,140.5,197.7,8.1\nURGENT,Urgent,sample_pickup,157.8,214.8,8.9\nCLINIC_W,Clinic W,sample_pickup,184.7,222.5,8.9\nGENOMICS,Genomics,medicine_drop,195.4,252.1,6.3\nTRIALS,Trials,sample_pickup,216.5,272.3,7.2\nVACCINE,Vaccine,sample_pickup,231.3,294.7,8.2\nOUTREACH,Outreach,medicine_drop,255.3,297.0,10.5\n",
+    "data/travel_times.csv": "from_stop_id,to_stop_id,travel_min,travel_cost\nHUB,LAB_A,12.95,13.131\nHUB,BIOBANK,19.23,19.757\nHUB,CLINIC_N,21.71,22.045\nHUB,IMAGING,22.73,22.861\nHUB,PHARMACY,20.88,21.486\nHUB,STERILE,15.74,16.091\nHUB,WARD_E,14.86,15.208\nHUB,DIALYSIS,13.42,13.602\nHUB,LAB_B,14.35,14.567\nHUB,URGENT,17.28,17.538\nHUB,CLINIC_W,17.87,18.265\nHUB,GENOMICS,19.29,19.661\nHUB,TRIALS,24.68,25.169\nHUB,VACCINE,27.84,28.252\nHUB,OUTREACH,30.96,31.272\nLAB_A,HUB,14.34,14.531\nLAB_A,BIOBANK,8.54,8.573\nLAB_A,CLINIC_N,13.87,14.052\nLAB_A,IMAGING,19.70,19.854\nLAB_A,PHARMACY,22.51,22.716\nLAB_A,STERILE,21.10,21.471\nLAB_A,WARD_E,24.43,24.871\nLAB_A,DIALYSIS,23.96,24.422\nLAB_A,LAB_B,23.83,23.892\nLAB_A,URGENT,21.94,22.228\nLAB_A,CLINIC_W,16.21,16.329\nLAB_A,GENOMICS,8.59,8.811\nLAB_A,TRIALS,12.83,13.102\nLAB_A,VACCINE,17.68,18.186\nLAB_A,OUTREACH,21.87,22.173\nBIOBANK,HUB,18.84,18.997\nBIOBANK,LAB_A,8.80,8.948\nBIOBANK,CLINIC_N,7.40,7.524\nBIOBANK,IMAGING,13.83,14.201\nBIOBANK,PHARMACY,22.03,22.377\nBIOBANK,STERILE,24.76,25.255\nBIOBANK,WARD_E,29.89,30.771\nBIOBANK,DIALYSIS,30.75,31.239\nBIOBANK,LAB_B,31.09,31.151\nBIOBANK,URGENT,27.33,27.370\nBIOBANK,CLINIC_W,21.79,21.825\nBIOBANK,GENOMICS,11.99,12.131\nBIOBANK,TRIALS,9.70,9.781\nBIOBANK,VACCINE,11.67,12.001\nBIOBANK,OUTREACH,14.89,15.114\nCLINIC_N,HUB,21.55,21.558\nCLINIC_N,LAB_A,13.35,13.744\nCLINIC_N,BIOBANK,7.49,7.709\nCLINIC_N,IMAGING,9.00,9.127\nCLINIC_N,PHARMACY,17.60,17.881\nCLINIC_N,STERILE,20.42,20.424\nCLINIC_N,WARD_E,28.07,28.422\nCLINIC_N,DIALYSIS,31.05,31.886\nCLINIC_N,LAB_B,34.17,34.694\nCLINIC_N,URGENT,33.79,34.239\nCLINIC_N,CLINIC_W,26.88,27.215\nCLINIC_N,GENOMICS,18.13,18.206\nCLINIC_N,TRIALS,15.67,15.850\nCLINIC_N,VACCINE,10.75,10.797\nCLINIC_N,OUTREACH,11.00,11.062\nIMAGING,HUB,23.85,24.456\nIMAGING,LAB_A,19.31,19.371\nIMAGING,BIOBANK,13.95,14.234\nIMAGING,CLINIC_N,8.55,8.733\nIMAGING,PHARMACY,12.56,12.854\nIMAGING,STERILE,18.92,19.481\nIMAGING,WARD_E,25.25,25.780\nIMAGING,DIALYSIS,31.26,31.320\nIMAGING,LAB_B,34.64,34.945\nIMAGING,URGENT,38.76,38.835\nIMAGING,CLINIC_W,34.27,34.408\nIMAGING,GENOMICS,25.49,26.244\nIMAGING,TRIALS,21.39,21.441\nIMAGING,VACCINE,16.05,16.249\nIMAGING,OUTREACH,10.16,10.442\nPHARMACY,HUB,22.08,22.550\nPHARMACY,LAB_A,22.29,22.662\nPHARMACY,BIOBANK,20.78,21.153\nPHARMACY,CLINIC_N,17.67,17.944\nPHARMACY,IMAGING,12.74,13.061\nPHARMACY,STERILE,9.60,9.728\nPHARMACY,WARD_E,17.62,18.124\nPHARMACY,DIALYSIS,26.10,26.414\nPHARMACY,LAB_B,32.47,32.922\nPHARMACY,URGENT,38.21,38.226\nPHARMACY,CLINIC_W,36.25,36.425\nPHARMACY,GENOMICS,31.07,31.368\nPHARMACY,TRIALS,30.77,30.856\nPHARMACY,VACCINE,25.99,26.700\nPHARMACY,OUTREACH,20.61,20.790\nSTERILE,HUB,15.82,16.177\nSTERILE,LAB_A,22.80,22.806\nSTERILE,BIOBANK,24.12,24.392\nSTERILE,CLINIC_N,20.18,20.337\nSTERILE,IMAGING,18.53,18.891\nSTERILE,PHARMACY,10.31,10.347\nSTERILE,WARD_E,10.75,10.766\nSTERILE,DIALYSIS,18.58,18.686\nSTERILE,LAB_B,25.84,26.016\nSTERILE,URGENT,30.50,30.757\nSTERILE,CLINIC_W,31.74,32.577\nSTERILE,GENOMICS,30.26,30.360\nSTERILE,TRIALS,30.10,30.659\nSTERILE,VACCINE,32.09,32.142\nSTERILE,OUTREACH,26.94,27.361\nWARD_E,HUB,15.30,15.470\nWARD_E,LAB_A,24.46,24.538\nWARD_E,BIOBANK,27.67,28.493\nWARD_E,CLINIC_N,28.69,29.094\nWARD_E,IMAGING,26.04,26.520\nWARD_E,PHARMACY,17.86,18.371\nWARD_E,STERILE,9.71,9.791\nWARD_E,DIALYSIS,10.36,10.493\nWARD_E,LAB_B,18.34,18.539\nWARD_E,URGENT,26.60,26.888\nWARD_E,CLINIC_W,32.04,32.316\nWARD_E,GENOMICS,30.89,31.453\nWARD_E,TRIALS,35.93,36.552\nWARD_E,VACCINE,34.81,35.777\nWARD_E,OUTREACH,35.97,36.570\nDIALYSIS,HUB,12.63,12.900\nDIALYSIS,LAB_A,25.67,25.905\nDIALYSIS,BIOBANK,31.30,31.380\nDIALYSIS,CLINIC_N,29.36,30.215\nDIALYSIS,IMAGING,32.68,33.376\nDIALYSIS,PHARMACY,26.42,26.971\nDIALYSIS,STERILE,19.08,19.388\nDIALYSIS,WARD_E,10.51,10.767\nDIALYSIS,LAB_B,10.02,10.061\nDIALYSIS,URGENT,18.87,18.968\nDIALYSIS,CLINIC_W,26.34,26.490\nDIALYSIS,GENOMICS,29.34,29.692\nDIALYSIS,TRIALS,33.82,33.834\nDIALYSIS,VACCINE,40.15,41.217\nDIALYSIS,OUTREACH,38.79,39.332\nLAB_B,HUB,14.57,14.961\nLAB_B,LAB_A,23.94,24.136\nLAB_B,BIOBANK,29.15,29.317\nLAB_B,CLINIC_N,34.76,35.765\nLAB_B,IMAGING,36.00,36.290\nLAB_B,PHARMACY,32.16,32.290\nLAB_B,STERILE,23.80,24.101\nLAB_B,WARD_E,17.99,18.391\nLAB_B,DIALYSIS,10.09,10.137\nLAB_B,URGENT,11.10,11.425\nLAB_B,CLINIC_W,19.94,20.229\nLAB_B,GENOMICS,27.53,27.719\nLAB_B,TRIALS,36.03,36.940\nLAB_B,VACCINE,40.03,41.049\nLAB_B,OUTREACH,42.15,42.180\nURGENT,HUB,16.39,16.817\nURGENT,LAB_A,21.00,21.373\nURGENT,BIOBANK,27.66,27.763\nURGENT,CLINIC_N,33.74,34.329\nURGENT,IMAGING,37.60,38.263\nURGENT,PHARMACY,36.83,37.850\nURGENT,STERILE,31.32,31.326\nURGENT,WARD_E,26.36,27.100\nURGENT,DIALYSIS,20.04,20.498\nURGENT,LAB_B,11.34,11.403\nURGENT,CLINIC_W,12.45,12.816\nURGENT,GENOMICS,23.06,23.366\nURGENT,TRIALS,30.77,31.497\nURGENT,VACCINE,38.49,38.858\nURGENT,OUTREACH,42.49,42.638\nCLINIC_W,HUB,18.63,19.180\nCLINIC_W,LAB_A,15.46,15.686\nCLINIC_W,BIOBANK,21.88,22.153\nCLINIC_W,CLINIC_N,26.04,26.685\nCLINIC_W,IMAGING,34.13,35.051\nCLINIC_W,PHARMACY,34.77,35.764\nCLINIC_W,STERILE,31.92,32.561\nCLINIC_W,WARD_E,30.40,30.782\nCLINIC_W,DIALYSIS,25.71,25.881\nCLINIC_W,LAB_B,19.40,19.482\nCLINIC_W,URGENT,12.57,12.734\nCLINIC_W,GENOMICS,12.23,12.356\nCLINIC_W,TRIALS,19.41,19.670\nCLINIC_W,VACCINE,29.69,29.852\nCLINIC_W,OUTREACH,35.11,35.520\nGENOMICS,HUB,19.26,19.644\nGENOMICS,LAB_A,8.38,8.615\nGENOMICS,BIOBANK,11.88,11.946\nGENOMICS,CLINIC_N,18.86,19.011\nGENOMICS,IMAGING,25.48,26.130\nGENOMICS,PHARMACY,30.24,30.823\nGENOMICS,STERILE,29.66,29.663\nGENOMICS,WARD_E,30.95,31.745\nGENOMICS,DIALYSIS,30.83,31.161\nGENOMICS,LAB_B,26.76,27.150\nGENOMICS,URGENT,23.25,23.573\nGENOMICS,CLINIC_W,12.19,12.262\nGENOMICS,TRIALS,9.79,9.942\nGENOMICS,VACCINE,18.99,19.199\nGENOMICS,OUTREACH,25.65,25.806\nTRIALS,HUB,23.82,24.242\nTRIALS,LAB_A,12.44,12.663\nTRIALS,BIOBANK,9.64,9.766\nTRIALS,CLINIC_N,14.59,14.916\nTRIALS,IMAGING,22.13,22.706\nTRIALS,PHARMACY,30.62,30.837\nTRIALS,STERILE,31.59,32.349\nTRIALS,WARD_E,34.93,35.883\nTRIALS,DIALYSIS,33.89,34.621\nTRIALS,LAB_B,34.90,35.745\nTRIALS,URGENT,28.91,29.628\nTRIALS,CLINIC_W,20.60,20.989\nTRIALS,GENOMICS,9.48,9.484\nTRIALS,VACCINE,12.56,12.607\nTRIALS,OUTREACH,18.83,18.991\nVACCINE,HUB,29.17,29.989\nVACCINE,LAB_A,18.04,18.487\nVACCINE,BIOBANK,11.29,11.466\nVACCINE,CLINIC_N,11.05,11.335\nVACCINE,IMAGING,16.44,16.688\nVACCINE,PHARMACY,25.93,26.623\nVACCINE,STERILE,30.14,30.450\nVACCINE,WARD_E,34.67,35.098\nVACCINE,DIALYSIS,38.67,39.074\nVACCINE,LAB_B,40.32,41.299\nVACCINE,URGENT,39.94,40.692\nVACCINE,CLINIC_W,30.67,30.888\nVACCINE,GENOMICS,20.02,20.573\nVACCINE,TRIALS,12.63,12.968\nVACCINE,OUTREACH,9.56,9.797\nOUTREACH,HUB,29.35,30.114\nOUTREACH,LAB_A,22.68,22.811\nOUTREACH,BIOBANK,15.22,15.634\nOUTREACH,CLINIC_N,10.37,10.442\nOUTREACH,IMAGING,10.06,10.174\nOUTREACH,PHARMACY,20.69,21.168\nOUTREACH,STERILE,27.93,28.709\nOUTREACH,WARD_E,36.04,36.417\nOUTREACH,DIALYSIS,38.63,39.367\nOUTREACH,LAB_B,42.28,42.469\nOUTREACH,URGENT,39.18,39.185\nOUTREACH,CLINIC_W,36.25,36.443\nOUTREACH,GENOMICS,23.79,23.904\nOUTREACH,TRIALS,18.95,19.448\nOUTREACH,VACCINE,9.97,10.001\n",
+    "submissions/solution_template.csv": "route_order,stop_id,arrival_min,departure_min\n"
+   }
+  },
+  "artifacts": {
+   "model_md": "# Autonomous Lab Courier TSPTW — Mathematical Model\n\n## Problem\nOne autonomous courier starts at depot HUB at time 0, must visit each of the 15 non-depot stops exactly once, respect each stop's [earliest, latest] arrival window and service duration, and return to HUB by the deadline (335 min). Minimize total travel cost.\n\n## Data\n- `stops.csv`: for each stop s: earliest E_s, latest L_s, service time S_s.\n- `travel_times.csv`: directed travel time T_{i,j} and cost C_{i,j} for all ordered pairs (i,j) of stops (including HUB).\n- `config.json`: depot HUB, start 0, deadline 335.\n\n## Decision Variables\nFor i, j in {HUB} ∪ stops, i ≠ j:\n- x_{i,j} ∈ {0,1}: 1 if the courier travels directly from i to j.\n- t_j ∈ [0, 335]: arrival time at stop j (continuous).\n\n## Constraints\n1. **Flow conservation (degree):**\n   - For each non-depot stop j: Σ_i x_{i,j} = 1 and Σ_j x_{j,i} = 1.\n   - Out of depot: Σ_j x_{HUB,j} = 1; into depot: Σ_i x_{i,HUB} = 1.\n\n2. **MTZ subtour elimination** (using arrival times):\n   For each non-depot i, j (i ≠ j):\n   t_j ≥ t_i + S_i + T_{i,j} − M(1 − x_{i,j})\n   where M = 335 (deadline). This enforces time consistency and eliminates subtours.\n\n3. **Time windows:**\n   E_j ≤ t_j ≤ L_j for every non-depot stop j.\n\n4. **Return deadline:**\n   For each non-depot i: t_{HUB} ≥ t_i + S_i + T_{i,HUB} − M(1 − x_{i,HUB}), with t_{HUB} ≤ 335.\n   (Equivalently: if x_{i,HUB}=1 then t_i + S_i + T_{i,HUB} ≤ 335.)\n\n## Objective\nMinimize Σ_{i,j} C_{i,j} · x_{i,j}\n\n## Solver\nPySCIPOpt, SCIP gaprel = 0.0005, time limit from ORCLAW_SOLVE_TIME_LIMIT_SECONDS if set.\n\n## Output\n`/app/submissions/solution.csv` with columns route_order, stop_id, arrival_min, departure_min.\nRoute order derived from the x variables (follow the chain from HUB). Arrival = t_j, departure = t_j + S_j.",
+   "solve_log_md": "# Solve Log — autonomous_lab_courier_tsptw\n\n## Approach\n- Rebuilt the model from scratch as a time-windowed single-vehicle TSPTW (MTZ formulation).\n- Decision variables: x[i,j] binary (direct travel arc), t[j] continuous arrival time for each non-depot stop, tHUB continuous return time.\n- Constraints:\n  1. Each non-depot stop has exactly one incoming and one outgoing arc (depot has one outgoing, one incoming).\n  2. MTZ time-linking: t[j] >= t[i] + service[i] + travel[i,j] - M*(1-x[i,j]) for all non-depot i,j.\n  3. Time windows: earliest[j] <= t[j] <= latest[j].\n  4. Return: tHUB >= t[i] + service[i] + travel[i,HUB] - M*(1-x[i,HUB]); tHUB <= deadline (335).\n  5. tHUB >= start (0).\n- Objective: minimize sum of travel_cost[i,j]*x[i,j] over all arcs including depot arcs.\n- Gap: 0.0005. Time limit: min(300, ORCLAW_SOLVE_TIME_LIMIT_SECONDS if set).\n\n## Commands\n- `python /app/submissions/solve.py`\n\n## Solver Status\n- SCIP status: optimal (solved to gap <= 0.0005)\n- Objective: minimum total travel cost (printed at runtime)\n\n## Validation Checks\n- Every non-depot stop appears exactly once in the route.\n- Route starts from HUB and returns to HUB.\n- Arrival times within [earliest, latest] windows (tolerance 1e-5).\n- Arrival at next stop >= departure from previous + travel time.\n- Departure = arrival + service duration.\n- Return to HUB by deadline 335.\n- Output schema: route_order,stop_id,arrival_min,departure_min (no depot row).\n\n## Notes\n- The previous attempt produced an infeasible model (presolving detected infeasibility) and wrote an invalid solution. This regeneration fixes the model structure: MTZ constraints are only added for arcs between non-depot stops, the depot return is handled via tHUB, and all time windows are enforced directly on t[j].",
+   "solve_py": "import csv\nimport json\nimport os\nimport sys\n\nfrom pyscipopt import Model, quicksum\n\nDATA_DIR = \"/app/data\"\nSUB_DIR = \"/app/submissions\"\nSOLUTION_PATH = os.path.join(SUB_DIR, \"solution.csv\")\nMODEL_MD_PATH = os.path.join(SUB_DIR, \"model.md\")\n\n\ndef read_data():\n    with open(os.path.join(DATA_DIR, \"config.json\"), \"r\") as f:\n        config = json.load(f)\n\n    stops = {}\n    with open(os.path.join(DATA_DIR, \"stops.csv\"), \"r\") as f:\n        reader = csv.DictReader(f)\n        for row in reader:\n            sid = row[\"stop_id\"].strip()\n            stops[sid] = {\n                \"earliest\": float(row[\"earliest_min\"]),\n                \"latest\": float(row[\"latest_min\"]),\n                \"service\": float(row[\"service_min\"]),\n            }\n\n    travel = {}\n    with open(os.path.join(DATA_DIR, \"travel_times.csv\"), \"r\") as f:\n        reader = csv.DictReader(f)\n        for row in reader:\n            frm = row[\"from_stop_id\"].strip()\n            to = row[\"to_stop_id\"].strip()\n            travel[(frm, to)] = {\n                \"time\": float(row[\"travel_min\"]),\n                \"cost\": float(row[\"travel_cost\"]),\n            }\n\n    return config, stops, travel\n\n\ndef main():\n    os.makedirs(SUB_DIR, exist_ok=True)\n\n    config, stops, travel = read_data()\n    depot = config[\"depot_stop_id\"]\n    start_time = config[\"start_time_min\"]\n    deadline = config[\"return_deadline_min\"]\n    tol = config.get(\"feasibility_tolerance\", 1e-5)\n\n    customers = [s for s in stops if s != depot]\n    n = len(customers)\n    print(f\"Depot: {depot}, Customers: {n}, Start: {start_time}, Deadline: {deadline}\")\n\n    # Travel time/cost lookup with defaults\n    def tt(i, j):\n        return travel.get((i, j), {}).get(\"time\", 0.0)\n\n    def tc(i, j):\n        return travel.get((i, j), {}).get(\"cost\", 0.0)\n\n    # Build model\n    model = Model(\"courier_tsptw\")\n    model.setParam(\"gaprel\", 0.0005)\n\n    time_limit = 300.0\n    env_limit = os.environ.get(\"ORCLAW_SOLVE_TIME_LIMIT_SECONDS\")\n    if env_limit is not None:\n        try:\n            time_limit = min(time_limit, float(env_limit))\n        except ValueError:\n            pass\n    model.setParam(\"limits/time\", time_limit)\n\n    M = deadline  # big-M for MTZ\n\n    # Variables\n    # x[i,j] for all i != j in {depot} U customers\n    all_nodes = [depot] + customers\n    x = {}\n    for i in all_nodes:\n        for j in all_nodes:\n            if i == j:\n                continue\n            x[(i, j)] = model.addVar(name=f\"x_{i}_{j}\", vtype=\"B\", lb=0, ub=1, obj=0.0)\n\n    # t[j] arrival time at customer j\n    t = {}\n    for j in customers:\n        t[j] = model.addVar(name=f\"t_{j}\", vtype=\"C\", lb=start_time, ub=deadline, obj=0.0)\n\n    # tHUB: return time to depot\n    tHUB = model.addVar(name=\"tHUB\", vtype=\"C\", lb=start_time, ub=deadline, obj=0.0)\n\n    # Objective: minimize total travel cost\n    obj_expr = quicksum(tc(i, j) * x[(i, j)] for i in all_nodes for j in all_nodes if i != j)\n    model.setObjective(obj_expr, sense=\"minimize\")\n\n    # Degree constraints\n    for j in customers:\n        # exactly one incoming\n        model.addCons(\n            quicksum(x[(i, j)] for i in all_nodes if i != j) == 1,\n            name=f\"in_{j}\",\n        )\n        # exactly one outgoing\n        model.addCons(\n            quicksum(x[(j, k)] for k in all_nodes if k != j) == 1,\n            name=f\"out_{j}\",\n        )\n\n    # Depot: one outgoing, one incoming\n    model.addCons(\n        quicksum(x[(depot, j)] for j in customers) == 1,\n        name=\"depot_out\",\n    )\n    model.addCons(\n        quicksum(x[(i, depot)] for i in customers) == 1,\n        name=\"depot_in\",\n    )\n\n    # MTZ time-linking constraints for arcs between customers\n    for i in customers:\n        for j in customers:\n            if i == j:\n                continue\n            model.addCons(\n                t[j] >= t[i] + stops[i][\"service\"] + tt(i, j) - M * (1 - x[(i, j)]),\n                name=f\"mtz_{i}_{j}\",\n            )\n\n    # Time window constraints\n    for j in customers:\n        model.addCons(t[j] >= stops[j][\"earliest\"], name=f\"tw_lo_{j}\")\n        model.addCons(t[j] <= stops[j][\"latest\"], name=f\"tw_hi_{j}\")\n\n    # Return to depot by deadline:\n    # If x[i, depot] = 1, then tHUB >= t[i] + service[i] + travel[i, depot]\n    for i in customers:\n        model.addCons(\n            tHUB >= t[i] + stops[i][\"service\"] + tt(i, depot) - M * (1 - x[(i, depot)]),\n            name=f\"ret_{i}\",\n        )\n    model.addCons(tHUB <= deadline, name=\"deadline\")\n\n    # First stop from depot: if x[depot, j] = 1, then t[j] >= start_time + travel[depot, j]\n    for j in customers:\n        model.addCons(\n            t[j] >= start_time + tt(depot, j) - M * (1 - x[(depot, j)]),\n            name=f\"first_{j}\",\n        )\n\n    # Solve\n    try:\n        model.optimize()\n    except Exception as e:\n        print(f\"Solver exception: {e}\")\n        # Write empty solution\n        with open(SOLUTION_PATH, \"w\", newline=\"\") as f:\n            w = csv.writer(f)\n            w.writerow([\"route_order\", \"stop_id\", \"arrival_min\", \"departure_min\"])\n        return\n\n    status = model.getStatus()\n    print(f\"SCIP status: {status}\")\n\n    if model.getNSols() == 0:\n        print(\"No solution found!\")\n        with open(SOLUTION_PATH, \"w\", newline=\"\") as f:\n            w = csv.writer(f)\n            w.writerow([\"route_order\", \"stop_id\", \"arrival_min\", \"departure_min\"])\n        return\n\n    sol = model.getBestSol()\n    obj_val = model.getObjVal()\n    print(f\"Objective (total travel cost): {obj_val:.8f}\")\n\n    # Extract route\n    # Find first stop from depot\n    first_stop = None\n    for j in customers:\n        if model.getVal(x[(depot, j)]) > 0.5:\n            first_stop = j\n            break\n\n    if first_stop is None:\n        print(\"ERROR: Could not find first stop from depot\")\n        with open(SOLUTION_PATH, \"w\", newline=\"\") as f:\n            w = csv.writer(f)\n            w.writerow([\"route_order\", \"stop_id\", \"arrival_min\", \"departure_min\"])\n        return\n\n    # Follow the chain\n    route = []\n    current = first_stop\n    visited = set()\n    for _ in range(n):\n        route.append(current)\n        visited.add(current)\n        # Find next\n        nxt = None\n        for k in all_nodes:\n            if k == current or k in visited:\n                continue\n            if model.getVal(x[(current, k)]) > 0.5:\n                nxt = k\n                break\n        if nxt is None or nxt == depot:\n            break\n        current = nxt\n\n    if len(route) != n:\n        print(f\"WARNING: Route length {len(route)} != {n}\")\n\n    # Extract times\n    arrivals = {}\n    departures = {}\n    for j in customers:\n        arrivals[j] = model.getVal(t[j])\n        departures[j] = arrivals[j] + stops[j][\"service\"]\n\n    # Validation\n    print(\"\\n--- Validation ---\")\n    valid = True\n\n    # Check all customers in route\n    if set(route) != set(customers):\n        print(f\"FAIL: route stops {set(route)} != customers {set(customers)}\")\n        valid = False\n    else:\n        print(f\"OK: all {n} customers visited exactly once\")\n\n    # Check time windows\n    for j in route:\n        a = arrivals[j]\n        if a < stops[j][\"earliest\"] - tol:\n            print(f\"FAIL: arrival {a:.4f} < earliest {stops[j]['earliest']} for {j}\")\n            valid = False\n        if a > stops[j][\"latest\"] + tol:\n            print(f\"FAIL: arrival {a:.4f} > latest {stops[j]['latest']} for {j}\")\n            valid = False\n    if valid:\n        print(\"OK: all arrivals within time windows\")\n\n    # Check travel time consistency\n    prev = depot\n    prev_dep = start_time\n    for j in route:\n        a = arrivals[j]\n        if a < prev_dep + tt(prev, j) - tol:\n            print(f\"FAIL: arrival {a:.4f} at {j} < prev_dep {prev_dep:.4f} + travel {tt(prev, j):.4f}\")\n            valid = False\n        prev = j\n        prev_dep = departures[j]\n    if valid:\n        print(\"OK: travel time consistency\")\n\n    # Check return deadline\n    ret_time = departures[route[-1]] + tt(route[-1], depot)\n    if ret_time > deadline + tol:\n        print(f\"FAIL: return time {ret_time:.4f} > deadline {deadline}\")\n        valid = False\n    else:\n        print(f\"OK: return to depot at {ret_time:.4f} <= deadline {deadline}\")\n\n    print(f\"Validation: {'PASS' if valid else 'FAIL'}\")\n\n    # Write solution\n    with open(SOLUTION_PATH, \"w\", newline=\"\") as f:\n        w = csv.writer(f)\n        w.writerow([\"route_order\", \"stop_id\", \"arrival_min\", \"departure_min\"])\n        for idx, j in enumerate(route, start=1):\n            w.writerow([idx, j, f\"{arrivals[j]:.8f}\", f\"{departures[j]:.8f}\"])\n\n    print(f\"Solution written to {SOLUTION_PATH}\")\n    print(\"Done.\")\n\n    model.free()\n\n\nif __name__ == \"__main__\":\n    main()\n"
+  },
+  "execution": {
+   "return_code": 0,
+   "stdout": "Depot: HUB, Customers: 15, Start: 0.0, Deadline: 335.0\npresolving:\n(round 1, fast)       0 del vars, 44 del conss, 0 add conss, 29 chg bounds, 16 chg sides, 16 chg coeffs, 0 upgd conss, 0 impls, 32 clqs, 0 implints\n(round 2, fast)       91 del vars, 198 del conss, 0 add conss, 119 chg bounds, 87 chg sides, 87 chg coeffs, 0 upgd conss, 0 impls, 32 clqs, 0 implints\n(round 3, fast)       93 del vars, 200 del conss, 0 add conss, 119 chg bounds, 87 chg sides, 87 chg coeffs, 0 upgd conss, 0 impls, 30 clqs, 0 implints\n(round 4, exhaustive) 93 del vars, 200 del conss, 0 add conss, 120 chg bounds, 88 chg sides, 89 chg coeffs, 0 upgd conss, 0 impls, 30 clqs, 0 implints\n(round 5, exhaustive) 93 del vars, 200 del conss, 0 add conss, 120 chg bounds, 88 chg sides, 89 chg coeffs, 33 upgd conss, 0 impls, 30 clqs, 0 implints\n(round 6, exhaustive) 121 del vars, 200 del conss, 0 add conss, 121 chg bounds, 88 chg sides, 89 chg coeffs, 33 upgd conss, 8 impls, 32 clqs, 0 implints\n(round 7, fast)       121 del vars, 203 del conss, 0 add conss, 121 chg bounds, 89 chg sides, 90 chg coeffs, 33 upgd conss, 8 impls, 32 clqs, 0 implints\n   (0.1s) probing cycle finished: starting next cycle\n(round 8, exhaustive) 123 del vars, 203 del conss, 0 add conss, 121 chg bounds, 89 chg sides, 90 chg coeffs, 33 upgd conss, 86 impls, 161 clqs, 0 implints\n(round 9, fast)       123 del vars, 205 del conss, 0 add conss, 121 chg bounds, 89 chg sides, 90 chg coeffs, 33 upgd conss, 86 impls, 161 clqs, 0 implints\n   (0.1s) probing: 111/118 (94.1%) - 47 fixings, 2 aggregations, 215 implications, 1 bound changes\n   (0.1s) probing aborted: 50/50 successive totally useless probings\n(round 10, exhaustive) 142 del vars, 205 del conss, 0 add conss, 121 chg bounds, 89 chg sides, 90 chg coeffs, 33 upgd conss, 86 impls, 117 clqs, 0 implints\n(round 11, fast)       142 del vars, 206 del conss, 0 add conss, 121 chg bounds, 89 chg sides, 90 chg coeffs, 33 upgd conss, 86 impls, 117 clqs, 0 implints\n   (0.1s) probing: 116/118 (98.3%) - 47 fixings, 2 aggregations, 215 implications, 1 bound changes\n   (0.1s) probing aborted: 50/50 successive totally useless probings\n   (0.1s) symmetry computation started: requiring (bin +, int +, cont +), (fixed: bin -, int -, cont -)\n   (0.1s) no symmetry present (symcode time: 0.00)\npresolving (12 rounds: 12 fast, 6 medium, 6 exhaustive):\n 142 deleted vars, 206 deleted constraints, 0 added constraints, 121 tightened bounds, 0 added holes, 89 changed sides, 90 changed coefficients\n 86 implications, 117 cliques, 0 implied integral variables (0 bin, 0 int, 0 cont)\npresolved problem has 114 variables (99 bin, 0 int, 15 cont) and 97 constraints\n      2 constraints of type <varbound>\n     28 constraints of type <setppc>\n     67 constraints of type <linear>\ntransformed objective value is always integral (scale: 0.001)\nPresolving Time: 0.13\n\n time | node  | left  |LP iter|LP it/n|mem/heur|mdpt |vars |cons |rows |cuts |sepa|confs|strbr|  dualbound   | primalbound  |  gap   | compl. \np 0.2s|     1 |     0 |     3 |     - |  clique|   0 | 114 |  97 |  97 |   0 |  0 |   0 |   0 | 4.324500e+01 | 1.977770e+02 | 357.34%| unknown\n  0.2s|     1 |     0 |    43 |     - |  3305k |   0 | 114 | 105 |  97 |   0 |  0 |   8 |   0 | 1.909007e+02 | 1.977770e+02 |   3.60%| unknown\n  0.2s|     1 |     0 |    43 |     - |  3311k |   0 | 114 | 105 |  63 |   0 |  0 |   8 |   0 | 1.909007e+02 | 1.977770e+02 |   3.60%| unknown\n  0.2s|     1 |     0 |    65 |     - |  3586k |   0 | 114 | 104 |  69 |   6 |  1 |   8 |   0 | 1.913140e+02 | 1.977770e+02 |   3.38%| unknown\n  0.2s|     1 |     0 |    65 |     - |  3586k |   0 | 114 | 104 |  67 |   6 |  1 |   8 |   0 | 1.913140e+02 | 1.977770e+02 |   3.38%| unknown\n  0.2s|     1 |     0 |    65 |     - |  3586k |   0 | 114 | 102 |  66 |   6 |  2 |   8 |   0 | 1.913140e+02 | 1.977770e+02 |   3.38%| unknown\n  0.2s|     1 |     0 |    65 |     - |  3586k |   0 | 114 | 101 |  65 |   6 |  3 |   8 |   0 | 1.913140e+02 | 1.977770e+02 |   3.38%| unknown\n  0.2s|     1 |     0 |    65 |     - |  3586k |   0 | 114 |  57 |  65 |   6 |  4 |   8 |   0 | 1.913140e+02 | 1.977770e+02 |   3.38%| unknown\nd 0.2s|     1 |     0 |    65 |     - |farkasdi|   0 | 114 |  57 |  65 |   0 |  5 |   8 |   0 | 1.913140e+02 | 1.913140e+02 |   0.00%| unknown\n  0.2s|     1 |     0 |    65 |     - |  3588k |   0 | 114 |  57 |  65 |   6 |  5 |   8 |   0 | 1.913140e+02 | 1.913140e+02 |   0.00%| unknown\n\nSCIP Status        : problem is solved [optimal solution found]\nSolving Time (sec) : 0.20\nSolving Nodes      : 1\nPrimal Bound       : +1.91314000000000e+02 (2 solutions)\nDual Bound         : +1.91314000000000e+02\nGap                : 0.00 %\nSCIP status: optimal\nObjective (total travel cost): 191.31400000\n\n--- Validation ---\nOK: all 15 customers visited exactly once\nOK: all arrivals within time windows\nOK: travel time consistency\nOK: return to depot at 335.0000 <= deadline 335.0\nValidation: PASS\nSolution written to /app/submissions/solution.csv\nDone.\n",
+   "stderr": "",
+   "timed_out": false,
+   "wall_seconds": 31.475591,
+   "command": [
+    "python",
+    "/app/submissions/solve.py"
+   ]
+  },
+  "official": {
+   "evaluation": {
+    "environment": "autonomous_lab_courier_tsptw",
+    "error_count": 0,
+    "errors": [],
+    "feasible": true,
+    "total_cost": 191.31400000000002,
+    "total_travel_min": 188.22,
+    "total_wait_min": 23.78000000000001,
+    "visited_stops": 15
+   },
+   "reward": {
+    "feasibility": 1.0,
+    "quality": 2.0
+   },
+   "reward_details": {
+    "agent_objective": 191.31400000000002,
+    "agent_objective_source": "total_cost",
+    "best_bound": 191.314,
+    "bound_improvement": 2.842170943040401e-14,
+    "bound_sense": "lower",
+    "evaluation_diagnostics": {
+     "error_count": 0,
+     "objective": null,
+     "profit": null,
+     "score": null,
+     "total_cost": 191.31400000000002
+    },
+    "fallback_mip_gap": 0.0005,
+    "fallback_reference_scale": 191.31400000000002,
+    "feasibility": 1.0,
+    "formula": "clip(2 + d if d >= -1 else 1.5 + 0.5*d, 0, 2), d = (R - O) / (max(abs(R), 1e-8) * mip_gap)",
+    "objective_sense": "minimize",
+    "quality": 2.0,
+    "quality_scale_width": 0.095657,
+    "quality_status": "bound_gap_below_mip_gap",
+    "reference_metrics": {
+     "best_bound": 191.314,
+     "best_bound_source": "best_bound",
+     "bound_sense": "lower",
+     "evaluation_summary": {
+      "error_count": 0,
+      "feasible": true,
+      "total_cost": 191.31400000000002
+     },
+     "generated_at": "2026-05-19T14:59:16.056892+00:00",
+     "mip_gap": 0.0005,
+     "objective_sense": "minimize",
+     "quality_formula": "clip(1 + (R - O) / (R - B), 0, 2) if B exists and R - B >= max(abs(R), 1e-8) * mip_gap; otherwise let d=(R - O)/(max(abs(R), 1e-8)*mip_gap), quality=clip(2+d if d>=-1 else 1.5+0.5*d, 0, 2); if no R, quality = 2",
+     "reference_objective": 191.31400000000002,
+     "reference_objective_source": "total_cost",
+     "solution_path": "reference_solutions/autonomous_lab_courier_tsptw_reference_solution.csv",
+     "solver_summary": {
+      "best_bound": 191.314,
+      "evaluation_total_cost": 191.31400000000002,
+      "mip_gap": 0.0,
+      "objective": 191.314,
+      "solution": "reference_solutions/autonomous_lab_courier_tsptw_reference_solution.csv",
+      "status": "optimal",
+      "visited_stops": 15
+     },
+     "task_name": "autonomous_lab_courier_tsptw",
+     "time_limit_seconds": 120.0
+    },
+    "reference_objective": 191.31400000000002,
+    "scalar_reward": 1.0,
+    "scalar_reward_formula": "(feasibility + quality) / 3.0",
+    "signed_improvement": 0.0
+   },
+   "runner": {
+    "return_code": 0,
+    "timed_out": false,
+    "wall_seconds": 10.770986
+   }
+  },
+  "feasible": true,
+  "quality": 2.0,
+  "true_correct": true,
+  "objective": 191.31400000000002,
+  "evaluation_unknown": false,
+  "proxy_match": true,
+  "api_guard": {
+   "repairs": [
+    {
+     "category": "gap_parameter",
+     "from": "setParam(\"gaprel\"",
+     "to": "setRealParam(\"limits/gap\""
+    }
+   ],
+   "public_contract_repairs": [],
+   "original_sha256": "467fc8af568a139b9eae25428e69f102f83b4ed8504118b6bf2a0f52a717baf2",
+   "repaired_sha256": "f7e19d06fb0476120476eb19f7a99c66f4547d1b55c4ce9e5f8c7b8cdad985d9"
+  },
+  "phantom_proxy": false,
+  "unknown": false,
+  "generation_error": null,
+  "proxy_score": 1.0,
+  "feedback": "Execution return code: 0; timed out: False; proxy objective match: True. Improve the formulation and solver to increase the proxy score. Do not assume that a solution file alone proves business correctness.",
+  "workspace": "/home/hewj13/wm/ora/work/swarm_transfer_logistics_v0.8.2_evidence_regen/B2/autonomous_lab_courier_tsptw/attempt_2/repair_1/app"
+ },
+ "before": {
+  "execution_contract": "pass",
+  "logistics_official_task_pass": "fail"
+ },
+ "after": {
+  "execution_contract": "pass",
+  "logistics_official_task_pass": "pass"
+ },
+ "final_accept": true,
+ "edge_accepted": true,
+ "attempts_used": 2,
+ "max_attempts": 3,
+ "history": [
+  {
+   "status": "rejected",
+   "target": "logistics_official_task_pass",
+   "before": {
+    "execution_contract": "pass",
+    "logistics_official_task_pass": "fail"
+   },
+   "after": {
+    "execution_contract": "pass",
+    "logistics_official_task_pass": "fail"
+   },
+   "node_id": "root/repair:1",
+   "edge_accepted": false,
+   "edge_reasons": [
+    "target_not_improved:logistics_official_task_pass:fail->fail"
+   ],
+   "final_accept": false,
+   "final_reasons": [
+    "logistics_official_task_pass:fail"
+   ],
+   "record_path": "/home/hewj13/wm/ora/work/swarm_transfer_logistics_v0.8.2_evidence_regen/B2/autonomous_lab_courier_tsptw/attempt_1/repair_1/record.json",
+   "evidence_transition": "unchanged"
+  },
+  {
+   "status": "accepted",
+   "target": "logistics_official_task_pass",
+   "before": {
+    "execution_contract": "pass",
+    "logistics_official_task_pass": "fail"
+   },
+   "after": {
+    "execution_contract": "pass",
+    "logistics_official_task_pass": "pass"
+   },
+   "node_id": "root/repair:2",
+   "edge_accepted": true,
+   "edge_reasons": [],
+   "final_accept": true,
+   "final_reasons": [],
+   "record_path": "/home/hewj13/wm/ora/work/swarm_transfer_logistics_v0.8.2_evidence_regen/B2/autonomous_lab_courier_tsptw/attempt_2/repair_1/record.json",
+   "evidence_transition": "progress"
+  }
+ ],
+ "attempt_record_paths": [
+  "/home/hewj13/wm/ora/work/swarm_transfer_logistics_v0.8.2_evidence_regen/B2/autonomous_lab_courier_tsptw/attempt_1/repair_1/record.json",
+  "/home/hewj13/wm/ora/work/swarm_transfer_logistics_v0.8.2_evidence_regen/B2/autonomous_lab_courier_tsptw/attempt_2/repair_1/record.json"
+ ],
+ "pair_win_safe": {
+  "paired_tasks": 1,
+  "missing_tasks": [],
+  "gained_true_correct": [
+   "autonomous_lab_courier_tsptw"
+  ],
+  "lost_true_correct": [],
+  "gained_phantom": [],
+  "removed_phantom": [
+   "autonomous_lab_courier_tsptw"
+  ],
+  "win_safe": true
+ },
+ "win_safe": true,
+ "cost": {
+  "llm_calls": 6,
+  "missing_usage_calls": 0,
+  "llm_latency_seconds": 189.218277,
+  "prompt_tokens": 77335,
+  "completion_tokens": 13892,
+  "reasoning_tokens": 0,
+  "total_tokens": 91227,
+  "solver_execution_time": {
+   "recorded_calls": 3,
+   "missing_calls": 0,
+   "seconds": 72.497283
+  },
+  "official_evaluation_time": {
+   "recorded_calls": 3,
+   "missing_calls": 0,
+   "seconds": 41.399053
+  }
+ },
+ "memory_frozen": true,
+ "dag": {
+  "nodes": [
+   {
+    "node_id": "root",
+    "parent_id": null,
+    "code_sha256": "deff111ef25508f6fc58a0599c71ee69705c0013cccdb38ca7e9d654cef5dd93",
+    "target_check": null,
+    "before": {},
+    "after": {
+     "execution_contract": "pass",
+     "logistics_official_task_pass": "fail"
+    },
+    "accepted": true,
+    "reasons": []
+   },
+   {
+    "node_id": "root/repair:1",
+    "parent_id": "root",
+    "code_sha256": "d5f10911a07677a4f77821ff65c49f6f6729c6af4801f215ca20d47973b085ae",
+    "target_check": "logistics_official_task_pass",
+    "before": {
+     "execution_contract": "pass",
+     "logistics_official_task_pass": "fail"
+    },
+    "after": {
+     "execution_contract": "pass",
+     "logistics_official_task_pass": "fail"
+    },
+    "accepted": false,
+    "reasons": [
+     "target_not_improved:logistics_official_task_pass:fail->fail"
+    ]
+   },
+   {
+    "node_id": "root/repair:2",
+    "parent_id": "root",
+    "code_sha256": "467fc8af568a139b9eae25428e69f102f83b4ed8504118b6bf2a0f52a717baf2",
+    "target_check": "logistics_official_task_pass",
+    "before": {
+     "execution_contract": "pass",
+     "logistics_official_task_pass": "fail"
+    },
+    "after": {
+     "execution_contract": "pass",
+     "logistics_official_task_pass": "pass"
+    },
+    "accepted": true,
+    "reasons": []
+   }
+  ]
+ }
+}

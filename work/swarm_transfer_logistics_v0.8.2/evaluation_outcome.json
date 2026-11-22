@@ -1,0 +1,32 @@
+{
+  "engineering_only": true,
+  "independent_tasks_at_run_start": [
+    "evtol_vertiport_recovery",
+    "robotic_mobile_fulfillment_orchestration",
+    "wastewater_sentinel_site_selection",
+    "naloxone_drone_response_network"
+  ],
+  "b0_true_correct": 0,
+  "b1_true_correct": 0,
+  "b2_true_correct": 0,
+  "b2_phantom_proxy": 0,
+  "b2_unknown": 0,
+  "b2_coverage": "4/4",
+  "b0_to_b2": {
+    "missing_tasks": [],
+    "lost_true_correct": [],
+    "gained_true_correct": [],
+    "gained_phantom": [],
+    "win_safe": true
+  },
+  "b3": "not_run",
+  "b3_reason": "No independently promoted memory; skip-memory-review preserves the previous rejection.",
+  "goal_met": false,
+  "failure_attribution": "Incomplete artifacts, runtime/API errors, an oversized or infeasible model, and semantic failures remained. Evidence-only regeneration did not establish a true-correct gain.",
+  "b2_total_tokens": 1402251,
+  "implementation_commit": "0fd1920c7db22633ca1272b7ae0f5517f37e888f",
+  "direct_implementation": "B1/implementation.json",
+  "suite_implementation": "suite_implementation.json",
+  "log": "driver.log",
+  "remaining_requirement": "These tasks are now engineering data. Freeze and test the failure-aware repair controller on a different untouched transfer batch; do not count this negative batch as success."
+}

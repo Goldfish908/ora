@@ -1,0 +1,2206 @@
+{
+ "expected_tasks": [
+  "evtol_vertiport_recovery",
+  "naloxone_drone_response_network",
+  "robotic_mobile_fulfillment_orchestration",
+  "wastewater_sentinel_site_selection"
+ ],
+ "arms": [
+  {
+   "arm": "B0_empty_specification",
+   "n_expected": 4,
+   "direct": {
+    "n": 4,
+    "expected_tasks": 4,
+    "coverage": 1.0,
+    "feasible": 0,
+    "proxy_match": 0,
+    "true_correct": 0,
+    "phantom_proxy": 0,
+    "unknown": 0,
+    "unresolved_non_phantom": 4,
+    "mean_quality": 0.0,
+    "failure_counts": {
+     "execution_error": 2,
+     "incomplete_artifact": 2
+    },
+    "api_guard_modified": 3,
+    "cost": {
+     "llm_calls": 8,
+     "missing_usage_calls": 0,
+     "llm_latency_seconds": 575.198627,
+     "prompt_tokens": 272708,
+     "completion_tokens": 39353,
+     "reasoning_tokens": 0,
+     "total_tokens": 312061,
+     "solver_execution_time": {
+      "recorded_calls": 2,
+      "missing_calls": 2,
+      "seconds": 57.812057
+     },
+     "official_evaluation_time": {
+      "recorded_calls": 4,
+      "missing_calls": 0,
+      "seconds": 73.034499
+     }
+    },
+    "tasks": [
+     {
+      "task": "evtol_vertiport_recovery",
+      "split": "transfer",
+      "candidate_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "attempt": 0,
+      "feasible": false,
+      "quality": 0.0,
+      "true_correct": false,
+      "objective": null,
+      "proxy_match": false,
+      "phantom_proxy": false,
+      "failure_class": "incomplete_artifact",
+      "execution_return_code": -1,
+      "generation_error": "ValueError: incomplete_artifact: placeholder marker found",
+      "cost": {
+       "llm_calls": 2,
+       "missing_usage_calls": 0,
+       "llm_latency_seconds": 145.798217,
+       "prompt_tokens": 28268,
+       "completion_tokens": 10088,
+       "reasoning_tokens": 0,
+       "total_tokens": 38356
+      },
+      "execution_wall_seconds": null,
+      "evaluation_wall_seconds": 26.734196,
+      "api_guard_repairs": 0,
+      "public_contract_repairs": 0,
+      "stderr_tail": null
+     },
+     {
+      "task": "naloxone_drone_response_network",
+      "split": "transfer",
+      "candidate_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "attempt": 0,
+      "feasible": false,
+      "quality": 0.0,
+      "true_correct": false,
+      "objective": null,
+      "proxy_match": false,
+      "phantom_proxy": false,
+      "failure_class": "execution_error",
+      "execution_return_code": 1,
+      "generation_error": null,
+      "cost": {
+       "llm_calls": 2,
+       "missing_usage_calls": 0,
+       "llm_latency_seconds": 134.32974,
+       "prompt_tokens": 14003,
+       "completion_tokens": 9965,
+       "reasoning_tokens": 0,
+       "total_tokens": 23968
+      },
+      "execution_wall_seconds": 18.258997,
+      "evaluation_wall_seconds": 7.786027,
+      "api_guard_repairs": 1,
+      "public_contract_repairs": 0,
+      "stderr_tail": "Warning: unrecognized optimization sense: obj"
+     },
+     {
+      "task": "robotic_mobile_fulfillment_orchestration",
+      "split": "transfer",
+      "candidate_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "attempt": 0,
+      "feasible": false,
+      "quality": 0.0,
+      "true_correct": false,
+      "objective": null,
+      "proxy_match": false,
+      "phantom_proxy": false,
+      "failure_class": "incomplete_artifact",
+      "execution_return_code": -1,
+      "generation_error": "ValueError: incomplete_artifact: placeholder marker found",
+      "cost": {
+       "llm_calls": 2,
+       "missing_usage_calls": 0,
+       "llm_latency_seconds": 200.255346,
+       "prompt_tokens": 26363,
+       "completion_tokens": 14460,
+       "reasoning_tokens": 0,
+       "total_tokens": 40823
+      },
+      "execution_wall_seconds": null,
+      "evaluation_wall_seconds": 20.929825,
+      "api_guard_repairs": 1,
+      "public_contract_repairs": 0,
+      "stderr_tail": null
+     },
+     {
+      "task": "wastewater_sentinel_site_selection",
+      "split": "transfer",
+      "candidate_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "attempt": 0,
+      "feasible": false,
+      "quality": 0.0,
+      "true_correct": false,
+      "objective": null,
+      "proxy_match": false,
+      "phantom_proxy": false,
+      "failure_class": "execution_error",
+      "execution_return_code": 1,
+      "generation_error": null,
+      "cost": {
+       "llm_calls": 2,
+       "missing_usage_calls": 0,
+       "llm_latency_seconds": 94.815324,
+       "prompt_tokens": 204074,
+       "completion_tokens": 4840,
+       "reasoning_tokens": 0,
+       "total_tokens": 208914
+      },
+      "execution_wall_seconds": 39.55306,
+      "evaluation_wall_seconds": 17.584451,
+      "api_guard_repairs": 2,
+      "public_contract_repairs": 0,
+      "stderr_tail": "TypeError: unsupported operand type(s) for +=: 'pyscipopt.scip.Expr' and 'pyscipopt.scip.Term'"
+     }
+    ]
+   },
+   "final": {
+    "n": 4,
+    "expected_tasks": 4,
+    "coverage": 1.0,
+    "feasible": 0,
+    "proxy_match": 0,
+    "true_correct": 0,
+    "phantom_proxy": 0,
+    "unknown": 0,
+    "unresolved_non_phantom": 4,
+    "mean_quality": 0.0,
+    "failure_counts": {
+     "execution_error": 2,
+     "incomplete_artifact": 2
+    },
+    "api_guard_modified": 3,
+    "cost": {
+     "llm_calls": 8,
+     "missing_usage_calls": 0,
+     "llm_latency_seconds": 575.198627,
+     "prompt_tokens": 272708,
+     "completion_tokens": 39353,
+     "reasoning_tokens": 0,
+     "total_tokens": 312061,
+     "solver_execution_time": {
+      "recorded_calls": 2,
+      "missing_calls": 2,
+      "seconds": 57.812057
+     },
+     "official_evaluation_time": {
+      "recorded_calls": 4,
+      "missing_calls": 0,
+      "seconds": 73.034499
+     }
+    },
+    "tasks": [
+     {
+      "task": "evtol_vertiport_recovery",
+      "split": "transfer",
+      "candidate_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "attempt": 0,
+      "feasible": false,
+      "quality": 0.0,
+      "true_correct": false,
+      "objective": null,
+      "proxy_match": false,
+      "phantom_proxy": false,
+      "failure_class": "incomplete_artifact",
+      "execution_return_code": -1,
+      "generation_error": "ValueError: incomplete_artifact: placeholder marker found",
+      "cost": {
+       "llm_calls": 2,
+       "missing_usage_calls": 0,
+       "llm_latency_seconds": 145.798217,
+       "prompt_tokens": 28268,
+       "completion_tokens": 10088,
+       "reasoning_tokens": 0,
+       "total_tokens": 38356
+      },
+      "execution_wall_seconds": null,
+      "evaluation_wall_seconds": 26.734196,
+      "api_guard_repairs": 0,
+      "public_contract_repairs": 0,
+      "stderr_tail": null
+     },
+     {
+      "task": "naloxone_drone_response_network",
+      "split": "transfer",
+      "candidate_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "attempt": 0,
+      "feasible": false,
+      "quality": 0.0,
+      "true_correct": false,
+      "objective": null,
+      "proxy_match": false,
+      "phantom_proxy": false,
+      "failure_class": "execution_error",
+      "execution_return_code": 1,
+      "generation_error": null,
+      "cost": {
+       "llm_calls": 2,
+       "missing_usage_calls": 0,
+       "llm_latency_seconds": 134.32974,
+       "prompt_tokens": 14003,
+       "completion_tokens": 9965,
+       "reasoning_tokens": 0,
+       "total_tokens": 23968
+      },
+      "execution_wall_seconds": 18.258997,
+      "evaluation_wall_seconds": 7.786027,
+      "api_guard_repairs": 1,
+      "public_contract_repairs": 0,
+      "stderr_tail": "Warning: unrecognized optimization sense: obj"
+     },
+     {
+      "task": "robotic_mobile_fulfillment_orchestration",
+      "split": "transfer",
+      "candidate_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "attempt": 0,
+      "feasible": false,
+      "quality": 0.0,
+      "true_correct": false,
+      "objective": null,
+      "proxy_match": false,
+      "phantom_proxy": false,
+      "failure_class": "incomplete_artifact",
+      "execution_return_code": -1,
+      "generation_error": "ValueError: incomplete_artifact: placeholder marker found",
+      "cost": {
+       "llm_calls": 2,
+       "missing_usage_calls": 0,
+       "llm_latency_seconds": 200.255346,
+       "prompt_tokens": 26363,
+       "completion_tokens": 14460,
+       "reasoning_tokens": 0,
+       "total_tokens": 40823
+      },
+      "execution_wall_seconds": null,
+      "evaluation_wall_seconds": 20.929825,
+      "api_guard_repairs": 1,
+      "public_contract_repairs": 0,
+      "stderr_tail": null
+     },
+     {
+      "task": "wastewater_sentinel_site_selection",
+      "split": "transfer",
+      "candidate_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "attempt": 0,
+      "feasible": false,
+      "quality": 0.0,
+      "true_correct": false,
+      "objective": null,
+      "proxy_match": false,
+      "phantom_proxy": false,
+      "failure_class": "execution_error",
+      "execution_return_code": 1,
+      "generation_error": null,
+      "cost": {
+       "llm_calls": 2,
+       "missing_usage_calls": 0,
+       "llm_latency_seconds": 94.815324,
+       "prompt_tokens": 204074,
+       "completion_tokens": 4840,
+       "reasoning_tokens": 0,
+       "total_tokens": 208914
+      },
+      "execution_wall_seconds": 39.55306,
+      "evaluation_wall_seconds": 17.584451,
+      "api_guard_repairs": 2,
+      "public_contract_repairs": 0,
+      "stderr_tail": "TypeError: unsupported operand type(s) for +=: 'pyscipopt.scip.Expr' and 'pyscipopt.scip.Term'"
+     }
+    ]
+   },
+   "pair_win_safe": {
+    "paired_tasks": 4,
+    "missing_tasks": [],
+    "gained_true_correct": [],
+    "lost_true_correct": [],
+    "gained_phantom": [],
+    "removed_phantom": [],
+    "win_safe": true
+   },
+   "cost": {
+    "llm_calls": 8,
+    "missing_usage_calls": 0,
+    "llm_latency_seconds": 575.198627,
+    "prompt_tokens": 272708,
+    "completion_tokens": 39353,
+    "reasoning_tokens": 0,
+    "total_tokens": 312061,
+    "solver_execution_time": {
+     "recorded_calls": 2,
+     "missing_calls": 2,
+     "seconds": 57.812057
+    },
+    "official_evaluation_time": {
+     "recorded_calls": 4,
+     "missing_calls": 0,
+     "seconds": 73.034499
+    }
+   },
+   "tasks": [
+    {
+     "task": "evtol_vertiport_recovery",
+     "direct": {
+      "task": "evtol_vertiport_recovery",
+      "split": "transfer",
+      "candidate_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "attempt": 0,
+      "feasible": false,
+      "quality": 0.0,
+      "true_correct": false,
+      "objective": null,
+      "proxy_match": false,
+      "phantom_proxy": false,
+      "failure_class": "incomplete_artifact",
+      "execution_return_code": -1,
+      "generation_error": "ValueError: incomplete_artifact: placeholder marker found",
+      "cost": {
+       "llm_calls": 2,
+       "missing_usage_calls": 0,
+       "llm_latency_seconds": 145.798217,
+       "prompt_tokens": 28268,
+       "completion_tokens": 10088,
+       "reasoning_tokens": 0,
+       "total_tokens": 38356
+      },
+      "execution_wall_seconds": null,
+      "evaluation_wall_seconds": 26.734196,
+      "api_guard_repairs": 0,
+      "public_contract_repairs": 0,
+      "stderr_tail": null,
+      "official_errors": [
+       "No solution file found."
+      ]
+     },
+     "final": {
+      "task": "evtol_vertiport_recovery",
+      "split": "transfer",
+      "candidate_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "attempt": 0,
+      "feasible": false,
+      "quality": 0.0,
+      "true_correct": false,
+      "objective": null,
+      "proxy_match": false,
+      "phantom_proxy": false,
+      "failure_class": "incomplete_artifact",
+      "execution_return_code": -1,
+      "generation_error": "ValueError: incomplete_artifact: placeholder marker found",
+      "cost": {
+       "llm_calls": 2,
+       "missing_usage_calls": 0,
+       "llm_latency_seconds": 145.798217,
+       "prompt_tokens": 28268,
+       "completion_tokens": 10088,
+       "reasoning_tokens": 0,
+       "total_tokens": 38356
+      },
+      "execution_wall_seconds": null,
+      "evaluation_wall_seconds": 26.734196,
+      "api_guard_repairs": 0,
+      "public_contract_repairs": 0,
+      "stderr_tail": null,
+      "official_errors": [
+       "No solution file found."
+      ]
+     },
+     "repair_status": "not_applicable",
+     "attempts_used": 0,
+     "coverage": true,
+     "unknown": false,
+     "win_safe": true,
+     "cost": {
+      "llm_calls": 2,
+      "missing_usage_calls": 0,
+      "llm_latency_seconds": 145.798217,
+      "prompt_tokens": 28268,
+      "completion_tokens": 10088,
+      "reasoning_tokens": 0,
+      "total_tokens": 38356,
+      "solver_execution_time": {
+       "recorded_calls": 0,
+       "missing_calls": 1,
+       "seconds": null
+      },
+      "official_evaluation_time": {
+       "recorded_calls": 1,
+       "missing_calls": 0,
+       "seconds": 26.734196
+      }
+     }
+    },
+    {
+     "task": "naloxone_drone_response_network",
+     "direct": {
+      "task": "naloxone_drone_response_network",
+      "split": "transfer",
+      "candidate_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "attempt": 0,
+      "feasible": false,
+      "quality": 0.0,
+      "true_correct": false,
+      "objective": null,
+      "proxy_match": false,
+      "phantom_proxy": false,
+      "failure_class": "execution_error",
+      "execution_return_code": 1,
+      "generation_error": null,
+      "cost": {
+       "llm_calls": 2,
+       "missing_usage_calls": 0,
+       "llm_latency_seconds": 134.32974,
+       "prompt_tokens": 14003,
+       "completion_tokens": 9965,
+       "reasoning_tokens": 0,
+       "total_tokens": 23968
+      },
+      "execution_wall_seconds": 18.258997,
+      "evaluation_wall_seconds": 7.786027,
+      "api_guard_repairs": 1,
+      "public_contract_repairs": 0,
+      "stderr_tail": "Warning: unrecognized optimization sense: obj",
+      "official_errors": [
+       "No solution file found."
+      ]
+     },
+     "final": {
+      "task": "naloxone_drone_response_network",
+      "split": "transfer",
+      "candidate_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "attempt": 0,
+      "feasible": false,
+      "quality": 0.0,
+      "true_correct": false,
+      "objective": null,
+      "proxy_match": false,
+      "phantom_proxy": false,
+      "failure_class": "execution_error",
+      "execution_return_code": 1,
+      "generation_error": null,
+      "cost": {
+       "llm_calls": 2,
+       "missing_usage_calls": 0,
+       "llm_latency_seconds": 134.32974,
+       "prompt_tokens": 14003,
+       "completion_tokens": 9965,
+       "reasoning_tokens": 0,
+       "total_tokens": 23968
+      },
+      "execution_wall_seconds": 18.258997,
+      "evaluation_wall_seconds": 7.786027,
+      "api_guard_repairs": 1,
+      "public_contract_repairs": 0,
+      "stderr_tail": "Warning: unrecognized optimization sense: obj",
+      "official_errors": [
+       "No solution file found."
+      ]
+     },
+     "repair_status": "not_applicable",
+     "attempts_used": 0,
+     "coverage": true,
+     "unknown": false,
+     "win_safe": true,
+     "cost": {
+      "llm_calls": 2,
+      "missing_usage_calls": 0,
+      "llm_latency_seconds": 134.32974,
+      "prompt_tokens": 14003,
+      "completion_tokens": 9965,
+      "reasoning_tokens": 0,
+      "total_tokens": 23968,
+      "solver_execution_time": {
+       "recorded_calls": 1,
+       "missing_calls": 0,
+       "seconds": 18.258997
+      },
+      "official_evaluation_time": {
+       "recorded_calls": 1,
+       "missing_calls": 0,
+       "seconds": 7.786027
+      }
+     }
+    },
+    {
+     "task": "robotic_mobile_fulfillment_orchestration",
+     "direct": {
+      "task": "robotic_mobile_fulfillment_orchestration",
+      "split": "transfer",
+      "candidate_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "attempt": 0,
+      "feasible": false,
+      "quality": 0.0,
+      "true_correct": false,
+      "objective": null,
+      "proxy_match": false,
+      "phantom_proxy": false,
+      "failure_class": "incomplete_artifact",
+      "execution_return_code": -1,
+      "generation_error": "ValueError: incomplete_artifact: placeholder marker found",
+      "cost": {
+       "llm_calls": 2,
+       "missing_usage_calls": 0,
+       "llm_latency_seconds": 200.255346,
+       "prompt_tokens": 26363,
+       "completion_tokens": 14460,
+       "reasoning_tokens": 0,
+       "total_tokens": 40823
+      },
+      "execution_wall_seconds": null,
+      "evaluation_wall_seconds": 20.929825,
+      "api_guard_repairs": 1,
+      "public_contract_repairs": 0,
+      "stderr_tail": null,
+      "official_errors": [
+       "No solution file found."
+      ]
+     },
+     "final": {
+      "task": "robotic_mobile_fulfillment_orchestration",
+      "split": "transfer",
+      "candidate_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "attempt": 0,
+      "feasible": false,
+      "quality": 0.0,
+      "true_correct": false,
+      "objective": null,
+      "proxy_match": false,
+      "phantom_proxy": false,
+      "failure_class": "incomplete_artifact",
+      "execution_return_code": -1,
+      "generation_error": "ValueError: incomplete_artifact: placeholder marker found",
+      "cost": {
+       "llm_calls": 2,
+       "missing_usage_calls": 0,
+       "llm_latency_seconds": 200.255346,
+       "prompt_tokens": 26363,
+       "completion_tokens": 14460,
+       "reasoning_tokens": 0,
+       "total_tokens": 40823
+      },
+      "execution_wall_seconds": null,
+      "evaluation_wall_seconds": 20.929825,
+      "api_guard_repairs": 1,
+      "public_contract_repairs": 0,
+      "stderr_tail": null,
+      "official_errors": [
+       "No solution file found."
+      ]
+     },
+     "repair_status": "not_applicable",
+     "attempts_used": 0,
+     "coverage": true,
+     "unknown": false,
+     "win_safe": true,
+     "cost": {
+      "llm_calls": 2,
+      "missing_usage_calls": 0,
+      "llm_latency_seconds": 200.255346,
+      "prompt_tokens": 26363,
+      "completion_tokens": 14460,
+      "reasoning_tokens": 0,
+      "total_tokens": 40823,
+      "solver_execution_time": {
+       "recorded_calls": 0,
+       "missing_calls": 1,
+       "seconds": null
+      },
+      "official_evaluation_time": {
+       "recorded_calls": 1,
+       "missing_calls": 0,
+       "seconds": 20.929825
+      }
+     }
+    },
+    {
+     "task": "wastewater_sentinel_site_selection",
+     "direct": {
+      "task": "wastewater_sentinel_site_selection",
+      "split": "transfer",
+      "candidate_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "attempt": 0,
+      "feasible": false,
+      "quality": 0.0,
+      "true_correct": false,
+      "objective": null,
+      "proxy_match": false,
+      "phantom_proxy": false,
+      "failure_class": "execution_error",
+      "execution_return_code": 1,
+      "generation_error": null,
+      "cost": {
+       "llm_calls": 2,
+       "missing_usage_calls": 0,
+       "llm_latency_seconds": 94.815324,
+       "prompt_tokens": 204074,
+       "completion_tokens": 4840,
+       "reasoning_tokens": 0,
+       "total_tokens": 208914
+      },
+      "execution_wall_seconds": 39.55306,
+      "evaluation_wall_seconds": 17.584451,
+      "api_guard_repairs": 2,
+      "public_contract_repairs": 0,
+      "stderr_tail": "TypeError: unsupported operand type(s) for +=: 'pyscipopt.scip.Expr' and 'pyscipopt.scip.Term'",
+      "official_errors": [
+       "No solution file found."
+      ]
+     },
+     "final": {
+      "task": "wastewater_sentinel_site_selection",
+      "split": "transfer",
+      "candidate_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "attempt": 0,
+      "feasible": false,
+      "quality": 0.0,
+      "true_correct": false,
+      "objective": null,
+      "proxy_match": false,
+      "phantom_proxy": false,
+      "failure_class": "execution_error",
+      "execution_return_code": 1,
+      "generation_error": null,
+      "cost": {
+       "llm_calls": 2,
+       "missing_usage_calls": 0,
+       "llm_latency_seconds": 94.815324,
+       "prompt_tokens": 204074,
+       "completion_tokens": 4840,
+       "reasoning_tokens": 0,
+       "total_tokens": 208914
+      },
+      "execution_wall_seconds": 39.55306,
+      "evaluation_wall_seconds": 17.584451,
+      "api_guard_repairs": 2,
+      "public_contract_repairs": 0,
+      "stderr_tail": "TypeError: unsupported operand type(s) for +=: 'pyscipopt.scip.Expr' and 'pyscipopt.scip.Term'",
+      "official_errors": [
+       "No solution file found."
+      ]
+     },
+     "repair_status": "not_applicable",
+     "attempts_used": 0,
+     "coverage": true,
+     "unknown": false,
+     "win_safe": true,
+     "cost": {
+      "llm_calls": 2,
+      "missing_usage_calls": 0,
+      "llm_latency_seconds": 94.815324,
+      "prompt_tokens": 204074,
+      "completion_tokens": 4840,
+      "reasoning_tokens": 0,
+      "total_tokens": 208914,
+      "solver_execution_time": {
+       "recorded_calls": 1,
+       "missing_calls": 0,
+       "seconds": 39.55306
+      },
+      "official_evaluation_time": {
+       "recorded_calls": 1,
+       "missing_calls": 0,
+       "seconds": 17.584451
+      }
+     }
+    }
+   ],
+   "provenance": "frozen_replay",
+   "specification_sha256": {
+    "evtol_vertiport_recovery": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "robotic_mobile_fulfillment_orchestration": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "wastewater_sentinel_site_selection": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "naloxone_drone_response_network": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+   },
+   "implementation": {
+    "path": "/home/hewj13/wm/ora/work/swarm_transfer_logistics_v0.8.2/B0/run.json",
+    "sha256": "09110684346b7a2ecf11c56412781c904f2edf24c44188af03feedca79fbc5c9"
+   },
+   "repair_inputs": []
+  },
+  {
+   "arm": "B1_gepa_specification",
+   "n_expected": 4,
+   "direct": {
+    "n": 4,
+    "expected_tasks": 4,
+    "coverage": 1.0,
+    "feasible": 0,
+    "proxy_match": 0,
+    "true_correct": 0,
+    "phantom_proxy": 0,
+    "unknown": 0,
+    "unresolved_non_phantom": 4,
+    "mean_quality": 0.0,
+    "failure_counts": {
+     "execution_error": 2,
+     "execution_timeout": 1,
+     "incomplete_artifact": 1
+    },
+    "api_guard_modified": 4,
+    "cost": {
+     "llm_calls": 8,
+     "missing_usage_calls": 0,
+     "llm_latency_seconds": 562.419734,
+     "prompt_tokens": 295280,
+     "completion_tokens": 38092,
+     "reasoning_tokens": 0,
+     "total_tokens": 333372,
+     "solver_execution_time": {
+      "recorded_calls": 3,
+      "missing_calls": 1,
+      "seconds": 412.835992
+     },
+     "official_evaluation_time": {
+      "recorded_calls": 4,
+      "missing_calls": 0,
+      "seconds": 83.582801
+     }
+    },
+    "tasks": [
+     {
+      "task": "evtol_vertiport_recovery",
+      "split": "transfer",
+      "candidate_sha256": "08f95083f60719b0681fcca6cfad453b3faf28577335b466265903e2a11fe190",
+      "attempt": 0,
+      "feasible": false,
+      "quality": 0.0,
+      "true_correct": false,
+      "objective": null,
+      "proxy_match": false,
+      "phantom_proxy": false,
+      "failure_class": "incomplete_artifact",
+      "execution_return_code": -1,
+      "generation_error": "ValueError: incomplete_artifact: placeholder marker found",
+      "cost": {
+       "llm_calls": 2,
+       "missing_usage_calls": 0,
+       "llm_latency_seconds": 174.418291,
+       "prompt_tokens": 34023,
+       "completion_tokens": 12185,
+       "reasoning_tokens": 0,
+       "total_tokens": 46208
+      },
+      "execution_wall_seconds": null,
+      "evaluation_wall_seconds": 15.301142,
+      "api_guard_repairs": 1,
+      "public_contract_repairs": 0,
+      "stderr_tail": null
+     },
+     {
+      "task": "naloxone_drone_response_network",
+      "split": "transfer",
+      "candidate_sha256": "08f95083f60719b0681fcca6cfad453b3faf28577335b466265903e2a11fe190",
+      "attempt": 0,
+      "feasible": false,
+      "quality": 0.0,
+      "true_correct": false,
+      "objective": null,
+      "proxy_match": false,
+      "phantom_proxy": false,
+      "failure_class": "execution_error",
+      "execution_return_code": 1,
+      "generation_error": null,
+      "cost": {
+       "llm_calls": 2,
+       "missing_usage_calls": 0,
+       "llm_latency_seconds": 138.401262,
+       "prompt_tokens": 19178,
+       "completion_tokens": 10688,
+       "reasoning_tokens": 0,
+       "total_tokens": 29866
+      },
+      "execution_wall_seconds": 33.224823,
+      "evaluation_wall_seconds": 29.347141,
+      "api_guard_repairs": 1,
+      "public_contract_repairs": 0,
+      "stderr_tail": "KeyError: ('S1', 'Z01', 'B04')"
+     },
+     {
+      "task": "robotic_mobile_fulfillment_orchestration",
+      "split": "transfer",
+      "candidate_sha256": "08f95083f60719b0681fcca6cfad453b3faf28577335b466265903e2a11fe190",
+      "attempt": 0,
+      "feasible": false,
+      "quality": 0.0,
+      "true_correct": false,
+      "objective": null,
+      "proxy_match": false,
+      "phantom_proxy": false,
+      "failure_class": "execution_error",
+      "execution_return_code": 1,
+      "generation_error": null,
+      "cost": {
+       "llm_calls": 2,
+       "missing_usage_calls": 0,
+       "llm_latency_seconds": 112.860131,
+       "prompt_tokens": 32021,
+       "completion_tokens": 7901,
+       "reasoning_tokens": 0,
+       "total_tokens": 39922
+      },
+      "execution_wall_seconds": 41.013234,
+      "evaluation_wall_seconds": 33.377425,
+      "api_guard_repairs": 1,
+      "public_contract_repairs": 0,
+      "stderr_tail": "NameError: name 'aisle_capacity' is not defined. Did you mean: 'aisle_cap_data'?"
+     },
+     {
+      "task": "wastewater_sentinel_site_selection",
+      "split": "transfer",
+      "candidate_sha256": "08f95083f60719b0681fcca6cfad453b3faf28577335b466265903e2a11fe190",
+      "attempt": 0,
+      "feasible": false,
+      "quality": 0.0,
+      "true_correct": false,
+      "objective": null,
+      "proxy_match": false,
+      "phantom_proxy": false,
+      "failure_class": "execution_timeout",
+      "execution_return_code": 137,
+      "generation_error": null,
+      "cost": {
+       "llm_calls": 2,
+       "missing_usage_calls": 0,
+       "llm_latency_seconds": 136.74005,
+       "prompt_tokens": 210058,
+       "completion_tokens": 7318,
+       "reasoning_tokens": 0,
+       "total_tokens": 217376
+      },
+      "execution_wall_seconds": 338.597935,
+      "evaluation_wall_seconds": 5.557093,
+      "api_guard_repairs": 1,
+      "public_contract_repairs": 0,
+      "stderr_tail": null
+     }
+    ]
+   },
+   "final": {
+    "n": 4,
+    "expected_tasks": 4,
+    "coverage": 1.0,
+    "feasible": 0,
+    "proxy_match": 0,
+    "true_correct": 0,
+    "phantom_proxy": 0,
+    "unknown": 0,
+    "unresolved_non_phantom": 4,
+    "mean_quality": 0.0,
+    "failure_counts": {
+     "execution_error": 2,
+     "execution_timeout": 1,
+     "incomplete_artifact": 1
+    },
+    "api_guard_modified": 4,
+    "cost": {
+     "llm_calls": 8,
+     "missing_usage_calls": 0,
+     "llm_latency_seconds": 562.419734,
+     "prompt_tokens": 295280,
+     "completion_tokens": 38092,
+     "reasoning_tokens": 0,
+     "total_tokens": 333372,
+     "solver_execution_time": {
+      "recorded_calls": 3,
+      "missing_calls": 1,
+      "seconds": 412.835992
+     },
+     "official_evaluation_time": {
+      "recorded_calls": 4,
+      "missing_calls": 0,
+      "seconds": 83.582801
+     }
+    },
+    "tasks": [
+     {
+      "task": "evtol_vertiport_recovery",
+      "split": "transfer",
+      "candidate_sha256": "08f95083f60719b0681fcca6cfad453b3faf28577335b466265903e2a11fe190",
+      "attempt": 0,
+      "feasible": false,
+      "quality": 0.0,
+      "true_correct": false,
+      "objective": null,
+      "proxy_match": false,
+      "phantom_proxy": false,
+      "failure_class": "incomplete_artifact",
+      "execution_return_code": -1,
+      "generation_error": "ValueError: incomplete_artifact: placeholder marker found",
+      "cost": {
+       "llm_calls": 2,
+       "missing_usage_calls": 0,
+       "llm_latency_seconds": 174.418291,
+       "prompt_tokens": 34023,
+       "completion_tokens": 12185,
+       "reasoning_tokens": 0,
+       "total_tokens": 46208
+      },
+      "execution_wall_seconds": null,
+      "evaluation_wall_seconds": 15.301142,
+      "api_guard_repairs": 1,
+      "public_contract_repairs": 0,
+      "stderr_tail": null
+     },
+     {
+      "task": "naloxone_drone_response_network",
+      "split": "transfer",
+      "candidate_sha256": "08f95083f60719b0681fcca6cfad453b3faf28577335b466265903e2a11fe190",
+      "attempt": 0,
+      "feasible": false,
+      "quality": 0.0,
+      "true_correct": false,
+      "objective": null,
+      "proxy_match": false,
+      "phantom_proxy": false,
+      "failure_class": "execution_error",
+      "execution_return_code": 1,
+      "generation_error": null,
+      "cost": {
+       "llm_calls": 2,
+       "missing_usage_calls": 0,
+       "llm_latency_seconds": 138.401262,
+       "prompt_tokens": 19178,
+       "completion_tokens": 10688,
+       "reasoning_tokens": 0,
+       "total_tokens": 29866
+      },
+      "execution_wall_seconds": 33.224823,
+      "evaluation_wall_seconds": 29.347141,
+      "api_guard_repairs": 1,
+      "public_contract_repairs": 0,
+      "stderr_tail": "KeyError: ('S1', 'Z01', 'B04')"
+     },
+     {
+      "task": "robotic_mobile_fulfillment_orchestration",
+      "split": "transfer",
+      "candidate_sha256": "08f95083f60719b0681fcca6cfad453b3faf28577335b466265903e2a11fe190",
+      "attempt": 0,
+      "feasible": false,
+      "quality": 0.0,
+      "true_correct": false,
+      "objective": null,
+      "proxy_match": false,
+      "phantom_proxy": false,
+      "failure_class": "execution_error",
+      "execution_return_code": 1,
+      "generation_error": null,
+      "cost": {
+       "llm_calls": 2,
+       "missing_usage_calls": 0,
+       "llm_latency_seconds": 112.860131,
+       "prompt_tokens": 32021,
+       "completion_tokens": 7901,
+       "reasoning_tokens": 0,
+       "total_tokens": 39922
+      },
+      "execution_wall_seconds": 41.013234,
+      "evaluation_wall_seconds": 33.377425,
+      "api_guard_repairs": 1,
+      "public_contract_repairs": 0,
+      "stderr_tail": "NameError: name 'aisle_capacity' is not defined. Did you mean: 'aisle_cap_data'?"
+     },
+     {
+      "task": "wastewater_sentinel_site_selection",
+      "split": "transfer",
+      "candidate_sha256": "08f95083f60719b0681fcca6cfad453b3faf28577335b466265903e2a11fe190",
+      "attempt": 0,
+      "feasible": false,
+      "quality": 0.0,
+      "true_correct": false,
+      "objective": null,
+      "proxy_match": false,
+      "phantom_proxy": false,
+      "failure_class": "execution_timeout",
+      "execution_return_code": 137,
+      "generation_error": null,
+      "cost": {
+       "llm_calls": 2,
+       "missing_usage_calls": 0,
+       "llm_latency_seconds": 136.74005,
+       "prompt_tokens": 210058,
+       "completion_tokens": 7318,
+       "reasoning_tokens": 0,
+       "total_tokens": 217376
+      },
+      "execution_wall_seconds": 338.597935,
+      "evaluation_wall_seconds": 5.557093,
+      "api_guard_repairs": 1,
+      "public_contract_repairs": 0,
+      "stderr_tail": null
+     }
+    ]
+   },
+   "pair_win_safe": {
+    "paired_tasks": 4,
+    "missing_tasks": [],
+    "gained_true_correct": [],
+    "lost_true_correct": [],
+    "gained_phantom": [],
+    "removed_phantom": [],
+    "win_safe": true
+   },
+   "cost": {
+    "llm_calls": 8,
+    "missing_usage_calls": 0,
+    "llm_latency_seconds": 562.419734,
+    "prompt_tokens": 295280,
+    "completion_tokens": 38092,
+    "reasoning_tokens": 0,
+    "total_tokens": 333372,
+    "solver_execution_time": {
+     "recorded_calls": 3,
+     "missing_calls": 1,
+     "seconds": 412.835992
+    },
+    "official_evaluation_time": {
+     "recorded_calls": 4,
+     "missing_calls": 0,
+     "seconds": 83.582801
+    }
+   },
+   "tasks": [
+    {
+     "task": "evtol_vertiport_recovery",
+     "direct": {
+      "task": "evtol_vertiport_recovery",
+      "split": "transfer",
+      "candidate_sha256": "08f95083f60719b0681fcca6cfad453b3faf28577335b466265903e2a11fe190",
+      "attempt": 0,
+      "feasible": false,
+      "quality": 0.0,
+      "true_correct": false,
+      "objective": null,
+      "proxy_match": false,
+      "phantom_proxy": false,
+      "failure_class": "incomplete_artifact",
+      "execution_return_code": -1,
+      "generation_error": "ValueError: incomplete_artifact: placeholder marker found",
+      "cost": {
+       "llm_calls": 2,
+       "missing_usage_calls": 0,
+       "llm_latency_seconds": 174.418291,
+       "prompt_tokens": 34023,
+       "completion_tokens": 12185,
+       "reasoning_tokens": 0,
+       "total_tokens": 46208
+      },
+      "execution_wall_seconds": null,
+      "evaluation_wall_seconds": 15.301142,
+      "api_guard_repairs": 1,
+      "public_contract_repairs": 0,
+      "stderr_tail": null,
+      "official_errors": [
+       "No solution file found."
+      ]
+     },
+     "final": {
+      "task": "evtol_vertiport_recovery",
+      "split": "transfer",
+      "candidate_sha256": "08f95083f60719b0681fcca6cfad453b3faf28577335b466265903e2a11fe190",
+      "attempt": 0,
+      "feasible": false,
+      "quality": 0.0,
+      "true_correct": false,
+      "objective": null,
+      "proxy_match": false,
+      "phantom_proxy": false,
+      "failure_class": "incomplete_artifact",
+      "execution_return_code": -1,
+      "generation_error": "ValueError: incomplete_artifact: placeholder marker found",
+      "cost": {
+       "llm_calls": 2,
+       "missing_usage_calls": 0,
+       "llm_latency_seconds": 174.418291,
+       "prompt_tokens": 34023,
+       "completion_tokens": 12185,
+       "reasoning_tokens": 0,
+       "total_tokens": 46208
+      },
+      "execution_wall_seconds": null,
+      "evaluation_wall_seconds": 15.301142,
+      "api_guard_repairs": 1,
+      "public_contract_repairs": 0,
+      "stderr_tail": null,
+      "official_errors": [
+       "No solution file found."
+      ]
+     },
+     "repair_status": "not_applicable",
+     "attempts_used": 0,
+     "coverage": true,
+     "unknown": false,
+     "win_safe": true,
+     "cost": {
+      "llm_calls": 2,
+      "missing_usage_calls": 0,
+      "llm_latency_seconds": 174.418291,
+      "prompt_tokens": 34023,
+      "completion_tokens": 12185,
+      "reasoning_tokens": 0,
+      "total_tokens": 46208,
+      "solver_execution_time": {
+       "recorded_calls": 0,
+       "missing_calls": 1,
+       "seconds": null
+      },
+      "official_evaluation_time": {
+       "recorded_calls": 1,
+       "missing_calls": 0,
+       "seconds": 15.301142
+      }
+     }
+    },
+    {
+     "task": "naloxone_drone_response_network",
+     "direct": {
+      "task": "naloxone_drone_response_network",
+      "split": "transfer",
+      "candidate_sha256": "08f95083f60719b0681fcca6cfad453b3faf28577335b466265903e2a11fe190",
+      "attempt": 0,
+      "feasible": false,
+      "quality": 0.0,
+      "true_correct": false,
+      "objective": null,
+      "proxy_match": false,
+      "phantom_proxy": false,
+      "failure_class": "execution_error",
+      "execution_return_code": 1,
+      "generation_error": null,
+      "cost": {
+       "llm_calls": 2,
+       "missing_usage_calls": 0,
+       "llm_latency_seconds": 138.401262,
+       "prompt_tokens": 19178,
+       "completion_tokens": 10688,
+       "reasoning_tokens": 0,
+       "total_tokens": 29866
+      },
+      "execution_wall_seconds": 33.224823,
+      "evaluation_wall_seconds": 29.347141,
+      "api_guard_repairs": 1,
+      "public_contract_repairs": 0,
+      "stderr_tail": "KeyError: ('S1', 'Z01', 'B04')",
+      "official_errors": [
+       "No solution file found."
+      ]
+     },
+     "final": {
+      "task": "naloxone_drone_response_network",
+      "split": "transfer",
+      "candidate_sha256": "08f95083f60719b0681fcca6cfad453b3faf28577335b466265903e2a11fe190",
+      "attempt": 0,
+      "feasible": false,
+      "quality": 0.0,
+      "true_correct": false,
+      "objective": null,
+      "proxy_match": false,
+      "phantom_proxy": false,
+      "failure_class": "execution_error",
+      "execution_return_code": 1,
+      "generation_error": null,
+      "cost": {
+       "llm_calls": 2,
+       "missing_usage_calls": 0,
+       "llm_latency_seconds": 138.401262,
+       "prompt_tokens": 19178,
+       "completion_tokens": 10688,
+       "reasoning_tokens": 0,
+       "total_tokens": 29866
+      },
+      "execution_wall_seconds": 33.224823,
+      "evaluation_wall_seconds": 29.347141,
+      "api_guard_repairs": 1,
+      "public_contract_repairs": 0,
+      "stderr_tail": "KeyError: ('S1', 'Z01', 'B04')",
+      "official_errors": [
+       "No solution file found."
+      ]
+     },
+     "repair_status": "not_applicable",
+     "attempts_used": 0,
+     "coverage": true,
+     "unknown": false,
+     "win_safe": true,
+     "cost": {
+      "llm_calls": 2,
+      "missing_usage_calls": 0,
+      "llm_latency_seconds": 138.401262,
+      "prompt_tokens": 19178,
+      "completion_tokens": 10688,
+      "reasoning_tokens": 0,
+      "total_tokens": 29866,
+      "solver_execution_time": {
+       "recorded_calls": 1,
+       "missing_calls": 0,
+       "seconds": 33.224823
+      },
+      "official_evaluation_time": {
+       "recorded_calls": 1,
+       "missing_calls": 0,
+       "seconds": 29.347141
+      }
+     }
+    },
+    {
+     "task": "robotic_mobile_fulfillment_orchestration",
+     "direct": {
+      "task": "robotic_mobile_fulfillment_orchestration",
+      "split": "transfer",
+      "candidate_sha256": "08f95083f60719b0681fcca6cfad453b3faf28577335b466265903e2a11fe190",
+      "attempt": 0,
+      "feasible": false,
+      "quality": 0.0,
+      "true_correct": false,
+      "objective": null,
+      "proxy_match": false,
+      "phantom_proxy": false,
+      "failure_class": "execution_error",
+      "execution_return_code": 1,
+      "generation_error": null,
+      "cost": {
+       "llm_calls": 2,
+       "missing_usage_calls": 0,
+       "llm_latency_seconds": 112.860131,
+       "prompt_tokens": 32021,
+       "completion_tokens": 7901,
+       "reasoning_tokens": 0,
+       "total_tokens": 39922
+      },
+      "execution_wall_seconds": 41.013234,
+      "evaluation_wall_seconds": 33.377425,
+      "api_guard_repairs": 1,
+      "public_contract_repairs": 0,
+      "stderr_tail": "NameError: name 'aisle_capacity' is not defined. Did you mean: 'aisle_cap_data'?",
+      "official_errors": [
+       "No solution file found."
+      ]
+     },
+     "final": {
+      "task": "robotic_mobile_fulfillment_orchestration",
+      "split": "transfer",
+      "candidate_sha256": "08f95083f60719b0681fcca6cfad453b3faf28577335b466265903e2a11fe190",
+      "attempt": 0,
+      "feasible": false,
+      "quality": 0.0,
+      "true_correct": false,
+      "objective": null,
+      "proxy_match": false,
+      "phantom_proxy": false,
+      "failure_class": "execution_error",
+      "execution_return_code": 1,
+      "generation_error": null,
+      "cost": {
+       "llm_calls": 2,
+       "missing_usage_calls": 0,
+       "llm_latency_seconds": 112.860131,
+       "prompt_tokens": 32021,
+       "completion_tokens": 7901,
+       "reasoning_tokens": 0,
+       "total_tokens": 39922
+      },
+      "execution_wall_seconds": 41.013234,
+      "evaluation_wall_seconds": 33.377425,
+      "api_guard_repairs": 1,
+      "public_contract_repairs": 0,
+      "stderr_tail": "NameError: name 'aisle_capacity' is not defined. Did you mean: 'aisle_cap_data'?",
+      "official_errors": [
+       "No solution file found."
+      ]
+     },
+     "repair_status": "not_applicable",
+     "attempts_used": 0,
+     "coverage": true,
+     "unknown": false,
+     "win_safe": true,
+     "cost": {
+      "llm_calls": 2,
+      "missing_usage_calls": 0,
+      "llm_latency_seconds": 112.860131,
+      "prompt_tokens": 32021,
+      "completion_tokens": 7901,
+      "reasoning_tokens": 0,
+      "total_tokens": 39922,
+      "solver_execution_time": {
+       "recorded_calls": 1,
+       "missing_calls": 0,
+       "seconds": 41.013234
+      },
+      "official_evaluation_time": {
+       "recorded_calls": 1,
+       "missing_calls": 0,
+       "seconds": 33.377425
+      }
+     }
+    },
+    {
+     "task": "wastewater_sentinel_site_selection",
+     "direct": {
+      "task": "wastewater_sentinel_site_selection",
+      "split": "transfer",
+      "candidate_sha256": "08f95083f60719b0681fcca6cfad453b3faf28577335b466265903e2a11fe190",
+      "attempt": 0,
+      "feasible": false,
+      "quality": 0.0,
+      "true_correct": false,
+      "objective": null,
+      "proxy_match": false,
+      "phantom_proxy": false,
+      "failure_class": "execution_timeout",
+      "execution_return_code": 137,
+      "generation_error": null,
+      "cost": {
+       "llm_calls": 2,
+       "missing_usage_calls": 0,
+       "llm_latency_seconds": 136.74005,
+       "prompt_tokens": 210058,
+       "completion_tokens": 7318,
+       "reasoning_tokens": 0,
+       "total_tokens": 217376
+      },
+      "execution_wall_seconds": 338.597935,
+      "evaluation_wall_seconds": 5.557093,
+      "api_guard_repairs": 1,
+      "public_contract_repairs": 0,
+      "stderr_tail": null,
+      "official_errors": [
+       "No solution file found."
+      ]
+     },
+     "final": {
+      "task": "wastewater_sentinel_site_selection",
+      "split": "transfer",
+      "candidate_sha256": "08f95083f60719b0681fcca6cfad453b3faf28577335b466265903e2a11fe190",
+      "attempt": 0,
+      "feasible": false,
+      "quality": 0.0,
+      "true_correct": false,
+      "objective": null,
+      "proxy_match": false,
+      "phantom_proxy": false,
+      "failure_class": "execution_timeout",
+      "execution_return_code": 137,
+      "generation_error": null,
+      "cost": {
+       "llm_calls": 2,
+       "missing_usage_calls": 0,
+       "llm_latency_seconds": 136.74005,
+       "prompt_tokens": 210058,
+       "completion_tokens": 7318,
+       "reasoning_tokens": 0,
+       "total_tokens": 217376
+      },
+      "execution_wall_seconds": 338.597935,
+      "evaluation_wall_seconds": 5.557093,
+      "api_guard_repairs": 1,
+      "public_contract_repairs": 0,
+      "stderr_tail": null,
+      "official_errors": [
+       "No solution file found."
+      ]
+     },
+     "repair_status": "not_applicable",
+     "attempts_used": 0,
+     "coverage": true,
+     "unknown": false,
+     "win_safe": true,
+     "cost": {
+      "llm_calls": 2,
+      "missing_usage_calls": 0,
+      "llm_latency_seconds": 136.74005,
+      "prompt_tokens": 210058,
+      "completion_tokens": 7318,
+      "reasoning_tokens": 0,
+      "total_tokens": 217376,
+      "solver_execution_time": {
+       "recorded_calls": 1,
+       "missing_calls": 0,
+       "seconds": 338.597935
+      },
+      "official_evaluation_time": {
+       "recorded_calls": 1,
+       "missing_calls": 0,
+       "seconds": 5.557093
+      }
+     }
+    }
+   ],
+   "provenance": "subsequent_disjoint_replay",
+   "specification_sha256": {
+    "evtol_vertiport_recovery": "08f95083f60719b0681fcca6cfad453b3faf28577335b466265903e2a11fe190",
+    "robotic_mobile_fulfillment_orchestration": "08f95083f60719b0681fcca6cfad453b3faf28577335b466265903e2a11fe190",
+    "wastewater_sentinel_site_selection": "08f95083f60719b0681fcca6cfad453b3faf28577335b466265903e2a11fe190",
+    "naloxone_drone_response_network": "08f95083f60719b0681fcca6cfad453b3faf28577335b466265903e2a11fe190"
+   },
+   "implementation": {
+    "path": "/home/hewj13/wm/ora/work/swarm_transfer_logistics_v0.8.2/B1/run.json",
+    "sha256": "055bb2d1aebbe2fe7b859560aadf51867d63a7cac52b10d14b0d002596d6d85b"
+   },
+   "repair_inputs": []
+  },
+  {
+   "arm": "B2_gepa_residual_dag",
+   "n_expected": 4,
+   "direct": {
+    "n": 4,
+    "expected_tasks": 4,
+    "coverage": 1.0,
+    "feasible": 0,
+    "proxy_match": 0,
+    "true_correct": 0,
+    "phantom_proxy": 0,
+    "unknown": 0,
+    "unresolved_non_phantom": 4,
+    "mean_quality": 0.0,
+    "failure_counts": {
+     "execution_error": 2,
+     "execution_timeout": 1,
+     "incomplete_artifact": 1
+    },
+    "api_guard_modified": 4,
+    "cost": {
+     "llm_calls": 8,
+     "missing_usage_calls": 0,
+     "llm_latency_seconds": 562.419734,
+     "prompt_tokens": 295280,
+     "completion_tokens": 38092,
+     "reasoning_tokens": 0,
+     "total_tokens": 333372,
+     "solver_execution_time": {
+      "recorded_calls": 3,
+      "missing_calls": 1,
+      "seconds": 412.835992
+     },
+     "official_evaluation_time": {
+      "recorded_calls": 4,
+      "missing_calls": 0,
+      "seconds": 83.582801
+     }
+    },
+    "tasks": [
+     {
+      "task": "evtol_vertiport_recovery",
+      "split": "transfer",
+      "candidate_sha256": "08f95083f60719b0681fcca6cfad453b3faf28577335b466265903e2a11fe190",
+      "attempt": 0,
+      "feasible": false,
+      "quality": 0.0,
+      "true_correct": false,
+      "objective": null,
+      "proxy_match": false,
+      "phantom_proxy": false,
+      "failure_class": "incomplete_artifact",
+      "execution_return_code": -1,
+      "generation_error": "ValueError: incomplete_artifact: placeholder marker found",
+      "cost": {
+       "llm_calls": 2,
+       "missing_usage_calls": 0,
+       "llm_latency_seconds": 174.418291,
+       "prompt_tokens": 34023,
+       "completion_tokens": 12185,
+       "reasoning_tokens": 0,
+       "total_tokens": 46208
+      },
+      "execution_wall_seconds": null,
+      "evaluation_wall_seconds": 15.301142,
+      "api_guard_repairs": 1,
+      "public_contract_repairs": 0,
+      "stderr_tail": null
+     },
+     {
+      "task": "naloxone_drone_response_network",
+      "split": "transfer",
+      "candidate_sha256": "08f95083f60719b0681fcca6cfad453b3faf28577335b466265903e2a11fe190",
+      "attempt": 0,
+      "feasible": false,
+      "quality": 0.0,
+      "true_correct": false,
+      "objective": null,
+      "proxy_match": false,
+      "phantom_proxy": false,
+      "failure_class": "execution_error",
+      "execution_return_code": 1,
+      "generation_error": null,
+      "cost": {
+       "llm_calls": 2,
+       "missing_usage_calls": 0,
+       "llm_latency_seconds": 138.401262,
+       "prompt_tokens": 19178,
+       "completion_tokens": 10688,
+       "reasoning_tokens": 0,
+       "total_tokens": 29866
+      },
+      "execution_wall_seconds": 33.224823,
+      "evaluation_wall_seconds": 29.347141,
+      "api_guard_repairs": 1,
+      "public_contract_repairs": 0,
+      "stderr_tail": "KeyError: ('S1', 'Z01', 'B04')"
+     },
+     {
+      "task": "robotic_mobile_fulfillment_orchestration",
+      "split": "transfer",
+      "candidate_sha256": "08f95083f60719b0681fcca6cfad453b3faf28577335b466265903e2a11fe190",
+      "attempt": 0,
+      "feasible": false,
+      "quality": 0.0,
+      "true_correct": false,
+      "objective": null,
+      "proxy_match": false,
+      "phantom_proxy": false,
+      "failure_class": "execution_error",
+      "execution_return_code": 1,
+      "generation_error": null,
+      "cost": {
+       "llm_calls": 2,
+       "missing_usage_calls": 0,
+       "llm_latency_seconds": 112.860131,
+       "prompt_tokens": 32021,
+       "completion_tokens": 7901,
+       "reasoning_tokens": 0,
+       "total_tokens": 39922
+      },
+      "execution_wall_seconds": 41.013234,
+      "evaluation_wall_seconds": 33.377425,
+      "api_guard_repairs": 1,
+      "public_contract_repairs": 0,
+      "stderr_tail": "NameError: name 'aisle_capacity' is not defined. Did you mean: 'aisle_cap_data'?"
+     },
+     {
+      "task": "wastewater_sentinel_site_selection",
+      "split": "transfer",
+      "candidate_sha256": "08f95083f60719b0681fcca6cfad453b3faf28577335b466265903e2a11fe190",
+      "attempt": 0,
+      "feasible": false,
+      "quality": 0.0,
+      "true_correct": false,
+      "objective": null,
+      "proxy_match": false,
+      "phantom_proxy": false,
+      "failure_class": "execution_timeout",
+      "execution_return_code": 137,
+      "generation_error": null,
+      "cost": {
+       "llm_calls": 2,
+       "missing_usage_calls": 0,
+       "llm_latency_seconds": 136.74005,
+       "prompt_tokens": 210058,
+       "completion_tokens": 7318,
+       "reasoning_tokens": 0,
+       "total_tokens": 217376
+      },
+      "execution_wall_seconds": 338.597935,
+      "evaluation_wall_seconds": 5.557093,
+      "api_guard_repairs": 1,
+      "public_contract_repairs": 0,
+      "stderr_tail": null
+     }
+    ]
+   },
+   "final": {
+    "n": 4,
+    "expected_tasks": 4,
+    "coverage": 1.0,
+    "feasible": 0,
+    "proxy_match": 0,
+    "true_correct": 0,
+    "phantom_proxy": 0,
+    "unknown": 0,
+    "unresolved_non_phantom": 4,
+    "mean_quality": 0.0,
+    "failure_counts": {
+     "execution_error": 2,
+     "execution_timeout": 1,
+     "incomplete_artifact": 1
+    },
+    "api_guard_modified": 4,
+    "cost": {
+     "llm_calls": 8,
+     "missing_usage_calls": 0,
+     "llm_latency_seconds": 562.419734,
+     "prompt_tokens": 295280,
+     "completion_tokens": 38092,
+     "reasoning_tokens": 0,
+     "total_tokens": 333372,
+     "solver_execution_time": {
+      "recorded_calls": 3,
+      "missing_calls": 1,
+      "seconds": 412.835992
+     },
+     "official_evaluation_time": {
+      "recorded_calls": 4,
+      "missing_calls": 0,
+      "seconds": 83.582801
+     }
+    },
+    "tasks": [
+     {
+      "task": "evtol_vertiport_recovery",
+      "split": "transfer",
+      "candidate_sha256": "08f95083f60719b0681fcca6cfad453b3faf28577335b466265903e2a11fe190",
+      "attempt": 0,
+      "feasible": false,
+      "quality": 0.0,
+      "true_correct": false,
+      "objective": null,
+      "proxy_match": false,
+      "phantom_proxy": false,
+      "failure_class": "incomplete_artifact",
+      "execution_return_code": -1,
+      "generation_error": "ValueError: incomplete_artifact: placeholder marker found",
+      "cost": {
+       "llm_calls": 2,
+       "missing_usage_calls": 0,
+       "llm_latency_seconds": 174.418291,
+       "prompt_tokens": 34023,
+       "completion_tokens": 12185,
+       "reasoning_tokens": 0,
+       "total_tokens": 46208
+      },
+      "execution_wall_seconds": null,
+      "evaluation_wall_seconds": 15.301142,
+      "api_guard_repairs": 1,
+      "public_contract_repairs": 0,
+      "stderr_tail": null
+     },
+     {
+      "task": "naloxone_drone_response_network",
+      "split": "transfer",
+      "candidate_sha256": "08f95083f60719b0681fcca6cfad453b3faf28577335b466265903e2a11fe190",
+      "attempt": 0,
+      "feasible": false,
+      "quality": 0.0,
+      "true_correct": false,
+      "objective": null,
+      "proxy_match": false,
+      "phantom_proxy": false,
+      "failure_class": "execution_error",
+      "execution_return_code": 1,
+      "generation_error": null,
+      "cost": {
+       "llm_calls": 2,
+       "missing_usage_calls": 0,
+       "llm_latency_seconds": 138.401262,
+       "prompt_tokens": 19178,
+       "completion_tokens": 10688,
+       "reasoning_tokens": 0,
+       "total_tokens": 29866
+      },
+      "execution_wall_seconds": 33.224823,
+      "evaluation_wall_seconds": 29.347141,
+      "api_guard_repairs": 1,
+      "public_contract_repairs": 0,
+      "stderr_tail": "KeyError: ('S1', 'Z01', 'B04')"
+     },
+     {
+      "task": "robotic_mobile_fulfillment_orchestration",
+      "split": "transfer",
+      "candidate_sha256": "08f95083f60719b0681fcca6cfad453b3faf28577335b466265903e2a11fe190",
+      "attempt": 0,
+      "feasible": false,
+      "quality": 0.0,
+      "true_correct": false,
+      "objective": null,
+      "proxy_match": false,
+      "phantom_proxy": false,
+      "failure_class": "execution_error",
+      "execution_return_code": 1,
+      "generation_error": null,
+      "cost": {
+       "llm_calls": 2,
+       "missing_usage_calls": 0,
+       "llm_latency_seconds": 112.860131,
+       "prompt_tokens": 32021,
+       "completion_tokens": 7901,
+       "reasoning_tokens": 0,
+       "total_tokens": 39922
+      },
+      "execution_wall_seconds": 41.013234,
+      "evaluation_wall_seconds": 33.377425,
+      "api_guard_repairs": 1,
+      "public_contract_repairs": 0,
+      "stderr_tail": "NameError: name 'aisle_capacity' is not defined. Did you mean: 'aisle_cap_data'?"
+     },
+     {
+      "task": "wastewater_sentinel_site_selection",
+      "split": "transfer",
+      "candidate_sha256": "08f95083f60719b0681fcca6cfad453b3faf28577335b466265903e2a11fe190",
+      "attempt": 0,
+      "feasible": false,
+      "quality": 0.0,
+      "true_correct": false,
+      "objective": null,
+      "proxy_match": false,
+      "phantom_proxy": false,
+      "failure_class": "execution_timeout",
+      "execution_return_code": 137,
+      "generation_error": null,
+      "cost": {
+       "llm_calls": 2,
+       "missing_usage_calls": 0,
+       "llm_latency_seconds": 136.74005,
+       "prompt_tokens": 210058,
+       "completion_tokens": 7318,
+       "reasoning_tokens": 0,
+       "total_tokens": 217376
+      },
+      "execution_wall_seconds": 338.597935,
+      "evaluation_wall_seconds": 5.557093,
+      "api_guard_repairs": 1,
+      "public_contract_repairs": 0,
+      "stderr_tail": null
+     }
+    ]
+   },
+   "pair_win_safe": {
+    "paired_tasks": 4,
+    "missing_tasks": [],
+    "gained_true_correct": [],
+    "lost_true_correct": [],
+    "gained_phantom": [],
+    "removed_phantom": [],
+    "win_safe": true
+   },
+   "cost": {
+    "llm_calls": 30,
+    "missing_usage_calls": 0,
+    "llm_latency_seconds": 2305.941156,
+    "prompt_tokens": 1250447,
+    "completion_tokens": 151804,
+    "reasoning_tokens": 0,
+    "total_tokens": 1402251,
+    "solver_execution_time": {
+     "recorded_calls": 13,
+     "missing_calls": 1,
+     "seconds": 1136.131468
+    },
+    "official_evaluation_time": {
+     "recorded_calls": 14,
+     "missing_calls": 0,
+     "seconds": 225.213282
+    }
+   },
+   "tasks": [
+    {
+     "task": "evtol_vertiport_recovery",
+     "direct": {
+      "task": "evtol_vertiport_recovery",
+      "split": "transfer",
+      "candidate_sha256": "08f95083f60719b0681fcca6cfad453b3faf28577335b466265903e2a11fe190",
+      "attempt": 0,
+      "feasible": false,
+      "quality": 0.0,
+      "true_correct": false,
+      "objective": null,
+      "proxy_match": false,
+      "phantom_proxy": false,
+      "failure_class": "incomplete_artifact",
+      "execution_return_code": -1,
+      "generation_error": "ValueError: incomplete_artifact: placeholder marker found",
+      "cost": {
+       "llm_calls": 2,
+       "missing_usage_calls": 0,
+       "llm_latency_seconds": 174.418291,
+       "prompt_tokens": 34023,
+       "completion_tokens": 12185,
+       "reasoning_tokens": 0,
+       "total_tokens": 46208
+      },
+      "execution_wall_seconds": null,
+      "evaluation_wall_seconds": 15.301142,
+      "api_guard_repairs": 1,
+      "public_contract_repairs": 0,
+      "stderr_tail": null,
+      "official_errors": [
+       "No solution file found."
+      ]
+     },
+     "final": {
+      "task": "evtol_vertiport_recovery",
+      "split": "transfer",
+      "candidate_sha256": "08f95083f60719b0681fcca6cfad453b3faf28577335b466265903e2a11fe190",
+      "attempt": 0,
+      "feasible": false,
+      "quality": 0.0,
+      "true_correct": false,
+      "objective": null,
+      "proxy_match": false,
+      "phantom_proxy": false,
+      "failure_class": "incomplete_artifact",
+      "execution_return_code": -1,
+      "generation_error": "ValueError: incomplete_artifact: placeholder marker found",
+      "cost": {
+       "llm_calls": 2,
+       "missing_usage_calls": 0,
+       "llm_latency_seconds": 174.418291,
+       "prompt_tokens": 34023,
+       "completion_tokens": 12185,
+       "reasoning_tokens": 0,
+       "total_tokens": 46208
+      },
+      "execution_wall_seconds": null,
+      "evaluation_wall_seconds": 15.301142,
+      "api_guard_repairs": 1,
+      "public_contract_repairs": 0,
+      "stderr_tail": null,
+      "official_errors": [
+       "No solution file found."
+      ]
+     },
+     "repair_status": "no_verified_progress",
+     "attempts_used": 3,
+     "coverage": true,
+     "unknown": false,
+     "win_safe": true,
+     "cost": {
+      "llm_calls": 8,
+      "missing_usage_calls": 0,
+      "llm_latency_seconds": 596.359741,
+      "prompt_tokens": 163686,
+      "completion_tokens": 42324,
+      "reasoning_tokens": 0,
+      "total_tokens": 206010,
+      "solver_execution_time": {
+       "recorded_calls": 3,
+       "missing_calls": 1,
+       "seconds": 380.910488
+      },
+      "official_evaluation_time": {
+       "recorded_calls": 4,
+       "missing_calls": 0,
+       "seconds": 51.020627
+      }
+     }
+    },
+    {
+     "task": "naloxone_drone_response_network",
+     "direct": {
+      "task": "naloxone_drone_response_network",
+      "split": "transfer",
+      "candidate_sha256": "08f95083f60719b0681fcca6cfad453b3faf28577335b466265903e2a11fe190",
+      "attempt": 0,
+      "feasible": false,
+      "quality": 0.0,
+      "true_correct": false,
+      "objective": null,
+      "proxy_match": false,
+      "phantom_proxy": false,
+      "failure_class": "execution_error",
+      "execution_return_code": 1,
+      "generation_error": null,
+      "cost": {
+       "llm_calls": 2,
+       "missing_usage_calls": 0,
+       "llm_latency_seconds": 138.401262,
+       "prompt_tokens": 19178,
+       "completion_tokens": 10688,
+       "reasoning_tokens": 0,
+       "total_tokens": 29866
+      },
+      "execution_wall_seconds": 33.224823,
+      "evaluation_wall_seconds": 29.347141,
+      "api_guard_repairs": 1,
+      "public_contract_repairs": 0,
+      "stderr_tail": "KeyError: ('S1', 'Z01', 'B04')",
+      "official_errors": [
+       "No solution file found."
+      ]
+     },
+     "final": {
+      "task": "naloxone_drone_response_network",
+      "split": "transfer",
+      "candidate_sha256": "08f95083f60719b0681fcca6cfad453b3faf28577335b466265903e2a11fe190",
+      "attempt": 0,
+      "feasible": false,
+      "quality": 0.0,
+      "true_correct": false,
+      "objective": null,
+      "proxy_match": false,
+      "phantom_proxy": false,
+      "failure_class": "execution_error",
+      "execution_return_code": 1,
+      "generation_error": null,
+      "cost": {
+       "llm_calls": 2,
+       "missing_usage_calls": 0,
+       "llm_latency_seconds": 138.401262,
+       "prompt_tokens": 19178,
+       "completion_tokens": 10688,
+       "reasoning_tokens": 0,
+       "total_tokens": 29866
+      },
+      "execution_wall_seconds": 33.224823,
+      "evaluation_wall_seconds": 29.347141,
+      "api_guard_repairs": 1,
+      "public_contract_repairs": 0,
+      "stderr_tail": "KeyError: ('S1', 'Z01', 'B04')",
+      "official_errors": [
+       "No solution file found."
+      ]
+     },
+     "repair_status": "no_verified_progress",
+     "attempts_used": 3,
+     "coverage": true,
+     "unknown": false,
+     "win_safe": true,
+     "cost": {
+      "llm_calls": 8,
+      "missing_usage_calls": 0,
+      "llm_latency_seconds": 644.499444,
+      "prompt_tokens": 102062,
+      "completion_tokens": 43192,
+      "reasoning_tokens": 0,
+      "total_tokens": 145254,
+      "solver_execution_time": {
+       "recorded_calls": 4,
+       "missing_calls": 0,
+       "seconds": 91.279585
+      },
+      "official_evaluation_time": {
+       "recorded_calls": 4,
+       "missing_calls": 0,
+       "seconds": 66.015845
+      }
+     }
+    },
+    {
+     "task": "robotic_mobile_fulfillment_orchestration",
+     "direct": {
+      "task": "robotic_mobile_fulfillment_orchestration",
+      "split": "transfer",
+      "candidate_sha256": "08f95083f60719b0681fcca6cfad453b3faf28577335b466265903e2a11fe190",
+      "attempt": 0,
+      "feasible": false,
+      "quality": 0.0,
+      "true_correct": false,
+      "objective": null,
+      "proxy_match": false,
+      "phantom_proxy": false,
+      "failure_class": "execution_error",
+      "execution_return_code": 1,
+      "generation_error": null,
+      "cost": {
+       "llm_calls": 2,
+       "missing_usage_calls": 0,
+       "llm_latency_seconds": 112.860131,
+       "prompt_tokens": 32021,
+       "completion_tokens": 7901,
+       "reasoning_tokens": 0,
+       "total_tokens": 39922
+      },
+      "execution_wall_seconds": 41.013234,
+      "evaluation_wall_seconds": 33.377425,
+      "api_guard_repairs": 1,
+      "public_contract_repairs": 0,
+      "stderr_tail": "NameError: name 'aisle_capacity' is not defined. Did you mean: 'aisle_cap_data'?",
+      "official_errors": [
+       "No solution file found."
+      ]
+     },
+     "final": {
+      "task": "robotic_mobile_fulfillment_orchestration",
+      "split": "transfer",
+      "candidate_sha256": "08f95083f60719b0681fcca6cfad453b3faf28577335b466265903e2a11fe190",
+      "attempt": 0,
+      "feasible": false,
+      "quality": 0.0,
+      "true_correct": false,
+      "objective": null,
+      "proxy_match": false,
+      "phantom_proxy": false,
+      "failure_class": "execution_error",
+      "execution_return_code": 1,
+      "generation_error": null,
+      "cost": {
+       "llm_calls": 2,
+       "missing_usage_calls": 0,
+       "llm_latency_seconds": 112.860131,
+       "prompt_tokens": 32021,
+       "completion_tokens": 7901,
+       "reasoning_tokens": 0,
+       "total_tokens": 39922
+      },
+      "execution_wall_seconds": 41.013234,
+      "evaluation_wall_seconds": 33.377425,
+      "api_guard_repairs": 1,
+      "public_contract_repairs": 0,
+      "stderr_tail": "NameError: name 'aisle_capacity' is not defined. Did you mean: 'aisle_cap_data'?",
+      "official_errors": [
+       "No solution file found."
+      ]
+     },
+     "repair_status": "no_verified_progress",
+     "attempts_used": 2,
+     "coverage": true,
+     "unknown": false,
+     "win_safe": true,
+     "cost": {
+      "llm_calls": 6,
+      "missing_usage_calls": 0,
+      "llm_latency_seconds": 434.021963,
+      "prompt_tokens": 113276,
+      "completion_tokens": 30570,
+      "reasoning_tokens": 0,
+      "total_tokens": 143846,
+      "solver_execution_time": {
+       "recorded_calls": 3,
+       "missing_calls": 0,
+       "seconds": 247.163748
+      },
+      "official_evaluation_time": {
+       "recorded_calls": 3,
+       "missing_calls": 0,
+       "seconds": 71.972236
+      }
+     }
+    },
+    {
+     "task": "wastewater_sentinel_site_selection",
+     "direct": {
+      "task": "wastewater_sentinel_site_selection",
+      "split": "transfer",
+      "candidate_sha256": "08f95083f60719b0681fcca6cfad453b3faf28577335b466265903e2a11fe190",
+      "attempt": 0,
+      "feasible": false,
+      "quality": 0.0,
+      "true_correct": false,
+      "objective": null,
+      "proxy_match": false,
+      "phantom_proxy": false,
+      "failure_class": "execution_timeout",
+      "execution_return_code": 137,
+      "generation_error": null,
+      "cost": {
+       "llm_calls": 2,
+       "missing_usage_calls": 0,
+       "llm_latency_seconds": 136.74005,
+       "prompt_tokens": 210058,
+       "completion_tokens": 7318,
+       "reasoning_tokens": 0,
+       "total_tokens": 217376
+      },
+      "execution_wall_seconds": 338.597935,
+      "evaluation_wall_seconds": 5.557093,
+      "api_guard_repairs": 1,
+      "public_contract_repairs": 0,
+      "stderr_tail": null,
+      "official_errors": [
+       "No solution file found."
+      ]
+     },
+     "final": {
+      "task": "wastewater_sentinel_site_selection",
+      "split": "transfer",
+      "candidate_sha256": "08f95083f60719b0681fcca6cfad453b3faf28577335b466265903e2a11fe190",
+      "attempt": 0,
+      "feasible": false,
+      "quality": 0.0,
+      "true_correct": false,
+      "objective": null,
+      "proxy_match": false,
+      "phantom_proxy": false,
+      "failure_class": "execution_timeout",
+      "execution_return_code": 137,
+      "generation_error": null,
+      "cost": {
+       "llm_calls": 2,
+       "missing_usage_calls": 0,
+       "llm_latency_seconds": 136.74005,
+       "prompt_tokens": 210058,
+       "completion_tokens": 7318,
+       "reasoning_tokens": 0,
+       "total_tokens": 217376
+      },
+      "execution_wall_seconds": 338.597935,
+      "evaluation_wall_seconds": 5.557093,
+      "api_guard_repairs": 1,
+      "public_contract_repairs": 0,
+      "stderr_tail": null,
+      "official_errors": [
+       "No solution file found."
+      ]
+     },
+     "repair_status": "rejected_regression",
+     "attempts_used": 3,
+     "coverage": true,
+     "unknown": false,
+     "win_safe": true,
+     "cost": {
+      "llm_calls": 8,
+      "missing_usage_calls": 0,
+      "llm_latency_seconds": 631.060008,
+      "prompt_tokens": 871423,
+      "completion_tokens": 35718,
+      "reasoning_tokens": 0,
+      "total_tokens": 907141,
+      "solver_execution_time": {
+       "recorded_calls": 3,
+       "missing_calls": 0,
+       "seconds": 416.777647
+      },
+      "official_evaluation_time": {
+       "recorded_calls": 3,
+       "missing_calls": 0,
+       "seconds": 36.204574
+      }
+     }
+    }
+   ],
+   "provenance": "subsequent_disjoint_replay",
+   "specification_sha256": {
+    "evtol_vertiport_recovery": "08f95083f60719b0681fcca6cfad453b3faf28577335b466265903e2a11fe190",
+    "robotic_mobile_fulfillment_orchestration": "08f95083f60719b0681fcca6cfad453b3faf28577335b466265903e2a11fe190",
+    "wastewater_sentinel_site_selection": "08f95083f60719b0681fcca6cfad453b3faf28577335b466265903e2a11fe190",
+    "naloxone_drone_response_network": "08f95083f60719b0681fcca6cfad453b3faf28577335b466265903e2a11fe190"
+   },
+   "implementation": {
+    "path": "/home/hewj13/wm/ora/work/swarm_transfer_logistics_v0.8.2/B1/run.json",
+    "sha256": "055bb2d1aebbe2fe7b859560aadf51867d63a7cac52b10d14b0d002596d6d85b"
+   },
+   "repair_inputs": [
+    "/home/hewj13/wm/ora/work/swarm_transfer_logistics_v0.8.2/B2/evtol_vertiport_recovery/repair_result.json",
+    "/home/hewj13/wm/ora/work/swarm_transfer_logistics_v0.8.2/B2/robotic_mobile_fulfillment_orchestration/repair_result.json",
+    "/home/hewj13/wm/ora/work/swarm_transfer_logistics_v0.8.2/B2/wastewater_sentinel_site_selection/repair_result.json",
+    "/home/hewj13/wm/ora/work/swarm_transfer_logistics_v0.8.2/B2/naloxone_drone_response_network/repair_result.json"
+   ]
+  },
+  {
+   "arm": "B3_verified_memory",
+   "status": "not_run"
+  }
+ ],
+ "b0_to_b1": {
+  "paired_tasks": 4,
+  "missing_tasks": [],
+  "gained_true_correct": [],
+  "lost_true_correct": [],
+  "gained_phantom": [],
+  "removed_phantom": [],
+  "win_safe": true
+ },
+ "b0_to_b2": {
+  "paired_tasks": 4,
+  "missing_tasks": [],
+  "gained_true_correct": [],
+  "lost_true_correct": [],
+  "gained_phantom": [],
+  "removed_phantom": [],
+  "win_safe": true
+ },
+ "b0_to_b3": {
+  "status": "not_run"
+ },
+ "b3_same_generator_specification_as_b1": false,
+ "memory_interpretation": "Compare only equal task coverage and record the authorized memory scope.",
+ "selection_or_heldout": "Read each arm's provenance; this report does not relabel selection tasks as held-out."
+}
+{
+ "candidate_idx": 2,
+ "memory_promoted": false,
+ "report": "/home/hewj13/wm/ora/work/swarm_transfer_logistics_v0.8.2/report/report.md"
+}

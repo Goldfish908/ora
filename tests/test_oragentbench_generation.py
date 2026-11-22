@@ -127,3 +127,16 @@ def test_exception_pass_is_not_an_empty_function():
             "    with open('/app/submissions/solution.csv', 'w') as handle:\n"
             "        handle.write('')\n" + "#" * 500)
     validate_solver_code(code)
+
+
+def test_undefined_global_is_rejected_before_solver_execution():
+    code = ("from pyscipopt import Model\nm = Model()\nm.optimize()\n"
+            "cost_obj = fixed_cost\nsol_path = '/app/submissions/solution.csv'\n" + "#" * 500)
+    with pytest.raises(ValueError, match="unresolved global names: fixed_cost"):
+        validate_solver_code(code)
+
+
+def test_star_import_does_not_cause_false_undefined_global_error():
+    code = ("from pyscipopt import *\nm = Model()\nm.optimize()\n"
+            "sol_path = '/app/submissions/solution.csv'\n" + "#" * 500)
+    validate_solver_code(code)

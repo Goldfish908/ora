@@ -180,3 +180,17 @@ def test_generation_failure_is_supplied_to_the_next_attempt(tmp_path, monkeypatc
     assert result["status"] == "accepted"
     assert attempts[0]["previous_generation_failure"] is None
     assert attempts[1]["previous_generation_failure"] == "ValueError: ambiguous patch"
+
+
+def test_repeated_incomplete_artifact_switches_to_evidence_regeneration():
+    record = {"generation_error": "ValueError: incomplete_artifact: no solver optimize call",
+              "execution": {"return_code": -1}}
+    assert not cleanroom_witness._regenerate_from_evidence(record, 1, None)
+    assert not cleanroom_witness._regenerate_from_evidence(record, 2, None)
+    assert cleanroom_witness._regenerate_from_evidence(
+        record, 2, "ValueError: incomplete_artifact: no solver optimize call")
+    record["generation_error"] = None
+    assert not cleanroom_witness._regenerate_from_evidence(
+        record, 2, "ValueError: incomplete_artifact")
+    record["execution"] = {"return_code": 0}
+    assert cleanroom_witness._regenerate_from_evidence(record, 2, None)

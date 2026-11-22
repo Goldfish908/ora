@@ -56,6 +56,22 @@ def test_guard_runs_before_completeness_validation():
     assert applied[0]["category"] == "constraint_count_method"
 
 
+def test_guard_replaces_nonexistent_scip_constructor():
+    code = "from pyscipopt import SCIP\nmodel = SCIP()\n"
+    repaired, applied = repair_known_api_errors(code)
+    assert repaired == "from pyscipopt import Model\nmodel = Model()\n"
+    assert {item["category"] for item in applied} == {"wrong_import", "model_construction"}
+
+
+def test_guard_removes_scip_from_a_multi_import_without_duplicate_model():
+    code = "from pyscipopt import Model, quicksum, SCIP\nmodel = SCIP()\n"
+    repaired, applied = repair_known_api_errors(code)
+    assert repaired == "from pyscipopt import Model, quicksum\nmodel = Model()\n"
+    assert {item["category"] for item in applied} == {"wrong_import", "model_construction"}
+    assert repair_known_api_errors("class SCIP:\n    pass\nmodel = SCIP()\n") == (
+        "class SCIP:\n    pass\nmodel = SCIP()\n", [])
+
+
 def test_output_schema_repair_is_explicit_and_scoped_to_public_contract():
     from ora_agent.api_guard import repair_public_output_contract
 

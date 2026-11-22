@@ -1,0 +1,73 @@
+{
+ "scope": "engineering_only_guard_replay",
+ "new_llm_calls": 0,
+ "source_artifacts_sha256": "7c79efd68960299de4bd8d64cea6d67ab3499001eb1e2c899497d9118db41bad",
+ "api_guard": {
+  "repairs": [
+   {
+    "category": "gap_parameter",
+    "from": "setParam(\"gaprel\"",
+    "to": "setRealParam(\"limits/gap\""
+   },
+   {
+    "category": "objective_method",
+    "from": "getObjval()",
+    "to": "getObjVal()"
+   },
+   {
+    "category": "wrong_import",
+    "from": "SCIP import",
+    "to": "Model import"
+   },
+   {
+    "category": "solver_status_acceptance",
+    "from": "status whitelist without gaplimit",
+    "to": "status whitelist with gaplimit"
+   }
+  ],
+  "public_contract_repairs": [],
+  "original_sha256": "c7f6b96f04ef0c7952569da30a52969f4217d0e33a224092d5eb0818587fda97",
+  "repaired_sha256": "aabdcd572ceef6c10ea85227e6fe89529bc15e54624d3d62ecf423521a9f9284"
+ },
+ "execution": {
+  "return_code": 1,
+  "stdout": "",
+  "stderr": "Traceback (most recent call last):\n  File \"/app/submissions/solve.py\", line 541, in <module>\n    solve()\n  File \"/app/submissions/solve.py\", line 120, in solve\n    latest_service[c[\"class_id\"]] = slot_index[c[\"latest_service_slot\"]]\n                                    ~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^\nKeyError: '12'\n",
+  "timed_out": false,
+  "wall_seconds": 9.892128,
+  "command": [
+   "python",
+   "/app/submissions/solve.py"
+  ]
+ },
+ "official": {
+  "evaluation": {
+   "feasible": false,
+   "errors": [
+    "No solution file found."
+   ],
+   "error_count": 1
+  },
+  "reward": {
+   "feasibility": 0.0,
+   "quality": 0.0
+  },
+  "reward_details": {
+   "feasibility": 0.0,
+   "quality": 0.0,
+   "quality_status": "missing_solution"
+  },
+  "runner": {
+   "return_code": 0,
+   "timed_out": false,
+   "wall_seconds": 11.176875
+  }
+ },
+ "metrics": {
+  "feasible": false,
+  "quality": 0.0,
+  "true_correct": false,
+  "objective": null,
+  "evaluation_unknown": false
+ }
+}

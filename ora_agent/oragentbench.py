@@ -2,11 +2,13 @@
 from __future__ import annotations
 
 import ast
+import builtins
 import hashlib
 import json
 import os
 import shutil
 import subprocess
+import symtable
 import time
 import uuid
 from dataclasses import dataclass
@@ -162,6 +164,31 @@ def parse_artifacts(response: dict) -> dict:
     return artifacts
 
 
+def _undefined_solver_globals(code: str, tree: ast.AST) -> list[str]:
+    if any(isinstance(node, ast.ImportFrom) and any(alias.name == "*" for alias in node.names)
+           for node in ast.walk(tree)):
+        return []
+    if any(isinstance(node, ast.Name) and node.id in {"eval", "exec", "globals", "locals"}
+           for node in ast.walk(tree)):
+        return []
+    module = symtable.symtable(code, "solve.py", "exec")
+    bound = {symbol.get_name() for symbol in module.get_symbols()
+             if symbol.is_assigned() or symbol.is_imported()}
+    unknown = set()
+
+    def visit(scope):
+        for symbol in scope.get_symbols():
+            name = symbol.get_name()
+            if symbol.is_global() and symbol.is_referenced() and name not in bound \
+                    and not hasattr(builtins, name) and not (name.startswith("__") and name.endswith("__")):
+                unknown.add(name)
+        for child in scope.get_children():
+            visit(child)
+
+    visit(module)
+    return sorted(unknown)
+
+
 def validate_solver_code(code: str) -> None:
     if len(code.strip()) < 500:
         raise ValueError("incomplete_artifact: solver is too short to be a complete model")
@@ -181,6 +208,9 @@ def validate_solver_code(code: str) -> None:
         raise ValueError("incomplete_artifact: no solver optimize call")
     if not any(marker in code for marker in ("solution.csv", "solution.json", "solution_path", "sol_path")):
         raise ValueError("incomplete_artifact: no decision artifact output")
+    unknown = _undefined_solver_globals(code, tree)
+    if unknown:
+        raise ValueError("incomplete_artifact: unresolved global names: " + ", ".join(unknown[:8]))
 
 
 def _phase_tool(phase: str) -> dict:
@@ -503,6 +533,7 @@ def probe_pyscipopt_api(outdir: Path) -> dict:
             "'setUb','setLb','chgVarUb','chgVarLb','getUbGlobal','getLbGlobal',"
             "'quicksum','changeCoeff','chgCoefLinear','chgVarObj','setObjCoeff']; "
             "[show(name) for name in names]; print('module quicksum', inspect.signature(quicksum)); "
+            "print('module SCIP present', hasattr(pyscipopt, 'SCIP')); "
             "from pyscipopt import Variable; "
             "print('Variable.getUbGlobal', inspect.signature(Variable.getUbGlobal)); "
             "print('Variable.getLbGlobal', inspect.signature(Variable.getLbGlobal))")

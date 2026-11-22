@@ -186,6 +186,16 @@ def semantic_findings(record: dict, workspace: Path) -> list[dict]:
     return findings
 
 
+def _regenerate_from_evidence(record: dict, attempt: int,
+                              previous_generation_failure: str | None) -> bool:
+    if attempt <= 1:
+        return False
+    execution = record.get("execution") or {}
+    if execution.get("return_code") == 0 and not execution.get("timed_out"):
+        return True
+    return bool(record.get("generation_error") and previous_generation_failure)
+
+
 def repair_once(memory: EvidenceMemory, packet: TaskPacket, record: dict, specification: str,
                 config: llm_mod.LLMConfig, outdir: Path, run_seed: int = 0,
                 api_guard: bool = False, dag: RepairDAG | None = None,
@@ -230,13 +240,13 @@ def repair_once(memory: EvidenceMemory, packet: TaskPacket, record: dict, specif
         "search_guidance": {
             "attempt": attempt,
             "alternate_branch": attempt > 1,
-            "regenerate_from_evidence": attempt > 1 and execution.get("return_code") == 0
-            and not execution.get("timed_out"),
+            "regenerate_from_evidence": _regenerate_from_evidence(
+                record, attempt, previous_generation_failure),
             "repair_kind": "runtime_patch" if execution.get("return_code") not in {0, None}
             and not execution.get("timed_out")
             and (execution.get("stderr") or execution.get("stderr_tail")) else "complete_artifacts",
             "instruction": "Earlier attempts did not establish verified progress. Do not repeat the previous code or make cosmetic edits. Rebuild the decision structure around every unmet public requirement, and explicitly verify every demand, service, route and output coordinate before writing the decision artifact."
-            if attempt > 1 and execution.get("return_code") == 0 and not execution.get("timed_out")
+            if _regenerate_from_evidence(record, attempt, previous_generation_failure)
             else "Preserve unrelated business requirements and address the target evidence. For a runtime failure, repair the observed cause in the current solver rather than replacing its working model. Assemble solver terms in ordinary Python lists and test the list before calling quicksum; never compare a PySCIPOpt expression with !=, <, or >. Check that a solution exists before reading its objective.",
         },
     }

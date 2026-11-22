@@ -1,0 +1,10 @@
+{
+ "metrics": {
+  "feasible": false,
+  "quality": 0.0,
+  "true_correct": false,
+  "objective": null,
+  "evaluation_unknown": false
+ },
+ "new_llm_calls": 0
+}

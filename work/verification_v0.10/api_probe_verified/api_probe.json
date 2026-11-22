@@ -1,0 +1,12 @@
+{
+ "return_code": 0,
+ "stdout": "PySCIPOpt version 6.3.0\naddVar (self, name='', vtype='C', lb=0.0, ub=None, obj=0.0, pricedVar=False, pricedVarScore=1.0, deletable=False)\naddCons (self, cons, name='', initial=True, separate=True, enforce=True, check=True, propagate=True, local=False, modifiable=False, dynamic=False, removable=False, stickingatnode=False)\nsetObjective (self, expr, sense='minimize', clear='true')\nsetMinimize (self)\nsetRealParam (self, name, value)\nsetParam (self, name, value)\ngetBestSol (self)\ngetSols (self)\ngetSolTime (self, sol)\ngetObjVal (self, original=True)\ngetObjval AttributeError\ngetStatus (self)\ngetOrigStatus AttributeError\ngetOrigTime AttributeError\ngetVarVal AttributeError\ngetNSols (self)\ngetNsolns AttributeError\ngetVal (self, expr: 'Union[Expr, GenExpr, MatrixExpr]') -> 'Union[float, np.ndarray]'\nfree (self)\ngetNvars AttributeError\ngetNVars (self, transformed=True)\ngetNconss AttributeError\ngetNCons AttributeError\ngetNConss (self, transformed=True)\nsetUb AttributeError\nsetLb AttributeError\nchgVarUb (self, var, ub)\nchgVarLb (self, var, lb)\ngetUbGlobal AttributeError\ngetLbGlobal AttributeError\nquicksum AttributeError\nchangeCoeff AttributeError\nchgCoefLinear (self, cons, var, value)\nchgVarObj AttributeError\nsetObjCoeff AttributeError\nmodule quicksum (termlist)\nmodule SCIP present False\nVariable.getUbGlobal (self)\nVariable.getLbGlobal (self)\n",
+ "stderr": "",
+ "timed_out": false,
+ "wall_seconds": 29.367161,
+ "command": [
+  "python",
+  "-c",
+  "from pyscipopt import Model, quicksum; import inspect, pyscipopt\nprint('PySCIPOpt version', pyscipopt.__version__)\ndef show(name):\n try: print(name, inspect.signature(getattr(Model, name)))\n except Exception as exc: print(name, type(exc).__name__)\nnames=['addVar','addCons','setObjective','setMinimize','setRealParam','setParam','getBestSol','getSols','getSolTime','getObjVal','getObjval','getStatus','getOrigStatus','getOrigTime','getVarVal','getNSols','getNsolns','getVal','free','getNvars','getNVars','getNconss','getNCons','getNConss','setUb','setLb','chgVarUb','chgVarLb','getUbGlobal','getLbGlobal','quicksum','changeCoeff','chgCoefLinear','chgVarObj','setObjCoeff']; [show(name) for name in names]; print('module quicksum', inspect.signature(quicksum)); print('module SCIP present', hasattr(pyscipopt, 'SCIP')); from pyscipopt import Variable; print('Variable.getUbGlobal', inspect.signature(Variable.getUbGlobal)); print('Variable.getLbGlobal', inspect.signature(Variable.getLbGlobal))"
+ ]
+}

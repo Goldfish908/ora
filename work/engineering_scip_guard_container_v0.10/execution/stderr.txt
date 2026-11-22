@@ -1,0 +1,7 @@
+Traceback (most recent call last):
+  File "/app/submissions/solve.py", line 541, in <module>
+    solve()
+  File "/app/submissions/solve.py", line 120, in solve
+    latest_service[c["class_id"]] = slot_index[c["latest_service_slot"]]
+                                    ~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^
+KeyError: '12'

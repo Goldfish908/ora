@@ -1,0 +1,13 @@
+{
+ "return_code": 1,
+ "stdout": null,
+ "stderr": null,
+ "timed_out": false,
+ "wall_seconds": 9.892128,
+ "command": [
+  "python",
+  "/app/submissions/solve.py"
+ ],
+ "stdout_file": "stdout.txt",
+ "stderr_file": "stderr.txt"
+}

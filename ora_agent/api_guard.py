@@ -75,10 +75,30 @@ class _VerifiedApiTransformer(ast.NodeVisitor):
         self.repairs = []
         self.replacements = []
         self.needs_quicksum = False
+        self.scip_aliases = set()
+
+    def visit_ImportFrom(self, node):
+        if node.module != "pyscipopt":
+            return
+        invalid = [alias for alias in node.names if alias.name == "SCIP"]
+        if not invalid:
+            return
+        for alias in invalid:
+            self.scip_aliases.add(alias.asname or alias.name)
+        kept = [alias for alias in node.names if alias.name != "SCIP"]
+        imported = [alias.name + (f" as {alias.asname}" if alias.asname else "") for alias in kept]
+        if not any(alias.name == "Model" and alias.asname is None for alias in kept):
+            imported.insert(0, "Model")
+        self.replacements.append((node, "from pyscipopt import " + ", ".join(imported)))
+        self.repairs.append({"category": "wrong_import", "from": "SCIP import", "to": "Model import"})
 
     def visit_Call(self, node):
         self.generic_visit(node)
         function = node.func
+        if isinstance(function, ast.Name) and function.id in self.scip_aliases:
+            self.replacements.append((function, "Model"))
+            self.repairs.append({"category": "model_construction", "from": "SCIP()", "to": "Model()"})
+            return
         if not isinstance(function, ast.Attribute):
             return
         if function.attr == "quicksum":

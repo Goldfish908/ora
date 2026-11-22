@@ -1,0 +1,27 @@
+{
+ "repairs": [
+  {
+   "category": "gap_parameter",
+   "from": "setParam(\"gaprel\"",
+   "to": "setRealParam(\"limits/gap\""
+  },
+  {
+   "category": "objective_method",
+   "from": "getObjval()",
+   "to": "getObjVal()"
+  },
+  {
+   "category": "wrong_import",
+   "from": "SCIP import",
+   "to": "Model import"
+  },
+  {
+   "category": "solver_status_acceptance",
+   "from": "status whitelist without gaplimit",
+   "to": "status whitelist with gaplimit"
+  }
+ ],
+ "public_contract_repairs": [],
+ "original_sha256": "c7f6b96f04ef0c7952569da30a52969f4217d0e33a224092d5eb0818587fda97",
+ "repaired_sha256": "aabdcd572ceef6c10ea85227e6fe89529bc15e54624d3d62ecf423521a9f9284"
+}

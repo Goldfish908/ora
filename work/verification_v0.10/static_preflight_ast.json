@@ -1,0 +1,25 @@
+{
+ "validation": "passed",
+ "repairs": [
+  {
+   "category": "gap_parameter",
+   "from": "setParam(\"gaprel\"",
+   "to": "setRealParam(\"limits/gap\""
+  },
+  {
+   "category": "objective_method",
+   "from": "getObjval()",
+   "to": "getObjVal()"
+  },
+  {
+   "category": "wrong_import",
+   "from": "SCIP import",
+   "to": "Model import"
+  },
+  {
+   "category": "solver_status_acceptance",
+   "from": "status whitelist without gaplimit",
+   "to": "status whitelist with gaplimit"
+  }
+ ]
+}

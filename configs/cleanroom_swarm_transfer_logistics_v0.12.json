@@ -1,0 +1,10 @@
+{
+  "version": "cleanroom_swarm_transfer_logistics_v0.12",
+  "selection_basis": "Four new subsequent-transfer tasks with true-correct oracle/official health and complete bounded single-step packets. None has participated in specification learning, Qwen engineering or memory promotion. kidney and urban drainage failed health; vertical farm is the first healthy preregistered reserve; fiber ring failed quality health.",
+  "tasks": [
+    {"name": "stochastic_surgery_capacity_planning", "domain": "logistics", "split": "transfer"},
+    {"name": "platelet_inventory_rotation", "domain": "logistics", "split": "transfer"},
+    {"name": "retail_media_campaign_allocation", "domain": "logistics", "split": "transfer"},
+    {"name": "vertical_farm_harvest_energy_planning", "domain": "logistics", "split": "transfer"}
+  ]
+}

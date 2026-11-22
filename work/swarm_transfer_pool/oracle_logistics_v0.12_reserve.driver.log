@@ -1,0 +1,16 @@
+{
+ "vertical_farm_harvest_energy_planning": {
+  "feasible": true,
+  "quality": 2.0,
+  "true_correct": true,
+  "objective": 785.7774790852013,
+  "evaluation_unknown": false
+ },
+ "fiber_ring_maintenance_coloring": {
+  "feasible": true,
+  "quality": 0.0,
+  "true_correct": false,
+  "objective": 75098.95000000001,
+  "evaluation_unknown": false
+ }
+}

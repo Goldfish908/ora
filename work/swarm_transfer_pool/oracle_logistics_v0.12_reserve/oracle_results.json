@@ -1,0 +1,177 @@
+{
+ "vertical_farm_harvest_energy_planning": {
+  "runner": {
+   "return_code": 0,
+   "timed_out": false,
+   "stdout": "{\n  \"best_bound\": 785.7774790852018,\n  \"evaluation_objective\": 785.7774790852013,\n  \"mip_gap\": 0.0,\n  \"objective\": 785.7774790852018,\n  \"solution\": \"/app/submissions/solution.csv\",\n  \"status\": \"optimal\"\n}\n",
+   "stderr": ""
+  },
+  "official": {
+   "evaluation": {
+    "environment": "vertical_farm_harvest_energy_planning",
+    "error_count": 0,
+    "errors": [],
+    "feasible": true,
+    "objective": 785.7774790852013,
+    "total_cost": 785.7774790852013
+   },
+   "reward": {
+    "feasibility": 1.0,
+    "quality": 2.0
+   },
+   "reward_details": {
+    "agent_objective": 785.7774790852013,
+    "agent_objective_source": "objective",
+    "best_bound": 785.7774790852018,
+    "bound_sense": "lower",
+    "evaluation_diagnostics": {
+     "error_count": 0,
+     "objective": 785.7774790852013,
+     "profit": null,
+     "score": null,
+     "total_cost": 785.7774790852013
+    },
+    "fallback_mip_gap": 0.0005,
+    "fallback_reference_scale": 785.7774790852013,
+    "feasibility": 1.0,
+    "formula": "clip(2 + d if d >= -1 else 1.5 + 0.5*d, 0, 2), d = (R - O) / (max(abs(R), 1e-8) * mip_gap)",
+    "objective_sense": "minimize",
+    "quality": 2.0,
+    "quality_status": "bound_gap_below_mip_gap",
+    "reference_metrics": {
+     "best_bound": 785.7774790852018,
+     "best_bound_source": "best_bound",
+     "bound_sense": "lower",
+     "evaluation_summary": {
+      "error_count": 0,
+      "feasible": true,
+      "objective": 785.7774790852013,
+      "total_cost": 785.7774790852013
+     },
+     "generated_at": "2026-05-18T16:10:43.579157+00:00",
+     "mip_gap": 0.0005,
+     "objective_sense": "minimize",
+     "quality_formula": "clip(1 + (R - O) / (R - B), 0, 2) if B exists and R - B >= max(abs(R), 1e-8) * mip_gap; otherwise let d=(R - O)/(max(abs(R), 1e-8)*mip_gap), quality=clip(2+d if d>=-1 else 1.5+0.5*d, 0, 2); if no R, quality = 2",
+     "reference_objective": 785.7774790852013,
+     "reference_objective_source": "objective",
+     "solution_path": "reference_solutions/vertical_farm_harvest_energy_planning_reference_solution.csv",
+     "solver_summary": {
+      "best_bound": 785.7774790852018,
+      "evaluation_objective": 785.7774790852013,
+      "mip_gap": 0.0,
+      "objective": 785.7774790852018,
+      "solution": "reference_solutions/vertical_farm_harvest_energy_planning_reference_solution.csv",
+      "status": "optimal"
+     },
+     "task_name": "vertical_farm_harvest_energy_planning",
+     "time_limit_seconds": 300.0
+    },
+    "reference_objective": 785.7774790852013,
+    "scalar_reward": 1.0,
+    "scalar_reward_formula": "(feasibility + quality) / 3.0"
+   },
+   "runner": {
+    "return_code": 0,
+    "timed_out": false,
+    "wall_seconds": 16.023294
+   }
+  },
+  "metrics": {
+   "feasible": true,
+   "quality": 2.0,
+   "true_correct": true,
+   "objective": 785.7774790852013,
+   "evaluation_unknown": false
+  }
+ },
+ "fiber_ring_maintenance_coloring": {
+  "runner": {
+   "return_code": 0,
+   "timed_out": false,
+   "stdout": "{\n  \"best_bound\": 71861.84718915143,\n  \"evaluation_objective\": 75098.95000000001,\n  \"mip_gap\": 0.045046195407808125,\n  \"objective\": 75098.95,\n  \"solution\": \"/app/submissions/solution.csv\",\n  \"status\": \"timelimit\"\n}\n",
+   "stderr": ""
+  },
+  "official": {
+   "evaluation": {
+    "environment": "fiber_ring_maintenance_coloring",
+    "error_count": 0,
+    "errors": [],
+    "feasible": true,
+    "objective": 75098.95000000001,
+    "total_cost": 75098.95000000001,
+    "used_district_windows": 19,
+    "used_window_count": 8
+   },
+   "reward": {
+    "feasibility": 1.0,
+    "quality": 0.0
+   },
+   "reward_details": {
+    "agent_objective": 75098.95000000001,
+    "agent_objective_source": "objective",
+    "best_bound": 74738.33,
+    "bound_improvement": -1.4551915228366852e-11,
+    "bound_sense": "lower",
+    "evaluation_diagnostics": {
+     "error_count": 0,
+     "objective": 75098.95000000001,
+     "profit": null,
+     "score": null,
+     "total_cost": 75098.95000000001
+    },
+    "fallback_mip_gap": 0.0005,
+    "fallback_reference_scale": 74738.32999999999,
+    "feasibility": 1.0,
+    "formula": "clip(2 + d if d >= -1 else 1.5 + 0.5*d, 0, 2), d = (R - O) / (max(abs(R), 1e-8) * mip_gap)",
+    "objective_sense": "minimize",
+    "quality": 0.0,
+    "quality_scale_width": 37.369164999999995,
+    "quality_status": "bound_gap_below_mip_gap",
+    "reference_metrics": {
+     "best_bound": 74738.33,
+     "best_bound_source": "best_bound",
+     "bound_sense": "lower",
+     "evaluation_summary": {
+      "error_count": 0,
+      "feasible": true,
+      "objective": 74738.32999999999,
+      "total_cost": 74738.32999999999
+     },
+     "generated_at": "2026-05-25T05:05:39.818857+00:00",
+     "mip_gap": 0.0005,
+     "objective_sense": "minimize",
+     "quality_formula": "clip(1 + (R - O) / (R - B), 0, 2) if B exists and R - B >= max(abs(R), 1e-8) * mip_gap; otherwise let d=(R - O)/(max(abs(R), 1e-8)*mip_gap), quality=clip(2+d if d>=-1 else 1.5+0.5*d, 0, 2); if no R, quality = 2",
+     "reference_objective": 74738.32999999999,
+     "reference_objective_source": "objective",
+     "solution_path": "reference_solutions/fiber_ring_maintenance_coloring_reference_solution.csv",
+     "solver_summary": {
+      "best_bound": 74738.33,
+      "evaluation_objective": 74738.32999999999,
+      "mip_gap": 0.0,
+      "objective": 74738.33,
+      "solution": "reference_solutions/fiber_ring_maintenance_coloring_reference_solution.csv",
+      "status": "optimal"
+     },
+     "task_name": "fiber_ring_maintenance_coloring",
+     "time_limit_seconds": 300.0
+    },
+    "reference_objective": 74738.32999999999,
+    "scalar_reward": 0.3333333333333333,
+    "scalar_reward_formula": "(feasibility + quality) / 3.0",
+    "signed_improvement": -360.62000000002445
+   },
+   "runner": {
+    "return_code": 0,
+    "timed_out": false,
+    "wall_seconds": 25.218488
+   }
+  },
+  "metrics": {
+   "feasible": true,
+   "quality": 0.0,
+   "true_correct": false,
+   "objective": 75098.95000000001,
+   "evaluation_unknown": false
+  }
+ }
+}

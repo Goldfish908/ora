@@ -1,0 +1,94 @@
+{
+ "version": "cleanroom_swarm_frozen_logistics_v0.12",
+ "n_tasks": 7,
+ "n_healthy": 7,
+ "all_true_correct": true,
+ "roles_sha256": "d8bab7cc98962c5e2ea10ec2f0bf2fa4a3a16a2c56290197431443eb8914c051",
+ "tasks": [
+  {
+   "task": "air_cargo_stochastic_order_allocation",
+   "domain": "logistics",
+   "split": "audit",
+   "role": "witness_calibration",
+   "feasible": true,
+   "quality": 1.0,
+   "objective": 8716.543824000004,
+   "source": "/home/hewj13/wm/ora/work/swarm_transfer_pool/oracle_logistics_v0.8.2/oracle_results.json",
+   "source_sha256": "89b623f324a3cc4b69c747c40ef43912b86b117728c28617b5218e3173231b7b",
+   "implementation_sha256": "12e12091de43209364121eb7300c82e1eb79aea78091c26c16fa05e1eedf524d"
+  },
+  {
+   "task": "wildfire_bus_evacuation_planning",
+   "domain": "logistics",
+   "split": "audit",
+   "role": "witness_calibration",
+   "feasible": true,
+   "quality": 2.0,
+   "objective": 860886.0992884045,
+   "source": "/home/hewj13/wm/ora/work/swarm_transfer_pool/oracle_logistics_v0.8.2/oracle_results.json",
+   "source_sha256": "89b623f324a3cc4b69c747c40ef43912b86b117728c28617b5218e3173231b7b",
+   "implementation_sha256": "12e12091de43209364121eb7300c82e1eb79aea78091c26c16fa05e1eedf524d"
+  },
+  {
+   "task": "heatwave_cooling_center_resource_plan",
+   "domain": "logistics",
+   "split": "audit",
+   "role": "witness_calibration",
+   "feasible": true,
+   "quality": 2.0,
+   "objective": 273011.26,
+   "source": "/home/hewj13/wm/ora/work/swarm_transfer_pool/oracle_logistics_v0.8.2/oracle_results.json",
+   "source_sha256": "89b623f324a3cc4b69c747c40ef43912b86b117728c28617b5218e3173231b7b",
+   "implementation_sha256": "12e12091de43209364121eb7300c82e1eb79aea78091c26c16fa05e1eedf524d"
+  },
+  {
+   "task": "stochastic_surgery_capacity_planning",
+   "domain": "logistics",
+   "split": "transfer",
+   "role": "subsequent_transfer",
+   "feasible": true,
+   "quality": 1.0,
+   "objective": 111966.26389999999,
+   "source": "/home/hewj13/wm/ora/work/swarm_transfer_pool/oracle_logistics_v0.12/oracle_results.json",
+   "source_sha256": "6e507ab02977f1c9dd30a3d935eee49916d3dbcf1ec10290342340cd52368d1e",
+   "implementation_sha256": "b48b3cc2890a337ea618debe1631c2f2526d02a192d1b2244a03394248c22e57"
+  },
+  {
+   "task": "platelet_inventory_rotation",
+   "domain": "logistics",
+   "split": "transfer",
+   "role": "subsequent_transfer",
+   "feasible": true,
+   "quality": 2.0,
+   "objective": 472158.62476,
+   "source": "/home/hewj13/wm/ora/work/swarm_transfer_pool/oracle_logistics_v0.12/oracle_results.json",
+   "source_sha256": "6e507ab02977f1c9dd30a3d935eee49916d3dbcf1ec10290342340cd52368d1e",
+   "implementation_sha256": "b48b3cc2890a337ea618debe1631c2f2526d02a192d1b2244a03394248c22e57"
+  },
+  {
+   "task": "retail_media_campaign_allocation",
+   "domain": "logistics",
+   "split": "transfer",
+   "role": "subsequent_transfer",
+   "feasible": true,
+   "quality": 2.0,
+   "objective": 12708.705645440004,
+   "source": "/home/hewj13/wm/ora/work/swarm_transfer_pool/oracle_logistics_v0.12/oracle_results.json",
+   "source_sha256": "6e507ab02977f1c9dd30a3d935eee49916d3dbcf1ec10290342340cd52368d1e",
+   "implementation_sha256": "b48b3cc2890a337ea618debe1631c2f2526d02a192d1b2244a03394248c22e57"
+  },
+  {
+   "task": "vertical_farm_harvest_energy_planning",
+   "domain": "logistics",
+   "split": "transfer",
+   "role": "subsequent_transfer",
+   "feasible": true,
+   "quality": 2.0,
+   "objective": 785.7774790852013,
+   "source": "/home/hewj13/wm/ora/work/swarm_transfer_pool/oracle_logistics_v0.12_reserve/oracle_results.json",
+   "source_sha256": "b6a063fffa68c7b3651ec63321a081b6f384d59389d5f22548aab641c8473623",
+   "implementation_sha256": "7b544c09ec31a11d8bfb3784c378b9027f6748dc6595db82729e702215d47286"
+  }
+ ],
+ "evidence_note": "Original oracle/official health only; Qwen outcomes were not used to select these tasks."
+}

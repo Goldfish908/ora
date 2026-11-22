@@ -57,7 +57,7 @@ def replay(args: argparse.Namespace, arm: str, source: Path | None = None,
 
 
 def repair_batch(args: argparse.Namespace, arm: str, packets: list, spec_source: Path,
-                 candidate: dict | None) -> list[Path]:
+                 candidate: dict | None, baseline_arm: str | None = None) -> list[Path]:
     out = args.out / arm
     memory = EvidenceMemory()
     oracle_source = args.witness_source
@@ -72,7 +72,7 @@ def repair_batch(args: argparse.Namespace, arm: str, packets: list, spec_source:
     config = llm_mod.load_config()
     results = []
     for packet in packets:
-        manifest_path = args.out / ("B1" if arm == "B2" else "B3") / "run.json"
+        manifest_path = args.out / (baseline_arm or ("B1" if arm == "B2" else "B3")) / "run.json"
         manifest = read_json(manifest_path)
         row = next(row for row in manifest["records"] if row["task"] == packet.name)
         record_path = Path(row["record_path"])

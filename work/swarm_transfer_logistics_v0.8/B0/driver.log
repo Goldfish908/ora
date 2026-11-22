@@ -1,0 +1,170 @@
+[shared_drone_base_delivery_assignment][e3b0c442] proxy=False true=False phantom=False quality=0.0000
+[autonomous_lab_courier_tsptw][e3b0c442] proxy=False true=False phantom=False quality=0.0000
+[flood_relief_multimodal_routing][e3b0c442] proxy=False true=False phantom=False quality=0.0000
+[curbside_delivery_slot_coordination][e3b0c442] proxy=True true=True phantom=False quality=2.0000
+{
+ "n": 4,
+ "expected_tasks": 4,
+ "coverage": 1.0,
+ "feasible": 1,
+ "proxy_match": 1,
+ "true_correct": 1,
+ "phantom_proxy": 0,
+ "unknown": 0,
+ "unresolved_non_phantom": 3,
+ "mean_quality": 0.5,
+ "failure_counts": {
+  "execution_error": 3,
+  "true_correct": 1
+ },
+ "api_guard_modified": 2,
+ "cost": {
+  "llm_calls": 8,
+  "missing_usage_calls": 0,
+  "llm_latency_seconds": 325.345111,
+  "prompt_tokens": 132047,
+  "completion_tokens": 22269,
+  "reasoning_tokens": 0,
+  "total_tokens": 154316,
+  "solver_execution_time": {
+   "recorded_calls": 4,
+   "missing_calls": 0,
+   "seconds": 118.153334
+  },
+  "official_evaluation_time": {
+   "recorded_calls": 4,
+   "missing_calls": 0,
+   "seconds": 84.04534
+  }
+ },
+ "tasks": [
+  {
+   "task": "shared_drone_base_delivery_assignment",
+   "split": "transfer",
+   "candidate_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+   "attempt": 0,
+   "feasible": false,
+   "quality": 0.0,
+   "true_correct": false,
+   "objective": null,
+   "proxy_match": false,
+   "phantom_proxy": false,
+   "failure_class": "execution_error",
+   "execution_return_code": 1,
+   "generation_error": null,
+   "cost": {
+    "llm_calls": 2,
+    "missing_usage_calls": 0,
+    "llm_latency_seconds": 88.230425,
+    "prompt_tokens": 70942,
+    "completion_tokens": 5834,
+    "reasoning_tokens": 0,
+    "total_tokens": 76776
+   },
+   "execution_wall_seconds": 6.556303,
+   "evaluation_wall_seconds": 3.01566,
+   "api_guard_repairs": 0,
+   "public_contract_repairs": 0,
+   "stderr_tail": "Warning: Without a solution, method can only be called in stage SOLVING."
+  },
+  {
+   "task": "autonomous_lab_courier_tsptw",
+   "split": "transfer",
+   "candidate_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+   "attempt": 0,
+   "feasible": false,
+   "quality": 0.0,
+   "true_correct": false,
+   "objective": null,
+   "proxy_match": false,
+   "phantom_proxy": false,
+   "failure_class": "execution_error",
+   "execution_return_code": 1,
+   "generation_error": null,
+   "cost": {
+    "llm_calls": 2,
+    "missing_usage_calls": 0,
+    "llm_latency_seconds": 71.459101,
+    "prompt_tokens": 15207,
+    "completion_tokens": 4900,
+    "reasoning_tokens": 0,
+    "total_tokens": 20107
+   },
+   "execution_wall_seconds": 17.347979,
+   "evaluation_wall_seconds": 14.38344,
+   "api_guard_repairs": 0,
+   "public_contract_repairs": 0,
+   "stderr_tail": "Warning: Without a solution, method can only be called in stage SOLVING."
+  },
+  {
+   "task": "flood_relief_multimodal_routing",
+   "split": "transfer",
+   "candidate_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+   "attempt": 0,
+   "feasible": false,
+   "quality": 0.0,
+   "true_correct": false,
+   "objective": null,
+   "proxy_match": false,
+   "phantom_proxy": false,
+   "failure_class": "execution_error",
+   "execution_return_code": 1,
+   "generation_error": null,
+   "cost": {
+    "llm_calls": 2,
+    "missing_usage_calls": 0,
+    "llm_latency_seconds": 114.220427,
+    "prompt_tokens": 11381,
+    "completion_tokens": 8102,
+    "reasoning_tokens": 0,
+    "total_tokens": 19483
+   },
+   "execution_wall_seconds": 49.903666,
+   "evaluation_wall_seconds": 32.912051,
+   "api_guard_repairs": 2,
+   "public_contract_repairs": 0,
+   "stderr_tail": null
+  },
+  {
+   "task": "curbside_delivery_slot_coordination",
+   "split": "transfer",
+   "candidate_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+   "attempt": 0,
+   "feasible": true,
+   "quality": 2.0,
+   "true_correct": true,
+   "objective": 926.4082098000001,
+   "proxy_match": true,
+   "phantom_proxy": false,
+   "failure_class": "true_correct",
+   "execution_return_code": 0,
+   "generation_error": null,
+   "cost": {
+    "llm_calls": 2,
+    "missing_usage_calls": 0,
+    "llm_latency_seconds": 51.435158,
+    "prompt_tokens": 34517,
+    "completion_tokens": 3433,
+    "reasoning_tokens": 0,
+    "total_tokens": 37950
+   },
+   "execution_wall_seconds": 44.345386,
+   "evaluation_wall_seconds": 33.734189,
+   "api_guard_repairs": 1,
+   "public_contract_repairs": 0,
+   "stderr_tail": null
+  }
+ ],
+ "arm": "B0_empty_specification",
+ "provenance": "frozen_replay",
+ "evolution_performed": false,
+ "feedback_returned_to_generator": false,
+ "candidate_idx": null,
+ "specification_sha256": {
+  "shared_drone_base_delivery_assignment": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+  "autonomous_lab_courier_tsptw": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+  "flood_relief_multimodal_routing": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+  "curbside_delivery_slot_coordination": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+ },
+ "wall_seconds": 528.114
+}

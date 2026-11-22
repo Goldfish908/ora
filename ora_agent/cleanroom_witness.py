@@ -189,7 +189,8 @@ def semantic_findings(record: dict, workspace: Path) -> list[dict]:
 def repair_once(memory: EvidenceMemory, packet: TaskPacket, record: dict, specification: str,
                 config: llm_mod.LLMConfig, outdir: Path, run_seed: int = 0,
                 api_guard: bool = False, dag: RepairDAG | None = None,
-                parent_id: str = "root", attempt: int = 1) -> dict:
+                parent_id: str = "root", attempt: int = 1,
+                previous_generation_failure: str | None = None) -> dict:
     if record["true_correct"]:
         return {"status": "preserved_win", "record": record}
     if packet.split not in {"dev", "audit", "transfer"}:
@@ -239,6 +240,8 @@ def repair_once(memory: EvidenceMemory, packet: TaskPacket, record: dict, specif
             else "Preserve unrelated business requirements and address the target evidence. For a runtime failure, repair the observed cause in the current solver rather than replacing its working model. Assemble solver terms in ordinary Python lists and test the list before calling quicksum; never compare a PySCIPOpt expression with !=, <, or >. Check that a solution exists before reading its objective.",
         },
     }
+    if previous_generation_failure:
+        evidence["previous_generation_failure"] = previous_generation_failure
     base = outdir / "repair_1"
     phase = "generation"
     try:
@@ -340,10 +343,12 @@ def repair_bounded(memory: EvidenceMemory, packet: TaskPacket, record: dict, spe
     final_verdicts = before
     stop_reason = "bounded_failure"
     unchanged_streak = 0
+    previous_generation_failure = None
     for attempt in range(1, max_attempts + 1):
         result = repair_once(memory, packet, current, specification, config,
                              outdir / f"attempt_{attempt}", run_seed + attempt - 1,
-                             api_guard=api_guard, dag=dag, parent_id=parent_id, attempt=attempt)
+                             api_guard=api_guard, dag=dag, parent_id=parent_id, attempt=attempt,
+                             previous_generation_failure=previous_generation_failure)
         history.append({key: value for key, value in result.items() if key not in {"record", "dag"}})
         child = result.get("record")
         if child is not None and child["workspace"] != current["workspace"]:
@@ -360,7 +365,9 @@ def repair_bounded(memory: EvidenceMemory, packet: TaskPacket, record: dict, spe
             break
         if result["status"] == "repair_failed":
             stop_reason = result["status"]
+            previous_generation_failure = result.get("error")
             continue
+        previous_generation_failure = None
         child = result["record"]
         transition = _evidence_transition(current, child)
         history[-1]["evidence_transition"] = transition

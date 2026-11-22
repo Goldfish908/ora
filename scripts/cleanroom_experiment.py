@@ -48,6 +48,23 @@ def load_tasks(config_path: Path) -> list[TaskPacket]:
     return packets
 
 
+def run_oracle_batch(packets: list[TaskPacket], outdir: Path, resume: bool = False) -> dict:
+    results_path = outdir / "oracle_results.json"
+    results = read_json(results_path) if resume and results_path.exists() else {}
+    expected = {packet.name for packet in packets}
+    if not set(results).issubset(expected):
+        raise ValueError("saved oracle results contain tasks outside the requested configuration")
+    for packet in packets:
+        if packet.name in results:
+            continue
+        oracle_dir = outdir / packet.name / "oracle"
+        result = run_oracle(packet, oracle_dir / "app")
+        results[packet.name] = result
+        write_json(oracle_dir / "result.json", result)
+        write_json(results_path, results)
+    return results
+
+
 def gepa_seed_candidate(args: argparse.Namespace) -> dict[str, str]:
     if not args.gepa_seed_result:
         return {"conventions": ""}
@@ -260,10 +277,7 @@ def main() -> None:
     started = time.monotonic()
 
     if args.mode == "oracle":
-        results = {}
-        for packet in packets:
-            results[packet.name] = run_oracle(packet, outdir / packet.name / "oracle/app")
-        write_json(outdir / "oracle_results.json", results)
+        results = run_oracle_batch(packets, outdir, resume=args.resume)
         print(json.dumps({name: result["metrics"] for name, result in results.items()}, indent=1))
         return
 

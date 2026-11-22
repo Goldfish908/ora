@@ -157,3 +157,26 @@ def test_changed_error_text_without_progress_stops(tmp_path, monkeypatch):
     assert attempts == [1, 2]
     assert result["record"] is record
     assert [row["evidence_transition"] for row in result["history"]] == ["unchanged", "unchanged"]
+
+
+def test_generation_failure_is_supplied_to_the_next_attempt(tmp_path, monkeypatch):
+    memory, packet, record, _ = setup_loop(monkeypatch, outcomes=99)
+    attempts = []
+
+    def branch(memory, packet, current, specification, config, outdir, run_seed, **kwargs):
+        attempts.append(kwargs)
+        if len(attempts) == 1:
+            return {"status": "repair_failed", "error": "ValueError: ambiguous patch",
+                    "before": {"execution_contract": "fail"}}
+        child = dict(current)
+        child.update(true_correct=True, workspace="recovered/app", execution={"return_code": 0},
+                     feasible=True, quality=1.0, official={"evaluation": {"errors": []}})
+        return {"status": "accepted", "record": child, "node_id": "recovered",
+                "before": {"execution_contract": "fail"}, "after": {"execution_contract": "pass"},
+                "edge_accepted": True, "final_accept": True}
+
+    monkeypatch.setattr(cleanroom_witness, "repair_once", branch)
+    result = cleanroom_witness.repair_bounded(memory, packet, record, "spec", None, tmp_path)
+    assert result["status"] == "accepted"
+    assert attempts[0]["previous_generation_failure"] is None
+    assert attempts[1]["previous_generation_failure"] == "ValueError: ambiguous patch"

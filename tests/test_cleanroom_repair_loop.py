@@ -108,8 +108,10 @@ def test_rejected_regression_retries_from_best_parent(tmp_path, monkeypatch):
 
 def test_changed_error_text_without_progress_stops(tmp_path, monkeypatch):
     memory, packet, record, _ = setup_loop(monkeypatch, outcomes=99)
+    attempts = []
 
     def unchanged(memory, packet, current, specification, config, outdir, run_seed, **kwargs):
+        attempts.append(kwargs["attempt"])
         child = dict(current)
         child.update(workspace="different/app", official={"evaluation": {"errors": ["different"]}})
         return {"status": "rejected", "record": child, "node_id": "different",
@@ -119,6 +121,7 @@ def test_changed_error_text_without_progress_stops(tmp_path, monkeypatch):
     monkeypatch.setattr(cleanroom_witness, "repair_once", unchanged)
     result = cleanroom_witness.repair_bounded(memory, packet, record, "spec", None, tmp_path)
     assert result["status"] == "no_verified_progress"
-    assert result["attempts_used"] == 1
+    assert result["attempts_used"] == 2
+    assert attempts == [1, 2]
     assert result["record"] is record
-    assert result["history"][0]["evidence_transition"] == "unchanged"
+    assert [row["evidence_transition"] for row in result["history"]] == ["unchanged", "unchanged"]

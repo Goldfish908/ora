@@ -226,6 +226,12 @@ def repair_once(memory: EvidenceMemory, packet: TaskPacket, record: dict, specif
         "witness_verdicts": before,
         "official_errors": (record.get("official", {}).get("evaluation", {}).get("errors") or [])[:20],
         "semantic_findings": semantic_findings(record, root_workspace),
+        "search_guidance": {
+            "attempt": attempt,
+            "alternate_branch": attempt > 1,
+            "instruction": "Earlier attempts did not establish verified progress. Do not repeat the previous code or make cosmetic edits. Rebuild the decision structure around every unmet public requirement, and explicitly verify every demand, service, route and output coordinate before writing the decision artifact."
+            if attempt > 1 else "Preserve unrelated business requirements and address the target evidence.",
+        },
     }
     base = outdir / "repair_1"
     phase = "generation"
@@ -327,6 +333,7 @@ def repair_bounded(memory: EvidenceMemory, packet: TaskPacket, record: dict, spe
     final_record = baseline
     final_verdicts = before
     stop_reason = "bounded_failure"
+    unchanged_streak = 0
     for attempt in range(1, max_attempts + 1):
         result = repair_once(memory, packet, current, specification, config,
                              outdir / f"attempt_{attempt}", run_seed + attempt - 1,
@@ -352,8 +359,12 @@ def repair_bounded(memory: EvidenceMemory, packet: TaskPacket, record: dict, spe
         transition = _evidence_transition(current, child)
         history[-1]["evidence_transition"] = transition
         if transition == "unchanged":
+            unchanged_streak += 1
             stop_reason = "no_verified_progress"
-            break
+            if unchanged_streak >= 2:
+                break
+            continue
+        unchanged_streak = 0
         if transition == "regression":
             stop_reason = "rejected_regression"
             continue

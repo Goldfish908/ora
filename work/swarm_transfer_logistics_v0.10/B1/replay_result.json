@@ -1,0 +1,179 @@
+{
+ "n": 4,
+ "expected_tasks": 4,
+ "coverage": 1.0,
+ "feasible": 1,
+ "proxy_match": 2,
+ "true_correct": 0,
+ "phantom_proxy": 2,
+ "unknown": 0,
+ "unresolved_non_phantom": 2,
+ "mean_quality": 0.0,
+ "failure_counts": {
+  "execution_error": 1,
+  "phantom_proxy": 2,
+  "quality_shortfall": 1
+ },
+ "api_guard_modified": 4,
+ "cost": {
+  "llm_calls": 8,
+  "missing_usage_calls": 0,
+  "llm_latency_seconds": 545.664837,
+  "prompt_tokens": 84020,
+  "completion_tokens": 34849,
+  "reasoning_tokens": 0,
+  "total_tokens": 118869,
+  "solver_execution_time": {
+   "recorded_calls": 4,
+   "missing_calls": 0,
+   "seconds": 96.18498
+  },
+  "official_evaluation_time": {
+   "recorded_calls": 4,
+   "missing_calls": 0,
+   "seconds": 72.286232
+  }
+ },
+ "tasks": [
+  {
+   "task": "home_healthcare_routing",
+   "split": "transfer",
+   "candidate_sha256": "08f95083f60719b0681fcca6cfad453b3faf28577335b466265903e2a11fe190",
+   "attempt": 0,
+   "feasible": false,
+   "quality": 0.0,
+   "true_correct": false,
+   "objective": null,
+   "proxy_match": false,
+   "phantom_proxy": false,
+   "failure_class": "execution_error",
+   "execution_return_code": 1,
+   "generation_error": null,
+   "cost": {
+    "llm_calls": 2,
+    "missing_usage_calls": 0,
+    "llm_latency_seconds": 223.243737,
+    "prompt_tokens": 24310,
+    "completion_tokens": 14247,
+    "reasoning_tokens": 0,
+    "total_tokens": 38557
+   },
+   "execution_wall_seconds": 30.138811,
+   "evaluation_wall_seconds": 17.825953,
+   "api_guard_repairs": 1,
+   "public_contract_repairs": 0,
+   "stderr_tail": "AssertionError: given constraint is not ExprCons but int"
+  },
+  {
+   "task": "airport_gate_assignment",
+   "split": "transfer",
+   "candidate_sha256": "08f95083f60719b0681fcca6cfad453b3faf28577335b466265903e2a11fe190",
+   "attempt": 0,
+   "feasible": true,
+   "quality": 0.0,
+   "true_correct": false,
+   "objective": 69370.0,
+   "proxy_match": false,
+   "phantom_proxy": false,
+   "failure_class": "quality_shortfall",
+   "execution_return_code": 0,
+   "generation_error": null,
+   "cost": {
+    "llm_calls": 2,
+    "missing_usage_calls": 0,
+    "llm_latency_seconds": 151.791654,
+    "prompt_tokens": 23792,
+    "completion_tokens": 9689,
+    "reasoning_tokens": 0,
+    "total_tokens": 33481
+   },
+   "execution_wall_seconds": 27.987201,
+   "evaluation_wall_seconds": 13.398585,
+   "api_guard_repairs": 1,
+   "public_contract_repairs": 0,
+   "stderr_tail": null
+  },
+  {
+   "task": "circular_packaging_replenishment",
+   "split": "transfer",
+   "candidate_sha256": "08f95083f60719b0681fcca6cfad453b3faf28577335b466265903e2a11fe190",
+   "attempt": 0,
+   "feasible": false,
+   "quality": 0.0,
+   "true_correct": false,
+   "objective": -10877.195999999994,
+   "proxy_match": true,
+   "phantom_proxy": true,
+   "failure_class": "phantom_proxy",
+   "execution_return_code": 0,
+   "generation_error": null,
+   "cost": {
+    "llm_calls": 2,
+    "missing_usage_calls": 0,
+    "llm_latency_seconds": 78.68606,
+    "prompt_tokens": 21192,
+    "completion_tokens": 4999,
+    "reasoning_tokens": 0,
+    "total_tokens": 26191
+   },
+   "execution_wall_seconds": 18.052549,
+   "evaluation_wall_seconds": 18.776921,
+   "api_guard_repairs": 1,
+   "public_contract_repairs": 0,
+   "stderr_tail": null
+  },
+  {
+   "task": "coastal_aquaculture_feed_oxygen_planning",
+   "split": "transfer",
+   "candidate_sha256": "08f95083f60719b0681fcca6cfad453b3faf28577335b466265903e2a11fe190",
+   "attempt": 0,
+   "feasible": false,
+   "quality": 0.0,
+   "true_correct": false,
+   "objective": 0.0,
+   "proxy_match": true,
+   "phantom_proxy": true,
+   "failure_class": "phantom_proxy",
+   "execution_return_code": 0,
+   "generation_error": null,
+   "cost": {
+    "llm_calls": 2,
+    "missing_usage_calls": 0,
+    "llm_latency_seconds": 91.943386,
+    "prompt_tokens": 14726,
+    "completion_tokens": 5914,
+    "reasoning_tokens": 0,
+    "total_tokens": 20640
+   },
+   "execution_wall_seconds": 20.006419,
+   "evaluation_wall_seconds": 22.284773,
+   "api_guard_repairs": 1,
+   "public_contract_repairs": 0,
+   "stderr_tail": null
+  }
+ ],
+ "arm": "B1_gepa_specification",
+ "provenance": "subsequent_disjoint_replay",
+ "evolution_performed": false,
+ "feedback_returned_to_generator": false,
+ "candidate_idx": 2,
+ "specification_sha256": {
+  "home_healthcare_routing": "08f95083f60719b0681fcca6cfad453b3faf28577335b466265903e2a11fe190",
+  "airport_gate_assignment": "08f95083f60719b0681fcca6cfad453b3faf28577335b466265903e2a11fe190",
+  "circular_packaging_replenishment": "08f95083f60719b0681fcca6cfad453b3faf28577335b466265903e2a11fe190",
+  "coastal_aquaculture_feed_oxygen_planning": "08f95083f60719b0681fcca6cfad453b3faf28577335b466265903e2a11fe190"
+ },
+ "wall_seconds": 714.935,
+ "paired_comparison": {
+  "paired_tasks": 4,
+  "missing_tasks": [],
+  "gained_true_correct": [],
+  "lost_true_correct": [],
+  "gained_phantom": [
+   "circular_packaging_replenishment",
+   "coastal_aquaculture_feed_oxygen_planning"
+  ],
+  "removed_phantom": [],
+  "win_safe": true
+ }
+}

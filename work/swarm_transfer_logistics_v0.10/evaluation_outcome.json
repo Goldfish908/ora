@@ -1,0 +1,55 @@
+{
+ "strict_goal_met": false,
+ "criterion_checks": {
+  "b2_strictly_above_b1": false,
+  "b1_to_b2_no_lost_true": true,
+  "b1_to_b2_no_missing": true,
+  "b1_to_b2_no_new_phantom": true,
+  "b0_to_b2_no_new_phantom": false,
+  "no_unknown": true,
+  "b3_not_run_without_promotion": true
+ },
+ "b0_to_b2": {
+  "paired_tasks": 4,
+  "missing_tasks": [],
+  "gained_true_correct": [],
+  "lost_true_correct": [],
+  "gained_phantom": [
+   "circular_packaging_replenishment",
+   "coastal_aquaculture_feed_oxygen_planning"
+  ],
+  "removed_phantom": [],
+  "win_safe": true
+ },
+ "b1_to_b2": {
+  "paired_tasks": 4,
+  "missing_tasks": [],
+  "gained_true_correct": [],
+  "lost_true_correct": [],
+  "gained_phantom": [],
+  "removed_phantom": [],
+  "win_safe": true
+ },
+ "b0_true_correct": 0,
+ "b1_true_correct": 0,
+ "b2_true_correct": 0,
+ "b2_phantom_proxy": 2,
+ "b2_unknown": 0,
+ "b2_attempts": 10,
+ "arm_tokens": {
+  "B0_empty_specification": 94386,
+  "B1_gepa_specification": 118869,
+  "B2_gepa_residual_dag": 477242
+ },
+ "repair_tokens": 358373,
+ "implementation_commit": "8aeea8619007476ebd75470c39330b3b207104ef",
+ "b3": "not_run",
+ "memory_promoted": false,
+ "validation": {
+  "pytest": "576 passed, 3 skipped",
+  "m2gen": "REGRESSION OK",
+  "path": "../verification_v0.10_final"
+ },
+ "interpretation": "No true-correct task was produced. B1 introduced two phantoms relative to B0 and B2 did not remove them. Repair did not improve on B1. These tasks are now engineering data and cannot be reused as independent evidence.",
+ "cost_boundary": "The 358373 repair tokens are lower than v0.9, but task sizes and implementations differ; this is not an isolated cost-reduction effect."
+}

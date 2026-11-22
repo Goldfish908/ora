@@ -1,0 +1,54 @@
+{
+ "task": "home_healthcare_routing",
+ "specification_sha256": "08f95083f60719b0681fcca6cfad453b3faf28577335b466265903e2a11fe190",
+ "repair": true,
+ "request": {
+  "solver_max_tokens": 8192,
+  "solver_reasoning_effort": "low",
+  "solver_disable_thinking": true,
+  "temperature": 0.6,
+  "stream": false,
+  "protocol": "unique_exact_runtime_patch_v1",
+  "parent_solver_sha256": "f1e601f50e058d85a13b55289480f6ba49c8d880a424043fb95d1f29f81b6da0"
+ },
+ "response": {
+  "content": "",
+  "tool_calls": [
+   {
+    "id": "chatcmpl-tool-8e8c8257246b22b7",
+    "type": "function",
+    "function": {
+     "name": "submit_runtime_patch",
+     "arguments": "{\"edits\": [{\"new_string\": \"                    if relation == \\\"different\\\" and c1 == c2:\\n                        model.addCons(x[(c1, i1, t1)] + x[(c2, i2, t2)] <= 1, name=f\\\"handoff_diff_{pid}_{c1}_{c2}_{i1}_{i2}\\\")\", \"old_string\": \"                    if relation == \\\"different\\\":\\n                        model.addCons(x[(c1, i1, t1)] + x[(c2, i2, t2)] <= 1 if c1 == c2 else 1, name=f\\\"handoff_diff_{pid}_{c1}_{c2}_{i1}_{i2}\\\")\"}]}"
+    }
+   }
+  ],
+  "usage": {
+   "prompt_tokens": 26995,
+   "total_tokens": 27176,
+   "completion_tokens": 181,
+   "prompt_tokens_details": null,
+   "completion_tokens_details": {
+    "reasoning_tokens": 0
+   }
+  },
+  "model": "Qwen3_8-27B",
+  "latency_s": 6.044151462614536,
+  "request_wall_s": 6.044639900326729,
+  "request_attempts": [
+   {
+    "attempt": 1,
+    "outcome": "success",
+    "latency_s": 6.044,
+    "time_to_first_chunk_s": null,
+    "stream_chunks": 0
+   }
+  ],
+  "retry_count": 0,
+  "finish_reason": "stop",
+  "streamed": false,
+  "stream_chunks": 0,
+  "time_to_first_chunk_s": null
+ },
+ "error": null
+}

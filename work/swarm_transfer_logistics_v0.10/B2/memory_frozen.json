@@ -1,0 +1,181 @@
+{
+ "frozen": true,
+ "events": [
+  {
+   "event": "check_hint_only",
+   "check_id": "execution_contract",
+   "at": "2026-11-22T09:44:18.025766+00:00"
+  },
+  {
+   "event": "check_veto_enabled",
+   "check_id": "execution_contract",
+   "at": "2026-11-22T09:44:18.026515+00:00"
+  },
+  {
+   "event": "check_hint_only",
+   "check_id": "logistics_official_task_pass",
+   "at": "2026-11-22T09:44:18.026569+00:00"
+  },
+  {
+   "event": "check_veto_enabled",
+   "check_id": "logistics_official_task_pass",
+   "at": "2026-11-22T09:44:18.028806+00:00"
+  },
+  {
+   "event": "memory_frozen",
+   "at": "2026-11-22T09:44:18.031914+00:00"
+  },
+  {
+   "event": "memory_frozen",
+   "at": "2026-11-22T09:46:23.914580+00:00"
+  },
+  {
+   "event": "memory_frozen",
+   "at": "2026-11-22T09:57:20.955208+00:00"
+  },
+  {
+   "event": "memory_frozen",
+   "at": "2026-11-22T10:04:21.414454+00:00"
+  }
+ ],
+ "specifications": [],
+ "checks": [
+  {
+   "check_id": "execution_contract",
+   "scope": {
+    "dataset": "oragentbench"
+   },
+   "source_quote": "required solution file",
+   "status": "veto_enabled",
+   "code_sha256": "c24510be5bb742559d5471f8c8fe7b93afb35f376619a60892303fb5bf1d35f5",
+   "audits": [
+    {
+     "records": [
+      {
+       "case_id": "exec_clean_0",
+       "expected": "pass",
+       "observed": "pass"
+      },
+      {
+       "case_id": "exec_wrong_0",
+       "expected": "fail",
+       "observed": "fail"
+      },
+      {
+       "case_id": "exec_clean_1",
+       "expected": "pass",
+       "observed": "pass"
+      },
+      {
+       "case_id": "exec_wrong_1",
+       "expected": "fail",
+       "observed": "fail"
+      },
+      {
+       "case_id": "exec_clean_2",
+       "expected": "pass",
+       "observed": "pass"
+      },
+      {
+       "case_id": "exec_wrong_2",
+       "expected": "fail",
+       "observed": "fail"
+      }
+     ],
+     "n_clean": 3,
+     "n_wrong": 3,
+     "precision": 1.0,
+     "detection": 1.0,
+     "unknown": 0,
+     "passed": true,
+     "reasons": [],
+     "at": "2026-11-22T09:44:18.026501+00:00"
+    }
+   ]
+  },
+  {
+   "check_id": "logistics_official_task_pass",
+   "scope": {
+    "dataset": "oragentbench",
+    "domain": "logistics"
+   },
+   "source_quote": "required solution file",
+   "status": "veto_enabled",
+   "code_sha256": "05d2771d2930b95605554ff263bf660a61b179ec1acf8917db4a981c337e2d8a",
+   "audits": [
+    {
+     "records": [
+      {
+       "case_id": "air_cargo_stochastic_order_allocation:clean",
+       "expected": "pass",
+       "observed": "pass"
+      },
+      {
+       "case_id": "air_cargo_stochastic_order_allocation:missing_solution",
+       "expected": "fail",
+       "observed": "fail"
+      },
+      {
+       "case_id": "air_cargo_stochastic_order_allocation:invalid_schema",
+       "expected": "fail",
+       "observed": "fail"
+      },
+      {
+       "case_id": "air_cargo_stochastic_order_allocation:empty_solution",
+       "expected": "fail",
+       "observed": "fail"
+      },
+      {
+       "case_id": "wildfire_bus_evacuation_planning:clean",
+       "expected": "pass",
+       "observed": "pass"
+      },
+      {
+       "case_id": "wildfire_bus_evacuation_planning:missing_solution",
+       "expected": "fail",
+       "observed": "fail"
+      },
+      {
+       "case_id": "wildfire_bus_evacuation_planning:invalid_schema",
+       "expected": "fail",
+       "observed": "fail"
+      },
+      {
+       "case_id": "wildfire_bus_evacuation_planning:empty_solution",
+       "expected": "fail",
+       "observed": "fail"
+      },
+      {
+       "case_id": "heatwave_cooling_center_resource_plan:clean",
+       "expected": "pass",
+       "observed": "pass"
+      },
+      {
+       "case_id": "heatwave_cooling_center_resource_plan:missing_solution",
+       "expected": "fail",
+       "observed": "fail"
+      },
+      {
+       "case_id": "heatwave_cooling_center_resource_plan:invalid_schema",
+       "expected": "fail",
+       "observed": "fail"
+      },
+      {
+       "case_id": "heatwave_cooling_center_resource_plan:empty_solution",
+       "expected": "fail",
+       "observed": "fail"
+      }
+     ],
+     "n_clean": 3,
+     "n_wrong": 9,
+     "precision": 1.0,
+     "detection": 1.0,
+     "unknown": 0,
+     "passed": true,
+     "reasons": [],
+     "at": "2026-11-22T09:44:18.028795+00:00"
+    }
+   ]
+  }
+ ]
+}

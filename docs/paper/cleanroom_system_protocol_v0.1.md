@@ -409,3 +409,20 @@ Witness 校准为 3 clean、9 wrong，precision=1.0、detection=1.0、UNKNOWN=0�
 证据入口：`work/swarm_transfer_logistics_v0.9/report/report.md`、`batch_summary.json`、`b0_b2_comparison.png`、`evaluation_outcome.json`、`implementation_snapshot.json` 和 `driver.log`。B1→B2 的独立配对检查保存在 `evaluation_outcome.json`，不与 B0→B2 的总增益混用。官方 Witness 与最终评价器同源，仍只支持任务内一致性检查，不等同于完全独立业务真值。
 
 最终交付版本执行 `PYTHONPATH="$PWD" /home/hewj13/planbb/miniforge3/envs/rl/bin/python -m pytest -q tests --ignore=tests/test_m2gen.py`，结果为 **571 passed、3 skipped**；`python3 m2gen/run_regression.py` 返回 `REGRESSION OK`。绘图函数修正了零值轴裁剪和标签遮挡，并有回归测试覆盖。最终日志与哈希见 `work/verification_v0.9_final/`。
+
+
+## v0.10 修复增量协议（结果产生前冻结）
+
+v0.9 达到 B2 相对 B0 的净增益，但 B1→B2 没有新增真正确，且九次修复成本过高。下一阶段不再使用 v0.9 题目调参，而使用此前已冻结的 v0.10 四题：home healthcare、airport gate、circular packaging 和 coastal aquaculture。它们的角色、公开单步契约和参考健康证据见 `configs/cleanroom_swarm_frozen_logistics_v0.10.json` 与 `work/swarm_transfer_pool/health_summary_v0.10.json`，均在 v0.9 结果揭晓前确定。
+
+核心实现提交为 `8aeea8619007476ebd75470c39330b3b207104ef`。相较 v0.9 的变化限于：
+
+- 不完整制品的首次修复仍失败时，后续尝试从公开题面和失败证据重建，不再携带旧坏代码。
+- 用 Python 标准库 `symtable` 检查未定义全局变量；星号导入和动态名字环境保守跳过，避免把静态不可判定当成正确。
+- 对实际出现的 `pyscipopt.SCIP` 无效导入做 AST 窄修复，只移除该导入并替换对应构造调用，不修改其他合法 API 或同名用户类。
+
+B0/B1/B2 使用相同的直接生成预算、API guard 和最多三次修复；B3 仍因无真实独立 memory 晋升而 `not_run`。主要性能问题改为 **B2 是否严格超过 B1 的官方真正确任务数**。同时要求 B1→B2 无 lost true、无 missing、无新增幻影、UNKNOWN 不计安全；另报 B0→B2，防止相对 B0 已存在的净增益掩盖修复无效。
+
+次要指标为每题修复 token、求解和评价 wall time、重复制品失败次数、预检拦截次数及工作分支回退次数。预检拦截只算工程可评估性，不算真正确；执行成功、局部错误减少、生成补丁或回退均不能替代官方真正确。v0.9 的旧制品仅用于工程复验，不并入 v0.10 的独立任务分母。
+
+冻结实现的全量回归为 **576 passed、3 skipped**，m2gen 为 `REGRESSION OK`。换分支契约、API 探测和旧 container 的零 LLM guard 复验见 `work/verification_v0.10_final/` 与 `work/engineering_scip_guard_container_v0.10/`。container 复验在导入错误后仍暴露 `KeyError: '12'`，因此不预先声称本版能解决数据键或业务语义问题。

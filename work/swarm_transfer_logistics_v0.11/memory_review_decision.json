@@ -1,0 +1,19 @@
+{
+  "specification_status": "not_run",
+  "b3": "not_run",
+  "b3_reason": "No independently promoted memory is authorized for this batch.",
+  "prior_review": {
+    "path": "work/cleanroom_expanded_audit_suite_v0.7.1/memory_review/promotion_summary.json",
+    "specification_status": "rejected"
+  },
+  "new_gepa_review": {
+    "path": "work/swarm_gepa_logistics_v0.8/gepa_result.json",
+    "accepted_nonseed_candidates": 0,
+    "rejected_proposals": 6
+  },
+  "review_skipped_by_protocol": true,
+  "no_repeated_promotion_trials": true,
+  "online_experience_write": false,
+  "registry_frozen_before_repair": true,
+  "interpretation": "The empty-specification repair branch is an ablation within B2, not learned memory or B3. No memory evolution or incremental B3 effect is claimed."
+}

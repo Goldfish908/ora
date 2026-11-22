@@ -85,13 +85,15 @@ class CleanroomAdapter:
     propose_new_texts = None
 
     def __init__(self, outdir: Path, workers: int, seed: int, config: llm_mod.LLMConfig,
-                 api_assist: bool = False, api_guard: bool = False):
+                 api_assist: bool = False, api_guard: bool = False,
+                 dev_official_feedback: bool = False):
         self.outdir = outdir
         self.workers = workers
         self.seed = seed
         self.config = config
         self.api_assist = api_assist
         self.api_guard = api_guard
+        self.dev_official_feedback = dev_official_feedback
         self._api_contract = None
 
     def _rollout(self, packet: TaskPacket, candidate: dict[str, str]) -> dict:
@@ -139,6 +141,12 @@ class CleanroomAdapter:
                 feedback += f"Public execution stderr tail:\n{execution['stderr_tail']}\n"
             if execution.get("stdout_tail"):
                 feedback += f"Public execution stdout tail:\n{execution['stdout_tail']}\n"
+        if self.dev_official_feedback and packet.split == "dev":
+            violations = (official.get("evaluation", {}).get("errors") or [])[:20]
+            if violations:
+                feedback += ("Development-only official violation coordinates; no reference solution or "
+                             "reference objective is included:\n"
+                             + json.dumps(violations, ensure_ascii=False) + "\n")
         feedback += ("Improve the formulation and solver to increase the proxy score. "
                      "Do not assume that a solution file alone proves business correctness.")
         record = {
@@ -225,6 +233,7 @@ def main() -> None:
     parser.add_argument("--spec-id")
     parser.add_argument("--api-assist", action="store_true")
     parser.add_argument("--api-guard", action="store_true")
+    parser.add_argument("--dev-official-feedback", action="store_true")
     args = parser.parse_args()
     llm_mod.REQUEST_TIMEOUT_SEC = args.llm_timeout
     config = llm_mod.load_config()
@@ -237,7 +246,8 @@ def main() -> None:
     trainset = [packet for packet in packets if packet.split == "dev"]
     valset = [packet for packet in packets if packet.split == "transfer"]
     adapter = CleanroomAdapter(outdir, args.workers, args.seed, config,
-                               api_assist=args.api_assist, api_guard=args.api_guard)
+                               api_assist=args.api_assist, api_guard=args.api_guard,
+                               dev_official_feedback=args.dev_official_feedback)
     started = time.monotonic()
 
     if args.mode == "oracle":

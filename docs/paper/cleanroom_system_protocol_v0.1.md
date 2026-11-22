@@ -271,3 +271,12 @@ B2 随后只针对失败/幻影任务进行有界修复，原本正确的木板�
 Witness 按域初始化，不能跨域继承否决权。能源域使用 smart building、robust microgrid 和 green hydrogen；物流域使用 cold chain、fuel tanker 和 cycling network。两域各自完成 3 个 clean、9 个 wrong 的真实审计，precision=1.0、detection=1.0、UNKNOWN=0。`scripts/cleanroom_witness_cache.py` 只适配批量 oracle 的只读缓存布局，不改写原工作区。官方 Witness 与官方评价器同源，仍不是完全独立的业务真值。
 
 B3 新增作用域裁剪：即使制造域 memory 晋升，packing_logistics 的 real_world_3d_bin_packing 也保持 not_run，不能套用制造域生成规范。医疗校准失败同样保持未授权。木板材和 EV 的 `Scip/SCIP` 导入暴露出现行 guard 的覆盖缺口；本轮保持实现不变，后续窄 guard 修复必须另起实现版本和同口径对照，不能回溯归因给本轮 GEPA。
+
+
+### v0.7.1 dev 反馈信号修订
+
+盲反馈运行 `work/cleanroom_gepa_expanded_v0.7` 保留为诊断对照，不补写为完整实验。两个提议的 dev 代理都只有增材一题通过，未超过 seed。第二个提议已将工业供应从 tuple 解包崩溃恢复为可执行，但仍有 `material_purchase` 输出字段违规；此时反馈只有 `return_code=0、proxy=false`，没有向反思器提供任何业务坐标。因此停止该盲搜索，目录与 `run_cancelled.json` 均保留，不将其包装为充分负结果。
+
+新增显式 `--dev-official-feedback`：只对 `split=dev` 的训练任务返回至多 20 条官方违规坐标，不包含官方评价器实现、参考解或参考目标值。validation、audit 和后续 transfer 即使也开启同一适配器，仍不得返回这些坐标。默认关闭以保持旧行为，测试同时覆盖 dev 可用和 transfer 不泄漏。
+
+新运行 `work/cleanroom_gepa_dev_feedback_v0.7.1` 必须绑定新的实现哈希。前一轮 B0 数字保留为工程观察，但不能与不同实现哈希的 GEPA 结果组合用于 memory 晋升；正式对照需要重新执行同口径 B0/B1。

@@ -45,3 +45,31 @@ def test_reflection_feedback_has_public_error_but_not_official_business_details(
     assert "OFFICIAL_BUSINESS_DETAIL" not in record["feedback"]
     rows = adapter.make_reflective_dataset(None, SimpleNamespace(trajectories=[record]), ["conventions"])
     assert "OFFICIAL_BUSINESS_DETAIL" not in rows["conventions"][0]["Feedback"]
+
+
+def test_dev_official_feedback_is_explicit_and_never_leaks_to_transfer(tmp_path, monkeypatch):
+    monkeypatch.setattr("scripts.cleanroom_experiment.generate_artifacts",
+                        lambda *args, **kwargs: {"model_md": "model", "solve_py": "code", "solve_log_md": "log"})
+
+    def prepare(packet, workspace, artifacts, api_guard=False):
+        workspace.mkdir(parents=True)
+
+    monkeypatch.setattr("scripts.cleanroom_experiment.prepare_workspace", prepare)
+    monkeypatch.setattr("scripts.cleanroom_experiment.execute_solver", lambda *args: {
+        "return_code": 0, "timed_out": False})
+    monkeypatch.setattr("scripts.cleanroom_experiment.official_evaluate", lambda *args: {
+        "evaluation": {"feasible": False, "errors": ["DEV_VIOLATION_COORDINATE"]},
+        "reward": {"feasibility": 0.0, "quality": 0.0}, "reward_details": {}})
+
+    for split in ("dev", "transfer"):
+        packet = SimpleNamespace(name="task", domain="manufacturing", split=split,
+                                 root=tmp_path / split / "task", instruction="instruction",
+                                 problem_statement="problem", public_files={})
+        adapter = CleanroomAdapter(tmp_path / split, 1, 0, None, dev_official_feedback=True)
+        record = adapter._rollout(packet, {"conventions": ""})
+        if split == "dev":
+            assert "DEV_VIOLATION_COORDINATE" in record["feedback"]
+            assert "Development-only" in record["feedback"]
+        else:
+            assert "DEV_VIOLATION_COORDINATE" not in record["feedback"]
+            assert "Development-only" not in record["feedback"]

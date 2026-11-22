@@ -35,6 +35,11 @@ REPLACEMENTS = (
     ("getOrigObjval()", "getObjVal()", "objective_method"),
     ("setParam(\"gaprel\"", "setRealParam(\"limits/gap\"", "gap_parameter"),
     ("setParam('gaprel'", "setRealParam('limits/gap'", "gap_parameter"),
+    ("setRealParam(\"gaprel\"", "setRealParam(\"limits/gap\"", "gap_parameter"),
+    ("setRealParam('gaprel'", "setRealParam('limits/gap'", "gap_parameter"),
+    ("setParam(\"gap/rel\"", "setRealParam(\"limits/gap\"", "gap_parameter"),
+    ("setParam('gap/rel'", "setRealParam('limits/gap'", "gap_parameter"),
+    (".setMinimize(False)", ".setMaximize()", "objective_direction"),
     ("setRealParam(\"gap/rel\"", "setRealParam(\"limits/gap\"", "gap_parameter"),
     ("setRealParam('gap/rel'", "setRealParam('limits/gap'", "gap_parameter"),
     ("setRealParam(\"mip/gap\"", "setRealParam(\"limits/gap\"", "gap_parameter"),
@@ -93,6 +98,25 @@ class _VerifiedApiTransformer(ast.NodeVisitor):
             self.repairs.append({"category": "objective_coefficient",
                                  "from": "changeCoeff(variable, coefficient)",
                                  "to": "setObjective(getObjective() + coefficient * variable)"})
+
+    def visit_Compare(self, node):
+        self.generic_visit(node)
+        if len(node.ops) != 1 or not isinstance(node.ops[0], ast.NotIn) \
+                or not isinstance(node.left, ast.Name) \
+                or node.left.id not in {"status", "solver_status", "scip_status", "model_status"}:
+            return
+        for comparator in node.comparators:
+            if not isinstance(comparator, (ast.List, ast.Tuple, ast.Set)):
+                continue
+            statuses = [element.value for element in comparator.elts
+                        if isinstance(element, ast.Constant) and isinstance(element.value, str)]
+            if "optimal" not in statuses or "gaplimit" in statuses:
+                continue
+            source = ast.get_source_segment(self.code, comparator)
+            self.replacements.append((comparator, source[:-1] + ', "gaplimit"' + source[-1]))
+            self.repairs.append({"category": "solver_status_acceptance",
+                                 "from": "status whitelist without gaplimit",
+                                 "to": "status whitelist with gaplimit"})
 
 
 def _apply_verified_transformers(code: str) -> tuple[str, list[dict]]:

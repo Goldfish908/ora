@@ -1,0 +1,132 @@
+{
+ "n": 3,
+ "expected_tasks": 3,
+ "coverage": 1.0,
+ "feasible": 2,
+ "proxy_match": 2,
+ "true_correct": 2,
+ "phantom_proxy": 0,
+ "unknown": 0,
+ "unresolved_non_phantom": 1,
+ "mean_quality": 1.3306410373623203,
+ "failure_counts": {
+  "execution_error": 1,
+  "true_correct": 2
+ },
+ "api_guard_modified": 3,
+ "cost": {
+  "llm_calls": 0,
+  "missing_usage_calls": 0,
+  "llm_latency_seconds": 0.0,
+  "prompt_tokens": 0,
+  "completion_tokens": 0,
+  "reasoning_tokens": 0,
+  "total_tokens": 0,
+  "solver_execution_time": {
+   "recorded_calls": 3,
+   "missing_calls": 0,
+   "seconds": 65.062454
+  },
+  "official_evaluation_time": {
+   "recorded_calls": 3,
+   "missing_calls": 0,
+   "seconds": 70.952477
+  }
+ },
+ "tasks": [
+  {
+   "task": "additive_microfactory_order_planning",
+   "split": "dev",
+   "candidate_sha256": "abdd040d09dfc3831b3762ed3d6863e0c1455eabb51f2af8959d7a0e676b248a",
+   "attempt": 0,
+   "feasible": true,
+   "quality": 1.991923112086961,
+   "true_correct": true,
+   "objective": 11688.043683670841,
+   "proxy_match": true,
+   "phantom_proxy": false,
+   "failure_class": "true_correct",
+   "execution_return_code": 0,
+   "generation_error": null,
+   "cost": {
+    "llm_calls": 0,
+    "missing_usage_calls": 0,
+    "llm_latency_seconds": 0.0,
+    "prompt_tokens": 0,
+    "completion_tokens": 0,
+    "reasoning_tokens": 0,
+    "total_tokens": 0
+   },
+   "execution_wall_seconds": 27.722846,
+   "evaluation_wall_seconds": 11.856565,
+   "api_guard_repairs": 5,
+   "public_contract_repairs": 0,
+   "stderr_tail": null
+  },
+  {
+   "task": "industrial_water_reuse_blending",
+   "split": "audit",
+   "candidate_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+   "attempt": 0,
+   "feasible": true,
+   "quality": 2.0,
+   "true_correct": true,
+   "objective": 6011.5448483809205,
+   "proxy_match": true,
+   "phantom_proxy": false,
+   "failure_class": "true_correct",
+   "execution_return_code": 0,
+   "generation_error": null,
+   "cost": {
+    "llm_calls": 0,
+    "missing_usage_calls": 0,
+    "llm_latency_seconds": 0.0,
+    "prompt_tokens": 0,
+    "completion_tokens": 0,
+    "reasoning_tokens": 0,
+    "total_tokens": 0
+   },
+   "execution_wall_seconds": 18.083689,
+   "evaluation_wall_seconds": 15.065044,
+   "api_guard_repairs": 2,
+   "public_contract_repairs": 0,
+   "stderr_tail": null
+  },
+  {
+   "task": "second_life_battery_pack_assembly",
+   "split": "dev",
+   "candidate_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+   "attempt": 0,
+   "feasible": false,
+   "quality": 0.0,
+   "true_correct": false,
+   "objective": null,
+   "proxy_match": false,
+   "phantom_proxy": false,
+   "failure_class": "execution_error",
+   "execution_return_code": 1,
+   "generation_error": null,
+   "cost": {
+    "llm_calls": 0,
+    "missing_usage_calls": 0,
+    "llm_latency_seconds": 0.0,
+    "prompt_tokens": 0,
+    "completion_tokens": 0,
+    "reasoning_tokens": 0,
+    "total_tokens": 0
+   },
+   "execution_wall_seconds": 19.255919,
+   "evaluation_wall_seconds": 44.030868,
+   "api_guard_repairs": 2,
+   "public_contract_repairs": 0,
+   "stderr_tail": "KeyError: ('O01', ('O01', 'A01'))"
+  }
+ ],
+ "llm_calls": 0,
+ "mode": "deterministic_guard_replay",
+ "no_evolution": true,
+ "original_candidate_sha256": [
+  "abdd040d09dfc3831b3762ed3d6863e0c1455eabb51f2af8959d7a0e676b248a",
+  "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+ ]
+}

@@ -1,0 +1,10 @@
+{
+  "version": "cleanroom_expand_services_v0.7",
+  "selection_basis": "Public packing, healthcare and port scenarios, packet-size budget and oracle/official health; no Qwen-score selection or domain relabelling.",
+  "tasks": [
+    {"name": "real_world_3d_bin_packing", "domain": "packing_logistics", "split": "audit"},
+    {"name": "nurse_rostering", "domain": "healthcare_scheduling", "split": "audit"},
+    {"name": "hybrid_telehealth_appointment_scheduling", "domain": "healthcare_scheduling", "split": "audit"},
+    {"name": "green_port_berth_planning", "domain": "port_scheduling", "split": "audit"}
+  ]
+}

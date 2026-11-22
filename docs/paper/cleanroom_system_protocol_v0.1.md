@@ -219,3 +219,22 @@ B2 随后只针对失败/幻影任务进行有界修复，原本正确的木板�
 - B3 仍因前一批 B1 新增幻影而未获授权，`--skip-memory-review` 保留拒绝决定，没有重复晋升。没有现有真实 win 被修坏，最终回退满足 win-safe。
 
 汇总报告：`work/cleanroom_transfer_suite_v0.6/report/report.md` 和 `batch_summary.json`。审计与 transfer 的统一结果图为 `work/cleanroom_b0_b3_results.png`，区分直接真正确、修复后真正确、幻影和 UNKNOWN。
+
+
+## v0.7 扩展与窄 API guard 复验
+
+继续以成功率和泛化为目标，而不是把小样本负结果当作终点。新增任务只按公开场景、输入大小、历史排除和 oracle/官方健康筛选，不按 Qwen 成绩挑题。
+
+新增的窄 guard 规则均有真实执行依据：`setRealParam("gaprel")` 参数别名、`setMinimize(False)` 的方向修正，以及将实际求解状态 `gaplimit` 加入允许导出的状态列表。转换保持原始源码，不整体重写 AST。
+
+无 LLM 的旧制品复验 `work/cleanroom_guard_v0.7_replay`：
+
+| 任务 | 原失败 | 复验结果 | 归因 |
+|---|---|---|---|
+| 增材 | `model.quicksum` 错误，修复后又因 `gaplimit` 被排除而写出空解 | `feasible=true、quality=1.991923112086961、profit=11688.043683670841` | 接受有效 gap-limit 解 |
+| 水回用 | `gaprel` 参数不存在 | `feasible=true、quality=2.0、objective=6011.5448483809205` | 正确参数名 |
+| 电池装配 | `setMinimize(False)` 参数错误 | 仍为执行失败：`KeyError('O01', ('O01', 'A01'))` | 方向错误后还有数据键映射问题 |
+
+复验为 2/3 真正确、0 幻影、0 UNKNOWN，所有 LLM 调用为 0。它证明的是确定性 guard 的局部工程收益，不是 GEPA 或 memory 的增益，也不说明所有数据/业务错误已经解决。
+
+后续扩展配置为 `configs/cleanroom_expand_energy_v0.7.json`、`cleanroom_expand_logistics_v0.7.json`、`cleanroom_expand_services_v0.7.json`。正式 dev/audit/transfer 划分将在健康检查完成后冻结。

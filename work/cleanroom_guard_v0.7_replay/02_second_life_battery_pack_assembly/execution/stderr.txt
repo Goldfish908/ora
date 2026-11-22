@@ -1,0 +1,7 @@
+Traceback (most recent call last):
+  File "/app/submissions/solve.py", line 360, in <module>
+    main()
+  File "/app/submissions/solve.py", line 99, in main
+    mp, tc, hm = COMP[(o, k)]
+                 ~~~~^^^^^^^^
+KeyError: ('O01', ('O01', 'A01'))

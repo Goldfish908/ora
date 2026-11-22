@@ -1,0 +1,15 @@
+{
+ "files": {
+  "ora_agent/api_guard.py": "5455db11f1c623faacfb3a39cbea4b622d77d76246e42de9f9f5afbff4aa46b3",
+  "ora_agent/oragentbench.py": "c44b984fa04b1c0344d5e54a3625797fd986eb01d14f193c5b5d8a3905ceb78d",
+  "ora_agent/cleanroom_analysis.py": "f83f9035757136e00af167467d9ea97dc448740cce8fef47abae779a225d770b",
+  "scripts/cleanroom_guard_replay.py": "4c99f1699332301a8b3ccf751f902e6b2d0cd6a6c5ef6dd3f454d60893c80b68"
+ },
+ "tasks_sha256": "0d1bcfbf00ccd4a7fc5013d85c42d44304d538421ef78aff371731b8813f9faf",
+ "source_records": [
+  "/home/hewj13/wm/ora/work/cleanroom_guard_only_replay_v0.6.1/01_additive_microfactory_order_planning/record.json",
+  "/home/hewj13/wm/ora/work/cleanroom_audit_suite_v0.6/B0/rollouts/e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855/industrial_water_reuse_blending/attempt_0/record.json",
+  "/home/hewj13/wm/ora/work/cleanroom_gepa_guarded_assist_v0.6/rollouts/e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855/second_life_battery_pack_assembly/attempt_0/record.json"
+ ],
+ "llm_used": false
+}

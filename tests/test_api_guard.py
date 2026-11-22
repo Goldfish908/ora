@@ -96,3 +96,29 @@ def test_guard_preserves_valid_python311_fstring_source():
     repaired, _ = repair_known_api_errors(code)
     assert 'print(f"latency {w[\'max_latency_ms\']}")' in repaired
     compile(repaired, "solve.py", "exec")
+
+
+def test_gaprel_alias_and_maximize_direction():
+    code = ('from pyscipopt import Model\n'
+            'm = Model()\n'
+            'x = m.addVar(vtype="B", obj=1.0)\n'
+            'm.setRealParam("gaprel", 0.0005)\n'
+            'm.setMinimize(False)\n'
+            'm.optimize()\n')
+    repaired, applied = repair_known_api_errors(code)
+    assert 'setRealParam("limits/gap", 0.0005)' in repaired
+    assert 'setMinimize(False)' not in repaired
+    assert 'setMaximize()' in repaired
+    assert {item["category"] for item in applied} == {"gap_parameter", "objective_direction"}
+
+
+def test_gaplimit_is_added_to_status_allowlist_without_duplicate():
+    code = ('from pyscipopt import Model\n'
+            'status = "gaplimit"\n'
+            'if status not in ("optimal", "gap", "timelimit", "bestsollimit", "gaptime"):\n'
+            '    raise RuntimeError("discard a valid solution")\n')
+    repaired, applied = repair_known_api_errors(code)
+    assert '"gaplimit"' in repaired
+    assert applied[0]["category"] == "solver_status_acceptance"
+    _, second = repair_known_api_errors(repaired)
+    assert all(item["category"] != "solver_status_acceptance" for item in second)

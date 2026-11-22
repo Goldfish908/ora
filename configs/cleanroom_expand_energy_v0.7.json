@@ -1,0 +1,10 @@
+{
+  "version": "cleanroom_expand_energy_v0.7",
+  "selection_basis": "Public energy scenarios, packet-size budget and oracle/official health; no Qwen-score selection.",
+  "tasks": [
+    {"name": "electric_bus_depot_charging", "domain": "energy", "split": "audit"},
+    {"name": "smart_building_demand_response_dispatch", "domain": "energy", "split": "audit"},
+    {"name": "robust_microgrid_islanding_dispatch", "domain": "energy", "split": "audit"},
+    {"name": "green_hydrogen_hub_resilience_planning", "domain": "energy", "split": "audit"}
+  ]
+}

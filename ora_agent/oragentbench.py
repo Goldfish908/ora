@@ -99,11 +99,21 @@ class TaskPacket:
         if specification.strip():
             system += "\n\nSHARED MODELING SPECIFICATION:\n" + specification.strip()
         if repair is not None:
-            system += (
-                "\n\nTARGETED REPAIR: revise the previous artifacts to address the target while preserving "
-                "all unrelated business requirements. Do not merely describe changes; return complete files."
-            )
-            findings = repair["evidence"].get("semantic_findings") or []
+            evidence = repair["evidence"]
+            regenerate = evidence.get("search_guidance", {}).get("regenerate_from_evidence", False)
+            if regenerate:
+                system += (
+                    "\n\nEVIDENCE-GUIDED REGENERATION: build a new model from the public task and observed "
+                    "evidence instead of editing previous code. Cover every public business requirement and "
+                    "explicitly verify every demand, service, route and output coordinate."
+                )
+            else:
+                system += (
+                    "\n\nTARGETED REPAIR: revise the previous artifacts to address the target while preserving "
+                    "all unrelated business requirements. Do not merely describe changes; return complete files."
+                )
+                packet += "\n\n### PREVIOUS ARTIFACTS\n" + json.dumps(repair["artifacts"], ensure_ascii=False)
+            findings = evidence.get("semantic_findings") or []
             if findings:
                 variables = sorted({finding["variable"] for finding in findings})
                 system += (
@@ -116,8 +126,7 @@ class TaskPacket:
                       "artifact. Do not merely rename existing flows. Address all reported business errors, "
                       "including CO2 budget violations."
                 )
-            packet += "\n\n### PREVIOUS ARTIFACTS\n" + json.dumps(repair["artifacts"], ensure_ascii=False)
-            packet += "\n\n### OBSERVED EVIDENCE\n" + json.dumps(repair["evidence"], ensure_ascii=False)
+            packet += "\n\n### OBSERVED EVIDENCE\n" + json.dumps(evidence, ensure_ascii=False)
         return [{"role": "system", "content": system},
                 {"role": "user", "content": f"Task: {self.name}\n\n{self.instruction}\n\n{packet}"}]
 

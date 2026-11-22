@@ -36,6 +36,21 @@ def test_two_phase_artifact_generation(tmp_path, monkeypatch):
     assert (tmp_path / "solver_generation.json").exists()
 
 
+def test_evidence_regeneration_excludes_previous_artifacts():
+    packet = TaskPacket.load(ROOT / "ORAgentBench/harbor_tasks/additive_microfactory_order_planning",
+                             "manufacturing", "dev")
+    repair = {"artifacts": {"solve_py": "old code"},
+              "evidence": {"search_guidance": {"regenerate_from_evidence": True}}}
+    messages = packet.prompt("spec", repair)
+    assert "PREVIOUS ARTIFACTS" not in messages[1]["content"]
+    assert "EVIDENCE-GUIDED REGENERATION" in messages[0]["content"]
+
+    repair["evidence"]["search_guidance"]["regenerate_from_evidence"] = False
+    messages = packet.prompt("spec", repair)
+    assert "PREVIOUS ARTIFACTS" in messages[1]["content"]
+    assert "TARGETED REPAIR" in messages[0]["content"]
+
+
 def test_truncated_artifact_is_explicit_failure():
     with pytest.raises(ValueError, match="truncated"):
         parse_artifacts({"finish_reason": "length", "tool_calls": []})

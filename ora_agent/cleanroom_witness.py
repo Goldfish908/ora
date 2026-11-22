@@ -229,6 +229,7 @@ def repair_once(memory: EvidenceMemory, packet: TaskPacket, record: dict, specif
         "search_guidance": {
             "attempt": attempt,
             "alternate_branch": attempt > 1,
+            "regenerate_from_evidence": attempt > 1,
             "instruction": "Earlier attempts did not establish verified progress. Do not repeat the previous code or make cosmetic edits. Rebuild the decision structure around every unmet public requirement, and explicitly verify every demand, service, route and output coordinate before writing the decision artifact."
             if attempt > 1 else "Preserve unrelated business requirements and address the target evidence.",
         },

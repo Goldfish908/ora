@@ -1,0 +1,78 @@
+{
+ "files": {
+  "ora_agent/llm.py": "ced54d7b87414e73e0ed7c572cba9f1118c9f850b67516d5b1f9834c9555a1d9",
+  "ora_agent/cleanroom.py": "c33b21414dc230fb1862cbfdefb42d4652759236af9401f77d8f10c0bd2ad2a5",
+  "ora_agent/oragentbench.py": "c44b984fa04b1c0344d5e54a3625797fd986eb01d14f193c5b5d8a3905ceb78d",
+  "ora_agent/api_guard.py": "5455db11f1c623faacfb3a39cbea4b622d77d76246e42de9f9f5afbff4aa46b3",
+  "ora_agent/cleanroom_witness.py": "855583e53a413836064f4e71dee53ba537d4a3c5a73818dd732da56b12bb4017",
+  "ora_agent/cleanroom_spec_audit.py": "c0551fbd49d8db6832714de221f1332e207705f7fcf21c1db730331951ad4097",
+  "scripts/cleanroom_experiment.py": "4d467a48071be1d7fabe8b483f5568f03979845b7c4e7ac722765d67f1b46d47",
+  "scripts/cleanroom_repair.py": "13443711cf0c7ba8c3c5120f6e979af065751738f7f6163a70d0cbb52447caee",
+  "scripts/cleanroom_memory.py": "12afa65d7c0c5002f99ef86d117c0748066311803d21f82cf169642313f84f7e",
+  "scripts/cleanroom_replay.py": "7051669b5916d13e62f2e22f954b8233ec4b2304e69e67efcc47d643c1777087",
+  "ora_agent/cleanroom_analysis.py": "f83f9035757136e00af167467d9ea97dc448740cce8fef47abae779a225d770b"
+ },
+ "tasks_sha256": "7558955725ab876b40b96ab3f7d595d0db44c56f0e9733e148e5356ff714c4f5",
+ "model": "Qwen3_8-27B",
+ "gepa_commit": "ce5b0d6e3d6af6c6dbec6de2c54536bbb961d309",
+ "generation": {
+  "max_tokens": 24576,
+  "reasoning_effort": "low",
+  "disable_thinking": true,
+  "model_reasoning_effort": "low",
+  "solver_reasoning_effort": "low",
+  "model_disable_thinking": true,
+  "solver_disable_thinking": true,
+  "model_max_tokens": 4096,
+  "model_max_words": 1800,
+  "temperature": 0.6,
+  "protocol": "two_phase_model_then_solver_v1",
+  "stream": false
+ },
+ "arguments": {
+  "tasks": "configs/cleanroom_expanded_transfer_v0.7.json",
+  "run_dir": "work/cleanroom_expanded_transfer_suite_v0.7.1/B0",
+  "gepa_result": null,
+  "memory": null,
+  "candidate_idx": null,
+  "candidate_sha256": null,
+  "spec_id": null,
+  "workers": 2,
+  "seed": 0,
+  "llm_timeout": 600.0,
+  "api_guard": true,
+  "resume": false,
+  "allow_selection_replay": false,
+  "compare_to": null
+ },
+ "evaluation": {
+  "provenance": "frozen_replay",
+  "memory_frozen": false,
+  "task_ids": [
+   "industrial_water_reuse_blending",
+   "mass_timber_panel_cutting_plan",
+   "ev_battery_recycling_network",
+   "real_world_3d_bin_packing"
+  ],
+  "source_sha256": null,
+  "reference_values_used_for_generation_or_reflection": false
+ },
+ "records": [
+  {
+   "task": "industrial_water_reuse_blending",
+   "record_path": "/home/hewj13/wm/ora/work/cleanroom_expanded_transfer_suite_v0.7.1/B0/rollouts/e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855/industrial_water_reuse_blending/attempt_0/record.json"
+  },
+  {
+   "task": "mass_timber_panel_cutting_plan",
+   "record_path": "/home/hewj13/wm/ora/work/cleanroom_expanded_transfer_suite_v0.7.1/B0/rollouts/e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855/mass_timber_panel_cutting_plan/attempt_0/record.json"
+  },
+  {
+   "task": "ev_battery_recycling_network",
+   "record_path": "/home/hewj13/wm/ora/work/cleanroom_expanded_transfer_suite_v0.7.1/B0/rollouts/e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855/ev_battery_recycling_network/attempt_0/record.json"
+  },
+  {
+   "task": "real_world_3d_bin_packing",
+   "record_path": "/home/hewj13/wm/ora/work/cleanroom_expanded_transfer_suite_v0.7.1/B0/rollouts/e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855/real_world_3d_bin_packing/attempt_0/record.json"
+  }
+ ]
+}

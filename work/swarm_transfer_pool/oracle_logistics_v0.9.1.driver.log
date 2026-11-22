@@ -1,0 +1,30 @@
+{
+ "synchromodal_freight_recovery": {
+  "feasible": true,
+  "quality": 0.0,
+  "true_correct": false,
+  "objective": 130447.06314285714,
+  "evaluation_unknown": false
+ },
+ "electric_medical_waste_lrp": {
+  "feasible": true,
+  "quality": 2.0,
+  "true_correct": true,
+  "objective": 15468.610262049602,
+  "evaluation_unknown": false
+ },
+ "container_gate_dro_appointment_planning": {
+  "feasible": true,
+  "quality": 0.4126084566647441,
+  "true_correct": true,
+  "objective": 52236.99463599999,
+  "evaluation_unknown": false
+ },
+ "medical_supply_dro_response": {
+  "feasible": false,
+  "quality": 0.0,
+  "true_correct": false,
+  "objective": null,
+  "evaluation_unknown": false
+ }
+}

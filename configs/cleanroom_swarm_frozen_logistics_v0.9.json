@@ -1,0 +1,13 @@
+{
+  "version": "cleanroom_swarm_frozen_logistics_v0.9",
+  "selection_basis": "Frozen role separation for the third full B0/B1/B2 batch. Witness calibration uses the existing three audit tasks. Four subsequent transfer tasks are disjoint from GEPA, Qwen engineering and memory promotion. Selection uses reference/official health and public packet contracts only.",
+  "tasks": [
+    {"name": "air_cargo_stochastic_order_allocation", "domain": "logistics", "split": "audit", "role": "witness_calibration"},
+    {"name": "wildfire_bus_evacuation_planning", "domain": "logistics", "split": "audit", "role": "witness_calibration"},
+    {"name": "heatwave_cooling_center_resource_plan", "domain": "logistics", "split": "audit", "role": "witness_calibration"},
+    {"name": "electric_medical_waste_lrp", "domain": "logistics", "split": "transfer", "role": "subsequent_transfer"},
+    {"name": "container_gate_dro_appointment_planning", "domain": "logistics", "split": "transfer", "role": "subsequent_transfer"},
+    {"name": "portable_battery_swap_rebalancing", "domain": "logistics", "split": "transfer", "role": "subsequent_transfer"},
+    {"name": "offshore_wind_maintenance", "domain": "logistics", "split": "transfer", "role": "subsequent_transfer"}
+  ]
+}

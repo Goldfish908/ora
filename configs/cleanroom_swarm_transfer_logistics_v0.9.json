@@ -1,0 +1,10 @@
+{
+  "version": "cleanroom_swarm_transfer_logistics_v0.9",
+  "selection_basis": "Four logistics tasks with true-correct oracle/official health, complete single-step packets and bounded public inputs. electric_medical_waste_lrp and container_gate_dro_appointment_planning are newly checked; portable_battery_swap_rebalancing and offshore_wind_maintenance were preregistered reserves. None has participated in specification learning, Qwen engineering trials or memory promotion. synchromodal_freight_recovery and medical_supply_dro_response were excluded solely for oracle quality/health before Qwen evaluation.",
+  "tasks": [
+    {"name": "electric_medical_waste_lrp", "domain": "logistics", "split": "transfer"},
+    {"name": "container_gate_dro_appointment_planning", "domain": "logistics", "split": "transfer"},
+    {"name": "portable_battery_swap_rebalancing", "domain": "logistics", "split": "transfer"},
+    {"name": "offshore_wind_maintenance", "domain": "logistics", "split": "transfer"}
+  ]
+}

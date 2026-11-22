@@ -1,0 +1,464 @@
+{
+ "synchromodal_freight_recovery": {
+  "runner": {
+   "return_code": 0,
+   "timed_out": false,
+   "stdout": "{\n  \"base_path_counts\": {\n    \"O01\": 12,\n    \"O02\": 16,\n    \"O03\": 12,\n    \"O04\": 2,\n    \"O05\": 4,\n    \"O06\": 1,\n    \"O07\": 1,\n    \"O08\": 4,\n    \"O09\": 1,\n    \"O10\": 8,\n    \"O11\": 10,\n    \"O12\": 2,\n    \"O13\": 2,\n    \"O14\": 2,\n    \"O15\": 3,\n    \"O16\": 4,\n    \"O17\": 1,\n    \"O18\": 1\n  },\n  \"best_bound\": 128198.74970684705,\n  \"evaluation\": {\n    \"accepted_orders\": 16,\n    \"cvar_cost\": 56654.08809523809,\n    \"error_count\": 0,\n    \"errors\": [],\n    \"expected_scenario_cost\": 46768.509666666665,\n    \"feasible\": true,\n    \"first_stage_cost\": 62150.0,\n    \"objective\": 130447.06314285714,\n    \"rejected_orders\": 2,\n    \"scenario_costs\": {\n      \"S01\": 40884.9,\n      \"S02\": 42305.73333333333,\n      \"S03\": 51237.066666666666,\n      \"S04\": 52000.36666666666,\n      \"S05\": 42434.6,\n      \"S06\": 42860.4,\n      \"S07\": 68860.86666666665,\n      \"S08\": 44244.7\n    },\n    \"scenario_emissions\": {\n      \"S01\": 14255.0,\n      \"S02\": 14130.0,\n      \"S03\": 22405.0,\n      \"S04\": 17390.0,\n      \"S05\": 10720.0,\n      \"S06\": 14780.0,\n      \"S07\": 27890.0,\n      \"S08\": 14765.0\n    }\n  },\n  \"gap\": 0.01753771734241679,\n  \"objective\": 130447.06314285698,\n  \"output\": \"/app/submissions/solution.json\",\n  \"scenario_path_count_max\": 15,\n  \"scenario_path_count_min\": 0,\n  \"status\": \"timelimit\"\n}\n",
+   "stderr": ""
+  },
+  "official": {
+   "evaluation": {
+    "accepted_orders": 16,
+    "cvar_cost": 56654.08809523809,
+    "error_count": 0,
+    "errors": [],
+    "expected_scenario_cost": 46768.509666666665,
+    "feasible": true,
+    "first_stage_cost": 62150.0,
+    "objective": 130447.06314285714,
+    "rejected_orders": 2,
+    "scenario_costs": {
+     "S01": 40884.9,
+     "S02": 42305.73333333333,
+     "S03": 51237.066666666666,
+     "S04": 52000.36666666666,
+     "S05": 42434.6,
+     "S06": 42860.4,
+     "S07": 68860.86666666665,
+     "S08": 44244.7
+    },
+    "scenario_emissions": {
+     "S01": 14255.0,
+     "S02": 14130.0,
+     "S03": 22405.0,
+     "S04": 17390.0,
+     "S05": 10720.0,
+     "S06": 14780.0,
+     "S07": 27890.0,
+     "S08": 14765.0
+    }
+   },
+   "reward": {
+    "feasibility": 1.0,
+    "quality": 0.0
+   },
+   "reward_details": {
+    "agent_objective": 130447.06314285714,
+    "agent_objective_source": "objective",
+    "best_bound": 129676.65057142841,
+    "bound_sense": "lower",
+    "evaluation_diagnostics": {
+     "error_count": 0,
+     "objective": 130447.06314285714,
+     "profit": null,
+     "score": null,
+     "total_cost": null
+    },
+    "fallback_mip_gap": 0.0005,
+    "fallback_reference_scale": 129676.65057142857,
+    "feasibility": 1.0,
+    "formula": "clip(2 + d if d >= -1 else 1.5 + 0.5*d, 0, 2), d = (R - O) / (max(abs(R), 1e-8) * mip_gap)",
+    "objective_sense": "minimize",
+    "quality": 0.0,
+    "quality_status": "bound_gap_below_mip_gap",
+    "reference_metrics": {
+     "best_bound": 129676.65057142841,
+     "best_bound_source": "best_bound",
+     "bound_sense": "lower",
+     "evaluation_summary": {
+      "error_count": 0,
+      "feasible": true,
+      "objective": 129676.65057142857
+     },
+     "generated_at": "2026-05-17T10:25:13.428388+00:00",
+     "mip_gap": 0.0005,
+     "objective_sense": "minimize",
+     "quality_formula": "clip(1 + (R - O) / (R - B), 0, 2) if B exists and R - B >= max(abs(R), 1e-8) * mip_gap; otherwise let d=(R - O)/(max(abs(R), 1e-8)*mip_gap), quality=clip(2+d if d>=-1 else 1.5+0.5*d, 0, 2); if no R, quality = 2",
+     "reference_objective": 129676.65057142857,
+     "reference_objective_source": "objective",
+     "solution_path": "reference_solutions/synchromodal_freight_recovery_reference_solution.json",
+     "solver_summary": {
+      "base_path_counts": {
+       "O01": 12,
+       "O02": 16,
+       "O03": 12,
+       "O04": 2,
+       "O05": 4,
+       "O06": 1,
+       "O07": 1,
+       "O08": 4,
+       "O09": 1,
+       "O10": 8,
+       "O11": 10,
+       "O12": 2,
+       "O13": 2,
+       "O14": 2,
+       "O15": 3,
+       "O16": 4,
+       "O17": 1,
+       "O18": 1
+      },
+      "best_bound": 129676.65057142841,
+      "evaluation": {
+       "accepted_orders": 16,
+       "cvar_cost": 56099.40238095237,
+       "error_count": 0,
+       "errors": [],
+       "expected_scenario_cost": 46108.87766666667,
+       "feasible": true,
+       "first_stage_cost": 62250.0,
+       "objective": 129676.65057142857,
+       "rejected_orders": 2,
+       "scenario_costs": {
+        "S01": 40209.9,
+        "S02": 41630.73333333333,
+        "S03": 50605.26666666666,
+        "S04": 51325.36666666666,
+        "S05": 41438.3,
+        "S06": 42292.5,
+        "S07": 68574.56666666665,
+        "S08": 43656.9
+       },
+       "scenario_emissions": {
+        "S01": 14255.0,
+        "S02": 14130.0,
+        "S03": 20220.0,
+        "S04": 17390.0,
+        "S05": 12235.0,
+        "S06": 14275.0,
+        "S07": 26805.0,
+        "S08": 14155.0
+       }
+      },
+      "gap": 0.0,
+      "objective": 129676.65057142841,
+      "output": "reference_solutions/synchromodal_freight_recovery_reference_solution.json",
+      "scenario_path_count_max": 15,
+      "scenario_path_count_min": 0,
+      "status": "optimal"
+     },
+     "task_name": "synchromodal_freight_recovery",
+     "time_limit_seconds": 300.0
+    },
+    "reference_objective": 129676.65057142857,
+    "scalar_reward": 0.3333333333333333,
+    "scalar_reward_formula": "(feasibility + quality) / 3.0"
+   },
+   "runner": {
+    "return_code": 0,
+    "timed_out": false,
+    "wall_seconds": 33.177436
+   }
+  },
+  "metrics": {
+   "feasible": true,
+   "quality": 0.0,
+   "true_correct": false,
+   "objective": 130447.06314285714,
+   "evaluation_unknown": false
+  }
+ },
+ "electric_medical_waste_lrp": {
+  "runner": {
+   "return_code": 0,
+   "timed_out": false,
+   "stdout": "{\n  \"best_bound\": null,\n  \"candidate_count\": 36,\n  \"evaluation\": {\n    \"charging_cost\": 95.68,\n    \"error_count\": 0,\n    \"errors\": [],\n    \"facility_open_cost\": 2511.0,\n    \"feasible\": true,\n    \"fixed_vehicle_cost\": 1861.1000000000001,\n    \"objective\": 15468.610262049602,\n    \"open_facilities\": [\n      \"F1\",\n      \"F2\",\n      \"F3\",\n      \"F5\"\n    ],\n    \"picked_clinics\": 44,\n    \"risk_cost\": 4799.9592620496,\n    \"risk_units\": 266664.4034472,\n    \"total_cost\": 15468.610262049602,\n    \"total_distance_km\": 1057.6200000000001,\n    \"travel_cost\": 3014.2170000000006,\n    \"treatment_cost\": 3186.6540000000005,\n    \"vehicle_count\": 8\n  },\n  \"feasible_candidate_count\": 1,\n  \"objective\": 15468.610262049602,\n  \"output\": \"/app/submissions/solution.csv\",\n  \"skipped_assignment_count\": 12,\n  \"status\": \"heuristic_feasible\"\n}\n",
+   "stderr": ""
+  },
+  "official": {
+   "evaluation": {
+    "charging_cost": 95.68,
+    "error_count": 0,
+    "errors": [],
+    "facility_open_cost": 2511.0,
+    "feasible": true,
+    "fixed_vehicle_cost": 1861.1000000000001,
+    "objective": 15468.610262049602,
+    "open_facilities": [
+     "F1",
+     "F2",
+     "F3",
+     "F5"
+    ],
+    "picked_clinics": 44,
+    "risk_cost": 4799.9592620496,
+    "risk_units": 266664.4034472,
+    "total_cost": 15468.610262049602,
+    "total_distance_km": 1057.6200000000001,
+    "travel_cost": 3014.2170000000006,
+    "treatment_cost": 3186.6540000000005,
+    "vehicle_count": 8
+   },
+   "reward": {
+    "feasibility": 1.0,
+    "quality": 2.0
+   },
+   "reward_details": {
+    "agent_objective": 15468.610262049602,
+    "agent_objective_source": "objective",
+    "best_bound": null,
+    "bound_improvement": null,
+    "bound_sense": "lower",
+    "evaluation_diagnostics": {
+     "error_count": 0,
+     "objective": 15468.610262049602,
+     "profit": null,
+     "score": null,
+     "total_cost": 15468.610262049602
+    },
+    "fallback_mip_gap": 0.0005,
+    "fallback_reference_scale": 15468.610262049602,
+    "feasibility": 1.0,
+    "formula": "clip(2 + d if d >= -1 else 1.5 + 0.5*d, 0, 2), d = (R - O) / (max(abs(R), 1e-8) * mip_gap)",
+    "objective_sense": "minimize",
+    "quality": 2.0,
+    "quality_scale_width": 7.734305131024802,
+    "quality_status": "scored_with_mip_gap_fallback",
+    "reference_metrics": {
+     "best_bound": null,
+     "best_bound_source": null,
+     "bound_sense": "lower",
+     "evaluation_summary": {
+      "error_count": 0,
+      "feasible": true,
+      "objective": 15468.610262049602,
+      "total_cost": 15468.610262049602
+     },
+     "generated_at": "2026-05-21T17:04:45.808215+00:00",
+     "mip_gap": 0.0005,
+     "objective_sense": "minimize",
+     "quality_formula": "clip(1 + (R - O) / (R - B), 0, 2) if B exists and R - B >= max(abs(R), 1e-8) * mip_gap; otherwise let d=(R - O)/(max(abs(R), 1e-8)*mip_gap), quality=clip(2+d if d>=-1 else 1.5+0.5*d, 0, 2); if no R, quality = 2",
+     "reference_objective": 15468.610262049602,
+     "reference_objective_source": "objective",
+     "solution_path": "reference_solutions/electric_medical_waste_lrp_reference_solution.csv",
+     "solver_summary": {
+      "best_bound": null,
+      "candidate_count": 27,
+      "evaluation": {
+       "charging_cost": 95.68,
+       "error_count": 0,
+       "errors": [],
+       "facility_open_cost": 2511.0,
+       "feasible": true,
+       "fixed_vehicle_cost": 1861.1,
+       "objective": 15468.610262049602,
+       "open_facilities": [
+        "F1",
+        "F2",
+        "F3",
+        "F5"
+       ],
+       "picked_clinics": 44,
+       "risk_cost": 4799.9592620496,
+       "risk_units": 266664.4034472,
+       "total_cost": 15468.610262049602,
+       "total_distance_km": 1057.6200000000001,
+       "travel_cost": 3014.2170000000006,
+       "treatment_cost": 3186.6540000000005,
+       "vehicle_count": 8
+      },
+      "feasible_candidate_count": 1,
+      "objective": 15468.610262049602,
+      "output": "reference_solutions/electric_medical_waste_lrp_reference_solution.csv",
+      "skipped_assignment_count": 12,
+      "status": "heuristic_feasible"
+     },
+     "task_name": "electric_medical_waste_lrp",
+     "time_limit_seconds": 300.0
+    },
+    "reference_objective": 15468.610262049602,
+    "scalar_reward": 1.0,
+    "scalar_reward_formula": "(feasibility + quality) / 3.0",
+    "signed_improvement": 0.0
+   },
+   "runner": {
+    "return_code": 0,
+    "timed_out": false,
+    "wall_seconds": 16.175176
+   }
+  },
+  "metrics": {
+   "feasible": true,
+   "quality": 2.0,
+   "true_correct": true,
+   "objective": 15468.610262049602,
+   "evaluation_unknown": false
+  }
+ },
+ "container_gate_dro_appointment_planning": {
+  "runner": {
+   "return_code": 0,
+   "timed_out": false,
+   "stdout": "{\n  \"best_bound\": 49310.67546066993,\n  \"evaluation_error_count\": 0,\n  \"evaluation_feasible\": true,\n  \"gap\": 0.05934453641106743,\n  \"objective\": 52236.99463599999,\n  \"output\": \"/app/submissions/solution.csv\",\n  \"solutions\": 4,\n  \"status\": \"timelimit\"\n}\n",
+   "stderr": ""
+  },
+  "official": {
+   "evaluation": {
+    "error_count": 0,
+    "errors": [],
+    "expected_scenario_cost": 31810.01169999999,
+    "feasible": true,
+    "fixed_cost": 5405.25,
+    "objective": 52236.99463599999,
+    "scenario_costs": {
+     "SC_BASE": 29821.55999999998,
+     "SC_CITY_CURFEW": 28716.999999999967,
+     "SC_CRANE_OUTAGE": 28544.909999999978,
+     "SC_CUSTOMS_BACKLOG": 37268.869999999995,
+     "SC_HAZMAT_HOLD": 30460.589999999997,
+     "SC_MORNING_SURGE": 35012.45000000001,
+     "SC_RAIL_CUTOFF": 33770.89,
+     "SC_REEFER_WAVE": 30618.919999999984,
+     "SC_STACK_IMBALANCE": 33089.429999999986
+    },
+    "scenario_peak_queue_trucks": {
+     "SC_BASE": 17,
+     "SC_CITY_CURFEW": 16,
+     "SC_CRANE_OUTAGE": 17,
+     "SC_CUSTOMS_BACKLOG": 17,
+     "SC_HAZMAT_HOLD": 15,
+     "SC_MORNING_SURGE": 15,
+     "SC_RAIL_CUTOFF": 17,
+     "SC_REEFER_WAVE": 16,
+     "SC_STACK_IMBALANCE": 16
+    },
+    "scenario_served_trucks": {
+     "SC_BASE": 318,
+     "SC_CITY_CURFEW": 316,
+     "SC_CRANE_OUTAGE": 315,
+     "SC_CUSTOMS_BACKLOG": 311,
+     "SC_HAZMAT_HOLD": 318,
+     "SC_MORNING_SURGE": 331,
+     "SC_RAIL_CUTOFF": 323,
+     "SC_REEFER_WAVE": 315,
+     "SC_STACK_IMBALANCE": 321
+    },
+    "scenario_unmet_trucks": {
+     "SC_BASE": 573,
+     "SC_CITY_CURFEW": 565,
+     "SC_CRANE_OUTAGE": 564,
+     "SC_CUSTOMS_BACKLOG": 685,
+     "SC_HAZMAT_HOLD": 572,
+     "SC_MORNING_SURGE": 686,
+     "SC_RAIL_CUTOFF": 627,
+     "SC_REEFER_WAVE": 578,
+     "SC_STACK_IMBALANCE": 623
+    },
+    "tail_cvar_cost": 35766.03080000001,
+    "tail_risk_weight": 0.42,
+    "total_cost": 52236.99463599999,
+    "total_quota": 435
+   },
+   "reward": {
+    "feasibility": 1.0,
+    "quality": 0.4126084566647441
+   },
+   "reward_details": {
+    "agent_objective": 52236.99463599999,
+    "agent_objective_source": "objective",
+    "best_bound": 49356.86709262088,
+    "bound_improvement": 1814.3775273790961,
+    "bound_sense": "lower",
+    "evaluation_diagnostics": {
+     "error_count": 0,
+     "objective": 52236.99463599999,
+     "profit": null,
+     "score": null,
+     "total_cost": 52236.99463599999
+    },
+    "fallback_mip_gap": 0.0005,
+    "fallback_reference_scale": 51171.244619999976,
+    "feasibility": 1.0,
+    "formula": "clip(1 + (R - O) / (R - B), 0, 2) when B exists and R - B >= max(abs(R), 1e-8) * mip_gap",
+    "objective_sense": "minimize",
+    "quality": 0.4126084566647441,
+    "quality_scale_width": 1814.3775273790961,
+    "quality_status": "scored_with_best_bound",
+    "reference_metrics": {
+     "best_bound": 49356.86709262088,
+     "best_bound_source": "best_bound",
+     "bound_sense": "lower",
+     "evaluation_summary": {
+      "error_count": 0,
+      "feasible": true,
+      "objective": 51171.244619999976,
+      "total_cost": 51171.244619999976
+     },
+     "generated_at": "2026-05-22T13:23:42.120142+00:00",
+     "mip_gap": 0.0005,
+     "objective_sense": "minimize",
+     "quality_formula": "clip(1 + (R - O) / (R - B), 0, 2) if B exists and R - B >= max(abs(R), 1e-8) * mip_gap; otherwise let d=(R - O)/(max(abs(R), 1e-8)*mip_gap), quality=clip(2+d if d>=-1 else 1.5+0.5*d, 0, 2); if no R, quality = 2",
+     "reference_objective": 51171.244619999976,
+     "reference_objective_source": "objective",
+     "solution_path": "reference_solutions/container_gate_dro_appointment_planning_reference_solution.csv",
+     "solver_summary": {
+      "best_bound": 49356.86709262088,
+      "evaluation_error_count": 0,
+      "evaluation_feasible": true,
+      "gap": 0.03676038683683852,
+      "objective": 51171.244619999976,
+      "output": "reference_solutions/container_gate_dro_appointment_planning_reference_solution.csv",
+      "solutions": 59,
+      "status": "timelimit"
+     },
+     "task_name": "container_gate_dro_appointment_planning",
+     "time_limit_seconds": 300.0
+    },
+    "reference_objective": 51171.244619999976,
+    "scalar_reward": 0.4708694855549147,
+    "scalar_reward_formula": "(feasibility + quality) / 3.0",
+    "signed_improvement": -1065.7500160000127
+   },
+   "runner": {
+    "return_code": 0,
+    "timed_out": false,
+    "wall_seconds": 13.566887
+   }
+  },
+  "metrics": {
+   "feasible": true,
+   "quality": 0.4126084566647441,
+   "true_correct": true,
+   "objective": 52236.99463599999,
+   "evaluation_unknown": false
+  }
+ },
+ "medical_supply_dro_response": {
+  "runner": {
+   "return_code": 137,
+   "timed_out": true,
+   "stdout": "",
+   "stderr": ""
+  },
+  "official": {
+   "evaluation": {
+    "feasible": false,
+    "errors": [
+     "No solution file found."
+    ],
+    "error_count": 1
+   },
+   "reward": {
+    "feasibility": 0.0,
+    "quality": 0.0
+   },
+   "reward_details": {
+    "feasibility": 0.0,
+    "quality": 0.0,
+    "quality_status": "missing_solution"
+   },
+   "runner": {
+    "return_code": 0,
+    "timed_out": false,
+    "wall_seconds": 3.885406
+   }
+  },
+  "metrics": {
+   "feasible": false,
+   "quality": 0.0,
+   "true_correct": false,
+   "objective": null,
+   "evaluation_unknown": false
+  }
+ }
+}

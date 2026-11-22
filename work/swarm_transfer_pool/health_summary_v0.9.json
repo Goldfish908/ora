@@ -1,0 +1,94 @@
+{
+ "version": "cleanroom_swarm_frozen_logistics_v0.9",
+ "n_tasks": 7,
+ "n_healthy": 7,
+ "all_true_correct": true,
+ "roles_sha256": "aa67d34385531a11fac837b19bfa6380bf8e421a9821d33ca94e3f0113c85548",
+ "tasks": [
+  {
+   "task": "air_cargo_stochastic_order_allocation",
+   "domain": "logistics",
+   "split": "audit",
+   "role": "witness_calibration",
+   "feasible": true,
+   "quality": 1.0,
+   "objective": 8716.543824000004,
+   "source": "/home/hewj13/wm/ora/work/swarm_transfer_pool/oracle_logistics_v0.8.2/oracle_results.json",
+   "source_sha256": "89b623f324a3cc4b69c747c40ef43912b86b117728c28617b5218e3173231b7b",
+   "implementation_sha256": "12e12091de43209364121eb7300c82e1eb79aea78091c26c16fa05e1eedf524d"
+  },
+  {
+   "task": "wildfire_bus_evacuation_planning",
+   "domain": "logistics",
+   "split": "audit",
+   "role": "witness_calibration",
+   "feasible": true,
+   "quality": 2.0,
+   "objective": 860886.0992884045,
+   "source": "/home/hewj13/wm/ora/work/swarm_transfer_pool/oracle_logistics_v0.8.2/oracle_results.json",
+   "source_sha256": "89b623f324a3cc4b69c747c40ef43912b86b117728c28617b5218e3173231b7b",
+   "implementation_sha256": "12e12091de43209364121eb7300c82e1eb79aea78091c26c16fa05e1eedf524d"
+  },
+  {
+   "task": "heatwave_cooling_center_resource_plan",
+   "domain": "logistics",
+   "split": "audit",
+   "role": "witness_calibration",
+   "feasible": true,
+   "quality": 2.0,
+   "objective": 273011.26,
+   "source": "/home/hewj13/wm/ora/work/swarm_transfer_pool/oracle_logistics_v0.8.2/oracle_results.json",
+   "source_sha256": "89b623f324a3cc4b69c747c40ef43912b86b117728c28617b5218e3173231b7b",
+   "implementation_sha256": "12e12091de43209364121eb7300c82e1eb79aea78091c26c16fa05e1eedf524d"
+  },
+  {
+   "task": "electric_medical_waste_lrp",
+   "domain": "logistics",
+   "split": "transfer",
+   "role": "subsequent_transfer",
+   "feasible": true,
+   "quality": 2.0,
+   "objective": 15468.610262049602,
+   "source": "/home/hewj13/wm/ora/work/swarm_transfer_pool/oracle_logistics_v0.9.1/oracle_results.json",
+   "source_sha256": "3e9bfd595b86a83afcc17d197a20c72b7e2a8c46cb1df628f918b122ab6531be",
+   "implementation_sha256": "8e768803ba2a58e4083047f74797d207de8209449b97f2b7db941dd4937edd2f"
+  },
+  {
+   "task": "container_gate_dro_appointment_planning",
+   "domain": "logistics",
+   "split": "transfer",
+   "role": "subsequent_transfer",
+   "feasible": true,
+   "quality": 0.4126084566647441,
+   "objective": 52236.99463599999,
+   "source": "/home/hewj13/wm/ora/work/swarm_transfer_pool/oracle_logistics_v0.9.1/oracle_results.json",
+   "source_sha256": "3e9bfd595b86a83afcc17d197a20c72b7e2a8c46cb1df628f918b122ab6531be",
+   "implementation_sha256": "8e768803ba2a58e4083047f74797d207de8209449b97f2b7db941dd4937edd2f"
+  },
+  {
+   "task": "portable_battery_swap_rebalancing",
+   "domain": "logistics",
+   "split": "transfer",
+   "role": "subsequent_transfer",
+   "feasible": true,
+   "quality": 2.0,
+   "objective": 3471.164610998212,
+   "source": "/home/hewj13/wm/ora/work/swarm_transfer_pool/oracle_logistics_v0.8.2/oracle_results.json",
+   "source_sha256": "89b623f324a3cc4b69c747c40ef43912b86b117728c28617b5218e3173231b7b",
+   "implementation_sha256": "12e12091de43209364121eb7300c82e1eb79aea78091c26c16fa05e1eedf524d"
+  },
+  {
+   "task": "offshore_wind_maintenance",
+   "domain": "logistics",
+   "split": "transfer",
+   "role": "subsequent_transfer",
+   "feasible": true,
+   "quality": 2.0,
+   "objective": 98842.5,
+   "source": "/home/hewj13/wm/ora/work/swarm_transfer_pool/oracle_logistics_v0.8.2/oracle_results.json",
+   "source_sha256": "89b623f324a3cc4b69c747c40ef43912b86b117728c28617b5218e3173231b7b",
+   "implementation_sha256": "12e12091de43209364121eb7300c82e1eb79aea78091c26c16fa05e1eedf524d"
+  }
+ ],
+ "evidence_note": "Original oracle/official health only; Qwen outcomes were not used to select these tasks."
+}

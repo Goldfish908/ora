@@ -1,0 +1,156 @@
+{
+ "tasks": [
+  {
+   "task": "container_gate_dro_appointment_planning",
+   "final_status": "bounded_failure",
+   "total_tokens_including_direct": 218938,
+   "repair_tokens": 138709,
+   "attempts": [
+    {
+     "attempt": 1,
+     "status": "rejected",
+     "error": null,
+     "protocol": "unique_exact_runtime_patch_v1",
+     "llm_calls": 1,
+     "missing_usage_calls": 0,
+     "llm_latency_seconds": 73.161737,
+     "prompt_tokens": 44053,
+     "completion_tokens": 4562,
+     "reasoning_tokens": 0,
+     "total_tokens": 48615
+    },
+    {
+     "attempt": 2,
+     "status": "rejected",
+     "error": null,
+     "protocol": "unique_exact_runtime_patch_v1",
+     "llm_calls": 1,
+     "missing_usage_calls": 0,
+     "llm_latency_seconds": 14.476415,
+     "prompt_tokens": 44649,
+     "completion_tokens": 667,
+     "reasoning_tokens": 0,
+     "total_tokens": 45316
+    },
+    {
+     "attempt": 3,
+     "status": "rejected",
+     "error": null,
+     "protocol": "unique_exact_runtime_patch_v1",
+     "llm_calls": 1,
+     "missing_usage_calls": 0,
+     "llm_latency_seconds": 5.052266,
+     "prompt_tokens": 44617,
+     "completion_tokens": 161,
+     "reasoning_tokens": 0,
+     "total_tokens": 44778
+    }
+   ]
+  },
+  {
+   "task": "electric_medical_waste_lrp",
+   "final_status": "repair_failed",
+   "total_tokens_including_direct": 990252,
+   "repair_tokens": 761733,
+   "attempts": [
+    {
+     "attempt": 1,
+     "status": "repair_failed",
+     "error": "ValueError: incomplete_artifact: no solver optimize call",
+     "protocol": "two_phase_model_then_solver_v1",
+     "llm_calls": 2,
+     "missing_usage_calls": 0,
+     "llm_latency_seconds": 182.493606,
+     "prompt_tokens": 241843,
+     "completion_tokens": 11190,
+     "reasoning_tokens": 0,
+     "total_tokens": 253033
+    },
+    {
+     "attempt": 2,
+     "status": "repair_failed",
+     "error": "ValueError: incomplete_artifact: no solver optimize call",
+     "protocol": "two_phase_model_then_solver_v1",
+     "llm_calls": 2,
+     "missing_usage_calls": 0,
+     "llm_latency_seconds": 184.526718,
+     "prompt_tokens": 242562,
+     "completion_tokens": 11869,
+     "reasoning_tokens": 0,
+     "total_tokens": 254431
+    },
+    {
+     "attempt": 3,
+     "status": "repair_failed",
+     "error": "ValueError: incomplete_artifact: no solver optimize call",
+     "protocol": "two_phase_model_then_solver_v1",
+     "llm_calls": 2,
+     "missing_usage_calls": 0,
+     "llm_latency_seconds": 183.377605,
+     "prompt_tokens": 242481,
+     "completion_tokens": 11788,
+     "reasoning_tokens": 0,
+     "total_tokens": 254269
+    }
+   ]
+  },
+  {
+   "task": "offshore_wind_maintenance",
+   "final_status": "rejected_regression",
+   "total_tokens_including_direct": 154887,
+   "repair_tokens": 125492,
+   "attempts": [
+    {
+     "attempt": 1,
+     "status": "rejected",
+     "error": null,
+     "protocol": "two_phase_model_then_solver_v1",
+     "llm_calls": 2,
+     "missing_usage_calls": 0,
+     "llm_latency_seconds": 98.003302,
+     "prompt_tokens": 38139,
+     "completion_tokens": 6463,
+     "reasoning_tokens": 0,
+     "total_tokens": 44602
+    },
+    {
+     "attempt": 2,
+     "status": "rejected",
+     "error": null,
+     "protocol": "two_phase_model_then_solver_v1",
+     "llm_calls": 2,
+     "missing_usage_calls": 0,
+     "llm_latency_seconds": 132.33755,
+     "prompt_tokens": 24234,
+     "completion_tokens": 8705,
+     "reasoning_tokens": 0,
+     "total_tokens": 32939
+    },
+    {
+     "attempt": 3,
+     "status": "rejected",
+     "error": null,
+     "protocol": "two_phase_model_then_solver_v1",
+     "llm_calls": 2,
+     "missing_usage_calls": 0,
+     "llm_latency_seconds": 132.003845,
+     "prompt_tokens": 39388,
+     "completion_tokens": 8563,
+     "reasoning_tokens": 0,
+     "total_tokens": 47951
+    }
+   ]
+  },
+  {
+   "task": "portable_battery_swap_rebalancing",
+   "final_status": "preserved_win",
+   "total_tokens_including_direct": 29085,
+   "repair_tokens": 0,
+   "attempts": []
+  }
+ ],
+ "total_repair_tokens": 1025934,
+ "total_attempts": 9,
+ "new_true_correct_over_b1": 0,
+ "note": "Costs are recomputed from saved model, solver and runtime-patch response logs, including the direct B1 generation in each task total."
+}

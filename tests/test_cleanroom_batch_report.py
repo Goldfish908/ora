@@ -87,3 +87,17 @@ def test_batch_report_cli_uses_argparse_singular_destinations(tmp_path, monkeypa
     main()
     assert len(calls["args"][3]) == 2
     assert len(calls["args"][5]) == 1
+
+
+def test_batch_figure_does_not_crop_nonzero_bars():
+    import matplotlib.pyplot as plt
+    from scripts.cleanroom_batch_figure import ARMS, draw
+
+    arms = [{"arm": name, "n_expected": 4, "direct": {"true_correct": 0},
+             "final": {"n": 4, "true_correct": 1, "phantom_proxy": 1, "unknown": 0}}
+            if name != "B3_verified_memory" else
+            {"arm": name, "status": "not_run"} for name in ARMS]
+    figure, axis = plt.subplots()
+    draw({"arms": arms}, axis, "outcomes")
+    assert axis.get_ylim() == (0.0, 4.8)
+    plt.close(figure)

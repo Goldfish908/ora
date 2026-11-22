@@ -1,0 +1,26 @@
+{
+ "status": "repair_failed",
+ "phase": "workspace",
+ "error": "ValueError: incomplete_artifact: no solver optimize call",
+ "before": {
+  "execution_contract": "fail",
+  "logistics_official_task_pass": "fail"
+ },
+ "dag": {
+  "nodes": [
+   {
+    "node_id": "root",
+    "parent_id": null,
+    "code_sha256": "5870450da55f9d095d111f58f553fc56ad0328554d185382d788b19ba704f6d1",
+    "target_check": null,
+    "before": {},
+    "after": {
+     "execution_contract": "fail",
+     "logistics_official_task_pass": "fail"
+    },
+    "accepted": true,
+    "reasons": []
+   }
+  ]
+ }
+}

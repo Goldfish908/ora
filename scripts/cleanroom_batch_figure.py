@@ -26,18 +26,19 @@ def draw(summary: dict, axis, title: str) -> None:
         values = [by_arm[arm].get(section, {}).get(key, 0) if "final" in by_arm[arm] else 0
                   for arm in ARMS]
         bars = axis.bar(x + (index - 1.5) * width, values, width, label=label, color=color)
-        axis.bar_label(bars, padding=2, fontsize=8)
+        axis.bar_label(bars, labels=[str(value) if value else "" for value in values], padding=2, fontsize=8)
     for index, arm in enumerate(ARMS):
         if "final" not in by_arm[arm]:
             axis.text(index, 0.06, "not_run", ha="center", va="bottom", fontsize=8, color="#666666")
         else:
             final = by_arm[arm]["final"]
-            axis.text(index, 0.12, f"final n={final['n']}/{by_arm[arm]['n_expected']}",
-                      ha="center", va="bottom", fontsize=7, color="#555555")
+            axis.text(index, 0.98, f"n={final['n']}/{by_arm[arm]['n_expected']}",
+                      transform=axis.get_xaxis_transform(), ha="center", va="top",
+                      fontsize=7, color="#555555")
     axis.set_xticks(x, ("B0", "B1", "B2", "B3"))
     axis.set_ylabel("Tasks")
     axis.set_title(title)
-    axis.set_ylim(bottom=0)
+    axis.set_ylim(0, max(1, max(arm.get("n_expected", 0) for arm in by_arm.values())) * 1.2)
     axis.grid(axis="x", visible=False)
 
 

@@ -1,0 +1,14 @@
+{
+ "framework_commit": "94005e63040142a04703479e3d6cc294b696f35e",
+ "pytest": "571 passed, 3 skipped",
+ "m2gen": "REGRESSION OK",
+ "strict_goal_met": true,
+ "sha256": {
+  "pytest_log": "9865b7654bd1ff85342a8c1e2e93ab5244d467b878f86ec6d5740e0e791bb918",
+  "m2gen_log": "25ee81ef0e419ad1a46ab419c2ee90b31f41d787b7acdd90859144d751dcd644",
+  "batch_summary": "07e324734f488ec026788a4a952623f667642d0d49ef617314d7cc302e81d1e3",
+  "figure": "a822ca2f97130f71def63c4200c48498e590598294204f2b78b77de70dad8524",
+  "outcome": "fdb41324ac2bb3704af45654c56735d02b058579bff573775a70fa8da798fbb3",
+  "plot_script": "c5061bc5b0798484e936cf01283431a898c6f0909aa752e34d95bcbc02e09af7"
+ }
+}

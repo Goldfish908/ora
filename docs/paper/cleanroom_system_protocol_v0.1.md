@@ -380,4 +380,32 @@ B0→B2 没有 missing、lost true 或新增幻影，但也没有 gained true，
 
 `529ef64` 的通用 guard 加入经容器签名核对的 `getNCons()→getNConss()`。对同一已保存第三次补丁做零 LLM 复验 `work/engineering_runtime_patch_naloxone_v0.8.5_guard_replay`，代码已能执行，得到 objective=29,703,555.805052724，但官方仍为业务不可行：开放基地数越界、优先级覆盖不足和地面兜底容量/比例违反等。这是**执行恢复而非真正确**，也不能声称带新绑定门禁的完整控制器必然生成同一候选。新控制器还会把上一次生成拒绝原因传入下一次尝试。
 
-该工作版全量 pytest 为 **567 passed、3 skipped**，m2gen 为 `REGRESSION OK`，日志为 `work/verification_runtime_patch_v0.8.4/`；后续小改仍需最终重跑。第三组独立任务健康检查尚未完成，不得把工程结果描述为迁移提升。官方 Witness 与最终评价器同源，仍只支持任务内一致性检查，不等同于完全独立业务真值。
+该工作版全量 pytest 为 **567 passed、3 skipped**，m2gen 为 `REGRESSION OK`，日志为 `work/verification_runtime_patch_v0.8.4/`；后续小改仍需最终重跑。第三组独立任务健康检查随后完成，正式结果如下。
+
+## v0.9 第三组全新 transfer：严格达标及其边界
+
+第三组使用 electric medical waste、container gate、portable battery 和 offshore wind 四题。它们未参与规范学习、Qwen 工程调参或 memory 晋升；角色和参考健康在运行前冻结于 `configs/cleanroom_swarm_frozen_logistics_v0.9.json` 与 `work/swarm_transfer_pool/health_summary_v0.9.json`。核心实现提交为 `94005e63040142a04703479e3d6cc294b696f35e`，B0/B1/B2 共用 24,576 solver tokens、4,096 model tokens、关闭 thinking、API guard 与每题最多三次修复。C2 规范哈希与上一批相同。
+
+| Arm | 覆盖 | 最终真正确 | 幻影 | UNKNOWN | 修复尝试 | Tokens |
+|---|---:|---:|---:|---:|---:|---:|
+| B0 | 4/4 | 0 | 1 | 0 | 0 | 344,756 |
+| B1 | 4/4 | 1 | 0 | 0 | 0 | 367,228 |
+| B2 | 4/4 | 1 | 0 | 0 | 9 | 1,393,162 |
+| B3 | not_run | — | — | — | — | — |
+
+| 任务 | B0 | B1 | B2 最终 | 尝试 | B2 tokens |
+|---|---|---|---|---:|---:|
+| electric_medical_waste_lrp | 幻影 | 制品不完整 | 制品不完整；三次均缺少 `optimize()` | 3 | 990,252 |
+| container_gate_dro_appointment_planning | 执行错误 | 执行错误 | 三个局部补丁后仍执行错误 | 3 | 218,938 |
+| portable_battery_swap_rebalancing | 质量不足 | 真正确，quality=2.0 | `preserved_win`，真正确，quality=2.0 | 0 | 29,085 |
+| offshore_wind_maintenance | 制品不完整 | 业务不可行 | 业务不可行；回归后回退 | 3 | 154,887 |
+
+B0→B2 为新增 portable 一个真正确、移除 electric 一个幻影，没有 lost true、missing task、新增幻影或 UNKNOWN，满足本轮严格性能条件。可是 B1→B2 没有新增或丢失真正确，也没有新增幻影：**净语义增益来自共享规范，不是 DAG 多修出了一题**。B2 相比 B1 多花 1,025,934 tokens，九次修复没有增加真正确，不能写成高效修复或 SOTA。
+
+container 的补丁依次暴露字符串与整数比较、元组解包和 `KeyError: 8`，最终都未通过业务门禁。offshore 第一次遗漏 mandatory tasks；第二次减少为工作时长容量错误，记为 `progress` 但仍非真正确；第三次再次遗漏 mandatory tasks，记为 `regression` 并回退。这证明证据转换和回退在工作，不证明语义生成问题已解决。electric 连续三次同类制品失败则说明仅反馈拒绝原因仍不足以防止重复生成。
+
+Witness 校准为 3 clean、9 wrong，precision=1.0、detection=1.0、UNKNOWN=0；但它和最终评价器同源，只提供任务内一致性检查，不是完全独立业务真值。没有真实独立 memory 晋升，B3 没有运行，不能声称 memory 在线写入、进化或增量收益。四题一题净增益也不足以宣称跨域泛化。
+
+证据入口：`work/swarm_transfer_logistics_v0.9/report/report.md`、`batch_summary.json`、`b0_b2_comparison.png`、`evaluation_outcome.json`、`implementation_snapshot.json` 和 `driver.log`。B1→B2 的独立配对检查保存在 `evaluation_outcome.json`，不与 B0→B2 的总增益混用。官方 Witness 与最终评价器同源，仍只支持任务内一致性检查，不等同于完全独立业务真值。
+
+最终交付版本执行 `PYTHONPATH="$PWD" /home/hewj13/planbb/miniforge3/envs/rl/bin/python -m pytest -q tests --ignore=tests/test_m2gen.py`，结果为 **571 passed、3 skipped**；`python3 m2gen/run_regression.py` 返回 `REGRESSION OK`。绘图函数修正了零值轴裁剪和标签遮挡，并有回归测试覆盖。最终日志与哈希见 `work/verification_v0.9_final/`。

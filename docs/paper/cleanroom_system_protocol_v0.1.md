@@ -280,3 +280,7 @@ B3 新增作用域裁剪：即使制造域 memory 晋升，packing_logistics 的
 新增显式 `--dev-official-feedback`：只对 `split=dev` 的训练任务返回至多 20 条官方违规坐标，不包含官方评价器实现、参考解或参考目标值。validation、audit 和后续 transfer 即使也开启同一适配器，仍不得返回这些坐标。默认关闭以保持旧行为，测试同时覆盖 dev 可用和 transfer 不泄漏。
 
 新运行 `work/cleanroom_gepa_dev_feedback_v0.7.1` 必须绑定新的实现哈希。前一轮 B0 数字保留为工程观察，但不能与不同实现哈希的 GEPA 结果组合用于 memory 晋升；正式对照需要重新执行同口径 B0/B1。
+
+v0.7.1 的两组 B0 已真实完成，源代码版本为 `576f6b7`，生成与评价文件哈希见各自 `implementation.json`。审计批为 2/4 真正确、0 幻影、0 UNKNOWN、106,398 tokens：smart building 和 hybrid telehealth 保持真实 win，robust microgrid 为 incomplete artifact，fuel tanker 为 `addCons()` 重复 `name` 参数。后续 transfer 为 1/4 真正确、0 幻影、0 UNKNOWN、232,124 tokens：水回用直接达到 `quality=2.0、objective=6011.5448483809205`，木板材、EV 和 real-world 3D packing 均为执行错误。
+
+本轮证据为 `work/cleanroom_expanded_audit_suite_v0.7.1/B0/` 与 `work/cleanroom_expanded_transfer_suite_v0.7.1/B0/` 下的 `run.json`、`replay_result.json`、`driver.log` 和逐题 `record.json`，提交为 `085c96f`。水回用从前一轮的幻影变为本轮真实 win，而实现中的直接生成逻辑没有变化，说明单次 LLM 采样有波动；不得把跨轮差异计作 GEPA 增益。后续 B1/B2 只与本轮 B0 配对，水回用及其他已有 win 必须保持 win-safe。

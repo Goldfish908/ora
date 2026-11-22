@@ -1,0 +1,11 @@
+{
+ "paired_tasks": 4,
+ "missing_tasks": [],
+ "gained_true_correct": [],
+ "lost_true_correct": [],
+ "gained_phantom": [
+  "robust_microgrid_islanding_dispatch"
+ ],
+ "removed_phantom": [],
+ "win_safe": true
+}

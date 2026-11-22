@@ -229,9 +229,11 @@ def repair_once(memory: EvidenceMemory, packet: TaskPacket, record: dict, specif
         "search_guidance": {
             "attempt": attempt,
             "alternate_branch": attempt > 1,
-            "regenerate_from_evidence": attempt > 1,
+            "regenerate_from_evidence": attempt > 1 and execution.get("return_code") == 0
+            and not execution.get("timed_out"),
             "instruction": "Earlier attempts did not establish verified progress. Do not repeat the previous code or make cosmetic edits. Rebuild the decision structure around every unmet public requirement, and explicitly verify every demand, service, route and output coordinate before writing the decision artifact."
-            if attempt > 1 else "Preserve unrelated business requirements and address the target evidence.",
+            if attempt > 1 and execution.get("return_code") == 0 and not execution.get("timed_out")
+            else "Preserve unrelated business requirements and address the target evidence. For a runtime failure, repair the observed cause in the current solver rather than replacing its working model. Assemble solver terms in ordinary Python lists and test the list before calling quicksum; never compare a PySCIPOpt expression with !=, <, or >. Check that a solution exists before reading its objective.",
         },
     }
     base = outdir / "repair_1"
@@ -360,6 +362,22 @@ def repair_bounded(memory: EvidenceMemory, packet: TaskPacket, record: dict, spe
         transition = _evidence_transition(current, child)
         history[-1]["evidence_transition"] = transition
         if transition == "unchanged":
+            previous_execution = current.get("execution") or {}
+            child_execution = child.get("execution") or {}
+            previous_error = previous_execution.get("stderr") or previous_execution.get("stderr_tail")
+            child_error = child_execution.get("stderr") or child_execution.get("stderr_tail")
+            new_runtime_diagnostic = (previous_execution.get("return_code") != 0
+                                      and child_execution.get("return_code") != 0
+                                      and bool(previous_error) and bool(child_error)
+                                      and previous_error != child_error)
+            if new_runtime_diagnostic:
+                unchanged_streak = 0
+                current = child
+                parent_id = result["node_id"]
+                stop_reason = "bounded_failure"
+                history[-1]["working_branch_advanced"] = True
+                history[-1]["verified_progress"] = False
+                continue
             unchanged_streak += 1
             stop_reason = "no_verified_progress"
             if unchanged_streak >= 2:

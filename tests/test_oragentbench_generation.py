@@ -51,6 +51,18 @@ def test_evidence_regeneration_excludes_previous_artifacts():
     assert "TARGETED REPAIR" in messages[0]["content"]
 
 
+def test_runtime_repair_keeps_solver_and_supplies_expression_contract():
+    packet = TaskPacket.load(ROOT / "ORAgentBench/harbor_tasks/additive_microfactory_order_planning",
+                             "manufacturing", "dev")
+    repair = {"artifacts": {"solve_py": "if lhs != 0:\n    pass"},
+              "evidence": {"execution": {"return_code": 1},
+                           "search_guidance": {"regenerate_from_evidence": False}}}
+    messages = packet.prompt("spec", repair)
+    assert "PREVIOUS ARTIFACTS" in messages[1]["content"]
+    assert "RUNTIME REPAIR CONTRACT" in messages[0]["content"]
+    assert "if terms:" in messages[0]["content"]
+
+
 def test_truncated_artifact_is_explicit_failure():
     with pytest.raises(ValueError, match="truncated"):
         parse_artifacts({"finish_reason": "length", "tool_calls": []})

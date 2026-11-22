@@ -112,6 +112,15 @@ class TaskPacket:
                     "\n\nTARGETED REPAIR: revise the previous artifacts to address the target while preserving "
                     "all unrelated business requirements. Do not merely describe changes; return complete files."
                 )
+                if evidence.get("execution", {}).get("return_code") != 0:
+                    system += (
+                        "\n\nRUNTIME REPAIR CONTRACT: locate and fix the observed failure in the current solver "
+                        "rather than replacing working logic. Construct PySCIPOpt expressions from ordinary "
+                        "Python term lists: test `if terms:` before `quicksum(terms)`, never use `!=`, `<`, or "
+                        "`>` to test whether an expression is empty. Use quicksum instead of mixing Python "
+                        "numeric accumulation with solver terms. Check `getBestSol()` or `getNSols()` before "
+                        "reading a solution or objective. Do not hide an exception or fabricate a decision file."
+                    )
                 packet += "\n\n### PREVIOUS ARTIFACTS\n" + json.dumps(repair["artifacts"], ensure_ascii=False)
             findings = evidence.get("semantic_findings") or []
             if findings:

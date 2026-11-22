@@ -106,6 +106,38 @@ def test_rejected_regression_retries_from_best_parent(tmp_path, monkeypatch):
         "progress", "regression", "progress"]
 
 
+def test_runtime_diagnostic_advances_only_the_working_branch(tmp_path, monkeypatch):
+    memory, packet, record, _ = setup_loop(monkeypatch, outcomes=99)
+    record["execution"]["stderr"] = "initial runtime error"
+    parents = []
+
+    def branch(memory, packet, current, specification, config, outdir, run_seed, **kwargs):
+        attempt = len(parents) + 1
+        parents.append(kwargs["parent_id"])
+        child = dict(current)
+        child["workspace"] = f"runtime{attempt}/app"
+        child["execution"] = {"return_code": 1, "stderr": f"runtime error {attempt}"}
+        status = "rejected"
+        if attempt == 3:
+            child.update(true_correct=True, feasible=True, quality=1.0,
+                         execution={"return_code": 0}, official={"evaluation": {"errors": []}})
+            status = "accepted"
+        return {"status": status, "record": child, "node_id": f"runtime_node{attempt}",
+                "before": {"execution_contract": "fail"},
+                "after": {"execution_contract": "pass" if status == "accepted" else "fail"},
+                "edge_accepted": status == "accepted", "final_accept": status == "accepted"}
+
+    monkeypatch.setattr(cleanroom_witness, "repair_once", branch)
+    result = cleanroom_witness.repair_bounded(memory, packet, record, "spec", None, tmp_path)
+    assert parents == ["root", "runtime_node1", "runtime_node2"]
+    assert result["status"] == "accepted"
+    assert result["attempts_used"] == 3
+    assert [row["evidence_transition"] for row in result["history"]] == [
+        "unchanged", "unchanged", "progress"]
+    assert [row.get("working_branch_advanced", False) for row in result["history"]] == [
+        True, True, False]
+
+
 def test_changed_error_text_without_progress_stops(tmp_path, monkeypatch):
     memory, packet, record, _ = setup_loop(monkeypatch, outcomes=99)
     attempts = []

@@ -1,0 +1,40 @@
+{
+ "git_commit": "8aeea8619007476ebd75470c39330b3b207104ef",
+ "core_worktree_clean": true,
+ "files": {
+  "ora_agent/llm.py": "ced54d7b87414e73e0ed7c572cba9f1118c9f850b67516d5b1f9834c9555a1d9",
+  "ora_agent/cleanroom.py": "c33b21414dc230fb1862cbfdefb42d4652759236af9401f77d8f10c0bd2ad2a5",
+  "ora_agent/oragentbench.py": "925629aca8dd63638e4ee1eaddcd68dd29c2845be638f9668306c1fe4eb0888e",
+  "ora_agent/api_guard.py": "802e50268c23a8eddbd966ea21375a9e02d43a81f43e2fa5223cde0c7dbe2a4a",
+  "ora_agent/cleanroom_witness.py": "c07eefe4d6d7a02d21ae51fa431ef847ad3e3f593fe9409298572e1fb2d5a680",
+  "ora_agent/cleanroom_spec_audit.py": "c0551fbd49d8db6832714de221f1332e207705f7fcf21c1db730331951ad4097",
+  "scripts/cleanroom_experiment.py": "cbedbc70322ff3b7f4e937e1b075eaa7ec9d38032d3d1c713ee9a80eb028dc3a",
+  "scripts/cleanroom_repair.py": "13443711cf0c7ba8c3c5120f6e979af065751738f7f6163a70d0cbb52447caee",
+  "scripts/cleanroom_memory.py": "12afa65d7c0c5002f99ef86d117c0748066311803d21f82cf169642313f84f7e",
+  "ora_agent/cleanroom_analysis.py": "feb82495d0821c5de81ad0b121fe78f4909d0bab64c4ef240f5cbabbd9efe7db",
+  "scripts/cleanroom_batch_report.py": "cde70b7bad12f8776a9a321eda99ef648614ee3a43d71435920c5260b64b2735",
+  "scripts/cleanroom_health_report.py": "cf0dcc5676a92c8c43b47c3c8fdc31d2574802ed7c5d28562c969d644523e871"
+ },
+ "generation": {
+  "max_tokens": 24576,
+  "reasoning_effort": "low",
+  "disable_thinking": true,
+  "model_reasoning_effort": "low",
+  "solver_reasoning_effort": "low",
+  "model_disable_thinking": true,
+  "solver_disable_thinking": true,
+  "model_max_tokens": 4096,
+  "model_max_words": 1800,
+  "temperature": 0.6,
+  "protocol": "two_phase_model_then_solver_v1",
+  "stream": false
+ },
+ "repair": {
+  "max_attempts": 3,
+  "protocol": "failure-routed exact patch; repeated incomplete artifacts regenerate from evidence; undefined-global preflight",
+  "final_acceptance": "all authorized checks pass; otherwise retain best verified baseline"
+ },
+ "b0_implementation_sha256": "3ac12a85431d3c04bd13349b8709c2560748e53f96e698300c1e4d8d1853441a",
+ "suite_implementation_sha256": "27c6e1cb520714813259c2e910f77b48013f9dfc2a41f4ce2b62b093ec3c593b",
+ "audit_tasks_sha256": "8a78f4f2d5b3eb24ebc9b802c11dd0862317637d4c32ee36591acf2267bfe1c6"
+}

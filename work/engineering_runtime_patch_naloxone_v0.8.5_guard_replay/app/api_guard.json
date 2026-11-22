@@ -1,0 +1,17 @@
+{
+ "repairs": [
+  {
+   "category": "constraint_count_method",
+   "from": "getNCons()",
+   "to": "getNConss()"
+  },
+  {
+   "category": "gap_parameter",
+   "from": "setParam(\"gaprel\"",
+   "to": "setRealParam(\"limits/gap\""
+  }
+ ],
+ "public_contract_repairs": [],
+ "original_sha256": "9eb9eaa7bd726da43c776ad0932f1050f76e51c7a9cbfecd71c40214ae067524",
+ "repaired_sha256": "13eda17947202abf0ce2137d72ef8f278283e97b6b184c812e05d633551cbe93"
+}

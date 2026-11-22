@@ -1,0 +1,27 @@
+{
+ "files": {
+  "ora_agent/cleanroom.py": "c33b21414dc230fb1862cbfdefb42d4652759236af9401f77d8f10c0bd2ad2a5",
+  "ora_agent/cleanroom_witness.py": "259c1308c9928a79a002bc5864b3e63f8ed1ece168b9f6dd22ec8d343aa60d30",
+  "ora_agent/cleanroom_analysis.py": "feb82495d0821c5de81ad0b121fe78f4909d0bab64c4ef240f5cbabbd9efe7db",
+  "ora_agent/oragentbench.py": "99ec622dad8b33be8e0029e26bdb9b7e945ce72db4cbeaa1668d249533c60032",
+  "ora_agent/api_guard.py": "5455db11f1c623faacfb3a39cbea4b622d77d76246e42de9f9f5afbff4aa46b3",
+  "scripts/cleanroom_repair.py": "13443711cf0c7ba8c3c5120f6e979af065751738f7f6163a70d0cbb52447caee"
+ },
+ "tasks_sha256": "b4942768650a487dac63be72ca03205d20f4e429f20e63cfb3703e77bfdd9c57",
+ "source_record_sha256": "255c85b4730fca3e3c6115fd3273478ae61ccc1de1697b257539bb19f9f613ff",
+ "spec_source_sha256": "12798e966269f171f2de9ace65706bd95517f9272a0e81da8d177d5a15240d85",
+ "model": "Qwen3_8-27B",
+ "arguments": {
+  "mode": "repair",
+  "tasks": "configs/cleanroom_engineering_naloxone_v0.8.4.json",
+  "run_dir": "work/engineering_runtime_patch_naloxone_v0.8.4",
+  "record": "work/swarm_transfer_logistics_v0.8.2/B1/rollouts/08f95083f60719b0681fcca6cfad453b3faf28577335b466265903e2a11fe190/naloxone_drone_response_network/attempt_0/record.json",
+  "spec_source": "work/cleanroom_gepa_dev_feedback_v0.7.1/gepa_result.json",
+  "spec_id": null,
+  "seed": 0,
+  "max_attempts": 3,
+  "llm_timeout": 600.0,
+  "witness_source": "work/swarm_transfer_pool/witness_initialized_v0.8.2/witness",
+  "api_guard": true
+ }
+}

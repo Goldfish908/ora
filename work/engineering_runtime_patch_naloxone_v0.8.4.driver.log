@@ -1,0 +1,56 @@
+{
+ "status": "bounded_failure",
+ "before": {
+  "execution_contract": "fail",
+  "logistics_official_task_pass": "fail"
+ },
+ "after": {
+  "execution_contract": "fail",
+  "logistics_official_task_pass": "fail"
+ },
+ "final_accept": false,
+ "edge_accepted": false,
+ "attempts_used": 3,
+ "max_attempts": 3,
+ "attempt_record_paths": [
+  "/home/hewj13/wm/ora/work/engineering_runtime_patch_naloxone_v0.8.4/attempt_1/repair_1/record.json",
+  "/home/hewj13/wm/ora/work/engineering_runtime_patch_naloxone_v0.8.4/attempt_2/repair_1/record.json",
+  "/home/hewj13/wm/ora/work/engineering_runtime_patch_naloxone_v0.8.4/attempt_3/repair_1/record.json"
+ ],
+ "pair_win_safe": {
+  "paired_tasks": 1,
+  "missing_tasks": [],
+  "gained_true_correct": [],
+  "lost_true_correct": [],
+  "gained_phantom": [],
+  "removed_phantom": [],
+  "win_safe": true
+ },
+ "win_safe": true,
+ "cost": {
+  "llm_calls": 5,
+  "missing_usage_calls": 0,
+  "llm_latency_seconds": 251.628017,
+  "prompt_tokens": 80804,
+  "completion_tokens": 17943,
+  "reasoning_tokens": 0,
+  "total_tokens": 98747,
+  "solver_execution_time": {
+   "recorded_calls": 4,
+   "missing_calls": 0,
+   "seconds": 60.192878
+  },
+  "official_evaluation_time": {
+   "recorded_calls": 4,
+   "missing_calls": 0,
+   "seconds": 50.172729
+  }
+ },
+ "memory_frozen": true,
+ "metrics": {
+  "feasible": false,
+  "quality": 0.0,
+  "true_correct": false,
+  "objective": null
+ }
+}

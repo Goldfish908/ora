@@ -1,0 +1,11 @@
+{
+ "metrics": {
+  "feasible": false,
+  "quality": 0.0,
+  "true_correct": false,
+  "objective": 29703555.805052724,
+  "evaluation_unknown": false
+ },
+ "new_llm_calls": 0,
+ "api_probe_return_code": 0
+}

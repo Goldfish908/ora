@@ -353,3 +353,31 @@ EV 第一次修复消除了三个 outlet 容量错误，只剩 hydromet share �
 真实 EV 工程 replay `work/swarm_repair_ev_best_parent_v0.8` 重现第一次仅剩 hydromet 错误、第二次重新出现市场供需错误的序列。第三次的 `parent_id` 为 `root/repair:1`，而非第二次的 `root/repair:1/repair:2`，证明退化后确实回到最佳父节点。三次转换为 `progress → regression → regression`，最终 `true_correct=false、win_safe=true、attempts=3`，成本为 8 次 LLM 调用、227,071 tokens。全量回归为 **560 passed、3 skipped**。
 
 这次 replay 是旧 transfer 上的工程验证，不是独立性能证据。它证明控制器结构修复有效，但没有解决语义生成错误；最终性能仍须在全新 transfer 上评价。
+
+
+## v0.8.2 第二组独立 transfer 负结果与局部补丁工作版
+
+第二组四题为 evtol、robotic fulfillment、wastewater sentinel 和 naloxone drone，开始实验前均未参与规范学习、工程调参或 memory 晋升。固定 C2 规范哈希为 `08f95083f60719b0681fcca6cfad453b3faf28577335b466265903e2a11fe190`，B0/B1/B2 使用相同直接生成预算与最多三次修复。
+
+| Arm | 覆盖 | 真正确 | 幻影 | UNKNOWN | 修复尝试 | Tokens |
+|---|---:|---:|---:|---:|---:|---:|
+| B0 | 4/4 | 0 | 0 | 0 | 0 | 312,061 |
+| B1 | 4/4 | 0 | 0 | 0 | 0 | 333,372 |
+| B2 | 4/4 | 0 | 0 | 0 | 11 | 1,402,251 |
+| B3 | not_run | — | — | — | — | — |
+
+B0→B2 没有 missing、lost true 或新增幻影，但也没有 gained true，严格性能验收**未通过**。失败包括制品不完整、运行/API 错误、过大模型或不可行模型和业务语义错误。中间出现的可执行或错误减少节点均未被当作真正确。逐题报告、尝试记录、成本和日志见 `work/swarm_transfer_logistics_v0.8.2/`，未达标判定为 `evaluation_outcome.json`。这些题随后只能作为工程数据。
+
+并行物流 GEPA `work/swarm_gepa_logistics_v0.8` 共记录 37 次 metric calls（含 seed 重评），6 个提议全部拒绝，没有非 seed 接受候选。一个拒绝提议让 autonomous-lab 真正确，却同时保留 shared-drone 幻影，不能据此晋升。候选曲线和提议历史见 `work/swarm_gepa_logistics_v0.8_report/`。因此 memory 没有独立晋升，B3 仍为 `not_run`，不反复重试直到获得晋升。
+
+### 分类型修复与精确局部补丁
+
+`a02f25f` 区分运行失败和语义失败：运行失败保留当前求解器做增量修复，语义失败才在无进展时换分支重建。可信最终节点与工作分支分离；新的运行诊断可以沿未通过最终门禁的工作分支继续，但最终结果始终回退到通过门禁的解或原基线。该机制的相关测试通过，但旧题真实复验因外层运行时限只保存了部分尝试，不能据此声称有效。
+
+`3ceb9fd` 进一步将具有真实 stderr 的运行错误路由到 `submit_runtime_patch`。模型仅返回 1–16 个精确代码替换；每个 `old_string` 必须唯一匹配，其他源码保持不变，截断、歧义或不完整补丁拒绝。补丁之后仍执行 API guard、语法/完整性、沙箱执行和官方检查。直接生成协议不变，每题仍最多三次修复提议；成本统计新增 `runtime_patch_generation.json`。没有真实 stderr 的不完整制品及超时仍走完整制品生成，不冒充运行补丁。
+
+工程题 naloxone 的局部补丁复验 `work/engineering_runtime_patch_naloxone_v0.8.4` 已完成三次尝试，没有真正确，最终回退且 win-safe=true；含直接生成共 5 次 LLM 调用、98,747 tokens。三次运行错误依次为 `NameError: fixed_cost`、键缺失、`getNCons` API 错误。第二个补丁试图删除一个实际上不再被引用的 `cost_obj` 赋值来绕过 `NameError`，因此后续版本增加绑定保留检查，禁止删除仍被引用的绑定或目标/成本绑定。
+
+`529ef64` 的通用 guard 加入经容器签名核对的 `getNCons()→getNConss()`。对同一已保存第三次补丁做零 LLM 复验 `work/engineering_runtime_patch_naloxone_v0.8.5_guard_replay`，代码已能执行，得到 objective=29,703,555.805052724，但官方仍为业务不可行：开放基地数越界、优先级覆盖不足和地面兜底容量/比例违反等。这是**执行恢复而非真正确**，也不能声称带新绑定门禁的完整控制器必然生成同一候选。新控制器还会把上一次生成拒绝原因传入下一次尝试。
+
+该工作版全量 pytest 为 **567 passed、3 skipped**，m2gen 为 `REGRESSION OK`，日志为 `work/verification_runtime_patch_v0.8.4/`；后续小改仍需最终重跑。第三组独立任务健康检查尚未完成，不得把工程结果描述为迁移提升。官方 Witness 与最终评价器同源，仍只支持任务内一致性检查，不等同于完全独立业务真值。

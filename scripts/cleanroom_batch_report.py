@@ -100,6 +100,11 @@ def build_arm(label: str, replay: dict, repairs: list[Path], expected_tasks: lis
             "repair_inputs": [str((ROOT / path).resolve()) for path in repairs]}
 
 
+def arm_final_records(arm: dict) -> list[dict]:
+    return [{"task": row["task"], **row["final"]} for row in arm.get("tasks", [])
+            if row["final"].get("true_correct") is not None]
+
+
 def build(b0: Path, b1: Path, b2: Path | None, b2_repairs: list[Path],
           b3: Path | None, b3_repairs: list[Path], out: Path) -> dict:
     inputs = {"B0_empty_specification": load_replay(b0), "B1_gepa_specification": load_replay(b1)}
@@ -124,9 +129,14 @@ def build(b0: Path, b1: Path, b2: Path | None, b2_repairs: list[Path],
     b1_specs = inputs["B1_gepa_specification"]["specification_sha256"]
     b3_specs = inputs.get("B3_verified_memory", {}).get("specification_sha256")
     identity = bool(b1_specs and b3_specs and b1_specs == b3_specs)
+    b0_final = arm_final_records(arms[0])
     result = {"expected_tasks": expected_tasks, "arms": arms,
               "b0_to_b1": pair_win_safe(inputs["B0_empty_specification"]["records"],
                                          inputs["B1_gepa_specification"]["records"]),
+              "b0_to_b2": pair_win_safe(b0_final, arm_final_records(arms[2]))
+              if b2 else {"status": "not_run"},
+              "b0_to_b3": pair_win_safe(b0_final, arm_final_records(arms[3]))
+              if b3 else {"status": "not_run"},
               "b3_same_generator_specification_as_b1": identity,
               "memory_interpretation": "Identical generator specifications do not establish an incremental memory effect."
               if identity else "Compare only equal task coverage and record the authorized memory scope.",

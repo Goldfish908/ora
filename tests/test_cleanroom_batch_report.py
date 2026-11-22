@@ -49,6 +49,9 @@ def test_batch_report_pairs_tasks_and_marks_identical_memory(tmp_path):
     assert result["b0_to_b1"]["gained_true_correct"] == ["b"]
     assert result["arms"][1]["pair_win_safe"]["win_safe"]
     assert result["arms"][2]["final"]["coverage"] == 1.0
+    assert result["b0_to_b2"]["gained_true_correct"] == ["b"]
+    assert result["b0_to_b2"]["win_safe"]
+    assert result["b0_to_b3"]["win_safe"]
     assert all(row["coverage"] and row["win_safe"] and not row["unknown"]
                for row in result["arms"][2]["tasks"])
     assert result["b3_same_generator_specification_as_b1"]

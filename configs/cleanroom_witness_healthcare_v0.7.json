@@ -1,0 +1,8 @@
+{
+  "version": "cleanroom_witness_healthcare_v0.7",
+  "tasks": [
+    {"name": "hybrid_telehealth_appointment_scheduling", "domain": "healthcare_scheduling", "split": "audit"},
+    {"name": "nurse_rostering", "domain": "healthcare_scheduling", "split": "audit"},
+    {"name": "german_or_scheduling", "domain": "healthcare_scheduling", "split": "audit"}
+  ]
+}

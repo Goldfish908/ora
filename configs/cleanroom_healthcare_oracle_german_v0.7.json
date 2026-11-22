@@ -1,0 +1,7 @@
+{
+  "version": "cleanroom_healthcare_oracle_german_v0.7",
+  "selection_basis": "Third healthcare task for same-domain Witness initialization; oracle/official health must pass before use.",
+  "tasks": [
+    {"name": "german_or_scheduling", "domain": "healthcare_scheduling", "split": "audit"}
+  ]
+}

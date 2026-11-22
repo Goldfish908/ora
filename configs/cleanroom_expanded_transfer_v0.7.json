@@ -1,0 +1,10 @@
+{
+  "version": "cleanroom_expanded_transfer_v0.7",
+  "selection_basis": "Four healthy tasks excluded from GEPA selection and memory-promotion review. The packing task has no authorized cross-domain Witness or memory scope and must retain explicit not_run/no_authorized_target outcomes.",
+  "tasks": [
+    {"name": "industrial_water_reuse_blending", "domain": "manufacturing", "split": "transfer"},
+    {"name": "mass_timber_panel_cutting_plan", "domain": "manufacturing", "split": "transfer"},
+    {"name": "ev_battery_recycling_network", "domain": "manufacturing", "split": "transfer"},
+    {"name": "real_world_3d_bin_packing", "domain": "packing_logistics", "split": "transfer"}
+  ]
+}

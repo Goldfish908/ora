@@ -1,11 +1,14 @@
 import json
 from types import SimpleNamespace
 
+import pytest
+
 from scripts.cleanroom_experiment import digest
 from scripts import cleanroom_suite
 
 
-def test_repair_batch_uses_same_spec_and_frozen_registry(tmp_path, monkeypatch):
+@pytest.mark.parametrize("use_witness_override", [False, True])
+def test_repair_batch_uses_same_spec_and_frozen_registry(tmp_path, monkeypatch, use_witness_override):
     specification = "validated specification"
     record = {"task": "task", "candidate_sha256": digest(specification)}
     record_path = tmp_path / "B1/rollouts/task/record.json"
@@ -17,9 +20,16 @@ def test_repair_batch_uses_same_spec_and_frozen_registry(tmp_path, monkeypatch):
     spec_source.write_text(json.dumps({"candidates": [{"conventions": specification}]}))
     packet = SimpleNamespace(name="task", domain="manufacturing", split="audit",
                              scope={"dataset": "oragentbench", "domain": "manufacturing"})
-    args = SimpleNamespace(out=tmp_path, dev_packets=[packet], witness_source=None,
-                           seed=0, max_attempts=3, resume=False)
-    monkeypatch.setattr(cleanroom_suite, "initialize_witness", lambda *args: {"authorized": True})
+    witness_packet = SimpleNamespace(name="witness", domain="energy", split="audit",
+                                     scope={"dataset": "oragentbench", "domain": "energy"})
+    witness_packets = [witness_packet] if use_witness_override else None
+    args = SimpleNamespace(out=tmp_path, dev_packets=[packet], witness_packets=witness_packets,
+                           witness_source=None, seed=0, max_attempts=3, resume=False)
+    initialization = []
+    def fake_initialize(memory, packets, outdir, source):
+        initialization.append((packets, source))
+        return {"authorized": True}
+    monkeypatch.setattr(cleanroom_suite, "initialize_witness", fake_initialize)
     monkeypatch.setattr(cleanroom_suite.llm_mod, "load_config", lambda: SimpleNamespace(model="test-model"))
     calls = []
 
@@ -29,6 +39,7 @@ def test_repair_batch_uses_same_spec_and_frozen_registry(tmp_path, monkeypatch):
 
     monkeypatch.setattr(cleanroom_suite, "repair_bounded", fake_repair)
     paths = cleanroom_suite.repair_batch(args, "B2", [packet], spec_source, None)
+    assert initialization == [([witness_packet] if use_witness_override else [packet], None)]
     assert len(paths) == 1 and paths[0].exists()
     assert calls[0][0]["candidate_sha256"] == digest(specification)
     assert calls[0][1] == specification
@@ -72,7 +83,8 @@ def test_suite_uses_external_memory_for_b3_without_repromotion(tmp_path, monkeyp
         {"name": "additive_microfactory_order_planning", "domain": "manufacturing", "split": "dev"}]}))
     audit_config = tmp_path / "audit.json"
     audit_config.write_text(json.dumps({"tasks": [
-        {"name": "industrial_water_reuse_blending", "domain": "manufacturing", "split": "transfer"}]}))
+        {"name": "industrial_water_reuse_blending", "domain": "manufacturing", "split": "transfer"},
+        {"name": "real_world_3d_bin_packing", "domain": "packing_logistics", "split": "transfer"}]}))
     gepa = tmp_path / "gepa"
     gepa.mkdir()
     (gepa / "gepa_result.json").write_text(json.dumps({
@@ -95,8 +107,8 @@ def test_suite_uses_external_memory_for_b3_without_repromotion(tmp_path, monkeyp
         "audit": {"changed_features_covered": True, "scope_confirmed": True}}))
 
     replays = []
-    def fake_replay(args, arm, source=None, candidate=None, compare_to=None):
-        replays.append((arm, source))
+    def fake_replay(args, arm, source=None, candidate=None, compare_to=None, packets=None):
+        replays.append((arm, source, packets))
         path = args.out / arm / "run.json"
         path.parent.mkdir(parents=True, exist_ok=True)
         path.write_text("{}")
@@ -104,7 +116,7 @@ def test_suite_uses_external_memory_for_b3_without_repromotion(tmp_path, monkeyp
     monkeypatch.setattr(cleanroom_suite, "replay", fake_replay)
     repairs = []
     def fake_repairs(args, arm, packets, spec_source, candidate=None):
-        repairs.append((arm, spec_source))
+        repairs.append((arm, packets, spec_source))
         path = args.out / f"{arm}_repair.json"
         path.write_text("{}")
         return [path]
@@ -123,9 +135,12 @@ def test_suite_uses_external_memory_for_b3_without_repromotion(tmp_path, monkeyp
                                      "--dev-tasks", str(dev_config), "--audit-tasks", str(audit_config),
                                      "--out", str(out), "--memory-source", str(memory_path)])
     cleanroom_suite.main()
-    assert [arm for arm, _ in repairs] == ["B2", "B3"]
-    assert repairs[0][1] == gepa / "gepa_result.json"
-    assert repairs[1][1] == memory_path
+    assert [arm for arm, _, _ in repairs] == ["B2", "B3"]
+    assert len(repairs[0][1]) == 2
+    assert [packet.name for packet in repairs[1][1]] == ["industrial_water_reuse_blending"]
+    assert repairs[0][2] == gepa / "gepa_result.json"
+    assert repairs[1][2] == memory_path
+    assert [packet.name for packet in replays[-1][2]] == ["industrial_water_reuse_blending"]
     assert not any(script == "scripts/cleanroom_memory.py" for script, _ in commands)
     report_command = next(arguments for script, arguments in commands
                           if script == "scripts/cleanroom_batch_report.py")
@@ -133,6 +148,7 @@ def test_suite_uses_external_memory_for_b3_without_repromotion(tmp_path, monkeyp
     result = json.loads((out / "suite_result.json").read_text())
     assert result["memory_promoted"]
     assert result["b3"] != "not_run"
+    assert result["b3_not_run_tasks"] == ["real_world_3d_bin_packing"]
 
 
 def test_suite_skip_memory_review_does_not_repromote_or_run_b3(tmp_path, monkeypatch):
@@ -145,6 +161,9 @@ def test_suite_skip_memory_review_does_not_repromote_or_run_b3(tmp_path, monkeyp
     audit_config = tmp_path / "audit.json"
     audit_config.write_text(json.dumps({"tasks": [
         {"name": "ev_battery_recycling_network", "domain": "manufacturing", "split": "transfer"}]}))
+    witness_config = tmp_path / "witness.json"
+    witness_config.write_text(json.dumps({"tasks": [
+        {"name": "smart_building_demand_response_dispatch", "domain": "energy", "split": "audit"}]}))
     gepa = tmp_path / "gepa"
     gepa.mkdir()
     (gepa / "gepa_result.json").write_text(json.dumps({
@@ -158,7 +177,7 @@ def test_suite_skip_memory_review_does_not_repromote_or_run_b3(tmp_path, monkeyp
                         compare_to=None: args.out / arm / "run.json")
     repairs = []
     def fake_repairs(args, arm, packets, spec_source, candidate=None):
-        repairs.append(arm)
+        repairs.append((arm, args.witness_packets))
         return [args.out / f"{arm}_repair.json"]
     monkeypatch.setattr(cleanroom_suite, "repair_batch", fake_repairs)
     commands = []
@@ -172,11 +191,16 @@ def test_suite_skip_memory_review_does_not_repromote_or_run_b3(tmp_path, monkeyp
     out = tmp_path / "suite"
     monkeypatch.setattr(sys, "argv", ["cleanroom_suite.py", "--gepa-run", str(gepa),
                                      "--dev-tasks", str(dev_config), "--audit-tasks", str(audit_config),
+                                     "--witness-tasks", str(witness_config),
                                      "--out", str(out), "--skip-memory-review"])
     cleanroom_suite.main()
-    assert repairs == ["B2"]
+    assert repairs[0][0] == "B2"
+    assert [packet.name for packet in repairs[0][1]] == ["smart_building_demand_response_dispatch"]
     assert "scripts/cleanroom_memory.py" not in commands
     result = json.loads((out / "suite_result.json").read_text())
     assert not result["memory_promoted"]
     assert result["memory_review"]["review_skipped_by_protocol"]
     assert result["b3"] == "not_run"
+    implementation = json.loads((out / "suite_implementation.json").read_text())
+    assert implementation["witness_tasks_sha256"] == hashlib.sha256(witness_config.read_bytes()).hexdigest()
+    assert "witness_packets" not in implementation["arguments"]

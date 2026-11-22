@@ -1,0 +1,18 @@
+{
+  "version": "cleanroom_frozen_roles_v0.7",
+  "selection_basis": "Frozen before expanded GEPA selection: healthy oracle/official tasks, public inputs, and no Qwen-score-based task selection. Twelve unique tasks have disjoint learning, audit, subsequent-transfer and validation roles.",
+  "tasks": [
+    {"name": "additive_microfactory_order_planning", "domain": "manufacturing", "split": "dev", "role": "gepa_dev"},
+    {"name": "industrial_supply_planning", "domain": "manufacturing", "split": "dev", "role": "gepa_dev"},
+    {"name": "second_life_battery_pack_assembly", "domain": "manufacturing", "split": "dev", "role": "gepa_dev"},
+    {"name": "smart_building_demand_response_dispatch", "domain": "energy", "split": "audit", "role": "independent_audit"},
+    {"name": "robust_microgrid_islanding_dispatch", "domain": "energy", "split": "audit", "role": "independent_audit"},
+    {"name": "fuel_tanker_compartment_routing", "domain": "logistics", "split": "audit", "role": "independent_audit"},
+    {"name": "hybrid_telehealth_appointment_scheduling", "domain": "healthcare_scheduling", "split": "audit", "role": "independent_audit"},
+    {"name": "industrial_water_reuse_blending", "domain": "manufacturing", "split": "transfer", "role": "subsequent_transfer"},
+    {"name": "mass_timber_panel_cutting_plan", "domain": "manufacturing", "split": "transfer", "role": "subsequent_transfer"},
+    {"name": "ev_battery_recycling_network", "domain": "manufacturing", "split": "transfer", "role": "subsequent_transfer"},
+    {"name": "real_world_3d_bin_packing", "domain": "packing_logistics", "split": "transfer", "role": "subsequent_transfer_no_cross_domain_witness"},
+    {"name": "carbon_aware_compute_scheduling", "domain": "compute_scheduling", "split": "transfer", "role": "gepa_validation"}
+  ]
+}

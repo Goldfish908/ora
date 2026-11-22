@@ -28,12 +28,19 @@ def command(args: argparse.Namespace, script: str, *arguments: str) -> None:
 
 
 def replay(args: argparse.Namespace, arm: str, source: Path | None = None,
-           candidate: dict | None = None, compare_to: Path | None = None) -> Path:
+           candidate: dict | None = None, compare_to: Path | None = None,
+           packets: list | None = None) -> Path:
     out = args.out / arm
     result_path = out / "replay_result.json"
     if args.resume and result_path.exists():
         return out / "run.json"
-    arguments = ["--tasks", str(args.audit_tasks), "--run-dir", str(out),
+    task_path = args.audit_tasks
+    if packets is not None:
+        task_path = args.out / f"{arm.lower()}_tasks.json"
+        write_json(task_path, {"version": f"{arm.lower()}_authorized_scope",
+                               "tasks": [{"name": packet.name, "domain": packet.domain,
+                                          "split": packet.split} for packet in packets]})
+    arguments = ["--tasks", str(task_path), "--run-dir", str(out),
                  "--workers", str(args.workers), "--seed", str(args.seed),
                  "--llm-timeout", str(args.llm_timeout), "--api-guard"]
     if args.resume:
@@ -54,7 +61,8 @@ def repair_batch(args: argparse.Namespace, arm: str, packets: list, spec_source:
     out = args.out / arm
     memory = EvidenceMemory()
     oracle_source = args.witness_source
-    initialization = initialize_witness(memory, args.dev_packets, out / "witness", oracle_source)
+    witness_packets = getattr(args, "witness_packets", None) or args.dev_packets
+    initialization = initialize_witness(memory, witness_packets, out / "witness", oracle_source)
     write_json(out / "witness_initialization.json", initialization)
     source = read_json(spec_source)
     if "candidates" not in source:
@@ -114,6 +122,7 @@ def main() -> None:
     parser.add_argument("--dev-tasks", required=True)
     parser.add_argument("--audit-tasks", required=True)
     parser.add_argument("--out", required=True)
+    parser.add_argument("--witness-tasks")
     parser.add_argument("--witness-source")
     parser.add_argument("--memory-source")
     parser.add_argument("--skip-memory-review", action="store_true")
@@ -128,6 +137,7 @@ def main() -> None:
     args.gepa_run = (ROOT / args.gepa_run).resolve()
     args.dev_tasks = (ROOT / args.dev_tasks).resolve()
     args.audit_tasks = (ROOT / args.audit_tasks).resolve()
+    args.witness_tasks = (ROOT / args.witness_tasks).resolve() if args.witness_tasks else None
     args.witness_source = (ROOT / args.witness_source).resolve() if args.witness_source else None
     args.memory_source = (ROOT / args.memory_source).resolve() if args.memory_source else None
     args.out = (ROOT / args.out).resolve()
@@ -145,10 +155,13 @@ def main() -> None:
     implementation = read_json(implementation_path)
     dev_sha256 = hashlib.sha256(args.dev_tasks.read_bytes()).hexdigest()
     audit_sha256 = hashlib.sha256(args.audit_tasks.read_bytes()).hexdigest()
+    witness_sha256 = hashlib.sha256(args.witness_tasks.read_bytes()).hexdigest() \
+        if args.witness_tasks else None
     if implementation["tasks_sha256"] != dev_sha256:
         raise ValueError("development task config differs from the GEPA implementation")
     expected = {"gepa_implementation_sha256": hashlib.sha256(implementation_path.read_bytes()).hexdigest(),
                 "dev_tasks_sha256": dev_sha256, "audit_tasks_sha256": audit_sha256,
+                "witness_tasks_sha256": witness_sha256,
                 "memory_source_sha256": hashlib.sha256(args.memory_source.read_bytes()).hexdigest()
                 if args.memory_source else None}
     previous_path = args.out / "suite_implementation.json"
@@ -158,6 +171,7 @@ def main() -> None:
             raise ValueError("suite inputs changed while resuming")
     candidate = select_candidate(result_path, result, analysis)
     args.dev_packets = [packet for packet in load_tasks(args.dev_tasks) if packet.split == "dev"]
+    args.witness_packets = load_tasks(args.witness_tasks) if args.witness_tasks else args.dev_packets
     audit_packets = load_tasks(args.audit_tasks)
     if not audit_packets or any(packet.split not in {"audit", "transfer"} for packet in audit_packets):
         raise ValueError("independent suite requires only audit/transfer tasks")
@@ -168,7 +182,8 @@ def main() -> None:
         "script_sha256": hashlib.sha256((ROOT / "scripts/cleanroom_suite.py").read_bytes()).hexdigest(),
         **expected,
         "arguments": {key: str(value) if isinstance(value, Path) else value
-                      for key, value in vars(args).items() if key != "dev_packets"}})
+                      for key, value in vars(args).items()
+                      if key not in {"dev_packets", "witness_packets"}}})
 
     b0_manifest = replay(args, "B0")
     b1_manifest = replay(args, "B1", result_path, candidate, b0_manifest)
@@ -193,14 +208,19 @@ def main() -> None:
     b2_repairs = repair_batch(args, "B2", audit_packets, result_path, candidate)
     b3_manifest = None
     b3_repairs = []
+    b3_packets = []
     if promoted:
-        b3_manifest = replay(args, "B3", memory_path)
-        b3_repairs = repair_batch(args, "B3", audit_packets, memory_path)
+        authorized_memory = restore_specifications(read_json(memory_path))
+        b3_packets = [packet for packet in audit_packets
+                      if authorized_memory.generator_specification(packet.scope) is not None]
+        if b3_packets:
+            b3_manifest = replay(args, "B3", memory_path, packets=b3_packets)
+            b3_repairs = repair_batch(args, "B3", b3_packets, memory_path)
     report_args = ["--b0", str(b0_manifest), "--b1", str(b1_manifest),
                    "--b2", str(b1_manifest)]
     for path in b2_repairs:
         report_args += ["--b2-repair", str(path)]
-    if promoted:
+    if b3_manifest is not None:
         report_args += ["--b3", str(b3_manifest)]
         for path in b3_repairs:
             report_args += ["--b3-repair", str(path)]
@@ -213,6 +233,9 @@ def main() -> None:
         "b2_repairs": [str(path) for path in b2_repairs],
         "b3": str(b3_manifest) if b3_manifest else "not_run",
         "b3_repairs": [str(path) for path in b3_repairs],
+        "b3_authorized_tasks": [packet.name for packet in b3_packets],
+        "b3_not_run_tasks": [packet.name for packet in audit_packets
+                             if packet not in b3_packets],
         "report": str(args.out / "report/batch_summary.json")})
     print(json.dumps({"candidate_idx": candidate["candidate_idx"], "memory_promoted": promoted,
                       "report": str(args.out / "report/report.md")}, indent=1))

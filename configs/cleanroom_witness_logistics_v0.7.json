@@ -1,0 +1,8 @@
+{
+  "version": "cleanroom_witness_logistics_v0.7",
+  "tasks": [
+    {"name": "cold_chain_locker_capacity_planning", "domain": "logistics", "split": "audit"},
+    {"name": "fuel_tanker_compartment_routing", "domain": "logistics", "split": "audit"},
+    {"name": "cycling_network_design", "domain": "logistics", "split": "audit"}
+  ]
+}

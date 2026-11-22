@@ -1,0 +1,15 @@
+{
+  "engineering_only": true,
+  "b0_true_correct": 1,
+  "b1_true_correct": 1,
+  "b2_true_correct": 2,
+  "b2_phantom_proxy": 2,
+  "b0_to_b2_win_safe": true,
+  "b0_to_b2_gained_phantom": [
+    "flood_relief_multimodal_routing",
+    "shared_drone_base_delivery_assignment"
+  ],
+  "true_semantic_gain": "autonomous_lab_courier_tsptw changed from phantom to true_correct with quality=2.0 in the second evidence-only regeneration attempt",
+  "goal_met": false,
+  "remaining_requirement": "Strict no-new-phantom condition is not met. Replicate and extend gains on the second untouched transfer batch."
+}

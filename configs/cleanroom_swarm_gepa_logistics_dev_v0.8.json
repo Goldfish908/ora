@@ -1,0 +1,10 @@
+{
+  "version": "cleanroom_swarm_gepa_logistics_dev_v0.8",
+  "selection_basis": "Engineering-contaminated logistics tasks used only to learn transferable public modeling conventions. These tasks may not be reused as independent evidence. carbon_aware_compute_scheduling remains the pre-existing validation task.",
+  "tasks": [
+    {"name": "shared_drone_base_delivery_assignment", "domain": "logistics", "split": "dev"},
+    {"name": "autonomous_lab_courier_tsptw", "domain": "logistics", "split": "dev"},
+    {"name": "flood_relief_multimodal_routing", "domain": "logistics", "split": "dev"},
+    {"name": "carbon_aware_compute_scheduling", "domain": "compute_scheduling", "split": "transfer"}
+  ]
+}

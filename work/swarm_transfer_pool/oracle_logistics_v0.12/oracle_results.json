@@ -1,0 +1,550 @@
+{
+ "stochastic_surgery_capacity_planning": {
+  "runner": {
+   "return_code": 0,
+   "timed_out": false,
+   "stdout": "{\n  \"evaluation\": {\n    \"deferred_cases\": 2,\n    \"error_count\": 0,\n    \"errors\": [],\n    \"expected_scenario_cost\": 13330.231500000002,\n    \"feasible\": true,\n    \"first_stage_cost\": 91220.0,\n    \"objective\": 111966.26389999999,\n    \"opened_blocks\": 12,\n    \"scenario_costs\": {\n      \"SC01\": 7526.699999999999,\n      \"SC02\": 12224.700000000003,\n      \"SC03\": 14564.850000000006,\n      \"SC04\": 10200.300000000003,\n      \"SC05\": 18653.699999999997,\n      \"SC06\": 10017.3,\n      \"SC07\": 14664.600000000002,\n      \"SC08\": 8069.4,\n      \"SC09\": 20913.899999999998,\n      \"SC10\": 11619.150000000003,\n      \"SC11\": 23686.199999999993,\n      \"SC12\": 7422.0\n    },\n    \"scheduled_cases\": 34,\n    \"tail_risk_cost\": 7416.032399999994,\n    \"total_cost\": 111966.26389999999\n  },\n  \"solver\": {\n    \"best_bound\": 109859.57539999997,\n    \"gap\": 0.0,\n    \"objective\": 109859.57539999997,\n    \"solving_time\": 28.311986,\n    \"status\": \"optimal\"\n  }\n}\n",
+   "stderr": ""
+  },
+  "official": {
+   "evaluation": {
+    "deferred_cases": 2,
+    "error_count": 0,
+    "errors": [],
+    "expected_scenario_cost": 13330.231500000002,
+    "feasible": true,
+    "first_stage_cost": 91220.0,
+    "objective": 111966.26389999999,
+    "opened_blocks": 12,
+    "scenario_costs": {
+     "SC01": 7526.699999999999,
+     "SC02": 12224.700000000003,
+     "SC03": 14564.850000000006,
+     "SC04": 10200.300000000003,
+     "SC05": 18653.699999999997,
+     "SC06": 10017.3,
+     "SC07": 14664.600000000002,
+     "SC08": 8069.4,
+     "SC09": 20913.899999999998,
+     "SC10": 11619.150000000003,
+     "SC11": 23686.199999999993,
+     "SC12": 7422.0
+    },
+    "scheduled_cases": 34,
+    "tail_risk_cost": 7416.032399999994,
+    "total_cost": 111966.26389999999
+   },
+   "reward": {
+    "feasibility": 1.0,
+    "quality": 1.0
+   },
+   "reward_details": {
+    "agent_objective": 111966.26389999999,
+    "agent_objective_source": "objective",
+    "best_bound": 109859.57539999997,
+    "bound_sense": "lower",
+    "evaluation_diagnostics": {
+     "error_count": 0,
+     "objective": 111966.26389999999,
+     "profit": null,
+     "score": null,
+     "total_cost": 111966.26389999999
+    },
+    "fallback_mip_gap": 0.0005,
+    "fallback_reference_scale": 111966.26389999999,
+    "feasibility": 1.0,
+    "formula": "clip(1 + (R - O) / (R - B), 0, 2) when B exists and R - B >= max(abs(R), 1e-8) * mip_gap",
+    "objective_sense": "minimize",
+    "quality": 1.0,
+    "quality_status": "scored_with_best_bound",
+    "reference_metrics": {
+     "best_bound": 109859.57539999997,
+     "best_bound_source": "best_bound",
+     "bound_sense": "lower",
+     "evaluation_summary": {
+      "error_count": 0,
+      "feasible": true,
+      "objective": 111966.26389999999,
+      "total_cost": 111966.26389999999
+     },
+     "generated_at": "2026-05-17T16:24:12.608113+00:00",
+     "mip_gap": 0.0005,
+     "objective_sense": "minimize",
+     "quality_formula": "clip(1 + (R - O) / (R - B), 0, 2) if B exists and R - B >= max(abs(R), 1e-8) * mip_gap; otherwise let d=(R - O)/(max(abs(R), 1e-8)*mip_gap), quality=clip(2+d if d>=-1 else 1.5+0.5*d, 0, 2); if no R, quality = 2",
+     "reference_objective": 111966.26389999999,
+     "reference_objective_source": "objective",
+     "solution_path": "reference_solutions/stochastic_surgery_capacity_planning_reference_solution.csv",
+     "solver_summary": {
+      "evaluation": {
+       "deferred_cases": 2,
+       "error_count": 0,
+       "errors": [],
+       "expected_scenario_cost": 13330.231500000002,
+       "feasible": true,
+       "first_stage_cost": 91220.0,
+       "objective": 111966.26389999999,
+       "opened_blocks": 12,
+       "scenario_costs": {
+        "SC01": 7526.699999999999,
+        "SC02": 12224.700000000003,
+        "SC03": 14564.850000000006,
+        "SC04": 10200.300000000003,
+        "SC05": 18653.699999999997,
+        "SC06": 10017.3,
+        "SC07": 14664.600000000002,
+        "SC08": 8069.4,
+        "SC09": 20913.899999999998,
+        "SC10": 11619.150000000003,
+        "SC11": 23686.199999999993,
+        "SC12": 7422.0
+       },
+       "scheduled_cases": 34,
+       "tail_risk_cost": 7416.032399999994,
+       "total_cost": 111966.26389999999
+      },
+      "solver": {
+       "best_bound": 109859.57539999997,
+       "gap": 0.0,
+       "objective": 109859.57539999997,
+       "solving_time": 2.468665,
+       "status": "optimal"
+      }
+     },
+     "task_name": "stochastic_surgery_capacity_planning",
+     "time_limit_seconds": 300.0
+    },
+    "reference_objective": 111966.26389999999,
+    "scalar_reward": 0.6666666666666666,
+    "scalar_reward_formula": "(feasibility + quality) / 3.0"
+   },
+   "runner": {
+    "return_code": 0,
+    "timed_out": false,
+    "wall_seconds": 21.265033
+   }
+  },
+  "metrics": {
+   "feasible": true,
+   "quality": 1.0,
+   "true_correct": true,
+   "objective": 111966.26389999999,
+   "evaluation_unknown": false
+  }
+ },
+ "robust_kidney_exchange_clearing": {
+  "runner": {
+   "return_code": 0,
+   "timed_out": false,
+   "stdout": "{\n  \"best_bound\": 8764691.875817467,\n  \"candidate_count\": 36000,\n  \"elapsed_seconds\": 352.4719293117523,\n  \"feasible\": false,\n  \"method\": \"enumerated_cycle_chain_set_packing_with_scip\",\n  \"objective\": 0,\n  \"selected_structures\": 0,\n  \"selected_transplants\": 0,\n  \"solution_path\": \"/app/submissions/solution.json\",\n  \"status\": \"timelimit\",\n  \"time_limit_seconds\": 300.0\n}\n",
+   "stderr": ""
+  },
+  "official": {
+   "evaluation": {
+    "cross_region_shipments": null,
+    "error_count": 6,
+    "errors": [
+     "NORTH regional transplant floor not met: 0 < 8.",
+     "SOUTH regional transplant floor not met: 0 < 8.",
+     "EAST regional transplant floor not met: 0 < 7.",
+     "WEST regional transplant floor not met: 0 < 8.",
+     "Highly sensitized transplant floor not met: 0 < 7.",
+     "Pediatric transplant floor not met: 0 < 6."
+    ],
+    "feasible": false,
+    "highly_sensitized_transplants": 0,
+    "objective": null,
+    "pediatric_team_cases": null,
+    "pediatric_transplants": 0,
+    "profit": null,
+    "regional_transplants": {
+     "EAST": 0,
+     "NORTH": 0,
+     "SOUTH": 0,
+     "WEST": 0
+    },
+    "selected_chains": 0,
+    "selected_cycles": 0,
+    "selected_transplants": 0,
+    "senior_team_cases": null
+   },
+   "reward": {
+    "feasibility": 0.0,
+    "quality": 0.0
+   },
+   "reward_details": {
+    "agent_objective": null,
+    "agent_objective_source": null,
+    "best_bound": 4698.181569360719,
+    "bound_improvement": null,
+    "bound_sense": "upper",
+    "evaluation_diagnostics": {
+     "error_count": 6,
+     "objective": null,
+     "profit": null,
+     "score": null,
+     "total_cost": null
+    },
+    "fallback_mip_gap": null,
+    "fallback_reference_scale": null,
+    "feasibility": 0.0,
+    "formula": "clip(1 + (O - R) / (B - R), 0, 2) when B exists and B - R >= max(abs(R), 1e-8) * mip_gap",
+    "objective_sense": "maximize",
+    "quality": 0.0,
+    "quality_scale_width": null,
+    "quality_status": "infeasible",
+    "reference_metrics": {
+     "best_bound": 4698.181569360719,
+     "best_bound_source": "best_bound",
+     "bound_sense": "upper",
+     "evaluation_summary": {
+      "error_count": 0,
+      "feasible": true,
+      "objective": 4696.370810728186,
+      "profit": 4696.370810728186
+     },
+     "generated_at": "2026-05-22T01:51:21.200794+00:00",
+     "mip_gap": 0.0005,
+     "objective_sense": "maximize",
+     "quality_formula": "clip(1 + (O - R) / (B - R), 0, 2) if B exists and B - R >= max(abs(R), 1e-8) * mip_gap; otherwise let d=(O - R)/(max(abs(R), 1e-8)*mip_gap), quality=clip(2+d if d>=-1 else 1.5+0.5*d, 0, 2); if no R, quality = 2",
+     "reference_objective": 4696.370810728186,
+     "reference_objective_source": "profit",
+     "solution_path": "reference_solutions/robust_kidney_exchange_clearing_reference_solution.json",
+     "solver_summary": {
+      "best_bound": 4698.181569360719,
+      "candidate_count": 36000,
+      "elapsed_seconds": 31.527278900146484,
+      "feasible": true,
+      "method": "enumerated_cycle_chain_set_packing_with_scip",
+      "objective": 4696.370810728186,
+      "selected_structures": 14,
+      "selected_transplants": 40,
+      "solution_path": "reference_solutions/robust_kidney_exchange_clearing_reference_solution.json",
+      "status": "gaplimit",
+      "time_limit_seconds": 300.0
+     },
+     "task_name": "robust_kidney_exchange_clearing",
+     "time_limit_seconds": 300.0
+    },
+    "reference_objective": 4696.370810728186,
+    "scalar_reward": 0.0,
+    "scalar_reward_formula": "(feasibility + quality) / 3.0",
+    "signed_improvement": null
+   },
+   "runner": {
+    "return_code": 0,
+    "timed_out": false,
+    "wall_seconds": 12.979142
+   }
+  },
+  "metrics": {
+   "feasible": false,
+   "quality": 0.0,
+   "true_correct": false,
+   "objective": null,
+   "evaluation_unknown": false
+  }
+ },
+ "platelet_inventory_rotation": {
+  "runner": {
+   "return_code": 0,
+   "timed_out": false,
+   "stdout": "{\n  \"best_bound\": 472158.6247600005,\n  \"evaluation_objective\": 472158.62476,\n  \"mip_gap\": 0.0,\n  \"objective\": 472158.6247600005,\n  \"solution\": \"/app/submissions/solution.csv\",\n  \"status\": \"optimal\"\n}\n",
+   "stderr": ""
+  },
+  "official": {
+   "evaluation": {
+    "environment": "platelet_inventory_rotation",
+    "error_count": 0,
+    "errors": [],
+    "feasible": true,
+    "objective": 472158.62476,
+    "total_cost": 472158.62476
+   },
+   "reward": {
+    "feasibility": 1.0,
+    "quality": 2.0
+   },
+   "reward_details": {
+    "agent_objective": 472158.62476,
+    "agent_objective_source": "objective",
+    "best_bound": 472158.6247600005,
+    "bound_improvement": -5.238689482212067e-10,
+    "bound_sense": "lower",
+    "evaluation_diagnostics": {
+     "error_count": 0,
+     "objective": 472158.62476,
+     "profit": null,
+     "score": null,
+     "total_cost": 472158.62476
+    },
+    "fallback_mip_gap": 0.0005,
+    "fallback_reference_scale": 472158.62476,
+    "feasibility": 1.0,
+    "formula": "clip(2 + d if d >= -1 else 1.5 + 0.5*d, 0, 2), d = (R - O) / (max(abs(R), 1e-8) * mip_gap)",
+    "objective_sense": "minimize",
+    "quality": 2.0,
+    "quality_scale_width": 236.07931238,
+    "quality_status": "bound_gap_below_mip_gap",
+    "reference_metrics": {
+     "best_bound": 472158.6247600005,
+     "best_bound_source": "best_bound",
+     "bound_sense": "lower",
+     "evaluation_summary": {
+      "error_count": 0,
+      "feasible": true,
+      "objective": 472158.62476,
+      "total_cost": 472158.62476
+     },
+     "generated_at": "2026-05-19T05:00:36.764470+00:00",
+     "mip_gap": 0.0005,
+     "objective_sense": "minimize",
+     "quality_formula": "clip(1 + (R - O) / (R - B), 0, 2) if B exists and R - B >= max(abs(R), 1e-8) * mip_gap; otherwise let d=(R - O)/(max(abs(R), 1e-8)*mip_gap), quality=clip(2+d if d>=-1 else 1.5+0.5*d, 0, 2); if no R, quality = 2",
+     "reference_objective": 472158.62476,
+     "reference_objective_source": "objective",
+     "solution_path": "reference_solutions/platelet_inventory_rotation_reference_solution.csv",
+     "solver_summary": {
+      "best_bound": 472158.6247600005,
+      "evaluation_objective": 472158.62476,
+      "mip_gap": 0.0,
+      "objective": 472158.6247600005,
+      "solution": "reference_solutions/platelet_inventory_rotation_reference_solution.csv",
+      "status": "optimal"
+     },
+     "task_name": "platelet_inventory_rotation",
+     "time_limit_seconds": 300.0
+    },
+    "reference_objective": 472158.62476,
+    "scalar_reward": 1.0,
+    "scalar_reward_formula": "(feasibility + quality) / 3.0",
+    "signed_improvement": 0.0
+   },
+   "runner": {
+    "return_code": 0,
+    "timed_out": false,
+    "wall_seconds": 28.068048
+   }
+  },
+  "metrics": {
+   "feasible": true,
+   "quality": 2.0,
+   "true_correct": true,
+   "objective": 472158.62476,
+   "evaluation_unknown": false
+  }
+ },
+ "retail_media_campaign_allocation": {
+  "runner": {
+   "return_code": 0,
+   "timed_out": false,
+   "stdout": "{\n  \"best_bound\": 12708.70564544,\n  \"evaluation_profit\": 12708.705645440004,\n  \"mip_gap\": 0.0,\n  \"objective\": 12708.70564544,\n  \"solution\": \"/app/submissions/solution.csv\",\n  \"status\": \"optimal\"\n}\n",
+   "stderr": ""
+  },
+  "official": {
+   "evaluation": {
+    "environment": "retail_media_campaign_allocation",
+    "error_count": 0,
+    "errors": [],
+    "feasible": true,
+    "profit": 12708.705645440004
+   },
+   "reward": {
+    "feasibility": 1.0,
+    "quality": 2.0
+   },
+   "reward_details": {
+    "agent_objective": 12708.705645440004,
+    "agent_objective_source": "profit",
+    "best_bound": 12708.70564544,
+    "bound_sense": "upper",
+    "evaluation_diagnostics": {
+     "error_count": 0,
+     "objective": null,
+     "profit": 12708.705645440004,
+     "score": null,
+     "total_cost": null
+    },
+    "fallback_mip_gap": 0.0005,
+    "fallback_reference_scale": 12708.705645440004,
+    "feasibility": 1.0,
+    "formula": "clip(2 + d if d >= -1 else 1.5 + 0.5*d, 0, 2), d = (O - R) / (max(abs(R), 1e-8) * mip_gap)",
+    "objective_sense": "maximize",
+    "quality": 2.0,
+    "quality_status": "bound_gap_below_mip_gap",
+    "reference_metrics": {
+     "best_bound": 12708.70564544,
+     "best_bound_source": "best_bound",
+     "bound_sense": "upper",
+     "evaluation_summary": {
+      "error_count": 0,
+      "feasible": true,
+      "profit": 12708.705645440004
+     },
+     "generated_at": "2026-05-18T12:03:49.053237+00:00",
+     "mip_gap": 0.0005,
+     "objective_sense": "maximize",
+     "quality_formula": "clip(1 + (O - R) / (B - R), 0, 2) if B exists and B - R >= max(abs(R), 1e-8) * mip_gap; otherwise let d=(O - R)/(max(abs(R), 1e-8)*mip_gap), quality=clip(2+d if d>=-1 else 1.5+0.5*d, 0, 2); if no R, quality = 2",
+     "reference_objective": 12708.705645440004,
+     "reference_objective_source": "profit",
+     "solution_path": "reference_solutions/retail_media_campaign_allocation_reference_solution.csv",
+     "solver_summary": {
+      "best_bound": 12708.70564544,
+      "evaluation_profit": 12708.705645440004,
+      "mip_gap": 0.0,
+      "objective": 12708.70564544,
+      "solution": "reference_solutions/retail_media_campaign_allocation_reference_solution.csv",
+      "status": "optimal"
+     },
+     "task_name": "retail_media_campaign_allocation",
+     "time_limit_seconds": 300.0
+    },
+    "reference_objective": 12708.705645440004,
+    "scalar_reward": 1.0,
+    "scalar_reward_formula": "(feasibility + quality) / 3.0"
+   },
+   "runner": {
+    "return_code": 0,
+    "timed_out": false,
+    "wall_seconds": 26.082788
+   }
+  },
+  "metrics": {
+   "feasible": true,
+   "quality": 2.0,
+   "true_correct": true,
+   "objective": 12708.705645440004,
+   "evaluation_unknown": false
+  }
+ },
+ "urban_drainage_mpc_control": {
+  "runner": {
+   "return_code": 0,
+   "timed_out": false,
+   "stdout": "{\n  \"best_bound\": 1402201.2849213555,\n  \"error_count\": 4,\n  \"feasible\": false,\n  \"method\": \"deterministic_equivalent_mip_with_cvar_and_nonanticipative_prefix\",\n  \"mip_gap\": 0.0005,\n  \"objective\": 2079318.7166489987,\n  \"solution_path\": \"/app/submissions/solution.csv\",\n  \"status\": \"timelimit\",\n  \"time_limit_seconds\": 300.0\n}\n",
+   "stderr": ""
+  },
+  "official": {
+   "evaluation": {
+    "district_overflow": {
+     "central": {
+      "expected_overflow_ml": 189.15248151700004,
+      "penalty": 126269.12403534027,
+      "target_ml": 19.6
+     },
+     "east": {
+      "expected_overflow_ml": 195.22330393900003,
+      "penalty": 126791.7048530102,
+      "target_ml": 17.3
+     },
+     "north": {
+      "expected_overflow_ml": 173.54591417599997,
+      "penalty": 120520.44905020029,
+      "target_ml": 18.4
+     },
+     "south": {
+      "expected_overflow_ml": 50.563704222,
+      "penalty": 24343.23275152356,
+      "target_ml": 18.7
+     }
+    },
+    "district_penalty": 397924.5106900743,
+    "environment": "urban_drainage_mpc_control",
+    "error_count": 4,
+    "errors": [
+     "S_base: group central_relief uses 3 starts, limit 2",
+     "S_extreme_tail: group east_outfall uses 6 starts, limit 4",
+     "S_north_cell: group central_relief uses 3 starts, limit 2",
+     "S_tide_lock: group central_relief uses 3 starts, limit 2"
+    ],
+    "expected_cost": 925556.6569385049,
+    "feasible": false,
+    "objective": 2079318.7166489987,
+    "scenario_costs": {
+     "S_base": 515815.91966918844,
+     "S_extreme_tail": 1781695.0025947546,
+     "S_north_cell": 884750.4156870209,
+     "S_south_burst": 894251.4828417096,
+     "S_tide_lock": 803443.0896912088
+    },
+    "scenario_overflow_ml": {
+     "S_base": 251.195006,
+     "S_extreme_tail": 1369.7651280000002,
+     "S_north_cell": 538.6125300000001,
+     "S_south_burst": 580.9950070000002,
+     "S_tide_lock": 525.5260059999998
+    },
+    "tail_cvar_cost": 1679638.9978231543,
+    "total_cost": 2079318.7166489987
+   },
+   "reward": {
+    "feasibility": 0.0,
+    "quality": 0.0
+   },
+   "reward_details": {
+    "agent_objective": 2079318.7166489987,
+    "agent_objective_source": "objective",
+    "best_bound": 1408727.3743233548,
+    "bound_sense": "lower",
+    "evaluation_diagnostics": {
+     "error_count": 4,
+     "objective": 2079318.7166489987,
+     "profit": null,
+     "score": null,
+     "total_cost": 2079318.7166489987
+    },
+    "fallback_mip_gap": null,
+    "fallback_reference_scale": null,
+    "feasibility": 0.0,
+    "formula": "clip(1 + (R - O) / (R - B), 0, 2) when B exists and R - B >= max(abs(R), 1e-8) * mip_gap",
+    "objective_sense": "minimize",
+    "quality": 0.0,
+    "quality_status": "infeasible",
+    "reference_metrics": {
+     "best_bound": 1408727.3743233548,
+     "best_bound_source": "best_bound",
+     "bound_sense": "lower",
+     "evaluation_summary": {
+      "error_count": 0,
+      "feasible": true,
+      "objective": 1479113.9062513956,
+      "total_cost": 1479113.9062513956
+     },
+     "generated_at": "2026-05-18T15:44:53.662723+00:00",
+     "mip_gap": 0.0005,
+     "objective_sense": "minimize",
+     "quality_formula": "clip(1 + (R - O) / (R - B), 0, 2) if B exists and R - B >= max(abs(R), 1e-8) * mip_gap; otherwise let d=(R - O)/(max(abs(R), 1e-8)*mip_gap), quality=clip(2+d if d>=-1 else 1.5+0.5*d, 0, 2); if no R, quality = 2",
+     "reference_objective": 1479113.9062513956,
+     "reference_objective_source": "objective",
+     "solution_path": "reference_solutions/urban_drainage_mpc_control_reference_solution.csv",
+     "solver_summary": {
+      "best_bound": 1408727.3743233548,
+      "error_count": 0,
+      "feasible": true,
+      "method": "deterministic_equivalent_mip_with_cvar_and_nonanticipative_prefix",
+      "mip_gap": 0.0005,
+      "objective": 1479113.9062513956,
+      "solution_path": "reference_solutions/urban_drainage_mpc_control_reference_solution.csv",
+      "status": "timelimit",
+      "time_limit_seconds": 300.0
+     },
+     "task_name": "urban_drainage_mpc_control",
+     "time_limit_seconds": 300.0
+    },
+    "reference_objective": 1479113.9062513956,
+    "scalar_reward": 0.0,
+    "scalar_reward_formula": "(feasibility + quality) / 3.0"
+   },
+   "runner": {
+    "return_code": 0,
+    "timed_out": false,
+    "wall_seconds": 15.429996
+   }
+  },
+  "metrics": {
+   "feasible": false,
+   "quality": 0.0,
+   "true_correct": false,
+   "objective": 2079318.7166489987,
+   "evaluation_unknown": false
+  }
+ }
+}

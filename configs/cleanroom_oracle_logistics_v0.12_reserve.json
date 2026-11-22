@@ -1,0 +1,8 @@
+{
+  "version": "cleanroom_oracle_logistics_v0.12_reserve",
+  "selection_basis": "Health-only reserves after kidney and urban drainage failed oracle health. Both have complete bounded single-step packets and no specification-learning, Qwen-engineering or memory-promotion history. Priority is vertical_farm_harvest_energy_planning then fiber_ring_maintenance_coloring; only oracle/official health determines eligibility.",
+  "tasks": [
+    {"name": "vertical_farm_harvest_energy_planning", "domain": "logistics", "split": "audit", "role": "reserve_first"},
+    {"name": "fiber_ring_maintenance_coloring", "domain": "logistics", "split": "audit", "role": "reserve_second"}
+  ]
+}

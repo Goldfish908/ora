@@ -1,0 +1,37 @@
+{
+ "stochastic_surgery_capacity_planning": {
+  "feasible": true,
+  "quality": 1.0,
+  "true_correct": true,
+  "objective": 111966.26389999999,
+  "evaluation_unknown": false
+ },
+ "robust_kidney_exchange_clearing": {
+  "feasible": false,
+  "quality": 0.0,
+  "true_correct": false,
+  "objective": null,
+  "evaluation_unknown": false
+ },
+ "platelet_inventory_rotation": {
+  "feasible": true,
+  "quality": 2.0,
+  "true_correct": true,
+  "objective": 472158.62476,
+  "evaluation_unknown": false
+ },
+ "retail_media_campaign_allocation": {
+  "feasible": true,
+  "quality": 2.0,
+  "true_correct": true,
+  "objective": 12708.705645440004,
+  "evaluation_unknown": false
+ },
+ "urban_drainage_mpc_control": {
+  "feasible": false,
+  "quality": 0.0,
+  "true_correct": false,
+  "objective": 2079318.7166489987,
+  "evaluation_unknown": false
+ }
+}

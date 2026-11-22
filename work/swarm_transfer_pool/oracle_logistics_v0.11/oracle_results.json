@@ -1,0 +1,375 @@
+{
+ "cell_tower_coverage_expansion": {
+  "runner": {
+   "return_code": 0,
+   "timed_out": false,
+   "stdout": "{\n  \"best_bound\": 197691.3335364,\n  \"evaluation_profit\": 197691.3335363999,\n  \"mip_gap\": 0.0,\n  \"objective\": 197691.3335364,\n  \"served_areas\": 35,\n  \"solution\": \"/app/submissions/solution.csv\",\n  \"status\": \"optimal\"\n}\n",
+   "stderr": ""
+  },
+  "official": {
+   "evaluation": {
+    "active_backhaul_groups": 7,
+    "backup_power_towers": 10.0,
+    "budget_used_kusd": 6754.099999999999,
+    "environment": "cell_tower_coverage_expansion",
+    "error_count": 0,
+    "errors": [],
+    "feasible": true,
+    "fiber_ready_towers": 15.0,
+    "profit": 197691.3335363999,
+    "score": 197691.3335363999,
+    "served_areas": 35
+   },
+   "reward": {
+    "feasibility": 1.0,
+    "quality": 2.0
+   },
+   "reward_details": {
+    "agent_objective": 197691.3335363999,
+    "agent_objective_source": "profit",
+    "best_bound": 197691.3335364,
+    "bound_improvement": 8.731149137020111e-11,
+    "bound_sense": "upper",
+    "evaluation_diagnostics": {
+     "error_count": 0,
+     "objective": null,
+     "profit": 197691.3335363999,
+     "score": 197691.3335363999,
+     "total_cost": null
+    },
+    "fallback_mip_gap": 0.0005,
+    "fallback_reference_scale": 197691.3335363999,
+    "feasibility": 1.0,
+    "formula": "clip(2 + d if d >= -1 else 1.5 + 0.5*d, 0, 2), d = (O - R) / (max(abs(R), 1e-8) * mip_gap)",
+    "objective_sense": "maximize",
+    "quality": 2.0,
+    "quality_scale_width": 98.84566676819996,
+    "quality_status": "bound_gap_below_mip_gap",
+    "reference_metrics": {
+     "best_bound": 197691.3335364,
+     "best_bound_source": "best_bound",
+     "bound_sense": "upper",
+     "evaluation_summary": {
+      "error_count": 0,
+      "feasible": true,
+      "objective": 197691.3335363999,
+      "profit": 197691.3335363999,
+      "score": 197691.3335363999
+     },
+     "generated_at": "2026-05-24T04:37:08.343353+00:00",
+     "mip_gap": 0.0,
+     "objective_sense": "maximize",
+     "quality_formula": "clip(1 + (O - R) / (B - R), 0, 2) if B exists and B - R >= max(abs(R), 1e-8) * mip_gap; otherwise let d=(O - R)/(max(abs(R), 1e-8)*mip_gap), quality=clip(2+d if d>=-1 else 1.5+0.5*d, 0, 2); if no R, quality = 2",
+     "reference_objective": 197691.3335363999,
+     "reference_objective_source": "profit",
+     "solution_path": "reference_solutions/cell_tower_coverage_expansion_reference_solution.csv",
+     "solver_summary": {
+      "best_bound": 197691.3335364,
+      "evaluation": {
+       "error_count": 0,
+       "errors": [],
+       "feasible": true,
+       "objective": 197691.3335363999,
+       "objective_sense": "maximize",
+       "profit": 197691.3335363999,
+       "score": 197691.3335363999
+      },
+      "evaluation_profit": 197691.3335363999,
+      "mip_gap": 0.0,
+      "objective": 197691.3335364,
+      "served_areas": 35,
+      "solution": "reference_solutions/cell_tower_coverage_expansion_reference_solution.csv",
+      "status": "optimal"
+     },
+     "task_name": "cell_tower_coverage_expansion",
+     "time_limit_seconds": 600.0
+    },
+    "reference_objective": 197691.3335363999,
+    "scalar_reward": 1.0,
+    "scalar_reward_formula": "(feasibility + quality) / 3.0",
+    "signed_improvement": 0.0
+   },
+   "runner": {
+    "return_code": 0,
+    "timed_out": false,
+    "wall_seconds": 7.323767
+   }
+  },
+  "metrics": {
+   "feasible": true,
+   "quality": 2.0,
+   "true_correct": true,
+   "objective": 197691.3335363999,
+   "evaluation_unknown": false
+  }
+ },
+ "private_5g_small_cell_planning": {
+  "runner": {
+   "return_code": 0,
+   "timed_out": false,
+   "stdout": "{\n  \"best_bound\": 61882.88798,\n  \"evaluation_profit\": 61854.522406000004,\n  \"mip_gap\": 0.0004585852884583727,\n  \"objective\": 61854.52240599999,\n  \"solution\": \"/app/submissions/solution.csv\",\n  \"status\": \"gaplimit\"\n}\n",
+   "stderr": ""
+  },
+  "official": {
+   "evaluation": {
+    "budget_used_kusd": 2110.6000000000004,
+    "covered_zones": 17,
+    "environment": "private_5g_small_cell_planning",
+    "error_count": 0,
+    "errors": [],
+    "feasible": true,
+    "fiber_ready_sites": 9.0,
+    "profit": 61854.522406000004,
+    "score": 61854.522406000004
+   },
+   "reward": {
+    "feasibility": 1.0,
+    "quality": 2.0
+   },
+   "reward_details": {
+    "agent_objective": 61854.522406000004,
+    "agent_objective_source": "profit",
+    "best_bound": 61882.88798,
+    "bound_improvement": 28.36557399999583,
+    "bound_sense": "upper",
+    "evaluation_diagnostics": {
+     "error_count": 0,
+     "objective": null,
+     "profit": 61854.522406000004,
+     "score": 61854.522406000004,
+     "total_cost": null
+    },
+    "fallback_mip_gap": 0.0005,
+    "fallback_reference_scale": 61854.522406000004,
+    "feasibility": 1.0,
+    "formula": "clip(2 + d if d >= -1 else 1.5 + 0.5*d, 0, 2), d = (O - R) / (max(abs(R), 1e-8) * mip_gap)",
+    "objective_sense": "maximize",
+    "quality": 2.0,
+    "quality_scale_width": 30.927261203000004,
+    "quality_status": "bound_gap_below_mip_gap",
+    "reference_metrics": {
+     "best_bound": 61882.88798,
+     "best_bound_source": "best_bound",
+     "bound_sense": "upper",
+     "evaluation_summary": {
+      "error_count": 0,
+      "feasible": true,
+      "profit": 61854.522406000004,
+      "score": 61854.522406000004
+     },
+     "generated_at": "2026-05-19T06:29:46.214892+00:00",
+     "mip_gap": 0.0005,
+     "objective_sense": "maximize",
+     "quality_formula": "clip(1 + (O - R) / (B - R), 0, 2) if B exists and B - R >= max(abs(R), 1e-8) * mip_gap; otherwise let d=(O - R)/(max(abs(R), 1e-8)*mip_gap), quality=clip(2+d if d>=-1 else 1.5+0.5*d, 0, 2); if no R, quality = 2",
+     "reference_objective": 61854.522406000004,
+     "reference_objective_source": "profit",
+     "solution_path": "reference_solutions/private_5g_small_cell_planning_reference_solution.csv",
+     "solver_summary": {
+      "best_bound": 61882.88798,
+      "evaluation_profit": 61854.522406000004,
+      "mip_gap": 0.0004585852884583727,
+      "objective": 61854.52240599999,
+      "solution": "reference_solutions/private_5g_small_cell_planning_reference_solution.csv",
+      "status": "gaplimit"
+     },
+     "task_name": "private_5g_small_cell_planning",
+     "time_limit_seconds": 300.0
+    },
+    "reference_objective": 61854.522406000004,
+    "scalar_reward": 1.0,
+    "scalar_reward_formula": "(feasibility + quality) / 3.0",
+    "signed_improvement": 0.0
+   },
+   "runner": {
+    "return_code": 0,
+    "timed_out": false,
+    "wall_seconds": 12.894465
+   }
+  },
+  "metrics": {
+   "feasible": true,
+   "quality": 2.0,
+   "true_correct": true,
+   "objective": 61854.522406000004,
+   "evaluation_unknown": false
+  }
+ },
+ "edge_cache_content_placement": {
+  "runner": {
+   "return_code": 0,
+   "timed_out": false,
+   "stdout": "{\n  \"best_bound\": 437.48569765749926,\n  \"evaluation_objective\": 437.4856976574998,\n  \"mip_gap\": 0.0,\n  \"objective\": 437.48569765749926,\n  \"solution\": \"/app/submissions/solution.csv\",\n  \"status\": \"optimal\"\n}\n",
+   "stderr": ""
+  },
+  "official": {
+   "evaluation": {
+    "environment": "edge_cache_content_placement",
+    "error_count": 0,
+    "errors": [],
+    "feasible": true,
+    "objective": 437.4856976574998,
+    "total_cost": 437.4856976574998
+   },
+   "reward": {
+    "feasibility": 1.0,
+    "quality": 2.0
+   },
+   "reward_details": {
+    "agent_objective": 437.4856976574998,
+    "agent_objective_source": "objective",
+    "best_bound": 437.48569765749926,
+    "bound_improvement": 5.684341886080801e-13,
+    "bound_sense": "lower",
+    "evaluation_diagnostics": {
+     "error_count": 0,
+     "objective": 437.4856976574998,
+     "profit": null,
+     "score": null,
+     "total_cost": 437.4856976574998
+    },
+    "fallback_mip_gap": 0.0005,
+    "fallback_reference_scale": 437.4856976574998,
+    "feasibility": 1.0,
+    "formula": "clip(2 + d if d >= -1 else 1.5 + 0.5*d, 0, 2), d = (R - O) / (max(abs(R), 1e-8) * mip_gap)",
+    "objective_sense": "minimize",
+    "quality": 2.0,
+    "quality_scale_width": 0.21874284882874992,
+    "quality_status": "bound_gap_below_mip_gap",
+    "reference_metrics": {
+     "best_bound": 437.48569765749926,
+     "best_bound_source": "best_bound",
+     "bound_sense": "lower",
+     "evaluation_summary": {
+      "error_count": 0,
+      "feasible": true,
+      "objective": 437.4856976574998,
+      "total_cost": 437.4856976574998
+     },
+     "generated_at": "2026-05-19T05:00:36.580816+00:00",
+     "mip_gap": 0.0005,
+     "objective_sense": "minimize",
+     "quality_formula": "clip(1 + (R - O) / (R - B), 0, 2) if B exists and R - B >= max(abs(R), 1e-8) * mip_gap; otherwise let d=(R - O)/(max(abs(R), 1e-8)*mip_gap), quality=clip(2+d if d>=-1 else 1.5+0.5*d, 0, 2); if no R, quality = 2",
+     "reference_objective": 437.4856976574998,
+     "reference_objective_source": "objective",
+     "solution_path": "reference_solutions/edge_cache_content_placement_reference_solution.csv",
+     "solver_summary": {
+      "best_bound": 437.48569765749926,
+      "evaluation_objective": 437.4856976574998,
+      "mip_gap": 0.0,
+      "objective": 437.48569765749926,
+      "solution": "reference_solutions/edge_cache_content_placement_reference_solution.csv",
+      "status": "optimal"
+     },
+     "task_name": "edge_cache_content_placement",
+     "time_limit_seconds": 300.0
+    },
+    "reference_objective": 437.4856976574998,
+    "scalar_reward": 1.0,
+    "scalar_reward_formula": "(feasibility + quality) / 3.0",
+    "signed_improvement": 0.0
+   },
+   "runner": {
+    "return_code": 0,
+    "timed_out": false,
+    "wall_seconds": 15.617983
+   }
+  },
+  "metrics": {
+   "feasible": true,
+   "quality": 2.0,
+   "true_correct": true,
+   "objective": 437.4856976574998,
+   "evaluation_unknown": false
+  }
+ },
+ "carbon_removal_credit_portfolio": {
+  "runner": {
+   "return_code": 0,
+   "timed_out": false,
+   "stdout": "{\n  \"best_bound\": 1109.25151,\n  \"evaluation_objective\": 1109.2515099999996,\n  \"mip_gap\": 0.0,\n  \"objective\": 1109.25151,\n  \"solution\": \"/app/submissions/solution.csv\",\n  \"status\": \"optimal\"\n}\n",
+   "stderr": ""
+  },
+  "official": {
+   "evaluation": {
+    "allocated_tonnes": 7535.0,
+    "contracted_projects": 9,
+    "environment": "carbon_removal_credit_portfolio",
+    "error_count": 0,
+    "errors": [],
+    "feasible": true,
+    "objective": 1109.2515099999996,
+    "total_cost": 1109.2515099999996
+   },
+   "reward": {
+    "feasibility": 1.0,
+    "quality": 2.0
+   },
+   "reward_details": {
+    "agent_objective": 1109.2515099999996,
+    "agent_objective_source": "objective",
+    "best_bound": 1109.25151,
+    "bound_improvement": -4.547473508864641e-13,
+    "bound_sense": "lower",
+    "evaluation_diagnostics": {
+     "error_count": 0,
+     "objective": 1109.2515099999996,
+     "profit": null,
+     "score": null,
+     "total_cost": 1109.2515099999996
+    },
+    "fallback_mip_gap": 0.0005,
+    "fallback_reference_scale": 1109.2515099999996,
+    "feasibility": 1.0,
+    "formula": "clip(2 + d if d >= -1 else 1.5 + 0.5*d, 0, 2), d = (R - O) / (max(abs(R), 1e-8) * mip_gap)",
+    "objective_sense": "minimize",
+    "quality": 2.0,
+    "quality_scale_width": 0.5546257549999998,
+    "quality_status": "bound_gap_below_mip_gap",
+    "reference_metrics": {
+     "best_bound": 1109.25151,
+     "best_bound_source": "best_bound",
+     "bound_sense": "lower",
+     "evaluation_summary": {
+      "error_count": 0,
+      "feasible": true,
+      "objective": 1109.2515099999996,
+      "total_cost": 1109.2515099999996
+     },
+     "generated_at": "2026-05-19T06:41:23.160112+00:00",
+     "mip_gap": 0.0005,
+     "objective_sense": "minimize",
+     "quality_formula": "clip(1 + (R - O) / (R - B), 0, 2) if B exists and R - B >= max(abs(R), 1e-8) * mip_gap; otherwise let d=(R - O)/(max(abs(R), 1e-8)*mip_gap), quality=clip(2+d if d>=-1 else 1.5+0.5*d, 0, 2); if no R, quality = 2",
+     "reference_objective": 1109.2515099999996,
+     "reference_objective_source": "objective",
+     "solution_path": "reference_solutions/carbon_removal_credit_portfolio_reference_solution.csv",
+     "solver_summary": {
+      "best_bound": 1109.25151,
+      "evaluation_objective": 1109.2515099999996,
+      "mip_gap": 0.0,
+      "objective": 1109.25151,
+      "solution": "reference_solutions/carbon_removal_credit_portfolio_reference_solution.csv",
+      "status": "optimal"
+     },
+     "task_name": "carbon_removal_credit_portfolio",
+     "time_limit_seconds": 300.0
+    },
+    "reference_objective": 1109.2515099999996,
+    "scalar_reward": 1.0,
+    "scalar_reward_formula": "(feasibility + quality) / 3.0",
+    "signed_improvement": 0.0
+   },
+   "runner": {
+    "return_code": 0,
+    "timed_out": false,
+    "wall_seconds": 15.648772
+   }
+  },
+  "metrics": {
+   "feasible": true,
+   "quality": 2.0,
+   "true_correct": true,
+   "objective": 1109.2515099999996,
+   "evaluation_unknown": false
+  }
+ }
+}

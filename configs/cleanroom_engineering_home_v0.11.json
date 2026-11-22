@@ -1,0 +1,10 @@
+{
+  "version": "cleanroom_engineering_home_v0.11",
+  "selection_basis": "Engineering-only replay of a previously evaluated task; not independent evidence.",
+  "tasks": [
+    {"name": "air_cargo_stochastic_order_allocation", "domain": "logistics", "split": "audit", "role": "witness_calibration"},
+    {"name": "wildfire_bus_evacuation_planning", "domain": "logistics", "split": "audit", "role": "witness_calibration"},
+    {"name": "heatwave_cooling_center_resource_plan", "domain": "logistics", "split": "audit", "role": "witness_calibration"},
+    {"name": "home_healthcare_routing", "domain": "logistics", "split": "transfer", "role": "engineering_only"}
+  ]
+}

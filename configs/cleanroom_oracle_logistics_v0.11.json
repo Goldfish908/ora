@@ -1,0 +1,10 @@
+{
+  "version": "cleanroom_oracle_logistics_v0.11",
+  "selection_basis": "New independent candidate health checks after v0.10 was completed. Complete bounded single-step public packets; no use in specification learning, Qwen engineering or memory promotion. Selection uses public scenario and oracle/official health only, never Qwen score.",
+  "tasks": [
+    {"name": "cell_tower_coverage_expansion", "domain": "logistics", "split": "audit"},
+    {"name": "private_5g_small_cell_planning", "domain": "logistics", "split": "audit"},
+    {"name": "edge_cache_content_placement", "domain": "logistics", "split": "audit"},
+    {"name": "carbon_removal_credit_portfolio", "domain": "logistics", "split": "audit"}
+  ]
+}

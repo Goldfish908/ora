@@ -1,0 +1,13 @@
+{
+  "version": "cleanroom_swarm_frozen_logistics_v0.11",
+  "selection_basis": "Frozen role allocation before any Qwen run on the four transfer tasks. Existing audit packets calibrate only the domain Witness; transfer tasks are disjoint from GEPA, Qwen engineering and memory promotion.",
+  "tasks": [
+    {"name": "air_cargo_stochastic_order_allocation", "domain": "logistics", "split": "audit", "role": "witness_calibration"},
+    {"name": "wildfire_bus_evacuation_planning", "domain": "logistics", "split": "audit", "role": "witness_calibration"},
+    {"name": "heatwave_cooling_center_resource_plan", "domain": "logistics", "split": "audit", "role": "witness_calibration"},
+    {"name": "cell_tower_coverage_expansion", "domain": "logistics", "split": "transfer", "role": "subsequent_transfer"},
+    {"name": "private_5g_small_cell_planning", "domain": "logistics", "split": "transfer", "role": "subsequent_transfer"},
+    {"name": "edge_cache_content_placement", "domain": "logistics", "split": "transfer", "role": "subsequent_transfer"},
+    {"name": "carbon_removal_credit_portfolio", "domain": "logistics", "split": "transfer", "role": "subsequent_transfer"}
+  ]
+}

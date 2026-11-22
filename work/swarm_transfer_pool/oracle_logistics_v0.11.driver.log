@@ -1,0 +1,30 @@
+{
+ "cell_tower_coverage_expansion": {
+  "feasible": true,
+  "quality": 2.0,
+  "true_correct": true,
+  "objective": 197691.3335363999,
+  "evaluation_unknown": false
+ },
+ "private_5g_small_cell_planning": {
+  "feasible": true,
+  "quality": 2.0,
+  "true_correct": true,
+  "objective": 61854.522406000004,
+  "evaluation_unknown": false
+ },
+ "edge_cache_content_placement": {
+  "feasible": true,
+  "quality": 2.0,
+  "true_correct": true,
+  "objective": 437.4856976574998,
+  "evaluation_unknown": false
+ },
+ "carbon_removal_credit_portfolio": {
+  "feasible": true,
+  "quality": 2.0,
+  "true_correct": true,
+  "objective": 1109.2515099999996,
+  "evaluation_unknown": false
+ }
+}

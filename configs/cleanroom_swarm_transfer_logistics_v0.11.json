@@ -1,0 +1,10 @@
+{
+  "version": "cleanroom_swarm_transfer_logistics_v0.11",
+  "selection_basis": "Four new subsequent-transfer tasks with true-correct oracle/official health and complete bounded single-step packets. None has participated in specification learning, Qwen engineering or memory promotion. Roles are frozen before any Qwen run on these tasks.",
+  "tasks": [
+    {"name": "cell_tower_coverage_expansion", "domain": "logistics", "split": "transfer"},
+    {"name": "private_5g_small_cell_planning", "domain": "logistics", "split": "transfer"},
+    {"name": "edge_cache_content_placement", "domain": "logistics", "split": "transfer"},
+    {"name": "carbon_removal_credit_portfolio", "domain": "logistics", "split": "transfer"}
+  ]
+}

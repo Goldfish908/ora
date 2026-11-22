@@ -1,0 +1,7 @@
+{
+  "version": "cleanroom_healthcare_oracle_sterile_v0.7",
+  "selection_basis": "Healthcare scheduling alternative after german_or_scheduling failed oracle health; selection uses public task type and oracle/official health, not Qwen scores.",
+  "tasks": [
+    {"name": "sterile_processing_robust_schedule", "domain": "healthcare_scheduling", "split": "audit"}
+  ]
+}

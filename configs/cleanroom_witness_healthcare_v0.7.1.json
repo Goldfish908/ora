@@ -1,0 +1,9 @@
+{
+  "version": "cleanroom_witness_healthcare_v0.7.1",
+  "selection_basis": "Use sterile_processing_robust_schedule only if its oracle/official health passes; german_or_scheduling is excluded after a reference timeout without an incumbent.",
+  "tasks": [
+    {"name": "hybrid_telehealth_appointment_scheduling", "domain": "healthcare_scheduling", "split": "audit"},
+    {"name": "nurse_rostering", "domain": "healthcare_scheduling", "split": "audit"},
+    {"name": "sterile_processing_robust_schedule", "domain": "healthcare_scheduling", "split": "audit"}
+  ]
+}

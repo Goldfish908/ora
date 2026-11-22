@@ -7,7 +7,9 @@ import hashlib
 import json
 from pathlib import Path
 
-from ora_agent.cleanroom_analysis import USAGE_KEYS, diagnose_record, pair_win_safe, summarize_records
+from ora_agent.cleanroom_analysis import (
+    USAGE_KEYS, diagnose_record, failure_class, pair_win_safe, summarize_records,
+)
 from ora_agent.oragentbench import read_json, write_json
 
 ROOT = Path(__file__).resolve().parents[1]
@@ -69,10 +71,13 @@ def build_arm(label: str, replay: dict, repairs: list[Path], expected_tasks: lis
         if cost is not None:
             add_cost(final_cost, cost)
         row = {"task": task,
-               "direct": diagnose_record(before) if before else {"status": "not_run"},
-               "final": diagnose_record(final) if final else {"status": "not_run"},
+               "direct": diagnose_record(before, include_official_errors=True) if before else {"status": "not_run"},
+               "final": diagnose_record(final, include_official_errors=True) if final else {"status": "not_run"},
                "repair_status": result.get("status") if result else "not_run" if repair_expected else "not_applicable",
                "attempts_used": result.get("attempts_used") if result else 0 if not repair_expected else None,
+               "coverage": final is not None,
+               "unknown": final is not None and failure_class(final) == "evaluation_unknown",
+               "win_safe": None if final is None else not before["true_correct"] or final["true_correct"],
                "cost": cost}
         rows.append(row)
         if final is not None:
@@ -144,16 +149,18 @@ def build(b0: Path, b1: Path, b2: Path | None, b2_repairs: list[Path],
                      f"{final['unknown']} | +{len(pair['gained_true_correct'])}/−{len(pair['lost_true_correct'])} | "
                      f"{attempts} | {arm['cost']['total_tokens']} |")
     lines += ["", "## Per-task outcomes", "",
-              "| Task | Arm | Direct | Final | Failure after | Repair status | Attempts |",
-              "|---|---|---|---|---|---|---:|"]
+              "| Task | Arm | True direct→final | Phantom direct→final | UNKNOWN | Failure after | Repair status | Attempts | Win-safe | Tokens |",
+              "|---|---|---|---|---|---|---|---:|---|---:|"]
     for arm in arms:
         for row in arm.get("tasks", []):
             direct, final = row["direct"], row["final"]
-            direct_text = str(direct.get("true_correct", "not_run"))
-            final_text = str(final.get("true_correct", "not_run"))
-            lines.append(f"| {row['task']} | {arm['arm']} | {direct_text} | {final_text} | "
-                         f"{final.get('failure_class', 'not_run')} | {row['repair_status']} | "
-                         f"{row['attempts_used'] if row['attempts_used'] is not None else '—'} |")
+            true_text = f"{direct.get('true_correct', 'not_run')}→{final.get('true_correct', 'not_run')}"
+            phantom_text = f"{direct.get('phantom_proxy', 'not_run')}→{final.get('phantom_proxy', 'not_run')}"
+            tokens = row["cost"]["total_tokens"] if row["cost"] else "—"
+            lines.append(f"| {row['task']} | {arm['arm']} | {true_text} | {phantom_text} | "
+                         f"{row['unknown']} | {final.get('failure_class', 'not_run')} | {row['repair_status']} | "
+                         f"{row['attempts_used'] if row['attempts_used'] is not None else '—'} | "
+                         f"{row['win_safe']} | {tokens} |")
     lines += ["", "## Interpretation", "", result["memory_interpretation"], "",
               "Cost records include LLM tokens/latency and solver/evaluator wall time in batch_summary.json. "
               "Selection tasks are not held-out. See implementation manifests and per-task records for evidence."]

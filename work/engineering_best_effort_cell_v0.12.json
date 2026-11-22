@@ -1,0 +1,16 @@
+{
+ "eligible": true,
+ "baseline": {
+  "true_correct": false,
+  "feasible": false,
+  "quality": 0.0,
+  "phantom_proxy": true
+ },
+ "candidate": {
+  "true_correct": false,
+  "feasible": true,
+  "quality": 0.0,
+  "phantom_proxy": false
+ },
+ "note": "Offline engineering replay only; does not rewrite the completed v0.11 result."
+}

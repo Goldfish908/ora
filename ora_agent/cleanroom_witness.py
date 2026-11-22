@@ -348,6 +348,18 @@ def _evidence_transition(current: dict, child: dict) -> str:
     return "unchanged"
 
 
+def _best_effort_fallback(baseline: dict, candidate: dict) -> bool:
+    if candidate is baseline or baseline.get("true_correct") or candidate.get("true_correct"):
+        return False
+    if not baseline.get("phantom_proxy") or candidate.get("phantom_proxy") or not candidate.get("feasible"):
+        return False
+    if candidate.get("unknown") or candidate.get("evaluation_unknown"):
+        return False
+    if (candidate.get("execution") or {}).get("return_code") != 0:
+        return False
+    return (candidate.get("quality") or 0.0) >= (baseline.get("quality") or 0.0)
+
+
 def repair_bounded(memory: EvidenceMemory, packet: TaskPacket, record: dict, specification: str,
                    config: llm_mod.LLMConfig, outdir: Path, run_seed: int = 0,
                    max_attempts: int = 3, api_guard: bool = False) -> dict:
@@ -375,6 +387,7 @@ def repair_bounded(memory: EvidenceMemory, packet: TaskPacket, record: dict, spe
     parent_id = "root"
     final_record = baseline
     final_verdicts = before
+    current_verdicts = before
     stop_reason = "bounded_failure"
     unchanged_streak = 0
     previous_generation_failure = None
@@ -421,6 +434,7 @@ def repair_bounded(memory: EvidenceMemory, packet: TaskPacket, record: dict, spe
             if new_runtime_diagnostic:
                 unchanged_streak = 0
                 current = child
+                current_verdicts = result["after"]
                 parent_id = result["node_id"]
                 stop_reason = "bounded_failure"
                 history[-1]["working_branch_advanced"] = True
@@ -436,8 +450,13 @@ def repair_bounded(memory: EvidenceMemory, packet: TaskPacket, record: dict, spe
             stop_reason = "rejected_regression"
             continue
         current = child
+        current_verdicts = result["after"]
         parent_id = result["node_id"]
         stop_reason = "bounded_failure"
+    if stop_reason != "accepted" and _best_effort_fallback(baseline, current):
+        final_record = current
+        final_verdicts = current_verdicts
+        stop_reason = "best_effort_fallback"
     accepted = stop_reason == "accepted"
     generation_costs = [generation_cost(baseline)]
     generation_costs += [generation_cost({"workspace": outdir / f"attempt_{index}/repair_1/app"})

@@ -460,3 +460,29 @@ home 和 airport 的旧工程复验均未产生真正确，因此不把执行恢
 质量不足反馈增加 `objective_sense` 和 `quality_status` 元数据，并要求检查求解器内部目标与按输出决策重算目标是否一致。只提供当前解实际产生的目标值，不把参考目标、最优界或参考解内容提供给修复模型。即使得到更低目标值，也仍须通过官方可行性和质量门禁，不能以代理改善替代真正确。
 
 主要验收仍为 B2 相对 B1 的真正确严格增加，同时无 lost true、missing、新增幻影或 UNKNOWN；B0→B2 的幻影变化另列。后续任何正结果都必须能追溯到具体分支和官方逐题记录，不能仅根据 prompt 设计推断机制有效。
+
+
+## v0.11 实际结果与受限 best-effort 回退
+
+v0.11 的完整独立结果如下，原始证据保存在 `work/swarm_transfer_logistics_v0.11/`。
+
+| Arm | 覆盖 | 真正确 | 幻影 | UNKNOWN | 修复尝试 | Tokens |
+|---|---:|---:|---:|---:|---:|---:|
+| B0 | 4/4 | 0 | 0 | 0 | 0 | 128,294 |
+| B1 | 4/4 | 2 | 1 | 0 | 0 | 156,031 |
+| B2 | 4/4 | 2 | 1 | 0 | 5 | 523,316 |
+| B3 | not_run | — | — | — | — | — |
+
+C2 相对 B0 新增 carbon removal 和 private 5G 两个真正确，同时新增 cell tower 幻影。B2 没超过 B1，也没消除该幻影；B0→B2 的严格无新增幻影条件因此不成立。空规范分支未产生真正确，edge cache 的两次结果都保持 quality=0。图件为 `report/b0_b2_comparison.png`，验收为 `evaluation_outcome.json`。
+
+cell 的第一次 C2 修复其实已从原幻影变为 `feasible=true、phantom=false、quality=0、objective=197311.6018755999`，即得到官方可行解，但仍不满足质量门槛。旧控制器只接受真正确，因此最后回退到原始幻影，丢失了严格更好的非正确候选。
+
+为此新增受限 best-effort 回退，只有同时满足以下条件才允许替换基线：
+
+- 基线是幻影，候选和基线都不是真正确；
+- 候选官方 `feasible=true`、`phantom=false`、执行返回码为 0；
+- 没有 UNKNOWN，且 quality 不低于基线。
+
+该状态记为 `best_effort_fallback`，`final_accept=false`，不能称为 accepted 或真正确。业务不可行候选、UNKNOWN、执行失败、质量退化和新幻影均不得进入此回退；真正确仍只能走原有全部门禁的 `accepted`。offline 检查 `work/engineering_best_effort_cell_v0.12.json` 证明旧 cell 第一次候选符合这些条件，但只用于工程验证，不回写 v0.11 的独立结果。
+
+后续独立验收分别报告真正确变化和幻影消除，不能把 best-effort 当作 B2 相对 B1 的真正确增益。这一规则是对前述“仅最终门禁通过才替换基线”的受限补充：只有原幻影变成官方可行且非幻影时才保留较好的非正确候选，其余失败仍回退原基线。新候选池 `configs/cleanroom_oracle_logistics_v0.12.json` 在任何 Qwen 运行前准备，仍只按公开契约与 oracle/官方健康筛选。

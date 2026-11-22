@@ -243,3 +243,36 @@ def test_second_semantic_regeneration_uses_empty_specification_branch(tmp_path, 
     assert result["attempts_used"] == 2
     assert result["history"][1]["specification_sha256"] == \
         "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+
+
+def test_feasible_nonphantom_is_best_effort_not_accepted(tmp_path, monkeypatch):
+    memory, packet, record, _ = setup_loop(monkeypatch, outcomes=99)
+    record.update(phantom_proxy=True, feasible=False, quality=0.0, objective=100.0)
+
+    def better(*args, **kwargs):
+        child = dict(record)
+        child.update(workspace="better/app", feasible=True, phantom_proxy=False, objective=90.0,
+                     execution={"return_code": 0})
+        return {"status": "rejected", "record": child, "node_id": "better",
+                "before": {"execution_contract": "pass"}, "after": {"execution_contract": "pass"},
+                "edge_accepted": False, "final_accept": False}
+
+    monkeypatch.setattr(cleanroom_witness, "repair_once", better)
+    result = cleanroom_witness.repair_bounded(memory, packet, record, "spec", None, tmp_path,
+                                              max_attempts=1)
+    assert result["status"] == "best_effort_fallback"
+    assert not result["final_accept"]
+    assert not result["record"]["true_correct"]
+    assert result["record"]["feasible"]
+    assert not result["record"]["phantom_proxy"]
+    assert result["pair_win_safe"]["removed_phantom"] == ["task"]
+    assert result["after"] == {"execution_contract": "pass"}
+
+
+def test_best_effort_cannot_accept_infeasible_or_new_true_candidate():
+    baseline = {"true_correct": False, "phantom_proxy": True, "feasible": False,
+                "quality": 0.0, "execution": {"return_code": 0}}
+    infeasible = dict(baseline, phantom_proxy=False)
+    assert not cleanroom_witness._best_effort_fallback(baseline, infeasible)
+    new_true = dict(infeasible, feasible=True, true_correct=True)
+    assert not cleanroom_witness._best_effort_fallback(baseline, new_true)

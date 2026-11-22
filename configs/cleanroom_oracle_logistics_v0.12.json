@@ -1,0 +1,11 @@
+{
+  "version": "cleanroom_oracle_logistics_v0.12",
+  "selection_basis": "New independent candidate health checks after the best-effort fallback was implemented. Complete bounded single-step public packets; no specification learning, Qwen engineering or memory promotion. clinical_trial_site_portfolio_selection is excluded for exceeding the public packet limit. urban_drainage_mpc_control is a health-only reserve; selection depends only on public contracts and oracle/official health, never Qwen scores.",
+  "tasks": [
+    {"name": "stochastic_surgery_capacity_planning", "domain": "logistics", "split": "audit", "role": "candidate"},
+    {"name": "robust_kidney_exchange_clearing", "domain": "logistics", "split": "audit", "role": "candidate"},
+    {"name": "platelet_inventory_rotation", "domain": "logistics", "split": "audit", "role": "candidate"},
+    {"name": "retail_media_campaign_allocation", "domain": "logistics", "split": "audit", "role": "candidate"},
+    {"name": "urban_drainage_mpc_control", "domain": "logistics", "split": "audit", "role": "reserve"}
+  ]
+}

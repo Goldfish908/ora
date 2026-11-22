@@ -426,3 +426,28 @@ B0/B1/B2 使用相同的直接生成预算、API guard 和最多三次修复；B
 次要指标为每题修复 token、求解和评价 wall time、重复制品失败次数、预检拦截次数及工作分支回退次数。预检拦截只算工程可评估性，不算真正确；执行成功、局部错误减少、生成补丁或回退均不能替代官方真正确。v0.9 的旧制品仅用于工程复验，不并入 v0.10 的独立任务分母。
 
 冻结实现的全量回归为 **576 passed、3 skipped**，m2gen 为 `REGRESSION OK`。换分支契约、API 探测和旧 container 的零 LLM guard 复验见 `work/verification_v0.10_final/` 与 `work/engineering_scip_guard_container_v0.10/`。container 复验在导入错误后仍暴露 `KeyError: '12'`，因此不预先声称本版能解决数据键或业务语义问题。
+
+
+## v0.10 实际结果与下一轮归因
+
+v0.10 未达到修复增量目标，完整结果已保存在 `work/swarm_transfer_logistics_v0.10/`。
+
+| Arm | 覆盖 | 真正确 | 幻影 | UNKNOWN | 修复尝试 | Tokens |
+|---|---:|---:|---:|---:|---:|---:|
+| B0 | 4/4 | 0 | 0 | 0 | 0 | 94,386 |
+| B1 | 4/4 | 0 | 2 | 0 | 0 | 118,869 |
+| B2 | 4/4 | 0 | 2 | 0 | 10 | 477,242 |
+| B3 | not_run | — | — | — | — | — |
+
+B0→B2 新增 circular packaging 和 coastal aquaculture 两个幻影，严格安全条件不成立；B1→B2 没有新增或丢失真正确、没有新增幻影，但原有幻影一个也没有消除。B2 的修复增量为 358,373 tokens，低于 v0.9 的 1,025,934，但任务规模和实现均不同，不能把差值解释为单独的机制降本效果。
+
+主要失败归因如下：
+
+- home 第一次从执行错误变成四个明确的未服务患者错误，旧控制器因错误数从 1 增加到 4 而误判为回归，随后沿旧代码产生 `duplicate_repair`。执行恢复和获得更具体业务证据不应被当成语义退化；真正确、可行性、幻影和 UNKNOWN 的安全门禁仍需单独保持。
+- airport 已可行且没有业务错误，但目标值为 69,370，质量为 0。原证据只有空错误列表，没有明确要求在保留可行性的同时优化目标，因此模型缺少有效搜索方向。后续反馈只包含实际目标值和质量状态，不把参考目标或最优界泄露给修复模型。
+- circular 的最后一次修复把 `(coefficient, variable)` 对直接传入 quicksum，产生确定的类型错误；home 的 `addCons(constraint if condition else 1)` 在条件为假时把整数 1 当作约束；另一个 home 输入使用了不存在的 `Scip` 导入。这些都适合窄 AST 转换，不需要让模型猜 API。
+- coastal 两次均有 77 个相同业务错误，说明语义重建仍可能近乎重复。API 类型修复不等于业务正确，不能把有目标值或错误坐标减少直接写成真正确。
+
+下一版相应加入执行恢复的证据转换、质量不足指导、quicksum 二元对乘法、`addCons` 条件约束转换以及 `SCIP/Scip` 窄导入修复。相关 580 项 pytest 和 m2gen 已通过。零 LLM 结构复验表明这些转换能消除对应 API 错误，但 circular 仍有库存语义错误，home 仍有未服务患者，故只能称为可评价性改善。
+
+v0.11 新独立角色已在任何 Qwen 运行前冻结：cell tower、private 5G、edge cache 和 carbon removal，四题参考健康均为 `true_correct=true、quality=2.0`，见 `configs/cleanroom_swarm_frozen_logistics_v0.11.json` 和 `work/swarm_transfer_pool/health_summary_v0.11.json`。home/airport 的旧题只用于机制复验，不会进入新独立分母。

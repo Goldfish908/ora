@@ -1,0 +1,165 @@
+{
+ "tasks": [
+  {
+   "task": "airport_gate_assignment",
+   "final_status": "rejected_regression",
+   "repair_tokens": 142406,
+   "attempts": [
+    {
+     "attempt": 1,
+     "status": "rejected",
+     "error": null,
+     "protocol": "two_phase_model_then_solver_v1",
+     "llm_calls": 2,
+     "missing_usage_calls": 0,
+     "llm_latency_seconds": 151.236965,
+     "prompt_tokens": 50182,
+     "completion_tokens": 9681,
+     "reasoning_tokens": 0,
+     "total_tokens": 59863
+    },
+    {
+     "attempt": 2,
+     "status": "rejected",
+     "error": null,
+     "protocol": "two_phase_model_then_solver_v1",
+     "llm_calls": 2,
+     "missing_usage_calls": 0,
+     "llm_latency_seconds": 165.60457,
+     "prompt_tokens": 30029,
+     "completion_tokens": 11103,
+     "reasoning_tokens": 0,
+     "total_tokens": 41132
+    },
+    {
+     "attempt": 3,
+     "status": "rejected",
+     "error": null,
+     "protocol": "two_phase_model_then_solver_v1",
+     "llm_calls": 2,
+     "missing_usage_calls": 0,
+     "llm_latency_seconds": 169.698666,
+     "prompt_tokens": 29974,
+     "completion_tokens": 11437,
+     "reasoning_tokens": 0,
+     "total_tokens": 41411
+    }
+   ]
+  },
+  {
+   "task": "circular_packaging_replenishment",
+   "final_status": "rejected_regression",
+   "repair_tokens": 103266,
+   "attempts": [
+    {
+     "attempt": 1,
+     "status": "rejected",
+     "error": null,
+     "protocol": "two_phase_model_then_solver_v1",
+     "llm_calls": 2,
+     "missing_usage_calls": 0,
+     "llm_latency_seconds": 84.790641,
+     "prompt_tokens": 35512,
+     "completion_tokens": 4997,
+     "reasoning_tokens": 0,
+     "total_tokens": 40509
+    },
+    {
+     "attempt": 2,
+     "status": "rejected",
+     "error": null,
+     "protocol": "two_phase_model_then_solver_v1",
+     "llm_calls": 2,
+     "missing_usage_calls": 0,
+     "llm_latency_seconds": 93.467207,
+     "prompt_tokens": 25044,
+     "completion_tokens": 6143,
+     "reasoning_tokens": 0,
+     "total_tokens": 31187
+    },
+    {
+     "attempt": 3,
+     "status": "rejected",
+     "error": null,
+     "protocol": "two_phase_model_then_solver_v1",
+     "llm_calls": 2,
+     "missing_usage_calls": 0,
+     "llm_latency_seconds": 122.223068,
+     "prompt_tokens": 25408,
+     "completion_tokens": 6162,
+     "reasoning_tokens": 0,
+     "total_tokens": 31570
+    }
+   ]
+  },
+  {
+   "task": "coastal_aquaculture_feed_oxygen_planning",
+   "final_status": "no_verified_progress",
+   "repair_tokens": 58349,
+   "attempts": [
+    {
+     "attempt": 1,
+     "status": "rejected",
+     "error": null,
+     "protocol": "two_phase_model_then_solver_v1",
+     "llm_calls": 2,
+     "missing_usage_calls": 0,
+     "llm_latency_seconds": 116.670766,
+     "prompt_tokens": 28820,
+     "completion_tokens": 7308,
+     "reasoning_tokens": 0,
+     "total_tokens": 36128
+    },
+    {
+     "attempt": 2,
+     "status": "rejected",
+     "error": null,
+     "protocol": "two_phase_model_then_solver_v1",
+     "llm_calls": 2,
+     "missing_usage_calls": 0,
+     "llm_latency_seconds": 90.214599,
+     "prompt_tokens": 16540,
+     "completion_tokens": 5681,
+     "reasoning_tokens": 0,
+     "total_tokens": 22221
+    }
+   ]
+  },
+  {
+   "task": "home_healthcare_routing",
+   "final_status": "duplicate_repair",
+   "repair_tokens": 54352,
+   "attempts": [
+    {
+     "attempt": 1,
+     "status": "partial_progress",
+     "error": null,
+     "protocol": "unique_exact_runtime_patch_v1",
+     "llm_calls": 1,
+     "missing_usage_calls": 0,
+     "llm_latency_seconds": 6.04464,
+     "prompt_tokens": 26995,
+     "completion_tokens": 181,
+     "reasoning_tokens": 0,
+     "total_tokens": 27176
+    },
+    {
+     "attempt": 2,
+     "status": "duplicate_repair",
+     "error": "repair produced duplicate code",
+     "protocol": "unique_exact_runtime_patch_v1",
+     "llm_calls": 1,
+     "missing_usage_calls": 0,
+     "llm_latency_seconds": 4.158625,
+     "prompt_tokens": 26995,
+     "completion_tokens": 181,
+     "reasoning_tokens": 0,
+     "total_tokens": 27176
+    }
+   ]
+  }
+ ],
+ "total_repair_tokens": 358373,
+ "new_true_correct_over_b1": 0,
+ "note": "Recomputed from saved generation logs. Different task sizes prevent an isolated cost comparison with v0.9."
+}

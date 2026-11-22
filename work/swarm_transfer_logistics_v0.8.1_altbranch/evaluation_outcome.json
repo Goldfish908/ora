@@ -1,0 +1,12 @@
+{
+  "engineering_only": true,
+  "goal_met": false,
+  "b0_true_correct": 1,
+  "b1_true_correct": 1,
+  "b2_true_correct": 1,
+  "b2_phantom_proxy": 3,
+  "attempts": 8,
+  "total_tokens": 688089,
+  "b0_to_b2_win_safe": true,
+  "conclusion": "One alternate branch after no progress changes failure evidence but does not produce a new true_correct task. Evidence-only regeneration is evaluated separately."
+}

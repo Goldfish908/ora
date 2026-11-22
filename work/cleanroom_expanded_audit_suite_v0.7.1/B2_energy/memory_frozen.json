@@ -1,0 +1,169 @@
+{
+ "frozen": true,
+ "events": [
+  {
+   "event": "check_hint_only",
+   "check_id": "execution_contract",
+   "at": "2026-11-22T03:34:26.708601+00:00"
+  },
+  {
+   "event": "check_veto_enabled",
+   "check_id": "execution_contract",
+   "at": "2026-11-22T03:34:26.709131+00:00"
+  },
+  {
+   "event": "check_hint_only",
+   "check_id": "energy_official_task_pass",
+   "at": "2026-11-22T03:34:26.709175+00:00"
+  },
+  {
+   "event": "check_veto_enabled",
+   "check_id": "energy_official_task_pass",
+   "at": "2026-11-22T03:38:13.882044+00:00"
+  },
+  {
+   "event": "memory_frozen",
+   "at": "2026-11-22T03:38:13.888980+00:00"
+  }
+ ],
+ "specifications": [],
+ "checks": [
+  {
+   "check_id": "execution_contract",
+   "scope": {
+    "dataset": "oragentbench"
+   },
+   "source_quote": "required solution file",
+   "status": "veto_enabled",
+   "code_sha256": "406714402c9296c8d60cee3f9d53abe62dd2f781b009ddf118ce036bfcba62da",
+   "audits": [
+    {
+     "records": [
+      {
+       "case_id": "exec_clean_0",
+       "expected": "pass",
+       "observed": "pass"
+      },
+      {
+       "case_id": "exec_wrong_0",
+       "expected": "fail",
+       "observed": "fail"
+      },
+      {
+       "case_id": "exec_clean_1",
+       "expected": "pass",
+       "observed": "pass"
+      },
+      {
+       "case_id": "exec_wrong_1",
+       "expected": "fail",
+       "observed": "fail"
+      },
+      {
+       "case_id": "exec_clean_2",
+       "expected": "pass",
+       "observed": "pass"
+      },
+      {
+       "case_id": "exec_wrong_2",
+       "expected": "fail",
+       "observed": "fail"
+      }
+     ],
+     "n_clean": 3,
+     "n_wrong": 3,
+     "precision": 1.0,
+     "detection": 1.0,
+     "unknown": 0,
+     "passed": true,
+     "reasons": [],
+     "at": "2026-11-22T03:34:26.709119+00:00"
+    }
+   ]
+  },
+  {
+   "check_id": "energy_official_task_pass",
+   "scope": {
+    "dataset": "oragentbench",
+    "domain": "energy"
+   },
+   "source_quote": "required solution file",
+   "status": "veto_enabled",
+   "code_sha256": "46ef71ab84716c17e30d366eb96fb406fb540e79da05dfd101d15bc1f5bc1c5a",
+   "audits": [
+    {
+     "records": [
+      {
+       "case_id": "smart_building_demand_response_dispatch:clean",
+       "expected": "pass",
+       "observed": "pass"
+      },
+      {
+       "case_id": "smart_building_demand_response_dispatch:missing_solution",
+       "expected": "fail",
+       "observed": "fail"
+      },
+      {
+       "case_id": "smart_building_demand_response_dispatch:invalid_schema",
+       "expected": "fail",
+       "observed": "fail"
+      },
+      {
+       "case_id": "smart_building_demand_response_dispatch:empty_solution",
+       "expected": "fail",
+       "observed": "fail"
+      },
+      {
+       "case_id": "robust_microgrid_islanding_dispatch:clean",
+       "expected": "pass",
+       "observed": "pass"
+      },
+      {
+       "case_id": "robust_microgrid_islanding_dispatch:missing_solution",
+       "expected": "fail",
+       "observed": "fail"
+      },
+      {
+       "case_id": "robust_microgrid_islanding_dispatch:invalid_schema",
+       "expected": "fail",
+       "observed": "fail"
+      },
+      {
+       "case_id": "robust_microgrid_islanding_dispatch:empty_solution",
+       "expected": "fail",
+       "observed": "fail"
+      },
+      {
+       "case_id": "green_hydrogen_hub_resilience_planning:clean",
+       "expected": "pass",
+       "observed": "pass"
+      },
+      {
+       "case_id": "green_hydrogen_hub_resilience_planning:missing_solution",
+       "expected": "fail",
+       "observed": "fail"
+      },
+      {
+       "case_id": "green_hydrogen_hub_resilience_planning:invalid_schema",
+       "expected": "fail",
+       "observed": "fail"
+      },
+      {
+       "case_id": "green_hydrogen_hub_resilience_planning:empty_solution",
+       "expected": "fail",
+       "observed": "fail"
+      }
+     ],
+     "n_clean": 3,
+     "n_wrong": 9,
+     "precision": 1.0,
+     "detection": 1.0,
+     "unknown": 0,
+     "passed": true,
+     "reasons": [],
+     "at": "2026-11-22T03:38:13.882024+00:00"
+    }
+   ]
+  }
+ ]
+}

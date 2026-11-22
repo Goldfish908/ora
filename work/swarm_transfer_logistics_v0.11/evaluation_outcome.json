@@ -1,0 +1,66 @@
+{
+ "strict_goal_met": false,
+ "criterion_checks": {
+  "b2_strictly_above_b1": false,
+  "b2_strictly_above_b0": true,
+  "b0_to_b2_no_new_phantom": false,
+  "b1_to_b2_no_lost_true": true,
+  "b1_to_b2_no_new_phantom": true,
+  "no_unknown": true,
+  "b3_not_run_without_promotion": true
+ },
+ "b0_to_b2": {
+  "paired_tasks": 4,
+  "missing_tasks": [],
+  "gained_true_correct": [
+   "carbon_removal_credit_portfolio",
+   "private_5g_small_cell_planning"
+  ],
+  "lost_true_correct": [],
+  "gained_phantom": [
+   "cell_tower_coverage_expansion"
+  ],
+  "removed_phantom": [],
+  "win_safe": true
+ },
+ "b1_to_b2": {
+  "paired_tasks": 4,
+  "missing_tasks": [],
+  "gained_true_correct": [],
+  "lost_true_correct": [],
+  "gained_phantom": [],
+  "removed_phantom": [],
+  "win_safe": true
+ },
+ "b0_true_correct": 0,
+ "b1_true_correct": 2,
+ "b2_true_correct": 2,
+ "b2_phantom_proxy": 1,
+ "b2_unknown": 0,
+ "b2_attempts": 5,
+ "arm_tokens": {
+  "B0_empty_specification": 128294,
+  "B1_gepa_specification": 156031,
+  "B2_gepa_residual_dag": 523316
+ },
+ "repair_tokens": 367285,
+ "implementation_commit": "ed2bd97b3c2cb9b296d89ef060630399545f1b0a",
+ "b3": "not_run",
+ "memory_promoted": false,
+ "validation": {
+  "pytest": "581 passed, 3 skipped",
+  "m2gen": "REGRESSION OK",
+  "path": "../verification_v0.11_final"
+ },
+ "best_effort_opportunity": {
+  "task": "cell_tower_coverage_expansion",
+  "attempt": 1,
+  "feasible": true,
+  "phantom_proxy": false,
+  "true_correct": false,
+  "quality": 0.0,
+  "objective": 197311.6018755999,
+  "note": "This candidate is not true-correct, but it dominates the original phantom by being feasible and non-phantom at equal quality. The current fallback discards it."
+ },
+ "interpretation": "C2 creates two true wins and one phantom over B0. B2 preserves two wins but adds no true correctness over B1 and retains one phantom. The empty-specification branch produced no true gain. These tasks are now engineering data."
+}

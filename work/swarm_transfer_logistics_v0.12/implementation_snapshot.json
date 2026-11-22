@@ -1,0 +1,41 @@
+{
+ "git_commit": "8eb3a1707ba0afac19dc52f88e075d23e0775542",
+ "core_worktree_clean": true,
+ "files": {
+  "ora_agent/llm.py": "ced54d7b87414e73e0ed7c572cba9f1118c9f850b67516d5b1f9834c9555a1d9",
+  "ora_agent/cleanroom.py": "c33b21414dc230fb1862cbfdefb42d4652759236af9401f77d8f10c0bd2ad2a5",
+  "ora_agent/oragentbench.py": "925629aca8dd63638e4ee1eaddcd68dd29c2845be638f9668306c1fe4eb0888e",
+  "ora_agent/api_guard.py": "5b5454dcfcfda5d21107aa33aca694e50a616d071fc6e831e1f6506c12b49ceb",
+  "ora_agent/cleanroom_witness.py": "779d16b66adebb2e087a617793e6edd99e97883fbe2602b71304035d6cbf1f60",
+  "ora_agent/cleanroom_spec_audit.py": "c0551fbd49d8db6832714de221f1332e207705f7fcf21c1db730331951ad4097",
+  "scripts/cleanroom_experiment.py": "cbedbc70322ff3b7f4e937e1b075eaa7ec9d38032d3d1c713ee9a80eb028dc3a",
+  "scripts/cleanroom_repair.py": "13443711cf0c7ba8c3c5120f6e979af065751738f7f6163a70d0cbb52447caee",
+  "scripts/cleanroom_memory.py": "12afa65d7c0c5002f99ef86d117c0748066311803d21f82cf169642313f84f7e",
+  "ora_agent/cleanroom_analysis.py": "feb82495d0821c5de81ad0b121fe78f4909d0bab64c4ef240f5cbabbd9efe7db",
+  "scripts/cleanroom_batch_report.py": "cde70b7bad12f8776a9a321eda99ef648614ee3a43d71435920c5260b64b2735",
+  "scripts/cleanroom_health_report.py": "cf0dcc5676a92c8c43b47c3c8fdc31d2574802ed7c5d28562c969d644523e871"
+ },
+ "generation": {
+  "max_tokens": 24576,
+  "reasoning_effort": "low",
+  "disable_thinking": true,
+  "model_reasoning_effort": "low",
+  "solver_reasoning_effort": "low",
+  "model_disable_thinking": true,
+  "solver_disable_thinking": true,
+  "model_max_tokens": 4096,
+  "model_max_words": 1800,
+  "temperature": 0.6,
+  "protocol": "two_phase_model_then_solver_v1",
+  "stream": false
+ },
+ "repair": {
+  "max_attempts": 3,
+  "protocol": "C2/empty-specification branches with restricted best-effort fallback",
+  "best_effort": "Only original phantom to feasible non-phantom with no UNKNOWN and non-degraded quality; final_accept=false",
+  "specification_hash_per_attempt": true
+ },
+ "b0_implementation_sha256": "0aae529c12ef7455baf5e1524b056506fea9c5dde691f797687c1a6563804dcc",
+ "suite_implementation_sha256": "6be6e8cb2ca831268ebd1dd1be681977198481043adbd9203221bcac1fff8e85",
+ "audit_tasks_sha256": "a62c78f89d5c0a6fa6e87193be2f25c6c813f68b7e45ab144a06dff14ea36adf"
+}

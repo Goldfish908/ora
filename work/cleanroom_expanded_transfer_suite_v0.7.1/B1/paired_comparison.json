@@ -1,0 +1,15 @@
+{
+ "paired_tasks": 4,
+ "missing_tasks": [],
+ "gained_true_correct": [
+  "mass_timber_panel_cutting_plan"
+ ],
+ "lost_true_correct": [
+  "industrial_water_reuse_blending"
+ ],
+ "gained_phantom": [
+  "industrial_water_reuse_blending"
+ ],
+ "removed_phantom": [],
+ "win_safe": false
+}

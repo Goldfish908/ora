@@ -1,0 +1,43 @@
+{
+ "engineering_only": true,
+ "cell": {
+  "status": "best_effort_fallback",
+  "final_accept": false,
+  "true_correct": false,
+  "feasible": true,
+  "phantom_proxy": false,
+  "quality": 0.0,
+  "attempts_used": 3,
+  "total_tokens": 186075,
+  "pair_win_safe": {
+   "paired_tasks": 1,
+   "missing_tasks": [],
+   "gained_true_correct": [],
+   "lost_true_correct": [],
+   "gained_phantom": [],
+   "removed_phantom": [
+    "cell_tower_coverage_expansion"
+   ],
+   "win_safe": true
+  },
+  "interpretation": "The third C2 branch produced an official-feasible, non-phantom quality-zero solution. The fallback removed the original phantom, but this is not a true-correct gain or proof of direct decision-repair effectiveness."
+ },
+ "coastal": {
+  "metrics": {
+   "feasible": false,
+   "quality": 0.0,
+   "true_correct": false,
+   "objective": null,
+   "evaluation_unknown": false
+  },
+  "phantom_proxy": false,
+  "execution_stderr": "Validation failed; not writing invalid solution.\n",
+  "interpretation": "Function-level patches fixed indexing errors, but the generated decision remained invalid on oxygen and fishmeal constraints. No valid solution and no true gain."
+ },
+ "validation": {
+  "pytest": "593 passed, 3 skipped",
+  "m2gen": "REGRESSION OK",
+  "path": "work/verification_decision_repair_v0.13"
+ },
+ "independent_evidence_claim": false
+}

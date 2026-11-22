@@ -541,3 +541,14 @@ B1→B2 新增 `retail_media_campaign_allocation` 一个真正确，没有 lost 
 若 `repair_solution.py` 自身执行失败，后续路由为 `decision_runtime_patch`，而不是立即重写整个模型。它复用唯一匹配的局部替换和绑定保护，但以决策脚本的完整性检查代替 `optimize()` 检查，且不得改变原 `solve.py`。工作目录即使只保留了 `solution_original.csv/json`，也能继续修复。
 
 标准库检查通过 `importlib.util.find_spec` 的来源判断，不依赖环境可能缺失的 `sys.stdlib_module_names`。求解器、网络、外部执行和动态代码模块仍被禁止；合法的 `fractions` 等标准库和沙箱根路径 `/app` 不得被误拒。补丁生成、执行和官方结果均落盘，脚本类型错误不能直接视为业务不可行。
+
+
+### 工程复验结论：best-effort 生效，但直接业务修复仍未证明有效
+
+coastal 的决策脚本在多次函数级补丁后修复了矩阵索引错误，却仍因氧气与鱼粉约束失败而没有有效解，不能称为成功。cell 的第一次决策修复也将服务从 45 行降至 12 行，产生 11 项人口、企业设备与关键区域覆盖错误，超过原来的 3 项容量错误，因此被回退。
+
+后续空规范分支执行失败，第三次 C2 分支得到 `feasible=true、phantom=false、quality=0、objective=197311.6018755999`。最终状态为 `best_effort_fallback`、`final_accept=false`，`pair_win_safe.removed_phantom=["cell_tower_coverage_expansion"]`，没有 lost true 或新增幻影。它证明受限回退确实能保留“官方可行但非真正确”的更好候选，而不是把原始幻影带回来；**并不证明直接决策生成已经正确，也不构成独立泛化证据**。
+
+cell 复验共三次修复、含直接生成共 7 次 LLM 调用、186,075 tokens。证据位于 `work/engineering_decision_repair_cell_v0.13.1/` 与 `work/engineering_decision_repair_outcome_v0.13.json`。全量回归为 **593 passed、3 skipped**，m2gen 为 `REGRESSION OK`。
+
+下一阶段使用已冻结的 federated learning、cold-chain locker、cycling network 和 nurse rostering 四个新任务，评价完整 B0/B1/B2 的真实正确率、幻影变化、直接修复贡献与成本。没有接受此结果前，不把这些新任务称为已经验证的迁移成功。

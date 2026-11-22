@@ -1,0 +1,13 @@
+{
+ "return_code": 1,
+ "stdout": null,
+ "stderr": null,
+ "timed_out": false,
+ "wall_seconds": 28.667224,
+ "command": [
+  "python",
+  "/app/submissions/repair_solution.py"
+ ],
+ "stdout_file": "stdout.txt",
+ "stderr_file": "stderr.txt"
+}

@@ -1,0 +1,58 @@
+{
+ "status": "best_effort_fallback",
+ "before": {
+  "execution_contract": "pass",
+  "logistics_official_task_pass": "fail"
+ },
+ "after": {
+  "execution_contract": "pass",
+  "logistics_official_task_pass": "fail"
+ },
+ "final_accept": false,
+ "edge_accepted": false,
+ "attempts_used": 3,
+ "max_attempts": 3,
+ "attempt_record_paths": [
+  "/home/hewj13/wm/ora/work/engineering_decision_repair_cell_v0.13.1/attempt_1/repair_1/record.json",
+  "/home/hewj13/wm/ora/work/engineering_decision_repair_cell_v0.13.1/attempt_2/repair_1/record.json",
+  "/home/hewj13/wm/ora/work/engineering_decision_repair_cell_v0.13.1/attempt_3/repair_1/record.json"
+ ],
+ "pair_win_safe": {
+  "paired_tasks": 1,
+  "missing_tasks": [],
+  "gained_true_correct": [],
+  "lost_true_correct": [],
+  "gained_phantom": [],
+  "removed_phantom": [
+   "cell_tower_coverage_expansion"
+  ],
+  "win_safe": true
+ },
+ "win_safe": true,
+ "cost": {
+  "llm_calls": 7,
+  "missing_usage_calls": 0,
+  "llm_latency_seconds": 424.711177,
+  "prompt_tokens": 156985,
+  "completion_tokens": 29090,
+  "reasoning_tokens": 0,
+  "total_tokens": 186075,
+  "solver_execution_time": {
+   "recorded_calls": 4,
+   "missing_calls": 0,
+   "seconds": 535.908417
+  },
+  "official_evaluation_time": {
+   "recorded_calls": 4,
+   "missing_calls": 0,
+   "seconds": 81.416157
+  }
+ },
+ "memory_frozen": true,
+ "metrics": {
+  "feasible": true,
+  "quality": 0.0,
+  "true_correct": false,
+  "objective": 197311.6018755999
+ }
+}

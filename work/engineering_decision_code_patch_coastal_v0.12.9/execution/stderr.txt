@@ -1,0 +1,15 @@
+Traceback (most recent call last):
+  File "/app/submissions/repair_solution.py", line 567, in <module>
+    main()
+  File "/app/submissions/repair_solution.py", line 527, in main
+    sol, lp_obj = solve_from_lp(cages, feeds, days, cond, cfg)
+                  ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/app/submissions/repair_solution.py", line 415, in solve_from_lp
+    var_index, order, cobj, A, b = build_lp(cages, feeds, days, cond, cfg)
+                                   ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/app/submissions/repair_solution.py", line 385, in build_lp
+    add_row([(var_index[(c, d, f)], 1.0) for f in f_ids],
+  File "/app/submissions/repair_solution.py", line 373, in add_row
+    row[var_index[key]] = val
+        ~~~~~~~~~^^^^^
+KeyError: 0

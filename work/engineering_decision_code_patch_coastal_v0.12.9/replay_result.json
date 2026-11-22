@@ -1,0 +1,50 @@
+{
+ "scope": "engineering_only_decision_code_patch",
+ "new_llm_calls": 1,
+ "source_code_sha256": "84e2ef3a99ceab4e5d99d3e20dc2367ffa31a37e226e09ecfe972584e9c3b87f",
+ "patched_code_sha256": "c1a0be83010c90e1c08b08bd2a3c8c0f02f6b87a61705414596adcd945e18362",
+ "specification_sha256": "08f95083f60719b0681fcca6cfad453b3faf28577335b466265903e2a11fe190",
+ "execution": {
+  "return_code": 1,
+  "stdout": "Incumbent rows read: 0\n",
+  "stderr": "Traceback (most recent call last):\n  File \"/app/submissions/repair_solution.py\", line 567, in <module>\n    main()\n  File \"/app/submissions/repair_solution.py\", line 527, in main\n    sol, lp_obj = solve_from_lp(cages, feeds, days, cond, cfg)\n                  ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"/app/submissions/repair_solution.py\", line 415, in solve_from_lp\n    var_index, order, cobj, A, b = build_lp(cages, feeds, days, cond, cfg)\n                                   ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"/app/submissions/repair_solution.py\", line 385, in build_lp\n    add_row([(var_index[(c, d, f)], 1.0) for f in f_ids],\n  File \"/app/submissions/repair_solution.py\", line 373, in add_row\n    row[var_index[key]] = val\n        ~~~~~~~~~^^^^^\nKeyError: 0\n",
+  "timed_out": false,
+  "wall_seconds": 27.180102,
+  "command": [
+   "python",
+   "/app/submissions/repair_solution.py"
+  ]
+ },
+ "official": {
+  "evaluation": {
+   "feasible": false,
+   "errors": [
+    "No solution file found."
+   ],
+   "error_count": 1
+  },
+  "reward": {
+   "feasibility": 0.0,
+   "quality": 0.0
+  },
+  "reward_details": {
+   "feasibility": 0.0,
+   "quality": 0.0,
+   "quality_status": "missing_solution"
+  },
+  "runner": {
+   "return_code": 0,
+   "timed_out": false,
+   "wall_seconds": 34.331586
+  }
+ },
+ "metrics": {
+  "feasible": false,
+  "quality": 0.0,
+  "true_correct": false,
+  "objective": null,
+  "evaluation_unknown": false
+ },
+ "proxy_match": false,
+ "phantom_proxy": false
+}

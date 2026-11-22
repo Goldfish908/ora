@@ -340,3 +340,7 @@ EV 第一次修复消除了三个 outlet 容量错误，只剩 hydromet share �
 本轮至少获得一个可复核的 dev 语义增益，但 B2 后续 transfer 的真正确率没有超过 B0 或 B1，故这是**完整负迁移结果**，不是 SOTA 或 memory 泛化成功。停止规则能够防止重复代码、部分进展和幻影被接受，却仍不能可靠生成不同且语义正确的修复。memory 的拒绝发生在 B2 之前，后续修复没有 retroactively 改写拒绝决定。
 
 统一结果图为 `work/cleanroom_expanded_b0_b3_results_v0.7.1.png`，显示直接/修复后真正确、幻影、UNKNOWN、最终覆盖和端到端 win-safe。官方 Witness 与官方评价器同源的限制仍然存在；它提供任务内一致性检查，不等同于完全独立的业务真值。12 个冻结角色的健康证据见 `work/cleanroom_frozen_health_v0.7/health_summary.json`。
+
+### 最终验证
+
+最终交付版本执行 `PYTHONPATH="$PWD" /home/hewj13/planbb/miniforge3/envs/rl/bin/python -m pytest -q tests --ignore=tests/test_m2gen.py`，结果为 **558 passed、3 skipped**；`python3 m2gen/run_regression.py` 返回 `REGRESSION OK`。日志为 `work/cleanroom_final_validation_v0.7.1/pytest.log` 和 `m2gen.log`，SHA-256 及关键结果哈希见同目录 `summary.json`。

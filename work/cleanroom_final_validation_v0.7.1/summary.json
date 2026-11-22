@@ -1,0 +1,19 @@
+{
+  "python_tests": {
+    "command": "PYTHONPATH=\"$PWD\" /home/hewj13/planbb/miniforge3/envs/rl/bin/python -m pytest -q tests --ignore=tests/test_m2gen.py",
+    "passed": 558,
+    "skipped": 3,
+    "failed": 0,
+    "log": "work/cleanroom_final_validation_v0.7.1/pytest.log",
+    "log_sha256": "000edd0a608c18e7bdc6952c017cd4bbc92cf37d6463e4e83e112cca6e49bb42"
+  },
+  "m2gen": {
+    "command": "python3 m2gen/run_regression.py",
+    "status": "REGRESSION OK",
+    "log": "work/cleanroom_final_validation_v0.7.1/m2gen.log",
+    "log_sha256": "25ee81ef0e419ad1a46ab419c2ee90b31f41d787b7acdd90859144d751dcd644"
+  },
+  "experiment_result_commit": "5772a6f",
+  "transfer_batch_summary_sha256": "b85394efd3cfc6acd081d8e711c43d93702e8b057e2b4e94afe35915cbad958b",
+  "combined_figure_sha256": "a5718bc02b6d430fe9a022003eedf8738bac0d7b351827bd205a91533b6edec0"
+}

@@ -552,3 +552,28 @@ coastal 的决策脚本在多次函数级补丁后修复了矩阵索引错误，
 cell 复验共三次修复、含直接生成共 7 次 LLM 调用、186,075 tokens。证据位于 `work/engineering_decision_repair_cell_v0.13.1/` 与 `work/engineering_decision_repair_outcome_v0.13.json`。全量回归为 **593 passed、3 skipped**，m2gen 为 `REGRESSION OK`。
 
 下一阶段使用已冻结的 federated learning、cold-chain locker、cycling network 和 nurse rostering 四个新任务，评价完整 B0/B1/B2 的真实正确率、幻影变化、直接修复贡献与成本。没有接受此结果前，不把这些新任务称为已经验证的迁移成功。
+
+
+## v0.13 对齐 pipeline 的独立验证
+
+本批使用 federated learning、cold-chain locker、cycling network 和 nurse rostering 四个未参与规范学习、工程调参或 memory 晋升的新任务。角色与参考健康证据在运行前冻结于 `configs/cleanroom_swarm_frozen_logistics_v0.13.json` 和 `work/swarm_transfer_pool/health_summary_v0.13.json`。实现绑定为 `18fafa40c57fd7819db974eec3f944cb001841a8`，完整结果位于 `work/swarm_transfer_logistics_v0.13/`。
+
+| Arm | 覆盖 | 真正确 | 幻影 | UNKNOWN | 修复尝试 | Tokens |
+|---|---:|---:|---:|---:|---:|---:|
+| B0 | 4/4 | 0 | 0 | 0 | 0 | 382,999 |
+| B1 | 4/4 | 1 | 0 | 0 | 0 | 411,209 |
+| B2 | 4/4 | 2 | 0 | 0 | 7 | 755,497 |
+| B3 | not_run | — | — | — | — | — |
+
+本批同时满足两个严格条件：
+
+- B0→B2 新增 cycling network 和 federated learning 两个真正确，没有 lost true、missing、新增幻影或 UNKNOWN；
+- B1→B2 新增 cycling network 一个真正确，同样没有 lost true、missing、新增幻影或 UNKNOWN。
+
+`cycling_network_design` 在第一次 **C2 两阶段模型/代码修复** 中被接受，`feasible=true、quality=2.0、objective=216495021.89352`，不是空规范、决策空间修复或 memory 的结果。`federated_learning_cohort_selection` 的已有正确解被 `preserved_win` 保留，没有额外修复调用。
+
+失败路径不能省略：cold-chain 的决策空间修复产生 75 项业务错误，空规范分支执行失败，第三次 C2 又产生 staff-hours 幻影并回退；nurse 第二次局部补丁恢复到 `feasible=true、quality=0`，第三次又因 quicksum 接收 list 而回归。best-effort 本批未触发，memory 没有晋升，B3 没有运行。因而不能把全部增益归功于新决策层，也不能声称 memory 自进化、跨域泛化或 SOTA。
+
+全部七次修复的增量为 344,288 tokens：cycling 82,344，cold-chain 111,348，nurse 150,596，federated 为 0。成本仍高，且不同错误所需预算明显不同，统一三轮仍只是上限而非最优策略。
+
+证据入口：`report/report.md`、`batch_summary.json`、`b0_b2_comparison.png`、`repair_cost_analysis.json`、`evaluation_outcome.json`、`implementation_snapshot.json` 和 `driver.log`。全量回归为 **593 passed、3 skipped**，m2gen 为 `REGRESSION OK`，日志见 `work/verification_decision_repair_v0.13/`。Witness 与官方评价器同源，仍不是独立业务真值。

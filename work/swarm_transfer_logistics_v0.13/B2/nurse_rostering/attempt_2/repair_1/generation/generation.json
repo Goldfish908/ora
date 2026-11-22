@@ -1,0 +1,54 @@
+{
+ "task": "nurse_rostering",
+ "specification_sha256": "08f95083f60719b0681fcca6cfad453b3faf28577335b466265903e2a11fe190",
+ "repair": true,
+ "request": {
+  "solver_max_tokens": 8192,
+  "solver_reasoning_effort": "low",
+  "solver_disable_thinking": true,
+  "temperature": 0.6,
+  "stream": false,
+  "protocol": "unique_exact_runtime_patch_v1",
+  "parent_solver_sha256": "e9f555fcd8de00c4b5e8591dc70eba6cbe4ca5606df02bc0554a726f0d12968d"
+ },
+ "response": {
+  "content": "",
+  "tool_calls": [
+   {
+    "id": "chatcmpl-tool-9dae6261895aeb05",
+    "type": "function",
+    "function": {
+     "name": "submit_runtime_patch",
+     "arguments": "{\"edits\": [{\"new_string\": \"# fairness rules\\nfair = []\\nfor r in fairness:\\n    pool = [x for x in r[\\\"nurse_ids\\\"].split(\\\";\\\") if x]\\n    fair.append({\\n        \\\"rule_id\\\": r[\\\"rule_id\\\"],\\n        \\\"metric\\\": r[\\\"metric\\\"],\", \"old_string\": \"# fairness rules\\nfair = []\\nfor r in fairness:\\n    pool = [x for x in r[\\\"nurse_ids\\\"].split(\\\";\\\") if x]\\n    fair.append({\\n        \\\"metric\\\": r[\\\"metric\\\"],\"}]}"
+    }
+   }
+  ],
+  "usage": {
+   "prompt_tokens": 32600,
+   "total_tokens": 32764,
+   "completion_tokens": 164,
+   "prompt_tokens_details": null,
+   "completion_tokens_details": {
+    "reasoning_tokens": 0
+   }
+  },
+  "model": "Qwen3_8-27B",
+  "latency_s": 5.477015674114227,
+  "request_wall_s": 5.47714301943779,
+  "request_attempts": [
+   {
+    "attempt": 1,
+    "outcome": "success",
+    "latency_s": 5.477,
+    "time_to_first_chunk_s": null,
+    "stream_chunks": 0
+   }
+  ],
+  "retry_count": 0,
+  "finish_reason": "stop",
+  "streamed": false,
+  "stream_chunks": 0,
+  "time_to_first_chunk_s": null
+ },
+ "error": null
+}

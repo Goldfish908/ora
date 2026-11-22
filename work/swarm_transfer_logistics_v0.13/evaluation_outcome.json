@@ -1,0 +1,85 @@
+{
+ "strict_goal_met": true,
+ "original_b0_strict_goal_met": true,
+ "repair_increment_goal_met": true,
+ "criterion_checks": {
+  "four_new_transfer_tasks": true,
+  "full_coverage": true,
+  "b2_strictly_above_b0": true,
+  "b2_strictly_above_b1": true,
+  "b0_to_b2_no_lost_true": true,
+  "b1_to_b2_no_lost_true": true,
+  "no_missing_tasks": true,
+  "b0_to_b2_no_new_phantom": true,
+  "b1_to_b2_no_new_phantom": true,
+  "no_unknown": true,
+  "b3_not_run_without_promotion": true
+ },
+ "b0_to_b2": {
+  "paired_tasks": 4,
+  "missing_tasks": [],
+  "gained_true_correct": [
+   "cycling_network_design",
+   "federated_learning_cohort_selection"
+  ],
+  "lost_true_correct": [],
+  "gained_phantom": [],
+  "removed_phantom": [],
+  "win_safe": true
+ },
+ "b1_to_b2": {
+  "paired_tasks": 4,
+  "missing_tasks": [],
+  "gained_true_correct": [
+   "cycling_network_design"
+  ],
+  "lost_true_correct": [],
+  "gained_phantom": [],
+  "removed_phantom": [],
+  "win_safe": true
+ },
+ "b0_true_correct": 0,
+ "b1_true_correct": 1,
+ "b2_true_correct": 2,
+ "b2_phantom_proxy": 0,
+ "b2_unknown": 0,
+ "b2_attempts": 7,
+ "arm_tokens": {
+  "B0_empty_specification": 382999,
+  "B1_gepa_specification": 411209,
+  "B2_gepa_residual_dag": 755497
+ },
+ "repair_tokens": 344288,
+ "accepted_repair": {
+  "task": "cycling_network_design",
+  "attempt": 1,
+  "specification_sha256": "08f95083f60719b0681fcca6cfad453b3faf28577335b466265903e2a11fe190",
+  "status": "accepted",
+  "protocol": "two_phase_model_then_solver_v1",
+  "quality": 2.0,
+  "objective": 216495021.89352,
+  "attribution": "First C2 targeted model/code repair; not a decision-space repair or memory effect"
+ },
+ "best_effort_fallback_triggered": false,
+ "decision_space_repair": {
+  "task": "cold_chain_locker_capacity_planning",
+  "accepted": false,
+  "first_attempt_errors": 75,
+  "final_status": "rejected_regression"
+ },
+ "b3": "not_run",
+ "memory_promoted": false,
+ "implementation_commit": "18fafa40c57fd7819db974eec3f944cb001841a8",
+ "validation": {
+  "pytest": "593 passed, 3 skipped",
+  "m2gen": "REGRESSION OK",
+  "path": "../verification_decision_repair_v0.13"
+ },
+ "interpretation": "Both strict conditions are met on four untouched tasks: B2 has two true-correct tasks versus zero in B0 and one in B1, with no lost true, missing tasks, new phantom or UNKNOWN. The gain comes from a C2 targeted model/code repair and safe preservation of federated. The new decision-space layer did not solve cold-chain and should not receive blanket credit. No memory evolution or SOTA claim is supported.",
+ "remaining_failures": [
+  "Cold-chain decision repair produced 75 business errors and later a rejected phantom.",
+  "Nurse recovered feasibility at quality zero, then regressed with a quicksum list error.",
+  "Federated required no repair; its existing true win was only preserved.",
+  "Witness and final official evaluation share the task evaluator and are not independent business truth."
+ ]
+}

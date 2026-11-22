@@ -1,0 +1,132 @@
+{
+ "tasks": [
+  {
+   "task": "cold_chain_locker_capacity_planning",
+   "final_status": "rejected_regression",
+   "repair_tokens": 111348,
+   "attempts": [
+    {
+     "attempt": 1,
+     "status": "rejected",
+     "error": null,
+     "protocol": "decision_space_repair_v1",
+     "specification_sha256": "08f95083f60719b0681fcca6cfad453b3faf28577335b466265903e2a11fe190",
+     "llm_calls": 1,
+     "missing_usage_calls": 0,
+     "llm_latency_seconds": 77.012083,
+     "prompt_tokens": 20634,
+     "completion_tokens": 5097,
+     "reasoning_tokens": 0,
+     "total_tokens": 25731
+    },
+    {
+     "attempt": 2,
+     "status": "rejected",
+     "error": null,
+     "protocol": "two_phase_model_then_solver_v1",
+     "specification_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+     "llm_calls": 2,
+     "missing_usage_calls": 0,
+     "llm_latency_seconds": 68.82062,
+     "prompt_tokens": 34514,
+     "completion_tokens": 5149,
+     "reasoning_tokens": 0,
+     "total_tokens": 39663
+    },
+    {
+     "attempt": 3,
+     "status": "rejected",
+     "error": null,
+     "protocol": "two_phase_model_then_solver_v1",
+     "specification_sha256": "08f95083f60719b0681fcca6cfad453b3faf28577335b466265903e2a11fe190",
+     "llm_calls": 2,
+     "missing_usage_calls": 0,
+     "llm_latency_seconds": 81.460779,
+     "prompt_tokens": 40312,
+     "completion_tokens": 5642,
+     "reasoning_tokens": 0,
+     "total_tokens": 45954
+    }
+   ]
+  },
+  {
+   "task": "cycling_network_design",
+   "final_status": "accepted",
+   "repair_tokens": 82344,
+   "attempts": [
+    {
+     "attempt": 1,
+     "status": "accepted",
+     "error": null,
+     "protocol": "two_phase_model_then_solver_v1",
+     "specification_sha256": "08f95083f60719b0681fcca6cfad453b3faf28577335b466265903e2a11fe190",
+     "llm_calls": 2,
+     "missing_usage_calls": 0,
+     "llm_latency_seconds": 117.340756,
+     "prompt_tokens": 74216,
+     "completion_tokens": 8128,
+     "reasoning_tokens": 0,
+     "total_tokens": 82344
+    }
+   ]
+  },
+  {
+   "task": "federated_learning_cohort_selection",
+   "final_status": "preserved_win",
+   "repair_tokens": 0,
+   "attempts": []
+  },
+  {
+   "task": "nurse_rostering",
+   "final_status": "rejected_regression",
+   "repair_tokens": 150596,
+   "attempts": [
+    {
+     "attempt": 1,
+     "status": "rejected",
+     "error": null,
+     "protocol": "unique_exact_runtime_patch_v1",
+     "specification_sha256": "08f95083f60719b0681fcca6cfad453b3faf28577335b466265903e2a11fe190",
+     "llm_calls": 1,
+     "missing_usage_calls": 0,
+     "llm_latency_seconds": 23.497144,
+     "prompt_tokens": 32875,
+     "completion_tokens": 1171,
+     "reasoning_tokens": 0,
+     "total_tokens": 34046
+    },
+    {
+     "attempt": 2,
+     "status": "partial_progress",
+     "error": null,
+     "protocol": "unique_exact_runtime_patch_v1",
+     "specification_sha256": "08f95083f60719b0681fcca6cfad453b3faf28577335b466265903e2a11fe190",
+     "llm_calls": 1,
+     "missing_usage_calls": 0,
+     "llm_latency_seconds": 5.477143,
+     "prompt_tokens": 32600,
+     "completion_tokens": 164,
+     "reasoning_tokens": 0,
+     "total_tokens": 32764
+    },
+    {
+     "attempt": 3,
+     "status": "rejected",
+     "error": null,
+     "protocol": "two_phase_model_then_solver_v1",
+     "specification_sha256": "08f95083f60719b0681fcca6cfad453b3faf28577335b466265903e2a11fe190",
+     "llm_calls": 2,
+     "missing_usage_calls": 0,
+     "llm_latency_seconds": 114.219498,
+     "prompt_tokens": 74882,
+     "completion_tokens": 8904,
+     "reasoning_tokens": 0,
+     "total_tokens": 83786
+    }
+   ]
+  }
+ ],
+ "total_repair_tokens": 344288,
+ "new_true_correct_over_b1": 1,
+ "note": "Recomputed from saved generation logs. Cycling used C2 two-phase model/code repair; cold-chain decision-space repair failed."
+}

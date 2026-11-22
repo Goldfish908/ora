@@ -1,0 +1,46 @@
+{
+ "files": {
+  "ora_agent/llm.py": "ced54d7b87414e73e0ed7c572cba9f1118c9f850b67516d5b1f9834c9555a1d9",
+  "ora_agent/cleanroom.py": "c33b21414dc230fb1862cbfdefb42d4652759236af9401f77d8f10c0bd2ad2a5",
+  "ora_agent/oragentbench.py": "abf12d78e3067a85a126be61e8dab09615f63bb8ebb52b77ae06ead416714f21",
+  "ora_agent/api_guard.py": "5b5454dcfcfda5d21107aa33aca694e50a616d071fc6e831e1f6506c12b49ceb",
+  "ora_agent/cleanroom_witness.py": "549d7b5b5a3a24de0c83bc443aa9f6d8aaae8621bd05c7733d65b38fb6ce5049",
+  "ora_agent/cleanroom_spec_audit.py": "c0551fbd49d8db6832714de221f1332e207705f7fcf21c1db730331951ad4097",
+  "scripts/cleanroom_experiment.py": "cbedbc70322ff3b7f4e937e1b075eaa7ec9d38032d3d1c713ee9a80eb028dc3a",
+  "scripts/cleanroom_repair.py": "13443711cf0c7ba8c3c5120f6e979af065751738f7f6163a70d0cbb52447caee",
+  "scripts/cleanroom_memory.py": "12afa65d7c0c5002f99ef86d117c0748066311803d21f82cf169642313f84f7e"
+ },
+ "tasks_sha256": "0b56733d66f1959641bdd6feea90a63b701754cf205d845d68f4bac4965d9400",
+ "model": "Qwen3_8-27B",
+ "gepa_commit": "ce5b0d6e3d6af6c6dbec6de2c54536bbb961d309",
+ "generation": {
+  "max_tokens": 24576,
+  "reasoning_effort": "low",
+  "disable_thinking": true,
+  "model_reasoning_effort": "low",
+  "solver_reasoning_effort": "low",
+  "model_disable_thinking": true,
+  "solver_disable_thinking": true,
+  "model_max_tokens": 4096,
+  "model_max_words": 1800,
+  "temperature": 0.6,
+  "protocol": "two_phase_model_then_solver_v1",
+  "stream": false
+ },
+ "arguments": {
+  "tasks": "/home/hewj13/wm/ora/configs/cleanroom_swarm_transfer_logistics_v0.13.json",
+  "run_dir": "/home/hewj13/wm/ora/work/swarm_transfer_logistics_v0.13/B1",
+  "gepa_result": "/home/hewj13/wm/ora/work/cleanroom_gepa_dev_feedback_v0.7.1/gepa_result.json",
+  "memory": null,
+  "candidate_idx": 2,
+  "candidate_sha256": "08f95083f60719b0681fcca6cfad453b3faf28577335b466265903e2a11fe190",
+  "spec_id": null,
+  "workers": 2,
+  "seed": 0,
+  "llm_timeout": 600.0,
+  "api_guard": true,
+  "resume": false,
+  "allow_selection_replay": false,
+  "compare_to": "/home/hewj13/wm/ora/work/swarm_transfer_logistics_v0.13/B0/run.json"
+ }
+}

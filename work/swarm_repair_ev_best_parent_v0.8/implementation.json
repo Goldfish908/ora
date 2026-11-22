@@ -1,0 +1,27 @@
+{
+ "files": {
+  "ora_agent/cleanroom.py": "c33b21414dc230fb1862cbfdefb42d4652759236af9401f77d8f10c0bd2ad2a5",
+  "ora_agent/cleanroom_witness.py": "41d64f345524d56fb366ed3a160022e8a834414d883302a9c26aa5506b5f1ba5",
+  "ora_agent/cleanroom_analysis.py": "f83f9035757136e00af167467d9ea97dc448740cce8fef47abae779a225d770b",
+  "ora_agent/oragentbench.py": "c44b984fa04b1c0344d5e54a3625797fd986eb01d14f193c5b5d8a3905ceb78d",
+  "ora_agent/api_guard.py": "5455db11f1c623faacfb3a39cbea4b622d77d76246e42de9f9f5afbff4aa46b3",
+  "scripts/cleanroom_repair.py": "13443711cf0c7ba8c3c5120f6e979af065751738f7f6163a70d0cbb52447caee"
+ },
+ "tasks_sha256": "ef1888357b1a1a22fb159795054c65ffc4f0e723f2e64c43e7aed7611dda3123",
+ "source_record_sha256": "71e484857a575217e0f49e8e743acdf68327b0af526450722b6037d1a90b41c2",
+ "spec_source_sha256": "12798e966269f171f2de9ace65706bd95517f9272a0e81da8d177d5a15240d85",
+ "model": "Qwen3_8-27B",
+ "arguments": {
+  "mode": "repair",
+  "tasks": "configs/cleanroom_swarm_repair_ev_v0.8.json",
+  "run_dir": "work/swarm_repair_ev_best_parent_v0.8",
+  "record": "work/cleanroom_expanded_transfer_suite_v0.7.1/B1/rollouts/08f95083f60719b0681fcca6cfad453b3faf28577335b466265903e2a11fe190/ev_battery_recycling_network/attempt_0/record.json",
+  "spec_source": "work/cleanroom_gepa_dev_feedback_v0.7.1/gepa_result.json",
+  "spec_id": null,
+  "seed": 0,
+  "max_attempts": 3,
+  "llm_timeout": 600.0,
+  "witness_source": "work/cleanroom_dag_repair_smoke_v0.3/witness",
+  "api_guard": true
+ }
+}

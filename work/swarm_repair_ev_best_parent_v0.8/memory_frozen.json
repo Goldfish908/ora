@@ -1,0 +1,169 @@
+{
+ "frozen": true,
+ "events": [
+  {
+   "event": "check_hint_only",
+   "check_id": "execution_contract",
+   "at": "2026-11-22T05:24:44.559278+00:00"
+  },
+  {
+   "event": "check_veto_enabled",
+   "check_id": "execution_contract",
+   "at": "2026-11-22T05:24:44.559754+00:00"
+  },
+  {
+   "event": "check_hint_only",
+   "check_id": "manufacturing_official_task_pass",
+   "at": "2026-11-22T05:24:44.559796+00:00"
+  },
+  {
+   "event": "check_veto_enabled",
+   "check_id": "manufacturing_official_task_pass",
+   "at": "2026-11-22T05:25:18.527727+00:00"
+  },
+  {
+   "event": "memory_frozen",
+   "at": "2026-11-22T05:25:18.530585+00:00"
+  }
+ ],
+ "specifications": [],
+ "checks": [
+  {
+   "check_id": "execution_contract",
+   "scope": {
+    "dataset": "oragentbench"
+   },
+   "source_quote": "required solution file",
+   "status": "veto_enabled",
+   "code_sha256": "877f7e17220cd750f3f7205d5402b5c86b5e36b0a1bb8e4f8967859aa49ab008",
+   "audits": [
+    {
+     "records": [
+      {
+       "case_id": "exec_clean_0",
+       "expected": "pass",
+       "observed": "pass"
+      },
+      {
+       "case_id": "exec_wrong_0",
+       "expected": "fail",
+       "observed": "fail"
+      },
+      {
+       "case_id": "exec_clean_1",
+       "expected": "pass",
+       "observed": "pass"
+      },
+      {
+       "case_id": "exec_wrong_1",
+       "expected": "fail",
+       "observed": "fail"
+      },
+      {
+       "case_id": "exec_clean_2",
+       "expected": "pass",
+       "observed": "pass"
+      },
+      {
+       "case_id": "exec_wrong_2",
+       "expected": "fail",
+       "observed": "fail"
+      }
+     ],
+     "n_clean": 3,
+     "n_wrong": 3,
+     "precision": 1.0,
+     "detection": 1.0,
+     "unknown": 0,
+     "passed": true,
+     "reasons": [],
+     "at": "2026-11-22T05:24:44.559744+00:00"
+    }
+   ]
+  },
+  {
+   "check_id": "manufacturing_official_task_pass",
+   "scope": {
+    "dataset": "oragentbench",
+    "domain": "manufacturing"
+   },
+   "source_quote": "required solution file",
+   "status": "veto_enabled",
+   "code_sha256": "4b37760e73ea2761035c1c84b912d73603af395a669d098bcf67899890f59a55",
+   "audits": [
+    {
+     "records": [
+      {
+       "case_id": "additive_microfactory_order_planning:clean",
+       "expected": "pass",
+       "observed": "pass"
+      },
+      {
+       "case_id": "additive_microfactory_order_planning:missing_solution",
+       "expected": "fail",
+       "observed": "fail"
+      },
+      {
+       "case_id": "additive_microfactory_order_planning:invalid_schema",
+       "expected": "fail",
+       "observed": "fail"
+      },
+      {
+       "case_id": "additive_microfactory_order_planning:empty_solution",
+       "expected": "fail",
+       "observed": "fail"
+      },
+      {
+       "case_id": "industrial_supply_planning:clean",
+       "expected": "pass",
+       "observed": "pass"
+      },
+      {
+       "case_id": "industrial_supply_planning:missing_solution",
+       "expected": "fail",
+       "observed": "fail"
+      },
+      {
+       "case_id": "industrial_supply_planning:invalid_schema",
+       "expected": "fail",
+       "observed": "fail"
+      },
+      {
+       "case_id": "industrial_supply_planning:empty_solution",
+       "expected": "fail",
+       "observed": "fail"
+      },
+      {
+       "case_id": "second_life_battery_pack_assembly:clean",
+       "expected": "pass",
+       "observed": "pass"
+      },
+      {
+       "case_id": "second_life_battery_pack_assembly:missing_solution",
+       "expected": "fail",
+       "observed": "fail"
+      },
+      {
+       "case_id": "second_life_battery_pack_assembly:invalid_schema",
+       "expected": "fail",
+       "observed": "fail"
+      },
+      {
+       "case_id": "second_life_battery_pack_assembly:empty_solution",
+       "expected": "fail",
+       "observed": "fail"
+      }
+     ],
+     "n_clean": 3,
+     "n_wrong": 9,
+     "precision": 1.0,
+     "detection": 1.0,
+     "unknown": 0,
+     "passed": true,
+     "reasons": [],
+     "at": "2026-11-22T05:25:18.527705+00:00"
+    }
+   ]
+  }
+ ]
+}

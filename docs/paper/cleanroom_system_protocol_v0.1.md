@@ -344,3 +344,12 @@ EV 第一次修复消除了三个 outlet 容量错误，只剩 hydromet share �
 ### 最终验证
 
 最终交付版本执行 `PYTHONPATH="$PWD" /home/hewj13/planbb/miniforge3/envs/rl/bin/python -m pytest -q tests --ignore=tests/test_m2gen.py`，结果为 **558 passed、3 skipped**；`python3 m2gen/run_regression.py` 返回 `REGRESSION OK`。日志为 `work/cleanroom_final_validation_v0.7.1/pytest.log` 和 `m2gen.log`，SHA-256 及关键结果哈希见同目录 `summary.json`。
+
+
+## v0.8 性能优先迭代：best-parent 首轮证据
+
+`6b9d433` 将中间修复搜索改为证据驱动的 best-parent 策略：执行恢复、业务可行、幻影/UNKNOWN减少、错误数减少或质量提升才算进展；任何对应退化都不再沿该子节点继续，而是保留最佳父节点并尝试后续种子。接受分支也记录 `evidence_transition`。最终仍只接受通过门禁的解，未通过时回退到直接基线。
+
+真实 EV 工程 replay `work/swarm_repair_ev_best_parent_v0.8` 重现第一次仅剩 hydromet 错误、第二次重新出现市场供需错误的序列。第三次的 `parent_id` 为 `root/repair:1`，而非第二次的 `root/repair:1/repair:2`，证明退化后确实回到最佳父节点。三次转换为 `progress → regression → regression`，最终 `true_correct=false、win_safe=true、attempts=3`，成本为 8 次 LLM 调用、227,071 tokens。全量回归为 **560 passed、3 skipped**。
+
+这次 replay 是旧 transfer 上的工程验证，不是独立性能证据。它证明控制器结构修复有效，但没有解决语义生成错误；最终性能仍须在全新 transfer 上评价。

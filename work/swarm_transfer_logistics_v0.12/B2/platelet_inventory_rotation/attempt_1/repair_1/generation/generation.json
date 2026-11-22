@@ -1,0 +1,54 @@
+{
+ "task": "platelet_inventory_rotation",
+ "specification_sha256": "08f95083f60719b0681fcca6cfad453b3faf28577335b466265903e2a11fe190",
+ "repair": true,
+ "request": {
+  "solver_max_tokens": 8192,
+  "solver_reasoning_effort": "low",
+  "solver_disable_thinking": true,
+  "temperature": 0.6,
+  "stream": false,
+  "protocol": "unique_exact_runtime_patch_v1",
+  "parent_solver_sha256": "44b114077113f4166f86c4c03ef3572892d68eea163bb3e7ba7b05ddc6f6327f"
+ },
+ "response": {
+  "content": "",
+  "tool_calls": [
+   {
+    "id": "chatcmpl-tool-a2e77063a96cd87a",
+    "type": "function",
+    "function": {
+     "name": "submit_runtime_patch",
+     "arguments": "{\"edits\": [{\"new_string\": \"for h in H:\\n    for d in D:\\n        Dm = demand.get((h, day_names[d]), 0.0)\\n        msr = min_service.get((h, day_names[d]), 0.0)\", \"old_string\": \"for h in H:\\n    for d in D:\\n        Dm = demand[(h, d)]\\n        msr = min_service[(h, d)]\"}]}"
+    }
+   }
+  ],
+  "usage": {
+   "prompt_tokens": 11485,
+   "total_tokens": 11613,
+   "completion_tokens": 128,
+   "prompt_tokens_details": null,
+   "completion_tokens_details": {
+    "reasoning_tokens": 0
+   }
+  },
+  "model": "Qwen3_8-27B",
+  "latency_s": 3.6733691543340683,
+  "request_wall_s": 3.673499122262001,
+  "request_attempts": [
+   {
+    "attempt": 1,
+    "outcome": "success",
+    "latency_s": 3.673,
+    "time_to_first_chunk_s": null,
+    "stream_chunks": 0
+   }
+  ],
+  "retry_count": 0,
+  "finish_reason": "stop",
+  "streamed": false,
+  "stream_chunks": 0,
+  "time_to_first_chunk_s": null
+ },
+ "error": "ValueError: runtime patch old_string must match exactly once"
+}

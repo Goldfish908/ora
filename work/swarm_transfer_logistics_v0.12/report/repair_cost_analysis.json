@@ -1,0 +1,146 @@
+{
+ "tasks": [
+  {
+   "task": "platelet_inventory_rotation",
+   "final_status": "rejected_regression",
+   "repair_tokens": 35649,
+   "attempts": [
+    {
+     "attempt": 1,
+     "status": "repair_failed",
+     "error": "RuntimeError: ValueError: runtime patch old_string must match exactly once",
+     "protocol": "unique_exact_runtime_patch_v1",
+     "specification_sha256": null,
+     "llm_calls": 1,
+     "missing_usage_calls": 0,
+     "llm_latency_seconds": 3.673499,
+     "prompt_tokens": 11485,
+     "completion_tokens": 128,
+     "reasoning_tokens": 0,
+     "total_tokens": 11613
+    },
+    {
+     "attempt": 2,
+     "status": "rejected",
+     "error": null,
+     "protocol": "unique_exact_runtime_patch_v1",
+     "specification_sha256": null,
+     "llm_calls": 1,
+     "missing_usage_calls": 0,
+     "llm_latency_seconds": 12.350368,
+     "prompt_tokens": 11505,
+     "completion_tokens": 815,
+     "reasoning_tokens": 0,
+     "total_tokens": 12320
+    },
+    {
+     "attempt": 3,
+     "status": "partial_progress",
+     "error": null,
+     "protocol": "unique_exact_runtime_patch_v1",
+     "specification_sha256": null,
+     "llm_calls": 1,
+     "missing_usage_calls": 0,
+     "llm_latency_seconds": 3.271241,
+     "prompt_tokens": 11640,
+     "completion_tokens": 76,
+     "reasoning_tokens": 0,
+     "total_tokens": 11716
+    }
+   ]
+  },
+  {
+   "task": "retail_media_campaign_allocation",
+   "final_status": "accepted",
+   "repair_tokens": 31735,
+   "attempts": [
+    {
+     "attempt": 1,
+     "status": "rejected",
+     "error": null,
+     "protocol": "unique_exact_runtime_patch_v1",
+     "specification_sha256": null,
+     "llm_calls": 1,
+     "missing_usage_calls": 0,
+     "llm_latency_seconds": 6.496454,
+     "prompt_tokens": 15038,
+     "completion_tokens": 276,
+     "reasoning_tokens": 0,
+     "total_tokens": 15314
+    },
+    {
+     "attempt": 2,
+     "status": "accepted",
+     "error": null,
+     "protocol": "unique_exact_runtime_patch_v1",
+     "specification_sha256": null,
+     "llm_calls": 1,
+     "missing_usage_calls": 0,
+     "llm_latency_seconds": 6.636112,
+     "prompt_tokens": 16180,
+     "completion_tokens": 241,
+     "reasoning_tokens": 0,
+     "total_tokens": 16421
+    }
+   ]
+  },
+  {
+   "task": "stochastic_surgery_capacity_planning",
+   "final_status": "rejected_regression",
+   "repair_tokens": 131450,
+   "attempts": [
+    {
+     "attempt": 1,
+     "status": "partial_progress",
+     "error": null,
+     "protocol": "two_phase_model_then_solver_v1",
+     "specification_sha256": null,
+     "llm_calls": 2,
+     "missing_usage_calls": 0,
+     "llm_latency_seconds": 135.975282,
+     "prompt_tokens": 51025,
+     "completion_tokens": 10210,
+     "reasoning_tokens": 0,
+     "total_tokens": 61235
+    },
+    {
+     "attempt": 2,
+     "status": "repair_failed",
+     "error": "ValueError: incomplete_artifact: placeholder marker found",
+     "protocol": "two_phase_model_then_solver_v1",
+     "specification_sha256": null,
+     "llm_calls": 2,
+     "missing_usage_calls": 0,
+     "llm_latency_seconds": 147.467686,
+     "prompt_tokens": 20657,
+     "completion_tokens": 11029,
+     "reasoning_tokens": 0,
+     "total_tokens": 31686
+    },
+    {
+     "attempt": 3,
+     "status": "rejected",
+     "error": null,
+     "protocol": "two_phase_model_then_solver_v1",
+     "specification_sha256": null,
+     "llm_calls": 2,
+     "missing_usage_calls": 0,
+     "llm_latency_seconds": 154.797359,
+     "prompt_tokens": 27111,
+     "completion_tokens": 11418,
+     "reasoning_tokens": 0,
+     "total_tokens": 38529
+    }
+   ]
+  },
+  {
+   "task": "vertical_farm_harvest_energy_planning",
+   "final_status": "preserved_win",
+   "repair_tokens": 0,
+   "attempts": []
+  }
+ ],
+ "total_repair_tokens": 198834,
+ "new_true_correct_over_b1": 1,
+ "note": "Recomputed from saved generation logs. The accepted retail repair used C2, not the empty-specification branch."
+}

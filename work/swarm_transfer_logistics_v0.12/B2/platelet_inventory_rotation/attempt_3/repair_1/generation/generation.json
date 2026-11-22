@@ -1,0 +1,54 @@
+{
+ "task": "platelet_inventory_rotation",
+ "specification_sha256": "08f95083f60719b0681fcca6cfad453b3faf28577335b466265903e2a11fe190",
+ "repair": true,
+ "request": {
+  "solver_max_tokens": 8192,
+  "solver_reasoning_effort": "low",
+  "solver_disable_thinking": true,
+  "temperature": 0.6,
+  "stream": false,
+  "protocol": "unique_exact_runtime_patch_v1",
+  "parent_solver_sha256": "c3d8f18262d5878e360f22eb3829c4d9eb9ea33f37629995ab34cce26cd11e24"
+ },
+ "response": {
+  "content": "",
+  "tool_calls": [
+   {
+    "id": "chatcmpl-tool-952707d6a0dfa7fd",
+    "type": "function",
+    "function": {
+     "name": "submit_runtime_patch",
+     "arguments": "{\"edits\": [{\"new_string\": \"        key = (row[\\\"hospital_id\\\"], row[\\\"day\\\"])\", \"old_string\": \"        key = (row[\\\"hospital_id\\\"], int(row[\\\"day\\\"]))\"}]}"
+    }
+   }
+  ],
+  "usage": {
+   "prompt_tokens": 11640,
+   "total_tokens": 11716,
+   "completion_tokens": 76,
+   "prompt_tokens_details": null,
+   "completion_tokens_details": {
+    "reasoning_tokens": 0
+   }
+  },
+  "model": "Qwen3_8-27B",
+  "latency_s": 3.271130219101906,
+  "request_wall_s": 3.271241456270218,
+  "request_attempts": [
+   {
+    "attempt": 1,
+    "outcome": "success",
+    "latency_s": 3.271,
+    "time_to_first_chunk_s": null,
+    "stream_chunks": 0
+   }
+  ],
+  "retry_count": 0,
+  "finish_reason": "stop",
+  "streamed": false,
+  "stream_chunks": 0,
+  "time_to_first_chunk_s": null
+ },
+ "error": null
+}

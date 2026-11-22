@@ -486,3 +486,25 @@ cell 的第一次 C2 修复其实已从原幻影变为 `feasible=true、phantom=
 该状态记为 `best_effort_fallback`，`final_accept=false`，不能称为 accepted 或真正确。业务不可行候选、UNKNOWN、执行失败、质量退化和新幻影均不得进入此回退；真正确仍只能走原有全部门禁的 `accepted`。offline 检查 `work/engineering_best_effort_cell_v0.12.json` 证明旧 cell 第一次候选符合这些条件，但只用于工程验证，不回写 v0.11 的独立结果。
 
 后续独立验收分别报告真正确变化和幻影消除，不能把 best-effort 当作 B2 相对 B1 的真正确增益。这一规则是对前述“仅最终门禁通过才替换基线”的受限补充：只有原幻影变成官方可行且非幻影时才保留较好的非正确候选，其余失败仍回退原基线。新候选池 `configs/cleanroom_oracle_logistics_v0.12.json` 在任何 Qwen 运行前准备，仍只按公开契约与 oracle/官方健康筛选。
+
+
+## v0.12 首个独立 B2-over-B1 真实修复增益
+
+v0.12 使用 surgery、platelet、retail media 和 vertical farm 四个未参与规范学习、工程调参或 memory 晋升的新任务。角色与健康证据在运行前冻结于 `configs/cleanroom_swarm_frozen_logistics_v0.12.json` 和 `work/swarm_transfer_pool/health_summary_v0.12.json`。实现为受限 best-effort 版本，B0/B1/B2 的直接生成预算和每题最多三次修复保持一致，B3 仍因无独立 memory 晋升而 `not_run`。
+
+| Arm | 覆盖 | 真正确 | 幻影 | UNKNOWN | 修复尝试 | Tokens |
+|---|---:|---:|---:|---:|---:|---:|
+| B0 | 4/4 | 2 | 0 | 0 | 0 | 102,766 |
+| B1 | 4/4 | 1 | 0 | 0 | 0 | 125,938 |
+| B2 | 4/4 | 2 | 0 | 0 | 8 | 324,772 |
+| B3 | not_run | — | — | — | — | — |
+
+B1→B2 新增 `retail_media_campaign_allocation` 一个真正确，没有 lost true、missing、新增幻影或 UNKNOWN，达到本阶段修复增量目标。retail 在第二次 **C2 targeted repair** 中被接受，`feasible=true、quality=1.9999999999997138、objective=12708.705645440003`，不是空规范分支的结果。vertical farm 为 `preserved_win`，已有正确解没有被修坏。
+
+但 B0 和 B2 都是 2/4 真正确，且 retail 在 B0 本来就正确、B1 生成失败后被恢复。因此这是**修复恢复一个正确解**，不是 B2 超过 B0，也不是 SOTA 或泛化结论。`evaluation_outcome.json` 分别保存 `strict_goal_met=true`（B2>B1 的修复目标）和 `original_b0_strict_goal_met=false`（未超过 B0）。
+
+其他失败不能被正结果掩盖：platelet 第三次产生幻影并被拒绝回退；surgery 第一次得到官方可行但 quality=0 的候选，第二次空规范产生被拒绝的占位制品，第三次又出现 `NameError: assign`，最终仍未通过。best-effort 回退本批没有触发，因此其独立效果尚未验证，不能把 retail 的 accepted 归因给 best-effort。
+
+全部八次修复的增量为 198,834 tokens。retail 的两次成功路径增量为 31,735 tokens；platelet 三次失败为 35,649，surgery 三次失败为 131,450，vertical 不额外修复。成功一例不说明统一三轮预算已最优，也不说明所有失败族均已解决。
+
+证据入口：`work/swarm_transfer_logistics_v0.12/report/report.md`、`batch_summary.json`、`b0_b2_comparison.png`、`repair_cost_analysis.json`、`evaluation_outcome.json`、`implementation_snapshot.json` 和 `driver.log`。全量回归为 **583 passed、3 skipped**，m2gen 为 `REGRESSION OK`，日志见 `work/verification_v0.12/`。Witness 与官方评价器同源，仍不是独立业务真值；memory 进化也没有得到证明。

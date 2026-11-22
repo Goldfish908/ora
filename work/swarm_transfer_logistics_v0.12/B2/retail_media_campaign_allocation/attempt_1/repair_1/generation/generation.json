@@ -1,0 +1,54 @@
+{
+ "task": "retail_media_campaign_allocation",
+ "specification_sha256": "08f95083f60719b0681fcca6cfad453b3faf28577335b466265903e2a11fe190",
+ "repair": true,
+ "request": {
+  "solver_max_tokens": 8192,
+  "solver_reasoning_effort": "low",
+  "solver_disable_thinking": true,
+  "temperature": 0.6,
+  "stream": false,
+  "protocol": "unique_exact_runtime_patch_v1",
+  "parent_solver_sha256": "167c7398368d243ee05d28a88ccf88dd0dab7c34d3b7263c9203843ccbf84ab2"
+ },
+ "response": {
+  "content": "",
+  "tool_calls": [
+   {
+    "id": "chatcmpl-tool-af30b160b38a614b",
+    "type": "function",
+    "function": {
+     "name": "submit_runtime_patch",
+     "arguments": "{\"edits\": [{\"new_string\": \"            for (c, k), v in camp_tot.items():\\n                if isinstance(k, str) and k in channels:\\n                    s = eligible[(c, k)][\\\"share\\\"]\\n                    if v > s * camp_tot[c] + 1e-4:\\n                        ok = False\\n                        print(f\\\"VIOLATION share {c} {k}: {v} > {s}*{camp_tot[c]}\\\")\\n            print(\\\"Validation:\\\", \\\"PASS\\\" if ok else \\\"FAIL\\\")\\n        else:\\n            print(\\\"No solution found.\\\")\", \"old_string\": \"            for (c, k), v in camp_tot.items():\\n                if isinstance(k, str) and k in channels:\\n                    s = eligible[(c, k)][\\\"share\\\"]\\n                    if v > s * camp_tot[c] + 1e-4:\\n                        ok = False\\n                        print(f\\\"VIOLATION share {c} {k}: {v} > {s}*{camp_tot[c]}\\\")\\n            print(\\\"Validation:\\\", \\\"PASS\\\" if ok else \\\"FAIL\\\")\"}]}"
+    }
+   }
+  ],
+  "usage": {
+   "prompt_tokens": 15038,
+   "total_tokens": 15314,
+   "completion_tokens": 276,
+   "prompt_tokens_details": null,
+   "completion_tokens_details": {
+    "reasoning_tokens": 0
+   }
+  },
+  "model": "Qwen3_8-27B",
+  "latency_s": 6.496321022510529,
+  "request_wall_s": 6.496453560888767,
+  "request_attempts": [
+   {
+    "attempt": 1,
+    "outcome": "success",
+    "latency_s": 6.496,
+    "time_to_first_chunk_s": null,
+    "stream_chunks": 0
+   }
+  ],
+  "retry_count": 0,
+  "finish_reason": "stop",
+  "streamed": false,
+  "stream_chunks": 0,
+  "time_to_first_chunk_s": null
+ },
+ "error": null
+}

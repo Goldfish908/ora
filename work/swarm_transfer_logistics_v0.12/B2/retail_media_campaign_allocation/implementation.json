@@ -1,0 +1,7 @@
+{
+ "task": "retail_media_campaign_allocation",
+ "specification_sha256": "08f95083f60719b0681fcca6cfad453b3faf28577335b466265903e2a11fe190",
+ "memory_source_sha256": "12798e966269f171f2de9ace65706bd95517f9272a0e81da8d177d5a15240d85",
+ "model": "Qwen3_8-27B",
+ "max_attempts": 3
+}

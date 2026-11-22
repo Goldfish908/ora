@@ -1,0 +1,46 @@
+{
+ "candidate": {
+  "candidate_idx": 2,
+  "candidate_sha256": "08f95083f60719b0681fcca6cfad453b3faf28577335b466265903e2a11fe190",
+  "parents": [
+   1
+  ],
+  "official_proxy_mean": 0.0,
+  "n": 1,
+  "executable": 0,
+  "feasible": 0,
+  "proxy_match": 0,
+  "true_correct": 0,
+  "phantom_proxy": 0,
+  "unknown": 0,
+  "generation_errors": 0,
+  "mean_quality": 0.0,
+  "dev_proxy_mean": 0.6666666666666666,
+  "selection_rule": "transfer_proxy_desc_dev_proxy_desc_candidate_idx_asc"
+ },
+ "memory_promoted": false,
+ "memory_review": {
+  "specification_status": "not_run",
+  "independent_replay": false,
+  "review_skipped_by_protocol": true
+ },
+ "memory_source": null,
+ "b0": "/home/hewj13/wm/ora/work/swarm_transfer_logistics_v0.12/B0/run.json",
+ "b1": "/home/hewj13/wm/ora/work/swarm_transfer_logistics_v0.12/B1/run.json",
+ "b2_repairs": [
+  "/home/hewj13/wm/ora/work/swarm_transfer_logistics_v0.12/B2/stochastic_surgery_capacity_planning/repair_result.json",
+  "/home/hewj13/wm/ora/work/swarm_transfer_logistics_v0.12/B2/platelet_inventory_rotation/repair_result.json",
+  "/home/hewj13/wm/ora/work/swarm_transfer_logistics_v0.12/B2/retail_media_campaign_allocation/repair_result.json",
+  "/home/hewj13/wm/ora/work/swarm_transfer_logistics_v0.12/B2/vertical_farm_harvest_energy_planning/repair_result.json"
+ ],
+ "b3": "not_run",
+ "b3_repairs": [],
+ "b3_authorized_tasks": [],
+ "b3_not_run_tasks": [
+  "stochastic_surgery_capacity_planning",
+  "platelet_inventory_rotation",
+  "retail_media_campaign_allocation",
+  "vertical_farm_harvest_energy_planning"
+ ],
+ "report": "/home/hewj13/wm/ora/work/swarm_transfer_logistics_v0.12/report/batch_summary.json"
+}

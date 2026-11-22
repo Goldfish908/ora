@@ -1,0 +1,70 @@
+{
+ "strict_goal_met": true,
+ "criterion_checks": {
+  "four_new_transfer_tasks": true,
+  "full_coverage": true,
+  "b2_strictly_above_b1": true,
+  "no_lost_true": true,
+  "no_missing_tasks": true,
+  "no_gained_phantom": true,
+  "no_unknown": true,
+  "b3_not_run_without_promotion": true
+ },
+ "original_b0_strict_goal_met": false,
+ "b0_to_b2": {
+  "paired_tasks": 4,
+  "missing_tasks": [],
+  "gained_true_correct": [],
+  "lost_true_correct": [],
+  "gained_phantom": [],
+  "removed_phantom": [],
+  "win_safe": true
+ },
+ "b1_to_b2": {
+  "paired_tasks": 4,
+  "missing_tasks": [],
+  "gained_true_correct": [
+   "retail_media_campaign_allocation"
+  ],
+  "lost_true_correct": [],
+  "gained_phantom": [],
+  "removed_phantom": [],
+  "win_safe": true
+ },
+ "b0_true_correct": 2,
+ "b1_true_correct": 1,
+ "b2_true_correct": 2,
+ "b2_phantom_proxy": 0,
+ "b2_unknown": 0,
+ "b2_attempts": 8,
+ "arm_tokens": {
+  "B0_empty_specification": 102766,
+  "B1_gepa_specification": 125938,
+  "B2_gepa_residual_dag": 324772
+ },
+ "repair_tokens": 198834,
+ "accepted_repair": {
+  "task": "retail_media_campaign_allocation",
+  "attempt": 2,
+  "specification_sha256": "08f95083f60719b0681fcca6cfad453b3faf28577335b466265903e2a11fe190",
+  "status": "accepted",
+  "quality": 1.9999999999997138,
+  "objective": 12708.705645440003,
+  "attribution": "Second C2 targeted repair, not the empty-specification branch"
+ },
+ "best_effort_fallback_triggered": false,
+ "b3": "not_run",
+ "memory_promoted": false,
+ "implementation_commit": "8eb3a1707ba0afac19dc52f88e075d23e0775542",
+ "validation": {
+  "pytest": "583 passed, 3 skipped",
+  "m2gen": "REGRESSION OK",
+  "path": "../verification_v0.12"
+ },
+ "interpretation": "First independent B2-over-B1 true repair gain in this study: retail is recovered from failure to true_correct with quality approximately 2.0. B0 and B2 are tied at two true tasks, so this is not an improvement over B0 or SOTA. No memory effect and no independent best-effort fallback trigger is established.",
+ "remaining_failures": [
+  "Platelet produced a rejected phantom in the third attempt and was rolled back.",
+  "Surgery had one feasible quality-zero candidate, a rejected empty-specification placeholder, and a later runtime regression.",
+  "Witness and final official evaluation share the task evaluator and are not independent business truth."
+ ]
+}

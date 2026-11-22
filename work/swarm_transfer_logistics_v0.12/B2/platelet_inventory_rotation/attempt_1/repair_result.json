@@ -1,0 +1,26 @@
+{
+ "status": "repair_failed",
+ "phase": "generation",
+ "error": "RuntimeError: ValueError: runtime patch old_string must match exactly once",
+ "before": {
+  "execution_contract": "fail",
+  "logistics_official_task_pass": "fail"
+ },
+ "dag": {
+  "nodes": [
+   {
+    "node_id": "root",
+    "parent_id": null,
+    "code_sha256": "44b114077113f4166f86c4c03ef3572892d68eea163bb3e7ba7b05ddc6f6327f",
+    "target_check": null,
+    "before": {},
+    "after": {
+     "execution_contract": "fail",
+     "logistics_official_task_pass": "fail"
+    },
+    "accepted": true,
+    "reasons": []
+   }
+  ]
+ }
+}

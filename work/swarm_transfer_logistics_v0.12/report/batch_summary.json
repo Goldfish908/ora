@@ -1,0 +1,2189 @@
+{
+ "expected_tasks": [
+  "platelet_inventory_rotation",
+  "retail_media_campaign_allocation",
+  "stochastic_surgery_capacity_planning",
+  "vertical_farm_harvest_energy_planning"
+ ],
+ "arms": [
+  {
+   "arm": "B0_empty_specification",
+   "n_expected": 4,
+   "direct": {
+    "n": 4,
+    "expected_tasks": 4,
+    "coverage": 1.0,
+    "feasible": 2,
+    "proxy_match": 2,
+    "true_correct": 2,
+    "phantom_proxy": 0,
+    "unknown": 0,
+    "unresolved_non_phantom": 2,
+    "mean_quality": 0.999999999527329,
+    "failure_counts": {
+     "execution_error": 1,
+     "incomplete_artifact": 1,
+     "true_correct": 2
+    },
+    "api_guard_modified": 1,
+    "cost": {
+     "llm_calls": 8,
+     "missing_usage_calls": 0,
+     "llm_latency_seconds": 358.874988,
+     "prompt_tokens": 77329,
+     "completion_tokens": 25437,
+     "reasoning_tokens": 0,
+     "total_tokens": 102766,
+     "solver_execution_time": {
+      "recorded_calls": 3,
+      "missing_calls": 1,
+      "seconds": 58.560227
+     },
+     "official_evaluation_time": {
+      "recorded_calls": 4,
+      "missing_calls": 0,
+      "seconds": 69.397992
+     }
+    },
+    "tasks": [
+     {
+      "task": "platelet_inventory_rotation",
+      "split": "transfer",
+      "candidate_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "attempt": 0,
+      "feasible": false,
+      "quality": 0.0,
+      "true_correct": false,
+      "objective": null,
+      "proxy_match": false,
+      "phantom_proxy": false,
+      "failure_class": "execution_error",
+      "execution_return_code": 1,
+      "generation_error": null,
+      "cost": {
+       "llm_calls": 2,
+       "missing_usage_calls": 0,
+       "llm_latency_seconds": 75.458099,
+       "prompt_tokens": 8697,
+       "completion_tokens": 5726,
+       "reasoning_tokens": 0,
+       "total_tokens": 14423
+      },
+      "execution_wall_seconds": 24.14048,
+      "evaluation_wall_seconds": 19.201912,
+      "api_guard_repairs": 1,
+      "public_contract_repairs": 0,
+      "stderr_tail": "Warning: unrecognized optimization sense: min"
+     },
+     {
+      "task": "retail_media_campaign_allocation",
+      "split": "transfer",
+      "candidate_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "attempt": 0,
+      "feasible": true,
+      "quality": 1.9999999999997138,
+      "true_correct": true,
+      "objective": 12708.705645440003,
+      "proxy_match": true,
+      "phantom_proxy": false,
+      "failure_class": "true_correct",
+      "execution_return_code": 0,
+      "generation_error": null,
+      "cost": {
+       "llm_calls": 2,
+       "missing_usage_calls": 0,
+       "llm_latency_seconds": 66.929219,
+       "prompt_tokens": 15875,
+       "completion_tokens": 4516,
+       "reasoning_tokens": 0,
+       "total_tokens": 20391
+      },
+      "execution_wall_seconds": 25.019395,
+      "evaluation_wall_seconds": 25.473273,
+      "api_guard_repairs": 0,
+      "public_contract_repairs": 0,
+      "stderr_tail": null
+     },
+     {
+      "task": "stochastic_surgery_capacity_planning",
+      "split": "transfer",
+      "candidate_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "attempt": 0,
+      "feasible": false,
+      "quality": 0.0,
+      "true_correct": false,
+      "objective": null,
+      "proxy_match": false,
+      "phantom_proxy": false,
+      "failure_class": "incomplete_artifact",
+      "execution_return_code": -1,
+      "generation_error": "ValueError: incomplete_artifact: no solver optimize call",
+      "cost": {
+       "llm_calls": 2,
+       "missing_usage_calls": 0,
+       "llm_latency_seconds": 159.464569,
+       "prompt_tokens": 18683,
+       "completion_tokens": 11430,
+       "reasoning_tokens": 0,
+       "total_tokens": 30113
+      },
+      "execution_wall_seconds": null,
+      "evaluation_wall_seconds": 12.828261,
+      "api_guard_repairs": 0,
+      "public_contract_repairs": 0,
+      "stderr_tail": null
+     },
+     {
+      "task": "vertical_farm_harvest_energy_planning",
+      "split": "transfer",
+      "candidate_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "attempt": 0,
+      "feasible": true,
+      "quality": 1.999999998109602,
+      "true_correct": true,
+      "objective": 785.777479085944,
+      "proxy_match": true,
+      "phantom_proxy": false,
+      "failure_class": "true_correct",
+      "execution_return_code": 0,
+      "generation_error": null,
+      "cost": {
+       "llm_calls": 2,
+       "missing_usage_calls": 0,
+       "llm_latency_seconds": 57.023101,
+       "prompt_tokens": 34074,
+       "completion_tokens": 3765,
+       "reasoning_tokens": 0,
+       "total_tokens": 37839
+      },
+      "execution_wall_seconds": 9.400352,
+      "evaluation_wall_seconds": 11.894546,
+      "api_guard_repairs": 0,
+      "public_contract_repairs": 0,
+      "stderr_tail": null
+     }
+    ]
+   },
+   "final": {
+    "n": 4,
+    "expected_tasks": 4,
+    "coverage": 1.0,
+    "feasible": 2,
+    "proxy_match": 2,
+    "true_correct": 2,
+    "phantom_proxy": 0,
+    "unknown": 0,
+    "unresolved_non_phantom": 2,
+    "mean_quality": 0.999999999527329,
+    "failure_counts": {
+     "execution_error": 1,
+     "incomplete_artifact": 1,
+     "true_correct": 2
+    },
+    "api_guard_modified": 1,
+    "cost": {
+     "llm_calls": 8,
+     "missing_usage_calls": 0,
+     "llm_latency_seconds": 358.874988,
+     "prompt_tokens": 77329,
+     "completion_tokens": 25437,
+     "reasoning_tokens": 0,
+     "total_tokens": 102766,
+     "solver_execution_time": {
+      "recorded_calls": 3,
+      "missing_calls": 1,
+      "seconds": 58.560227
+     },
+     "official_evaluation_time": {
+      "recorded_calls": 4,
+      "missing_calls": 0,
+      "seconds": 69.397992
+     }
+    },
+    "tasks": [
+     {
+      "task": "platelet_inventory_rotation",
+      "split": "transfer",
+      "candidate_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "attempt": 0,
+      "feasible": false,
+      "quality": 0.0,
+      "true_correct": false,
+      "objective": null,
+      "proxy_match": false,
+      "phantom_proxy": false,
+      "failure_class": "execution_error",
+      "execution_return_code": 1,
+      "generation_error": null,
+      "cost": {
+       "llm_calls": 2,
+       "missing_usage_calls": 0,
+       "llm_latency_seconds": 75.458099,
+       "prompt_tokens": 8697,
+       "completion_tokens": 5726,
+       "reasoning_tokens": 0,
+       "total_tokens": 14423
+      },
+      "execution_wall_seconds": 24.14048,
+      "evaluation_wall_seconds": 19.201912,
+      "api_guard_repairs": 1,
+      "public_contract_repairs": 0,
+      "stderr_tail": "Warning: unrecognized optimization sense: min"
+     },
+     {
+      "task": "retail_media_campaign_allocation",
+      "split": "transfer",
+      "candidate_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "attempt": 0,
+      "feasible": true,
+      "quality": 1.9999999999997138,
+      "true_correct": true,
+      "objective": 12708.705645440003,
+      "proxy_match": true,
+      "phantom_proxy": false,
+      "failure_class": "true_correct",
+      "execution_return_code": 0,
+      "generation_error": null,
+      "cost": {
+       "llm_calls": 2,
+       "missing_usage_calls": 0,
+       "llm_latency_seconds": 66.929219,
+       "prompt_tokens": 15875,
+       "completion_tokens": 4516,
+       "reasoning_tokens": 0,
+       "total_tokens": 20391
+      },
+      "execution_wall_seconds": 25.019395,
+      "evaluation_wall_seconds": 25.473273,
+      "api_guard_repairs": 0,
+      "public_contract_repairs": 0,
+      "stderr_tail": null
+     },
+     {
+      "task": "stochastic_surgery_capacity_planning",
+      "split": "transfer",
+      "candidate_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "attempt": 0,
+      "feasible": false,
+      "quality": 0.0,
+      "true_correct": false,
+      "objective": null,
+      "proxy_match": false,
+      "phantom_proxy": false,
+      "failure_class": "incomplete_artifact",
+      "execution_return_code": -1,
+      "generation_error": "ValueError: incomplete_artifact: no solver optimize call",
+      "cost": {
+       "llm_calls": 2,
+       "missing_usage_calls": 0,
+       "llm_latency_seconds": 159.464569,
+       "prompt_tokens": 18683,
+       "completion_tokens": 11430,
+       "reasoning_tokens": 0,
+       "total_tokens": 30113
+      },
+      "execution_wall_seconds": null,
+      "evaluation_wall_seconds": 12.828261,
+      "api_guard_repairs": 0,
+      "public_contract_repairs": 0,
+      "stderr_tail": null
+     },
+     {
+      "task": "vertical_farm_harvest_energy_planning",
+      "split": "transfer",
+      "candidate_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "attempt": 0,
+      "feasible": true,
+      "quality": 1.999999998109602,
+      "true_correct": true,
+      "objective": 785.777479085944,
+      "proxy_match": true,
+      "phantom_proxy": false,
+      "failure_class": "true_correct",
+      "execution_return_code": 0,
+      "generation_error": null,
+      "cost": {
+       "llm_calls": 2,
+       "missing_usage_calls": 0,
+       "llm_latency_seconds": 57.023101,
+       "prompt_tokens": 34074,
+       "completion_tokens": 3765,
+       "reasoning_tokens": 0,
+       "total_tokens": 37839
+      },
+      "execution_wall_seconds": 9.400352,
+      "evaluation_wall_seconds": 11.894546,
+      "api_guard_repairs": 0,
+      "public_contract_repairs": 0,
+      "stderr_tail": null
+     }
+    ]
+   },
+   "pair_win_safe": {
+    "paired_tasks": 4,
+    "missing_tasks": [],
+    "gained_true_correct": [],
+    "lost_true_correct": [],
+    "gained_phantom": [],
+    "removed_phantom": [],
+    "win_safe": true
+   },
+   "cost": {
+    "llm_calls": 8,
+    "missing_usage_calls": 0,
+    "llm_latency_seconds": 358.874988,
+    "prompt_tokens": 77329,
+    "completion_tokens": 25437,
+    "reasoning_tokens": 0,
+    "total_tokens": 102766,
+    "solver_execution_time": {
+     "recorded_calls": 3,
+     "missing_calls": 1,
+     "seconds": 58.560227
+    },
+    "official_evaluation_time": {
+     "recorded_calls": 4,
+     "missing_calls": 0,
+     "seconds": 69.397992
+    }
+   },
+   "tasks": [
+    {
+     "task": "platelet_inventory_rotation",
+     "direct": {
+      "task": "platelet_inventory_rotation",
+      "split": "transfer",
+      "candidate_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "attempt": 0,
+      "feasible": false,
+      "quality": 0.0,
+      "true_correct": false,
+      "objective": null,
+      "proxy_match": false,
+      "phantom_proxy": false,
+      "failure_class": "execution_error",
+      "execution_return_code": 1,
+      "generation_error": null,
+      "cost": {
+       "llm_calls": 2,
+       "missing_usage_calls": 0,
+       "llm_latency_seconds": 75.458099,
+       "prompt_tokens": 8697,
+       "completion_tokens": 5726,
+       "reasoning_tokens": 0,
+       "total_tokens": 14423
+      },
+      "execution_wall_seconds": 24.14048,
+      "evaluation_wall_seconds": 19.201912,
+      "api_guard_repairs": 1,
+      "public_contract_repairs": 0,
+      "stderr_tail": "Warning: unrecognized optimization sense: min",
+      "official_errors": [
+       "No solution file found."
+      ]
+     },
+     "final": {
+      "task": "platelet_inventory_rotation",
+      "split": "transfer",
+      "candidate_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "attempt": 0,
+      "feasible": false,
+      "quality": 0.0,
+      "true_correct": false,
+      "objective": null,
+      "proxy_match": false,
+      "phantom_proxy": false,
+      "failure_class": "execution_error",
+      "execution_return_code": 1,
+      "generation_error": null,
+      "cost": {
+       "llm_calls": 2,
+       "missing_usage_calls": 0,
+       "llm_latency_seconds": 75.458099,
+       "prompt_tokens": 8697,
+       "completion_tokens": 5726,
+       "reasoning_tokens": 0,
+       "total_tokens": 14423
+      },
+      "execution_wall_seconds": 24.14048,
+      "evaluation_wall_seconds": 19.201912,
+      "api_guard_repairs": 1,
+      "public_contract_repairs": 0,
+      "stderr_tail": "Warning: unrecognized optimization sense: min",
+      "official_errors": [
+       "No solution file found."
+      ]
+     },
+     "repair_status": "not_applicable",
+     "attempts_used": 0,
+     "coverage": true,
+     "unknown": false,
+     "win_safe": true,
+     "cost": {
+      "llm_calls": 2,
+      "missing_usage_calls": 0,
+      "llm_latency_seconds": 75.458099,
+      "prompt_tokens": 8697,
+      "completion_tokens": 5726,
+      "reasoning_tokens": 0,
+      "total_tokens": 14423,
+      "solver_execution_time": {
+       "recorded_calls": 1,
+       "missing_calls": 0,
+       "seconds": 24.14048
+      },
+      "official_evaluation_time": {
+       "recorded_calls": 1,
+       "missing_calls": 0,
+       "seconds": 19.201912
+      }
+     }
+    },
+    {
+     "task": "retail_media_campaign_allocation",
+     "direct": {
+      "task": "retail_media_campaign_allocation",
+      "split": "transfer",
+      "candidate_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "attempt": 0,
+      "feasible": true,
+      "quality": 1.9999999999997138,
+      "true_correct": true,
+      "objective": 12708.705645440003,
+      "proxy_match": true,
+      "phantom_proxy": false,
+      "failure_class": "true_correct",
+      "execution_return_code": 0,
+      "generation_error": null,
+      "cost": {
+       "llm_calls": 2,
+       "missing_usage_calls": 0,
+       "llm_latency_seconds": 66.929219,
+       "prompt_tokens": 15875,
+       "completion_tokens": 4516,
+       "reasoning_tokens": 0,
+       "total_tokens": 20391
+      },
+      "execution_wall_seconds": 25.019395,
+      "evaluation_wall_seconds": 25.473273,
+      "api_guard_repairs": 0,
+      "public_contract_repairs": 0,
+      "stderr_tail": null,
+      "official_errors": []
+     },
+     "final": {
+      "task": "retail_media_campaign_allocation",
+      "split": "transfer",
+      "candidate_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "attempt": 0,
+      "feasible": true,
+      "quality": 1.9999999999997138,
+      "true_correct": true,
+      "objective": 12708.705645440003,
+      "proxy_match": true,
+      "phantom_proxy": false,
+      "failure_class": "true_correct",
+      "execution_return_code": 0,
+      "generation_error": null,
+      "cost": {
+       "llm_calls": 2,
+       "missing_usage_calls": 0,
+       "llm_latency_seconds": 66.929219,
+       "prompt_tokens": 15875,
+       "completion_tokens": 4516,
+       "reasoning_tokens": 0,
+       "total_tokens": 20391
+      },
+      "execution_wall_seconds": 25.019395,
+      "evaluation_wall_seconds": 25.473273,
+      "api_guard_repairs": 0,
+      "public_contract_repairs": 0,
+      "stderr_tail": null,
+      "official_errors": []
+     },
+     "repair_status": "not_applicable",
+     "attempts_used": 0,
+     "coverage": true,
+     "unknown": false,
+     "win_safe": true,
+     "cost": {
+      "llm_calls": 2,
+      "missing_usage_calls": 0,
+      "llm_latency_seconds": 66.929219,
+      "prompt_tokens": 15875,
+      "completion_tokens": 4516,
+      "reasoning_tokens": 0,
+      "total_tokens": 20391,
+      "solver_execution_time": {
+       "recorded_calls": 1,
+       "missing_calls": 0,
+       "seconds": 25.019395
+      },
+      "official_evaluation_time": {
+       "recorded_calls": 1,
+       "missing_calls": 0,
+       "seconds": 25.473273
+      }
+     }
+    },
+    {
+     "task": "stochastic_surgery_capacity_planning",
+     "direct": {
+      "task": "stochastic_surgery_capacity_planning",
+      "split": "transfer",
+      "candidate_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "attempt": 0,
+      "feasible": false,
+      "quality": 0.0,
+      "true_correct": false,
+      "objective": null,
+      "proxy_match": false,
+      "phantom_proxy": false,
+      "failure_class": "incomplete_artifact",
+      "execution_return_code": -1,
+      "generation_error": "ValueError: incomplete_artifact: no solver optimize call",
+      "cost": {
+       "llm_calls": 2,
+       "missing_usage_calls": 0,
+       "llm_latency_seconds": 159.464569,
+       "prompt_tokens": 18683,
+       "completion_tokens": 11430,
+       "reasoning_tokens": 0,
+       "total_tokens": 30113
+      },
+      "execution_wall_seconds": null,
+      "evaluation_wall_seconds": 12.828261,
+      "api_guard_repairs": 0,
+      "public_contract_repairs": 0,
+      "stderr_tail": null,
+      "official_errors": [
+       "No solution file found."
+      ]
+     },
+     "final": {
+      "task": "stochastic_surgery_capacity_planning",
+      "split": "transfer",
+      "candidate_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "attempt": 0,
+      "feasible": false,
+      "quality": 0.0,
+      "true_correct": false,
+      "objective": null,
+      "proxy_match": false,
+      "phantom_proxy": false,
+      "failure_class": "incomplete_artifact",
+      "execution_return_code": -1,
+      "generation_error": "ValueError: incomplete_artifact: no solver optimize call",
+      "cost": {
+       "llm_calls": 2,
+       "missing_usage_calls": 0,
+       "llm_latency_seconds": 159.464569,
+       "prompt_tokens": 18683,
+       "completion_tokens": 11430,
+       "reasoning_tokens": 0,
+       "total_tokens": 30113
+      },
+      "execution_wall_seconds": null,
+      "evaluation_wall_seconds": 12.828261,
+      "api_guard_repairs": 0,
+      "public_contract_repairs": 0,
+      "stderr_tail": null,
+      "official_errors": [
+       "No solution file found."
+      ]
+     },
+     "repair_status": "not_applicable",
+     "attempts_used": 0,
+     "coverage": true,
+     "unknown": false,
+     "win_safe": true,
+     "cost": {
+      "llm_calls": 2,
+      "missing_usage_calls": 0,
+      "llm_latency_seconds": 159.464569,
+      "prompt_tokens": 18683,
+      "completion_tokens": 11430,
+      "reasoning_tokens": 0,
+      "total_tokens": 30113,
+      "solver_execution_time": {
+       "recorded_calls": 0,
+       "missing_calls": 1,
+       "seconds": null
+      },
+      "official_evaluation_time": {
+       "recorded_calls": 1,
+       "missing_calls": 0,
+       "seconds": 12.828261
+      }
+     }
+    },
+    {
+     "task": "vertical_farm_harvest_energy_planning",
+     "direct": {
+      "task": "vertical_farm_harvest_energy_planning",
+      "split": "transfer",
+      "candidate_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "attempt": 0,
+      "feasible": true,
+      "quality": 1.999999998109602,
+      "true_correct": true,
+      "objective": 785.777479085944,
+      "proxy_match": true,
+      "phantom_proxy": false,
+      "failure_class": "true_correct",
+      "execution_return_code": 0,
+      "generation_error": null,
+      "cost": {
+       "llm_calls": 2,
+       "missing_usage_calls": 0,
+       "llm_latency_seconds": 57.023101,
+       "prompt_tokens": 34074,
+       "completion_tokens": 3765,
+       "reasoning_tokens": 0,
+       "total_tokens": 37839
+      },
+      "execution_wall_seconds": 9.400352,
+      "evaluation_wall_seconds": 11.894546,
+      "api_guard_repairs": 0,
+      "public_contract_repairs": 0,
+      "stderr_tail": null,
+      "official_errors": []
+     },
+     "final": {
+      "task": "vertical_farm_harvest_energy_planning",
+      "split": "transfer",
+      "candidate_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "attempt": 0,
+      "feasible": true,
+      "quality": 1.999999998109602,
+      "true_correct": true,
+      "objective": 785.777479085944,
+      "proxy_match": true,
+      "phantom_proxy": false,
+      "failure_class": "true_correct",
+      "execution_return_code": 0,
+      "generation_error": null,
+      "cost": {
+       "llm_calls": 2,
+       "missing_usage_calls": 0,
+       "llm_latency_seconds": 57.023101,
+       "prompt_tokens": 34074,
+       "completion_tokens": 3765,
+       "reasoning_tokens": 0,
+       "total_tokens": 37839
+      },
+      "execution_wall_seconds": 9.400352,
+      "evaluation_wall_seconds": 11.894546,
+      "api_guard_repairs": 0,
+      "public_contract_repairs": 0,
+      "stderr_tail": null,
+      "official_errors": []
+     },
+     "repair_status": "not_applicable",
+     "attempts_used": 0,
+     "coverage": true,
+     "unknown": false,
+     "win_safe": true,
+     "cost": {
+      "llm_calls": 2,
+      "missing_usage_calls": 0,
+      "llm_latency_seconds": 57.023101,
+      "prompt_tokens": 34074,
+      "completion_tokens": 3765,
+      "reasoning_tokens": 0,
+      "total_tokens": 37839,
+      "solver_execution_time": {
+       "recorded_calls": 1,
+       "missing_calls": 0,
+       "seconds": 9.400352
+      },
+      "official_evaluation_time": {
+       "recorded_calls": 1,
+       "missing_calls": 0,
+       "seconds": 11.894546
+      }
+     }
+    }
+   ],
+   "provenance": "frozen_replay",
+   "specification_sha256": {
+    "stochastic_surgery_capacity_planning": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "platelet_inventory_rotation": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "retail_media_campaign_allocation": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "vertical_farm_harvest_energy_planning": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+   },
+   "implementation": {
+    "path": "/home/hewj13/wm/ora/work/swarm_transfer_logistics_v0.12/B0/run.json",
+    "sha256": "30afa269ea5c1c987c39e0a96f6f81463739300dc8a51514beaa37b5871927b6"
+   },
+   "repair_inputs": []
+  },
+  {
+   "arm": "B1_gepa_specification",
+   "n_expected": 4,
+   "direct": {
+    "n": 4,
+    "expected_tasks": 4,
+    "coverage": 1.0,
+    "feasible": 1,
+    "proxy_match": 1,
+    "true_correct": 1,
+    "phantom_proxy": 0,
+    "unknown": 0,
+    "unresolved_non_phantom": 3,
+    "mean_quality": 0.4999999995274005,
+    "failure_counts": {
+     "execution_error": 2,
+     "incomplete_artifact": 1,
+     "true_correct": 1
+    },
+    "api_guard_modified": 4,
+    "cost": {
+     "llm_calls": 8,
+     "missing_usage_calls": 0,
+     "llm_latency_seconds": 346.14933,
+     "prompt_tokens": 102377,
+     "completion_tokens": 23561,
+     "reasoning_tokens": 0,
+     "total_tokens": 125938,
+     "solver_execution_time": {
+      "recorded_calls": 3,
+      "missing_calls": 1,
+      "seconds": 46.751108
+     },
+     "official_evaluation_time": {
+      "recorded_calls": 4,
+      "missing_calls": 0,
+      "seconds": 58.739827
+     }
+    },
+    "tasks": [
+     {
+      "task": "platelet_inventory_rotation",
+      "split": "transfer",
+      "candidate_sha256": "08f95083f60719b0681fcca6cfad453b3faf28577335b466265903e2a11fe190",
+      "attempt": 0,
+      "feasible": false,
+      "quality": 0.0,
+      "true_correct": false,
+      "objective": null,
+      "proxy_match": false,
+      "phantom_proxy": false,
+      "failure_class": "execution_error",
+      "execution_return_code": 1,
+      "generation_error": null,
+      "cost": {
+       "llm_calls": 2,
+       "missing_usage_calls": 0,
+       "llm_latency_seconds": 62.668521,
+       "prompt_tokens": 14273,
+       "completion_tokens": 4134,
+       "reasoning_tokens": 0,
+       "total_tokens": 18407
+      },
+      "execution_wall_seconds": 21.105612,
+      "evaluation_wall_seconds": 7.166296,
+      "api_guard_repairs": 1,
+      "public_contract_repairs": 0,
+      "stderr_tail": "KeyError: ('hp01', 0)"
+     },
+     {
+      "task": "retail_media_campaign_allocation",
+      "split": "transfer",
+      "candidate_sha256": "08f95083f60719b0681fcca6cfad453b3faf28577335b466265903e2a11fe190",
+      "attempt": 0,
+      "feasible": false,
+      "quality": 0.0,
+      "true_correct": false,
+      "objective": null,
+      "proxy_match": false,
+      "phantom_proxy": false,
+      "failure_class": "execution_error",
+      "execution_return_code": 1,
+      "generation_error": null,
+      "cost": {
+       "llm_calls": 2,
+       "missing_usage_calls": 0,
+       "llm_latency_seconds": 45.218775,
+       "prompt_tokens": 21607,
+       "completion_tokens": 2949,
+       "reasoning_tokens": 0,
+       "total_tokens": 24556
+      },
+      "execution_wall_seconds": 13.522385,
+      "evaluation_wall_seconds": 3.043278,
+      "api_guard_repairs": 1,
+      "public_contract_repairs": 0,
+      "stderr_tail": "ValueError: too many values to unpack (expected 2)"
+     },
+     {
+      "task": "stochastic_surgery_capacity_planning",
+      "split": "transfer",
+      "candidate_sha256": "08f95083f60719b0681fcca6cfad453b3faf28577335b466265903e2a11fe190",
+      "attempt": 0,
+      "feasible": false,
+      "quality": 0.0,
+      "true_correct": false,
+      "objective": null,
+      "proxy_match": false,
+      "phantom_proxy": false,
+      "failure_class": "incomplete_artifact",
+      "execution_return_code": -1,
+      "generation_error": "ValueError: incomplete_artifact: placeholder marker found",
+      "cost": {
+       "llm_calls": 2,
+       "missing_usage_calls": 0,
+       "llm_latency_seconds": 167.426093,
+       "prompt_tokens": 25855,
+       "completion_tokens": 11823,
+       "reasoning_tokens": 0,
+       "total_tokens": 37678
+      },
+      "execution_wall_seconds": null,
+      "evaluation_wall_seconds": 11.323343,
+      "api_guard_repairs": 1,
+      "public_contract_repairs": 0,
+      "stderr_tail": null
+     },
+     {
+      "task": "vertical_farm_harvest_energy_planning",
+      "split": "transfer",
+      "candidate_sha256": "08f95083f60719b0681fcca6cfad453b3faf28577335b466265903e2a11fe190",
+      "attempt": 0,
+      "feasible": true,
+      "quality": 1.999999998109602,
+      "true_correct": true,
+      "objective": 785.777479085944,
+      "proxy_match": true,
+      "phantom_proxy": false,
+      "failure_class": "true_correct",
+      "execution_return_code": 0,
+      "generation_error": null,
+      "cost": {
+       "llm_calls": 2,
+       "missing_usage_calls": 0,
+       "llm_latency_seconds": 70.835941,
+       "prompt_tokens": 40642,
+       "completion_tokens": 4655,
+       "reasoning_tokens": 0,
+       "total_tokens": 45297
+      },
+      "execution_wall_seconds": 12.123111,
+      "evaluation_wall_seconds": 37.20691,
+      "api_guard_repairs": 1,
+      "public_contract_repairs": 0,
+      "stderr_tail": null
+     }
+    ]
+   },
+   "final": {
+    "n": 4,
+    "expected_tasks": 4,
+    "coverage": 1.0,
+    "feasible": 1,
+    "proxy_match": 1,
+    "true_correct": 1,
+    "phantom_proxy": 0,
+    "unknown": 0,
+    "unresolved_non_phantom": 3,
+    "mean_quality": 0.4999999995274005,
+    "failure_counts": {
+     "execution_error": 2,
+     "incomplete_artifact": 1,
+     "true_correct": 1
+    },
+    "api_guard_modified": 4,
+    "cost": {
+     "llm_calls": 8,
+     "missing_usage_calls": 0,
+     "llm_latency_seconds": 346.14933,
+     "prompt_tokens": 102377,
+     "completion_tokens": 23561,
+     "reasoning_tokens": 0,
+     "total_tokens": 125938,
+     "solver_execution_time": {
+      "recorded_calls": 3,
+      "missing_calls": 1,
+      "seconds": 46.751108
+     },
+     "official_evaluation_time": {
+      "recorded_calls": 4,
+      "missing_calls": 0,
+      "seconds": 58.739827
+     }
+    },
+    "tasks": [
+     {
+      "task": "platelet_inventory_rotation",
+      "split": "transfer",
+      "candidate_sha256": "08f95083f60719b0681fcca6cfad453b3faf28577335b466265903e2a11fe190",
+      "attempt": 0,
+      "feasible": false,
+      "quality": 0.0,
+      "true_correct": false,
+      "objective": null,
+      "proxy_match": false,
+      "phantom_proxy": false,
+      "failure_class": "execution_error",
+      "execution_return_code": 1,
+      "generation_error": null,
+      "cost": {
+       "llm_calls": 2,
+       "missing_usage_calls": 0,
+       "llm_latency_seconds": 62.668521,
+       "prompt_tokens": 14273,
+       "completion_tokens": 4134,
+       "reasoning_tokens": 0,
+       "total_tokens": 18407
+      },
+      "execution_wall_seconds": 21.105612,
+      "evaluation_wall_seconds": 7.166296,
+      "api_guard_repairs": 1,
+      "public_contract_repairs": 0,
+      "stderr_tail": "KeyError: ('hp01', 0)"
+     },
+     {
+      "task": "retail_media_campaign_allocation",
+      "split": "transfer",
+      "candidate_sha256": "08f95083f60719b0681fcca6cfad453b3faf28577335b466265903e2a11fe190",
+      "attempt": 0,
+      "feasible": false,
+      "quality": 0.0,
+      "true_correct": false,
+      "objective": null,
+      "proxy_match": false,
+      "phantom_proxy": false,
+      "failure_class": "execution_error",
+      "execution_return_code": 1,
+      "generation_error": null,
+      "cost": {
+       "llm_calls": 2,
+       "missing_usage_calls": 0,
+       "llm_latency_seconds": 45.218775,
+       "prompt_tokens": 21607,
+       "completion_tokens": 2949,
+       "reasoning_tokens": 0,
+       "total_tokens": 24556
+      },
+      "execution_wall_seconds": 13.522385,
+      "evaluation_wall_seconds": 3.043278,
+      "api_guard_repairs": 1,
+      "public_contract_repairs": 0,
+      "stderr_tail": "ValueError: too many values to unpack (expected 2)"
+     },
+     {
+      "task": "stochastic_surgery_capacity_planning",
+      "split": "transfer",
+      "candidate_sha256": "08f95083f60719b0681fcca6cfad453b3faf28577335b466265903e2a11fe190",
+      "attempt": 0,
+      "feasible": false,
+      "quality": 0.0,
+      "true_correct": false,
+      "objective": null,
+      "proxy_match": false,
+      "phantom_proxy": false,
+      "failure_class": "incomplete_artifact",
+      "execution_return_code": -1,
+      "generation_error": "ValueError: incomplete_artifact: placeholder marker found",
+      "cost": {
+       "llm_calls": 2,
+       "missing_usage_calls": 0,
+       "llm_latency_seconds": 167.426093,
+       "prompt_tokens": 25855,
+       "completion_tokens": 11823,
+       "reasoning_tokens": 0,
+       "total_tokens": 37678
+      },
+      "execution_wall_seconds": null,
+      "evaluation_wall_seconds": 11.323343,
+      "api_guard_repairs": 1,
+      "public_contract_repairs": 0,
+      "stderr_tail": null
+     },
+     {
+      "task": "vertical_farm_harvest_energy_planning",
+      "split": "transfer",
+      "candidate_sha256": "08f95083f60719b0681fcca6cfad453b3faf28577335b466265903e2a11fe190",
+      "attempt": 0,
+      "feasible": true,
+      "quality": 1.999999998109602,
+      "true_correct": true,
+      "objective": 785.777479085944,
+      "proxy_match": true,
+      "phantom_proxy": false,
+      "failure_class": "true_correct",
+      "execution_return_code": 0,
+      "generation_error": null,
+      "cost": {
+       "llm_calls": 2,
+       "missing_usage_calls": 0,
+       "llm_latency_seconds": 70.835941,
+       "prompt_tokens": 40642,
+       "completion_tokens": 4655,
+       "reasoning_tokens": 0,
+       "total_tokens": 45297
+      },
+      "execution_wall_seconds": 12.123111,
+      "evaluation_wall_seconds": 37.20691,
+      "api_guard_repairs": 1,
+      "public_contract_repairs": 0,
+      "stderr_tail": null
+     }
+    ]
+   },
+   "pair_win_safe": {
+    "paired_tasks": 4,
+    "missing_tasks": [],
+    "gained_true_correct": [],
+    "lost_true_correct": [],
+    "gained_phantom": [],
+    "removed_phantom": [],
+    "win_safe": true
+   },
+   "cost": {
+    "llm_calls": 8,
+    "missing_usage_calls": 0,
+    "llm_latency_seconds": 346.14933,
+    "prompt_tokens": 102377,
+    "completion_tokens": 23561,
+    "reasoning_tokens": 0,
+    "total_tokens": 125938,
+    "solver_execution_time": {
+     "recorded_calls": 3,
+     "missing_calls": 1,
+     "seconds": 46.751108
+    },
+    "official_evaluation_time": {
+     "recorded_calls": 4,
+     "missing_calls": 0,
+     "seconds": 58.739827
+    }
+   },
+   "tasks": [
+    {
+     "task": "platelet_inventory_rotation",
+     "direct": {
+      "task": "platelet_inventory_rotation",
+      "split": "transfer",
+      "candidate_sha256": "08f95083f60719b0681fcca6cfad453b3faf28577335b466265903e2a11fe190",
+      "attempt": 0,
+      "feasible": false,
+      "quality": 0.0,
+      "true_correct": false,
+      "objective": null,
+      "proxy_match": false,
+      "phantom_proxy": false,
+      "failure_class": "execution_error",
+      "execution_return_code": 1,
+      "generation_error": null,
+      "cost": {
+       "llm_calls": 2,
+       "missing_usage_calls": 0,
+       "llm_latency_seconds": 62.668521,
+       "prompt_tokens": 14273,
+       "completion_tokens": 4134,
+       "reasoning_tokens": 0,
+       "total_tokens": 18407
+      },
+      "execution_wall_seconds": 21.105612,
+      "evaluation_wall_seconds": 7.166296,
+      "api_guard_repairs": 1,
+      "public_contract_repairs": 0,
+      "stderr_tail": "KeyError: ('hp01', 0)",
+      "official_errors": [
+       "No solution file found."
+      ]
+     },
+     "final": {
+      "task": "platelet_inventory_rotation",
+      "split": "transfer",
+      "candidate_sha256": "08f95083f60719b0681fcca6cfad453b3faf28577335b466265903e2a11fe190",
+      "attempt": 0,
+      "feasible": false,
+      "quality": 0.0,
+      "true_correct": false,
+      "objective": null,
+      "proxy_match": false,
+      "phantom_proxy": false,
+      "failure_class": "execution_error",
+      "execution_return_code": 1,
+      "generation_error": null,
+      "cost": {
+       "llm_calls": 2,
+       "missing_usage_calls": 0,
+       "llm_latency_seconds": 62.668521,
+       "prompt_tokens": 14273,
+       "completion_tokens": 4134,
+       "reasoning_tokens": 0,
+       "total_tokens": 18407
+      },
+      "execution_wall_seconds": 21.105612,
+      "evaluation_wall_seconds": 7.166296,
+      "api_guard_repairs": 1,
+      "public_contract_repairs": 0,
+      "stderr_tail": "KeyError: ('hp01', 0)",
+      "official_errors": [
+       "No solution file found."
+      ]
+     },
+     "repair_status": "not_applicable",
+     "attempts_used": 0,
+     "coverage": true,
+     "unknown": false,
+     "win_safe": true,
+     "cost": {
+      "llm_calls": 2,
+      "missing_usage_calls": 0,
+      "llm_latency_seconds": 62.668521,
+      "prompt_tokens": 14273,
+      "completion_tokens": 4134,
+      "reasoning_tokens": 0,
+      "total_tokens": 18407,
+      "solver_execution_time": {
+       "recorded_calls": 1,
+       "missing_calls": 0,
+       "seconds": 21.105612
+      },
+      "official_evaluation_time": {
+       "recorded_calls": 1,
+       "missing_calls": 0,
+       "seconds": 7.166296
+      }
+     }
+    },
+    {
+     "task": "retail_media_campaign_allocation",
+     "direct": {
+      "task": "retail_media_campaign_allocation",
+      "split": "transfer",
+      "candidate_sha256": "08f95083f60719b0681fcca6cfad453b3faf28577335b466265903e2a11fe190",
+      "attempt": 0,
+      "feasible": false,
+      "quality": 0.0,
+      "true_correct": false,
+      "objective": null,
+      "proxy_match": false,
+      "phantom_proxy": false,
+      "failure_class": "execution_error",
+      "execution_return_code": 1,
+      "generation_error": null,
+      "cost": {
+       "llm_calls": 2,
+       "missing_usage_calls": 0,
+       "llm_latency_seconds": 45.218775,
+       "prompt_tokens": 21607,
+       "completion_tokens": 2949,
+       "reasoning_tokens": 0,
+       "total_tokens": 24556
+      },
+      "execution_wall_seconds": 13.522385,
+      "evaluation_wall_seconds": 3.043278,
+      "api_guard_repairs": 1,
+      "public_contract_repairs": 0,
+      "stderr_tail": "ValueError: too many values to unpack (expected 2)",
+      "official_errors": [
+       "No solution file found."
+      ]
+     },
+     "final": {
+      "task": "retail_media_campaign_allocation",
+      "split": "transfer",
+      "candidate_sha256": "08f95083f60719b0681fcca6cfad453b3faf28577335b466265903e2a11fe190",
+      "attempt": 0,
+      "feasible": false,
+      "quality": 0.0,
+      "true_correct": false,
+      "objective": null,
+      "proxy_match": false,
+      "phantom_proxy": false,
+      "failure_class": "execution_error",
+      "execution_return_code": 1,
+      "generation_error": null,
+      "cost": {
+       "llm_calls": 2,
+       "missing_usage_calls": 0,
+       "llm_latency_seconds": 45.218775,
+       "prompt_tokens": 21607,
+       "completion_tokens": 2949,
+       "reasoning_tokens": 0,
+       "total_tokens": 24556
+      },
+      "execution_wall_seconds": 13.522385,
+      "evaluation_wall_seconds": 3.043278,
+      "api_guard_repairs": 1,
+      "public_contract_repairs": 0,
+      "stderr_tail": "ValueError: too many values to unpack (expected 2)",
+      "official_errors": [
+       "No solution file found."
+      ]
+     },
+     "repair_status": "not_applicable",
+     "attempts_used": 0,
+     "coverage": true,
+     "unknown": false,
+     "win_safe": true,
+     "cost": {
+      "llm_calls": 2,
+      "missing_usage_calls": 0,
+      "llm_latency_seconds": 45.218775,
+      "prompt_tokens": 21607,
+      "completion_tokens": 2949,
+      "reasoning_tokens": 0,
+      "total_tokens": 24556,
+      "solver_execution_time": {
+       "recorded_calls": 1,
+       "missing_calls": 0,
+       "seconds": 13.522385
+      },
+      "official_evaluation_time": {
+       "recorded_calls": 1,
+       "missing_calls": 0,
+       "seconds": 3.043278
+      }
+     }
+    },
+    {
+     "task": "stochastic_surgery_capacity_planning",
+     "direct": {
+      "task": "stochastic_surgery_capacity_planning",
+      "split": "transfer",
+      "candidate_sha256": "08f95083f60719b0681fcca6cfad453b3faf28577335b466265903e2a11fe190",
+      "attempt": 0,
+      "feasible": false,
+      "quality": 0.0,
+      "true_correct": false,
+      "objective": null,
+      "proxy_match": false,
+      "phantom_proxy": false,
+      "failure_class": "incomplete_artifact",
+      "execution_return_code": -1,
+      "generation_error": "ValueError: incomplete_artifact: placeholder marker found",
+      "cost": {
+       "llm_calls": 2,
+       "missing_usage_calls": 0,
+       "llm_latency_seconds": 167.426093,
+       "prompt_tokens": 25855,
+       "completion_tokens": 11823,
+       "reasoning_tokens": 0,
+       "total_tokens": 37678
+      },
+      "execution_wall_seconds": null,
+      "evaluation_wall_seconds": 11.323343,
+      "api_guard_repairs": 1,
+      "public_contract_repairs": 0,
+      "stderr_tail": null,
+      "official_errors": [
+       "No solution file found."
+      ]
+     },
+     "final": {
+      "task": "stochastic_surgery_capacity_planning",
+      "split": "transfer",
+      "candidate_sha256": "08f95083f60719b0681fcca6cfad453b3faf28577335b466265903e2a11fe190",
+      "attempt": 0,
+      "feasible": false,
+      "quality": 0.0,
+      "true_correct": false,
+      "objective": null,
+      "proxy_match": false,
+      "phantom_proxy": false,
+      "failure_class": "incomplete_artifact",
+      "execution_return_code": -1,
+      "generation_error": "ValueError: incomplete_artifact: placeholder marker found",
+      "cost": {
+       "llm_calls": 2,
+       "missing_usage_calls": 0,
+       "llm_latency_seconds": 167.426093,
+       "prompt_tokens": 25855,
+       "completion_tokens": 11823,
+       "reasoning_tokens": 0,
+       "total_tokens": 37678
+      },
+      "execution_wall_seconds": null,
+      "evaluation_wall_seconds": 11.323343,
+      "api_guard_repairs": 1,
+      "public_contract_repairs": 0,
+      "stderr_tail": null,
+      "official_errors": [
+       "No solution file found."
+      ]
+     },
+     "repair_status": "not_applicable",
+     "attempts_used": 0,
+     "coverage": true,
+     "unknown": false,
+     "win_safe": true,
+     "cost": {
+      "llm_calls": 2,
+      "missing_usage_calls": 0,
+      "llm_latency_seconds": 167.426093,
+      "prompt_tokens": 25855,
+      "completion_tokens": 11823,
+      "reasoning_tokens": 0,
+      "total_tokens": 37678,
+      "solver_execution_time": {
+       "recorded_calls": 0,
+       "missing_calls": 1,
+       "seconds": null
+      },
+      "official_evaluation_time": {
+       "recorded_calls": 1,
+       "missing_calls": 0,
+       "seconds": 11.323343
+      }
+     }
+    },
+    {
+     "task": "vertical_farm_harvest_energy_planning",
+     "direct": {
+      "task": "vertical_farm_harvest_energy_planning",
+      "split": "transfer",
+      "candidate_sha256": "08f95083f60719b0681fcca6cfad453b3faf28577335b466265903e2a11fe190",
+      "attempt": 0,
+      "feasible": true,
+      "quality": 1.999999998109602,
+      "true_correct": true,
+      "objective": 785.777479085944,
+      "proxy_match": true,
+      "phantom_proxy": false,
+      "failure_class": "true_correct",
+      "execution_return_code": 0,
+      "generation_error": null,
+      "cost": {
+       "llm_calls": 2,
+       "missing_usage_calls": 0,
+       "llm_latency_seconds": 70.835941,
+       "prompt_tokens": 40642,
+       "completion_tokens": 4655,
+       "reasoning_tokens": 0,
+       "total_tokens": 45297
+      },
+      "execution_wall_seconds": 12.123111,
+      "evaluation_wall_seconds": 37.20691,
+      "api_guard_repairs": 1,
+      "public_contract_repairs": 0,
+      "stderr_tail": null,
+      "official_errors": []
+     },
+     "final": {
+      "task": "vertical_farm_harvest_energy_planning",
+      "split": "transfer",
+      "candidate_sha256": "08f95083f60719b0681fcca6cfad453b3faf28577335b466265903e2a11fe190",
+      "attempt": 0,
+      "feasible": true,
+      "quality": 1.999999998109602,
+      "true_correct": true,
+      "objective": 785.777479085944,
+      "proxy_match": true,
+      "phantom_proxy": false,
+      "failure_class": "true_correct",
+      "execution_return_code": 0,
+      "generation_error": null,
+      "cost": {
+       "llm_calls": 2,
+       "missing_usage_calls": 0,
+       "llm_latency_seconds": 70.835941,
+       "prompt_tokens": 40642,
+       "completion_tokens": 4655,
+       "reasoning_tokens": 0,
+       "total_tokens": 45297
+      },
+      "execution_wall_seconds": 12.123111,
+      "evaluation_wall_seconds": 37.20691,
+      "api_guard_repairs": 1,
+      "public_contract_repairs": 0,
+      "stderr_tail": null,
+      "official_errors": []
+     },
+     "repair_status": "not_applicable",
+     "attempts_used": 0,
+     "coverage": true,
+     "unknown": false,
+     "win_safe": true,
+     "cost": {
+      "llm_calls": 2,
+      "missing_usage_calls": 0,
+      "llm_latency_seconds": 70.835941,
+      "prompt_tokens": 40642,
+      "completion_tokens": 4655,
+      "reasoning_tokens": 0,
+      "total_tokens": 45297,
+      "solver_execution_time": {
+       "recorded_calls": 1,
+       "missing_calls": 0,
+       "seconds": 12.123111
+      },
+      "official_evaluation_time": {
+       "recorded_calls": 1,
+       "missing_calls": 0,
+       "seconds": 37.20691
+      }
+     }
+    }
+   ],
+   "provenance": "subsequent_disjoint_replay",
+   "specification_sha256": {
+    "stochastic_surgery_capacity_planning": "08f95083f60719b0681fcca6cfad453b3faf28577335b466265903e2a11fe190",
+    "platelet_inventory_rotation": "08f95083f60719b0681fcca6cfad453b3faf28577335b466265903e2a11fe190",
+    "retail_media_campaign_allocation": "08f95083f60719b0681fcca6cfad453b3faf28577335b466265903e2a11fe190",
+    "vertical_farm_harvest_energy_planning": "08f95083f60719b0681fcca6cfad453b3faf28577335b466265903e2a11fe190"
+   },
+   "implementation": {
+    "path": "/home/hewj13/wm/ora/work/swarm_transfer_logistics_v0.12/B1/run.json",
+    "sha256": "2ce0fccbcc5623e61e4e70604fc989cb1c91834f49788e22f0424b6da9787fec"
+   },
+   "repair_inputs": []
+  },
+  {
+   "arm": "B2_gepa_residual_dag",
+   "n_expected": 4,
+   "direct": {
+    "n": 4,
+    "expected_tasks": 4,
+    "coverage": 1.0,
+    "feasible": 1,
+    "proxy_match": 1,
+    "true_correct": 1,
+    "phantom_proxy": 0,
+    "unknown": 0,
+    "unresolved_non_phantom": 3,
+    "mean_quality": 0.4999999995274005,
+    "failure_counts": {
+     "execution_error": 2,
+     "incomplete_artifact": 1,
+     "true_correct": 1
+    },
+    "api_guard_modified": 4,
+    "cost": {
+     "llm_calls": 8,
+     "missing_usage_calls": 0,
+     "llm_latency_seconds": 346.14933,
+     "prompt_tokens": 102377,
+     "completion_tokens": 23561,
+     "reasoning_tokens": 0,
+     "total_tokens": 125938,
+     "solver_execution_time": {
+      "recorded_calls": 3,
+      "missing_calls": 1,
+      "seconds": 46.751108
+     },
+     "official_evaluation_time": {
+      "recorded_calls": 4,
+      "missing_calls": 0,
+      "seconds": 58.739827
+     }
+    },
+    "tasks": [
+     {
+      "task": "platelet_inventory_rotation",
+      "split": "transfer",
+      "candidate_sha256": "08f95083f60719b0681fcca6cfad453b3faf28577335b466265903e2a11fe190",
+      "attempt": 0,
+      "feasible": false,
+      "quality": 0.0,
+      "true_correct": false,
+      "objective": null,
+      "proxy_match": false,
+      "phantom_proxy": false,
+      "failure_class": "execution_error",
+      "execution_return_code": 1,
+      "generation_error": null,
+      "cost": {
+       "llm_calls": 2,
+       "missing_usage_calls": 0,
+       "llm_latency_seconds": 62.668521,
+       "prompt_tokens": 14273,
+       "completion_tokens": 4134,
+       "reasoning_tokens": 0,
+       "total_tokens": 18407
+      },
+      "execution_wall_seconds": 21.105612,
+      "evaluation_wall_seconds": 7.166296,
+      "api_guard_repairs": 1,
+      "public_contract_repairs": 0,
+      "stderr_tail": "KeyError: ('hp01', 0)"
+     },
+     {
+      "task": "retail_media_campaign_allocation",
+      "split": "transfer",
+      "candidate_sha256": "08f95083f60719b0681fcca6cfad453b3faf28577335b466265903e2a11fe190",
+      "attempt": 0,
+      "feasible": false,
+      "quality": 0.0,
+      "true_correct": false,
+      "objective": null,
+      "proxy_match": false,
+      "phantom_proxy": false,
+      "failure_class": "execution_error",
+      "execution_return_code": 1,
+      "generation_error": null,
+      "cost": {
+       "llm_calls": 2,
+       "missing_usage_calls": 0,
+       "llm_latency_seconds": 45.218775,
+       "prompt_tokens": 21607,
+       "completion_tokens": 2949,
+       "reasoning_tokens": 0,
+       "total_tokens": 24556
+      },
+      "execution_wall_seconds": 13.522385,
+      "evaluation_wall_seconds": 3.043278,
+      "api_guard_repairs": 1,
+      "public_contract_repairs": 0,
+      "stderr_tail": "ValueError: too many values to unpack (expected 2)"
+     },
+     {
+      "task": "stochastic_surgery_capacity_planning",
+      "split": "transfer",
+      "candidate_sha256": "08f95083f60719b0681fcca6cfad453b3faf28577335b466265903e2a11fe190",
+      "attempt": 0,
+      "feasible": false,
+      "quality": 0.0,
+      "true_correct": false,
+      "objective": null,
+      "proxy_match": false,
+      "phantom_proxy": false,
+      "failure_class": "incomplete_artifact",
+      "execution_return_code": -1,
+      "generation_error": "ValueError: incomplete_artifact: placeholder marker found",
+      "cost": {
+       "llm_calls": 2,
+       "missing_usage_calls": 0,
+       "llm_latency_seconds": 167.426093,
+       "prompt_tokens": 25855,
+       "completion_tokens": 11823,
+       "reasoning_tokens": 0,
+       "total_tokens": 37678
+      },
+      "execution_wall_seconds": null,
+      "evaluation_wall_seconds": 11.323343,
+      "api_guard_repairs": 1,
+      "public_contract_repairs": 0,
+      "stderr_tail": null
+     },
+     {
+      "task": "vertical_farm_harvest_energy_planning",
+      "split": "transfer",
+      "candidate_sha256": "08f95083f60719b0681fcca6cfad453b3faf28577335b466265903e2a11fe190",
+      "attempt": 0,
+      "feasible": true,
+      "quality": 1.999999998109602,
+      "true_correct": true,
+      "objective": 785.777479085944,
+      "proxy_match": true,
+      "phantom_proxy": false,
+      "failure_class": "true_correct",
+      "execution_return_code": 0,
+      "generation_error": null,
+      "cost": {
+       "llm_calls": 2,
+       "missing_usage_calls": 0,
+       "llm_latency_seconds": 70.835941,
+       "prompt_tokens": 40642,
+       "completion_tokens": 4655,
+       "reasoning_tokens": 0,
+       "total_tokens": 45297
+      },
+      "execution_wall_seconds": 12.123111,
+      "evaluation_wall_seconds": 37.20691,
+      "api_guard_repairs": 1,
+      "public_contract_repairs": 0,
+      "stderr_tail": null
+     }
+    ]
+   },
+   "final": {
+    "n": 4,
+    "expected_tasks": 4,
+    "coverage": 1.0,
+    "feasible": 2,
+    "proxy_match": 2,
+    "true_correct": 2,
+    "phantom_proxy": 0,
+    "unknown": 0,
+    "unresolved_non_phantom": 2,
+    "mean_quality": 0.999999999527329,
+    "failure_counts": {
+     "execution_error": 1,
+     "incomplete_artifact": 1,
+     "true_correct": 2
+    },
+    "api_guard_modified": 4,
+    "cost": {
+     "llm_calls": 7,
+     "missing_usage_calls": 0,
+     "llm_latency_seconds": 307.566667,
+     "prompt_tokens": 96950,
+     "completion_tokens": 20853,
+     "reasoning_tokens": 0,
+     "total_tokens": 117803,
+     "solver_execution_time": {
+      "recorded_calls": 3,
+      "missing_calls": 1,
+      "seconds": 47.532122
+     },
+     "official_evaluation_time": {
+      "recorded_calls": 4,
+      "missing_calls": 0,
+      "seconds": 73.384669
+     }
+    },
+    "tasks": [
+     {
+      "task": "platelet_inventory_rotation",
+      "split": "transfer",
+      "candidate_sha256": "08f95083f60719b0681fcca6cfad453b3faf28577335b466265903e2a11fe190",
+      "attempt": 0,
+      "feasible": false,
+      "quality": 0.0,
+      "true_correct": false,
+      "objective": null,
+      "proxy_match": false,
+      "phantom_proxy": false,
+      "failure_class": "execution_error",
+      "execution_return_code": 1,
+      "generation_error": null,
+      "cost": {
+       "llm_calls": 2,
+       "missing_usage_calls": 0,
+       "llm_latency_seconds": 62.668521,
+       "prompt_tokens": 14273,
+       "completion_tokens": 4134,
+       "reasoning_tokens": 0,
+       "total_tokens": 18407
+      },
+      "execution_wall_seconds": 21.105612,
+      "evaluation_wall_seconds": 7.166296,
+      "api_guard_repairs": 1,
+      "public_contract_repairs": 0,
+      "stderr_tail": "KeyError: ('hp01', 0)"
+     },
+     {
+      "task": "retail_media_campaign_allocation",
+      "split": "transfer",
+      "candidate_sha256": "08f95083f60719b0681fcca6cfad453b3faf28577335b466265903e2a11fe190",
+      "attempt": 2,
+      "feasible": true,
+      "quality": 1.9999999999997138,
+      "true_correct": true,
+      "objective": 12708.705645440003,
+      "proxy_match": true,
+      "phantom_proxy": false,
+      "failure_class": "true_correct",
+      "execution_return_code": 0,
+      "generation_error": null,
+      "cost": {
+       "llm_calls": 1,
+       "missing_usage_calls": 0,
+       "llm_latency_seconds": 6.636112,
+       "prompt_tokens": 16180,
+       "completion_tokens": 241,
+       "reasoning_tokens": 0,
+       "total_tokens": 16421
+      },
+      "execution_wall_seconds": 14.303399,
+      "evaluation_wall_seconds": 17.68812,
+      "api_guard_repairs": 1,
+      "public_contract_repairs": 0,
+      "stderr_tail": null
+     },
+     {
+      "task": "stochastic_surgery_capacity_planning",
+      "split": "transfer",
+      "candidate_sha256": "08f95083f60719b0681fcca6cfad453b3faf28577335b466265903e2a11fe190",
+      "attempt": 0,
+      "feasible": false,
+      "quality": 0.0,
+      "true_correct": false,
+      "objective": null,
+      "proxy_match": false,
+      "phantom_proxy": false,
+      "failure_class": "incomplete_artifact",
+      "execution_return_code": -1,
+      "generation_error": "ValueError: incomplete_artifact: placeholder marker found",
+      "cost": {
+       "llm_calls": 2,
+       "missing_usage_calls": 0,
+       "llm_latency_seconds": 167.426093,
+       "prompt_tokens": 25855,
+       "completion_tokens": 11823,
+       "reasoning_tokens": 0,
+       "total_tokens": 37678
+      },
+      "execution_wall_seconds": null,
+      "evaluation_wall_seconds": 11.323343,
+      "api_guard_repairs": 1,
+      "public_contract_repairs": 0,
+      "stderr_tail": null
+     },
+     {
+      "task": "vertical_farm_harvest_energy_planning",
+      "split": "transfer",
+      "candidate_sha256": "08f95083f60719b0681fcca6cfad453b3faf28577335b466265903e2a11fe190",
+      "attempt": 0,
+      "feasible": true,
+      "quality": 1.999999998109602,
+      "true_correct": true,
+      "objective": 785.777479085944,
+      "proxy_match": true,
+      "phantom_proxy": false,
+      "failure_class": "true_correct",
+      "execution_return_code": 0,
+      "generation_error": null,
+      "cost": {
+       "llm_calls": 2,
+       "missing_usage_calls": 0,
+       "llm_latency_seconds": 70.835941,
+       "prompt_tokens": 40642,
+       "completion_tokens": 4655,
+       "reasoning_tokens": 0,
+       "total_tokens": 45297
+      },
+      "execution_wall_seconds": 12.123111,
+      "evaluation_wall_seconds": 37.20691,
+      "api_guard_repairs": 1,
+      "public_contract_repairs": 0,
+      "stderr_tail": null
+     }
+    ]
+   },
+   "pair_win_safe": {
+    "paired_tasks": 4,
+    "missing_tasks": [],
+    "gained_true_correct": [
+     "retail_media_campaign_allocation"
+    ],
+    "lost_true_correct": [],
+    "gained_phantom": [],
+    "removed_phantom": [],
+    "win_safe": true
+   },
+   "cost": {
+    "llm_calls": 19,
+    "missing_usage_calls": 0,
+    "llm_latency_seconds": 816.817331,
+    "prompt_tokens": 267018,
+    "completion_tokens": 57754,
+    "reasoning_tokens": 0,
+    "total_tokens": 324772,
+    "solver_execution_time": {
+     "recorded_calls": 9,
+     "missing_calls": 1,
+     "seconds": 180.870165
+    },
+    "official_evaluation_time": {
+     "recorded_calls": 10,
+     "missing_calls": 0,
+     "seconds": 163.998268
+    }
+   },
+   "tasks": [
+    {
+     "task": "platelet_inventory_rotation",
+     "direct": {
+      "task": "platelet_inventory_rotation",
+      "split": "transfer",
+      "candidate_sha256": "08f95083f60719b0681fcca6cfad453b3faf28577335b466265903e2a11fe190",
+      "attempt": 0,
+      "feasible": false,
+      "quality": 0.0,
+      "true_correct": false,
+      "objective": null,
+      "proxy_match": false,
+      "phantom_proxy": false,
+      "failure_class": "execution_error",
+      "execution_return_code": 1,
+      "generation_error": null,
+      "cost": {
+       "llm_calls": 2,
+       "missing_usage_calls": 0,
+       "llm_latency_seconds": 62.668521,
+       "prompt_tokens": 14273,
+       "completion_tokens": 4134,
+       "reasoning_tokens": 0,
+       "total_tokens": 18407
+      },
+      "execution_wall_seconds": 21.105612,
+      "evaluation_wall_seconds": 7.166296,
+      "api_guard_repairs": 1,
+      "public_contract_repairs": 0,
+      "stderr_tail": "KeyError: ('hp01', 0)",
+      "official_errors": [
+       "No solution file found."
+      ]
+     },
+     "final": {
+      "task": "platelet_inventory_rotation",
+      "split": "transfer",
+      "candidate_sha256": "08f95083f60719b0681fcca6cfad453b3faf28577335b466265903e2a11fe190",
+      "attempt": 0,
+      "feasible": false,
+      "quality": 0.0,
+      "true_correct": false,
+      "objective": null,
+      "proxy_match": false,
+      "phantom_proxy": false,
+      "failure_class": "execution_error",
+      "execution_return_code": 1,
+      "generation_error": null,
+      "cost": {
+       "llm_calls": 2,
+       "missing_usage_calls": 0,
+       "llm_latency_seconds": 62.668521,
+       "prompt_tokens": 14273,
+       "completion_tokens": 4134,
+       "reasoning_tokens": 0,
+       "total_tokens": 18407
+      },
+      "execution_wall_seconds": 21.105612,
+      "evaluation_wall_seconds": 7.166296,
+      "api_guard_repairs": 1,
+      "public_contract_repairs": 0,
+      "stderr_tail": "KeyError: ('hp01', 0)",
+      "official_errors": [
+       "No solution file found."
+      ]
+     },
+     "repair_status": "rejected_regression",
+     "attempts_used": 3,
+     "coverage": true,
+     "unknown": false,
+     "win_safe": true,
+     "cost": {
+      "llm_calls": 5,
+      "missing_usage_calls": 0,
+      "llm_latency_seconds": 81.963629,
+      "prompt_tokens": 48903,
+      "completion_tokens": 5153,
+      "reasoning_tokens": 0,
+      "total_tokens": 54056,
+      "solver_execution_time": {
+       "recorded_calls": 3,
+       "missing_calls": 0,
+       "seconds": 45.72634
+      },
+      "official_evaluation_time": {
+       "recorded_calls": 3,
+       "missing_calls": 0,
+       "seconds": 48.384704
+      }
+     }
+    },
+    {
+     "task": "retail_media_campaign_allocation",
+     "direct": {
+      "task": "retail_media_campaign_allocation",
+      "split": "transfer",
+      "candidate_sha256": "08f95083f60719b0681fcca6cfad453b3faf28577335b466265903e2a11fe190",
+      "attempt": 0,
+      "feasible": false,
+      "quality": 0.0,
+      "true_correct": false,
+      "objective": null,
+      "proxy_match": false,
+      "phantom_proxy": false,
+      "failure_class": "execution_error",
+      "execution_return_code": 1,
+      "generation_error": null,
+      "cost": {
+       "llm_calls": 2,
+       "missing_usage_calls": 0,
+       "llm_latency_seconds": 45.218775,
+       "prompt_tokens": 21607,
+       "completion_tokens": 2949,
+       "reasoning_tokens": 0,
+       "total_tokens": 24556
+      },
+      "execution_wall_seconds": 13.522385,
+      "evaluation_wall_seconds": 3.043278,
+      "api_guard_repairs": 1,
+      "public_contract_repairs": 0,
+      "stderr_tail": "ValueError: too many values to unpack (expected 2)",
+      "official_errors": [
+       "No solution file found."
+      ]
+     },
+     "final": {
+      "task": "retail_media_campaign_allocation",
+      "split": "transfer",
+      "candidate_sha256": "08f95083f60719b0681fcca6cfad453b3faf28577335b466265903e2a11fe190",
+      "attempt": 2,
+      "feasible": true,
+      "quality": 1.9999999999997138,
+      "true_correct": true,
+      "objective": 12708.705645440003,
+      "proxy_match": true,
+      "phantom_proxy": false,
+      "failure_class": "true_correct",
+      "execution_return_code": 0,
+      "generation_error": null,
+      "cost": {
+       "llm_calls": 1,
+       "missing_usage_calls": 0,
+       "llm_latency_seconds": 6.636112,
+       "prompt_tokens": 16180,
+       "completion_tokens": 241,
+       "reasoning_tokens": 0,
+       "total_tokens": 16421
+      },
+      "execution_wall_seconds": 14.303399,
+      "evaluation_wall_seconds": 17.68812,
+      "api_guard_repairs": 1,
+      "public_contract_repairs": 0,
+      "stderr_tail": null,
+      "official_errors": []
+     },
+     "repair_status": "accepted",
+     "attempts_used": 2,
+     "coverage": true,
+     "unknown": false,
+     "win_safe": true,
+     "cost": {
+      "llm_calls": 4,
+      "missing_usage_calls": 0,
+      "llm_latency_seconds": 58.351341,
+      "prompt_tokens": 52825,
+      "completion_tokens": 3466,
+      "reasoning_tokens": 0,
+      "total_tokens": 56291,
+      "solver_execution_time": {
+       "recorded_calls": 3,
+       "missing_calls": 0,
+       "seconds": 49.852052
+      },
+      "official_evaluation_time": {
+       "recorded_calls": 3,
+       "missing_calls": 0,
+       "seconds": 27.082325
+      }
+     }
+    },
+    {
+     "task": "stochastic_surgery_capacity_planning",
+     "direct": {
+      "task": "stochastic_surgery_capacity_planning",
+      "split": "transfer",
+      "candidate_sha256": "08f95083f60719b0681fcca6cfad453b3faf28577335b466265903e2a11fe190",
+      "attempt": 0,
+      "feasible": false,
+      "quality": 0.0,
+      "true_correct": false,
+      "objective": null,
+      "proxy_match": false,
+      "phantom_proxy": false,
+      "failure_class": "incomplete_artifact",
+      "execution_return_code": -1,
+      "generation_error": "ValueError: incomplete_artifact: placeholder marker found",
+      "cost": {
+       "llm_calls": 2,
+       "missing_usage_calls": 0,
+       "llm_latency_seconds": 167.426093,
+       "prompt_tokens": 25855,
+       "completion_tokens": 11823,
+       "reasoning_tokens": 0,
+       "total_tokens": 37678
+      },
+      "execution_wall_seconds": null,
+      "evaluation_wall_seconds": 11.323343,
+      "api_guard_repairs": 1,
+      "public_contract_repairs": 0,
+      "stderr_tail": null,
+      "official_errors": [
+       "No solution file found."
+      ]
+     },
+     "final": {
+      "task": "stochastic_surgery_capacity_planning",
+      "split": "transfer",
+      "candidate_sha256": "08f95083f60719b0681fcca6cfad453b3faf28577335b466265903e2a11fe190",
+      "attempt": 0,
+      "feasible": false,
+      "quality": 0.0,
+      "true_correct": false,
+      "objective": null,
+      "proxy_match": false,
+      "phantom_proxy": false,
+      "failure_class": "incomplete_artifact",
+      "execution_return_code": -1,
+      "generation_error": "ValueError: incomplete_artifact: placeholder marker found",
+      "cost": {
+       "llm_calls": 2,
+       "missing_usage_calls": 0,
+       "llm_latency_seconds": 167.426093,
+       "prompt_tokens": 25855,
+       "completion_tokens": 11823,
+       "reasoning_tokens": 0,
+       "total_tokens": 37678
+      },
+      "execution_wall_seconds": null,
+      "evaluation_wall_seconds": 11.323343,
+      "api_guard_repairs": 1,
+      "public_contract_repairs": 0,
+      "stderr_tail": null,
+      "official_errors": [
+       "No solution file found."
+      ]
+     },
+     "repair_status": "rejected_regression",
+     "attempts_used": 3,
+     "coverage": true,
+     "unknown": false,
+     "win_safe": true,
+     "cost": {
+      "llm_calls": 8,
+      "missing_usage_calls": 0,
+      "llm_latency_seconds": 605.66642,
+      "prompt_tokens": 124648,
+      "completion_tokens": 44480,
+      "reasoning_tokens": 0,
+      "total_tokens": 169128,
+      "solver_execution_time": {
+       "recorded_calls": 2,
+       "missing_calls": 1,
+       "seconds": 73.168662
+      },
+      "official_evaluation_time": {
+       "recorded_calls": 3,
+       "missing_calls": 0,
+       "seconds": 51.324329
+      }
+     }
+    },
+    {
+     "task": "vertical_farm_harvest_energy_planning",
+     "direct": {
+      "task": "vertical_farm_harvest_energy_planning",
+      "split": "transfer",
+      "candidate_sha256": "08f95083f60719b0681fcca6cfad453b3faf28577335b466265903e2a11fe190",
+      "attempt": 0,
+      "feasible": true,
+      "quality": 1.999999998109602,
+      "true_correct": true,
+      "objective": 785.777479085944,
+      "proxy_match": true,
+      "phantom_proxy": false,
+      "failure_class": "true_correct",
+      "execution_return_code": 0,
+      "generation_error": null,
+      "cost": {
+       "llm_calls": 2,
+       "missing_usage_calls": 0,
+       "llm_latency_seconds": 70.835941,
+       "prompt_tokens": 40642,
+       "completion_tokens": 4655,
+       "reasoning_tokens": 0,
+       "total_tokens": 45297
+      },
+      "execution_wall_seconds": 12.123111,
+      "evaluation_wall_seconds": 37.20691,
+      "api_guard_repairs": 1,
+      "public_contract_repairs": 0,
+      "stderr_tail": null,
+      "official_errors": []
+     },
+     "final": {
+      "task": "vertical_farm_harvest_energy_planning",
+      "split": "transfer",
+      "candidate_sha256": "08f95083f60719b0681fcca6cfad453b3faf28577335b466265903e2a11fe190",
+      "attempt": 0,
+      "feasible": true,
+      "quality": 1.999999998109602,
+      "true_correct": true,
+      "objective": 785.777479085944,
+      "proxy_match": true,
+      "phantom_proxy": false,
+      "failure_class": "true_correct",
+      "execution_return_code": 0,
+      "generation_error": null,
+      "cost": {
+       "llm_calls": 2,
+       "missing_usage_calls": 0,
+       "llm_latency_seconds": 70.835941,
+       "prompt_tokens": 40642,
+       "completion_tokens": 4655,
+       "reasoning_tokens": 0,
+       "total_tokens": 45297
+      },
+      "execution_wall_seconds": 12.123111,
+      "evaluation_wall_seconds": 37.20691,
+      "api_guard_repairs": 1,
+      "public_contract_repairs": 0,
+      "stderr_tail": null,
+      "official_errors": []
+     },
+     "repair_status": "preserved_win",
+     "attempts_used": 0,
+     "coverage": true,
+     "unknown": false,
+     "win_safe": true,
+     "cost": {
+      "llm_calls": 2,
+      "missing_usage_calls": 0,
+      "llm_latency_seconds": 70.835941,
+      "prompt_tokens": 40642,
+      "completion_tokens": 4655,
+      "reasoning_tokens": 0,
+      "total_tokens": 45297,
+      "solver_execution_time": {
+       "recorded_calls": 1,
+       "missing_calls": 0,
+       "seconds": 12.123111
+      },
+      "official_evaluation_time": {
+       "recorded_calls": 1,
+       "missing_calls": 0,
+       "seconds": 37.20691
+      }
+     }
+    }
+   ],
+   "provenance": "subsequent_disjoint_replay",
+   "specification_sha256": {
+    "stochastic_surgery_capacity_planning": "08f95083f60719b0681fcca6cfad453b3faf28577335b466265903e2a11fe190",
+    "platelet_inventory_rotation": "08f95083f60719b0681fcca6cfad453b3faf28577335b466265903e2a11fe190",
+    "retail_media_campaign_allocation": "08f95083f60719b0681fcca6cfad453b3faf28577335b466265903e2a11fe190",
+    "vertical_farm_harvest_energy_planning": "08f95083f60719b0681fcca6cfad453b3faf28577335b466265903e2a11fe190"
+   },
+   "implementation": {
+    "path": "/home/hewj13/wm/ora/work/swarm_transfer_logistics_v0.12/B1/run.json",
+    "sha256": "2ce0fccbcc5623e61e4e70604fc989cb1c91834f49788e22f0424b6da9787fec"
+   },
+   "repair_inputs": [
+    "/home/hewj13/wm/ora/work/swarm_transfer_logistics_v0.12/B2/stochastic_surgery_capacity_planning/repair_result.json",
+    "/home/hewj13/wm/ora/work/swarm_transfer_logistics_v0.12/B2/platelet_inventory_rotation/repair_result.json",
+    "/home/hewj13/wm/ora/work/swarm_transfer_logistics_v0.12/B2/retail_media_campaign_allocation/repair_result.json",
+    "/home/hewj13/wm/ora/work/swarm_transfer_logistics_v0.12/B2/vertical_farm_harvest_energy_planning/repair_result.json"
+   ]
+  },
+  {
+   "arm": "B3_verified_memory",
+   "status": "not_run"
+  }
+ ],
+ "b0_to_b1": {
+  "paired_tasks": 4,
+  "missing_tasks": [],
+  "gained_true_correct": [],
+  "lost_true_correct": [
+   "retail_media_campaign_allocation"
+  ],
+  "gained_phantom": [],
+  "removed_phantom": [],
+  "win_safe": false
+ },
+ "b0_to_b2": {
+  "paired_tasks": 4,
+  "missing_tasks": [],
+  "gained_true_correct": [],
+  "lost_true_correct": [],
+  "gained_phantom": [],
+  "removed_phantom": [],
+  "win_safe": true
+ },
+ "b0_to_b3": {
+  "status": "not_run"
+ },
+ "b3_same_generator_specification_as_b1": false,
+ "memory_interpretation": "Compare only equal task coverage and record the authorized memory scope.",
+ "selection_or_heldout": "Read each arm's provenance; this report does not relabel selection tasks as held-out."
+}

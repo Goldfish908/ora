@@ -1,0 +1,11 @@
+{
+ "source": "/home/hewj13/wm/ora/work/swarm_transfer_pool/oracle_logistics_v0.8.1",
+ "oracle_results_sha256": "9c5e78beed00269e097f82ab35d2b373ba2968694740a4fdd1334b6df7167ec6",
+ "task_names": [
+  "precision_ag_sprayer_tanker_routing",
+  "railway_disruption_recovery",
+  "front_distribution_center_robust_inventory"
+ ],
+ "layout": "task/oracle/{result.json,app -> immutable batch oracle workspace}",
+ "tasks_sha256": "d4cef99bcba2a402ed37afe452c6f12e43f29271450677b7e4b3553bb2f99c6e"
+}

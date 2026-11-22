@@ -1,0 +1,165 @@
+{
+ "frozen": false,
+ "events": [
+  {
+   "event": "check_hint_only",
+   "check_id": "execution_contract",
+   "at": "2026-11-22T05:39:26.483063+00:00"
+  },
+  {
+   "event": "check_veto_enabled",
+   "check_id": "execution_contract",
+   "at": "2026-11-22T05:39:26.483523+00:00"
+  },
+  {
+   "event": "check_hint_only",
+   "check_id": "logistics_official_task_pass",
+   "at": "2026-11-22T05:39:26.483562+00:00"
+  },
+  {
+   "event": "check_veto_enabled",
+   "check_id": "logistics_official_task_pass",
+   "at": "2026-11-22T05:40:57.137031+00:00"
+  }
+ ],
+ "specifications": [],
+ "checks": [
+  {
+   "check_id": "execution_contract",
+   "scope": {
+    "dataset": "oragentbench"
+   },
+   "source_quote": "required solution file",
+   "status": "veto_enabled",
+   "code_sha256": "54b73cfa7db0dea2440288f343682566fd314786d862708a810c4ba3dbb1288a",
+   "audits": [
+    {
+     "records": [
+      {
+       "case_id": "exec_clean_0",
+       "expected": "pass",
+       "observed": "pass"
+      },
+      {
+       "case_id": "exec_wrong_0",
+       "expected": "fail",
+       "observed": "fail"
+      },
+      {
+       "case_id": "exec_clean_1",
+       "expected": "pass",
+       "observed": "pass"
+      },
+      {
+       "case_id": "exec_wrong_1",
+       "expected": "fail",
+       "observed": "fail"
+      },
+      {
+       "case_id": "exec_clean_2",
+       "expected": "pass",
+       "observed": "pass"
+      },
+      {
+       "case_id": "exec_wrong_2",
+       "expected": "fail",
+       "observed": "fail"
+      }
+     ],
+     "n_clean": 3,
+     "n_wrong": 3,
+     "precision": 1.0,
+     "detection": 1.0,
+     "unknown": 0,
+     "passed": true,
+     "reasons": [],
+     "at": "2026-11-22T05:39:26.483513+00:00"
+    }
+   ]
+  },
+  {
+   "check_id": "logistics_official_task_pass",
+   "scope": {
+    "dataset": "oragentbench",
+    "domain": "logistics"
+   },
+   "source_quote": "required solution file",
+   "status": "veto_enabled",
+   "code_sha256": "86a5e8c16e828d1ee1adda672043b4f856420722d2ce2f6a42c85d651d61528e",
+   "audits": [
+    {
+     "records": [
+      {
+       "case_id": "precision_ag_sprayer_tanker_routing:clean",
+       "expected": "pass",
+       "observed": "pass"
+      },
+      {
+       "case_id": "precision_ag_sprayer_tanker_routing:missing_solution",
+       "expected": "fail",
+       "observed": "fail"
+      },
+      {
+       "case_id": "precision_ag_sprayer_tanker_routing:invalid_schema",
+       "expected": "fail",
+       "observed": "fail"
+      },
+      {
+       "case_id": "precision_ag_sprayer_tanker_routing:empty_solution",
+       "expected": "fail",
+       "observed": "fail"
+      },
+      {
+       "case_id": "railway_disruption_recovery:clean",
+       "expected": "pass",
+       "observed": "pass"
+      },
+      {
+       "case_id": "railway_disruption_recovery:missing_solution",
+       "expected": "fail",
+       "observed": "fail"
+      },
+      {
+       "case_id": "railway_disruption_recovery:invalid_schema",
+       "expected": "fail",
+       "observed": "fail"
+      },
+      {
+       "case_id": "railway_disruption_recovery:empty_solution",
+       "expected": "fail",
+       "observed": "fail"
+      },
+      {
+       "case_id": "front_distribution_center_robust_inventory:clean",
+       "expected": "pass",
+       "observed": "pass"
+      },
+      {
+       "case_id": "front_distribution_center_robust_inventory:missing_solution",
+       "expected": "fail",
+       "observed": "fail"
+      },
+      {
+       "case_id": "front_distribution_center_robust_inventory:invalid_schema",
+       "expected": "fail",
+       "observed": "fail"
+      },
+      {
+       "case_id": "front_distribution_center_robust_inventory:empty_solution",
+       "expected": "fail",
+       "observed": "fail"
+      }
+     ],
+     "n_clean": 3,
+     "n_wrong": 9,
+     "precision": 1.0,
+     "detection": 1.0,
+     "unknown": 0,
+     "passed": true,
+     "reasons": [],
+     "at": "2026-11-22T05:40:57.137006+00:00"
+    }
+   ]
+  }
+ ]
+}

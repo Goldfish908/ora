@@ -1,0 +1,13 @@
+{
+  "version": "cleanroom_swarm_frozen_logistics_v0.8",
+  "selection_basis": "Seven true_correct healthy tasks from oracle_logistics_v0.8.1. Roles are frozen before direct generation. Calibration and subsequent transfer are disjoint; synchromodal_freight_recovery and container_gate_dro_appointment_planning are excluded because oracle quality=0.",
+  "tasks": [
+    {"name": "precision_ag_sprayer_tanker_routing", "domain": "logistics", "split": "audit", "role": "witness_calibration"},
+    {"name": "railway_disruption_recovery", "domain": "logistics", "split": "audit", "role": "witness_calibration"},
+    {"name": "front_distribution_center_robust_inventory", "domain": "logistics", "split": "audit", "role": "witness_calibration"},
+    {"name": "shared_drone_base_delivery_assignment", "domain": "logistics", "split": "transfer", "role": "subsequent_transfer"},
+    {"name": "autonomous_lab_courier_tsptw", "domain": "logistics", "split": "transfer", "role": "subsequent_transfer"},
+    {"name": "flood_relief_multimodal_routing", "domain": "logistics", "split": "transfer", "role": "subsequent_transfer"},
+    {"name": "curbside_delivery_slot_coordination", "domain": "logistics", "split": "transfer", "role": "subsequent_transfer"}
+  ]
+}

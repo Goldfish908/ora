@@ -1,0 +1,94 @@
+{
+ "version": "cleanroom_swarm_frozen_logistics_v0.8",
+ "n_tasks": 7,
+ "n_healthy": 7,
+ "all_true_correct": true,
+ "roles_sha256": "e19cefa98d26be127c8ee651d569e0d2c76c0b958aaad60f26344bf8093b1f19",
+ "tasks": [
+  {
+   "task": "precision_ag_sprayer_tanker_routing",
+   "domain": "logistics",
+   "split": "audit",
+   "role": "witness_calibration",
+   "feasible": true,
+   "quality": 2.0,
+   "objective": 26425.803923,
+   "source": "/home/hewj13/wm/ora/work/swarm_transfer_pool/oracle_logistics_v0.8.1/oracle_results.json",
+   "source_sha256": "9c5e78beed00269e097f82ab35d2b373ba2968694740a4fdd1334b6df7167ec6",
+   "implementation_sha256": "6884dfeaf85f9dd7efec2235b0ae0de29d2584c9ecb65a223248d533faca4926"
+  },
+  {
+   "task": "railway_disruption_recovery",
+   "domain": "logistics",
+   "split": "audit",
+   "role": "witness_calibration",
+   "feasible": true,
+   "quality": 1.0,
+   "objective": 6056.4,
+   "source": "/home/hewj13/wm/ora/work/swarm_transfer_pool/oracle_logistics_v0.8.1/oracle_results.json",
+   "source_sha256": "9c5e78beed00269e097f82ab35d2b373ba2968694740a4fdd1334b6df7167ec6",
+   "implementation_sha256": "6884dfeaf85f9dd7efec2235b0ae0de29d2584c9ecb65a223248d533faca4926"
+  },
+  {
+   "task": "front_distribution_center_robust_inventory",
+   "domain": "logistics",
+   "split": "audit",
+   "role": "witness_calibration",
+   "feasible": true,
+   "quality": 2.0,
+   "objective": 682.9921499999999,
+   "source": "/home/hewj13/wm/ora/work/swarm_transfer_pool/oracle_logistics_v0.8.1/oracle_results.json",
+   "source_sha256": "9c5e78beed00269e097f82ab35d2b373ba2968694740a4fdd1334b6df7167ec6",
+   "implementation_sha256": "6884dfeaf85f9dd7efec2235b0ae0de29d2584c9ecb65a223248d533faca4926"
+  },
+  {
+   "task": "shared_drone_base_delivery_assignment",
+   "domain": "logistics",
+   "split": "transfer",
+   "role": "subsequent_transfer",
+   "feasible": true,
+   "quality": 2.0,
+   "objective": 28392.128099999987,
+   "source": "/home/hewj13/wm/ora/work/swarm_transfer_pool/oracle_logistics_v0.8.1/oracle_results.json",
+   "source_sha256": "9c5e78beed00269e097f82ab35d2b373ba2968694740a4fdd1334b6df7167ec6",
+   "implementation_sha256": "6884dfeaf85f9dd7efec2235b0ae0de29d2584c9ecb65a223248d533faca4926"
+  },
+  {
+   "task": "autonomous_lab_courier_tsptw",
+   "domain": "logistics",
+   "split": "transfer",
+   "role": "subsequent_transfer",
+   "feasible": true,
+   "quality": 2.0,
+   "objective": 191.31400000000002,
+   "source": "/home/hewj13/wm/ora/work/swarm_transfer_pool/oracle_logistics_v0.8.1/oracle_results.json",
+   "source_sha256": "9c5e78beed00269e097f82ab35d2b373ba2968694740a4fdd1334b6df7167ec6",
+   "implementation_sha256": "6884dfeaf85f9dd7efec2235b0ae0de29d2584c9ecb65a223248d533faca4926"
+  },
+  {
+   "task": "flood_relief_multimodal_routing",
+   "domain": "logistics",
+   "split": "transfer",
+   "role": "subsequent_transfer",
+   "feasible": true,
+   "quality": 1.0,
+   "objective": 11348.077200000002,
+   "source": "/home/hewj13/wm/ora/work/swarm_transfer_pool/oracle_logistics_v0.8.1/oracle_results.json",
+   "source_sha256": "9c5e78beed00269e097f82ab35d2b373ba2968694740a4fdd1334b6df7167ec6",
+   "implementation_sha256": "6884dfeaf85f9dd7efec2235b0ae0de29d2584c9ecb65a223248d533faca4926"
+  },
+  {
+   "task": "curbside_delivery_slot_coordination",
+   "domain": "logistics",
+   "split": "transfer",
+   "role": "subsequent_transfer",
+   "feasible": true,
+   "quality": 2.0,
+   "objective": 926.4082098000001,
+   "source": "/home/hewj13/wm/ora/work/swarm_transfer_pool/oracle_logistics_v0.8.1/oracle_results.json",
+   "source_sha256": "9c5e78beed00269e097f82ab35d2b373ba2968694740a4fdd1334b6df7167ec6",
+   "implementation_sha256": "6884dfeaf85f9dd7efec2235b0ae0de29d2584c9ecb65a223248d533faca4926"
+  }
+ ],
+ "evidence_note": "Original oracle/official health only; Qwen outcomes were not used to select these tasks."
+}

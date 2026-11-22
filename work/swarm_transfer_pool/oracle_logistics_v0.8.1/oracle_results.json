@@ -1,0 +1,1017 @@
+{
+ "precision_ag_sprayer_tanker_routing": {
+  "runner": {
+   "return_code": 0,
+   "timed_out": false,
+   "stdout": "{\n  \"best_bound\": null,\n  \"candidate_count\": 3,\n  \"environment\": \"precision_ag_sprayer_tanker_routing\",\n  \"evaluation\": {\n    \"error_count\": 0,\n    \"feasible\": true,\n    \"late_priority_minutes\": 3541.079,\n    \"objective\": 26425.803923,\n    \"pad_service_count\": 11,\n    \"reload_count\": 6,\n    \"sprayer_km\": 157.197,\n    \"sync_count\": 8,\n    \"tender_km\": 83.722,\n    \"under_ideal_priority_liters\": 0.0,\n    \"wait_minutes\": 1481.937\n  },\n  \"feasible\": true,\n  \"feasible_candidate_count\": 1,\n  \"method\": \"event-driven multi-candidate synchronized route construction with weather-aware timing and pad-capacity repair\",\n  \"objective\": 26425.803923,\n  \"route_km\": 240.919,\n  \"solution_path\": \"/app/submissions/solution.json\",\n  \"time_limit_seconds\": 300.0\n}\n",
+   "stderr": ""
+  },
+  "official": {
+   "evaluation": {
+    "environment": "precision_ag_sprayer_tanker_routing",
+    "error_count": 0,
+    "errors": [],
+    "feasible": true,
+    "late_priority_minutes": 3541.079,
+    "objective": 26425.803923,
+    "pad_service_count": 11,
+    "reload_count": 6,
+    "sprayed_fields": 36,
+    "sprayer_km": 157.197,
+    "sync_count": 8,
+    "tender_km": 83.722,
+    "total_cost": 26425.803923,
+    "under_ideal_priority_liters": 0.0,
+    "wait_minutes": 1481.937,
+    "warnings": []
+   },
+   "reward": {
+    "feasibility": 1.0,
+    "quality": 2.0
+   },
+   "reward_details": {
+    "agent_objective": 26425.803923,
+    "agent_objective_source": "objective",
+    "best_bound": null,
+    "bound_improvement": null,
+    "bound_sense": "lower",
+    "evaluation_diagnostics": {
+     "error_count": 0,
+     "objective": 26425.803923,
+     "profit": null,
+     "score": null,
+     "total_cost": 26425.803923
+    },
+    "fallback_mip_gap": 0.0005,
+    "fallback_reference_scale": 26425.803923,
+    "feasibility": 1.0,
+    "formula": "clip(2 + d if d >= -1 else 1.5 + 0.5*d, 0, 2), d = (R - O) / (max(abs(R), 1e-8) * mip_gap)",
+    "objective_sense": "minimize",
+    "quality": 2.0,
+    "quality_scale_width": 13.2129019615,
+    "quality_status": "scored_with_mip_gap_fallback",
+    "reference_metrics": {
+     "best_bound": null,
+     "best_bound_source": null,
+     "bound_sense": "lower",
+     "evaluation_summary": {
+      "error_count": 0,
+      "feasible": true,
+      "objective": 26425.803923,
+      "total_cost": 26425.803923
+     },
+     "generated_at": "2026-05-19T16:29:18.901961+00:00",
+     "mip_gap": 0.0005,
+     "objective_sense": "minimize",
+     "quality_formula": "clip(1 + (R - O) / (R - B), 0, 2) if B exists and R - B >= max(abs(R), 1e-8) * mip_gap; otherwise let d=(R - O)/(max(abs(R), 1e-8)*mip_gap), quality=clip(2+d if d>=-1 else 1.5+0.5*d, 0, 2); if no R, quality = 2",
+     "reference_objective": 26425.803923,
+     "reference_objective_source": "objective",
+     "solution_path": "reference_solutions/precision_ag_sprayer_tanker_routing_reference_solution.json",
+     "solver_summary": {
+      "best_bound": null,
+      "candidate_count": 3,
+      "environment": "precision_ag_sprayer_tanker_routing",
+      "evaluation": {
+       "error_count": 0,
+       "feasible": true,
+       "late_priority_minutes": 3541.079,
+       "objective": 26425.803923,
+       "pad_service_count": 11,
+       "reload_count": 6,
+       "sprayer_km": 157.197,
+       "sync_count": 8,
+       "tender_km": 83.722,
+       "under_ideal_priority_liters": 0.0,
+       "wait_minutes": 1481.937
+      },
+      "feasible": true,
+      "feasible_candidate_count": 1,
+      "method": "multi-candidate synchronized route construction with weather-aware timing and pad-capacity repair",
+      "objective": 26425.803923,
+      "route_km": 240.919,
+      "solution_path": "reference_solutions/precision_ag_sprayer_tanker_routing_reference_solution.json",
+      "time_limit_seconds": 300.0
+     },
+     "task_name": "precision_ag_sprayer_tanker_routing",
+     "time_limit_seconds": 300.0
+    },
+    "reference_objective": 26425.803923,
+    "scalar_reward": 1.0,
+    "scalar_reward_formula": "(feasibility + quality) / 3.0",
+    "signed_improvement": 0.0
+   },
+   "runner": {
+    "return_code": 0,
+    "timed_out": false,
+    "wall_seconds": 6.674281
+   }
+  },
+  "metrics": {
+   "feasible": true,
+   "quality": 2.0,
+   "true_correct": true,
+   "objective": 26425.803923,
+   "evaluation_unknown": false
+  }
+ },
+ "synchromodal_freight_recovery": {
+  "runner": {
+   "return_code": 0,
+   "timed_out": false,
+   "stdout": "{\n  \"base_path_counts\": {\n    \"O01\": 12,\n    \"O02\": 16,\n    \"O03\": 12,\n    \"O04\": 2,\n    \"O05\": 4,\n    \"O06\": 1,\n    \"O07\": 1,\n    \"O08\": 4,\n    \"O09\": 1,\n    \"O10\": 8,\n    \"O11\": 10,\n    \"O12\": 2,\n    \"O13\": 2,\n    \"O14\": 2,\n    \"O15\": 3,\n    \"O16\": 4,\n    \"O17\": 1,\n    \"O18\": 1\n  },\n  \"best_bound\": 128177.35609522222,\n  \"evaluation\": {\n    \"accepted_orders\": 16,\n    \"cvar_cost\": 56408.64523809524,\n    \"error_count\": 0,\n    \"errors\": [],\n    \"expected_scenario_cost\": 47002.11766666667,\n    \"feasible\": true,\n    \"first_stage_cost\": 62020.0,\n    \"objective\": 130457.40285714286,\n    \"rejected_orders\": 2,\n    \"scenario_costs\": {\n      \"S01\": 41800.5,\n      \"S02\": 43221.33333333333,\n      \"S03\": 50155.26666666666,\n      \"S04\": 52915.96666666667,\n      \"S05\": 43028.9,\n      \"S06\": 42841.9,\n      \"S07\": 67210.86666666667,\n      \"S08\": 43206.9\n    },\n    \"scenario_emissions\": {\n      \"S01\": 12725.0,\n      \"S02\": 12600.0,\n      \"S03\": 20220.0,\n      \"S04\": 15860.0,\n      \"S05\": 10705.0,\n      \"S06\": 14155.0,\n      \"S07\": 27890.0,\n      \"S08\": 14155.0\n    }\n  },\n  \"gap\": 0.01778821807048862,\n  \"objective\": 130457.4028571427,\n  \"output\": \"/app/submissions/solution.json\",\n  \"scenario_path_count_max\": 15,\n  \"scenario_path_count_min\": 0,\n  \"status\": \"timelimit\"\n}\n",
+   "stderr": ""
+  },
+  "official": {
+   "evaluation": {
+    "accepted_orders": 16,
+    "cvar_cost": 56408.64523809524,
+    "error_count": 0,
+    "errors": [],
+    "expected_scenario_cost": 47002.11766666667,
+    "feasible": true,
+    "first_stage_cost": 62020.0,
+    "objective": 130457.40285714286,
+    "rejected_orders": 2,
+    "scenario_costs": {
+     "S01": 41800.5,
+     "S02": 43221.33333333333,
+     "S03": 50155.26666666666,
+     "S04": 52915.96666666667,
+     "S05": 43028.9,
+     "S06": 42841.9,
+     "S07": 67210.86666666667,
+     "S08": 43206.9
+    },
+    "scenario_emissions": {
+     "S01": 12725.0,
+     "S02": 12600.0,
+     "S03": 20220.0,
+     "S04": 15860.0,
+     "S05": 10705.0,
+     "S06": 14155.0,
+     "S07": 27890.0,
+     "S08": 14155.0
+    }
+   },
+   "reward": {
+    "feasibility": 1.0,
+    "quality": 0.0
+   },
+   "reward_details": {
+    "agent_objective": 130457.40285714286,
+    "agent_objective_source": "objective",
+    "best_bound": 129676.65057142841,
+    "bound_sense": "lower",
+    "evaluation_diagnostics": {
+     "error_count": 0,
+     "objective": 130457.40285714286,
+     "profit": null,
+     "score": null,
+     "total_cost": null
+    },
+    "fallback_mip_gap": 0.0005,
+    "fallback_reference_scale": 129676.65057142857,
+    "feasibility": 1.0,
+    "formula": "clip(2 + d if d >= -1 else 1.5 + 0.5*d, 0, 2), d = (R - O) / (max(abs(R), 1e-8) * mip_gap)",
+    "objective_sense": "minimize",
+    "quality": 0.0,
+    "quality_status": "bound_gap_below_mip_gap",
+    "reference_metrics": {
+     "best_bound": 129676.65057142841,
+     "best_bound_source": "best_bound",
+     "bound_sense": "lower",
+     "evaluation_summary": {
+      "error_count": 0,
+      "feasible": true,
+      "objective": 129676.65057142857
+     },
+     "generated_at": "2026-05-17T10:25:13.428388+00:00",
+     "mip_gap": 0.0005,
+     "objective_sense": "minimize",
+     "quality_formula": "clip(1 + (R - O) / (R - B), 0, 2) if B exists and R - B >= max(abs(R), 1e-8) * mip_gap; otherwise let d=(R - O)/(max(abs(R), 1e-8)*mip_gap), quality=clip(2+d if d>=-1 else 1.5+0.5*d, 0, 2); if no R, quality = 2",
+     "reference_objective": 129676.65057142857,
+     "reference_objective_source": "objective",
+     "solution_path": "reference_solutions/synchromodal_freight_recovery_reference_solution.json",
+     "solver_summary": {
+      "base_path_counts": {
+       "O01": 12,
+       "O02": 16,
+       "O03": 12,
+       "O04": 2,
+       "O05": 4,
+       "O06": 1,
+       "O07": 1,
+       "O08": 4,
+       "O09": 1,
+       "O10": 8,
+       "O11": 10,
+       "O12": 2,
+       "O13": 2,
+       "O14": 2,
+       "O15": 3,
+       "O16": 4,
+       "O17": 1,
+       "O18": 1
+      },
+      "best_bound": 129676.65057142841,
+      "evaluation": {
+       "accepted_orders": 16,
+       "cvar_cost": 56099.40238095237,
+       "error_count": 0,
+       "errors": [],
+       "expected_scenario_cost": 46108.87766666667,
+       "feasible": true,
+       "first_stage_cost": 62250.0,
+       "objective": 129676.65057142857,
+       "rejected_orders": 2,
+       "scenario_costs": {
+        "S01": 40209.9,
+        "S02": 41630.73333333333,
+        "S03": 50605.26666666666,
+        "S04": 51325.36666666666,
+        "S05": 41438.3,
+        "S06": 42292.5,
+        "S07": 68574.56666666665,
+        "S08": 43656.9
+       },
+       "scenario_emissions": {
+        "S01": 14255.0,
+        "S02": 14130.0,
+        "S03": 20220.0,
+        "S04": 17390.0,
+        "S05": 12235.0,
+        "S06": 14275.0,
+        "S07": 26805.0,
+        "S08": 14155.0
+       }
+      },
+      "gap": 0.0,
+      "objective": 129676.65057142841,
+      "output": "reference_solutions/synchromodal_freight_recovery_reference_solution.json",
+      "scenario_path_count_max": 15,
+      "scenario_path_count_min": 0,
+      "status": "optimal"
+     },
+     "task_name": "synchromodal_freight_recovery",
+     "time_limit_seconds": 300.0
+    },
+    "reference_objective": 129676.65057142857,
+    "scalar_reward": 0.3333333333333333,
+    "scalar_reward_formula": "(feasibility + quality) / 3.0"
+   },
+   "runner": {
+    "return_code": 0,
+    "timed_out": false,
+    "wall_seconds": 22.423285
+   }
+  },
+  "metrics": {
+   "feasible": true,
+   "quality": 0.0,
+   "true_correct": false,
+   "objective": 130457.40285714286,
+   "evaluation_unknown": false
+  }
+ },
+ "railway_disruption_recovery": {
+  "runner": {
+   "return_code": 0,
+   "timed_out": false,
+   "stdout": "{\n  \"best_bound\": 0.0,\n  \"dispatch_strategy\": \"connection_protection\",\n  \"evaluation\": {\n    \"cancel_cost\": 0.0,\n    \"connection_cost\": 140.0,\n    \"crew_swap_cost\": 84.0,\n    \"delay_cost\": 5742.4,\n    \"error_count\": 0,\n    \"errors\": [],\n    \"feasible\": true,\n    \"missed_connections\": 1,\n    \"objective\": 6056.4,\n    \"run_trains\": 14,\n    \"short_turn_cost\": 0.0,\n    \"swap_cost\": 90.0,\n    \"total_cost\": 6056.4\n  },\n  \"missed_connections\": 1,\n  \"objective\": 6056.4,\n  \"run_trains\": 14,\n  \"status\": \"heuristic_feasible\"\n}\n",
+   "stderr": ""
+  },
+  "official": {
+   "evaluation": {
+    "cancel_cost": 0.0,
+    "connection_cost": 140.0,
+    "crew_swap_cost": 84.0,
+    "delay_cost": 5742.4,
+    "error_count": 0,
+    "errors": [],
+    "feasible": true,
+    "missed_connections": 1,
+    "objective": 6056.4,
+    "run_trains": 14,
+    "short_turn_cost": 0.0,
+    "swap_cost": 90.0,
+    "total_cost": 6056.4
+   },
+   "reward": {
+    "feasibility": 1.0,
+    "quality": 1.0
+   },
+   "reward_details": {
+    "agent_objective": 6056.4,
+    "agent_objective_source": "objective",
+    "best_bound": 0.0,
+    "bound_sense": "lower",
+    "evaluation_diagnostics": {
+     "error_count": 0,
+     "objective": 6056.4,
+     "profit": null,
+     "score": null,
+     "total_cost": 6056.4
+    },
+    "fallback_mip_gap": 0.0005,
+    "fallback_reference_scale": 6056.4,
+    "feasibility": 1.0,
+    "formula": "clip(1 + (R - O) / (R - B), 0, 2) when B exists and R - B >= max(abs(R), 1e-8) * mip_gap",
+    "objective_sense": "minimize",
+    "quality": 1.0,
+    "quality_status": "scored_with_best_bound",
+    "reference_metrics": {
+     "best_bound": 0.0,
+     "best_bound_source": "best_bound",
+     "bound_sense": "lower",
+     "evaluation_summary": {
+      "error_count": 0,
+      "feasible": true,
+      "objective": 6056.4,
+      "total_cost": 6056.4
+     },
+     "generated_at": "2026-05-16T20:17:42.295244+00:00",
+     "mip_gap": 0.0005,
+     "objective_sense": "minimize",
+     "quality_formula": "clip(1 + (R - O) / (R - B), 0, 2) if B exists and R - B >= max(abs(R), 1e-8) * mip_gap; otherwise let d=(R - O)/(max(abs(R), 1e-8)*mip_gap), quality=clip(2+d if d>=-1 else 1.5+0.5*d, 0, 2); if no R, quality = 2",
+     "reference_objective": 6056.4,
+     "reference_objective_source": "objective",
+     "solution_path": "/private/tmp/oragentbench_reference_solutions/railway_disruption_recovery_reference_solution.json",
+     "solver_summary": {
+      "best_bound": 0.0,
+      "dispatch_strategy": "connection_protection",
+      "evaluation": {
+       "cancel_cost": 0.0,
+       "connection_cost": 140.0,
+       "crew_swap_cost": 84.0,
+       "delay_cost": 5742.4,
+       "error_count": 0,
+       "errors": [],
+       "feasible": true,
+       "missed_connections": 1,
+       "objective": 6056.4,
+       "run_trains": 14,
+       "short_turn_cost": 0.0,
+       "swap_cost": 90.0,
+       "total_cost": 6056.4
+      },
+      "missed_connections": 1,
+      "objective": 6056.4,
+      "run_trains": 14,
+      "status": "heuristic_feasible"
+     },
+     "task_name": "railway_disruption_recovery",
+     "time_limit_seconds": 300.0
+    },
+    "reference_objective": 6056.4,
+    "scalar_reward": 0.6666666666666666,
+    "scalar_reward_formula": "(feasibility + quality) / 3.0"
+   },
+   "runner": {
+    "return_code": 0,
+    "timed_out": false,
+    "wall_seconds": 18.545482
+   }
+  },
+  "metrics": {
+   "feasible": true,
+   "quality": 1.0,
+   "true_correct": true,
+   "objective": 6056.4,
+   "evaluation_unknown": false
+  }
+ },
+ "front_distribution_center_robust_inventory": {
+  "runner": {
+   "return_code": 0,
+   "timed_out": false,
+   "stdout": "{\n  \"best_bound\": 683.2644923923446,\n  \"evaluation_profit\": 682.9921499999999,\n  \"mip_gap\": 0.00039874893488106155,\n  \"objective\": 682.9921499999999,\n  \"solution\": \"/app/submissions/solution.csv\",\n  \"status\": \"gaplimit\"\n}\n",
+   "stderr": ""
+  },
+  "official": {
+   "evaluation": {
+    "environment": "front_distribution_center_robust_inventory",
+    "error_count": 0,
+    "errors": [],
+    "expected_contribution": 1104.42465,
+    "feasible": true,
+    "holding_cost": 75.3,
+    "objective": 682.9921499999999,
+    "priority_tail_penalty": 346.13250000000005,
+    "profit": 682.9921499999999,
+    "scenario_details": {
+     "SC01": {
+      "contribution": 1083.2599999999998,
+      "priority_shortfall": 4.550000000000001
+     },
+     "SC02": {
+      "contribution": 1165.19,
+      "priority_shortfall": 3.65
+     },
+     "SC03": {
+      "contribution": 1064.6399999999999,
+      "priority_shortfall": 9.200000000000001
+     },
+     "SC04": {
+      "contribution": 1079.6999999999998,
+      "priority_shortfall": 10.100000000000001
+     },
+     "SC05": {
+      "contribution": 1152.6199999999997,
+      "priority_shortfall": 8.65
+     },
+     "SC06": {
+      "contribution": 1120.0,
+      "priority_shortfall": 10.7
+     },
+     "SC07": {
+      "contribution": 1143.43,
+      "priority_shortfall": 11.55
+     },
+     "SC08": {
+      "contribution": 1084.7099999999998,
+      "priority_shortfall": 7.35
+     },
+     "SC09": {
+      "contribution": 1092.28,
+      "priority_shortfall": 8.5
+     },
+     "SC10": {
+      "contribution": 1070.1299999999999,
+      "priority_shortfall": 19.950000000000003
+     }
+    },
+    "worst_priority_shortfall": 19.950000000000003
+   },
+   "reward": {
+    "feasibility": 1.0,
+    "quality": 2.0
+   },
+   "reward_details": {
+    "agent_objective": 682.9921499999999,
+    "agent_objective_source": "profit",
+    "best_bound": 683.2644923923446,
+    "bound_improvement": 0.2723423923446262,
+    "bound_sense": "upper",
+    "evaluation_diagnostics": {
+     "error_count": 0,
+     "objective": 682.9921499999999,
+     "profit": 682.9921499999999,
+     "score": null,
+     "total_cost": null
+    },
+    "fallback_mip_gap": 0.0005,
+    "fallback_reference_scale": 682.9921499999999,
+    "feasibility": 1.0,
+    "formula": "clip(2 + d if d >= -1 else 1.5 + 0.5*d, 0, 2), d = (O - R) / (max(abs(R), 1e-8) * mip_gap)",
+    "objective_sense": "maximize",
+    "quality": 2.0,
+    "quality_scale_width": 0.34149607499999995,
+    "quality_status": "bound_gap_below_mip_gap",
+    "reference_metrics": {
+     "best_bound": 683.2644923923446,
+     "best_bound_source": "best_bound",
+     "bound_sense": "upper",
+     "evaluation_summary": {
+      "error_count": 0,
+      "feasible": true,
+      "objective": 682.9921499999999,
+      "profit": 682.9921499999999
+     },
+     "generated_at": "2026-05-21T16:48:44.817745+00:00",
+     "mip_gap": 0.0005,
+     "objective_sense": "maximize",
+     "quality_formula": "clip(1 + (O - R) / (B - R), 0, 2) if B exists and B - R >= max(abs(R), 1e-8) * mip_gap; otherwise let d=(O - R)/(max(abs(R), 1e-8)*mip_gap), quality=clip(2+d if d>=-1 else 1.5+0.5*d, 0, 2); if no R, quality = 2",
+     "reference_objective": 682.9921499999999,
+     "reference_objective_source": "profit",
+     "solution_path": "reference_solutions/front_distribution_center_robust_inventory_reference_solution.csv",
+     "solver_summary": {
+      "best_bound": 683.2644923923446,
+      "evaluation_profit": 682.9921499999999,
+      "mip_gap": 0.00039874893488106155,
+      "objective": 682.9921499999999,
+      "solution": "reference_solutions/front_distribution_center_robust_inventory_reference_solution.csv",
+      "status": "gaplimit"
+     },
+     "task_name": "front_distribution_center_robust_inventory",
+     "time_limit_seconds": 300.0
+    },
+    "reference_objective": 682.9921499999999,
+    "scalar_reward": 1.0,
+    "scalar_reward_formula": "(feasibility + quality) / 3.0",
+    "signed_improvement": 0.0
+   },
+   "runner": {
+    "return_code": 0,
+    "timed_out": false,
+    "wall_seconds": 26.119033
+   }
+  },
+  "metrics": {
+   "feasible": true,
+   "quality": 2.0,
+   "true_correct": true,
+   "objective": 682.9921499999999,
+   "evaluation_unknown": false
+  }
+ },
+ "shared_drone_base_delivery_assignment": {
+  "runner": {
+   "return_code": 0,
+   "timed_out": false,
+   "stdout": "{\n  \"best_bound\": 28382.989100000006,\n  \"evaluation_objective\": 28392.128099999987,\n  \"mip_gap\": 0.0003219886379054972,\n  \"objective\": 28392.1281,\n  \"solution\": \"/app/submissions/solution.csv\",\n  \"status\": \"gaplimit\"\n}\n",
+   "stderr": ""
+  },
+  "official": {
+   "evaluation": {
+    "environment": "shared_drone_base_delivery_assignment",
+    "error_count": 0,
+    "errors": [],
+    "feasible": true,
+    "objective": 28392.128099999987,
+    "total_cost": 28392.128099999987
+   },
+   "reward": {
+    "feasibility": 1.0,
+    "quality": 2.0
+   },
+   "reward_details": {
+    "agent_objective": 28392.128099999987,
+    "agent_objective_source": "objective",
+    "best_bound": 28382.989100000006,
+    "bound_sense": "lower",
+    "evaluation_diagnostics": {
+     "error_count": 0,
+     "objective": 28392.128099999987,
+     "profit": null,
+     "score": null,
+     "total_cost": 28392.128099999987
+    },
+    "fallback_mip_gap": 0.0005,
+    "fallback_reference_scale": 28392.128099999987,
+    "feasibility": 1.0,
+    "formula": "clip(2 + d if d >= -1 else 1.5 + 0.5*d, 0, 2), d = (R - O) / (max(abs(R), 1e-8) * mip_gap)",
+    "objective_sense": "minimize",
+    "quality": 2.0,
+    "quality_status": "bound_gap_below_mip_gap",
+    "reference_metrics": {
+     "best_bound": 28382.989100000006,
+     "best_bound_source": "best_bound",
+     "bound_sense": "lower",
+     "evaluation_summary": {
+      "error_count": 0,
+      "feasible": true,
+      "objective": 28392.128099999987,
+      "total_cost": 28392.128099999987
+     },
+     "generated_at": "2026-05-18T12:03:48.926084+00:00",
+     "mip_gap": 0.0005,
+     "objective_sense": "minimize",
+     "quality_formula": "clip(1 + (R - O) / (R - B), 0, 2) if B exists and R - B >= max(abs(R), 1e-8) * mip_gap; otherwise let d=(R - O)/(max(abs(R), 1e-8)*mip_gap), quality=clip(2+d if d>=-1 else 1.5+0.5*d, 0, 2); if no R, quality = 2",
+     "reference_objective": 28392.128099999987,
+     "reference_objective_source": "objective",
+     "solution_path": "reference_solutions/shared_drone_base_delivery_assignment_reference_solution.csv",
+     "solver_summary": {
+      "best_bound": 28382.989100000006,
+      "evaluation_objective": 28392.128099999987,
+      "mip_gap": 0.0003219886379054972,
+      "objective": 28392.1281,
+      "solution": "reference_solutions/shared_drone_base_delivery_assignment_reference_solution.csv",
+      "status": "gaplimit"
+     },
+     "task_name": "shared_drone_base_delivery_assignment",
+     "time_limit_seconds": 300.0
+    },
+    "reference_objective": 28392.128099999987,
+    "scalar_reward": 1.0,
+    "scalar_reward_formula": "(feasibility + quality) / 3.0"
+   },
+   "runner": {
+    "return_code": 0,
+    "timed_out": false,
+    "wall_seconds": 22.960522
+   }
+  },
+  "metrics": {
+   "feasible": true,
+   "quality": 2.0,
+   "true_correct": true,
+   "objective": 28392.128099999987,
+   "evaluation_unknown": false
+  }
+ },
+ "autonomous_lab_courier_tsptw": {
+  "runner": {
+   "return_code": 0,
+   "timed_out": false,
+   "stdout": "{\n  \"best_bound\": 191.314,\n  \"evaluation_total_cost\": 191.31400000000002,\n  \"mip_gap\": 0.0,\n  \"objective\": 191.314,\n  \"solution\": \"/app/submissions/solution.csv\",\n  \"status\": \"optimal\",\n  \"visited_stops\": 15\n}\n",
+   "stderr": ""
+  },
+  "official": {
+   "evaluation": {
+    "environment": "autonomous_lab_courier_tsptw",
+    "error_count": 0,
+    "errors": [],
+    "feasible": true,
+    "total_cost": 191.31400000000002,
+    "total_travel_min": 188.22,
+    "total_wait_min": 23.78000000000001,
+    "visited_stops": 15
+   },
+   "reward": {
+    "feasibility": 1.0,
+    "quality": 2.0
+   },
+   "reward_details": {
+    "agent_objective": 191.31400000000002,
+    "agent_objective_source": "total_cost",
+    "best_bound": 191.314,
+    "bound_improvement": 2.842170943040401e-14,
+    "bound_sense": "lower",
+    "evaluation_diagnostics": {
+     "error_count": 0,
+     "objective": null,
+     "profit": null,
+     "score": null,
+     "total_cost": 191.31400000000002
+    },
+    "fallback_mip_gap": 0.0005,
+    "fallback_reference_scale": 191.31400000000002,
+    "feasibility": 1.0,
+    "formula": "clip(2 + d if d >= -1 else 1.5 + 0.5*d, 0, 2), d = (R - O) / (max(abs(R), 1e-8) * mip_gap)",
+    "objective_sense": "minimize",
+    "quality": 2.0,
+    "quality_scale_width": 0.095657,
+    "quality_status": "bound_gap_below_mip_gap",
+    "reference_metrics": {
+     "best_bound": 191.314,
+     "best_bound_source": "best_bound",
+     "bound_sense": "lower",
+     "evaluation_summary": {
+      "error_count": 0,
+      "feasible": true,
+      "total_cost": 191.31400000000002
+     },
+     "generated_at": "2026-05-19T14:59:16.056892+00:00",
+     "mip_gap": 0.0005,
+     "objective_sense": "minimize",
+     "quality_formula": "clip(1 + (R - O) / (R - B), 0, 2) if B exists and R - B >= max(abs(R), 1e-8) * mip_gap; otherwise let d=(R - O)/(max(abs(R), 1e-8)*mip_gap), quality=clip(2+d if d>=-1 else 1.5+0.5*d, 0, 2); if no R, quality = 2",
+     "reference_objective": 191.31400000000002,
+     "reference_objective_source": "total_cost",
+     "solution_path": "reference_solutions/autonomous_lab_courier_tsptw_reference_solution.csv",
+     "solver_summary": {
+      "best_bound": 191.314,
+      "evaluation_total_cost": 191.31400000000002,
+      "mip_gap": 0.0,
+      "objective": 191.314,
+      "solution": "reference_solutions/autonomous_lab_courier_tsptw_reference_solution.csv",
+      "status": "optimal",
+      "visited_stops": 15
+     },
+     "task_name": "autonomous_lab_courier_tsptw",
+     "time_limit_seconds": 120.0
+    },
+    "reference_objective": 191.31400000000002,
+    "scalar_reward": 1.0,
+    "scalar_reward_formula": "(feasibility + quality) / 3.0",
+    "signed_improvement": 0.0
+   },
+   "runner": {
+    "return_code": 0,
+    "timed_out": false,
+    "wall_seconds": 19.537087
+   }
+  },
+  "metrics": {
+   "feasible": true,
+   "quality": 2.0,
+   "true_correct": true,
+   "objective": 191.31400000000002,
+   "evaluation_unknown": false
+  }
+ },
+ "flood_relief_multimodal_routing": {
+  "runner": {
+   "return_code": 0,
+   "timed_out": false,
+   "stdout": "{\n  \"best_bound\": 52.849999999999994,\n  \"evaluation\": {\n    \"completion_time\": 642.4800000000001,\n    \"delivered_shelters\": 26,\n    \"error_count\": 0,\n    \"errors\": [],\n    \"feasible\": true,\n    \"objective\": 11348.077200000002,\n    \"risk_penalty_minutes\": 33.0,\n    \"route_travel_time\": 151.0,\n    \"total_cost\": 11348.077200000002,\n    \"weighted_late_penalty\": 10705.597200000002,\n    \"weighted_lateness\": 7930.072000000001\n  },\n  \"improvement_passes\": 2,\n  \"objective\": 11348.077200000002,\n  \"route_stops\": 13,\n  \"status\": \"heuristic_feasible\"\n}\n",
+   "stderr": ""
+  },
+  "official": {
+   "evaluation": {
+    "completion_time": 642.4800000000001,
+    "delivered_shelters": 26,
+    "error_count": 0,
+    "errors": [],
+    "feasible": true,
+    "objective": 11348.077200000002,
+    "risk_penalty_minutes": 33.0,
+    "route_travel_time": 151.0,
+    "total_cost": 11348.077200000002,
+    "weighted_late_penalty": 10705.597200000002,
+    "weighted_lateness": 7930.072000000001
+   },
+   "reward": {
+    "feasibility": 1.0,
+    "quality": 1.0
+   },
+   "reward_details": {
+    "agent_objective": 11348.077200000002,
+    "agent_objective_source": "objective",
+    "best_bound": 52.849999999999994,
+    "bound_sense": "lower",
+    "evaluation_diagnostics": {
+     "error_count": 0,
+     "objective": 11348.077200000002,
+     "profit": null,
+     "score": null,
+     "total_cost": 11348.077200000002
+    },
+    "fallback_mip_gap": 0.0005,
+    "fallback_reference_scale": 11348.077200000002,
+    "feasibility": 1.0,
+    "formula": "clip(1 + (R - O) / (R - B), 0, 2) when B exists and R - B >= max(abs(R), 1e-8) * mip_gap",
+    "objective_sense": "minimize",
+    "quality": 1.0,
+    "quality_status": "scored_with_best_bound",
+    "reference_metrics": {
+     "best_bound": 52.849999999999994,
+     "best_bound_source": "best_bound",
+     "bound_sense": "lower",
+     "evaluation_summary": {
+      "error_count": 0,
+      "feasible": true,
+      "objective": 11348.077200000002,
+      "total_cost": 11348.077200000002
+     },
+     "generated_at": "2026-05-16T18:06:44.857348+00:00",
+     "mip_gap": 0.0005,
+     "objective_sense": "minimize",
+     "quality_formula": "clip(1 + (R - O) / (R - B), 0, 2) if B exists and R - B >= max(abs(R), 1e-8) * mip_gap; otherwise let d=(R - O)/(max(abs(R), 1e-8)*mip_gap), quality=clip(2+d if d>=-1 else 1.5+0.5*d, 0, 2); if no R, quality = 2",
+     "reference_objective": 11348.077200000002,
+     "reference_objective_source": "objective",
+     "solution_path": "/private/tmp/oragentbench_reference_solutions/flood_relief_multimodal_routing_reference_solution.csv",
+     "solver_summary": {
+      "best_bound": 52.849999999999994,
+      "evaluation": {
+       "completion_time": 642.4800000000001,
+       "delivered_shelters": 26,
+       "error_count": 0,
+       "errors": [],
+       "feasible": true,
+       "objective": 11348.077200000002,
+       "risk_penalty_minutes": 33.0,
+       "route_travel_time": 151.0,
+       "total_cost": 11348.077200000002,
+       "weighted_late_penalty": 10705.597200000002,
+       "weighted_lateness": 7930.072000000001
+      },
+      "improvement_passes": 2,
+      "objective": 11348.077200000002,
+      "route_stops": 13,
+      "status": "heuristic_feasible"
+     },
+     "task_name": "flood_relief_multimodal_routing",
+     "time_limit_seconds": 300.0
+    },
+    "reference_objective": 11348.077200000002,
+    "scalar_reward": 0.6666666666666666,
+    "scalar_reward_formula": "(feasibility + quality) / 3.0"
+   },
+   "runner": {
+    "return_code": 0,
+    "timed_out": false,
+    "wall_seconds": 20.33008
+   }
+  },
+  "metrics": {
+   "feasible": true,
+   "quality": 1.0,
+   "true_correct": true,
+   "objective": 11348.077200000002,
+   "evaluation_unknown": false
+  }
+ },
+ "curbside_delivery_slot_coordination": {
+  "runner": {
+   "return_code": 0,
+   "timed_out": false,
+   "stdout": "{\n  \"best_bound\": 926.4082097999999,\n  \"evaluation_objective\": 926.4082098000001,\n  \"mip_gap\": 0.0,\n  \"objective\": 926.4082097999999,\n  \"solution\": \"/app/submissions/solution.csv\",\n  \"status\": \"optimal\"\n}\n",
+   "stderr": ""
+  },
+  "official": {
+   "evaluation": {
+    "environment": "curbside_delivery_slot_coordination",
+    "error_count": 0,
+    "errors": [],
+    "feasible": true,
+    "objective": 926.4082098000001,
+    "total_cost": 926.4082098000001
+   },
+   "reward": {
+    "feasibility": 1.0,
+    "quality": 2.0
+   },
+   "reward_details": {
+    "agent_objective": 926.4082098000001,
+    "agent_objective_source": "objective",
+    "best_bound": 926.4082097999999,
+    "bound_sense": "lower",
+    "evaluation_diagnostics": {
+     "error_count": 0,
+     "objective": 926.4082098000001,
+     "profit": null,
+     "score": null,
+     "total_cost": 926.4082098000001
+    },
+    "fallback_mip_gap": 0.0005,
+    "fallback_reference_scale": 926.4082098000001,
+    "feasibility": 1.0,
+    "formula": "clip(2 + d if d >= -1 else 1.5 + 0.5*d, 0, 2), d = (R - O) / (max(abs(R), 1e-8) * mip_gap)",
+    "objective_sense": "minimize",
+    "quality": 2.0,
+    "quality_status": "bound_gap_below_mip_gap",
+    "reference_metrics": {
+     "best_bound": 926.4082097999999,
+     "best_bound_source": "best_bound",
+     "bound_sense": "lower",
+     "evaluation_summary": {
+      "error_count": 0,
+      "feasible": true,
+      "objective": 926.4082098000001,
+      "total_cost": 926.4082098000001
+     },
+     "generated_at": "2026-05-18T16:10:43.485850+00:00",
+     "mip_gap": 0.0005,
+     "objective_sense": "minimize",
+     "quality_formula": "clip(1 + (R - O) / (R - B), 0, 2) if B exists and R - B >= max(abs(R), 1e-8) * mip_gap; otherwise let d=(R - O)/(max(abs(R), 1e-8)*mip_gap), quality=clip(2+d if d>=-1 else 1.5+0.5*d, 0, 2); if no R, quality = 2",
+     "reference_objective": 926.4082098000001,
+     "reference_objective_source": "objective",
+     "solution_path": "reference_solutions/curbside_delivery_slot_coordination_reference_solution.csv",
+     "solver_summary": {
+      "best_bound": 926.4082097999999,
+      "evaluation_objective": 926.4082098000001,
+      "mip_gap": 0.0,
+      "objective": 926.4082097999999,
+      "solution": "reference_solutions/curbside_delivery_slot_coordination_reference_solution.csv",
+      "status": "optimal"
+     },
+     "task_name": "curbside_delivery_slot_coordination",
+     "time_limit_seconds": 300.0
+    },
+    "reference_objective": 926.4082098000001,
+    "scalar_reward": 1.0,
+    "scalar_reward_formula": "(feasibility + quality) / 3.0"
+   },
+   "runner": {
+    "return_code": 0,
+    "timed_out": false,
+    "wall_seconds": 6.745405
+   }
+  },
+  "metrics": {
+   "feasible": true,
+   "quality": 2.0,
+   "true_correct": true,
+   "objective": 926.4082098000001,
+   "evaluation_unknown": false
+  }
+ },
+ "container_gate_dro_appointment_planning": {
+  "runner": {
+   "return_code": 0,
+   "timed_out": false,
+   "stdout": "{\n  \"best_bound\": 49310.67546066993,\n  \"evaluation_error_count\": 0,\n  \"evaluation_feasible\": true,\n  \"gap\": 0.08175585220984291,\n  \"objective\": 53342.111755999984,\n  \"output\": \"/app/submissions/solution.csv\",\n  \"solutions\": 4,\n  \"status\": \"timelimit\"\n}\n",
+   "stderr": ""
+  },
+  "official": {
+   "evaluation": {
+    "error_count": 0,
+    "errors": [],
+    "expected_scenario_cost": 31844.733299999993,
+    "feasible": true,
+    "fixed_cost": 6539.0,
+    "objective": 53342.111755999984,
+    "scenario_costs": {
+     "SC_BASE": 29532.26999999998,
+     "SC_CITY_CURFEW": 29342.07999999999,
+     "SC_CRANE_OUTAGE": 28235.449999999983,
+     "SC_CUSTOMS_BACKLOG": 36580.87,
+     "SC_HAZMAT_HOLD": 30888.91,
+     "SC_MORNING_SURGE": 35239.899999999994,
+     "SC_RAIL_CUTOFF": 33897.39,
+     "SC_REEFER_WAVE": 30724.129999999994,
+     "SC_STACK_IMBALANCE": 33224.41
+    },
+    "scenario_peak_queue_trucks": {
+     "SC_BASE": 13,
+     "SC_CITY_CURFEW": 13,
+     "SC_CRANE_OUTAGE": 13,
+     "SC_CUSTOMS_BACKLOG": 13,
+     "SC_HAZMAT_HOLD": 13,
+     "SC_MORNING_SURGE": 13,
+     "SC_RAIL_CUTOFF": 13,
+     "SC_REEFER_WAVE": 13,
+     "SC_STACK_IMBALANCE": 13
+    },
+    "scenario_served_trucks": {
+     "SC_BASE": 328,
+     "SC_CITY_CURFEW": 312,
+     "SC_CRANE_OUTAGE": 333,
+     "SC_CUSTOMS_BACKLOG": 331,
+     "SC_HAZMAT_HOLD": 317,
+     "SC_MORNING_SURGE": 333,
+     "SC_RAIL_CUTOFF": 321,
+     "SC_REEFER_WAVE": 326,
+     "SC_STACK_IMBALANCE": 318
+    },
+    "scenario_unmet_trucks": {
+     "SC_BASE": 563,
+     "SC_CITY_CURFEW": 569,
+     "SC_CRANE_OUTAGE": 546,
+     "SC_CUSTOMS_BACKLOG": 665,
+     "SC_HAZMAT_HOLD": 573,
+     "SC_MORNING_SURGE": 684,
+     "SC_RAIL_CUTOFF": 629,
+     "SC_REEFER_WAVE": 567,
+     "SC_STACK_IMBALANCE": 626
+    },
+    "tail_cvar_cost": 35615.18679999999,
+    "tail_risk_weight": 0.42,
+    "total_cost": 53342.111755999984,
+    "total_quota": 444
+   },
+   "reward": {
+    "feasibility": 1.0,
+    "quality": 0.0
+   },
+   "reward_details": {
+    "agent_objective": 53342.111755999984,
+    "agent_objective_source": "objective",
+    "best_bound": 49356.86709262088,
+    "bound_improvement": 1814.3775273790961,
+    "bound_sense": "lower",
+    "evaluation_diagnostics": {
+     "error_count": 0,
+     "objective": 53342.111755999984,
+     "profit": null,
+     "score": null,
+     "total_cost": 53342.111755999984
+    },
+    "fallback_mip_gap": 0.0005,
+    "fallback_reference_scale": 51171.244619999976,
+    "feasibility": 1.0,
+    "formula": "clip(1 + (R - O) / (R - B), 0, 2) when B exists and R - B >= max(abs(R), 1e-8) * mip_gap",
+    "objective_sense": "minimize",
+    "quality": 0.0,
+    "quality_scale_width": 1814.3775273790961,
+    "quality_status": "scored_with_best_bound",
+    "reference_metrics": {
+     "best_bound": 49356.86709262088,
+     "best_bound_source": "best_bound",
+     "bound_sense": "lower",
+     "evaluation_summary": {
+      "error_count": 0,
+      "feasible": true,
+      "objective": 51171.244619999976,
+      "total_cost": 51171.244619999976
+     },
+     "generated_at": "2026-05-22T13:23:42.120142+00:00",
+     "mip_gap": 0.0005,
+     "objective_sense": "minimize",
+     "quality_formula": "clip(1 + (R - O) / (R - B), 0, 2) if B exists and R - B >= max(abs(R), 1e-8) * mip_gap; otherwise let d=(R - O)/(max(abs(R), 1e-8)*mip_gap), quality=clip(2+d if d>=-1 else 1.5+0.5*d, 0, 2); if no R, quality = 2",
+     "reference_objective": 51171.244619999976,
+     "reference_objective_source": "objective",
+     "solution_path": "reference_solutions/container_gate_dro_appointment_planning_reference_solution.csv",
+     "solver_summary": {
+      "best_bound": 49356.86709262088,
+      "evaluation_error_count": 0,
+      "evaluation_feasible": true,
+      "gap": 0.03676038683683852,
+      "objective": 51171.244619999976,
+      "output": "reference_solutions/container_gate_dro_appointment_planning_reference_solution.csv",
+      "solutions": 59,
+      "status": "timelimit"
+     },
+     "task_name": "container_gate_dro_appointment_planning",
+     "time_limit_seconds": 300.0
+    },
+    "reference_objective": 51171.244619999976,
+    "scalar_reward": 0.3333333333333333,
+    "scalar_reward_formula": "(feasibility + quality) / 3.0",
+    "signed_improvement": -2170.867136000008
+   },
+   "runner": {
+    "return_code": 0,
+    "timed_out": false,
+    "wall_seconds": 18.570305
+   }
+  },
+  "metrics": {
+   "feasible": true,
+   "quality": 0.0,
+   "true_correct": false,
+   "objective": 53342.111755999984,
+   "evaluation_unknown": false
+  }
+ }
+}

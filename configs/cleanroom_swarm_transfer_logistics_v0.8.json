@@ -1,0 +1,10 @@
+{
+  "version": "cleanroom_swarm_transfer_logistics_v0.8",
+  "selection_basis": "Four healthy tasks disjoint from GEPA selection, engineering analysis, memory promotion and Witness calibration. B0/B1/B2 use identical generation settings; B3 remains not_run unless a real promotion occurs.",
+  "tasks": [
+    {"name": "shared_drone_base_delivery_assignment", "domain": "logistics", "split": "transfer"},
+    {"name": "autonomous_lab_courier_tsptw", "domain": "logistics", "split": "transfer"},
+    {"name": "flood_relief_multimodal_routing", "domain": "logistics", "split": "transfer"},
+    {"name": "curbside_delivery_slot_coordination", "domain": "logistics", "split": "transfer"}
+  ]
+}

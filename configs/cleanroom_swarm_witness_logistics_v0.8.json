@@ -1,0 +1,8 @@
+{
+  "version": "cleanroom_swarm_witness_logistics_v0.8",
+  "tasks": [
+    {"name": "precision_ag_sprayer_tanker_routing", "domain": "logistics", "split": "audit"},
+    {"name": "railway_disruption_recovery", "domain": "logistics", "split": "audit"},
+    {"name": "front_distribution_center_robust_inventory", "domain": "logistics", "split": "audit"}
+  ]
+}

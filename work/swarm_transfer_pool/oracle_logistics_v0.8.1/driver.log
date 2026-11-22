@@ -1,0 +1,65 @@
+{
+ "precision_ag_sprayer_tanker_routing": {
+  "feasible": true,
+  "quality": 2.0,
+  "true_correct": true,
+  "objective": 26425.803923,
+  "evaluation_unknown": false
+ },
+ "synchromodal_freight_recovery": {
+  "feasible": true,
+  "quality": 0.0,
+  "true_correct": false,
+  "objective": 130457.40285714286,
+  "evaluation_unknown": false
+ },
+ "railway_disruption_recovery": {
+  "feasible": true,
+  "quality": 1.0,
+  "true_correct": true,
+  "objective": 6056.4,
+  "evaluation_unknown": false
+ },
+ "front_distribution_center_robust_inventory": {
+  "feasible": true,
+  "quality": 2.0,
+  "true_correct": true,
+  "objective": 682.9921499999999,
+  "evaluation_unknown": false
+ },
+ "shared_drone_base_delivery_assignment": {
+  "feasible": true,
+  "quality": 2.0,
+  "true_correct": true,
+  "objective": 28392.128099999987,
+  "evaluation_unknown": false
+ },
+ "autonomous_lab_courier_tsptw": {
+  "feasible": true,
+  "quality": 2.0,
+  "true_correct": true,
+  "objective": 191.31400000000002,
+  "evaluation_unknown": false
+ },
+ "flood_relief_multimodal_routing": {
+  "feasible": true,
+  "quality": 1.0,
+  "true_correct": true,
+  "objective": 11348.077200000002,
+  "evaluation_unknown": false
+ },
+ "curbside_delivery_slot_coordination": {
+  "feasible": true,
+  "quality": 2.0,
+  "true_correct": true,
+  "objective": 926.4082098000001,
+  "evaluation_unknown": false
+ },
+ "container_gate_dro_appointment_planning": {
+  "feasible": true,
+  "quality": 0.0,
+  "true_correct": false,
+  "objective": 53342.111755999984,
+  "evaluation_unknown": false
+ }
+}

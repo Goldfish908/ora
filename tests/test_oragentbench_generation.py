@@ -4,7 +4,9 @@ from pathlib import Path
 import pytest
 
 from ora_agent import llm as llm_mod
-from ora_agent.oragentbench import TaskPacket, generate_artifacts, parse_artifacts, validate_solver_code
+from ora_agent.oragentbench import (
+    TaskPacket, apply_runtime_patch, generate_artifacts, parse_artifacts, validate_solver_code,
+)
 
 ROOT = Path(__file__).resolve().parents[1]
 
@@ -61,6 +63,40 @@ def test_runtime_repair_keeps_solver_and_supplies_expression_contract():
     assert "PREVIOUS ARTIFACTS" in messages[1]["content"]
     assert "RUNTIME REPAIR CONTRACT" in messages[0]["content"]
     assert "if terms:" in messages[0]["content"]
+
+
+def test_runtime_patch_preserves_all_unedited_source(tmp_path, monkeypatch):
+    packet = TaskPacket.load(ROOT / "ORAgentBench/harbor_tasks/additive_microfactory_order_planning",
+                             "manufacturing", "dev")
+    code = ("from pyscipopt import Model\nm = Model()\nm.optimize()\n"
+            "sol_path = '/app/submissions/solution.csv'\n" + "#" * 500)
+    previous = {"model_md": "# Model", "solve_py": code, "solve_log_md": "# Log"}
+    repair = {"artifacts": previous, "evidence": {"execution": {"return_code": 1},
+              "search_guidance": {"regenerate_from_evidence": False, "repair_kind": "runtime_patch"}}}
+    calls = []
+
+    def fake_chat(messages, **kwargs):
+        name = kwargs["extra"]["tools"][0]["function"]["name"]
+        calls.append(name)
+        edits = [{"old_string": "m = Model()", "new_string": "m = Model('patched')"}]
+        return {"model": "test-model", "finish_reason": "stop",
+                "tool_calls": [{"function": {"name": name, "arguments": json.dumps({"edits": edits})}}]}
+
+    monkeypatch.setattr(llm_mod, "chat", fake_chat)
+    config = llm_mod.LLMConfig("http://localhost", "test-key", "test-model")
+    artifacts = generate_artifacts(packet, "spec", config, tmp_path, repair=repair)
+    assert calls == ["submit_runtime_patch"]
+    assert artifacts["solve_py"] == code.replace("m = Model()", "m = Model('patched')")
+    assert artifacts["model_md"] == previous["model_md"]
+    assert (tmp_path / "runtime_patch_generation.json").exists()
+    assert not (tmp_path / "model_generation.json").exists()
+
+
+def test_ambiguous_runtime_patch_is_rejected_without_modifying_source():
+    code = ("from pyscipopt import Model\nm = Model()\nm.optimize()\n"
+            "m = Model()\nsol_path = '/app/submissions/solution.csv'\n" + "#" * 500)
+    with pytest.raises(ValueError, match="exactly once"):
+        apply_runtime_patch(code, [{"old_string": "m = Model()", "new_string": "m = Model('new')"}])
 
 
 def test_truncated_artifact_is_explicit_failure():

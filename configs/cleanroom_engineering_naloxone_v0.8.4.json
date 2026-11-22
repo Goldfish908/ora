@@ -1,0 +1,10 @@
+{
+  "version": "cleanroom_engineering_naloxone_v0.8.4",
+  "selection_basis": "Engineering-only replay of a previously evaluated task. The three audit packets only calibrate the domain Witness. This configuration is not independent transfer evidence.",
+  "tasks": [
+    {"name": "air_cargo_stochastic_order_allocation", "domain": "logistics", "split": "audit", "role": "witness_calibration"},
+    {"name": "wildfire_bus_evacuation_planning", "domain": "logistics", "split": "audit", "role": "witness_calibration"},
+    {"name": "heatwave_cooling_center_resource_plan", "domain": "logistics", "split": "audit", "role": "witness_calibration"},
+    {"name": "naloxone_drone_response_network", "domain": "logistics", "split": "transfer", "role": "engineering_only"}
+  ]
+}

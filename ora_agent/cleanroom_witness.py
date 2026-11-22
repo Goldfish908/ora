@@ -231,6 +231,9 @@ def repair_once(memory: EvidenceMemory, packet: TaskPacket, record: dict, specif
             "alternate_branch": attempt > 1,
             "regenerate_from_evidence": attempt > 1 and execution.get("return_code") == 0
             and not execution.get("timed_out"),
+            "repair_kind": "runtime_patch" if execution.get("return_code") not in {0, None}
+            and not execution.get("timed_out")
+            and (execution.get("stderr") or execution.get("stderr_tail")) else "complete_artifacts",
             "instruction": "Earlier attempts did not establish verified progress. Do not repeat the previous code or make cosmetic edits. Rebuild the decision structure around every unmet public requirement, and explicitly verify every demand, service, route and output coordinate before writing the decision artifact."
             if attempt > 1 and execution.get("return_code") == 0 and not execution.get("timed_out")
             else "Preserve unrelated business requirements and address the target evidence. For a runtime failure, repair the observed cause in the current solver rather than replacing its working model. Assemble solver terms in ordinary Python lists and test the list before calling quicksum; never compare a PySCIPOpt expression with !=, <, or >. Check that a solution exists before reading its objective.",

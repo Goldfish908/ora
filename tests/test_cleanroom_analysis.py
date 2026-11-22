@@ -44,6 +44,21 @@ def test_generation_cost_reads_both_phases(tmp_path):
     assert summary["unknown"] == 1
 
 
+def test_generation_cost_includes_a_runtime_patch(tmp_path):
+    workspace = tmp_path / "attempt_0/app"
+    generation = workspace.parent / "generation"
+    generation.mkdir(parents=True)
+    (generation / "runtime_patch_generation.json").write_text(json.dumps({"response": {
+        "usage": {"prompt_tokens": 40, "completion_tokens": 5, "total_tokens": 45},
+        "request_wall_s": 0.75}}))
+    row = record()
+    row["workspace"] = str(workspace)
+    summary = summarize_records([row])
+    assert summary["cost"]["llm_calls"] == 1
+    assert summary["cost"]["total_tokens"] == 45
+    assert summary["cost"]["missing_usage_calls"] == 0
+
+
 def test_pairing_requires_same_coverage_and_preserves_wins():
     before = [record("a", true=True), record("b", phantom=True)]
     after = [record("a", true=False), record("b", true=True)]

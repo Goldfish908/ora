@@ -96,6 +96,15 @@ class TaskPacket:
             "coefficients through addVar(obj=...) or setObjective with a valid expression. "
             "Do not return placeholders, TODOs, abbreviated code, or comments about writing the rest later."
         )
+        if tool_name == "submit_runtime_patch":
+            system = (
+                "You are an expert PySCIPOpt debugger. Use exactly one submit_runtime_patch tool call. "
+                "Repair only the observed runtime failure with exact source replacements. Every old_string "
+                "must be a unique, contiguous span copied verbatim from the supplied previous solver. "
+                "Preserve all other source bytes. Do not return a rewritten solver, placeholders or fabricated "
+                "results. Construct solver expressions from Python term lists and check for an incumbent "
+                "before reading its objective. The patched solver must remain complete and executable."
+            )
         if specification.strip():
             system += "\n\nSHARED MODELING SPECIFICATION:\n" + specification.strip()
         if repair is not None:
@@ -179,6 +188,13 @@ def _phase_tool(phase: str) -> dict:
         name = "submit_model"
         properties = {"model_md": {"type": "string", "description": "Concise complete mathematical model in Markdown."}}
         required = ["model_md"]
+    elif phase == "runtime_patch":
+        name = "submit_runtime_patch"
+        properties = {"edits": {"type": "array", "items": {"type": "object", "properties": {
+            "old_string": {"type": "string", "description": "Unique verbatim source span to replace."},
+            "new_string": {"type": "string", "description": "Complete replacement for that source span."},
+        }, "required": ["old_string", "new_string"]}}}
+        required = ["edits"]
     else:
         name = "submit_solver"
         properties = {
@@ -218,8 +234,67 @@ def _call_artifact_tool(phase: str, messages: list[dict], config: llm_mod.LLMCon
         raise
 
 
+def apply_runtime_patch(code: str, edits: list[dict]) -> str:
+    if not isinstance(edits, list) or not 1 <= len(edits) <= 16:
+        raise ValueError("runtime patch must contain between one and sixteen edits")
+    patched = code
+    for edit in edits:
+        if not isinstance(edit, dict):
+            raise ValueError("runtime patch edit must be an object")
+        old, new = edit.get("old_string"), edit.get("new_string")
+        if not isinstance(old, str) or not old or not isinstance(new, str):
+            raise ValueError("runtime patch requires nonempty old_string and string new_string")
+        if patched.count(old) != 1:
+            raise ValueError("runtime patch old_string must match exactly once")
+        patched = patched.replace(old, new, 1)
+    validate_solver_code(patched)
+    return patched
+
+
+def _generate_runtime_patch(packet: TaskPacket, specification: str, config: llm_mod.LLMConfig,
+                            outdir: Path, run_seed: int, repair: dict) -> dict:
+    max_tokens = min(int(os.environ.get("ORA_CLEANROOM_MAX_TOKENS", "32768")), 8192)
+    reasoning = os.environ.get("ORA_CLEANROOM_SOLVER_REASONING",
+                               os.environ.get("ORA_CLEANROOM_REASONING", "medium"))
+    disable = os.environ.get("ORA_CLEANROOM_SOLVER_DISABLE_THINKING",
+                             os.environ.get("ORA_CLEANROOM_DISABLE_THINKING", "0")) == "1"
+    parent = repair["artifacts"]["solve_py"]
+    request = {"solver_max_tokens": max_tokens, "solver_reasoning_effort": reasoning,
+               "solver_disable_thinking": disable, "temperature": 0.6, "stream": False,
+               "protocol": "unique_exact_runtime_patch_v1",
+               "parent_solver_sha256": hashlib.sha256(parent.encode()).hexdigest()}
+    messages = packet.prompt(specification, repair, tool_name="submit_runtime_patch")
+    response = None
+    try:
+        prompt_hash = hashlib.sha256(json.dumps(messages).encode()).hexdigest()
+        response, patch = _call_artifact_tool("runtime_patch", messages, config, max_tokens,
+                                             reasoning, run_seed ^ int(prompt_hash[:8], 16), disable)
+        artifacts = {"model_md": repair["artifacts"]["model_md"],
+                     "solve_py": apply_runtime_patch(parent, patch.get("edits")),
+                     "solve_log_md": repair["artifacts"]["solve_log_md"]}
+        write_json(outdir / "runtime_patch_generation.json", {
+            "messages": messages, "response": response, "request": request})
+        error = None
+    except Exception as exc:
+        response = getattr(exc, "response", None) or response or {
+            "request_attempts": getattr(exc, "request_attempts", []), "usage": {}}
+        error = f"{type(exc).__name__}: {exc}"
+        write_json(outdir / "runtime_patch_generation.json", {
+            "messages": messages, "response": response, "request": request, "error": error})
+    write_json(outdir / "generation.json", {
+        "task": packet.name, "specification_sha256": hashlib.sha256(specification.encode()).hexdigest(),
+        "repair": True, "request": request, "response": response, "error": error})
+    if error:
+        raise RuntimeError(error)
+    write_json(outdir / "artifacts.json", artifacts)
+    return artifacts
+
+
 def generate_artifacts(packet: TaskPacket, specification: str, config: llm_mod.LLMConfig,
                        outdir: Path, run_seed: int = 0, repair: dict | None = None) -> dict:
+    if repair is not None and repair.get("evidence", {}).get("search_guidance", {}).get(
+            "repair_kind") == "runtime_patch":
+        return _generate_runtime_patch(packet, specification, config, outdir, run_seed, repair)
     response = None
     phase = "model"
     max_tokens = int(os.environ.get("ORA_CLEANROOM_MAX_TOKENS", "32768"))

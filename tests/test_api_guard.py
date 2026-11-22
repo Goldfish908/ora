@@ -51,6 +51,9 @@ def test_guard_runs_before_completeness_validation():
     assert "opt.getNVars()" in repaired
     assert "opt.getNConss()" in repaired
     assert "opt.optimize()" in repaired
+    singular, applied = repair_known_api_errors("opt.getNCons()\n")
+    assert singular == "opt.getNConss()\n"
+    assert applied[0]["category"] == "constraint_count_method"
 
 
 def test_output_schema_repair_is_explicit_and_scoped_to_public_contract():

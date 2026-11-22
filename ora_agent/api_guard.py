@@ -31,6 +31,7 @@ REPLACEMENTS = (
     (".solve()", ".optimize()", "solve_call"),
     ("getNvars()", "getNVars()", "variable_count_method"),
     ("getNconss()", "getNConss()", "constraint_count_method"),
+    ("getNCons()", "getNConss()", "constraint_count_method"),
     ("getSolStatus()", "getStatus()", "status_method"),
     ("getOrigObjval()", "getObjVal()", "objective_method"),
     ("setParam(\"gaprel\"", "setRealParam(\"limits/gap\"", "gap_parameter"),

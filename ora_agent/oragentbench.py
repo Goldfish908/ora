@@ -248,6 +248,21 @@ def apply_runtime_patch(code: str, edits: list[dict]) -> str:
             raise ValueError("runtime patch old_string must match exactly once")
         patched = patched.replace(old, new, 1)
     validate_solver_code(patched)
+    before_tree, after_tree = ast.parse(code), ast.parse(patched)
+    before_bindings = {node.id for node in ast.walk(before_tree)
+                       if isinstance(node, ast.Name) and isinstance(node.ctx, ast.Store)}
+    after_bindings = {node.id for node in ast.walk(after_tree)
+                      if isinstance(node, ast.Name) and isinstance(node.ctx, ast.Store)}
+    after_loads = {node.id for node in ast.walk(after_tree)
+                   if isinstance(node, ast.Name) and isinstance(node.ctx, ast.Load)}
+    removed_bindings = before_bindings - after_bindings
+    missing = sorted(removed_bindings & after_loads)
+    if missing:
+        raise ValueError("runtime patch removes bindings that remain referenced: " + ", ".join(missing))
+    dropped_semantic = sorted(name for name in removed_bindings
+                              if any(token in name.lower() for token in ("cost", "objective", "obj")))
+    if dropped_semantic:
+        raise ValueError("runtime patch removes objective or cost bindings: " + ", ".join(dropped_semantic))
     return patched
 
 
@@ -484,6 +499,7 @@ def probe_pyscipopt_api(outdir: Path) -> dict:
             "names=['addVar','addCons','setObjective','setMinimize','setRealParam','setParam',"
             "'getBestSol','getSols','getSolTime','getObjVal','getObjval','getStatus',"
             "'getOrigStatus','getOrigTime','getVarVal','getNSols','getNsolns','getVal','free',"
+            "'getNvars','getNVars','getNconss','getNCons','getNConss',"
             "'setUb','setLb','chgVarUb','chgVarLb','getUbGlobal','getLbGlobal',"
             "'quicksum','changeCoeff','chgCoefLinear','chgVarObj','setObjCoeff']; "
             "[show(name) for name in names]; print('module quicksum', inspect.signature(quicksum)); "

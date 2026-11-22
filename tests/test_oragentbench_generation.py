@@ -99,6 +99,13 @@ def test_ambiguous_runtime_patch_is_rejected_without_modifying_source():
         apply_runtime_patch(code, [{"old_string": "m = Model()", "new_string": "m = Model('new')"}])
 
 
+def test_runtime_patch_cannot_delete_a_cost_expression_to_hide_an_error():
+    code = ("from pyscipopt import Model\nm = Model()\nm.optimize()\n"
+            "cost_obj = undefined_cost\nsol_path = '/app/submissions/solution.csv'\n" + "#" * 500)
+    with pytest.raises(ValueError, match="removes objective or cost bindings"):
+        apply_runtime_patch(code, [{"old_string": "cost_obj = undefined_cost\n", "new_string": ""}])
+
+
 def test_truncated_artifact_is_explicit_failure():
     with pytest.raises(ValueError, match="truncated"):
         parse_artifacts({"finish_reason": "length", "tool_calls": []})

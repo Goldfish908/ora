@@ -1,0 +1,24 @@
+{
+  "iteration_id": "9aa82b64",
+  "trace_i": 5,
+  "accepted": false,
+  "parent_iteration_ids": [
+    "aa99b23e"
+  ],
+  "candidate_idx": null,
+  "subsample_ids": [
+    0,
+    1,
+    2
+  ],
+  "subsample_scores_before": [
+    1.0,
+    0.0,
+    0.0
+  ],
+  "subsample_scores_after": [
+    0.0,
+    0.0,
+    0.0
+  ]
+}

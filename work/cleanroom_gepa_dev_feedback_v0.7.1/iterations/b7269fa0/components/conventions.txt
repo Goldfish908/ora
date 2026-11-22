@@ -1,0 +1,108 @@
+You are solving an operations-research benchmark task inside a sandbox.
+
+Work only inside `/app`. Do not use the internet, hidden evaluator files, reference models, package registries, or remote data.
+
+## Required Workflow
+
+1. Read `/app/PROBLEM_STATEMENT.md` and every file under `/app/data/`.
+2. Write a complete mathematical model to `/app/submissions/model.md` before finalizing code.
+3. Implement the solver in `/app/submissions/solve.py` using PySCIPOpt.
+4. Use SCIP relative gap `0.0005`. If `ORCLAW_SOLVE_TIME_LIMIT_SECONDS` is set, use a time limit no larger than that value. Preserve solution values with precision up to `1e-8` after the decimal point.
+5. Make `/app/submissions/solve.py` solve from scratch when run as `python /app/submissions/solve.py`.
+6. Write the required solution file under `/app/submissions/` using the task schema.
+7. Write `/app/submissions/solve_log.md` with commands, solver status, objective or score if available, and validation checks.
+
+## PySCIPOpt API Contract (version 6.3.0) — CRITICAL
+
+The following methods and their signatures are the ONLY ones available. Do NOT use any other method names. Many common method names do NOT exist in this version:
+
+### Model methods (that DO exist):
+- `model.addVar(name='', vtype='C', lb=0.0, ub=None, obj=0.0, pricedVar=False, pricedVarScore=1.0, deletable=False)`
+- `model.addCons(cons, name='', initial=True, separate=True, enforce=True, check=True, propagate=True, local=False, modifiable=False, dynamic=False, removable=False, stickingatnode=False)`
+- `model.setObjective(expr, sense='minimize', clear='true')` — NOTE: `sense` is the SECOND positional parameter. Do NOT pass a name string as the second positional argument AND also pass `sense=` as a keyword. Correct usage: `model.setObjective(expr, sense='maximize')` or `model.setObjective(expr, 'maximize')`.
+- `model.setMinimize()` — sets objective sense to minimize
+- `model.setRealParam(name, value)` — e.g., `model.setRealParam('limits/time', 300.0)`
+- `model.setParam(name, value)` — e.g., `model.setParam('gaprel', 0.0005)`
+- `model.getBestSol()`
+- `model.getSols()`
+- `model.getSolTime(sol)`
+- `model.getObjVal(original=True)` — returns objective value
+- `model.getStatus()` — returns status string like 'optimal', 'timelimit', 'gap', 'infeasible', etc.
+- `model.getNSols()` — returns number of solutions found
+- `model.getVal(expr)` — evaluates an expression or variable in the best solution
+- `model.free()`
+- `model.chgVarUb(var, ub)` — change variable upper bound
+- `model.chgVarLb(var, lb)` — change variable lower bound
+- `model.chgCoefLinear(cons, var, value)` — change coefficient in a constraint
+- `model.optimize()` — solve the model
+
+### Module-level:
+- `quicksum(termlist)` — from `pyscipopt import quicksum`; sums a list of terms
+
+### Variable methods:
+- `var.getUbGlobal()`
+- `var.getLbGlobal()`
+
+### Methods that DO NOT EXIST (will cause AttributeError):
+- `model.setRealGap(...)` → USE `model.setParam('gaprel', 0.0005)` INSTEAD
+- `model.getObjval(...)` → USE `model.getObjVal(...)` INSTEAD
+- `model.getOrigStatus(...)` → does not exist
+- `model.getOrigTime(...)` → does not exist
+- `model.getVarVal(...)` → USE `model.getVal(var)` INSTEAD
+- `model.getNsolns(...)` → USE `model.getNSols(...)` INSTEAD
+- `model.setUb(...)` → USE `model.chgVarUb(var, ub)` INSTEAD
+- `model.setLb(...)` → USE `model.chgVarLb(var, lb)` INSTEAD
+- `model.quicksum(...)` → USE module-level `quicksum(...)` INSTEAD
+- `model.changeCoeff(...)` → USE `model.chgCoefLinear(cons, var, value)` INSTEAD
+- `model.chgVarObj(...)` → does not exist; set obj in addVar or use setObjective
+- `model.setObjCoeff(...)` → does not exist
+
+### Common Pitfalls:
+1. **Setting the gap**: Use `model.setParam('gaprel', 0.0005)`. The method `setRealGap` does NOT exist.
+2. **Setting objective sense**: `model.setObjective(expr, sense='maximize')` is correct. `model.setObjective(expr, "my_name", sense='maximize')` is WRONG because the second positional arg is `sense` itself, causing a "multiple values for keyword argument 'sense'" error.
+3. **Tuple unpacking**: Be very careful when iterating over dictionaries with tuple keys. If your keys are 5-tuples like `(p, dc, pd, m, mode)`, do NOT try to unpack them as 4-tuples. Use `for key, var in my_dict.items():` and then access `key[0]`, `key[1]`, etc., or unpack with the correct number of variables.
+4. **Getting variable values**: Use `model.getVal(var)` where `var` is the Variable object. Do NOT use `model.getVarVal(var)`.
+5. **Number of solutions**: Use `model.getNSols()`, not `model.getNsolns()`.
+6. **Time limit**: Use `model.setRealParam('limits/time', seconds)` or `model.setParam('limits/time', seconds)`.
+
+## Modeling and Solving Strategy
+
+You may improve the modeling and solving strategy based on preliminary results, but each individual solve attempt is limited to 5 minutes. The whole workflow is also time-limited, so do not perform unlimited full solve-and-iterate cycles.
+
+Before running expensive solves, reason about the problem structure and choose an efficient approach. You may:
+1. Use stronger mathematical formulations and more sophisticated modeling strategies tailored to the structure, special properties, and scale of the given problem instance.
+2. Solve directly with SCIP when the model is tractable.
+3. Design effective heuristic, local-search, repair, or rounding methods when exact optimization is too slow.
+4. Combine heuristics with SCIP, for example by generating an initial feasible solution, fixing or relaxing selected variables, using warm starts if supported, or solving restricted subproblems.
+5. Run short diagnostic solves to estimate difficulty, then refine the model or solution method.
+
+Do not default to a naive formulation. Before coding, explicitly analyze whether the problem is better represented as an assignment model, network flow model, set partitioning model, time-indexed model, interval/order-based scheduling model, routing model, or decomposition-based model and so on. Choose the formulation that is likely to give the strongest relaxation and fastest solution for the given instance size. Use preprocessing, dominance filtering, bound tightening, valid inequalities, symmetry breaking, and heuristic warm starts whenever applicable.
+
+## Iteration Budget
+
+Use the limited iteration budget wisely:
+- First ensure feasibility and correct output schema.
+- Then improve objective quality.
+- Prefer targeted refinements over repeated full solves.
+- Stop iterating when additional improvements are unlikely within the remaining time.
+- Record every meaningful solve attempt and validation result in `/app/submissions/solve_log.md`.
+
+The final submission should prioritize correctness, feasibility, and robust execution from scratch under the time limit.
+
+## Code Quality Requirements
+
+- The script must be self-contained and runnable as `python /app/submissions/solve.py`.
+- Handle edge cases: empty variable sets, infeasible subproblems, solver returning no solution.
+- Always check `model.getNSols() > 0` before extracting solution values.
+- Round integer variables to the nearest integer when extracting.
+- Validate the solution against all constraints before writing the output file.
+- Write the solution file even if the solver doesn't reach optimality (use best incumbent).
+- Include proper error handling so the script doesn't crash on minor numerical issues.
+- Print diagnostic information (status, objective, key statistics) to stdout.
+
+## Output File Requirements
+
+- Write the solution file with the EXACT column headers specified in the task's `solution_template.csv`.
+- Omit zero-valued rows (or include them with value 0 if the schema allows).
+- Format numeric values with sufficient precision (up to 1e-8 after the decimal point for continuous values; integers for integer variables).
+- The `solve_log.md` must document: commands run, solver status, objective/score value, and all validation checks performed.

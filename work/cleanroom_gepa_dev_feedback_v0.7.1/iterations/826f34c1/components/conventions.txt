@@ -1,0 +1,190 @@
+You are solving an operations-research benchmark task inside a sandbox.
+
+Work only inside `/app`. Do not use the internet, hidden evaluator files, reference models, package registries, or remote data.
+
+## Required Workflow
+1. Read `/app/PROBLEM_STATEMENT.md` and every file under `/app/data/`.
+2. Write a complete mathematical model to `/app/submissions/model.md` before finalizing code.
+3. Implement the solver in `/app/submissions/solve.py` using PySCIPOpt.
+4. Use SCIP relative gap `0.0005`. If `ORCLAW_SOLVE_TIME_LIMIT_SECONDS` is set, use a time limit no larger than that value. Preserve solution values with precision up to `1e-8` after the decimal point.
+5. Make `/app/submissions/solve.py` solve from scratch when run as `python /app/submissions/solve.py`.
+6. Write the required solution file under `/app/submissions/` using the task schema.
+7. Write `/app/submissions/solve_log.md` with commands, solver status, objective or score if available, and validation checks.
+
+## Critical PySCIPOpt 6.3.0 API Reference (MUST FOLLOW)
+
+The following are the ONLY valid methods/attributes. Using anything else will cause an AttributeError or TypeError at runtime:
+
+### Model Methods:
+- `model.addVar(name='', vtype='C', lb=0.0, ub=None, obj=0.0, pricedVar=False, pricedVarScore=1.0, deletable=False)`
+- `model.addCons(cons, name='', initial=True, separate=True, enforce=True, check=True, propagate=True, local=False, modifiable=False, dynamic=False, removable=False, stickingatnode=False)`
+- `model.setObjective(expr, sense='minimize', clear='true')` — NOTE: `sense` is the 2nd positional parameter. Do NOT pass a name string as a positional argument AND also pass `sense=` as a keyword. Correct usage: `model.setObjective(expr, sense='maximize')` or `model.setObjective(expr, 'maximize')`.
+- `model.setMinimize()`
+- `model.setRealParam(name, value)`
+- `model.setParam(name, value)`
+- `model.getBestSol()`
+- `model.getSols()`
+- `model.getSolTime(sol)`
+- `model.getObjVal(original=True)` — NOTE: capital V in "Val"
+- `model.getStatus()`
+- `model.getNSols()` — NOTE: capital S in "Sols"
+- `model.getVal(expr)`
+- `model.free()`
+- `model.chgVarUb(var, ub)`
+- `model.chgVarLb(var, lb)`
+- `model.chgCoefLinear(cons, var, value)`
+- `model.optimize()`
+
+### Module-level function:
+- `quicksum(termlist)` — imported via `from pyscipopt import Model, quicksum`. This is a MODULE function, NOT a method on Model.
+
+### Variable Methods:
+- `var.getUbGlobal()`
+- `var.getLbGlobal()`
+
+### Methods that DO NOT EXIST (will raise AttributeError):
+- `model.setRealGap(...)` — USE `model.setParam("gaprel", 0.0005)` INSTEAD
+- `model.getObjval(...)` — wrong case, use `model.getObjVal(...)`
+- `model.getOrigStatus(...)` — does not exist
+- `model.getOrigTime(...)` — does not exist
+- `model.getVarVal(...)` — does not exist
+- `model.getNsolns(...)` — wrong case, use `model.getNSols(...)`
+- `model.setUb(...)` — use `model.chgVarUb(var, ub)`
+- `model.setLb(...)` — use `model.chgVarLb(var, lb)`
+- `model.getUbGlobal(...)` / `model.getLbGlobal(...)` on Model — only exist on Variable objects
+- `model.quicksum(...)` — it's a module function, not a method
+- `model.changeCoeff(...)` — use `model.chgCoefLinear(cons, var, value)`
+- `model.chgVarObj(...)` — does not exist
+- `model.setObjCoeff(...)` — does not exist
+- `variable.obj` — DOES NOT EXIST. You cannot access the objective coefficient of a variable via `var.obj`. You must store coefficients in your own dictionaries and build the objective expression explicitly.
+
+### Setting the gap:
+```python
+model.setParam("gaprel", 0.0005)
+# NOT model.setRealGap(0.0005)
+```
+
+### Setting time limit:
+```python
+model.setParam("limits/time", time_limit_seconds)
+```
+
+### Setting objective sense:
+```python
+# For maximization:
+model.setObjective(expr, sense='maximize')
+# OR equivalently:
+model.setObjective(expr, 'maximize')
+# For minimization (default):
+model.setObjective(expr)
+# OR:
+model.setMinimize()  # then set objective coefficients on vars
+```
+
+## CRITICAL: Building the Objective Expression
+
+**NEVER use `variable.obj` to reference objective coefficients.** The Variable object in PySCIPOpt 6.3.0 does NOT have an `.obj` attribute. Accessing it will raise `AttributeError: 'pyscipopt.scip.Variable' object has no attribute 'obj'`.
+
+Instead, store all objective coefficients in your own Python dictionaries/lists when you compute them, then build the objective expression explicitly:
+
+```python
+# CORRECT approach:
+obj_coeffs = {}  # store coefficients as you compute them
+obj_coeffs[(p, o)] = revenue - cost1 - cost2  # example
+
+# Build objective explicitly:
+obj_expr = quicksum([
+    obj_coeffs[key] * var_dict[key] for key in var_dict
+])
+model.setObjective(obj_expr, sense='maximize')
+
+# WRONG approach (will crash):
+# model.setObjective(quicksum(v.obj for v in var_dict.values()), sense='maximize')
+```
+
+You CAN pass `obj=coeff` to `addVar()` to set the coefficient on the variable internally, but you CANNOT later retrieve it via `var.obj`. The safest pattern is to:
+1. Store coefficients in your own dictionaries.
+2. Optionally pass them to `addVar(obj=...)` for SCIP's internal use.
+3. Build the final objective expression explicitly from your stored coefficients and variable objects.
+
+## CRITICAL: Robust Data Loading and Key Access
+
+When building dictionaries from CSV data, always verify that keys exist before accessing them. Use defensive patterns:
+
+```python
+# Instead of:
+value = my_dict[key]  # KeyError if key missing
+
+# Use:
+value = my_dict.get(key, default_value)
+# Or check membership first:
+if key in my_dict:
+    value = my_dict[key]
+else:
+    # handle missing key (skip, use default, etc.)
+```
+
+When iterating over lanes/pairs from one data file and looking up parameters from another data file, always guard against the second file not having an entry for that combination. For example, if `plant_to_dc_routes.csv` lists a lane but `transport_modes.csv` does not have a mode entry for it, you must handle that gracefully (skip the lane or use a default mode).
+
+## Modeling and Solving Strategy
+
+Before running expensive solves, reason about the problem structure and choose an efficient approach. You may:
+1. Use stronger mathematical formulations and more sophisticated modeling strategies tailored to the structure, special properties, and scale of the given problem instance.
+2. Solve directly with SCIP when the model is tractable.
+3. Design effective heuristic, local-search, repair, or rounding methods when exact optimization is too slow.
+4. Combine heuristics with SCIP, for example by generating an initial feasible solution, fixing or relaxing selected variables, using warm starts if supported, or solving restricted subproblems.
+5. Run short diagnostic solves to estimate difficulty, then refine the model or solution method.
+
+Do not default to a naive formulation. Before coding, explicitly analyze whether the problem is better represented as an assignment model, network flow model, set partitioning model, time-indexed model, interval/order-based scheduling model, routing model, or decomposition-based model. Choose the formulation that is likely to give the strongest relaxation and fastest solution for the given instance size. Use preprocessing, dominance filtering, bound tightening, valid inequalities, symmetry breaking, and heuristic warm starts whenever applicable.
+
+Use the limited iteration budget wisely:
+- First ensure feasibility and correct output schema.
+- Then improve objective quality.
+- Prefer targeted refinements over repeated full solves.
+- Stop iterating when additional improvements are unlikely within the remaining time.
+- Record every meaningful solve attempt and validation result in `/app/submissions/solve_log.md`.
+
+The final submission should prioritize correctness, feasibility, and robust execution from scratch under the time limit.
+
+## Common Pitfalls to Avoid
+
+1. **`variable.obj` does not exist**: Never write `v.obj` or `var.obj`. Store coefficients in your own data structures and build the objective expression explicitly using `quicksum([coeff * var for ...])`.
+
+2. **Tuple unpacking errors**: When iterating over dictionaries with multi-element tuple keys, always verify the number of elements matches your unpacking pattern. For example, if keys are `(p, dc, pd, m, mode)` (5 elements), do NOT unpack as `(p, dc, pd, mode)` (4 elements).
+
+3. **setObjective signature**: The second positional parameter is `sense`, not a name. If you want to name the objective, there is no name parameter in this API version. Just use `model.setObjective(expr, sense='maximize')`.
+
+4. **Integer vs continuous variables**: Production quantities that must be integer parts/packs use `vtype='I'`. Setup/activation decisions use `vtype='B'`. Continuous quantities (tons, kg) use `vtype='C'` (default).
+
+5. **Rounding solution values**: After solving, round integer variables to nearest integer with `int(round(model.getVal(var)))`. For continuous variables, use `f'{val:.8f}'` format.
+
+6. **Solution file must exist**: The evaluator checks for the solution file. If the solver fails or times out, still attempt to write a best-effort solution file.
+
+7. **Validation before writing**: After extracting the solution, validate all constraints are satisfied within tolerance before writing the file. Print validation results.
+
+8. **Eligibility filtering**: Only create variables for feasible combinations (e.g., only eligible printer-material pairs, only approved lot-order pairs). This dramatically reduces model size.
+
+9. **Binary linking constraints**: For setup/activation variables that gate production, use `x <= bigM * y` where bigM is a tight upper bound on x (e.g., the maximum possible production, not an arbitrary large number).
+
+10. **Weighted average constraints**: When a constraint requires a weighted average to meet a threshold (e.g., average SoH >= minimum), linearize by moving the threshold to the left: `sum(weight_i * value_i * x_i) >= threshold * sum(weight_i * x_i)`.
+
+11. **Cross-file data consistency**: When one file defines the set of entities (e.g., lanes) and another file provides parameters for those entities (e.g., transport modes per lane), always check that the parameter file has an entry before using it. Use `if key in dict:` or `dict.get(key, default)` patterns. If a lane exists in the routes file but has no mode entry in the modes file, either skip it or assign a default mode.
+
+12. **Environment variable for time limit**:
+```python
+import os
+time_limit = 300.0  # default 5 minutes
+env_limit = os.environ.get("ORCLAW_SOLVE_TIME_LIMIT_SECONDS")
+if env_limit is not None:
+    try:
+        time_limit = min(time_limit, float(env_limit))
+    except ValueError:
+        pass
+model.setParam("limits/time", time_limit)
+```
+
+13. **Large models and time limits**: For large MIPs (hundreds of binary variables, thousands of continuous variables), the solver may not reach optimality within the time limit. In that case, the best incumbent found is still valid. Always check `model.getNSols() > 0` before extracting a solution, and write the best available solution even if the solver status is "timelimit" or "gap".
+
+14. **Objective with both positive and negative coefficients**: When maximizing profit (revenue minus costs), some per-unit contributions may be negative (e.g., using an expensive printer for a low-margin order). This is fine — SCIP will naturally avoid negative-contribution assignments unless forced by minimum fill constraints. Do not artificially restrict variables to only positive-contribution pairs unless the problem explicitly forbids it.
+
+15. **Output schema compliance**: Carefully read the required output schema in the problem statement. Column names, row types, and which fields to fill vs. leave blank must match exactly. For example, if the schema says "put the pack family in order_id and leave lot_id blank" for setup rows, do exactly that.

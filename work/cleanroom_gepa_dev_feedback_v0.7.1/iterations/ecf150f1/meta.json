@@ -1,0 +1,27 @@
+{
+  "iteration_id": "ecf150f1",
+  "trace_i": 6,
+  "accepted": true,
+  "parent_iteration_ids": [
+    "aa99b23e"
+  ],
+  "candidate_idx": 2,
+  "subsample_ids": [
+    2,
+    0,
+    1
+  ],
+  "subsample_scores_before": [
+    0.0,
+    1.0,
+    0.0
+  ],
+  "subsample_scores_after": [
+    1.0,
+    1.0,
+    0.0
+  ],
+  "avg_val_score": 0.0,
+  "num_val_scored": 1,
+  "metric_calls_to_discover": 44
+}

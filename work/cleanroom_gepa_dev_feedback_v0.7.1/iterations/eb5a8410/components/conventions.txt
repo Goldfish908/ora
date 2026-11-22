@@ -1,0 +1,74 @@
+You are solving an operations-research benchmark task inside a sandbox. Work only inside `/app`. Do not use the internet, hidden evaluator files, reference models, package registries, or remote data.
+
+## Required Workflow
+1. Read `/app/PROBLEM_STATEMENT.md` and every file under `/app/data/`.
+2. Write a complete mathematical model to `/app/submissions/model.md` before finalizing code.
+3. Implement the solver in `/app/submissions/solve.py` using PySCIPOpt.
+4. Use SCIP relative gap `0.0005`. If `ORCLAW_SOLVE_TIME_LIMIT_SECONDS` is set, use a time limit no larger than that value. Preserve solution values with precision up to `1e-8` after the decimal point.
+5. Make `/app/submissions/solve.py` solve from scratch when run as `python /app/submissions/solve.py`.
+6. Write the required solution file under `/app/submissions/` using the task schema specified in the problem statement.
+7. Write `/app/submissions/solve_log.md` with commands, solver status, objective or score if available, and validation checks. The log must contain ACTUAL values from the run — never leave placeholder text like "(recorded at runtime)" or "(filled at runtime)".
+
+## Critical PySCIPOpt 6.3.0 API Contract
+
+The following API signatures are EXACT. Deviating from them will cause runtime errors:
+
+- `model.addVar(name='', vtype='C', lb=0.0, ub=None, obj=0.0)` — vtype is 'C', 'I', 'B', or 'N'
+- `model.addCons(cons, name='')` — cons is a pyscipopt Expr
+- `model.setObjective(expr, sense='minimize', clear='true')` — The second positional argument is `sense` (a string: 'minimize' or 'maximize'), NOT a name. There is NO name parameter for the objective. For maximization: `model.setObjective(expr, sense='maximize')`.
+- `model.setMinimize()` — Takes NO arguments. Only sets direction to minimize. Do NOT call `model.setMinimize(False)` — this will fail.
+- `model.setParam(name, value)` — Set a parameter (e.g., `model.setParam("gaprel", 0.0005)`)
+- `model.setRealParam(name, value)` — Set a real-valued parameter (e.g., `model.setRealParam("limits/time", 300.0)`)
+- There is NO `model.setRealGap(value)` method. Use `model.setParam("gaprel", 0.0005)` or `model.setRealParam("gaprel", 0.0005)`.
+- `model.optimize()` — Solve the model
+- `model.getStatus()` — Returns status string (e.g., 'optimal', 'timelimit', 'gap', 'infeasible', 'nodelimits', etc.)
+- `model.getObjVal(original=True)` — Returns objective value. Note: capital V in `ObjVal`. NOT `getObjval`.
+- `model.getNSols()` — Returns number of solutions found. NOT `getNsolns`, NOT `getNsol`.
+- `model.getVal(var_or_expr)` — Returns the value of a variable or expression in the best solution.
+- `model.getBestSol()` — Returns the best solution object.
+- `model.free()` — Free the model.
+- `quicksum(termlist)` — Module-level function imported via `from pyscipopt import quicksum`. It is NOT a method on Model. Do NOT call `model.quicksum(...)`.
+- `model.chgVarUb(var, ub)` / `model.chgVarLb(var, lb)` — Change variable bounds.
+- `model.chgCoefLinear(cons, var, value)` — Change coefficient in a constraint.
+
+### Common Mistakes to Avoid
+- `model.setObjective(expr, "my_name", sense="maximize")` → WRONG. The second positional arg is `sense`. Correct: `model.setObjective(expr, sense="maximize")`.
+- `model.setRealGap(0.0005)` → WRONG. Correct: `model.setParam("gaprel", 0.0005)`.
+- `model.setMinimize(False)` → WRONG. Correct: `model.setObjective(expr, sense="maximize")`.
+- `model.getObjval()` → WRONG (AttributeError). Correct: `model.getObjVal()`.
+- `model.getNsolns()` → WRONG (AttributeError). Correct: `model.getNSols()`.
+- `model.getNsol()` → WRONG (AttributeError). Correct: `model.getNSols()`.
+- `model.quicksum([...])` → WRONG. Correct: `quicksum([...])` (module-level).
+- `model.fixVar(var, value)` → May not exist in all versions. Safer to use `model.chgVarLb(var, value)` and `model.chgVarUb(var, value)`, or set the variable bounds at creation.
+
+## Strategy Guidance
+
+Before running expensive solves, reason about the problem structure and choose an efficient approach:
+1. Use stronger mathematical formulations tailored to the structure, special properties, and scale.
+2. Solve directly with SCIP when the model is tractable (small instances with <200 variables).
+3. For larger instances, consider: decomposition, fixing variables, heuristic warm starts, or solving restricted subproblems.
+4. Run short diagnostic solves (e.g., 30s) to estimate difficulty, then refine.
+5. Use preprocessing, dominance filtering, bound tightening, valid inequalities, symmetry breaking, and heuristic warm starts whenever applicable.
+
+Use the limited iteration budget wisely:
+- First ensure feasibility and correct output schema.
+- Then improve objective quality.
+- Prefer targeted refinements over repeated full solves.
+- Stop iterating when additional improvements are unlikely within remaining time.
+- Record every meaningful solve attempt and validation result in `/app/submissions/solve_log.md`.
+
+## Robustness Requirements
+
+- If the solver does not reach optimality (status is 'timelimit', 'gap', 'nodelimits', etc.), still extract and write the best incumbent solution if one exists (`model.getNSols() > 0`).
+- If no solution is found at all, write a feasible solution using a simple heuristic (e.g., greedy assignment) to ensure the solution file exists.
+- Always write the solution file, even if the solver fails. An empty or missing solution file scores zero.
+- Round integer variables to the nearest integer when extracting.
+- Handle edge cases: zero-demand orders, infeasible combinations, etc.
+
+## Validation
+
+After extracting the solution, validate all constraints are satisfied within the feasibility tolerance (1e-5). Write the validation results to `solve_log.md` with actual pass/fail status for each constraint group.
+
+## Output Format
+
+Follow the exact schema specified in the problem statement's "Required Output" or "Submission" section. Use the column names and row types exactly as specified. Omit zero-valued rows unless the schema requires them.

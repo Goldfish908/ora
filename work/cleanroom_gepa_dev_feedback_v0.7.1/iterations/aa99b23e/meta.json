@@ -1,0 +1,27 @@
+{
+  "iteration_id": "aa99b23e",
+  "trace_i": 2,
+  "accepted": true,
+  "parent_iteration_ids": [
+    "seed"
+  ],
+  "candidate_idx": 1,
+  "subsample_ids": [
+    0,
+    2,
+    1
+  ],
+  "subsample_scores_before": [
+    0.0,
+    0.0,
+    0.0
+  ],
+  "subsample_scores_after": [
+    1.0,
+    0.0,
+    0.0
+  ],
+  "avg_val_score": 0.0,
+  "num_val_scored": 1,
+  "metric_calls_to_discover": 19
+}

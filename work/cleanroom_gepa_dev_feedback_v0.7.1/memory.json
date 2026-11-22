@@ -1,0 +1,68 @@
+{
+ "frozen": false,
+ "events": [
+  {
+   "event": "spec_candidate",
+   "spec_id": "spec_0",
+   "at": "2026-11-22T03:24:01.553684+00:00"
+  },
+  {
+   "event": "spec_candidate",
+   "spec_id": "spec_1",
+   "at": "2026-11-22T03:24:01.553749+00:00"
+  },
+  {
+   "event": "spec_candidate",
+   "spec_id": "spec_2",
+   "at": "2026-11-22T03:24:01.553827+00:00"
+  }
+ ],
+ "specifications": [
+  {
+   "spec_id": "spec_0",
+   "text": null,
+   "scope": {
+    "dataset": "oragentbench"
+   },
+   "parent_id": null,
+   "source_refs": [
+    "dev_public_problem_statements"
+   ],
+   "status": "candidate",
+   "text_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+   "audits": [],
+   "created_at": "2026-11-22T03:24:01.553650+00:00"
+  },
+  {
+   "spec_id": "spec_1",
+   "text": null,
+   "scope": {
+    "dataset": "oragentbench"
+   },
+   "parent_id": "spec_0",
+   "source_refs": [
+    "dev_public_problem_statements"
+   ],
+   "status": "candidate",
+   "text_sha256": "02e80fd464c9abe2bde4fd207359f187558c7ac0b5a86fc275b741f5e643553f",
+   "audits": [],
+   "created_at": "2026-11-22T03:24:01.553696+00:00"
+  },
+  {
+   "spec_id": "spec_2",
+   "text": null,
+   "scope": {
+    "dataset": "oragentbench"
+   },
+   "parent_id": "spec_1",
+   "source_refs": [
+    "dev_public_problem_statements"
+   ],
+   "status": "candidate",
+   "text_sha256": "08f95083f60719b0681fcca6cfad453b3faf28577335b466265903e2a11fe190",
+   "audits": [],
+   "created_at": "2026-11-22T03:24:01.553756+00:00"
+  }
+ ],
+ "checks": []
+}

@@ -1,0 +1,116 @@
+{
+ "execution_audit": {
+  "records": [
+   {
+    "case_id": "exec_clean_0",
+    "expected": "pass",
+    "observed": "pass"
+   },
+   {
+    "case_id": "exec_wrong_0",
+    "expected": "fail",
+    "observed": "fail"
+   },
+   {
+    "case_id": "exec_clean_1",
+    "expected": "pass",
+    "observed": "pass"
+   },
+   {
+    "case_id": "exec_wrong_1",
+    "expected": "fail",
+    "observed": "fail"
+   },
+   {
+    "case_id": "exec_clean_2",
+    "expected": "pass",
+    "observed": "pass"
+   },
+   {
+    "case_id": "exec_wrong_2",
+    "expected": "fail",
+    "observed": "fail"
+   }
+  ],
+  "n_clean": 3,
+  "n_wrong": 3,
+  "precision": 1.0,
+  "detection": 1.0,
+  "unknown": 0,
+  "passed": true,
+  "reasons": [],
+  "at": "2026-11-22T03:34:26.725407+00:00"
+ },
+ "official_audit": {
+  "records": [
+   {
+    "case_id": "cold_chain_locker_capacity_planning:clean",
+    "expected": "pass",
+    "observed": "pass"
+   },
+   {
+    "case_id": "cold_chain_locker_capacity_planning:missing_solution",
+    "expected": "fail",
+    "observed": "fail"
+   },
+   {
+    "case_id": "cold_chain_locker_capacity_planning:invalid_schema",
+    "expected": "fail",
+    "observed": "fail"
+   },
+   {
+    "case_id": "cold_chain_locker_capacity_planning:empty_solution",
+    "expected": "fail",
+    "observed": "fail"
+   },
+   {
+    "case_id": "fuel_tanker_compartment_routing:clean",
+    "expected": "pass",
+    "observed": "pass"
+   },
+   {
+    "case_id": "fuel_tanker_compartment_routing:missing_solution",
+    "expected": "fail",
+    "observed": "fail"
+   },
+   {
+    "case_id": "fuel_tanker_compartment_routing:invalid_schema",
+    "expected": "fail",
+    "observed": "fail"
+   },
+   {
+    "case_id": "fuel_tanker_compartment_routing:empty_solution",
+    "expected": "fail",
+    "observed": "fail"
+   },
+   {
+    "case_id": "cycling_network_design:clean",
+    "expected": "pass",
+    "observed": "pass"
+   },
+   {
+    "case_id": "cycling_network_design:missing_solution",
+    "expected": "fail",
+    "observed": "fail"
+   },
+   {
+    "case_id": "cycling_network_design:invalid_schema",
+    "expected": "fail",
+    "observed": "fail"
+   },
+   {
+    "case_id": "cycling_network_design:empty_solution",
+    "expected": "fail",
+    "observed": "fail"
+   }
+  ],
+  "n_clean": 3,
+  "n_wrong": 9,
+  "precision": 1.0,
+  "detection": 1.0,
+  "unknown": 0,
+  "passed": true,
+  "reasons": [],
+  "at": "2026-11-22T03:37:49.508843+00:00"
+ }
+}

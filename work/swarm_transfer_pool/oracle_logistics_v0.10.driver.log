@@ -1,0 +1,30 @@
+{
+ "home_healthcare_routing": {
+  "feasible": true,
+  "quality": 2.0,
+  "true_correct": true,
+  "objective": 16077.0055,
+  "evaluation_unknown": false
+ },
+ "airport_gate_assignment": {
+  "feasible": true,
+  "quality": 2.0,
+  "true_correct": true,
+  "objective": 66241.2,
+  "evaluation_unknown": false
+ },
+ "circular_packaging_replenishment": {
+  "feasible": true,
+  "quality": 2.0,
+  "true_correct": true,
+  "objective": 36772.57574659999,
+  "evaluation_unknown": false
+ },
+ "coastal_aquaculture_feed_oxygen_planning": {
+  "feasible": true,
+  "quality": 2.0,
+  "true_correct": true,
+  "objective": 28050.30798322503,
+  "evaluation_unknown": false
+ }
+}

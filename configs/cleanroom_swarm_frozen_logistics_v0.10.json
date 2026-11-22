@@ -1,0 +1,13 @@
+{
+  "version": "cleanroom_swarm_frozen_logistics_v0.10",
+  "selection_basis": "Reserve role allocation frozen before the v0.9 outcome. Existing audit tasks calibrate only the domain Witness. Four disjoint reserve tasks have true-correct oracle health and no Qwen engineering history.",
+  "tasks": [
+    {"name": "air_cargo_stochastic_order_allocation", "domain": "logistics", "split": "audit", "role": "witness_calibration"},
+    {"name": "wildfire_bus_evacuation_planning", "domain": "logistics", "split": "audit", "role": "witness_calibration"},
+    {"name": "heatwave_cooling_center_resource_plan", "domain": "logistics", "split": "audit", "role": "witness_calibration"},
+    {"name": "home_healthcare_routing", "domain": "logistics", "split": "transfer", "role": "reserve_subsequent_transfer"},
+    {"name": "airport_gate_assignment", "domain": "logistics", "split": "transfer", "role": "reserve_subsequent_transfer"},
+    {"name": "circular_packaging_replenishment", "domain": "logistics", "split": "transfer", "role": "reserve_subsequent_transfer"},
+    {"name": "coastal_aquaculture_feed_oxygen_planning", "domain": "logistics", "split": "transfer", "role": "reserve_subsequent_transfer"}
+  ]
+}

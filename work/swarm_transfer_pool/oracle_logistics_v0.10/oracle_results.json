@@ -1,0 +1,546 @@
+{
+ "home_healthcare_routing": {
+  "runner": {
+   "return_code": 0,
+   "timed_out": false,
+   "stdout": "{\n  \"best_bound\": 16076.969999999992,\n  \"evaluation\": {\n    \"cost_raw\": {\n      \"caregiver_preferences\": 0,\n      \"highest_tardiness\": 147.00029999999998,\n      \"max_idle_time\": 176.0,\n      \"missed_lunch_break\": 1.0,\n      \"optional_patients\": 3.0,\n      \"total_extra_time\": 0.0,\n      \"total_tardiness\": 196.00049999999993,\n      \"total_waiting_time\": 0.0,\n      \"travel_time\": 442.0\n    },\n    \"cost_weighted\": {\n      \"caregiver_preferences\": 0.0,\n      \"highest_tardiness\": 735.0014999999999,\n      \"max_idle_time\": 12672.0,\n      \"missed_lunch_break\": 60.0,\n      \"optional_patients\": 600.0,\n      \"total_extra_time\": 0.0,\n      \"total_tardiness\": 1568.0039999999995,\n      \"total_waiting_time\": 0.0,\n      \"travel_time\": 442.0\n    },\n    \"errors\": [],\n    \"feasible\": true,\n    \"score\": 16077.0055,\n    \"served_patients\": [\n      \"p0\",\n      \"p1\",\n      \"p2\",\n      \"p3\",\n      \"p5\",\n      \"p7\",\n      \"p8\"\n    ],\n    \"served_service_count\": 9\n  },\n  \"mip_gap\": 0.0,\n  \"objective\": 16076.969999999992,\n  \"solver_status\": 2\n}\n",
+   "stderr": ""
+  },
+  "official": {
+   "evaluation": {
+    "cost_raw": {
+     "caregiver_preferences": 0,
+     "highest_tardiness": 147.00029999999998,
+     "max_idle_time": 176.0,
+     "missed_lunch_break": 1.0,
+     "optional_patients": 3.0,
+     "total_extra_time": 0.0,
+     "total_tardiness": 196.00049999999993,
+     "total_waiting_time": 0.0,
+     "travel_time": 442.0
+    },
+    "cost_weighted": {
+     "caregiver_preferences": 0.0,
+     "highest_tardiness": 735.0014999999999,
+     "max_idle_time": 12672.0,
+     "missed_lunch_break": 60.0,
+     "optional_patients": 600.0,
+     "total_extra_time": 0.0,
+     "total_tardiness": 1568.0039999999995,
+     "total_waiting_time": 0.0,
+     "travel_time": 442.0
+    },
+    "errors": [],
+    "feasible": true,
+    "score": 16077.0055,
+    "served_patients": [
+     "p0",
+     "p1",
+     "p2",
+     "p3",
+     "p5",
+     "p7",
+     "p8"
+    ],
+    "served_service_count": 9
+   },
+   "reward": {
+    "feasibility": 1.0,
+    "quality": 2.0
+   },
+   "reward_details": {
+    "agent_objective": 16077.0055,
+    "agent_objective_source": "score",
+    "best_bound": 16076.969999999992,
+    "bound_sense": "lower",
+    "evaluation_diagnostics": {
+     "error_count": null,
+     "objective": null,
+     "profit": null,
+     "score": 16077.0055,
+     "total_cost": null
+    },
+    "fallback_mip_gap": 0.0005,
+    "fallback_reference_scale": 16077.0055,
+    "feasibility": 1.0,
+    "formula": "clip(2 + d if d >= -1 else 1.5 + 0.5*d, 0, 2), d = (R - O) / (max(abs(R), 1e-8) * mip_gap)",
+    "objective_sense": "minimize",
+    "quality": 2.0,
+    "quality_status": "bound_gap_below_mip_gap",
+    "reference_metrics": {
+     "best_bound": 16076.969999999992,
+     "best_bound_source": "best_bound",
+     "bound_sense": "lower",
+     "evaluation_summary": {
+      "feasible": true,
+      "score": 16077.0055
+     },
+     "generated_at": "2026-05-16T15:08:34.870333+00:00",
+     "mip_gap": 0.0005,
+     "objective_sense": "minimize",
+     "quality_formula": "clip(1 + (R - O) / (R - B), 0, 2) if B exists and R - B >= max(abs(R), 1e-8) * mip_gap; otherwise let d=(R - O)/(max(abs(R), 1e-8)*mip_gap), quality=clip(2+d if d>=-1 else 1.5+0.5*d, 0, 2); if no R, quality = 2",
+     "reference_objective": 16077.0055,
+     "reference_objective_source": "score",
+     "solution_path": "/private/tmp/oragentbench_reference_solutions/home_healthcare_routing_reference_solution.json",
+     "solver_summary": {
+      "best_bound": 16076.969999999992,
+      "evaluation": {
+       "cost_raw": {
+        "caregiver_preferences": 0,
+        "highest_tardiness": 147.00029999999998,
+        "max_idle_time": 176.0,
+        "missed_lunch_break": 1.0,
+        "optional_patients": 3.0,
+        "total_extra_time": 0.0,
+        "total_tardiness": 196.00049999999993,
+        "total_waiting_time": 0.0,
+        "travel_time": 442.0
+       },
+       "cost_weighted": {
+        "caregiver_preferences": 0.0,
+        "highest_tardiness": 735.0014999999999,
+        "max_idle_time": 12672.0,
+        "missed_lunch_break": 60.0,
+        "optional_patients": 600.0,
+        "total_extra_time": 0.0,
+        "total_tardiness": 1568.0039999999995,
+        "total_waiting_time": 0.0,
+        "travel_time": 442.0
+       },
+       "errors": [],
+       "feasible": true,
+       "score": 16077.0055,
+       "served_patients": [
+        "p0",
+        "p1",
+        "p2",
+        "p3",
+        "p5",
+        "p7",
+        "p8"
+       ],
+       "served_service_count": 9
+      },
+      "mip_gap": 0.0,
+      "objective": 16076.969999999992,
+      "solver_status": 2
+     },
+     "task_name": "home_healthcare_routing",
+     "time_limit_seconds": 300.0
+    },
+    "reference_objective": 16077.0055,
+    "scalar_reward": 1.0,
+    "scalar_reward_formula": "(feasibility + quality) / 3.0"
+   },
+   "runner": {
+    "return_code": 0,
+    "timed_out": false,
+    "wall_seconds": 9.941954
+   }
+  },
+  "metrics": {
+   "feasible": true,
+   "quality": 2.0,
+   "true_correct": true,
+   "objective": 16077.0055,
+   "evaluation_unknown": false
+  }
+ },
+ "airport_gate_assignment": {
+  "runner": {
+   "return_code": 0,
+   "timed_out": false,
+   "stdout": "{\n  \"bound\": 66221.40000000001,\n  \"evaluation\": {\n    \"apron_assignments\": 2,\n    \"error_count\": 0,\n    \"errors\": [],\n    \"facility_loads\": {\n      \"T1|immigration_arrival|A_AFTERNOON\": 170.0,\n      \"T1|immigration_arrival|A_EVENING\": 164.0,\n      \"T1|immigration_arrival|A_LATE\": 338.0,\n      \"T1|immigration_arrival|A_MIDDAY\": 174.0,\n      \"T1|immigration_arrival|A_MORNING\": 165.0,\n      \"T1|remote_bus|ALL\": 200.0,\n      \"T1|security_departure|D_AFTERNOON\": 394.0,\n      \"T1|security_departure|D_EVENING\": 272.0,\n      \"T1|security_departure|D_LATE\": 568.0,\n      \"T1|security_departure|D_MIDDAY\": 394.0,\n      \"T1|security_departure|D_MORNING\": 274.0,\n      \"T2|immigration_arrival|A_AFTERNOON\": 176.0,\n      \"T2|immigration_arrival|A_LATE\": 369.0,\n      \"T2|immigration_arrival|A_MIDDAY\": 278.0,\n      \"T2|immigration_arrival|A_MORNING\": 182.0,\n      \"T2|remote_bus|ALL\": 244.0,\n      \"T2|security_departure|D_AFTERNOON\": 402.0,\n      \"T2|security_departure|D_EVENING\": 178.0,\n      \"T2|security_departure|D_LATE\": 561.0,\n      \"T2|security_departure|D_MIDDAY\": 358.0,\n      \"T2|security_departure|D_MORNING\": 258.0\n    },\n    \"feasible\": true,\n    \"gate_assignments\": 26,\n    \"handler_loads\": {\n      \"H_REMOTE_T1|D_EVENING\": 1.0,\n      \"H_REMOTE_T2|D_AFTERNOON\": 1.0,\n      \"H_T1_HEAVY|D_AFTERNOON\": 1.0,\n      \"H_T1_HEAVY|D_EVENING\": 1.0,\n      \"H_T1_HEAVY|D_LATE\": 2.0,\n      \"H_T1_HEAVY|D_MIDDAY\": 1.0,\n      \"H_T1_HEAVY|D_MORNING\": 1.0,\n      \"H_T1_LOCAL|D_AFTERNOON\": 2.0,\n      \"H_T1_LOCAL|D_LATE\": 2.0,\n      \"H_T1_LOCAL|D_MIDDAY\": 2.0,\n      \"H_T1_LOCAL|D_MORNING\": 1.0,\n      \"H_T2_HEAVY|D_AFTERNOON\": 1.0,\n      \"H_T2_HEAVY|D_LATE\": 2.0,\n      \"H_T2_HEAVY|D_MIDDAY\": 1.0,\n      \"H_T2_HEAVY|D_MORNING\": 1.0,\n      \"H_T2_LOCAL|D_AFTERNOON\": 1.0,\n      \"H_T2_LOCAL|D_EVENING\": 2.0,\n      \"H_T2_LOCAL|D_LATE\": 2.0,\n      \"H_T2_LOCAL|D_MIDDAY\": 2.0,\n      \"H_T2_LOCAL|D_MORNING\": 1.0\n    },\n    \"handler_widebody_loads\": {\n      \"H_T1_HEAVY|D_AFTERNOON\": 1.0,\n      \"H_T1_HEAVY|D_EVENING\": 1.0,\n      \"H_T1_HEAVY|D_LATE\": 2.0,\n      \"H_T1_HEAVY|D_MIDDAY\": 1.0,\n      \"H_T1_HEAVY|D_MORNING\": 1.0,\n      \"H_T2_HEAVY|D_AFTERNOON\": 1.0,\n      \"H_T2_HEAVY|D_LATE\": 2.0,\n      \"H_T2_HEAVY|D_MIDDAY\": 1.0,\n      \"H_T2_HEAVY|D_MORNING\": 1.0\n    },\n    \"objective_terms\": {\n      \"connection_walk\": 3637.2,\n      \"remote\": 5376.0,\n      \"taxi\": 2576.0,\n      \"terminal_mismatch\": 2200.0,\n      \"walking\": 52452.0\n    },\n    \"score\": 66241.2\n  },\n  \"mip_gap\": 0.0002989970009692993,\n  \"model_size\": {\n    \"binary_variables\": 1526,\n    \"constraints\": 6606,\n    \"variables\": 1526\n  },\n  \"objective\": 66241.2,\n  \"solution_path\": \"/app/submissions/solution.csv\",\n  \"status\": 2\n}\n",
+   "stderr": ""
+  },
+  "official": {
+   "evaluation": {
+    "apron_assignments": 2,
+    "error_count": 0,
+    "errors": [],
+    "facility_loads": {
+     "T1|immigration_arrival|A_AFTERNOON": 170.0,
+     "T1|immigration_arrival|A_EVENING": 164.0,
+     "T1|immigration_arrival|A_LATE": 338.0,
+     "T1|immigration_arrival|A_MIDDAY": 174.0,
+     "T1|immigration_arrival|A_MORNING": 165.0,
+     "T1|remote_bus|ALL": 200.0,
+     "T1|security_departure|D_AFTERNOON": 394.0,
+     "T1|security_departure|D_EVENING": 272.0,
+     "T1|security_departure|D_LATE": 568.0,
+     "T1|security_departure|D_MIDDAY": 394.0,
+     "T1|security_departure|D_MORNING": 274.0,
+     "T2|immigration_arrival|A_AFTERNOON": 176.0,
+     "T2|immigration_arrival|A_LATE": 369.0,
+     "T2|immigration_arrival|A_MIDDAY": 278.0,
+     "T2|immigration_arrival|A_MORNING": 182.0,
+     "T2|remote_bus|ALL": 244.0,
+     "T2|security_departure|D_AFTERNOON": 402.0,
+     "T2|security_departure|D_EVENING": 178.0,
+     "T2|security_departure|D_LATE": 561.0,
+     "T2|security_departure|D_MIDDAY": 358.0,
+     "T2|security_departure|D_MORNING": 258.0
+    },
+    "feasible": true,
+    "gate_assignments": 26,
+    "handler_loads": {
+     "H_REMOTE_T1|D_EVENING": 1.0,
+     "H_REMOTE_T2|D_AFTERNOON": 1.0,
+     "H_T1_HEAVY|D_AFTERNOON": 1.0,
+     "H_T1_HEAVY|D_EVENING": 1.0,
+     "H_T1_HEAVY|D_LATE": 2.0,
+     "H_T1_HEAVY|D_MIDDAY": 1.0,
+     "H_T1_HEAVY|D_MORNING": 1.0,
+     "H_T1_LOCAL|D_AFTERNOON": 2.0,
+     "H_T1_LOCAL|D_LATE": 2.0,
+     "H_T1_LOCAL|D_MIDDAY": 2.0,
+     "H_T1_LOCAL|D_MORNING": 1.0,
+     "H_T2_HEAVY|D_AFTERNOON": 1.0,
+     "H_T2_HEAVY|D_LATE": 2.0,
+     "H_T2_HEAVY|D_MIDDAY": 1.0,
+     "H_T2_HEAVY|D_MORNING": 1.0,
+     "H_T2_LOCAL|D_AFTERNOON": 1.0,
+     "H_T2_LOCAL|D_EVENING": 2.0,
+     "H_T2_LOCAL|D_LATE": 2.0,
+     "H_T2_LOCAL|D_MIDDAY": 2.0,
+     "H_T2_LOCAL|D_MORNING": 1.0
+    },
+    "handler_widebody_loads": {
+     "H_T1_HEAVY|D_AFTERNOON": 1.0,
+     "H_T1_HEAVY|D_EVENING": 1.0,
+     "H_T1_HEAVY|D_LATE": 2.0,
+     "H_T1_HEAVY|D_MIDDAY": 1.0,
+     "H_T1_HEAVY|D_MORNING": 1.0,
+     "H_T2_HEAVY|D_AFTERNOON": 1.0,
+     "H_T2_HEAVY|D_LATE": 2.0,
+     "H_T2_HEAVY|D_MIDDAY": 1.0,
+     "H_T2_HEAVY|D_MORNING": 1.0
+    },
+    "objective_terms": {
+     "connection_walk": 3637.2,
+     "remote": 5376.0,
+     "taxi": 2576.0,
+     "terminal_mismatch": 2200.0,
+     "walking": 52452.0
+    },
+    "score": 66241.2
+   },
+   "reward": {
+    "feasibility": 1.0,
+    "quality": 2.0
+   },
+   "reward_details": {
+    "agent_objective": 66241.2,
+    "agent_objective_source": "score",
+    "best_bound": 66241.2,
+    "bound_sense": "lower",
+    "evaluation_diagnostics": {
+     "error_count": 0,
+     "objective": null,
+     "profit": null,
+     "score": 66241.2,
+     "total_cost": null
+    },
+    "fallback_mip_gap": 0.0005,
+    "fallback_reference_scale": 66241.2,
+    "feasibility": 1.0,
+    "formula": "clip(2 + d if d >= -1 else 1.5 + 0.5*d, 0, 2), d = (R - O) / (max(abs(R), 1e-8) * mip_gap)",
+    "objective_sense": "minimize",
+    "quality": 2.0,
+    "quality_status": "bound_gap_below_mip_gap",
+    "reference_metrics": {
+     "best_bound": 66241.2,
+     "best_bound_source": "bound",
+     "bound_sense": "lower",
+     "evaluation_summary": {
+      "error_count": 0,
+      "feasible": true,
+      "score": 66241.2
+     },
+     "generated_at": "2026-05-25T02:30:44.792310+00:00",
+     "mip_gap": 0.0005,
+     "objective_sense": "minimize",
+     "quality_formula": "clip(1 + (R - O) / (R - B), 0, 2) if B exists and R - B >= max(abs(R), 1e-8) * mip_gap; otherwise let d=(R - O)/(max(abs(R), 1e-8)*mip_gap), quality=clip(2+d if d>=-1 else 1.5+0.5*d, 0, 2); if no R, quality = 2",
+     "reference_objective": 66241.2,
+     "reference_objective_source": "score",
+     "solution_path": "reference_solutions/airport_gate_assignment_reference_solution.csv",
+     "solver_summary": {
+      "bound": 66241.2,
+      "evaluation": {
+       "apron_assignments": 2,
+       "error_count": 0,
+       "errors": [],
+       "facility_loads": {
+        "T1|immigration_arrival|A_AFTERNOON": 170.0,
+        "T1|immigration_arrival|A_EVENING": 164.0,
+        "T1|immigration_arrival|A_LATE": 338.0,
+        "T1|immigration_arrival|A_MIDDAY": 174.0,
+        "T1|immigration_arrival|A_MORNING": 165.0,
+        "T1|remote_bus|ALL": 200.0,
+        "T1|security_departure|D_AFTERNOON": 394.0,
+        "T1|security_departure|D_EVENING": 272.0,
+        "T1|security_departure|D_LATE": 568.0,
+        "T1|security_departure|D_MIDDAY": 394.0,
+        "T1|security_departure|D_MORNING": 274.0,
+        "T2|immigration_arrival|A_AFTERNOON": 176.0,
+        "T2|immigration_arrival|A_LATE": 369.0,
+        "T2|immigration_arrival|A_MIDDAY": 278.0,
+        "T2|immigration_arrival|A_MORNING": 182.0,
+        "T2|remote_bus|ALL": 244.0,
+        "T2|security_departure|D_AFTERNOON": 402.0,
+        "T2|security_departure|D_EVENING": 178.0,
+        "T2|security_departure|D_LATE": 561.0,
+        "T2|security_departure|D_MIDDAY": 358.0,
+        "T2|security_departure|D_MORNING": 258.0
+       },
+       "feasible": true,
+       "gate_assignments": 26,
+       "handler_loads": {
+        "H_REMOTE_T1|D_EVENING": 1.0,
+        "H_REMOTE_T2|D_AFTERNOON": 1.0,
+        "H_T1_HEAVY|D_AFTERNOON": 1.0,
+        "H_T1_HEAVY|D_EVENING": 1.0,
+        "H_T1_HEAVY|D_LATE": 2.0,
+        "H_T1_HEAVY|D_MIDDAY": 1.0,
+        "H_T1_HEAVY|D_MORNING": 1.0,
+        "H_T1_LOCAL|D_AFTERNOON": 2.0,
+        "H_T1_LOCAL|D_LATE": 2.0,
+        "H_T1_LOCAL|D_MIDDAY": 2.0,
+        "H_T1_LOCAL|D_MORNING": 1.0,
+        "H_T2_HEAVY|D_AFTERNOON": 1.0,
+        "H_T2_HEAVY|D_LATE": 2.0,
+        "H_T2_HEAVY|D_MIDDAY": 1.0,
+        "H_T2_HEAVY|D_MORNING": 1.0,
+        "H_T2_LOCAL|D_AFTERNOON": 1.0,
+        "H_T2_LOCAL|D_EVENING": 2.0,
+        "H_T2_LOCAL|D_LATE": 2.0,
+        "H_T2_LOCAL|D_MIDDAY": 2.0,
+        "H_T2_LOCAL|D_MORNING": 1.0
+       },
+       "handler_widebody_loads": {
+        "H_T1_HEAVY|D_AFTERNOON": 1.0,
+        "H_T1_HEAVY|D_EVENING": 1.0,
+        "H_T1_HEAVY|D_LATE": 2.0,
+        "H_T1_HEAVY|D_MIDDAY": 1.0,
+        "H_T1_HEAVY|D_MORNING": 1.0,
+        "H_T2_HEAVY|D_AFTERNOON": 1.0,
+        "H_T2_HEAVY|D_LATE": 2.0,
+        "H_T2_HEAVY|D_MIDDAY": 1.0,
+        "H_T2_HEAVY|D_MORNING": 1.0
+       },
+       "objective_terms": {
+        "connection_walk": 3637.2,
+        "remote": 5376.0,
+        "taxi": 2576.0,
+        "terminal_mismatch": 2200.0,
+        "walking": 52452.0
+       },
+       "score": 66241.2
+      },
+      "mip_gap": 0.0,
+      "model_size": {
+       "binary_variables": 1526,
+       "constraints": 6606,
+       "variables": 1526
+      },
+      "objective": 66241.2,
+      "solution_path": "reference_solutions/airport_gate_assignment_reference_solution.csv",
+      "status": 2
+     },
+     "task_name": "airport_gate_assignment",
+     "time_limit_seconds": 300.0
+    },
+    "reference_objective": 66241.2,
+    "scalar_reward": 1.0,
+    "scalar_reward_formula": "(feasibility + quality) / 3.0"
+   },
+   "runner": {
+    "return_code": 0,
+    "timed_out": false,
+    "wall_seconds": 12.868948
+   }
+  },
+  "metrics": {
+   "feasible": true,
+   "quality": 2.0,
+   "true_correct": true,
+   "objective": 66241.2,
+   "evaluation_unknown": false
+  }
+ },
+ "circular_packaging_replenishment": {
+  "runner": {
+   "return_code": 0,
+   "timed_out": false,
+   "stdout": "{\n  \"best_bound\": 36772.5757466,\n  \"evaluation_objective\": 36772.57574659999,\n  \"mip_gap\": 0.0,\n  \"objective\": 36772.5757466,\n  \"solution\": \"/app/submissions/solution.csv\",\n  \"status\": \"optimal\"\n}\n",
+   "stderr": ""
+  },
+  "official": {
+   "evaluation": {
+    "environment": "circular_packaging_replenishment",
+    "error_count": 0,
+    "errors": [],
+    "feasible": true,
+    "objective": 36772.57574659999,
+    "total_cost": 36772.57574659999
+   },
+   "reward": {
+    "feasibility": 1.0,
+    "quality": 2.0
+   },
+   "reward_details": {
+    "agent_objective": 36772.57574659999,
+    "agent_objective_source": "objective",
+    "best_bound": 36772.5757466,
+    "bound_sense": "lower",
+    "evaluation_diagnostics": {
+     "error_count": 0,
+     "objective": 36772.57574659999,
+     "profit": null,
+     "score": null,
+     "total_cost": 36772.57574659999
+    },
+    "fallback_mip_gap": 0.0005,
+    "fallback_reference_scale": 36772.57574659999,
+    "feasibility": 1.0,
+    "formula": "clip(2 + d if d >= -1 else 1.5 + 0.5*d, 0, 2), d = (R - O) / (max(abs(R), 1e-8) * mip_gap)",
+    "objective_sense": "minimize",
+    "quality": 2.0,
+    "quality_status": "bound_gap_below_mip_gap",
+    "reference_metrics": {
+     "best_bound": 36772.5757466,
+     "best_bound_source": "best_bound",
+     "bound_sense": "lower",
+     "evaluation_summary": {
+      "error_count": 0,
+      "feasible": true,
+      "objective": 36772.57574659999,
+      "total_cost": 36772.57574659999
+     },
+     "generated_at": "2026-05-18T12:03:48.648089+00:00",
+     "mip_gap": 0.0005,
+     "objective_sense": "minimize",
+     "quality_formula": "clip(1 + (R - O) / (R - B), 0, 2) if B exists and R - B >= max(abs(R), 1e-8) * mip_gap; otherwise let d=(R - O)/(max(abs(R), 1e-8)*mip_gap), quality=clip(2+d if d>=-1 else 1.5+0.5*d, 0, 2); if no R, quality = 2",
+     "reference_objective": 36772.57574659999,
+     "reference_objective_source": "objective",
+     "solution_path": "reference_solutions/circular_packaging_replenishment_reference_solution.csv",
+     "solver_summary": {
+      "best_bound": 36772.5757466,
+      "evaluation_objective": 36772.57574659999,
+      "mip_gap": 0.0,
+      "objective": 36772.5757466,
+      "solution": "reference_solutions/circular_packaging_replenishment_reference_solution.csv",
+      "status": "optimal"
+     },
+     "task_name": "circular_packaging_replenishment",
+     "time_limit_seconds": 300.0
+    },
+    "reference_objective": 36772.57574659999,
+    "scalar_reward": 1.0,
+    "scalar_reward_formula": "(feasibility + quality) / 3.0"
+   },
+   "runner": {
+    "return_code": 0,
+    "timed_out": false,
+    "wall_seconds": 4.959476
+   }
+  },
+  "metrics": {
+   "feasible": true,
+   "quality": 2.0,
+   "true_correct": true,
+   "objective": 36772.57574659999,
+   "evaluation_unknown": false
+  }
+ },
+ "coastal_aquaculture_feed_oxygen_planning": {
+  "runner": {
+   "return_code": 0,
+   "timed_out": false,
+   "stdout": "{\n  \"best_bound\": 28050.307983225426,\n  \"evaluation_objective\": 28050.30798322503,\n  \"mip_gap\": 0.0,\n  \"objective\": 28050.307983225426,\n  \"solution\": \"/app/submissions/solution.csv\",\n  \"status\": \"optimal\"\n}\n",
+   "stderr": ""
+  },
+  "official": {
+   "evaluation": {
+    "environment": "coastal_aquaculture_feed_oxygen_planning",
+    "error_count": 0,
+    "errors": [],
+    "feasible": true,
+    "objective": 28050.30798322503,
+    "total_aeration_hours": 286.5092970987,
+    "total_cost": 28050.30798322503,
+    "total_feed_kg": 14937.65
+   },
+   "reward": {
+    "feasibility": 1.0,
+    "quality": 2.0
+   },
+   "reward_details": {
+    "agent_objective": 28050.30798322503,
+    "agent_objective_source": "objective",
+    "best_bound": 28050.307983225426,
+    "bound_improvement": -3.965396899729967e-10,
+    "bound_sense": "lower",
+    "evaluation_diagnostics": {
+     "error_count": 0,
+     "objective": 28050.30798322503,
+     "profit": null,
+     "score": null,
+     "total_cost": 28050.30798322503
+    },
+    "fallback_mip_gap": 0.0005,
+    "fallback_reference_scale": 28050.30798322503,
+    "feasibility": 1.0,
+    "formula": "clip(2 + d if d >= -1 else 1.5 + 0.5*d, 0, 2), d = (R - O) / (max(abs(R), 1e-8) * mip_gap)",
+    "objective_sense": "minimize",
+    "quality": 2.0,
+    "quality_scale_width": 14.025153991612514,
+    "quality_status": "bound_gap_below_mip_gap",
+    "reference_metrics": {
+     "best_bound": 28050.307983225426,
+     "best_bound_source": "best_bound",
+     "bound_sense": "lower",
+     "evaluation_summary": {
+      "error_count": 0,
+      "feasible": true,
+      "objective": 28050.30798322503,
+      "total_cost": 28050.30798322503
+     },
+     "generated_at": "2026-05-19T06:41:23.240989+00:00",
+     "mip_gap": 0.0005,
+     "objective_sense": "minimize",
+     "quality_formula": "clip(1 + (R - O) / (R - B), 0, 2) if B exists and R - B >= max(abs(R), 1e-8) * mip_gap; otherwise let d=(R - O)/(max(abs(R), 1e-8)*mip_gap), quality=clip(2+d if d>=-1 else 1.5+0.5*d, 0, 2); if no R, quality = 2",
+     "reference_objective": 28050.30798322503,
+     "reference_objective_source": "objective",
+     "solution_path": "reference_solutions/coastal_aquaculture_feed_oxygen_planning_reference_solution.csv",
+     "solver_summary": {
+      "best_bound": 28050.307983225426,
+      "evaluation_objective": 28050.30798322503,
+      "mip_gap": 0.0,
+      "objective": 28050.307983225426,
+      "solution": "reference_solutions/coastal_aquaculture_feed_oxygen_planning_reference_solution.csv",
+      "status": "optimal"
+     },
+     "task_name": "coastal_aquaculture_feed_oxygen_planning",
+     "time_limit_seconds": 300.0
+    },
+    "reference_objective": 28050.30798322503,
+    "scalar_reward": 1.0,
+    "scalar_reward_formula": "(feasibility + quality) / 3.0",
+    "signed_improvement": 0.0
+   },
+   "runner": {
+    "return_code": 0,
+    "timed_out": false,
+    "wall_seconds": 13.293845
+   }
+  },
+  "metrics": {
+   "feasible": true,
+   "quality": 2.0,
+   "true_correct": true,
+   "objective": 28050.30798322503,
+   "evaluation_unknown": false
+  }
+ }
+}

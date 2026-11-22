@@ -11,7 +11,7 @@ USAGE_KEYS = ("prompt_tokens", "completion_tokens", "reasoning_tokens", "total_t
 def generation_cost(record: dict) -> dict:
     generation = Path(record["workspace"]).parent / "generation"
     responses = []
-    for phase in ("model", "solver", "runtime_patch"):
+    for phase in ("model", "solver", "runtime_patch", "decision_repair"):
         path = generation / f"{phase}_generation.json"
         if path.exists():
             responses.append(read_json(path).get("response") or {})

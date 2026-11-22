@@ -69,3 +69,18 @@ def test_pairing_requires_same_coverage_and_preserves_wins():
     assert not comparison["win_safe"]
     assert pair_win_safe(before, before)["win_safe"]
     assert not pair_win_safe(before, after[:1])["win_safe"]
+
+
+def test_generation_cost_includes_decision_repair(tmp_path):
+    workspace = tmp_path / "attempt_0/app"
+    generation = workspace.parent / "generation"
+    generation.mkdir(parents=True)
+    (generation / "decision_repair_generation.json").write_text(json.dumps({"response": {
+        "usage": {"prompt_tokens": 20, "completion_tokens": 5, "total_tokens": 25},
+        "request_wall_s": 0.5}}))
+    row = record()
+    row["workspace"] = str(workspace)
+    summary = summarize_records([row])
+    assert summary["cost"]["llm_calls"] == 1
+    assert summary["cost"]["total_tokens"] == 25
+    assert summary["cost"]["llm_latency_seconds"] == 0.5

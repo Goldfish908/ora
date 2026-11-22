@@ -508,3 +508,36 @@ B1→B2 新增 `retail_media_campaign_allocation` 一个真正确，没有 lost 
 全部八次修复的增量为 198,834 tokens。retail 的两次成功路径增量为 31,735 tokens；platelet 三次失败为 35,649，surgery 三次失败为 131,450，vertical 不额外修复。成功一例不说明统一三轮预算已最优，也不说明所有失败族均已解决。
 
 证据入口：`work/swarm_transfer_logistics_v0.12/report/report.md`、`batch_summary.json`、`b0_b2_comparison.png`、`repair_cost_analysis.json`、`evaluation_outcome.json`、`implementation_snapshot.json` 和 `driver.log`。全量回归为 **583 passed、3 skipped**，m2gen 为 `REGRESSION OK`，日志见 `work/verification_v0.12/`。Witness 与官方评价器同源，仍不是独立业务真值；memory 进化也没有得到证明。
+
+
+## 决策空间修复协议（工程验证阶段）
+
+此前的修复主要改写模型代码，容易在修一个 API 或约束时引入新的模型错误。为对齐“运行错误修代码、业务错误修决策、模型错误才重建”，新增 `ora_agent/decision_repair.py` 和 `submit_decision_repair` 工具协议。
+
+### 触发与边界
+
+仅当以下条件同时成立时，首次修复优先进入决策空间：
+
+- 原求解器执行返回码为 0；
+- 存在模型自己产生的 `solution.csv` 或 `solution.json`；
+- 官方评价仍为非可行，并给出业务错误。
+
+没有解文件的执行错误仍走代码修复；已可行但质量不足仍走目标与输出一致性修复。首次决策修复若取得可验证进展但未通过，第二次可依据官方业务错误同时修正决策与校验器，并提供上一版 `repair_solution.py`；若执行失败则走函数级局部补丁，错误增多或连续无进展则回到可信父节点和空规范/C2 的模型重建，不对同一旧解无限重复。
+
+### 输入、输出与安全
+
+- 原解决策只读保存为 `solution_original.csv/json`，同时记录原解哈希。
+- 修复脚本只能读取公开数据和该旧解，不能读取参考解、隐藏评价器或外部文件。
+- 只允许 Python 标准库，禁止动态执行、占位实现和未定义全局变量。
+- 输出必须保持题面规定的 schema，并重新计算公开约束与目标，不能通过删除必需服务、改 ID 或伪造验证日志来隐藏错误。
+- 求解器代码在该分支保持不变；DAG 另外记录 `repair_solution.py` 和新解哈希，因此不会把决策变化误判为重复修复。
+- 最终仍由官方评价决定 `accepted`、受限 `best_effort_fallback` 或回退，不因生成了决策修复脚本就视为成功。
+
+每次 `decision_repair_generation.json` 都记录 prompt、响应、协议和 token；`repair_solution.py`、旧解、新解、执行日志和官方结果共同组成证据链。当前先用已评估过的 coastal 幻影题做工程验证，不把该题结果重新计入独立成绩。只有真实安全性和增益得到验证后，才冻结新的独立 pipeline 对照。
+
+
+### 决策脚本运行补丁
+
+若 `repair_solution.py` 自身执行失败，后续路由为 `decision_runtime_patch`，而不是立即重写整个模型。它复用唯一匹配的局部替换和绑定保护，但以决策脚本的完整性检查代替 `optimize()` 检查，且不得改变原 `solve.py`。工作目录即使只保留了 `solution_original.csv/json`，也能继续修复。
+
+标准库检查通过 `importlib.util.find_spec` 的来源判断，不依赖环境可能缺失的 `sys.stdlib_module_names`。求解器、网络、外部执行和动态代码模块仍被禁止；合法的 `fractions` 等标准库和沙箱根路径 `/app` 不得被误拒。补丁生成、执行和官方结果均落盘，脚本类型错误不能直接视为业务不可行。

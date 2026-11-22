@@ -1,0 +1,10 @@
+{
+ "pytest": "593 passed, 3 skipped",
+ "m2gen": "REGRESSION OK",
+ "sha256": {
+  "pytest_log": "d5b2c7ab68540b011b807a009610091d80bf9a404ed6200ac1bd851efc880e2c",
+  "m2gen_log": "25ee81ef0e419ad1a46ab419c2ee90b31f41d787b7acdd90859144d751dcd644",
+  "decision_repair_source": "c7e102d80cebfa82e6f51a3d6f8ea2f1dda84baea800007ed77f1fc04b450a4a",
+  "witness_source": "549d7b5b5a3a24de0c83bc443aa9f6d8aaae8621bd05c7733d65b38fb6ce5049"
+ }
+}

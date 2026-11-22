@@ -107,12 +107,46 @@ class TaskPacket:
                 "results. Construct solver expressions from Python term lists and check for an incumbent "
                 "before reading its objective. The patched solver must remain complete and executable."
             )
+        if repair is not None and tool_name == "submit_runtime_patch" \
+                and repair["evidence"].get("search_guidance", {}).get("repair_kind") == "decision_runtime_patch":
+            system = (
+                "You are an operations-research decision-repair debugger. Use exactly one "
+                "submit_runtime_patch tool call. Repair only the observed failure in the supplied "
+                "repair_solution.py with exact source replacements. Every old_string must occur exactly "
+                "once and be copied verbatim. Preserve all other code and the original solver. Use only "
+                "public data and the agent-generated incumbent, preserve the output schema and all hard "
+                "requirements, and do not fabricate a solution or invoke another solver. Use the supplied "
+                "failure_context exception and source_excerpt to repair the reported statement and its "
+                "direct dependencies first. Do not modify unrelated output, validation or model sections "
+                "while the failing statement has not been addressed. When function_source is present, "
+                "old_string must be that complete function and new_string must be its complete corrected "
+                "replacement, not a fragment from another section."
+            )
+        if tool_name == "submit_decision_repair":
+            system = (
+                "You are an operations-research decision-repair engineer. Use exactly one "
+                "submit_decision_repair tool call. Write a complete Python standard-library script "
+                "that reads the agent-generated incumbent from `/app/submissions/solution_original.csv` "
+                "or `solution_original.json`, repairs its decisions, and writes the exact public output "
+                "schema to `solution.csv` or `solution.json`. Use only public task data and the supplied "
+                "incumbent; never read reference solutions, hidden evaluators or external files. Do not "
+                "rewrite or invoke the solver. Preserve unrelated correct decisions and every hard "
+                "requirement. Recompute public constraints and the objective from the emitted decisions. "
+                "Do not delete required service, change IDs to hide violations, or fabricate validation "
+                "results. The script must run as `python /app/submissions/repair_solution.py`."
+            )
         if specification.strip():
             system += "\n\nSHARED MODELING SPECIFICATION:\n" + specification.strip()
         if repair is not None:
             evidence = repair["evidence"]
             regenerate = evidence.get("search_guidance", {}).get("regenerate_from_evidence", False)
-            if regenerate:
+            decision_code_patch = tool_name == "submit_runtime_patch" and \
+                evidence.get("search_guidance", {}).get("repair_kind") == "decision_runtime_patch"
+            if tool_name == "submit_decision_repair":
+                pass
+            elif decision_code_patch:
+                packet += "\n\n### PREVIOUS ARTIFACTS\n" + json.dumps(repair["artifacts"], ensure_ascii=False)
+            elif regenerate:
                 system += (
                     "\n\nEVIDENCE-GUIDED REGENERATION: build a new model from the public task and observed "
                     "evidence instead of editing previous code. Cover every public business requirement and "
@@ -134,7 +168,7 @@ class TaskPacket:
                     )
                 packet += "\n\n### PREVIOUS ARTIFACTS\n" + json.dumps(repair["artifacts"], ensure_ascii=False)
             findings = evidence.get("semantic_findings") or []
-            if findings:
+            if findings and tool_name != "submit_decision_repair" and not decision_code_patch:
                 variables = sorted({finding["variable"] for finding in findings})
                 system += (
                     "\n\nREQUIRED ACTIVATION CONTRACT:\n"
@@ -147,6 +181,10 @@ class TaskPacket:
                       "including CO2 budget violations."
                 )
             packet += "\n\n### OBSERVED EVIDENCE\n" + json.dumps(evidence, ensure_ascii=False)
+            if tool_name == "submit_decision_repair" or decision_code_patch:
+                packet += "\n\n### AGENT-GENERATED INCUMBENT\n" + repair["decision_artifact"]
+            if tool_name == "submit_decision_repair" and repair["artifacts"].get("repair_solution_py"):
+                packet += "\n\n### PREVIOUS DECISION REPAIR CODE\n" + repair["artifacts"]["repair_solution_py"]
         return [{"role": "system", "content": system},
                 {"role": "user", "content": f"Task: {self.name}\n\n{self.instruction}\n\n{packet}"}]
 
@@ -225,6 +263,13 @@ def _phase_tool(phase: str) -> dict:
             "new_string": {"type": "string", "description": "Complete replacement for that source span."},
         }, "required": ["old_string", "new_string"]}}}
         required = ["edits"]
+    elif phase == "decision_repair":
+        name = "submit_decision_repair"
+        properties = {
+            "repair_py": {"type": "string", "description": "Complete standard-library decision repair script."},
+            "repair_log_md": {"type": "string", "description": "Honest repair and validation log template."},
+        }
+        required = ["repair_py", "repair_log_md"]
     else:
         name = "submit_solver"
         properties = {
@@ -264,7 +309,7 @@ def _call_artifact_tool(phase: str, messages: list[dict], config: llm_mod.LLMCon
         raise
 
 
-def apply_runtime_patch(code: str, edits: list[dict]) -> str:
+def apply_runtime_patch(code: str, edits: list[dict], *, validator=validate_solver_code) -> str:
     if not isinstance(edits, list) or not 1 <= len(edits) <= 16:
         raise ValueError("runtime patch must contain between one and sixteen edits")
     patched = code
@@ -277,7 +322,7 @@ def apply_runtime_patch(code: str, edits: list[dict]) -> str:
         if patched.count(old) != 1:
             raise ValueError("runtime patch old_string must match exactly once")
         patched = patched.replace(old, new, 1)
-    validate_solver_code(patched)
+    validator(patched)
     before_tree, after_tree = ast.parse(code), ast.parse(patched)
     before_bindings = {node.id for node in ast.walk(before_tree)
                        if isinstance(node, ast.Name) and isinstance(node.ctx, ast.Store)}

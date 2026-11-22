@@ -276,3 +276,38 @@ def test_best_effort_cannot_accept_infeasible_or_new_true_candidate():
     assert not cleanroom_witness._best_effort_fallback(baseline, infeasible)
     new_true = dict(infeasible, feasible=True, true_correct=True)
     assert not cleanroom_witness._best_effort_fallback(baseline, new_true)
+
+
+def test_decision_repair_requires_incumbent_and_business_failure(tmp_path):
+    workspace = tmp_path / "app"
+    (workspace / "submissions").mkdir(parents=True)
+    incumbent = workspace / "submissions/solution.csv"
+    incumbent.write_text("a,b\n1,2\n")
+    record = {"workspace": str(workspace), "true_correct": False, "feasible": False,
+              "execution": {"return_code": 0}, "official": {"evaluation": {"errors": ["bad"]}}}
+    assert cleanroom_witness._decision_repair_eligible(record)
+    record["feasible"] = True
+    assert not cleanroom_witness._decision_repair_eligible(record)
+    record["feasible"] = False
+    incumbent.unlink()
+    assert not cleanroom_witness._decision_repair_eligible(record)
+
+
+def test_decision_runtime_patch_route_requires_failed_decision_script():
+    record = {"artifacts": {"repair_solution_py": "code"},
+              "execution": {"return_code": 1, "stderr": "TypeError"}}
+    assert cleanroom_witness._decision_repair_mode(record, 2) == "decision_runtime_patch"
+    record["execution"]["return_code"] = 0
+    assert cleanroom_witness._decision_repair_mode(record, 2) is None
+
+
+def test_decision_business_failure_gets_one_followup_before_model_rebuild(tmp_path):
+    workspace = tmp_path / "app"
+    (workspace / "submissions").mkdir(parents=True)
+    (workspace / "submissions/solution.csv").write_text("a,b\n1,2\n")
+    record = {"workspace": str(workspace), "true_correct": False, "feasible": False,
+              "execution": {"return_code": 0}, "official": {"evaluation": {"errors": ["bad"]}},
+              "artifacts": {"repair_solution_py": "old repair code"}}
+    assert cleanroom_witness._decision_repair_mode(record, 1) == "decision_repair"
+    assert cleanroom_witness._decision_repair_mode(record, 2) == "decision_repair"
+    assert cleanroom_witness._decision_repair_mode(record, 3) is None

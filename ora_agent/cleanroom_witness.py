@@ -32,6 +32,14 @@ from .oragentbench import (
     run_oracle,
     write_json,
 )
+from .decision_repair import (
+    decision_artifact_path,
+    decision_artifact_sha256,
+    execute_decision_repair,
+    generate_decision_code_patch,
+    generate_decision_repair,
+    prepare_decision_repair_workspace,
+)
 
 
 def solution_exists(workspace: Path) -> bool:
@@ -187,6 +195,43 @@ def semantic_findings(record: dict, workspace: Path) -> list[dict]:
     return findings
 
 
+def _decision_repair_eligible(record: dict) -> bool:
+    if record.get("true_correct") or record.get("feasible"):
+        return False
+    if (record.get("execution") or {}).get("return_code") != 0:
+        return False
+    errors = (record.get("official", {}).get("evaluation", {}).get("errors") or [])
+    return bool(errors) and decision_artifact_path(Path(record["workspace"])) is not None
+
+
+def _decision_repair_code_eligible(record: dict) -> bool:
+    execution = record.get("execution") or {}
+    return "repair_solution_py" in (record.get("artifacts") or {}) \
+        and execution.get("return_code") not in {0, None} and not execution.get("timed_out") \
+        and bool(execution.get("stderr") or execution.get("stderr_tail"))
+
+
+def _decision_repair_result_eligible(record: dict) -> bool:
+    if record.get("true_correct") or record.get("feasible"):
+        return False
+    if (record.get("execution") or {}).get("return_code") != 0:
+        return False
+    if "repair_solution_py" not in (record.get("artifacts") or {}):
+        return False
+    errors = record.get("official", {}).get("evaluation", {}).get("errors") or []
+    return bool(errors) and decision_artifact_path(Path(record["workspace"])) is not None
+
+
+def _decision_repair_mode(record: dict, attempt: int) -> str | None:
+    if attempt == 1 and _decision_repair_eligible(record):
+        return "decision_repair"
+    if attempt > 1 and _decision_repair_code_eligible(record):
+        return "decision_runtime_patch"
+    if attempt == 2 and _decision_repair_result_eligible(record):
+        return "decision_repair"
+    return None
+
+
 def _regenerate_from_evidence(record: dict, attempt: int,
                               previous_generation_failure: str | None) -> bool:
     if attempt <= 1:
@@ -232,6 +277,7 @@ def repair_once(memory: EvidenceMemory, packet: TaskPacket, record: dict, specif
     if "pyscipopt" in execution_diagnostics.get("stderr_tail", "").lower():
         evidence_api = probe_pyscipopt_api(outdir / "api_probe")
         execution_diagnostics["api_contract"] = evidence_api["stdout"]
+    decision_mode = _decision_repair_mode(record, attempt)
     evidence = {
         "target_check": target,
         "execution": execution_diagnostics,
@@ -245,10 +291,12 @@ def repair_once(memory: EvidenceMemory, packet: TaskPacket, record: dict, specif
             "alternate_branch": attempt > 1,
             "regenerate_from_evidence": _regenerate_from_evidence(
                 record, attempt, previous_generation_failure),
-            "repair_kind": "runtime_patch" if execution.get("return_code") not in {0, None}
+            "repair_kind": decision_mode or ("runtime_patch" if execution.get("return_code") not in {0, None}
             and not execution.get("timed_out")
-            and (execution.get("stderr") or execution.get("stderr_tail")) else "complete_artifacts",
-            "instruction": "Earlier attempts did not establish verified progress. Do not repeat the previous code or make cosmetic edits. Rebuild the decision structure around every unmet public requirement, and explicitly verify every demand, service, route and output coordinate before writing the decision artifact."
+            and (execution.get("stderr") or execution.get("stderr_tail")) else "complete_artifacts"),
+            "instruction": "Repair only the incumbent decisions using public data. Preserve every hard requirement and unrelated correct decision, and recompute all constraints and the objective from the emitted solution."
+            if decision_mode is not None
+            else "Earlier attempts did not establish verified progress. Do not repeat the previous code or make cosmetic edits. Rebuild the decision structure around every unmet public requirement, and explicitly verify every demand, service, route and output coordinate before writing the decision artifact."
             if _regenerate_from_evidence(record, attempt, previous_generation_failure)
             else "Preserve unrelated business requirements and address the target evidence. For a runtime failure, repair the observed cause in the current solver rather than replacing its working model. Assemble solver terms in ordinary Python lists and test the list before calling quicksum; never compare a PySCIPOpt expression with !=, <, or >. Check that a solution exists before reading its objective.",
         },
@@ -261,13 +309,38 @@ def repair_once(memory: EvidenceMemory, packet: TaskPacket, record: dict, specif
     base = outdir / "repair_1"
     phase = "generation"
     try:
-        artifacts = generate_artifacts(packet, specification, config, base / "generation", run_seed,
-                                       repair={"artifacts": record["artifacts"], "evidence": evidence})
+        repair_input = {"artifacts": record["artifacts"], "evidence": evidence}
+        if decision_mode is not None:
+            incumbent_path = decision_artifact_path(root_workspace)
+            if incumbent_path is None:
+                for name in ("solution_original.csv", "solution_original.json"):
+                    candidate = root_workspace / "submissions" / name
+                    if candidate.exists():
+                        incumbent_path = candidate
+                        break
+            if incumbent_path is None:
+                raise ValueError("decision repair requires an agent-generated incumbent")
+            repair_input["decision_artifact"] = incumbent_path.read_text()
+        if decision_mode == "decision_runtime_patch":
+            artifacts = generate_decision_code_patch(packet, specification, config, base / "generation",
+                                                    run_seed, repair_input)
+        elif decision_mode == "decision_repair":
+            artifacts = generate_decision_repair(packet, specification, config, base / "generation",
+                                                run_seed, repair_input)
+        else:
+            artifacts = generate_artifacts(packet, specification, config, base / "generation", run_seed,
+                                           repair=repair_input)
         phase = "workspace"
         workspace = base / "app"
-        prepare_workspace(packet, workspace, artifacts, api_guard=api_guard)
-        phase = "execution"
-        child_execution = execute_solver(workspace, base / "execution")
+        if decision_mode is not None:
+            prepare_decision_repair_workspace(packet, workspace, artifacts, root_workspace,
+                                              api_guard=api_guard)
+            phase = "execution"
+            child_execution = execute_decision_repair(workspace, base / "execution")
+        else:
+            prepare_workspace(packet, workspace, artifacts, api_guard=api_guard)
+            phase = "execution"
+            child_execution = execute_solver(workspace, base / "execution")
         phase = "official_evaluation"
         child_official = official_evaluate(packet, workspace, base / "official")
     except Exception as exc:
@@ -285,11 +358,16 @@ def repair_once(memory: EvidenceMemory, packet: TaskPacket, record: dict, specif
                     "official": child_official, **metrics, "workspace": str(workspace),
                     "proxy_match": proxy, "phantom_proxy": bool(proxy) and not metrics["true_correct"],
                     "unknown": metrics["evaluation_unknown"],
+                    "decision_artifact_sha256": decision_artifact_sha256(workspace)
+                    if decision_mode is not None else None,
                     "api_guard": read_json(guard_path) if guard_path.exists() else None,
                     "generation_error": None}
     write_json(base / "record.json", child_record)
+    repair_identity = artifacts["solve_py"]
+    if "repair_solution_py" in artifacts:
+        repair_identity += "\n" + artifacts["repair_solution_py"]
     try:
-        node = dag.add_repair(parent_id, artifacts["solve_py"], target, before, after, packet.scope)
+        node = dag.add_repair(parent_id, repair_identity, target, before, after, packet.scope)
     except ValueError as exc:
         result = {"status": "duplicate_repair", "error": str(exc), "before": before, "after": after,
                   "record": child_record, "dag": dag.to_dict()}

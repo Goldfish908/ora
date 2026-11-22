@@ -1,0 +1,54 @@
+{
+ "status": "repair_failed",
+ "before": {
+  "execution_contract": "fail",
+  "logistics_official_task_pass": "fail"
+ },
+ "after": {
+  "execution_contract": "fail",
+  "logistics_official_task_pass": "fail"
+ },
+ "final_accept": false,
+ "edge_accepted": false,
+ "attempts_used": 3,
+ "max_attempts": 3,
+ "attempt_record_paths": [
+  "/home/hewj13/wm/ora/work/engineering_home_recovery_v0.11/attempt_1/repair_1/record.json"
+ ],
+ "pair_win_safe": {
+  "paired_tasks": 1,
+  "missing_tasks": [],
+  "gained_true_correct": [],
+  "lost_true_correct": [],
+  "gained_phantom": [],
+  "removed_phantom": [],
+  "win_safe": true
+ },
+ "win_safe": true,
+ "cost": {
+  "llm_calls": 7,
+  "missing_usage_calls": 0,
+  "llm_latency_seconds": 638.282216,
+  "prompt_tokens": 104248,
+  "completion_tokens": 39200,
+  "reasoning_tokens": 0,
+  "total_tokens": 143448,
+  "solver_execution_time": {
+   "recorded_calls": 2,
+   "missing_calls": 0,
+   "seconds": 68.320194
+  },
+  "official_evaluation_time": {
+   "recorded_calls": 2,
+   "missing_calls": 0,
+   "seconds": 35.22426
+  }
+ },
+ "memory_frozen": true,
+ "metrics": {
+  "feasible": false,
+  "quality": 0.0,
+  "true_correct": false,
+  "objective": null
+ }
+}

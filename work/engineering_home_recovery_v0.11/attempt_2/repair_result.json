@@ -1,0 +1,42 @@
+{
+ "status": "repair_failed",
+ "phase": "workspace",
+ "error": "ValueError: incomplete_artifact: placeholder marker found",
+ "before": {
+  "execution_contract": "pass",
+  "logistics_official_task_pass": "fail"
+ },
+ "dag": {
+  "nodes": [
+   {
+    "node_id": "root",
+    "parent_id": null,
+    "code_sha256": "f1e601f50e058d85a13b55289480f6ba49c8d880a424043fb95d1f29f81b6da0",
+    "target_check": null,
+    "before": {},
+    "after": {
+     "execution_contract": "fail",
+     "logistics_official_task_pass": "fail"
+    },
+    "accepted": true,
+    "reasons": []
+   },
+   {
+    "node_id": "root/repair:1",
+    "parent_id": "root",
+    "code_sha256": "ebbcf42497d819ee0ac031f71a0a7291944888ff5367073d3119ea4d7268ab07",
+    "target_check": "execution_contract",
+    "before": {
+     "execution_contract": "fail",
+     "logistics_official_task_pass": "fail"
+    },
+    "after": {
+     "execution_contract": "pass",
+     "logistics_official_task_pass": "fail"
+    },
+    "accepted": true,
+    "reasons": []
+   }
+  ]
+ }
+}

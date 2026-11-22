@@ -2,6 +2,7 @@
 from __future__ import annotations
 
 import csv
+import hashlib
 import json
 import shutil
 from pathlib import Path
@@ -236,6 +237,8 @@ def repair_once(memory: EvidenceMemory, packet: TaskPacket, record: dict, specif
         "execution": execution_diagnostics,
         "witness_verdicts": before,
         "official_errors": (record.get("official", {}).get("evaluation", {}).get("errors") or [])[:20],
+        "observed_metrics": {key: record.get(key) for key in
+                             ("feasible", "quality", "objective", "proxy_match", "phantom_proxy")},
         "semantic_findings": semantic_findings(record, root_workspace),
         "search_guidance": {
             "attempt": attempt,
@@ -250,6 +253,9 @@ def repair_once(memory: EvidenceMemory, packet: TaskPacket, record: dict, specif
             else "Preserve unrelated business requirements and address the target evidence. For a runtime failure, repair the observed cause in the current solver rather than replacing its working model. Assemble solver terms in ordinary Python lists and test the list before calling quicksum; never compare a PySCIPOpt expression with !=, <, or >. Check that a solution exists before reading its objective.",
         },
     }
+    quality_guidance = _quality_guidance(record)
+    if quality_guidance:
+        evidence["quality_guidance"] = quality_guidance
     if previous_generation_failure:
         evidence["previous_generation_failure"] = previous_generation_failure
     base = outdir / "repair_1"
@@ -275,6 +281,7 @@ def repair_once(memory: EvidenceMemory, packet: TaskPacket, record: dict, specif
     proxy = proxy_match(packet, child_official)
     guard_path = workspace / "api_guard.json"
     child_record = {**record, "attempt": attempt, "artifacts": artifacts, "execution": child_execution,
+                    "candidate_sha256": hashlib.sha256(specification.encode()).hexdigest(),
                     "official": child_official, **metrics, "workspace": str(workspace),
                     "proxy_match": proxy, "phantom_proxy": bool(proxy) and not metrics["true_correct"],
                     "unknown": metrics["evaluation_unknown"],
@@ -299,6 +306,17 @@ def repair_once(memory: EvidenceMemory, packet: TaskPacket, record: dict, specif
     return result
 
 
+def _quality_guidance(record: dict) -> dict | None:
+    if record.get("true_correct") or not record.get("feasible"):
+        return None
+    details = (record.get("official") or {}).get("reward_details") or {}
+    return {"status": "quality_shortfall", "objective": record.get("objective"),
+            "quality": record.get("quality"), "required_quality": "greater than 0.4",
+            "quality_status": details.get("quality_status"),
+            "objective_sense": details.get("objective_sense"),
+            "instruction": "The solution is feasible but below the official quality threshold. Preserve every hard constraint and the exact output schema while improving the modeled objective. Recompute the objective from the emitted decisions and check its consistency with the solver objective; do not sacrifice feasibility or fabricate a reference objective."}
+
+
 def _evidence_transition(current: dict, child: dict) -> str:
     def errors(record):
         return (record.get("official", {}).get("evaluation", {}).get("errors") or [])
@@ -316,6 +334,12 @@ def _evidence_transition(current: dict, child: dict) -> str:
         return "regression"
     old_errors, new_errors = len(errors(current)), len(errors(child))
     old_quality, new_quality = current.get("quality") or 0.0, child.get("quality") or 0.0
+    execution_recovered = ((current.get("execution", {}).get("return_code") != 0)
+                           and (child.get("execution", {}).get("return_code") == 0)
+                           and not current.get("feasible") and current.get("objective") is None
+                           and new_quality >= old_quality)
+    if execution_recovered:
+        return "progress"
     if new_errors > old_errors or new_quality < old_quality:
         return "regression"
     if any(new and not old for old, new in comparisons) \
@@ -355,11 +379,15 @@ def repair_bounded(memory: EvidenceMemory, packet: TaskPacket, record: dict, spe
     unchanged_streak = 0
     previous_generation_failure = None
     for attempt in range(1, max_attempts + 1):
-        result = repair_once(memory, packet, current, specification, config,
+        branch_specification = specification
+        if attempt == 2 and _regenerate_from_evidence(current, attempt, previous_generation_failure):
+            branch_specification = ""
+        result = repair_once(memory, packet, current, branch_specification, config,
                              outdir / f"attempt_{attempt}", run_seed + attempt - 1,
                              api_guard=api_guard, dag=dag, parent_id=parent_id, attempt=attempt,
                              previous_generation_failure=previous_generation_failure)
         history.append({key: value for key, value in result.items() if key not in {"record", "dag"}})
+        history[-1]["specification_sha256"] = hashlib.sha256(branch_specification.encode()).hexdigest()
         child = result.get("record")
         if child is not None and child["workspace"] != current["workspace"]:
             attempt_records.append(child)

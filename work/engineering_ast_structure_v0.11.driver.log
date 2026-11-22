@@ -1,0 +1,2 @@
+circular_quicksum {"metrics": {"feasible": false, "quality": 0.0, "true_correct": false, "objective": -10877.195999999994, "evaluation_unknown": false}, "error": null}
+home_conditional_cons {"metrics": {"feasible": false, "quality": 0.0, "true_correct": false, "objective": 29400.0, "evaluation_unknown": false}, "error": null}

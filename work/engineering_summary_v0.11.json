@@ -1,0 +1,49 @@
+{
+ "engineering_only": true,
+ "home": {
+  "status": "repair_failed",
+  "true_correct": false,
+  "attempts_used": 3,
+  "transitions": [
+   "progress",
+   null,
+   null
+  ],
+  "total_tokens": 143448,
+  "conclusion": "Execution recovery advanced to business evidence; two later generations were rejected for real placeholders. No duplicate_repair and no true gain."
+ },
+ "airport": {
+  "status": "rejected_regression",
+  "true_correct": false,
+  "objective": 69370.0,
+  "quality": 0.0,
+  "attempts_used": 3,
+  "total_tokens": 172282,
+  "conclusion": "Explicit quality guidance did not improve the objective; the original feasible low-quality result was preserved."
+ },
+ "ast_guard_replays": {
+  "circular_quicksum": {
+   "metrics": {
+    "feasible": false,
+    "quality": 0.0,
+    "true_correct": false,
+    "objective": -10877.195999999994,
+    "evaluation_unknown": false
+   },
+   "error": null,
+   "new_llm_calls": 0
+  },
+  "home_conditional_cons": {
+   "metrics": {
+    "feasible": false,
+    "quality": 0.0,
+    "true_correct": false,
+    "objective": 29400.0,
+    "evaluation_unknown": false
+   },
+   "error": null,
+   "new_llm_calls": 0
+  }
+ },
+ "independent_evidence_claim": false
+}

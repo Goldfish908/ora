@@ -1,0 +1,17 @@
+{
+ "repairs": [
+  {
+   "category": "gap_parameter",
+   "from": "setParam(\"gaprel\"",
+   "to": "setRealParam(\"limits/gap\""
+  },
+  {
+   "category": "quicksum_pair_multiplication",
+   "from": "(coefficient, variable)",
+   "to": "coefficient * variable"
+  }
+ ],
+ "public_contract_repairs": [],
+ "original_sha256": "eaddae94fefe91ed9f8bcbb9aebec41acf3cec76ad7f0f5348f6e9da99f36e67",
+ "repaired_sha256": "5ed525abdb897a14773935e22f2c41d25938e5454a68128f284580d6508cf276"
+}

@@ -451,3 +451,12 @@ B0→B2 新增 circular packaging 和 coastal aquaculture 两个幻影，严格�
 下一版相应加入执行恢复的证据转换、质量不足指导、quicksum 二元对乘法、`addCons` 条件约束转换以及 `SCIP/Scip` 窄导入修复。相关 580 项 pytest 和 m2gen 已通过。零 LLM 结构复验表明这些转换能消除对应 API 错误，但 circular 仍有库存语义错误，home 仍有未服务患者，故只能称为可评价性改善。
 
 v0.11 新独立角色已在任何 Qwen 运行前冻结：cell tower、private 5G、edge cache 和 carbon removal，四题参考健康均为 `true_correct=true、quality=2.0`，见 `configs/cleanroom_swarm_frozen_logistics_v0.11.json` 和 `work/swarm_transfer_pool/health_summary_v0.11.json`。home/airport 的旧题只用于机制复验，不会进入新独立分母。
+
+
+## v0.11 规范分支与质量一致性（独立运行前）
+
+home 和 airport 的旧工程复验均未产生真正确，因此不把执行恢复和 API guard 的局部改善当作业务成功。v0.11 在相同三次修复预算内增加规范来源分支：第一次仍使用选定的 C2；第二次若需要从证据进行语义重建，则改用空共享规范；第三次回到原 C2。运行错误的精确局部补丁不切换规范。每次生成记录实际规范哈希，空规范结果不得归因给 C2，也不增加额外生成次数。
+
+质量不足反馈增加 `objective_sense` 和 `quality_status` 元数据，并要求检查求解器内部目标与按输出决策重算目标是否一致。只提供当前解实际产生的目标值，不把参考目标、最优界或参考解内容提供给修复模型。即使得到更低目标值，也仍须通过官方可行性和质量门禁，不能以代理改善替代真正确。
+
+主要验收仍为 B2 相对 B1 的真正确严格增加，同时无 lost true、missing、新增幻影或 UNKNOWN；B0→B2 的幻影变化另列。后续任何正结果都必须能追溯到具体分支和官方逐题记录，不能仅根据 prompt 设计推断机制有效。

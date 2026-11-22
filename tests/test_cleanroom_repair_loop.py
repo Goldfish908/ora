@@ -194,3 +194,52 @@ def test_repeated_incomplete_artifact_switches_to_evidence_regeneration():
         record, 2, "ValueError: incomplete_artifact")
     record["execution"] = {"return_code": 0}
     assert cleanroom_witness._regenerate_from_evidence(record, 2, None)
+
+
+def test_execution_recovery_is_progress_even_with_more_specific_business_errors():
+    current = {"true_correct": False, "feasible": False, "phantom_proxy": False,
+               "unknown": False, "objective": None, "quality": 0.0,
+               "execution": {"return_code": 1}, "official": {"evaluation": {"errors": ["No solution file found."]}}}
+    child = dict(current, execution={"return_code": 0},
+                 official={"evaluation": {"errors": ["missing patient p0", "missing patient p1"]}})
+    assert cleanroom_witness._evidence_transition(current, child) == "progress"
+    child["phantom_proxy"] = True
+    assert cleanroom_witness._evidence_transition(current, child) == "regression"
+
+
+def test_quality_shortfall_has_explicit_objective_guidance_without_a_reference_target():
+    guidance = cleanroom_witness._quality_guidance(
+        {"feasible": True, "true_correct": False, "quality": 0.0, "objective": 123.0,
+         "official": {"reward_details": {"objective_sense": "minimize",
+                                        "quality_status": "bound_gap_below_mip_gap"}}})
+    assert guidance["status"] == "quality_shortfall"
+    assert guidance["objective"] == 123.0
+    assert guidance["objective_sense"] == "minimize"
+    assert guidance["quality_status"] == "bound_gap_below_mip_gap"
+    assert "emitted decisions" in guidance["instruction"]
+    assert "fabricate a reference objective" in guidance["instruction"]
+    assert cleanroom_witness._quality_guidance({"feasible": False, "true_correct": False}) is None
+
+
+def test_second_semantic_regeneration_uses_empty_specification_branch(tmp_path, monkeypatch):
+    memory, packet, record, _ = setup_loop(monkeypatch, outcomes=99)
+    specifications = []
+
+    def branch(memory, packet, current, specification, config, outdir, run_seed, **kwargs):
+        specifications.append(specification)
+        accepted = len(specifications) == 2
+        child = dict(current)
+        child.update(true_correct=accepted, workspace=f"branch{len(specifications)}/app",
+                     execution={"return_code": 0}, feasible=accepted, quality=1.0 if accepted else 0.0)
+        return {"status": "accepted" if accepted else "rejected", "record": child,
+                "node_id": f"node{len(specifications)}", "before": {"execution_contract": "fail"},
+                "after": {"execution_contract": "pass" if accepted else "fail"},
+                "edge_accepted": accepted, "final_accept": accepted}
+
+    monkeypatch.setattr(cleanroom_witness, "repair_once", branch)
+    result = cleanroom_witness.repair_bounded(memory, packet, record, "spec", None, tmp_path)
+    assert result["status"] == "accepted"
+    assert specifications == ["spec", ""]
+    assert result["attempts_used"] == 2
+    assert result["history"][1]["specification_sha256"] == \
+        "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"

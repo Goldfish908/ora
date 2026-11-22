@@ -72,6 +72,23 @@ def test_guard_removes_scip_from_a_multi_import_without_duplicate_model():
         "class SCIP:\n    pass\nmodel = SCIP()\n", [])
 
 
+def test_guard_rewrites_quicksum_pairs_and_conditional_constraints():
+    code = ("from pyscipopt import Model, quicksum\n"
+            "obj = quicksum([(c, v) for (c, v) in obj_terms])\n"
+            "model.addCons(x[a] + x[b] <= 1 if a == b else 1, name='pair')\n")
+    repaired, applied = repair_known_api_errors(code)
+    assert "quicksum([c * v for (c, v) in obj_terms])" in repaired
+    assert "model.addCons(x[a] + x[b] <= 1, name='pair') if a == b else None" in repaired
+    assert {item["category"] for item in applied} == {
+        "quicksum_pair_multiplication", "conditional_constraint"}
+
+
+def test_guard_also_removes_invalid_scip_mixed_case_import():
+    code = "from pyscipopt import Model, Scip\nmodel = Scip()\n"
+    repaired, _ = repair_known_api_errors(code)
+    assert repaired == "from pyscipopt import Model\nmodel = Model()\n"
+
+
 def test_output_schema_repair_is_explicit_and_scoped_to_public_contract():
     from ora_agent.api_guard import repair_public_output_contract
 

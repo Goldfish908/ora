@@ -1,0 +1,163 @@
+{
+ "scope": "engineering_only_guard_replay",
+ "new_llm_calls": 0,
+ "source_artifacts_sha256": "b519ad5a348a8744641b72288206268e2fbf0b216062320fc0bdd2fe110ff92e",
+ "api_guard": {
+  "repairs": [
+   {
+    "category": "gap_parameter",
+    "from": "setParam(\"gaprel\"",
+    "to": "setRealParam(\"limits/gap\""
+   },
+   {
+    "category": "conditional_constraint",
+    "from": "addCons(constraint if condition else 1)",
+    "to": "addCons(constraint) if condition else None"
+   }
+  ],
+  "public_contract_repairs": [],
+  "original_sha256": "f1e601f50e058d85a13b55289480f6ba49c8d880a424043fb95d1f29f81b6da0",
+  "repaired_sha256": "4d1fff4a55659903c237a4b71571ed6097727dba527a72ed6a293a5bef76959a"
+ },
+ "execution": {
+  "return_code": 0,
+  "stdout": "Status: infeasible\nNumber of solutions: 0\nNo solution found.\n\n--- Validation ---\nWARNING: required service p0/s6 not found in solution\nWARNING: required service p0/s3 not found in solution\nWARNING: required service p1/s6 not found in solution\nWARNING: required service p2/s2 not found in solution\nWARNING: required service p3/s7 not found in solution\n--- Validation complete ---\n\nSolution written to /app/submissions/solution.json\nRoutes: 0\n",
+  "stderr": "",
+  "timed_out": false,
+  "wall_seconds": 28.490469,
+  "command": [
+   "python",
+   "/app/submissions/solve.py"
+  ]
+ },
+ "official": {
+  "evaluation": {
+   "cost_raw": {
+    "caregiver_preferences": 0,
+    "max_idle_time": 390.0,
+    "missed_lunch_break": 2.0,
+    "optional_patients": 6.0,
+    "total_extra_time": 0.0,
+    "travel_time": 0.0
+   },
+   "cost_weighted": {
+    "caregiver_preferences": 0.0,
+    "max_idle_time": 28080.0,
+    "missed_lunch_break": 120.0,
+    "optional_patients": 1200.0,
+    "total_extra_time": 0.0,
+    "travel_time": 0.0
+   },
+   "errors": [
+    "Required patient p0 is not served.",
+    "Required patient p1 is not served.",
+    "Required patient p2 is not served.",
+    "Required patient p3 is not served."
+   ],
+   "feasible": false,
+   "score": 29400.0,
+   "served_patients": [],
+   "served_service_count": 0
+  },
+  "reward": {
+   "feasibility": 0.0,
+   "quality": 0.0
+  },
+  "reward_details": {
+   "agent_objective": 29400.0,
+   "agent_objective_source": "score",
+   "best_bound": 16076.969999999992,
+   "bound_sense": "lower",
+   "evaluation_diagnostics": {
+    "error_count": null,
+    "objective": null,
+    "profit": null,
+    "score": 29400.0,
+    "total_cost": null
+   },
+   "fallback_mip_gap": null,
+   "fallback_reference_scale": null,
+   "feasibility": 0.0,
+   "formula": "clip(1 + (R - O) / (R - B), 0, 2) when B exists and R - B >= max(abs(R), 1e-8) * mip_gap",
+   "objective_sense": "minimize",
+   "quality": 0.0,
+   "quality_status": "infeasible",
+   "reference_metrics": {
+    "best_bound": 16076.969999999992,
+    "best_bound_source": "best_bound",
+    "bound_sense": "lower",
+    "evaluation_summary": {
+     "feasible": true,
+     "score": 16077.0055
+    },
+    "generated_at": "2026-05-16T15:08:34.870333+00:00",
+    "mip_gap": 0.0005,
+    "objective_sense": "minimize",
+    "quality_formula": "clip(1 + (R - O) / (R - B), 0, 2) if B exists and R - B >= max(abs(R), 1e-8) * mip_gap; otherwise let d=(R - O)/(max(abs(R), 1e-8)*mip_gap), quality=clip(2+d if d>=-1 else 1.5+0.5*d, 0, 2); if no R, quality = 2",
+    "reference_objective": 16077.0055,
+    "reference_objective_source": "score",
+    "solution_path": "/private/tmp/oragentbench_reference_solutions/home_healthcare_routing_reference_solution.json",
+    "solver_summary": {
+     "best_bound": 16076.969999999992,
+     "evaluation": {
+      "cost_raw": {
+       "caregiver_preferences": 0,
+       "highest_tardiness": 147.00029999999998,
+       "max_idle_time": 176.0,
+       "missed_lunch_break": 1.0,
+       "optional_patients": 3.0,
+       "total_extra_time": 0.0,
+       "total_tardiness": 196.00049999999993,
+       "total_waiting_time": 0.0,
+       "travel_time": 442.0
+      },
+      "cost_weighted": {
+       "caregiver_preferences": 0.0,
+       "highest_tardiness": 735.0014999999999,
+       "max_idle_time": 12672.0,
+       "missed_lunch_break": 60.0,
+       "optional_patients": 600.0,
+       "total_extra_time": 0.0,
+       "total_tardiness": 1568.0039999999995,
+       "total_waiting_time": 0.0,
+       "travel_time": 442.0
+      },
+      "errors": [],
+      "feasible": true,
+      "score": 16077.0055,
+      "served_patients": [
+       "p0",
+       "p1",
+       "p2",
+       "p3",
+       "p5",
+       "p7",
+       "p8"
+      ],
+      "served_service_count": 9
+     },
+     "mip_gap": 0.0,
+     "objective": 16076.969999999992,
+     "solver_status": 2
+    },
+    "task_name": "home_healthcare_routing",
+    "time_limit_seconds": 300.0
+   },
+   "reference_objective": 16077.0055,
+   "scalar_reward": 0.0,
+   "scalar_reward_formula": "(feasibility + quality) / 3.0"
+  },
+  "runner": {
+   "return_code": 0,
+   "timed_out": false,
+   "wall_seconds": 13.526064
+  }
+ },
+ "metrics": {
+  "feasible": false,
+  "quality": 0.0,
+  "true_correct": false,
+  "objective": 29400.0,
+  "evaluation_unknown": false
+ }
+}

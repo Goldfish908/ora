@@ -1,0 +1,17 @@
+{
+ "repairs": [
+  {
+   "category": "gap_parameter",
+   "from": "setParam(\"gaprel\"",
+   "to": "setRealParam(\"limits/gap\""
+  },
+  {
+   "category": "conditional_constraint",
+   "from": "addCons(constraint if condition else 1)",
+   "to": "addCons(constraint) if condition else None"
+  }
+ ],
+ "public_contract_repairs": [],
+ "original_sha256": "f1e601f50e058d85a13b55289480f6ba49c8d880a424043fb95d1f29f81b6da0",
+ "repaired_sha256": "4d1fff4a55659903c237a4b71571ed6097727dba527a72ed6a293a5bef76959a"
+}

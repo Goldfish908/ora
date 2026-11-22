@@ -80,24 +80,51 @@ class _VerifiedApiTransformer(ast.NodeVisitor):
     def visit_ImportFrom(self, node):
         if node.module != "pyscipopt":
             return
-        invalid = [alias for alias in node.names if alias.name == "SCIP"]
+        invalid = [alias for alias in node.names if alias.name in {"SCIP", "Scip"}]
         if not invalid:
             return
         for alias in invalid:
             self.scip_aliases.add(alias.asname or alias.name)
-        kept = [alias for alias in node.names if alias.name != "SCIP"]
+        kept = [alias for alias in node.names if alias.name not in {"SCIP", "Scip"}]
         imported = [alias.name + (f" as {alias.asname}" if alias.asname else "") for alias in kept]
         if not any(alias.name == "Model" and alias.asname is None for alias in kept):
             imported.insert(0, "Model")
         self.replacements.append((node, "from pyscipopt import " + ", ".join(imported)))
-        self.repairs.append({"category": "wrong_import", "from": "SCIP import", "to": "Model import"})
+        self.repairs.append({"category": "wrong_import", "from": "SCIP/Scip import", "to": "Model import"})
 
     def visit_Call(self, node):
         self.generic_visit(node)
         function = node.func
         if isinstance(function, ast.Name) and function.id in self.scip_aliases:
             self.replacements.append((function, "Model"))
-            self.repairs.append({"category": "model_construction", "from": "SCIP()", "to": "Model()"})
+            self.repairs.append({"category": "model_construction", "from": "SCIP/Scip()", "to": "Model()"})
+            return
+        if isinstance(function, ast.Name) and function.id == "quicksum" \
+                and len(node.args) == 1 and not node.keywords:
+            argument = node.args[0]
+            if isinstance(argument, (ast.ListComp, ast.GeneratorExp)) \
+                    and isinstance(argument.elt, ast.Tuple) and len(argument.elt.elts) == 2 \
+                    and any(isinstance(generator.target, ast.Tuple) and len(generator.target.elts) == 2
+                            for generator in argument.generators):
+                left, right = (ast.get_source_segment(self.code, element) for element in argument.elt.elts)
+                self.replacements.append((argument.elt, f"{left} * {right}"))
+                self.repairs.append({"category": "quicksum_pair_multiplication",
+                                     "from": "(coefficient, variable)", "to": "coefficient * variable"})
+            return
+        if isinstance(function, ast.Attribute) and function.attr == "addCons" \
+                and len(node.args) == 1 and isinstance(node.args[0], ast.IfExp):
+            argument = node.args[0]
+            if isinstance(argument.body, ast.Compare) and isinstance(argument.orelse, ast.Constant) \
+                    and argument.orelse.value == 1:
+                receiver = ast.get_source_segment(self.code, function.value)
+                body = ast.get_source_segment(self.code, argument.body)
+                condition = ast.get_source_segment(self.code, argument.test)
+                keywords = [ast.get_source_segment(self.code, keyword) for keyword in node.keywords]
+                call = f"{receiver}.addCons({', '.join([body, *keywords])})"
+                self.replacements.append((node, f"{call} if {condition} else None"))
+                self.repairs.append({"category": "conditional_constraint",
+                                     "from": "addCons(constraint if condition else 1)",
+                                     "to": "addCons(constraint) if condition else None"})
             return
         if not isinstance(function, ast.Attribute):
             return

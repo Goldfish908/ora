@@ -48,6 +48,13 @@ def load_tasks(config_path: Path) -> list[TaskPacket]:
     return packets
 
 
+def gepa_seed_candidate(args: argparse.Namespace) -> dict[str, str]:
+    if not args.gepa_seed_result:
+        return {"conventions": ""}
+    result = read_json((ROOT / args.gepa_seed_result).resolve())
+    return {"conventions": result["candidates"][args.gepa_seed_idx]["conventions"]}
+
+
 def record_implementation(outdir: Path, args: argparse.Namespace, config: llm_mod.LLMConfig,
                           resume: bool) -> None:
     files = ["ora_agent/llm.py", "ora_agent/cleanroom.py", "ora_agent/oragentbench.py", "ora_agent/api_guard.py",
@@ -234,6 +241,8 @@ def main() -> None:
     parser.add_argument("--api-assist", action="store_true")
     parser.add_argument("--api-guard", action="store_true")
     parser.add_argument("--dev-official-feedback", action="store_true")
+    parser.add_argument("--gepa-seed-result")
+    parser.add_argument("--gepa-seed-idx", type=int, default=0)
     args = parser.parse_args()
     llm_mod.REQUEST_TIMEOUT_SEC = args.llm_timeout
     config = llm_mod.load_config()
@@ -285,7 +294,7 @@ def main() -> None:
                    {"messages": [{"role": "user", "content": prompt}], "response": response})
         return response.get("content") or ""
 
-    result = gepa.optimize(seed_candidate={"conventions": ""}, trainset=trainset, valset=valset,
+    result = gepa.optimize(seed_candidate=gepa_seed_candidate(args), trainset=trainset, valset=valset,
                            adapter=adapter, reflection_lm=reflection_lm,
                            max_metric_calls=args.max_metric_calls, run_dir=str(outdir),
                            seed=args.seed, cache_evaluation=True, write_agent_state=True,

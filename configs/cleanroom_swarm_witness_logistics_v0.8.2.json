@@ -1,0 +1,8 @@
+{
+  "version": "cleanroom_swarm_witness_logistics_v0.8.2",
+  "tasks": [
+    {"name": "air_cargo_stochastic_order_allocation", "domain": "logistics", "split": "audit"},
+    {"name": "wildfire_bus_evacuation_planning", "domain": "logistics", "split": "audit"},
+    {"name": "heatwave_cooling_center_resource_plan", "domain": "logistics", "split": "audit"}
+  ]
+}

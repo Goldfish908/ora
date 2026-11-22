@@ -1,0 +1,15 @@
+{
+  "version": "cleanroom_swarm_frozen_logistics_v0.8.2",
+  "selection_basis": "Nine true_correct healthy tasks from oracle_logistics_v0.8.2. airport_deicing and satellite are excluded because oracle quality=0. Witness calibration, subsequent transfer and reserves are disjoint.",
+  "tasks": [
+    {"name": "air_cargo_stochastic_order_allocation", "domain": "logistics", "split": "audit", "role": "witness_calibration"},
+    {"name": "wildfire_bus_evacuation_planning", "domain": "logistics", "split": "audit", "role": "witness_calibration"},
+    {"name": "heatwave_cooling_center_resource_plan", "domain": "logistics", "split": "audit", "role": "witness_calibration"},
+    {"name": "evtol_vertiport_recovery", "domain": "logistics", "split": "transfer", "role": "subsequent_transfer"},
+    {"name": "robotic_mobile_fulfillment_orchestration", "domain": "logistics", "split": "transfer", "role": "subsequent_transfer"},
+    {"name": "wastewater_sentinel_site_selection", "domain": "logistics", "split": "transfer", "role": "subsequent_transfer"},
+    {"name": "naloxone_drone_response_network", "domain": "logistics", "split": "transfer", "role": "subsequent_transfer"},
+    {"name": "portable_battery_swap_rebalancing", "domain": "logistics", "split": "audit", "role": "reserve"},
+    {"name": "offshore_wind_maintenance", "domain": "logistics", "split": "audit", "role": "reserve"}
+  ]
+}

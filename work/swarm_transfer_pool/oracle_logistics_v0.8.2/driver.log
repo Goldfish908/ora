@@ -1,0 +1,79 @@
+{
+ "airport_deicing_stochastic_resource_plan": {
+  "feasible": true,
+  "quality": 0.0,
+  "true_correct": false,
+  "objective": 34455.216820874295,
+  "evaluation_unknown": false
+ },
+ "air_cargo_stochastic_order_allocation": {
+  "feasible": true,
+  "quality": 1.0,
+  "true_correct": true,
+  "objective": 8716.543824000004,
+  "evaluation_unknown": false
+ },
+ "evtol_vertiport_recovery": {
+  "feasible": true,
+  "quality": 2.0,
+  "true_correct": true,
+  "objective": -4664.178186956522,
+  "evaluation_unknown": false
+ },
+ "robotic_mobile_fulfillment_orchestration": {
+  "feasible": true,
+  "quality": 2.0,
+  "true_correct": true,
+  "objective": 9040.6648,
+  "evaluation_unknown": false
+ },
+ "wastewater_sentinel_site_selection": {
+  "feasible": true,
+  "quality": 1.0417985349626957,
+  "true_correct": true,
+  "objective": 510587.290486329,
+  "evaluation_unknown": false
+ },
+ "wildfire_bus_evacuation_planning": {
+  "feasible": true,
+  "quality": 2.0,
+  "true_correct": true,
+  "objective": 860886.0992884045,
+  "evaluation_unknown": false
+ },
+ "heatwave_cooling_center_resource_plan": {
+  "feasible": true,
+  "quality": 2.0,
+  "true_correct": true,
+  "objective": 273011.26,
+  "evaluation_unknown": false
+ },
+ "satellite_disaster_response_downlink": {
+  "feasible": true,
+  "quality": 0.0,
+  "true_correct": false,
+  "objective": 2764.97808,
+  "evaluation_unknown": false
+ },
+ "naloxone_drone_response_network": {
+  "feasible": true,
+  "quality": 2.0,
+  "true_correct": true,
+  "objective": 139170.69611067677,
+  "evaluation_unknown": false
+ },
+ "portable_battery_swap_rebalancing": {
+  "feasible": true,
+  "quality": 2.0,
+  "true_correct": true,
+  "objective": 3471.164610998212,
+  "evaluation_unknown": false
+ },
+ "offshore_wind_maintenance": {
+  "feasible": true,
+  "quality": 2.0,
+  "true_correct": true,
+  "objective": 98842.5,
+  "evaluation_unknown": false
+ }
+}

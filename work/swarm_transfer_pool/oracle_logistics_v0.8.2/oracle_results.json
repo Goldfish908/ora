@@ -1,0 +1,2073 @@
+{
+ "airport_deicing_stochastic_resource_plan": {
+  "runner": {
+   "return_code": 0,
+   "timed_out": false,
+   "stdout": "{\n  \"best_bound\": 34041.615914462265,\n  \"evaluation_objective\": 34455.216820874295,\n  \"mip_gap\": 0.012149861142060504,\n  \"objective\": 34455.21682087434,\n  \"solution\": \"/app/submissions/solution.csv\",\n  \"status\": \"timelimit\",\n  \"total_trucks\": 17.0\n}\n",
+   "stderr": ""
+  },
+  "official": {
+   "evaluation": {
+    "critical_tail_cost": 4200.0,
+    "environment": "airport_deicing_stochastic_resource_plan",
+    "error_count": 0,
+    "errors": [],
+    "expected_operating_cost": 16255.8684208743,
+    "feasible": true,
+    "objective": 34455.216820874295,
+    "scenario_details": {
+     "SC01": {
+      "critical_shortfall": 0.0,
+      "operating_cost": 8735.932211199999,
+      "runoff_exposure_gal": 970.55552
+     },
+     "SC02": {
+      "critical_shortfall": 0.0,
+      "operating_cost": 12151.7255,
+      "runoff_exposure_gal": 1912.0500000000002
+     },
+     "SC03": {
+      "critical_shortfall": 0.0,
+      "operating_cost": 13126.7700575,
+      "runoff_exposure_gal": 2923.25825
+     },
+     "SC04": {
+      "critical_shortfall": 0.0,
+      "operating_cost": 12423.108915599998,
+      "runoff_exposure_gal": 2089.02876
+     },
+     "SC05": {
+      "critical_shortfall": 0.0,
+      "operating_cost": 14693.6097472,
+      "runoff_exposure_gal": 2777.741120000001
+     },
+     "SC06": {
+      "critical_shortfall": 0.0,
+      "operating_cost": 16234.451743360001,
+      "runoff_exposure_gal": 4464.134656
+     },
+     "SC07": {
+      "critical_shortfall": 0.0,
+      "operating_cost": 9415.8783432,
+      "runoff_exposure_gal": 1304.25272
+     },
+     "SC08": {
+      "critical_shortfall": 0.0,
+      "operating_cost": 13861.642015039999,
+      "runoff_exposure_gal": 2603.9419840000005
+     },
+     "SC09": {
+      "critical_shortfall": 0.0,
+      "operating_cost": 19028.017625200002,
+      "runoff_exposure_gal": 4490.314920000001
+     },
+     "SC10": {
+      "critical_shortfall": 10.0,
+      "operating_cost": 36084.9190808,
+      "runoff_exposure_gal": 5877.57768
+     }
+    },
+    "staging_cost": 13999.348399999999,
+    "total_cost": 34455.216820874295,
+    "total_trucks": 17.0,
+    "total_type_i_gallons": 30285.34,
+    "total_type_iv_gallons": 10390.359999999999,
+    "worst_critical_shortfall": 10.0
+   },
+   "reward": {
+    "feasibility": 1.0,
+    "quality": 0.0
+   },
+   "reward_details": {
+    "agent_objective": 34455.216820874295,
+    "agent_objective_source": "objective",
+    "best_bound": 34041.816834058554,
+    "bound_improvement": 16.37283484004729,
+    "bound_sense": "lower",
+    "evaluation_diagnostics": {
+     "error_count": 0,
+     "objective": 34455.216820874295,
+     "profit": null,
+     "score": null,
+     "total_cost": 34455.216820874295
+    },
+    "fallback_mip_gap": 0.0005,
+    "fallback_reference_scale": 34058.1896688986,
+    "feasibility": 1.0,
+    "formula": "clip(2 + d if d >= -1 else 1.5 + 0.5*d, 0, 2), d = (R - O) / (max(abs(R), 1e-8) * mip_gap)",
+    "objective_sense": "minimize",
+    "quality": 0.0,
+    "quality_scale_width": 17.0290948344493,
+    "quality_status": "bound_gap_below_mip_gap",
+    "reference_metrics": {
+     "best_bound": 34041.816834058554,
+     "best_bound_source": "best_bound",
+     "bound_sense": "lower",
+     "evaluation_summary": {
+      "error_count": 0,
+      "feasible": true,
+      "objective": 34058.1896688986,
+      "total_cost": 34058.1896688986
+     },
+     "generated_at": "2026-05-21T17:40:05.087600+00:00",
+     "mip_gap": 0.0005,
+     "objective_sense": "minimize",
+     "quality_formula": "clip(1 + (R - O) / (R - B), 0, 2) if B exists and R - B >= max(abs(R), 1e-8) * mip_gap; otherwise let d=(R - O)/(max(abs(R), 1e-8)*mip_gap), quality=clip(2+d if d>=-1 else 1.5+0.5*d, 0, 2); if no R, quality = 2",
+     "reference_objective": 34058.1896688986,
+     "reference_objective_source": "objective",
+     "solution_path": "reference_solutions/airport_deicing_stochastic_resource_plan_reference_solution.csv",
+     "solver_summary": {
+      "best_bound": 34041.816834058554,
+      "evaluation_objective": 34058.1896688986,
+      "mip_gap": 0.0004809624268839378,
+      "objective": 34058.1896688986,
+      "solution": "reference_solutions/airport_deicing_stochastic_resource_plan_reference_solution.csv",
+      "status": "gaplimit",
+      "total_trucks": 17.0
+     },
+     "task_name": "airport_deicing_stochastic_resource_plan",
+     "time_limit_seconds": 300.0
+    },
+    "reference_objective": 34058.1896688986,
+    "scalar_reward": 0.3333333333333333,
+    "scalar_reward_formula": "(feasibility + quality) / 3.0",
+    "signed_improvement": -397.0271519756934
+   },
+   "runner": {
+    "return_code": 0,
+    "timed_out": false,
+    "wall_seconds": 20.071404
+   }
+  },
+  "metrics": {
+   "feasible": true,
+   "quality": 0.0,
+   "true_correct": false,
+   "objective": 34455.216820874295,
+   "evaluation_unknown": false
+  }
+ },
+ "air_cargo_stochastic_order_allocation": {
+  "runner": {
+   "return_code": 0,
+   "timed_out": false,
+   "stdout": "{\n  \"accepted_order_count\": 34,\n  \"best_bound\": 8716.727566702284,\n  \"evaluation_profit\": 8716.543824000004,\n  \"mip_gap\": 2.1079765786782103e-05,\n  \"objective\": 8716.543824000004,\n  \"solution\": \"/app/submissions/solution.csv\",\n  \"status\": \"gaplimit\"\n}\n",
+   "stderr": ""
+  },
+  "official": {
+   "evaluation": {
+    "accepted_order_count": 34,
+    "environment": "air_cargo_stochastic_order_allocation",
+    "error_count": 0,
+    "errors": [],
+    "expected_carbon_penalty": 32.201676,
+    "expected_profit_before_tail": 9030.043824000004,
+    "feasible": true,
+    "objective": 8716.543824000004,
+    "priority_tail_penalty": 313.5,
+    "profit": 8716.543824000004,
+    "scenario_details": {
+     "SC01": {
+      "carbon_penalty": 8.773100000000014,
+      "loaded_volume": {
+       "A01": 10.25,
+       "A02": 14.15,
+       "A03": 16.5,
+       "A04": 5.45,
+       "A05": 13.8,
+       "A06": 6.3,
+       "A07": 19.7
+      },
+      "loaded_weight": {
+       "A01": 1160.0,
+       "A02": 1665.0,
+       "A03": 2020.0,
+       "A04": 725.0,
+       "A05": 1720.0,
+       "A06": 815.0,
+       "A07": 2405.0
+      },
+      "priority_shortfall": 6.4,
+      "profit_after_carbon": 9735.726900000001,
+      "ramp_team_cold_slots": {
+       "RAMP_AMER": 5.0,
+       "RAMP_ASIA": 4.0,
+       "RAMP_EU": 3.0
+      },
+      "ramp_team_hazmat_minutes": {
+       "RAMP_AMER": 0.0,
+       "RAMP_ASIA": 0.0,
+       "RAMP_EU": 0.0
+      },
+      "ramp_team_uld_minutes": {
+       "RAMP_AMER": 236.51,
+       "RAMP_ASIA": 150.745,
+       "RAMP_EU": 132.215
+      }
+     },
+     "SC02": {
+      "carbon_penalty": 19.347300000000004,
+      "loaded_volume": {
+       "A01": 10.25,
+       "A02": 15.850000000000001,
+       "A03": 12.899999999999999,
+       "A04": 10.55,
+       "A05": 16.15,
+       "A06": 11.899999999999999,
+       "A07": 17.15
+      },
+      "loaded_weight": {
+       "A01": 1160.0,
+       "A02": 1975.0,
+       "A03": 1660.0,
+       "A04": 1365.0,
+       "A05": 2025.0,
+       "A06": 1525.0,
+       "A07": 2075.0
+      },
+      "priority_shortfall": 0.8,
+      "profit_after_carbon": 11410.002700000003,
+      "ramp_team_cold_slots": {
+       "RAMP_AMER": 5.0,
+       "RAMP_ASIA": 4.0,
+       "RAMP_EU": 2.0
+      },
+      "ramp_team_hazmat_minutes": {
+       "RAMP_AMER": 0.0,
+       "RAMP_ASIA": 0.0,
+       "RAMP_EU": 0.0
+      },
+      "ramp_team_uld_minutes": {
+       "RAMP_AMER": 272.87,
+       "RAMP_ASIA": 160.60500000000002,
+       "RAMP_EU": 145.505
+      }
+     },
+     "SC03": {
+      "carbon_penalty": 39.454049999999995,
+      "loaded_volume": {
+       "A01": 3.85,
+       "A02": 16.2,
+       "A03": 22.05,
+       "A04": 0.0,
+       "A05": 20.65,
+       "A06": 0.0,
+       "A07": 15.849999999999998
+      },
+      "loaded_weight": {
+       "A01": 380.0,
+       "A02": 1925.0,
+       "A03": 2780.0,
+       "A04": 0.0,
+       "A05": 2605.0,
+       "A06": 0.0,
+       "A07": 1915.0
+      },
+      "priority_shortfall": 3.5,
+      "profit_after_carbon": 9816.24595,
+      "ramp_team_cold_slots": {
+       "RAMP_AMER": 5.0,
+       "RAMP_ASIA": 4.0,
+       "RAMP_EU": 3.0
+      },
+      "ramp_team_hazmat_minutes": {
+       "RAMP_AMER": 34.0,
+       "RAMP_ASIA": 0.0,
+       "RAMP_EU": 34.0
+      },
+      "ramp_team_uld_minutes": {
+       "RAMP_AMER": 211.7,
+       "RAMP_ASIA": 119.755,
+       "RAMP_EU": 127.88999999999999
+      }
+     },
+     "SC04": {
+      "carbon_penalty": 11.180100000000005,
+      "loaded_volume": {
+       "A01": 6.4,
+       "A02": 11.2,
+       "A03": 6.5,
+       "A04": 10.55,
+       "A05": 9.9,
+       "A06": 11.899999999999999,
+       "A07": 12.25
+      },
+      "loaded_weight": {
+       "A01": 780.0,
+       "A02": 1430.0,
+       "A03": 820.0,
+       "A04": 1365.0,
+       "A05": 1275.0,
+       "A06": 1525.0,
+       "A07": 1570.0
+      },
+      "priority_shortfall": 0.8,
+      "profit_after_carbon": 6024.819900000001,
+      "ramp_team_cold_slots": {
+       "RAMP_AMER": 0.0,
+       "RAMP_ASIA": 0.0,
+       "RAMP_EU": 0.0
+      },
+      "ramp_team_hazmat_minutes": {
+       "RAMP_AMER": 0.0,
+       "RAMP_ASIA": 0.0,
+       "RAMP_EU": 0.0
+      },
+      "ramp_team_uld_minutes": {
+       "RAMP_AMER": 208.19999999999996,
+       "RAMP_ASIA": 107.84,
+       "RAMP_EU": 108.385
+      }
+     },
+     "SC05": {
+      "carbon_penalty": 11.180100000000005,
+      "loaded_volume": {
+       "A01": 6.4,
+       "A02": 9.15,
+       "A03": 9.899999999999999,
+       "A04": 10.55,
+       "A05": 14.75,
+       "A06": 11.899999999999999,
+       "A07": 10.3
+      },
+      "loaded_weight": {
+       "A01": 780.0,
+       "A02": 1170.0,
+       "A03": 1300.0,
+       "A04": 1365.0,
+       "A05": 1900.0,
+       "A06": 1525.0,
+       "A07": 1320.0
+      },
+      "priority_shortfall": 8.3,
+      "profit_after_carbon": 4506.0699,
+      "ramp_team_cold_slots": {
+       "RAMP_AMER": 0.0,
+       "RAMP_ASIA": 0.0,
+       "RAMP_EU": 0.0
+      },
+      "ramp_team_hazmat_minutes": {
+       "RAMP_AMER": 34.0,
+       "RAMP_ASIA": 0.0,
+       "RAMP_EU": 34.0
+      },
+      "ramp_team_uld_minutes": {
+       "RAMP_AMER": 225.01999999999998,
+       "RAMP_ASIA": 95.95,
+       "RAMP_EU": 128.10500000000002
+      }
+     },
+     "SC06": {
+      "carbon_penalty": 14.03944999999999,
+      "loaded_volume": {
+       "A01": 6.300000000000001,
+       "A02": 20.599999999999998,
+       "A03": 12.149999999999999,
+       "A04": 5.45,
+       "A05": 11.3,
+       "A06": 2.25,
+       "A07": 17.95
+      },
+      "loaded_weight": {
+       "A01": 690.0,
+       "A02": 2535.0,
+       "A03": 1480.0,
+       "A04": 725.0,
+       "A05": 1405.0,
+       "A06": 295.0,
+       "A07": 2200.0
+      },
+      "priority_shortfall": 2.7,
+      "profit_after_carbon": 10356.61055,
+      "ramp_team_cold_slots": {
+       "RAMP_AMER": 5.0,
+       "RAMP_ASIA": 4.0,
+       "RAMP_EU": 3.0
+      },
+      "ramp_team_hazmat_minutes": {
+       "RAMP_AMER": 0.0,
+       "RAMP_ASIA": 0.0,
+       "RAMP_EU": 0.0
+      },
+      "ramp_team_uld_minutes": {
+       "RAMP_AMER": 184.725,
+       "RAMP_ASIA": 161.69000000000003,
+       "RAMP_EU": 106.985
+      }
+     },
+     "SC07": {
+      "carbon_penalty": 0.0,
+      "loaded_volume": {
+       "A01": 7.800000000000001,
+       "A02": 18.55,
+       "A03": 14.349999999999998,
+       "A04": 3.25,
+       "A05": 11.099999999999998,
+       "A06": 9.649999999999999,
+       "A07": 17.6
+      },
+      "loaded_weight": {
+       "A01": 850.0,
+       "A02": 2275.0,
+       "A03": 1740.0,
+       "A04": 430.0,
+       "A05": 1370.0,
+       "A06": 1230.0,
+       "A07": 2120.0
+      },
+      "priority_shortfall": 3.5,
+      "profit_after_carbon": 8824.45,
+      "ramp_team_cold_slots": {
+       "RAMP_AMER": 5.0,
+       "RAMP_ASIA": 4.0,
+       "RAMP_EU": 3.0
+      },
+      "ramp_team_hazmat_minutes": {
+       "RAMP_AMER": 0.0,
+       "RAMP_ASIA": 0.0,
+       "RAMP_EU": 0.0
+      },
+      "ramp_team_uld_minutes": {
+       "RAMP_AMER": 231.115,
+       "RAMP_ASIA": 159.85000000000002,
+       "RAMP_EU": 105.005
+      }
+     },
+     "SC08": {
+      "carbon_penalty": 1.6600000000000001,
+      "loaded_volume": {
+       "A01": 6.4,
+       "A02": 5.15,
+       "A03": 11.05,
+       "A04": 7.3,
+       "A05": 15.549999999999999,
+       "A06": 11.899999999999999,
+       "A07": 10.8
+      },
+      "loaded_weight": {
+       "A01": 780.0,
+       "A02": 680.0,
+       "A03": 1490.0,
+       "A04": 935.0,
+       "A05": 1995.0,
+       "A06": 1525.0,
+       "A07": 1395.0
+      },
+      "priority_shortfall": 7.5,
+      "profit_after_carbon": 6844.14,
+      "ramp_team_cold_slots": {
+       "RAMP_AMER": 2.0,
+       "RAMP_ASIA": 1.0,
+       "RAMP_EU": 1.0
+      },
+      "ramp_team_hazmat_minutes": {
+       "RAMP_AMER": 34.0,
+       "RAMP_ASIA": 0.0,
+       "RAMP_EU": 34.0
+      },
+      "ramp_team_uld_minutes": {
+       "RAMP_AMER": 232.55999999999997,
+       "RAMP_ASIA": 72.75,
+       "RAMP_EU": 113.0
+      }
+     },
+     "SC09": {
+      "carbon_penalty": 38.167550000000006,
+      "loaded_volume": {
+       "A01": 10.25,
+       "A02": 20.599999999999998,
+       "A03": 16.5,
+       "A04": 5.45,
+       "A05": 16.15,
+       "A06": 11.899999999999999,
+       "A07": 21.65
+      },
+      "loaded_weight": {
+       "A01": 1160.0,
+       "A02": 2535.0,
+       "A03": 2020.0,
+       "A04": 725.0,
+       "A05": 2025.0,
+       "A06": 1525.0,
+       "A07": 2655.0
+      },
+      "priority_shortfall": 3.5,
+      "profit_after_carbon": 11824.382450000001,
+      "ramp_team_cold_slots": {
+       "RAMP_AMER": 5.0,
+       "RAMP_ASIA": 4.0,
+       "RAMP_EU": 3.0
+      },
+      "ramp_team_hazmat_minutes": {
+       "RAMP_AMER": 0.0,
+       "RAMP_ASIA": 0.0,
+       "RAMP_EU": 0.0
+      },
+      "ramp_team_uld_minutes": {
+       "RAMP_AMER": 298.96999999999997,
+       "RAMP_ASIA": 188.15500000000003,
+       "RAMP_EU": 132.215
+      }
+     },
+     "SC10": {
+      "carbon_penalty": 46.02765000000001,
+      "loaded_volume": {
+       "A01": 10.25,
+       "A02": 20.599999999999998,
+       "A03": 4.35,
+       "A04": 10.55,
+       "A05": 9.9,
+       "A06": 9.649999999999999,
+       "A07": 21.65
+      },
+      "loaded_weight": {
+       "A01": 1160.0,
+       "A02": 2535.0,
+       "A03": 540.0,
+       "A04": 1365.0,
+       "A05": 1275.0,
+       "A06": 1230.0,
+       "A07": 2655.0
+      },
+      "priority_shortfall": 5.499999999999999,
+      "profit_after_carbon": 8336.022350000001,
+      "ramp_team_cold_slots": {
+       "RAMP_AMER": 3.0,
+       "RAMP_ASIA": 4.0,
+       "RAMP_EU": 0.0
+      },
+      "ramp_team_hazmat_minutes": {
+       "RAMP_AMER": 0.0,
+       "RAMP_ASIA": 0.0,
+       "RAMP_EU": 0.0
+      },
+      "ramp_team_uld_minutes": {
+       "RAMP_AMER": 247.645,
+       "RAMP_ASIA": 188.15500000000003,
+       "RAMP_EU": 95.915
+      }
+     },
+     "SC11": {
+      "carbon_penalty": 62.901549999999986,
+      "loaded_volume": {
+       "A01": 6.4,
+       "A02": 9.15,
+       "A03": 22.05,
+       "A04": 7.3,
+       "A05": 23.35,
+       "A06": 11.899999999999999,
+       "A07": 7.750000000000001
+      },
+      "loaded_weight": {
+       "A01": 780.0,
+       "A02": 1170.0,
+       "A03": 2780.0,
+       "A04": 935.0,
+       "A05": 2955.0,
+       "A06": 1525.0,
+       "A07": 990.0
+      },
+      "priority_shortfall": 7.3,
+      "profit_after_carbon": 8006.498450000001,
+      "ramp_team_cold_slots": {
+       "RAMP_AMER": 2.0,
+       "RAMP_ASIA": 0.0,
+       "RAMP_EU": 3.0
+      },
+      "ramp_team_hazmat_minutes": {
+       "RAMP_AMER": 34.0,
+       "RAMP_ASIA": 0.0,
+       "RAMP_EU": 34.0
+      },
+      "ramp_team_uld_minutes": {
+       "RAMP_AMER": 260.11,
+       "RAMP_ASIA": 95.95,
+       "RAMP_EU": 176.8
+      }
+     },
+     "SC12": {
+      "carbon_penalty": 108.92920000000001,
+      "loaded_volume": {
+       "A01": 10.25,
+       "A02": 20.599999999999998,
+       "A03": 22.05,
+       "A04": 10.55,
+       "A05": 23.35,
+       "A06": 11.899999999999999,
+       "A07": 21.65
+      },
+      "loaded_weight": {
+       "A01": 1160.0,
+       "A02": 2535.0,
+       "A03": 2780.0,
+       "A04": 1365.0,
+       "A05": 2955.0,
+       "A06": 1525.0,
+       "A07": 2655.0
+      },
+      "priority_shortfall": 11.0,
+      "profit_after_carbon": 11951.5208,
+      "ramp_team_cold_slots": {
+       "RAMP_AMER": 5.0,
+       "RAMP_ASIA": 4.0,
+       "RAMP_EU": 3.0
+      },
+      "ramp_team_hazmat_minutes": {
+       "RAMP_AMER": 34.0,
+       "RAMP_ASIA": 0.0,
+       "RAMP_EU": 34.0
+      },
+      "ramp_team_uld_minutes": {
+       "RAMP_AMER": 340.72999999999996,
+       "RAMP_ASIA": 188.15500000000003,
+       "RAMP_EU": 198.575
+      }
+     }
+    },
+    "worst_priority_shortfall": 11.0
+   },
+   "reward": {
+    "feasibility": 1.0,
+    "quality": 1.0
+   },
+   "reward_details": {
+    "agent_objective": 8716.543824000004,
+    "agent_objective_source": "profit",
+    "best_bound": 8716.727566702284,
+    "bound_improvement": 0.1837427022801421,
+    "bound_sense": "upper",
+    "evaluation_diagnostics": {
+     "error_count": 0,
+     "objective": 8716.543824000004,
+     "profit": 8716.543824000004,
+     "score": null,
+     "total_cost": null
+    },
+    "fallback_mip_gap": 2.1079765786782103e-05,
+    "fallback_reference_scale": 8716.543824000004,
+    "feasibility": 1.0,
+    "formula": "clip(1 + (O - R) / (B - R), 0, 2) when B exists and B - R >= max(abs(R), 1e-8) * mip_gap",
+    "objective_sense": "maximize",
+    "quality": 1.0,
+    "quality_scale_width": 0.1837427022801421,
+    "quality_status": "scored_with_best_bound",
+    "reference_metrics": {
+     "best_bound": 8716.727566702284,
+     "best_bound_source": "best_bound",
+     "bound_sense": "upper",
+     "evaluation_summary": {
+      "error_count": 0,
+      "feasible": true,
+      "objective": 8716.543824000004,
+      "profit": 8716.543824000004
+     },
+     "generated_at": "2026-05-24T04:37:08.343353+00:00",
+     "mip_gap": 2.1079765786782103e-05,
+     "objective_sense": "maximize",
+     "quality_formula": "clip(1 + (O - R) / (B - R), 0, 2) if B exists and B - R >= max(abs(R), 1e-8) * mip_gap; otherwise let d=(O - R)/(max(abs(R), 1e-8)*mip_gap), quality=clip(2+d if d>=-1 else 1.5+0.5*d, 0, 2); if no R, quality = 2",
+     "reference_objective": 8716.543824000004,
+     "reference_objective_source": "profit",
+     "solution_path": "reference_solutions/air_cargo_stochastic_order_allocation_reference_solution.csv",
+     "solver_summary": {
+      "accepted_order_count": 34,
+      "best_bound": 8716.727566702284,
+      "evaluation": {
+       "error_count": 0,
+       "errors": [],
+       "feasible": true,
+       "objective": 8716.543824000004,
+       "objective_sense": "maximize",
+       "profit": 8716.543824000004
+      },
+      "evaluation_profit": 8716.543824000004,
+      "mip_gap": 2.1079765786782103e-05,
+      "objective": 8716.543824000004,
+      "solution": "reference_solutions/air_cargo_stochastic_order_allocation_reference_solution.csv",
+      "status": "gaplimit"
+     },
+     "task_name": "air_cargo_stochastic_order_allocation",
+     "time_limit_seconds": 600.0
+    },
+    "reference_objective": 8716.543824000004,
+    "scalar_reward": 0.6666666666666666,
+    "scalar_reward_formula": "(feasibility + quality) / 3.0",
+    "signed_improvement": 0.0
+   },
+   "runner": {
+    "return_code": 0,
+    "timed_out": false,
+    "wall_seconds": 27.095865
+   }
+  },
+  "metrics": {
+   "feasible": true,
+   "quality": 1.0,
+   "true_correct": true,
+   "objective": 8716.543824000004,
+   "evaluation_unknown": false
+  }
+ },
+ "evtol_vertiport_recovery": {
+  "runner": {
+   "return_code": 0,
+   "timed_out": false,
+   "stdout": "{\"accepted_passengers\": 27.0, \"accepted_requests\": 13, \"best_bound\": null, \"expected_profit\": 1761.4457260869563, \"method\": \"robust greedy insertion with scenario rollback and charging repair\", \"profit\": -4664.178186956522, \"status\": \"heuristic_feasible\", \"tail_risk\": 1985.4130434782608}\n",
+   "stderr": ""
+  },
+  "official": {
+   "evaluation": {
+    "decline_penalty": 5830.0,
+    "error_count": 0,
+    "errors": [],
+    "expected_profit": 1761.4457260869563,
+    "feasible": true,
+    "profit": -4664.178186956522,
+    "scenario_profit": {
+     "S_CLEAR": 1814.586956521739,
+     "S_STORM_CELLS": 1663.598260869565,
+     "S_WIND_NORTH": 1738.108652173913
+    },
+    "tail_risk": 1985.4130434782608
+   },
+   "reward": {
+    "feasibility": 1.0,
+    "quality": 2.0
+   },
+   "reward_details": {
+    "agent_objective": -4664.178186956522,
+    "agent_objective_source": "profit",
+    "best_bound": null,
+    "bound_sense": "upper",
+    "evaluation_diagnostics": {
+     "error_count": 0,
+     "objective": null,
+     "profit": -4664.178186956522,
+     "score": null,
+     "total_cost": null
+    },
+    "fallback_mip_gap": 0.0005,
+    "fallback_reference_scale": 4664.178186956522,
+    "feasibility": 1.0,
+    "formula": "clip(2 + d if d >= -1 else 1.5 + 0.5*d, 0, 2), d = (O - R) / (max(abs(R), 1e-8) * mip_gap)",
+    "objective_sense": "maximize",
+    "quality": 2.0,
+    "quality_status": "scored_with_mip_gap_fallback",
+    "reference_metrics": {
+     "best_bound": null,
+     "best_bound_source": null,
+     "bound_sense": "upper",
+     "evaluation_summary": {
+      "error_count": 0,
+      "feasible": true,
+      "profit": -4664.178186956522
+     },
+     "generated_at": "2026-05-16T22:06:56.538443+00:00",
+     "mip_gap": 0.0005,
+     "objective_sense": "maximize",
+     "quality_formula": "clip(1 + (O - R) / (B - R), 0, 2) if B exists and B - R >= max(abs(R), 1e-8) * mip_gap; otherwise let d=(O - R)/(max(abs(R), 1e-8)*mip_gap), quality=clip(2+d if d>=-1 else 1.5+0.5*d, 0, 2); if no R, quality = 2",
+     "reference_objective": -4664.178186956522,
+     "reference_objective_source": "profit",
+     "solution_path": "/private/tmp/oragentbench_reference_solutions/evtol_vertiport_recovery_reference_solution.csv",
+     "solver_summary": {
+      "accepted_passengers": 27.0,
+      "accepted_requests": 13,
+      "best_bound": null,
+      "expected_profit": 1761.4457260869563,
+      "method": "robust greedy insertion with scenario rollback and charging repair",
+      "profit": -4664.178186956522,
+      "status": "heuristic_feasible",
+      "tail_risk": 1985.4130434782608
+     },
+     "task_name": "evtol_vertiport_recovery",
+     "time_limit_seconds": 300.0
+    },
+    "reference_objective": -4664.178186956522,
+    "scalar_reward": 1.0,
+    "scalar_reward_formula": "(feasibility + quality) / 3.0"
+   },
+   "runner": {
+    "return_code": 0,
+    "timed_out": false,
+    "wall_seconds": 23.546792
+   }
+  },
+  "metrics": {
+   "feasible": true,
+   "quality": 2.0,
+   "true_correct": true,
+   "objective": -4664.178186956522,
+   "evaluation_unknown": false
+  }
+ },
+ "robotic_mobile_fulfillment_orchestration": {
+  "runner": {
+   "return_code": 0,
+   "timed_out": false,
+   "stdout": "{\n  \"charge_rows\": 3,\n  \"mip_gap\": 0.0005,\n  \"objective\": 9040.6648,\n  \"row_count\": 180,\n  \"status\": \"heuristic_feasible\",\n  \"time_limit\": 300.0,\n  \"visit_count\": 79\n}\n",
+   "stderr": ""
+  },
+  "official": {
+   "evaluation": {
+    "diagnostics": {
+     "charge_rows": 3,
+     "orders_completed": 42,
+     "peak_congestion_units": 0,
+     "pick_rows": 98,
+     "priority_late_excess": 0.0,
+     "promise_group_spread_excess": 81.0,
+     "split_penalty_units": 37.0,
+     "station_imbalance_units": 82.0,
+     "total_charge_slots": 3,
+     "total_energy_used": 572.3600000000001,
+     "total_visit_distance": 867.0,
+     "visit_count": 79,
+     "weighted_tardiness": 33.8
+    },
+    "error_count": 0,
+    "errors": [],
+    "feasible": true,
+    "objective": 9040.6648,
+    "total_cost": 9040.6648
+   },
+   "reward": {
+    "feasibility": 1.0,
+    "quality": 2.0
+   },
+   "reward_details": {
+    "agent_objective": 9040.6648,
+    "agent_objective_source": "objective",
+    "best_bound": null,
+    "bound_sense": "lower",
+    "evaluation_diagnostics": {
+     "error_count": 0,
+     "objective": 9040.6648,
+     "profit": null,
+     "score": null,
+     "total_cost": 9040.6648
+    },
+    "fallback_mip_gap": 0.0005,
+    "fallback_reference_scale": 9040.6648,
+    "feasibility": 1.0,
+    "formula": "clip(2 + d if d >= -1 else 1.5 + 0.5*d, 0, 2), d = (R - O) / (max(abs(R), 1e-8) * mip_gap)",
+    "objective_sense": "minimize",
+    "quality": 2.0,
+    "quality_status": "scored_with_mip_gap_fallback",
+    "reference_metrics": {
+     "best_bound": null,
+     "best_bound_source": null,
+     "bound_sense": "lower",
+     "evaluation_summary": {
+      "error_count": 0,
+      "feasible": true,
+      "objective": 9040.6648,
+      "total_cost": 9040.6648
+     },
+     "generated_at": "2026-05-24T13:14:47Z",
+     "mip_gap": 0.0005,
+     "objective_sense": "minimize",
+     "quality_formula": "clip(1 + (R - O) / (R - B), 0, 2) if B exists and R - B >= max(abs(R), 1e-8) * mip_gap; otherwise let d=(R - O)/(max(abs(R), 1e-8)*mip_gap), quality=clip(2+d if d>=-1 else 1.5+0.5*d, 0, 2); if no R, quality = 2",
+     "reference_objective": 9040.6648,
+     "reference_objective_source": "objective",
+     "solution_path": "/private/tmp/oragentbench_reference_solutions/robotic_mobile_fulfillment_orchestration_reference_solution.csv",
+     "solver_summary": {
+      "charge_rows": 3,
+      "mip_gap": 0.0005,
+      "objective": 9040.6648,
+      "row_count": 180,
+      "status": "heuristic_feasible",
+      "time_limit": 300.0,
+      "visit_count": 79
+     },
+     "task_name": "robotic_mobile_fulfillment_orchestration",
+     "time_limit_seconds": 300.0
+    },
+    "reference_objective": 9040.6648,
+    "scalar_reward": 1.0,
+    "scalar_reward_formula": "(feasibility + quality) / 3.0"
+   },
+   "runner": {
+    "return_code": 0,
+    "timed_out": false,
+    "wall_seconds": 16.977291
+   }
+  },
+  "metrics": {
+   "feasible": true,
+   "quality": 2.0,
+   "true_correct": true,
+   "objective": 9040.6648,
+   "evaluation_unknown": false
+  }
+ },
+ "wastewater_sentinel_site_selection": {
+  "runner": {
+   "return_code": 0,
+   "timed_out": false,
+   "stdout": "{\n  \"best_bound\": 511360.4514535729,\n  \"evaluation_objective\": 510587.290486329,\n  \"expected_coverage_points\": 443.5833163052336,\n  \"mip_gap\": 0.001514258152621137,\n  \"objective\": 510587.29048632924,\n  \"robust_floor_points\": 409.01922800000006,\n  \"selected_sites\": 34,\n  \"solution\": \"/app/submissions/solution.csv\",\n  \"status\": \"timelimit\",\n  \"total_weekly_samples\": 46\n}\n",
+   "stderr": ""
+  },
+  "official": {
+   "evaluation": {
+    "benefit": 587030.410486329,
+    "composite_sites": 1,
+    "environment": "wastewater_sentinel_site_selection",
+    "error_count": 0,
+    "errors": [],
+    "expected_coverage_points": 443.5833163052336,
+    "feasible": true,
+    "objective": 510587.290486329,
+    "passive_sites": 33,
+    "profit": 510587.290486329,
+    "robust_floor_points": 409.01922800000006,
+    "scenario_details": {
+     "K01": {
+      "covered_risk_points": 514.473946,
+      "covered_tracts": 68,
+      "equity_rate": 1.0,
+      "facility_reached": true
+     },
+     "K02": {
+      "covered_risk_points": 409.4584599999999,
+      "covered_tracts": 68,
+      "equity_rate": 1.0,
+      "facility_reached": true
+     },
+     "K03": {
+      "covered_risk_points": 449.2000439999999,
+      "covered_tracts": 68,
+      "equity_rate": 1.0,
+      "facility_reached": true
+     },
+     "K04": {
+      "covered_risk_points": 419.33541799999995,
+      "covered_tracts": 68,
+      "equity_rate": 1.0,
+      "facility_reached": true
+     },
+     "K05": {
+      "covered_risk_points": 499.590094,
+      "covered_tracts": 68,
+      "equity_rate": 1.0,
+      "facility_reached": true
+     },
+     "K06": {
+      "covered_risk_points": 409.49467999999996,
+      "covered_tracts": 68,
+      "equity_rate": 1.0,
+      "facility_reached": true
+     },
+     "K07": {
+      "covered_risk_points": 434.798304,
+      "covered_tracts": 68,
+      "equity_rate": 1.0,
+      "facility_reached": true
+     },
+     "K08": {
+      "covered_risk_points": 409.23935599999993,
+      "covered_tracts": 68,
+      "equity_rate": 1.0,
+      "facility_reached": true
+     },
+     "K09": {
+      "covered_risk_points": 508.64824999999985,
+      "covered_tracts": 68,
+      "equity_rate": 1.0,
+      "facility_reached": true
+     },
+     "K10": {
+      "covered_risk_points": 409.6075680000001,
+      "covered_tracts": 68,
+      "equity_rate": 1.0,
+      "facility_reached": true
+     },
+     "K11": {
+      "covered_risk_points": 439.0304200000001,
+      "covered_tracts": 68,
+      "equity_rate": 1.0,
+      "facility_reached": true
+     },
+     "K12": {
+      "covered_risk_points": 424.34137199999986,
+      "covered_tracts": 68,
+      "equity_rate": 1.0,
+      "facility_reached": true
+     },
+     "K13": {
+      "covered_risk_points": 500.667386,
+      "covered_tracts": 68,
+      "equity_rate": 1.0,
+      "facility_reached": true
+     },
+     "K14": {
+      "covered_risk_points": 414.737492,
+      "covered_tracts": 68,
+      "equity_rate": 1.0,
+      "facility_reached": true
+     },
+     "K15": {
+      "covered_risk_points": 437.971476,
+      "covered_tracts": 68,
+      "equity_rate": 1.0,
+      "facility_reached": true
+     },
+     "K16": {
+      "covered_risk_points": 415.7324119999999,
+      "covered_tracts": 68,
+      "equity_rate": 1.0,
+      "facility_reached": true
+     },
+     "K17": {
+      "covered_risk_points": 504.84056999999984,
+      "covered_tracts": 68,
+      "equity_rate": 1.0,
+      "facility_reached": true
+     },
+     "K18": {
+      "covered_risk_points": 409.01922800000006,
+      "covered_tracts": 68,
+      "equity_rate": 1.0,
+      "facility_reached": true
+     },
+     "K19": {
+      "covered_risk_points": 440.88300399999997,
+      "covered_tracts": 68,
+      "equity_rate": 1.0,
+      "facility_reached": true
+     },
+     "K20": {
+      "covered_risk_points": 417.12516999999986,
+      "covered_tracts": 68,
+      "equity_rate": 1.0,
+      "facility_reached": true
+     }
+    },
+    "selected_sites": 34,
+    "total_budget_used": 76443.12,
+    "total_cost": 76443.12,
+    "total_field_hours": 58.656000000000006,
+    "total_lab_hours": 74.81999999999996,
+    "total_weekly_samples": 46
+   },
+   "reward": {
+    "feasibility": 1.0,
+    "quality": 1.0417985349626957
+   },
+   "reward_details": {
+    "agent_objective": 510587.290486329,
+    "agent_objective_source": "profit",
+    "best_bound": 511086.7005597012,
+    "bound_improvement": 254.67007337219547,
+    "bound_sense": "upper",
+    "evaluation_diagnostics": {
+     "error_count": 0,
+     "objective": 510587.290486329,
+     "profit": 510587.290486329,
+     "score": null,
+     "total_cost": 76443.12
+    },
+    "fallback_mip_gap": 0.0005,
+    "fallback_reference_scale": 510832.030486329,
+    "feasibility": 1.0,
+    "formula": "clip(2 + d if d >= -1 else 1.5 + 0.5*d, 0, 2), d = (O - R) / (max(abs(R), 1e-8) * mip_gap)",
+    "objective_sense": "maximize",
+    "quality": 1.0417985349626957,
+    "quality_scale_width": 255.4160152431645,
+    "quality_status": "bound_gap_below_mip_gap",
+    "reference_metrics": {
+     "best_bound": 511086.7005597012,
+     "best_bound_source": "best_bound",
+     "bound_sense": "upper",
+     "evaluation_summary": {
+      "error_count": 0,
+      "feasible": true,
+      "objective": 510832.030486329,
+      "profit": 510832.030486329,
+      "total_cost": 76198.37999999999
+     },
+     "generated_at": "2026-05-22T02:43:19.283169+00:00",
+     "mip_gap": 0.0005,
+     "objective_sense": "maximize",
+     "quality_formula": "clip(1 + (O - R) / (B - R), 0, 2) if B exists and B - R >= max(abs(R), 1e-8) * mip_gap; otherwise let d=(O - R)/(max(abs(R), 1e-8)*mip_gap), quality=clip(2+d if d>=-1 else 1.5+0.5*d, 0, 2); if no R, quality = 2",
+     "reference_objective": 510832.030486329,
+     "reference_objective_source": "profit",
+     "solution_path": "reference_solutions/wastewater_sentinel_site_selection_reference_solution.csv",
+     "solver_summary": {
+      "best_bound": 511086.7005597012,
+      "evaluation_objective": 510832.030486329,
+      "expected_coverage_points": 443.5833163052336,
+      "mip_gap": 0.000498539751177472,
+      "objective": 510832.03048632905,
+      "robust_floor_points": 409.01922800000006,
+      "selected_sites": 34,
+      "solution": "reference_solutions/wastewater_sentinel_site_selection_reference_solution.csv",
+      "status": "gaplimit",
+      "total_weekly_samples": 46
+     },
+     "task_name": "wastewater_sentinel_site_selection",
+     "time_limit_seconds": 300.0
+    },
+    "reference_objective": 510832.030486329,
+    "scalar_reward": 0.6805995116542318,
+    "scalar_reward_formula": "(feasibility + quality) / 3.0",
+    "signed_improvement": -244.7399999999907
+   },
+   "runner": {
+    "return_code": 0,
+    "timed_out": false,
+    "wall_seconds": 20.685105
+   }
+  },
+  "metrics": {
+   "feasible": true,
+   "quality": 1.0417985349626957,
+   "true_correct": true,
+   "objective": 510587.290486329,
+   "evaluation_unknown": false
+  }
+ },
+ "wildfire_bus_evacuation_planning": {
+  "runner": {
+   "return_code": 0,
+   "timed_out": false,
+   "stdout": "{\"best_bound\": null, \"error_count\": 0, \"feasible\": true, \"method\": \"scenario_greedy_route_construction_with_capacity_repair\", \"mip_gap\": 0.0005, \"objective\": 860886.0992884045, \"status\": \"heuristic_solution_written\", \"time_limit_seconds\": 300.0}\n",
+   "stderr": ""
+  },
+  "official": {
+   "evaluation": {
+    "error_count": 0,
+    "errors": [],
+    "expected_scenario_cost": 451660.51224738685,
+    "feasible": true,
+    "first_stage_cost": 102580.0,
+    "objective": 860886.0992884045,
+    "scenario_costs": {
+     "NIGHT_IGNITION": 329571.7478796801,
+     "RED_FLAG": 962234.8820122874,
+     "SLOW_WIND": 284491.7662451421,
+     "SPOT_FIRE": 531711.7153939592,
+     "WIND_SHIFT": 371779.50327608624
+    },
+    "scenario_diagnostics": {
+     "NIGHT_IGNITION": {
+      "corridor_trips": {
+       "C1": 6,
+       "C2": 6,
+       "C3": 5,
+       "C4": 5,
+       "C5": 5
+      },
+      "crowding_cost": 1944.0,
+      "fill_rates": {
+       "P01": 1.0,
+       "P02": 1.0,
+       "P03": 0.8269230769230769,
+       "P04": 1.0,
+       "P05": 1.0,
+       "P06": 1.0,
+       "P07": 0.9696969696969697,
+       "P08": 0.9882352941176471,
+       "P09": 1.0,
+       "P10": 1.0
+      },
+      "late_cost": 0.0,
+      "shelter_in_place_cost": 114920.0,
+      "shelter_load": {
+       "S1": {
+        "evacuees": 86.0,
+        "medical": 14.52,
+        "pets": 9.0,
+        "wheelchair": 5.0
+       },
+       "S2": {
+        "evacuees": 207.0,
+        "medical": 22.360000000000003,
+        "pets": 36.0,
+        "wheelchair": 19.0
+       },
+       "S3": {
+        "evacuees": 203.0,
+        "medical": 24.33,
+        "pets": 24.0,
+        "wheelchair": 15.0
+       },
+       "S5": {
+        "evacuees": 201.0,
+        "medical": 41.839999999999996,
+        "pets": 27.0,
+        "wheelchair": 29.0
+       }
+      },
+      "smoke_cost": 18623.905466217286,
+      "trip_cost": 44323.84241346279,
+      "unserved_cost": 149760.0
+     },
+     "RED_FLAG": {
+      "corridor_trips": {
+       "C1": 7,
+       "C2": 4,
+       "C3": 6,
+       "C4": 7,
+       "C5": 4
+      },
+      "crowding_cost": 4134.0,
+      "fill_rates": {
+       "P01": 1.0,
+       "P02": 1.0,
+       "P03": 0.7096774193548387,
+       "P04": 0.8333333333333334,
+       "P05": 0.981651376146789,
+       "P06": 1.0,
+       "P07": 0.9743589743589743,
+       "P08": 0.9900990099009901,
+       "P09": 0.8461538461538461,
+       "P10": 1.0
+      },
+      "late_cost": 5730.0,
+      "shelter_in_place_cost": 170690.0,
+      "shelter_load": {
+       "S1": {
+        "evacuees": 169.0,
+        "medical": 24.9,
+        "pets": 14.0,
+        "wheelchair": 12.0
+       },
+       "S2": {
+        "evacuees": 209.0,
+        "medical": 22.720000000000002,
+        "pets": 38.0,
+        "wheelchair": 20.0
+       },
+       "S3": {
+        "evacuees": 233.0,
+        "medical": 25.020000000000003,
+        "pets": 37.0,
+        "wheelchair": 23.0
+       },
+       "S5": {
+        "evacuees": 169.0,
+        "medical": 41.94,
+        "pets": 25.0,
+        "wheelchair": 28.0
+       }
+      },
+      "smoke_cost": 94855.56868058242,
+      "trip_cost": 58265.313331704965,
+      "unserved_cost": 628560.0
+     },
+     "SLOW_WIND": {
+      "corridor_trips": {
+       "C1": 5,
+       "C2": 6,
+       "C3": 5,
+       "C4": 5,
+       "C5": 5
+      },
+      "crowding_cost": 4182.0,
+      "fill_rates": {
+       "P01": 1.0,
+       "P02": 1.0,
+       "P03": 0.8333333333333334,
+       "P04": 1.0,
+       "P05": 1.0,
+       "P06": 1.0,
+       "P07": 0.9827586206896551,
+       "P08": 0.9868421052631579,
+       "P09": 1.0,
+       "P10": 1.0
+      },
+      "late_cost": 0.0,
+      "shelter_in_place_cost": 102440.0,
+      "shelter_load": {
+       "S1": {
+        "evacuees": 8.0,
+        "medical": 0.56,
+        "pets": 0.0,
+        "wheelchair": 0.0
+       },
+       "S2": {
+        "evacuees": 210.0,
+        "medical": 29.46,
+        "pets": 40.0,
+        "wheelchair": 20.0
+       },
+       "S3": {
+        "evacuees": 189.0,
+        "medical": 22.010000000000005,
+        "pets": 23.0,
+        "wheelchair": 13.0
+       },
+       "S5": {
+        "evacuees": 223.0,
+        "medical": 41.00000000000001,
+        "pets": 23.0,
+        "wheelchair": 29.0
+       }
+      },
+      "smoke_cost": 12884.7107724245,
+      "trip_cost": 36105.05547271761,
+      "unserved_cost": 128880.0
+     },
+     "SPOT_FIRE": {
+      "corridor_trips": {
+       "C1": 6,
+       "C2": 6,
+       "C3": 6,
+       "C4": 5,
+       "C5": 4
+      },
+      "crowding_cost": 3678.0,
+      "fill_rates": {
+       "P01": 1.0,
+       "P02": 1.0,
+       "P03": 0.8363636363636363,
+       "P04": 1.0,
+       "P05": 1.0,
+       "P06": 1.0,
+       "P07": 0.9868421052631579,
+       "P08": 0.9897959183673469,
+       "P09": 0.875,
+       "P10": 1.0
+      },
+      "late_cost": 2025.0,
+      "shelter_in_place_cost": 144170.0,
+      "shelter_load": {
+       "S1": {
+        "evacuees": 162.0,
+        "medical": 21.650000000000002,
+        "pets": 10.0,
+        "wheelchair": 8.0
+       },
+       "S2": {
+        "evacuees": 207.0,
+        "medical": 23.26,
+        "pets": 38.0,
+        "wheelchair": 22.0
+       },
+       "S3": {
+        "evacuees": 233.0,
+        "medical": 23.56,
+        "pets": 33.0,
+        "wheelchair": 20.0
+       },
+       "S5": {
+        "evacuees": 158.0,
+        "medical": 41.5,
+        "pets": 22.0,
+        "wheelchair": 28.0
+       }
+      },
+      "smoke_cost": 62174.7462324994,
+      "trip_cost": 53623.969161459776,
+      "unserved_cost": 266040.0
+     },
+     "WIND_SHIFT": {
+      "corridor_trips": {
+       "C1": 6,
+       "C2": 6,
+       "C3": 6,
+       "C4": 5,
+       "C5": 5
+      },
+      "crowding_cost": 2526.0,
+      "fill_rates": {
+       "P01": 1.0,
+       "P02": 1.0,
+       "P03": 0.8303571428571429,
+       "P04": 1.0,
+       "P05": 1.0,
+       "P06": 1.0,
+       "P07": 0.9855072463768116,
+       "P08": 0.9891304347826086,
+       "P09": 1.0,
+       "P10": 1.0
+      },
+      "late_cost": 675.0,
+      "shelter_in_place_cost": 122460.0,
+      "shelter_load": {
+       "S1": {
+        "evacuees": 128.0,
+        "medical": 19.97,
+        "pets": 9.0,
+        "wheelchair": 7.0
+       },
+       "S2": {
+        "evacuees": 204.0,
+        "medical": 21.939999999999998,
+        "pets": 37.0,
+        "wheelchair": 21.0
+       },
+       "S3": {
+        "evacuees": 230.0,
+        "medical": 27.6,
+        "pets": 26.0,
+        "wheelchair": 17.0
+       },
+       "S5": {
+        "evacuees": 192.0,
+        "medical": 41.980000000000004,
+        "pets": 27.0,
+        "wheelchair": 29.0
+       }
+      },
+      "smoke_cost": 44869.04576691273,
+      "trip_cost": 50769.457509173524,
+      "unserved_cost": 150480.0
+     }
+    },
+    "tail_risk_cost": 876130.2486886218,
+    "total_cost": 860886.0992884045
+   },
+   "reward": {
+    "feasibility": 1.0,
+    "quality": 2.0
+   },
+   "reward_details": {
+    "agent_objective": 860886.0992884045,
+    "agent_objective_source": "objective",
+    "best_bound": null,
+    "bound_sense": "lower",
+    "evaluation_diagnostics": {
+     "error_count": 0,
+     "objective": 860886.0992884045,
+     "profit": null,
+     "score": null,
+     "total_cost": 860886.0992884045
+    },
+    "fallback_mip_gap": 0.0005,
+    "fallback_reference_scale": 860886.0992884045,
+    "feasibility": 1.0,
+    "formula": "clip(2 + d if d >= -1 else 1.5 + 0.5*d, 0, 2), d = (R - O) / (max(abs(R), 1e-8) * mip_gap)",
+    "objective_sense": "minimize",
+    "quality": 2.0,
+    "quality_status": "scored_with_mip_gap_fallback",
+    "reference_metrics": {
+     "best_bound": null,
+     "best_bound_source": null,
+     "bound_sense": "lower",
+     "evaluation_summary": {
+      "error_count": 0,
+      "feasible": true,
+      "objective": 860886.0992884045,
+      "total_cost": 860886.0992884045
+     },
+     "generated_at": "2026-05-16T17:27:02.929505+00:00",
+     "mip_gap": 0.0005,
+     "objective_sense": "minimize",
+     "quality_formula": "clip(1 + (R - O) / (R - B), 0, 2) if B exists and R - B >= max(abs(R), 1e-8) * mip_gap; otherwise let d=(R - O)/(max(abs(R), 1e-8)*mip_gap), quality=clip(2+d if d>=-1 else 1.5+0.5*d, 0, 2); if no R, quality = 2",
+     "reference_objective": 860886.0992884045,
+     "reference_objective_source": "objective",
+     "solution_path": "/private/tmp/oragentbench_reference_solutions/wildfire_bus_evacuation_planning_reference_solution.json",
+     "solver_summary": {
+      "best_bound": null,
+      "error_count": 0,
+      "feasible": true,
+      "method": "scenario_greedy_route_construction_with_capacity_repair",
+      "mip_gap": 0.0005,
+      "objective": 860886.0992884045,
+      "status": "heuristic_solution_written",
+      "time_limit_seconds": 300.0
+     },
+     "task_name": "wildfire_bus_evacuation_planning",
+     "time_limit_seconds": 300.0
+    },
+    "reference_objective": 860886.0992884045,
+    "scalar_reward": 1.0,
+    "scalar_reward_formula": "(feasibility + quality) / 3.0"
+   },
+   "runner": {
+    "return_code": 0,
+    "timed_out": false,
+    "wall_seconds": 15.086997
+   }
+  },
+  "metrics": {
+   "feasible": true,
+   "quality": 2.0,
+   "true_correct": true,
+   "objective": 860886.0992884045,
+   "evaluation_unknown": false
+  }
+ },
+ "heatwave_cooling_center_resource_plan": {
+  "runner": {
+   "return_code": 0,
+   "timed_out": false,
+   "stdout": "{\n  \"best_bound\": 272942.04983159096,\n  \"evaluation_objective\": 273011.26,\n  \"mip_gap\": 0.000253570926325321,\n  \"objective\": 273011.2599999999,\n  \"solution\": \"/app/submissions/solution.csv\",\n  \"status\": \"gaplimit\"\n}\n",
+   "stderr": ""
+  },
+  "official": {
+   "evaluation": {
+    "environment": "heatwave_cooling_center_resource_plan",
+    "error_count": 0,
+    "errors": [],
+    "feasible": true,
+    "objective": 273011.26,
+    "served_people": 8978.0,
+    "total_cost": 273011.26
+   },
+   "reward": {
+    "feasibility": 1.0,
+    "quality": 2.0
+   },
+   "reward_details": {
+    "agent_objective": 273011.26,
+    "agent_objective_source": "objective",
+    "best_bound": 272942.04983159096,
+    "bound_sense": "lower",
+    "evaluation_diagnostics": {
+     "error_count": 0,
+     "objective": 273011.26,
+     "profit": null,
+     "score": null,
+     "total_cost": 273011.26
+    },
+    "fallback_mip_gap": 0.0005,
+    "fallback_reference_scale": 273011.26,
+    "feasibility": 1.0,
+    "formula": "clip(2 + d if d >= -1 else 1.5 + 0.5*d, 0, 2), d = (R - O) / (max(abs(R), 1e-8) * mip_gap)",
+    "objective_sense": "minimize",
+    "quality": 2.0,
+    "quality_status": "bound_gap_below_mip_gap",
+    "reference_metrics": {
+     "best_bound": 272942.04983159096,
+     "best_bound_source": "best_bound",
+     "bound_sense": "lower",
+     "evaluation_summary": {
+      "error_count": 0,
+      "feasible": true,
+      "objective": 273011.26,
+      "total_cost": 273011.26
+     },
+     "generated_at": "2026-05-18T10:30:24.070527+00:00",
+     "mip_gap": 0.0005,
+     "objective_sense": "minimize",
+     "quality_formula": "clip(1 + (R - O) / (R - B), 0, 2) if B exists and R - B >= max(abs(R), 1e-8) * mip_gap; otherwise let d=(R - O)/(max(abs(R), 1e-8)*mip_gap), quality=clip(2+d if d>=-1 else 1.5+0.5*d, 0, 2); if no R, quality = 2",
+     "reference_objective": 273011.26,
+     "reference_objective_source": "objective",
+     "solution_path": "reference_solutions/heatwave_cooling_center_resource_plan_reference_solution.csv",
+     "solver_summary": {
+      "best_bound": 272942.04983159096,
+      "evaluation_objective": 273011.26,
+      "mip_gap": 0.000253570926325321,
+      "objective": 273011.2599999999,
+      "solution": "reference_solutions/heatwave_cooling_center_resource_plan_reference_solution.csv",
+      "status": "gaplimit"
+     },
+     "task_name": "heatwave_cooling_center_resource_plan",
+     "time_limit_seconds": 300.0
+    },
+    "reference_objective": 273011.26,
+    "scalar_reward": 1.0,
+    "scalar_reward_formula": "(feasibility + quality) / 3.0"
+   },
+   "runner": {
+    "return_code": 0,
+    "timed_out": false,
+    "wall_seconds": 21.945238
+   }
+  },
+  "metrics": {
+   "feasible": true,
+   "quality": 2.0,
+   "true_correct": true,
+   "objective": 273011.26,
+   "evaluation_unknown": false
+  }
+ },
+ "satellite_disaster_response_downlink": {
+  "runner": {
+   "return_code": 0,
+   "timed_out": false,
+   "stdout": "{\n  \"best_bound\": 7510.442039706611,\n  \"constraints\": 4867,\n  \"evaluation\": {\n    \"error_count\": 0,\n    \"errors\": [],\n    \"expected_profit\": 2764.97808,\n    \"feasible\": true,\n    \"first_stage_observation_count\": 25,\n    \"profit\": 2764.97808,\n    \"scenario_delivered_counts\": {\n      \"S_CLEAR\": 24,\n      \"S_STATION_OUTAGE\": 24,\n      \"S_TROPICAL_CLOUDS\": 15,\n      \"S_WILDFIRE_SMOKE\": 24\n    },\n    \"scenario_profits\": {\n      \"S_CLEAR\": 3509.3999999999996,\n      \"S_STATION_OUTAGE\": 3597.14,\n      \"S_TROPICAL_CLOUDS\": 1971.98,\n      \"S_WILDFIRE_SMOKE\": 3651.2160000000003\n    },\n    \"tail_loss\": 0.0\n  },\n  \"gap\": 1.7162754359725731,\n  \"objective\": 2764.978080000001,\n  \"output\": \"/app/submissions/solution.csv\",\n  \"solutions\": 2,\n  \"status\": \"timelimit\",\n  \"variables\": 3462\n}\n",
+   "stderr": ""
+  },
+  "official": {
+   "evaluation": {
+    "error_count": 0,
+    "errors": [],
+    "expected_profit": 2764.97808,
+    "feasible": true,
+    "first_stage_observation_count": 25,
+    "profit": 2764.97808,
+    "scenario_delivered_counts": {
+     "S_CLEAR": 24,
+     "S_STATION_OUTAGE": 24,
+     "S_TROPICAL_CLOUDS": 15,
+     "S_WILDFIRE_SMOKE": 24
+    },
+    "scenario_profits": {
+     "S_CLEAR": 3509.3999999999996,
+     "S_STATION_OUTAGE": 3597.14,
+     "S_TROPICAL_CLOUDS": 1971.98,
+     "S_WILDFIRE_SMOKE": 3651.2160000000003
+    },
+    "tail_loss": 0.0
+   },
+   "reward": {
+    "feasibility": 1.0,
+    "quality": 0.0
+   },
+   "reward_details": {
+    "agent_objective": 2764.97808,
+    "agent_objective_source": "profit",
+    "best_bound": 7404.412597424037,
+    "bound_sense": "upper",
+    "evaluation_diagnostics": {
+     "error_count": 0,
+     "objective": null,
+     "profit": 2764.97808,
+     "score": null,
+     "total_cost": null
+    },
+    "fallback_mip_gap": 0.0005,
+    "fallback_reference_scale": 6918.37424,
+    "feasibility": 1.0,
+    "formula": "clip(1 + (O - R) / (B - R), 0, 2) when B exists and B - R >= max(abs(R), 1e-8) * mip_gap",
+    "objective_sense": "maximize",
+    "quality": 0.0,
+    "quality_status": "scored_with_best_bound",
+    "reference_metrics": {
+     "best_bound": 7404.412597424037,
+     "best_bound_source": "best_bound",
+     "bound_sense": "upper",
+     "evaluation_summary": {
+      "error_count": 0,
+      "feasible": true,
+      "profit": 6918.37424
+     },
+     "generated_at": "2026-05-16T22:15:59.790920+00:00",
+     "mip_gap": 0.0005,
+     "objective_sense": "maximize",
+     "quality_formula": "clip(1 + (O - R) / (B - R), 0, 2) if B exists and B - R >= max(abs(R), 1e-8) * mip_gap; otherwise let d=(O - R)/(max(abs(R), 1e-8)*mip_gap), quality=clip(2+d if d>=-1 else 1.5+0.5*d, 0, 2); if no R, quality = 2",
+     "reference_objective": 6918.37424,
+     "reference_objective_source": "profit",
+     "solution_path": "/private/tmp/oragentbench_reference_solutions/satellite_disaster_response_downlink_reference_solution.csv",
+     "solver_summary": {
+      "best_bound": 7404.412597424037,
+      "constraints": 4896,
+      "evaluation": {
+       "error_count": 0,
+       "errors": [],
+       "expected_profit": 6918.37424,
+       "feasible": true,
+       "first_stage_observation_count": 43,
+       "profit": 6918.37424,
+       "scenario_delivered_counts": {
+        "S_CLEAR": 42,
+        "S_STATION_OUTAGE": 37,
+        "S_TROPICAL_CLOUDS": 30,
+        "S_WILDFIRE_SMOKE": 41
+       },
+       "scenario_profits": {
+        "S_CLEAR": 8284.54,
+        "S_STATION_OUTAGE": 7448.079999999999,
+        "S_TROPICAL_CLOUDS": 5859.61,
+        "S_WILDFIRE_SMOKE": 8368.928000000002
+       },
+       "tail_loss": 0.0
+      },
+      "gap": 0.07025326190276238,
+      "objective": 6918.374239999993,
+      "output": "/private/tmp/oragentbench_reference_solutions/satellite_disaster_response_downlink_reference_solution.csv",
+      "solutions": 34,
+      "status": "timelimit",
+      "variables": 3462
+     },
+     "task_name": "satellite_disaster_response_downlink",
+     "time_limit_seconds": 300.0
+    },
+    "reference_objective": 6918.37424,
+    "scalar_reward": 0.3333333333333333,
+    "scalar_reward_formula": "(feasibility + quality) / 3.0"
+   },
+   "runner": {
+    "return_code": 0,
+    "timed_out": false,
+    "wall_seconds": 12.579211
+   }
+  },
+  "metrics": {
+   "feasible": true,
+   "quality": 0.0,
+   "true_correct": false,
+   "objective": 2764.97808,
+   "evaluation_unknown": false
+  }
+ },
+ "naloxone_drone_response_network": {
+  "runner": {
+   "return_code": 0,
+   "timed_out": false,
+   "stdout": "{\n  \"best_bound\": null,\n  \"candidate_policies_checked\": 453,\n  \"feasible_policies_seen\": 2,\n  \"objective\": 139170.69611067677,\n  \"runtime_seconds\": 99.16359877586365,\n  \"solution_path\": \"/app/submissions/solution.csv\",\n  \"status\": \"heuristic_complete\"\n}\n",
+   "stderr": ""
+  },
+  "official": {
+   "evaluation": {
+    "binding_corridors": [
+     "S3:central->central",
+     "S4:central->central",
+     "S4:east->east",
+     "S4:north->central",
+     "S5:central->central",
+     "S6:central->west"
+    ],
+    "error_count": 0,
+    "errors": [],
+    "expected_equity_gap": 0.0,
+    "expected_ground_share": 0.0,
+    "expected_mortality_risk": 7.172931517148488,
+    "expected_response_minutes": 6.333042508032608,
+    "feasible": true,
+    "max_corridor_utilization": 0.9636666666666666,
+    "max_queue_utilization": 0.08491720329256398,
+    "objective": 139170.69611067677,
+    "open_bases": [
+     "B01",
+     "B02",
+     "B04",
+     "B07",
+     "B08"
+    ],
+    "scenario_avg_response_minutes": {
+     "S1": 5.557051489215277,
+     "S2": 6.4959005085890995,
+     "S3": 5.94441638622917,
+     "S4": 6.477874507548231,
+     "S5": 7.752235042843354,
+     "S6": 7.622690513135441
+    },
+    "scenario_equity_gap": {
+     "S1": 0.0,
+     "S2": 0.0,
+     "S3": 0.0,
+     "S4": 0.0,
+     "S5": 0.0,
+     "S6": 0.0
+    },
+    "scenario_ground_share": {
+     "S1": 0.0,
+     "S2": 0.0,
+     "S3": 0.0,
+     "S4": 0.0,
+     "S5": 0.0,
+     "S6": 0.0
+    },
+    "tail_response_minutes": 7.687462777989397,
+    "total_cost": 320584.0,
+    "total_drones": 13
+   },
+   "reward": {
+    "feasibility": 1.0,
+    "quality": 2.0
+   },
+   "reward_details": {
+    "agent_objective": 139170.69611067677,
+    "agent_objective_source": "objective",
+    "best_bound": null,
+    "bound_sense": "lower",
+    "evaluation_diagnostics": {
+     "error_count": 0,
+     "objective": 139170.69611067677,
+     "profit": null,
+     "score": null,
+     "total_cost": 320584.0
+    },
+    "fallback_mip_gap": 0.0005,
+    "fallback_reference_scale": 139170.69611067677,
+    "feasibility": 1.0,
+    "formula": "clip(2 + d if d >= -1 else 1.5 + 0.5*d, 0, 2), d = (R - O) / (max(abs(R), 1e-8) * mip_gap)",
+    "objective_sense": "minimize",
+    "quality": 2.0,
+    "quality_status": "scored_with_mip_gap_fallback",
+    "reference_metrics": {
+     "best_bound": null,
+     "best_bound_source": null,
+     "bound_sense": "lower",
+     "evaluation_summary": {
+      "error_count": 0,
+      "feasible": true,
+      "objective": 139170.69611067677,
+      "total_cost": 320584.0
+     },
+     "generated_at": "2026-05-24T12:53:09Z",
+     "mip_gap": 0.0005,
+     "objective_sense": "minimize",
+     "quality_formula": "clip(1 + (R - O) / (R - B), 0, 2) if B exists and R - B >= max(abs(R), 1e-8) * mip_gap; otherwise let d=(R - O)/(max(abs(R), 1e-8)*mip_gap), quality=clip(2+d if d>=-1 else 1.5+0.5*d, 0, 2); if no R, quality = 2",
+     "reference_objective": 139170.69611067677,
+     "reference_objective_source": "objective",
+     "solution_path": "reference_solutions/naloxone_drone_response_network_reference_solution.csv",
+     "solver_summary": {
+      "best_bound": null,
+      "candidate_policies_checked": 453,
+      "feasible_policies_seen": 2,
+      "objective": 139170.69611067677,
+      "runtime_seconds": 3.2510337829589844,
+      "solution_path": "reference_solutions/naloxone_drone_response_network_reference_solution.csv",
+      "status": "heuristic_complete"
+     },
+     "task_name": "naloxone_drone_response_network",
+     "time_limit_seconds": 300.0
+    },
+    "reference_objective": 139170.69611067677,
+    "scalar_reward": 1.0,
+    "scalar_reward_formula": "(feasibility + quality) / 3.0"
+   },
+   "runner": {
+    "return_code": 0,
+    "timed_out": false,
+    "wall_seconds": 18.043464
+   }
+  },
+  "metrics": {
+   "feasible": true,
+   "quality": 2.0,
+   "true_correct": true,
+   "objective": 139170.69611067677,
+   "evaluation_unknown": false
+  }
+ },
+ "portable_battery_swap_rebalancing": {
+  "runner": {
+   "return_code": 0,
+   "timed_out": false,
+   "stdout": "{\n  \"best_bound\": 3471.164610998091,\n  \"evaluation_objective\": 3471.164610998212,\n  \"mip_gap\": 0.0,\n  \"objective\": 3471.164610998091,\n  \"solution\": \"/app/submissions/solution.csv\",\n  \"status\": \"optimal\"\n}\n",
+   "stderr": ""
+  },
+  "official": {
+   "evaluation": {
+    "environment": "portable_battery_swap_rebalancing",
+    "error_count": 0,
+    "errors": [],
+    "feasible": true,
+    "objective": 3471.164610998212,
+    "total_cost": 3471.164610998212
+   },
+   "reward": {
+    "feasibility": 1.0,
+    "quality": 2.0
+   },
+   "reward_details": {
+    "agent_objective": 3471.164610998212,
+    "agent_objective_source": "objective",
+    "best_bound": 3471.164610998091,
+    "bound_sense": "lower",
+    "evaluation_diagnostics": {
+     "error_count": 0,
+     "objective": 3471.164610998212,
+     "profit": null,
+     "score": null,
+     "total_cost": 3471.164610998212
+    },
+    "fallback_mip_gap": 0.0005,
+    "fallback_reference_scale": 3471.164610998212,
+    "feasibility": 1.0,
+    "formula": "clip(2 + d if d >= -1 else 1.5 + 0.5*d, 0, 2), d = (R - O) / (max(abs(R), 1e-8) * mip_gap)",
+    "objective_sense": "minimize",
+    "quality": 2.0,
+    "quality_status": "bound_gap_below_mip_gap",
+    "reference_metrics": {
+     "best_bound": 3471.164610998091,
+     "best_bound_source": "best_bound",
+     "bound_sense": "lower",
+     "evaluation_summary": {
+      "error_count": 0,
+      "feasible": true,
+      "objective": 3471.164610998212,
+      "total_cost": 3471.164610998212
+     },
+     "generated_at": "2026-05-18T16:10:43.671437+00:00",
+     "mip_gap": 0.0005,
+     "objective_sense": "minimize",
+     "quality_formula": "clip(1 + (R - O) / (R - B), 0, 2) if B exists and R - B >= max(abs(R), 1e-8) * mip_gap; otherwise let d=(R - O)/(max(abs(R), 1e-8)*mip_gap), quality=clip(2+d if d>=-1 else 1.5+0.5*d, 0, 2); if no R, quality = 2",
+     "reference_objective": 3471.164610998212,
+     "reference_objective_source": "objective",
+     "solution_path": "reference_solutions/portable_battery_swap_rebalancing_reference_solution.csv",
+     "solver_summary": {
+      "best_bound": 3471.164610998091,
+      "evaluation_objective": 3471.164610998212,
+      "mip_gap": 0.0,
+      "objective": 3471.164610998091,
+      "solution": "reference_solutions/portable_battery_swap_rebalancing_reference_solution.csv",
+      "status": "optimal"
+     },
+     "task_name": "portable_battery_swap_rebalancing",
+     "time_limit_seconds": 300.0
+    },
+    "reference_objective": 3471.164610998212,
+    "scalar_reward": 1.0,
+    "scalar_reward_formula": "(feasibility + quality) / 3.0"
+   },
+   "runner": {
+    "return_code": 0,
+    "timed_out": false,
+    "wall_seconds": 28.926914
+   }
+  },
+  "metrics": {
+   "feasible": true,
+   "quality": 2.0,
+   "true_correct": true,
+   "objective": 3471.164610998212,
+   "evaluation_unknown": false
+  }
+ },
+ "offshore_wind_maintenance": {
+  "runner": {
+   "return_code": 0,
+   "timed_out": false,
+   "stdout": "{'status': 'optimal', 'objective': 98842.5, 'best_bound': 98842.5, 'gap': 0.0, 'selected_routes': 9, 'assigned_tasks': 19, 'evaluation': {'feasible': True, 'errors': [], 'error_count': 0, 'objective': 98842.5, 'score': 98842.5, 'objective_terms': {'route_cost': 73100.0, 'late_penalty': 7000.0, 'downtime_cost': 21060.0, 'deferral_penalty': 2500.0, 'overtime_cost': 1232.5, 'same_turbine_opportunity_credit': 5400.0, 'string_opportunity_credit': 650.0, 'opportunity_credit': 6050.0}, 'selected_route_count': 9, 'assigned_task_count': 19, 'overtime_by_day_skill': {'1:blade': 0.0, '1:electrical': 0.0, '1:mechanical': 0.0, '1:cable': 0.0, '2:blade': 0.0, '2:electrical': 0.0, '2:mechanical': 0.0, '2:cable': 2.0, '3:blade': 3.5, '3:electrical': 0.0, '3:mechanical': 0.0, '3:cable': 2.0, '4:blade': 0.0, '4:electrical': 0.0, '4:mechanical': 0.0, '4:cable': 3.5, '5:blade': 0.0, '5:electrical': 0.0, '5:mechanical': 0.0, '5:cable': 0.0}}}\n",
+   "stderr": ""
+  },
+  "official": {
+   "evaluation": {
+    "assigned_task_count": 19,
+    "error_count": 0,
+    "errors": [],
+    "feasible": true,
+    "objective": 98842.5,
+    "objective_terms": {
+     "deferral_penalty": 2500.0,
+     "downtime_cost": 21060.0,
+     "late_penalty": 7000.0,
+     "opportunity_credit": 6050.0,
+     "overtime_cost": 1232.5,
+     "route_cost": 73100.0,
+     "same_turbine_opportunity_credit": 5400.0,
+     "string_opportunity_credit": 650.0
+    },
+    "overtime_by_day_skill": {
+     "1:blade": 0.0,
+     "1:cable": 0.0,
+     "1:electrical": 0.0,
+     "1:mechanical": 0.0,
+     "2:blade": 0.0,
+     "2:cable": 2.0,
+     "2:electrical": 0.0,
+     "2:mechanical": 0.0,
+     "3:blade": 3.5,
+     "3:cable": 2.0,
+     "3:electrical": 0.0,
+     "3:mechanical": 0.0,
+     "4:blade": 0.0,
+     "4:cable": 3.5,
+     "4:electrical": 0.0,
+     "4:mechanical": 0.0,
+     "5:blade": 0.0,
+     "5:cable": 0.0,
+     "5:electrical": 0.0,
+     "5:mechanical": 0.0
+    },
+    "score": 98842.5,
+    "selected_route_count": 9
+   },
+   "reward": {
+    "feasibility": 1.0,
+    "quality": 2.0
+   },
+   "reward_details": {
+    "agent_objective": 98842.5,
+    "agent_objective_source": "objective",
+    "best_bound": 98842.5,
+    "bound_sense": "lower",
+    "evaluation_diagnostics": {
+     "error_count": 0,
+     "objective": 98842.5,
+     "profit": null,
+     "score": 98842.5,
+     "total_cost": null
+    },
+    "fallback_mip_gap": 0.0005,
+    "fallback_reference_scale": 98842.5,
+    "feasibility": 1.0,
+    "formula": "clip(2 + d if d >= -1 else 1.5 + 0.5*d, 0, 2), d = (R - O) / (max(abs(R), 1e-8) * mip_gap)",
+    "objective_sense": "minimize",
+    "quality": 2.0,
+    "quality_status": "bound_gap_below_mip_gap",
+    "reference_metrics": {
+     "best_bound": 98842.5,
+     "best_bound_source": "best_bound",
+     "bound_sense": "lower",
+     "evaluation_summary": {
+      "error_count": 0,
+      "feasible": true,
+      "objective": 98842.5,
+      "score": 98842.5
+     },
+     "generated_at": "2026-05-25T02:36:49.102254+00:00",
+     "mip_gap": 0.0005,
+     "objective_sense": "minimize",
+     "quality_formula": "clip(1 + (R - O) / (R - B), 0, 2) if B exists and R - B >= max(abs(R), 1e-8) * mip_gap; otherwise let d=(R - O)/(max(abs(R), 1e-8)*mip_gap), quality=clip(2+d if d>=-1 else 1.5+0.5*d, 0, 2); if no R, quality = 2",
+     "reference_objective": 98842.5,
+     "reference_objective_source": "objective",
+     "solution_path": "reference_solutions/offshore_wind_maintenance_reference_solution.csv",
+     "solver_summary": {
+      "assigned_tasks": 19,
+      "best_bound": 98842.5,
+      "evaluation": {
+       "assigned_task_count": 19,
+       "error_count": 0,
+       "errors": [],
+       "feasible": true,
+       "objective": 98842.5,
+       "objective_terms": {
+        "deferral_penalty": 2500.0,
+        "downtime_cost": 21060.0,
+        "late_penalty": 7000.0,
+        "opportunity_credit": 6050.0,
+        "overtime_cost": 1232.5,
+        "route_cost": 73100.0,
+        "same_turbine_opportunity_credit": 5400.0,
+        "string_opportunity_credit": 650.0
+       },
+       "overtime_by_day_skill": {
+        "1:blade": 0.0,
+        "1:cable": 0.0,
+        "1:electrical": 0.0,
+        "1:mechanical": 0.0,
+        "2:blade": 0.0,
+        "2:cable": 2.0,
+        "2:electrical": 0.0,
+        "2:mechanical": 0.0,
+        "3:blade": 3.5,
+        "3:cable": 2.0,
+        "3:electrical": 0.0,
+        "3:mechanical": 0.0,
+        "4:blade": 0.0,
+        "4:cable": 3.5,
+        "4:electrical": 0.0,
+        "4:mechanical": 0.0,
+        "5:blade": 0.0,
+        "5:cable": 0.0,
+        "5:electrical": 0.0,
+        "5:mechanical": 0.0
+       },
+       "score": 98842.5,
+       "selected_route_count": 9
+      },
+      "gap": 0.0,
+      "objective": 98842.5,
+      "selected_routes": 9,
+      "status": "optimal"
+     },
+     "task_name": "offshore_wind_maintenance",
+     "time_limit_seconds": 300.0
+    },
+    "reference_objective": 98842.5,
+    "scalar_reward": 1.0,
+    "scalar_reward_formula": "(feasibility + quality) / 3.0"
+   },
+   "runner": {
+    "return_code": 0,
+    "timed_out": false,
+    "wall_seconds": 13.260949
+   }
+  },
+  "metrics": {
+   "feasible": true,
+   "quality": 2.0,
+   "true_correct": true,
+   "objective": 98842.5,
+   "evaluation_unknown": false
+  }
+ }
+}

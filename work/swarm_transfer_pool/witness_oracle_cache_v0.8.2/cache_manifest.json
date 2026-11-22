@@ -1,0 +1,11 @@
+{
+ "source": "/home/hewj13/wm/ora/work/swarm_transfer_pool/oracle_logistics_v0.8.2",
+ "oracle_results_sha256": "89b623f324a3cc4b69c747c40ef43912b86b117728c28617b5218e3173231b7b",
+ "task_names": [
+  "air_cargo_stochastic_order_allocation",
+  "wildfire_bus_evacuation_planning",
+  "heatwave_cooling_center_resource_plan"
+ ],
+ "layout": "task/oracle/{result.json,app -> immutable batch oracle workspace}",
+ "tasks_sha256": "eb8a234a75d634bd50deb2ac1915bbf977624b468f2e59ee1448fca24e34ad76"
+}

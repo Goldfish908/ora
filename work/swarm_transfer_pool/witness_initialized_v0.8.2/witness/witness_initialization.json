@@ -1,0 +1,120 @@
+{
+ "domain": "logistics",
+ "n_tasks": 3,
+ "n_cases": 12,
+ "execution_audit": {
+  "records": [
+   {
+    "case_id": "exec_clean_0",
+    "expected": "pass",
+    "observed": "pass"
+   },
+   {
+    "case_id": "exec_wrong_0",
+    "expected": "fail",
+    "observed": "fail"
+   },
+   {
+    "case_id": "exec_clean_1",
+    "expected": "pass",
+    "observed": "pass"
+   },
+   {
+    "case_id": "exec_wrong_1",
+    "expected": "fail",
+    "observed": "fail"
+   },
+   {
+    "case_id": "exec_clean_2",
+    "expected": "pass",
+    "observed": "pass"
+   },
+   {
+    "case_id": "exec_wrong_2",
+    "expected": "fail",
+    "observed": "fail"
+   }
+  ],
+  "n_clean": 3,
+  "n_wrong": 3,
+  "precision": 1.0,
+  "detection": 1.0,
+  "unknown": 0,
+  "passed": true,
+  "reasons": [],
+  "at": "2026-11-22T06:36:45.938499+00:00"
+ },
+ "official_audit": {
+  "records": [
+   {
+    "case_id": "air_cargo_stochastic_order_allocation:clean",
+    "expected": "pass",
+    "observed": "pass"
+   },
+   {
+    "case_id": "air_cargo_stochastic_order_allocation:missing_solution",
+    "expected": "fail",
+    "observed": "fail"
+   },
+   {
+    "case_id": "air_cargo_stochastic_order_allocation:invalid_schema",
+    "expected": "fail",
+    "observed": "fail"
+   },
+   {
+    "case_id": "air_cargo_stochastic_order_allocation:empty_solution",
+    "expected": "fail",
+    "observed": "fail"
+   },
+   {
+    "case_id": "wildfire_bus_evacuation_planning:clean",
+    "expected": "pass",
+    "observed": "pass"
+   },
+   {
+    "case_id": "wildfire_bus_evacuation_planning:missing_solution",
+    "expected": "fail",
+    "observed": "fail"
+   },
+   {
+    "case_id": "wildfire_bus_evacuation_planning:invalid_schema",
+    "expected": "fail",
+    "observed": "fail"
+   },
+   {
+    "case_id": "wildfire_bus_evacuation_planning:empty_solution",
+    "expected": "fail",
+    "observed": "fail"
+   },
+   {
+    "case_id": "heatwave_cooling_center_resource_plan:clean",
+    "expected": "pass",
+    "observed": "pass"
+   },
+   {
+    "case_id": "heatwave_cooling_center_resource_plan:missing_solution",
+    "expected": "fail",
+    "observed": "fail"
+   },
+   {
+    "case_id": "heatwave_cooling_center_resource_plan:invalid_schema",
+    "expected": "fail",
+    "observed": "fail"
+   },
+   {
+    "case_id": "heatwave_cooling_center_resource_plan:empty_solution",
+    "expected": "fail",
+    "observed": "fail"
+   }
+  ],
+  "n_clean": 3,
+  "n_wrong": 9,
+  "precision": 1.0,
+  "detection": 1.0,
+  "unknown": 0,
+  "passed": true,
+  "reasons": [],
+  "at": "2026-11-22T06:40:07.233379+00:00"
+ },
+ "scope_note": "Official task evaluators are used only in dev/audit. This is not a universal cross-domain Witness."
+}

@@ -238,3 +238,36 @@ B2 随后只针对失败/幻影任务进行有界修复，原本正确的木板�
 复验为 2/3 真正确、0 幻影、0 UNKNOWN，所有 LLM 调用为 0。它证明的是确定性 guard 的局部工程收益，不是 GEPA 或 memory 的增益，也不说明所有数据/业务错误已经解决。
 
 后续扩展配置为 `configs/cleanroom_expand_energy_v0.7.json`、`cleanroom_expand_logistics_v0.7.json`、`cleanroom_expand_services_v0.7.json`。正式 dev/audit/transfer 划分将在健康检查完成后冻结。
+
+
+## v0.7 扩展冻结配置与 B0 实测
+
+冻结角色配置为 `configs/cleanroom_frozen_roles_v0.7.json`，包含 12 个唯一健康任务。任务角色如下；后续 transfer 不参与 GEPA train/validation，也不参与 memory 晋升审查。
+
+| 角色 | 任务 |
+|---|---|
+| GEPA dev | additive_microfactory_order_planning、industrial_supply_planning、second_life_battery_pack_assembly |
+| 独立审计 | smart_building_demand_response_dispatch、robust_microgrid_islanding_dispatch、fuel_tanker_compartment_routing、hybrid_telehealth_appointment_scheduling |
+| 后续 transfer | industrial_water_reuse_blending、mass_timber_panel_cutting_plan、ev_battery_recycling_network、real_world_3d_bin_packing |
+| GEPA validation | carbon_aware_compute_scheduling |
+
+另外四个通过健康检查的任务为 cold_chain_locker_capacity_planning、cycling_network_design、green_hydrogen_hub_resilience_planning 和 nurse_rostering，可用于同域 Witness 校准；健康池合计 16 题。electric_bus_depot_charging、bike_share_rebalancing、green_port_berth_planning、german_or_scheduling 和 sterile_processing_robust_schedule 因参考求解没有可行解或没有 incumbent 而排除。医疗域目前只有两个健康任务，未满足三题初始化要求，不得伪造授权。
+
+统一生成预算为 24,576 max tokens，关闭 thinking，模型阶段 4,096 tokens；B0 与后续 B1 使用相同 guard 和实现。空规范 B0 的真实结果如下。
+
+| 批次 | 任务 | 真正确 | 幻影 | UNKNOWN | 失败族 | LLM tokens |
+|---|---|---|---|---|---|---:|
+| 独立审计 | smart_building_demand_response_dispatch | 是 | 否 | 否 | true_correct | 18,727 |
+| 独立审计 | robust_microgrid_islanding_dispatch | 否 | 否 | 否 | incomplete_artifact | 42,162 |
+| 独立审计 | fuel_tanker_compartment_routing | 否 | 否 | 否 | execution_error: unhashable dict | 31,031 |
+| 独立审计 | hybrid_telehealth_appointment_scheduling | 是 | 否 | 否 | true_correct | 22,262 |
+| 后续 transfer | industrial_water_reuse_blending | 否 | 是 | 否 | phantom_proxy | 13,436 |
+| 后续 transfer | mass_timber_panel_cutting_plan | 否 | 否 | 否 | execution_error: 不存在的 Scip 导入 | 165,694 |
+| 后续 transfer | ev_battery_recycling_network | 否 | 否 | 否 | execution_error: 不存在的 SCIP 导入 | 29,519 |
+| 后续 transfer | real_world_3d_bin_packing | 否 | 否 | 否 | incomplete_artifact | 21,727 |
+
+审计批汇总为 2/4 真正确、0 幻影、0 UNKNOWN、114,182 tokens；后续 transfer 为 0/4 真正确、1/4 幻影、0 UNKNOWN、230,376 tokens。证据分别为 `work/cleanroom_expanded_audit_suite_v0.7/B0/replay_result.json` 和 `work/cleanroom_expanded_transfer_suite_v0.7/B0/replay_result.json`。这些结果只作为同实现基线，不能用来筛选 GEPA 候选。
+
+Witness 按域初始化，不能跨域继承否决权。能源域使用 smart building、robust microgrid 和 green hydrogen；物流域使用 cold chain、fuel tanker 和 cycling network。两域各自完成 3 个 clean、9 个 wrong 的真实审计，precision=1.0、detection=1.0、UNKNOWN=0。`scripts/cleanroom_witness_cache.py` 只适配批量 oracle 的只读缓存布局，不改写原工作区。官方 Witness 与官方评价器同源，仍不是完全独立的业务真值。
+
+B3 新增作用域裁剪：即使制造域 memory 晋升，packing_logistics 的 real_world_3d_bin_packing 也保持 not_run，不能套用制造域生成规范。医疗校准失败同样保持未授权。木板材和 EV 的 `Scip/SCIP` 导入暴露出现行 guard 的覆盖缺口；本轮保持实现不变，后续窄 guard 修复必须另起实现版本和同口径对照，不能回溯归因给本轮 GEPA。

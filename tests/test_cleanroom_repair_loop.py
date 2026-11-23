@@ -405,3 +405,27 @@ def test_feasible_checkpoint_survives_later_runtime_regression(tmp_path, monkeyp
     assert result["checkpoint_record"]["feasible"]
     assert result["checkpoint_route"] == "objective_optimization"
     assert result["checkpoint_record_path"] == "checkpoint2/record.json"
+
+
+def test_fixed_specification_regeneration_does_not_silently_switch_to_empty(tmp_path, monkeypatch):
+    memory, packet, record, _ = setup_loop(monkeypatch, outcomes=99)
+    specifications = []
+
+    def branch(memory, packet, current, specification, config, outdir, run_seed, **kwargs):
+        specifications.append(specification)
+        accepted = len(specifications) == 2
+        child = dict(current)
+        child.update(true_correct=accepted, workspace=f"fixed{len(specifications)}/app",
+                     execution={"return_code": 0}, feasible=accepted, quality=1.0 if accepted else 0.0)
+        return {"status": "accepted" if accepted else "rejected", "record": child,
+                "node_id": f"fixed{len(specifications)}", "before": {"execution_contract": "fail"},
+                "after": {"execution_contract": "pass" if accepted else "fail"},
+                "edge_accepted": accepted, "final_accept": accepted}
+
+    monkeypatch.setattr(cleanroom_witness, "repair_once", branch)
+    result = cleanroom_witness.repair_bounded(
+        memory, packet, record, "frozen-spec", None, tmp_path,
+        allow_empty_spec_regeneration=False,
+    )
+    assert result["status"] == "accepted"
+    assert specifications == ["frozen-spec", "frozen-spec"]

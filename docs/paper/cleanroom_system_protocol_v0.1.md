@@ -608,3 +608,63 @@ cell 复验共三次修复、含直接生成共 7 次 LLM 调用、186,075 token
 ### 零 LLM 旧制品审计
 
 `scripts/cleanroom_saved_artifact_audit.py` 只读取保存制品，不调用 LLM、求解器或官方评价器。`work/verification_saved_artifact_audit_v0.1/` 中，cold-chain 全 unmet 根解被路由为 `model_diagnosis`，非空但含 75 项业务错误的解为 `decision_repair`，nurse/cell 的可行低质量解为 `objective_optimization`。nurse 的旧修复结果可重建第二次可行 checkpoint，而不会被第三次 quicksum 代码错误覆盖。这些结果验证路由和证据保留，不是新的业务正确率。
+
+
+## v0.15 声明式邻域修复的首批正向案例
+
+### 历史搜索策略调整
+
+对 v0.9–v0.13 的 20 个不同任务进行逐题复核后，空规范、固定规范和有界修复的最终真正确分别为 2、5、7。39 次修复仅新增两道真正确，纯修复消耗 2,294,714 tokens；第三轮 10 次尝试没有新增正确，消耗 680,282 tokens。至少 6 个幻影候选被台账拒绝或回退。由此不再默认执行第三轮重复大语言模型修复；修复 DAG 只保留为证据、检查点和回滚台账，不宣称图搜索本身具有正确率或成本优势。固定 C2 继续作为可选对照资产，不晋升为 memory。
+
+这些历史结果来自不同实现和自适应开发任务，不构成统一实现的独立重复实验，也不据此否定种群式编码修复的研究价值。新的比较必须共享相同初始制品，统一总候选评价预算，并加入直接重优化对照。
+
+### 声明式修复机制
+
+`ora_agent/declarative_neighborhood.py` 实现父解原始字节和 SHA-256、稳定违规键、依赖图、固定/释放变量、局部求解、完整决策复核和独立检查点。任何固定值变化、父解字段丢失、新增违规、UNKNOWN、无修复进展或目标方向退化均拒绝。决策修复允许保留部分旧违规，但至少修复一项且不得新增；目标优化要求可行父解和独立重算的有限目标值。
+
+`ora_agent/population_repair.py` 另提供相同总预算下的单链和种群控制。探索池与最终 elite 池分离：只有可行、无新增硬错误且非 UNKNOWN 的目标暂时退化候选可以用于后续父代探索，最终解和 checkpoint 只从相对初始不退化的 elite 中选择。所有变异提议（包括重复 hash）均计入提议成本。
+
+### ORAgentBench：联邦学习修复专用场景
+
+`ora_agent/federated_public_ir.py` 将 2,634 维客户—训练流二进制决策映射为完整公开检查，覆盖合格 pair、客户唯一分配、训练流人数上下限、样本量、安全 enclave、privacy/upload/GPU 预算和公开目标重算。`ora_agent/federated_neighborhood.py` 固定无关变量，释放违规及同客户直接邻居，使用 SCIP sub-MILP 修复。
+
+从 v0.13 B1 的官方正确解预先构造三类错误，最终由官方评价器独立复评，官方结果不参与候选选择：
+
+| 场景 | 修复前官方结果 | 修复后官方结果 | 公开目标值变化 | SCIP 时间 |
+|---|---|---|---:|---:|
+| 客户重复分配 | infeasible, quality=0, true=false | feasible, quality=2, true=true | 6029.078750 → 6021.271243 | 约 0.63s |
+| 训练流人数/examples/enclave 不足 | infeasible, quality=0, true=false | feasible, quality=2, true=true | 4695.628619 → 6021.590729 | 约 0.85s |
+| privacy/upload/GPU 同时超预算 | infeasible, quality=0, true=false | feasible, quality=2, true=true | 6549.361358 → 6020.703448 | 约 0.95s |
+
+三个场景均无新增违规，正确控制解原始字节不变。修复调用 LLM 次数为 0。求解状态为 gaplimit，因此只能声称官方认可的可行修复，不能声称全局最优。这些是同一任务由正确解构造的预声明修复场景，不是跨任务或完整自然语言生成证据。报告与图件为 `work/federated_repair_audit_v0.1.2/`。
+
+### IndustryOR：注册 ID9 窄根修复
+
+`ora_agent/industryor_neighborhood.py` 仅允许具有合格独立业务审计且已有核验公开 MILP 的注册题；当前只实现 ID9，其他题 fail-closed 为 `not_ready`。窄失败根存在 `link_x3_y2` 违规，公开目标 623 已匹配答案，但独立业务审计失败。一次 SCIP sub-MILP 后 `y2=0`，固定变量不变，最终注册业务审计为 true 且独立枚举为 `proven_optimal`，公开目标仍匹配。正确控制根为空邻域，未调用 SCIP，原始字节和哈希完全不变。
+
+该结果证明目标匹配与业务正确是不同指标，也证明声明式算子可在一个 IndustryOR 注册窄根上产生独立业务增益。它仍只是两个既有决策制品的局部修复重放，不能估计总体恢复率，不能与 ORAgentBench 从头生成的准确率、成本或 SOTA 直接比较。报告为 `work/industryor_declarative_audit_v0.1.1/`；分基准案例图为 `work/declarative_cross_benchmark_v0.1/cross_benchmark_cases.png`。
+
+### 技能和覆盖边界
+
+技能注册表实现独立 baseline/treatment/evaluator 绑定、dev/gapcheck 非零真实增量要求和激活 scope 校验；尚未产生真实晋升资产，不得把测试中的合成证据当作部署收益。
+
+冷链公开检查能稳定识别全 unmet 根解的 48 个服务下限错误和第一次修复解的 74 个需求守恒/温度容量错误，但员工工时换算语义未完整覆盖，不能将这 74 项与官方 75 项一一等同，也不能将部分公开检查通过称为完整业务可行。
+
+
+## v0.16 同根种群对照结果：不采用种群作为默认路径
+
+`scripts/federated_population_audit.py` 在 duplicate_client、stream_minimums 和 all_budgets 三个预声明场景上，使用逐字节相同的初始 artifact，比较单链、种群和一次全变量直接重优化。种群为 k=3、depth=2、总候选评价预算 6；单链使用相同预算上限和操作序列。操作包括默认声明式邻域、全变量直接重优化和可行父解目标优化。所有搜索结束后才冻结 elite-best 并调用官方评价，官方结果不参与候选选择。
+
+| 场景 | 单链官方目标 | 种群官方目标 | 直接重优化官方目标 | 种群相对单链 | 三者官方结果 |
+|---|---:|---:|---:|---|---|
+| duplicate_client | 6021.2476195 | 6021.2476195 | 6020.6899100 | 持平 | 全部 true, quality=2 |
+| stream_minimums | 6021.5907285 | 6021.5907285 | 6020.6899100 | 持平 | 全部 true, quality=2 |
+| all_budgets | 6021.2476195 | 6020.7034476 | 6020.6899100 | 种群低 0.5441719 | 全部 true, quality=2 |
+
+搜索成本分别为：单链约 31.0/47.3/38.7 秒，种群约 46.3/50.3/36.7 秒，直接重优化约 12.8/13.4/12.4 秒。所有 9 个策略—场景结果均为官方真正确，评价 UNKNOWN 为 0。共 9 个 UNKNOWN 候选全部被拒绝，新增公开违规和 lost-win 均为 0。
+
+第三个场景的归因显示，单链在“直接重优化后的探索父解”上继续做目标优化，达到 6021.2476；种群把目标优化分配给另一个 elite 父解，只达到 6020.7034。这说明父代—算子配对显著影响搜索结果，不能把一次负结果抽象为遗传搜索范式无效。但这也不改变当前工程结论：在本轮三个场景中，直接重优化以明显更低成本获得相同官方质量，种群没有提供足以抵消额外评价成本的价值。
+
+因此当前默认策略为：正确根不做无目标修复；适合全模型求解时优先直接重优化；需要保留父解结构时使用声明式邻域；种群仅保留为后续研究工具，不设为默认在线路径。直接重优化同样是限时/gap-limit 求解，不声称全局最优。该结论只适用于当前三个修复场景，不推广为所有任务、预算或基准的普遍排序。
+
+证据：`work/federated_population_audit_v0.1/audit.json`、`report.md`、`population_comparison.png` 和 `implementation_snapshot.json`。

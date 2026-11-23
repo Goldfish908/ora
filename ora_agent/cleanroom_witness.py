@@ -559,7 +559,8 @@ def _best_effort_fallback(baseline: dict, candidate: dict) -> bool:
 
 def repair_bounded(memory: EvidenceMemory, packet: TaskPacket, record: dict, specification: str,
                    config: llm_mod.LLMConfig, outdir: Path, run_seed: int = 0,
-                   max_attempts: int = 3, api_guard: bool = False) -> dict:
+                   max_attempts: int = 3, api_guard: bool = False,
+                   allow_empty_spec_regeneration: bool = True) -> dict:
     from .cleanroom_analysis import USAGE_KEYS, generation_cost, pair_win_safe, summarize_records
 
     if not 1 <= max_attempts <= 3:
@@ -593,7 +594,8 @@ def repair_bounded(memory: EvidenceMemory, packet: TaskPacket, record: dict, spe
     previous_generation_failure = None
     for attempt in range(1, max_attempts + 1) if not root_unknown else []:
         branch_specification = specification
-        if attempt == 2 and _regenerate_from_evidence(current, attempt, previous_generation_failure):
+        if allow_empty_spec_regeneration and attempt == 2 \
+                and _regenerate_from_evidence(current, attempt, previous_generation_failure):
             branch_specification = ""
         result = repair_once(memory, packet, current, branch_specification, config,
                              outdir / f"attempt_{attempt}", run_seed + attempt - 1,

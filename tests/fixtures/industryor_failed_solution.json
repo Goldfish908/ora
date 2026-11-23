@@ -1,0 +1,30 @@
+{
+  "export": {
+    "complete": true,
+    "error": null
+  },
+  "objective": 623.0,
+  "schema_version": "industryor.solution.v1",
+  "solution_count": 7,
+  "solver_status": "optimal",
+  "variable_types": {
+    "x1": "INTEGER",
+    "x2": "INTEGER",
+    "x3": "INTEGER",
+    "x4": "INTEGER",
+    "y1": "BINARY",
+    "y2": "BINARY",
+    "y_A": "BINARY",
+    "y_R": "BINARY"
+  },
+  "variables": {
+    "x1": 0.0,
+    "x2": 0.0,
+    "x3": 0.0,
+    "x4": 89.0,
+    "y1": 0.0,
+    "y2": 1.0,
+    "y_A": 1.0,
+    "y_R": 1.0
+  }
+}

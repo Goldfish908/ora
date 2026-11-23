@@ -768,3 +768,17 @@ ID20 的公开 MILP 已加入 `ora_agent/industryor_neighborhood.py`：x1..x4 �
 本轮三臂失败恢复合计 6/6，正确控制原字节保留 6/6；真实 SCIP 6 次，LLM 调用和 tokens 均为 0。选择与制品 SHA256 冻结后重新执行独立 `score_solution`，再读取公开 `en_answer`。这里的“独立”指独立于候选搜索的评价实现，不意味着它拥有不同来源的外部业务真值。
 
 ID19/21 的目标和总采购量都是全局耦合，因此 direct-full 与 declarative 均释放全部五个变量；本结果不证明声明式邻域比直接重优化更局部或更有效，也不支持跨题恢复率。机器明细与报告为 `work/supplier_neighborhood_audit_v0.1/audit.json` 和 `report.md`。
+
+
+## v0.21 方法技能的真实晋升审计：拒绝
+
+`ora_agent/federated_skill_candidate.py` 将联邦学习场景的声明式 sub-MILP 方法封装为候选技能，并把独立 direct-full 与 single-chain 的真实制品、冻结哈希、官方评价和成本账本送入 `SkillRegistry`。本次提交保存的是拒绝晋升的证据，不是一个已激活技能。
+
+| 审计层 | 配对数 | 新增真正确 gained_true | 要求 | 丢失真正确 | 新增幻影 | UNKNOWN | 结果 |
+|---|---:|---:|---:|---:|---:|---:|---|
+| dev | 2 | 0 | 1 | 0 | 0 | 0 | rejected |
+| gapcheck | 1 | 0 | 1 | 0 | 0 | 0 | 未获晋升资格 |
+
+两臂在三个预声明场景的最终官方真正确都已经为 true，所以目标值和数值 quality 的改善不能记作 `gained_true`。所有场景又来自同一个 problem 的预声明开发实验，不构成跨任务或独立留出证据；当前可选技能资产仍为空。
+
+single-chain 臂混合了多种操作，不能视为纯单次 sub-MILP 消融；它的候选预算也与一次 direct-full 不同。搜索成本与总成本均没有全场景优势。后续必须补独立 problem 上的真实 false → true 配对、多种子、预算匹配和纯消融证据，不能把本次 rejected 直接改写为 promoted。报告和机器证据为 `work/federated_skill_audit_v0.1/report.md` 与 `audit.json`。

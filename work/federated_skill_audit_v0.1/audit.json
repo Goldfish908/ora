@@ -1,0 +1,1395 @@
+{
+ "schema_version": "federated_skill_audit_v0.1",
+ "asset": {
+  "method_id": "federated_sub_milp_v0.1",
+  "version": "0.1",
+  "trigger_signature": {
+   "asset_level": "method",
+   "problem_id": "federated_learning_cohort_selection",
+   "event": "declarative_solution_repair",
+   "representation": "binary_client_stream_selection"
+  },
+  "required_inputs": [
+   "incumbent_solution_csv",
+   "parent_artifact_sha256",
+   "PROBLEM_STATEMENT.md",
+   "data/config.json",
+   "data/clients.csv",
+   "data/training_streams.csv",
+   "data/client_stream_scores.csv",
+   "public_check_violations",
+   "repair_mode",
+   "solver_time_limit_and_relative_gap"
+  ],
+  "dataset_scope": [
+   "ORAgentBench/federated_learning_cohort_selection"
+  ],
+  "domain_scope": [
+   "logistics/federated-learning-cohort-selection"
+  ],
+  "api_scope": [
+   "PySCIPOpt==6.2.1",
+   "federated_sub_milp_v0.1"
+  ],
+  "schema_scope": [
+   "federated_learning_cohort_selection/solution.csv:client_id,stream_id,selected"
+  ],
+  "operations": [
+   "build_violation_dependency_graph",
+   "release_violations_and_direct_neighbors",
+   "fix_all_non_neighborhood_binary_variables",
+   "solve_public_maximize_sub_milp",
+   "recheck_complete_public_constraints_and_objective",
+   "accept_only_known_non_regressing_candidate"
+  ],
+  "allowed_edits": [
+   "released_selected_binary_variables_only"
+  ],
+  "invariants": [
+   "parent_sha256_must_match",
+   "fixed_variables_must_remain_byte_identical",
+   "released_and_fixed_variables_partition_the_complete_decision_vector",
+   "eligible_client_stream_pairs_only",
+   "no_new_public_violations",
+   "maximize_objective_must_not_regress",
+   "unknown_candidates_are_rejected",
+   "official_feedback_is_post_freeze_only"
+  ],
+  "forbidden_actions": [
+   "change_fixed_variables",
+   "alter_public_data_constraints_or_objective",
+   "delete_or_hide_violations",
+   "use_official_results_for_parent_selection_or_expansion",
+   "claim_global_optimality_from_gaplimit",
+   "activate_on_another_problem_dataset_domain_api_or_schema"
+  ],
+  "positive_examples": [
+   {
+    "scenario": "duplicate_client",
+    "root_sha256": "491818eeef497c74f4cfee3be8ad9164cb87a97b45a19fea4cdd8ce3d932e284",
+    "candidate_sha256": "5cc2289ac05e10ba9a70464dcf5a27b8d2b7c3fd6e4b786b0f1285b191de6a7d",
+    "operation": "default_declarative_neighborhood",
+    "observed": "official feasible and true; no public violations"
+   },
+   {
+    "scenario": "stream_minimums",
+    "root_sha256": "f2af43afac7d6e8760ee5313fd01b760ec55c695d936b378ee5ab65f604830f4",
+    "candidate_sha256": "dd4ce34a844c8490779c537a1cc5d9dc85ae14e7f03d388e05e33171b5027217",
+    "operation": "default_declarative_neighborhood",
+    "observed": "official feasible and true; no public violations"
+   },
+   {
+    "scenario": "all_budgets",
+    "root_sha256": "f4c4f5240b5a5da7f3256f52e474e9e1829e41cdfb0f7f4b84226834ee0f181b",
+    "candidate_sha256": "5cc2289ac05e10ba9a70464dcf5a27b8d2b7c3fd6e4b786b0f1285b191de6a7d",
+    "operation": "feasible_parent_objective_optimization",
+    "observed": "official feasible and true; no public violations"
+   }
+  ],
+  "negative_examples": [
+   {
+    "case": "fixed_variable_changed",
+    "required_action": "reject_and_restore_parent"
+   },
+   {
+    "case": "new_violation_or_UNKNOWN",
+    "required_action": "reject"
+   },
+   {
+    "case": "clean_control",
+    "required_action": "report_separately_not_as_damage_repair"
+   }
+  ],
+  "near_miss_examples": [
+   {
+    "scenario": "all_budgets",
+    "scope": "privacy_upload_and_gpu_positive_contributors"
+   },
+   {
+    "scenario": "stream_minimums",
+    "scope": "same_stream_minimum_constraints_and_neighbors"
+   }
+  ],
+  "ambiguous_examples": [
+   {
+    "case": "duplicate_csv_row_aggregation",
+    "required_action": "UNKNOWN_not_pass"
+   },
+   {
+    "case": "gaplimit_solver_status",
+    "required_action": "feasible_incumbent_not_optimality"
+   }
+  ],
+  "out_of_scope_examples": [
+   {
+    "case": "another_ORAgentBench_problem",
+    "required_action": "do_not_activate"
+   },
+   {
+    "case": "free_text_or_solver_code_generation",
+    "required_action": "do_not_activate"
+   },
+   {
+    "case": "different_solution_schema",
+    "required_action": "do_not_activate"
+   }
+  ],
+  "code": "\"\"\"Declarative sub-MILP neighborhoods for federated cohort decisions.\"\"\"\nfrom __future__ import annotations\n\nimport math\nimport time\nfrom pathlib import Path\nfrom typing import Callable, Mapping\n\nfrom .declarative_neighborhood import (\n    DECISION_REPAIR,\n    DecisionArtifact,\n    DependencyGraph,\n    NeighborhoodError,\n    NeighborhoodSpec,\n    RepairResult,\n    ViolationKey,\n    build_neighborhood,\n    repair_neighborhood,\n)\nfrom .federated_public_ir import (\n    CLIENT_UNIQUE,\n    GPU_BUDGET,\n    PRIVACY_BUDGET,\n    STREAM_CLIENTS,\n    STREAM_ENCLAVES,\n    STREAM_EXAMPLES,\n    UPLOAD_BUDGET,\n    FederatedPublicChecker,\n    PublicProblem,\n    all_variable_names,\n    decisions_to_artifact,\n    decisions_to_solution_bytes,\n    load_public_files,\n    load_public_problem,\n    pair_key,\n    solution_file_to_artifact,\n    solution_to_artifact,\n    split_variable_name,\n    variable_name,\n)\n\nSOLVER_VERSION = \"federated_sub_milp_v0.1\"\n\n\ndef _bind(bindings: dict[str, tuple[str, ...]], requirement_id: str, index,\n          rule_parts: tuple[str, ...], names: list[str] | tuple[str, ...]) -> None:\n    for rule_part in rule_parts:\n        key = ViolationKey(requirement_id, tuple(str(item) for item in index), rule_part).stable_key\n        bindings[key] = tuple(sorted(names))\n\n\ndef build_dependency_graph(decisions: Mapping | None = None,\n                           public_files: dict[str, str] | None = None) -> DependencyGraph:\n    \"\"\"Bind every encoded constraint violation and connect alternatives for the same client.\n\n    Budget bindings use the parent's positive contributors when decisions are supplied. This\n    avoids releasing unrelated, already-zero clients merely because a global budget is tight.\n    \"\"\"\n    problem = load_public_problem(public_files)\n    names_by_pair = {\n        pair: variable_name(*pair) for pair in problem.pair_order\n    }\n    selected = decisions.get(\"selected\", {}) if isinstance(decisions, Mapping) else {}\n    bindings = {}\n    adjacency = {}\n    for client_id, pairs in problem.by_client.items():\n        names = [names_by_pair[pair] for pair in pairs]\n        _bind(bindings, CLIENT_UNIQUE, (client_id,),\n              (\"capacity\", \"numeric_inputs\"), names)\n        for name in names:\n            adjacency[name] = tuple(sorted(other for other in names if other != name))\n    for stream_id, pairs in problem.by_stream.items():\n        names = [names_by_pair[pair] for pair in pairs]\n        for requirement_id in (STREAM_CLIENTS, STREAM_EXAMPLES, STREAM_ENCLAVES):\n            _bind(bindings, requirement_id, (stream_id,),\n                  (\"minimum_flow\", \"capacity\", \"numeric_inputs\"), names)\n    if isinstance(decisions, Mapping) and isinstance(selected, Mapping):\n        contributing = [\n            names_by_pair[pair] for pair in problem.pair_order\n            if selected.get(pair_key(*pair)) == 1 and not isinstance(selected.get(pair_key(*pair)), bool)\n        ]\n    else:\n        contributing = [names_by_pair[pair] for pair in problem.pair_order]\n    for requirement_id in (PRIVACY_BUDGET, UPLOAD_BUDGET, GPU_BUDGET):\n        _bind(bindings, requirement_id, (\"sprint\",),\n              (\"capacity\", \"numeric_inputs\"), contributing)\n    return DependencyGraph(bindings, adjacency)\n\n\ndef _as_artifact(parent, public_files: dict[str, str]) -> DecisionArtifact:\n    if isinstance(parent, DecisionArtifact):\n        return parent\n    if isinstance(parent, (str, bytes)):\n        return solution_to_artifact(parent, public_files)\n    if isinstance(parent, Mapping):\n        return decisions_to_artifact(parent, public_files)\n    raise NeighborhoodError(\"federated parent must be CSV bytes/text, decisions, or DecisionArtifact\")\n\n\ndef _fixed_binary_values(spec: NeighborhoodSpec) -> dict[str, int]:\n    values = {}\n    for name in spec.fixed_variables:\n        value = spec.fixed_values[name]\n        if isinstance(value, bool) or not isinstance(value, (int, float)) \\\n                or not math.isfinite(value) or value not in {0, 1}:\n            raise NeighborhoodError(f\"fixed federated variable is not binary: {name}\")\n        values[name] = int(value)\n    return values\n\n\ndef solve_sub_milp(spec: NeighborhoodSpec, public_files: dict[str, str] | None = None,\n                   *, time_limit_seconds: float = 60.0, relative_gap: float = 0.0005) -> dict:\n    \"\"\"Solve the full public formulation with every non-neighborhood variable fixed.\"\"\"\n    if not isinstance(time_limit_seconds, (int, float)) or isinstance(time_limit_seconds, bool) \\\n            or not math.isfinite(time_limit_seconds) or time_limit_seconds <= 0:\n        raise NeighborhoodError(\"time_limit_seconds must be a finite positive number\")\n    if not isinstance(relative_gap, (int, float)) or isinstance(relative_gap, bool) \\\n            or not math.isfinite(relative_gap) or relative_gap < 0:\n        raise NeighborhoodError(\"relative_gap must be a finite nonnegative number\")\n    try:\n        from pyscipopt import Model, quicksum\n    except ImportError as exc:\n        raise RuntimeError(\"PySCIPOpt is required for federated sub-MILP repair\") from exc\n\n    files = load_public_files() if public_files is None else public_files\n    problem = load_public_problem(files)\n    variable_names = all_variable_names(files)\n    if set(spec.released_variables).union(spec.fixed_variables) != set(variable_names):\n        raise NeighborhoodError(\"neighborhood does not partition the complete federated decision vector\")\n    fixed = _fixed_binary_values(spec)\n    released = set(spec.released_variables)\n    model = Model(f\"federated_neighborhood_{spec.parent_sha256[:12]}\")\n    model.hideOutput()\n    model.setRealParam(\"limits/gap\", float(relative_gap))\n    model.setRealParam(\"limits/time\", float(time_limit_seconds))\n    variables = {}\n    for name in variable_names:\n        if name in released:\n            variables[name] = model.addVar(name=name, vtype=\"B\")\n        else:\n            value = fixed[name]\n            variables[name] = model.addVar(name=name, vtype=\"B\", lb=value, ub=value)\n\n    def pair_expression(pairs, coefficient: Callable[[tuple[str, str]], float]):\n        return quicksum(\n            coefficient(pair) * variables[variable_name(*pair)] for pair in pairs\n        )\n\n    for client_id, pairs in problem.by_client.items():\n        model.addCons(pair_expression(pairs, lambda pair: 1.0) <= 1.0,\n                      name=f\"unique_{client_id}\")\n    for stream_id, pairs in problem.by_stream.items():\n        stream = problem.streams[stream_id]\n        count = pair_expression(pairs, lambda pair: 1.0)\n        model.addCons(count >= float(stream[\"min_clients\"]), name=f\"min_clients_{stream_id}\")\n        model.addCons(count <= float(stream[\"max_clients\"]), name=f\"max_clients_{stream_id}\")\n        model.addCons(\n            pair_expression(pairs, lambda pair: float(problem.scores[pair][\"examples\"]))\n            >= float(stream[\"min_examples\"]),\n            name=f\"examples_{stream_id}\",\n        )\n        model.addCons(\n            pair_expression(\n                pairs, lambda pair: float(problem.clients[pair[0]][\"secure_enclave\"]))\n            >= float(stream[\"min_secure_enclave_clients\"]),\n            name=f\"enclaves_{stream_id}\",\n        )\n    all_pairs = problem.pair_order\n    model.addCons(\n        pair_expression(all_pairs, lambda pair: float(problem.clients[pair[0]][\"privacy_cost\"]))\n        <= float(problem.config[\"privacy_budget\"]),\n        name=\"privacy_budget\",\n    )\n    model.addCons(\n        pair_expression(all_pairs, lambda pair: float(problem.scores[pair][\"upload_mb\"]))\n        <= float(problem.config[\"upload_budget_mb\"]),\n        name=\"upload_budget\",\n    )\n    model.addCons(\n        pair_expression(all_pairs, lambda pair: float(problem.scores[pair][\"gpu_minutes\"]))\n        <= float(problem.config[\"gpu_minutes_budget\"]),\n        name=\"gpu_budget\",\n    )\n\n    def objective_coefficient(pair: tuple[str, str]) -> float:\n        score = problem.scores[pair]\n        return (float(score[\"expected_model_gain\"])\n                - float(problem.clients[pair[0]][\"privacy_cost\"])\n                - float(score[\"gpu_minutes\"]) * float(problem.config[\"gpu_minute_cost\"])\n                - float(score[\"upload_mb\"]) * float(problem.config[\"upload_mb_cost\"]))\n\n    model.setObjective(pair_expression(all_pairs, objective_coefficient), \"maximize\")\n    started = time.perf_counter()\n    model.optimize()\n    elapsed = time.perf_counter() - started\n    solver_status = str(model.getStatus()).lower()\n    base = {\n        \"parent_sha256\": spec.parent_sha256,\n        \"solver_status\": solver_status,\n        \"solver_version\": SOLVER_VERSION,\n        \"solve_seconds\": elapsed,\n        \"node_count\": model.getNNodes(),\n        \"released_variable_count\": len(spec.released_variables),\n        \"fixed_variable_count\": len(spec.fixed_variables),\n        \"veto_enabled\": False,\n    }\n    if model.getNSols() == 0:\n        return {\"status\": solver_status, **base}\n    solution = model.getBestSol()\n    values = {}\n    for name in spec.released_variables:\n        value = float(model.getSolVal(solution, variables[name]))\n        rounded = round(value)\n        if abs(value - rounded) > 1e-6:\n            return {\"status\": \"failed\", \"reason\": \"non_integral_solver_value\", **base}\n        values[name] = int(rounded)\n    complete_selected = {}\n    for pair in problem.pair_order:\n        name = variable_name(*pair)\n        complete_selected[pair_key(*pair)] = values[name] if name in released else fixed[name]\n    raw_bytes = decisions_to_solution_bytes({\"selected\": complete_selected}, files)\n    status = \"optimal\" if solver_status == \"optimal\" else \"feasible\"\n    return {\n        \"status\": status,\n        \"values\": values,\n        \"raw_bytes\": raw_bytes,\n        \"scip_objective\": float(model.getSolObjVal(solution)),\n        \"primal_bound\": float(model.getPrimalbound()),\n        \"dual_bound\": float(model.getDualbound()),\n        **base,\n    }\n\n\nclass FederatedNeighborhoodRepair:\n    def __init__(self, public_files: dict[str, str] | None = None, *,\n                 time_limit_seconds: float = 60.0, relative_gap: float = 0.0005) -> None:\n        self.public_files = load_public_files() if public_files is None else public_files\n        self.problem: PublicProblem = load_public_problem(self.public_files)\n        self.checker = FederatedPublicChecker(self.public_files)\n        self.variable_names = all_variable_names(self.public_files)\n        self.time_limit_seconds = time_limit_seconds\n        self.relative_gap = relative_gap\n\n    def artifact(self, parent) -> DecisionArtifact:\n        return _as_artifact(parent, self.public_files)\n\n    def graph(self, parent=None) -> DependencyGraph:\n        decisions = None if parent is None else self.artifact(parent).decisions\n        return build_dependency_graph(decisions, self.public_files)\n\n    def build(self, parent, violations=None, **kwargs) -> NeighborhoodSpec:\n        artifact = self.artifact(parent)\n        if violations is None:\n            violations = self.checker.check(artifact.decisions)[\"violations\"]\n        kwargs.setdefault(\"variable_names\", self.variable_names)\n        kwargs.setdefault(\"objective_sense\", self.checker.ir.objective_sense)\n        return build_neighborhood(\n            artifact, violations, self.graph(artifact), **kwargs,\n        )\n\n    def solve(self, spec: NeighborhoodSpec) -> dict:\n        return solve_sub_milp(\n            spec, self.public_files,\n            time_limit_seconds=self.time_limit_seconds,\n            relative_gap=self.relative_gap,\n        )\n\n    def repair(self, parent, *, mode: str = DECISION_REPAIR, seed_variables=(),\n               checkpoint=None, solver: Callable[[NeighborhoodSpec], object] | None = None,\n               objective_tolerance: float = 1e-9) -> RepairResult:\n        artifact = self.artifact(parent)\n        retained = None if checkpoint is None else self.artifact(checkpoint)\n        return repair_neighborhood(\n            artifact,\n            self.graph(artifact),\n            self.checker.check,\n            self.solve if solver is None else solver,\n            variable_names=self.variable_names,\n            seed_variables=seed_variables,\n            mode=mode,\n            objective_sense=self.checker.ir.objective_sense,\n            objective_tolerance=objective_tolerance,\n            checkpoint=retained,\n        )\n\n\ndef repair_federated_solution(parent, public_files: dict[str, str] | None = None, *,\n                              time_limit_seconds: float = 60.0, relative_gap: float = 0.0005,\n                              mode: str = DECISION_REPAIR, seed_variables=(), checkpoint=None,\n                              solver: Callable[[NeighborhoodSpec], object] | None = None) -> RepairResult:\n    return FederatedNeighborhoodRepair(\n        public_files, time_limit_seconds=time_limit_seconds, relative_gap=relative_gap,\n    ).repair(\n        parent, mode=mode, seed_variables=seed_variables, checkpoint=checkpoint, solver=solver,\n    )\n\n\ndef repair_federated_solution_file(path: str | Path, public_files: dict[str, str] | None = None,\n                                   **kwargs) -> RepairResult:\n    files = load_public_files() if public_files is None else public_files\n    return repair_federated_solution(solution_file_to_artifact(path, files), files, **kwargs)\n",
+  "text": "Method-level declarative sub-MILP repair for the registered federated cohort-selection problem only. Release violation variables and direct neighbors, keep every other binary decision fixed, solve the complete public formulation, and accept only a fully rechecked non-regressing candidate. Costs are observed means over the three real predeclared single-chain treatment runs; they are not a promised runtime or cross-task estimate.",
+  "baseline_implementation_sha256": "a445cb9f2e9d6ee9f362b00b5bd158a11eb3641fb8469539828aa1a496f5342a",
+  "evaluator_sha256": "98ea397fd96ffabffbf6568e10428ba8fa460a25bb6717134891fb2bd4685ac8",
+  "task_coverage": {
+   "dev": [
+    "duplicate_client",
+    "stream_minimums"
+   ],
+   "gapcheck": [
+    "all_budgets"
+   ]
+  },
+  "required_seeds": [
+   20261123
+  ],
+  "cost": {
+   "llm_calls": 0,
+   "mean_search_seconds_across_3_predeclared_scenarios": 5.795866007606189,
+   "mean_official_wall_seconds_across_3_predeclared_scenarios": 27.577293,
+   "mean_total_seconds_across_3_predeclared_scenarios": 33.37315900760619,
+   "mean_solver_seconds_across_3_predeclared_scenarios": 3.3781967336932817,
+   "mean_child_evaluations_across_3_predeclared_scenarios": 4.666666666666667,
+   "mean_solver_calls_across_3_predeclared_scenarios": 3.6666666666666665
+  },
+  "min_gained_true": {
+   "dev": 1,
+   "gapcheck": 1
+  },
+  "asset_id": "federated_sub_milp_v0.1:0.1",
+  "code_sha256": "186a99772af22ebd4071ef2e6f368872869a847780a7b86b95899c749cbf7ce2",
+  "text_sha256": "b5f7eec0a48e37442ee3cf6fe9aabfe0e1bcdfccabb1d5bf0da5297dc4e0f251",
+  "evidence_binding_sha256": "b43eae24f604215011786c9100fb3902f14ad061dc6667bc53e95526447b1be4",
+  "parent_id": null,
+  "lineage": [],
+  "revision": 0,
+  "status": "rejected",
+  "activation_log": [],
+  "state_history": [
+   {
+    "from": null,
+    "to": "candidate",
+    "reason": "proposed",
+    "at": "2026-11-23T10:16:49.612387+00:00"
+   },
+   {
+    "from": "candidate",
+    "to": "rejected",
+    "reason": "raw dev evidence rejected",
+    "at": "2026-11-23T10:16:49.616091+00:00",
+    "evidence_sha256": "5965d08656bce3e65fde364e9d4fd406fb6c1d33c9fffca064c820bd9afc7bc0",
+    "reasons": [
+     "no_gained_true:dev requires 1, observed 0"
+    ]
+   }
+  ],
+  "validation_reports": [
+   {
+    "schema_version": 1,
+    "metrics_used": false,
+    "passed": false,
+    "status": "rejected",
+    "reasons": [
+     "no_gained_true:dev requires 1, observed 0"
+    ],
+    "layers": {
+     "dev": {
+      "pairs": 2,
+      "gained_true": 0,
+      "required_gained_true": 1,
+      "lost_true": 0,
+      "new_phantom": 0,
+      "unknown": 0,
+      "passed": false,
+      "reasons": [
+       "no_gained_true:dev requires 1, observed 0"
+      ]
+     }
+    },
+    "records": [
+     {
+      "split": "dev",
+      "task_id": "duplicate_client",
+      "seed": 20261123,
+      "unknown": false,
+      "gained_true": false,
+      "lost_true": false,
+      "new_phantom": false
+     },
+     {
+      "split": "dev",
+      "task_id": "stream_minimums",
+      "seed": 20261123,
+      "unknown": false,
+      "gained_true": false,
+      "lost_true": false,
+      "new_phantom": false
+     }
+    ],
+    "evidence_binding_sha256": "b43eae24f604215011786c9100fb3902f14ad061dc6667bc53e95526447b1be4",
+    "dev_evidence_sha256": "5965d08656bce3e65fde364e9d4fd406fb6c1d33c9fffca064c820bd9afc7bc0",
+    "evidence_sha256": "5965d08656bce3e65fde364e9d4fd406fb6c1d33c9fffca064c820bd9afc7bc0",
+    "gapcheck_failed": false,
+    "asset_id": "federated_sub_milp_v0.1:0.1",
+    "action": "validate",
+    "at": "2026-11-23T10:16:49.616009+00:00"
+   }
+  ],
+  "dev_evidence_sha256": null,
+  "promotion_evidence_sha256": null
+ },
+ "method": {
+  "level": "method",
+  "method_id": "federated_sub_milp_v0.1",
+  "version": "0.1",
+  "control": "direct-full independent baseline implementation and cost ledger",
+  "treatment": "single-chain declarative sub-MILP implementation and cost ledger",
+  "baseline_implementation_sha256": "a445cb9f2e9d6ee9f362b00b5bd158a11eb3641fb8469539828aa1a496f5342a",
+  "treatment_implementation_sha256": "186a99772af22ebd4071ef2e6f368872869a847780a7b86b95899c749cbf7ce2",
+  "evaluator_sha256": "98ea397fd96ffabffbf6568e10428ba8fa460a25bb6717134891fb2bd4685ac8",
+  "implementation_hashes_differ": true
+ },
+ "provenance": {
+  "source_schema": "gepa_federated_experiment_v0.1",
+  "source_path": "/home/hewj13/wm/ora/work/gepa_federated_experiment_v0.1/audit.json",
+  "source_audit_sha256": "944c157f37c32b7217369690ae53840b4553448f6f8afb74e84902998a4fa0fb",
+  "source_snapshot_sha256": "d5703d76269cd974431303b9ce31c7cc7d6b6f0b1222d41ff6148cb2c2f2e0c1",
+  "source_generation_git_head": "89b05378e4e1428a54d7e80f59e5eccff66496ff",
+  "source_runtime": {
+   "python_version": "3.12.3",
+   "pyscipopt_version": "6.2.1",
+   "git_head": "89b05378e4e1428a54d7e80f59e5eccff66496ff",
+   "gepa_src": "/home/hewj13/wm/ext/gepa/src",
+   "scip_random_seed_shift": "SCIP library default; identical for every arm"
+  },
+  "implementation_sha256": {
+   "ora_agent/declarative_neighborhood.py": "7a3930125e6078ecbdff70df85ae25b25930763cdcd00fa1483a0400ef936d2c",
+   "ora_agent/population_repair.py": "841cdfc2fc7c74cb2d34f1f99385de4e97ec0aa14ccf6e231b520e7a5ddfa576",
+   "ora_agent/federated_neighborhood.py": "186a99772af22ebd4071ef2e6f368872869a847780a7b86b95899c749cbf7ce2",
+   "ora_agent/federated_public_ir.py": "bd87633fc1f4efc5e393e922fc87f4214bd11fd5b9744ce7d72054f6312b6853",
+   "ora_agent/gepa_repair.py": "3c0c69822c242233b68539fda4dc5dcb064ad0520ac0e1d1b4259458dc32aad5",
+   "scripts/federated_population_audit.py": "a445cb9f2e9d6ee9f362b00b5bd158a11eb3641fb8469539828aa1a496f5342a",
+   "scripts/gepa_federated_experiment.py": "76046b426107b90bd4c88019a4c14b3edbc27a99d50ce2235cb0095925417b63"
+  },
+  "control_implementation": {
+   "arm": "direct-full",
+   "source": "scripts/federated_population_audit.py",
+   "sha256": "a445cb9f2e9d6ee9f362b00b5bd158a11eb3641fb8469539828aa1a496f5342a",
+   "execution": "independent direct-full arm and ledger; one all-variable solve"
+  },
+  "treatment_implementation": {
+   "arm": "single",
+   "source": "ora_agent/federated_neighborhood.py",
+   "sha256": "186a99772af22ebd4071ef2e6f368872869a847780a7b86b95899c749cbf7ce2",
+   "execution": "single-chain declarative sub-MILP arm and independent ledger"
+  },
+  "implementation_hashes_differ": true,
+  "evaluator": {
+   "kind": "ORAgentBench official wrapper and federated task tests",
+   "sha256": "98ea397fd96ffabffbf6568e10428ba8fa460a25bb6717134891fb2bd4685ac8",
+   "sources": {
+    "ora_agent/oragentbench.py": "10b4f96ea66c82c502e34e68eb2fafa4e621cc1619371fc641f47ac78a88c91a",
+    "ORAgentBench/harbor_tasks/federated_learning_cohort_selection/tests/evaluate_solution.py": "f8c6302704fc468439c33c5969566f1375a523283758def61ae9de11641cbb2c",
+    "ORAgentBench/harbor_tasks/federated_learning_cohort_selection/tests/reference_metrics.json": "860e1866c94e7fa96548a1c9386ab195ad883f25a72301b004fec6e0d1d3cb05",
+    "ORAgentBench/harbor_tasks/federated_learning_cohort_selection/tests/scip_compat.py": "80a741a5f2dfe48c931487e6e5ceffad5f0c71bc2c5f63a972da88230cbd551b",
+    "ORAgentBench/harbor_tasks/federated_learning_cohort_selection/tests/test.sh": "80de0fa8c2ab467827a562da285e9eb2d02636fc88ef096bb403c373937f4764"
+   },
+   "historical_binding_note": "The source experiment did not freeze a separate evaluator hash; this audit binds the current wrapper and task tests and recomputes every saved official result."
+  },
+  "public_file_sha256": {
+   "PROBLEM_STATEMENT.md": "e40605b5718a0301ed68f1540d0ddbd6e084554b70f1816062388395dc4a8ec7",
+   "data/client_stream_scores.csv": "3a921a78a4b4a7536134855914712e02f12e5b87323af87b01126b6388952377",
+   "data/clients.csv": "e35f39379308470c6ddaa1744f86d026f044e4a6a971b48b06c7d89e933f024d",
+   "data/config.json": "3c2f2600d4b74e0c1b4f0793bfb4683d09e83ca318f0fd37f4550fc46edf6e39",
+   "data/training_streams.csv": "3215f52d0c5aef0338b42fdaed7993e78bf38b93d3ec6e7708f13170c7c4c65a",
+   "submissions/solution_template.csv": "6ef75f682e17912e52f535b17d1c2c0a62e882903c42f92469ec0720b30c06a9"
+  },
+  "official_records_recomputed": 8,
+  "frozen_final_artifacts_verified": 8,
+  "metrics_source": "official_metrics(saved official_evaluation.json), never audit summaries alone"
+ },
+ "coverage": {
+  "problem_ids": [
+   "federated_learning_cohort_selection"
+  ],
+  "distinct_problem_count": 1,
+  "scenario_origin": "predeclared corruptions of one clean artifact in one development experiment",
+  "dev_tasks": [
+   "duplicate_client",
+   "stream_minimums"
+  ],
+  "gapcheck_tasks": [
+   "all_budgets"
+  ],
+  "gapcheck_classification": "same_problem_predeclared_replay_not_an_independent_holdout",
+  "cross_task_evidence": false,
+  "independent_gapcheck": false,
+  "required_seeds": [
+   20261123
+  ],
+  "observed_seeds": [
+   20261123
+  ],
+  "clean_control_separate": true
+ },
+ "pairs": [
+  {
+   "scenario": "duplicate_client",
+   "split": "dev",
+   "seed": 20261123,
+   "initial_sha256": "491818eeef497c74f4cfee3be8ad9164cb87a97b45a19fea4cdd8ce3d932e284",
+   "initial_public": {
+    "status": "INFEASIBLE",
+    "objective": 6029.0787503,
+    "violation_count": 3
+   },
+   "control": {
+    "initial_artifact_sha256": "491818eeef497c74f4cfee3be8ad9164cb87a97b45a19fea4cdd8ce3d932e284",
+    "implementation_sha256": "a445cb9f2e9d6ee9f362b00b5bd158a11eb3641fb8469539828aa1a496f5342a",
+    "evaluator_sha256": "98ea397fd96ffabffbf6568e10428ba8fa460a25bb6717134891fb2bd4685ac8",
+    "status": "OK",
+    "true_correct": true,
+    "proxy_correct": true,
+    "candidate_id": "root/g1/c1",
+    "candidate_sha256": "c4f7070fb060e8c0727215645bb6075389f58976c6344df25bbc3c57abc2a115",
+    "operation": "direct_full_reoptimization",
+    "spec_signature": {
+     "mode": "decision_repair",
+     "released_variable_count": 2634,
+     "fixed_variable_count": 0,
+     "released_variables_sha256": "3b78e89d94d68a193b7f15dd8bd0f1181020e6ee1ff0cb2d19086223366e6b06",
+     "violation_keys_sha256": "6364d169d4e96d03f729b8f78a3d4a3b3b41c06754ae5ec930cee44c7a5d8bb9"
+    },
+    "public": {
+     "status": "FEASIBLE",
+     "objective": 6020.689910000001,
+     "violation_count": 0
+    },
+    "official": {
+     "feasible": true,
+     "quality": 1.9999999999981872,
+     "true_correct": true,
+     "objective": 6020.689909999998,
+     "evaluation_unknown": false,
+     "candidate_sha256": "c4f7070fb060e8c0727215645bb6075389f58976c6344df25bbc3c57abc2a115",
+     "runner_return_code": 0,
+     "runner_timed_out": false,
+     "runner_wall_seconds": 42.609065,
+     "output_dir": "official/duplicate_client__direct-full__d40b64e7be/result",
+     "raw_official_evaluation_sha256": "fd96fa657911606741260bfef20fb666836d88319ff235b2032df8b5e7db6aa4"
+    },
+    "cost": {
+     "initial_evaluation_seconds": 0.026225052773952484,
+     "proposal_seconds": 0.1645646020770073,
+     "evaluation_seconds": 1.719022810459137,
+     "solver_seconds": 1.3193266838788986,
+     "search_seconds": 1.9098124653100967,
+     "official_wall_seconds": 42.609065,
+     "total_seconds": 44.5188774653101,
+     "ledger_total_seconds": 1.9098124653100967,
+     "cost_ledger_sha256": "a923ccb0914f095950e70ad43484275cb887270d1a2b58ff745cb9a1b7dc4362",
+     "child_evaluations": 1,
+     "solver_calls": 1,
+     "evaluation_budget": 1,
+     "llm_calls": 0
+    },
+    "unchanged": false,
+    "best_not_worse_than_initial": true
+   },
+   "treatment": {
+    "initial_artifact_sha256": "491818eeef497c74f4cfee3be8ad9164cb87a97b45a19fea4cdd8ce3d932e284",
+    "implementation_sha256": "186a99772af22ebd4071ef2e6f368872869a847780a7b86b95899c749cbf7ce2",
+    "evaluator_sha256": "98ea397fd96ffabffbf6568e10428ba8fa460a25bb6717134891fb2bd4685ac8",
+    "status": "OK",
+    "true_correct": true,
+    "proxy_correct": true,
+    "candidate_id": "root/g1/c1",
+    "candidate_sha256": "5cc2289ac05e10ba9a70464dcf5a27b8d2b7c3fd6e4b786b0f1285b191de6a7d",
+    "operation": "default_declarative_neighborhood",
+    "spec_signature": {
+     "mode": "decision_repair",
+     "released_variable_count": 1691,
+     "fixed_variable_count": 943,
+     "released_variables_sha256": "a9a70408101b1a25de3e0b3fc25d2c5379ef5cadcfa83669d0f88727958f6702",
+     "violation_keys_sha256": "6364d169d4e96d03f729b8f78a3d4a3b3b41c06754ae5ec930cee44c7a5d8bb9"
+    },
+    "public": {
+     "status": "FEASIBLE",
+     "objective": 6021.247619499999,
+     "violation_count": 0
+    },
+    "official": {
+     "feasible": true,
+     "quality": 2.0,
+     "true_correct": true,
+     "objective": 6021.2476195,
+     "evaluation_unknown": false,
+     "candidate_sha256": "5cc2289ac05e10ba9a70464dcf5a27b8d2b7c3fd6e4b786b0f1285b191de6a7d",
+     "runner_return_code": 0,
+     "runner_timed_out": false,
+     "runner_wall_seconds": 23.907108,
+     "output_dir": "official/duplicate_client__single__b53245d84c/result",
+     "raw_official_evaluation_sha256": "b551e1d1e2a9ac436120ae5dbaa2a7fc5cf3e38f0f7954b21244b95bfd67ef04"
+    },
+    "cost": {
+     "initial_evaluation_seconds": 0.026225052773952484,
+     "proposal_seconds": 0.787897378206253,
+     "evaluation_seconds": 3.4424930289387703,
+     "solver_seconds": 2.255301244556904,
+     "search_seconds": 4.256615459918976,
+     "official_wall_seconds": 23.907108,
+     "total_seconds": 28.163723459918977,
+     "ledger_total_seconds": 4.256615459918976,
+     "cost_ledger_sha256": "eb3fc40e7095a1c07028ad8ff2d784ad8c95e8934780ebeabc05806491d678aa",
+     "child_evaluations": 4,
+     "solver_calls": 3,
+     "evaluation_budget": 6,
+     "llm_calls": 0
+    },
+    "unchanged": false,
+    "best_not_worse_than_initial": true
+   },
+   "deltas": {
+    "quality_treatment_minus_control": 1.8127721546079556e-12,
+    "objective_treatment_minus_control": 0.5577095000016925,
+    "search_seconds_treatment_minus_control": 2.346802994608879,
+    "total_seconds_treatment_minus_control": -16.35515400539112
+   },
+   "checks": {
+    "same_initial_root": true,
+    "official_records_recomputed": true,
+    "frozen_artifacts_verified": true,
+    "costs_reconciled": true,
+    "both_official_feasible": true,
+    "both_official_true": true,
+    "quality_not_worse": true,
+    "objective_not_worse": true,
+    "search_cost_not_worse": false,
+    "total_cost_not_worse": true,
+    "equal_evaluation_budget": false,
+    "gained_true": false,
+    "lost_true": false,
+    "new_phantom": false
+   }
+  },
+  {
+   "scenario": "stream_minimums",
+   "split": "dev",
+   "seed": 20261123,
+   "initial_sha256": "f2af43afac7d6e8760ee5313fd01b760ec55c695d936b378ee5ab65f604830f4",
+   "initial_public": {
+    "status": "INFEASIBLE",
+    "objective": 4695.628619499999,
+    "violation_count": 3
+   },
+   "control": {
+    "initial_artifact_sha256": "f2af43afac7d6e8760ee5313fd01b760ec55c695d936b378ee5ab65f604830f4",
+    "implementation_sha256": "a445cb9f2e9d6ee9f362b00b5bd158a11eb3641fb8469539828aa1a496f5342a",
+    "evaluator_sha256": "98ea397fd96ffabffbf6568e10428ba8fa460a25bb6717134891fb2bd4685ac8",
+    "status": "OK",
+    "true_correct": true,
+    "proxy_correct": true,
+    "candidate_id": "root/g1/c1",
+    "candidate_sha256": "c4f7070fb060e8c0727215645bb6075389f58976c6344df25bbc3c57abc2a115",
+    "operation": "direct_full_reoptimization",
+    "spec_signature": {
+     "mode": "decision_repair",
+     "released_variable_count": 2634,
+     "fixed_variable_count": 0,
+     "released_variables_sha256": "3b78e89d94d68a193b7f15dd8bd0f1181020e6ee1ff0cb2d19086223366e6b06",
+     "violation_keys_sha256": "71b85c68be3749be96636c8003fe1f0ec52550ca63178c9d7e29c41659af86a3"
+    },
+    "public": {
+     "status": "FEASIBLE",
+     "objective": 6020.689910000001,
+     "violation_count": 0
+    },
+    "official": {
+     "feasible": true,
+     "quality": 1.9999999999984894,
+     "true_correct": true,
+     "objective": 6020.689909999999,
+     "evaluation_unknown": false,
+     "candidate_sha256": "c4f7070fb060e8c0727215645bb6075389f58976c6344df25bbc3c57abc2a115",
+     "runner_return_code": 0,
+     "runner_timed_out": false,
+     "runner_wall_seconds": 53.217478,
+     "output_dir": "official/stream_minimums__direct-full__16aae75642/result",
+     "raw_official_evaluation_sha256": "a756a9fcfed7163de54237b3b92c25d3771e3230a9b5eabae1cd1c45d9d7c43e"
+    },
+    "cost": {
+     "initial_evaluation_seconds": 0.02696278691291809,
+     "proposal_seconds": 0.16178152710199356,
+     "evaluation_seconds": 1.6929602921009064,
+     "solver_seconds": 1.3121688291430473,
+     "search_seconds": 1.881704606115818,
+     "official_wall_seconds": 53.217478,
+     "total_seconds": 55.09918260611582,
+     "ledger_total_seconds": 1.881704606115818,
+     "cost_ledger_sha256": "3bf029558bd447bcf2aec7f42c2784012608fcfc82d17be30cacebbbbab12900",
+     "child_evaluations": 1,
+     "solver_calls": 1,
+     "evaluation_budget": 1,
+     "llm_calls": 0
+    },
+    "unchanged": false,
+    "best_not_worse_than_initial": true
+   },
+   "treatment": {
+    "initial_artifact_sha256": "f2af43afac7d6e8760ee5313fd01b760ec55c695d936b378ee5ab65f604830f4",
+    "implementation_sha256": "186a99772af22ebd4071ef2e6f368872869a847780a7b86b95899c749cbf7ce2",
+    "evaluator_sha256": "98ea397fd96ffabffbf6568e10428ba8fa460a25bb6717134891fb2bd4685ac8",
+    "status": "OK",
+    "true_correct": true,
+    "proxy_correct": true,
+    "candidate_id": "root/g1/c1",
+    "candidate_sha256": "dd4ce34a844c8490779c537a1cc5d9dc85ae14e7f03d388e05e33171b5027217",
+    "operation": "default_declarative_neighborhood",
+    "spec_signature": {
+     "mode": "decision_repair",
+     "released_variable_count": 2078,
+     "fixed_variable_count": 556,
+     "released_variables_sha256": "5120d46cf16cf25bc5c7a938fd90f6ec224874569e5edea35c993dfafc1a60a1",
+     "violation_keys_sha256": "71b85c68be3749be96636c8003fe1f0ec52550ca63178c9d7e29c41659af86a3"
+    },
+    "public": {
+     "status": "FEASIBLE",
+     "objective": 6021.590728499999,
+     "violation_count": 0
+    },
+    "official": {
+     "feasible": true,
+     "quality": 2.0,
+     "true_correct": true,
+     "objective": 6021.590728499996,
+     "evaluation_unknown": false,
+     "candidate_sha256": "dd4ce34a844c8490779c537a1cc5d9dc85ae14e7f03d388e05e33171b5027217",
+     "runner_return_code": 0,
+     "runner_timed_out": false,
+     "runner_wall_seconds": 32.609377,
+     "output_dir": "official/stream_minimums__single__0a2b0a2cb4/result",
+     "raw_official_evaluation_sha256": "0e9b7eb73f0c1a595a403b4367bdbd6ca5bb1890291cc4dea73937022fc1641c"
+    },
+    "cost": {
+     "initial_evaluation_seconds": 0.02696278691291809,
+     "proposal_seconds": 0.9497998580336571,
+     "evaluation_seconds": 5.50467686355114,
+     "solver_seconds": 3.935976840555668,
+     "search_seconds": 6.481439508497715,
+     "official_wall_seconds": 32.609377,
+     "total_seconds": 39.09081650849772,
+     "ledger_total_seconds": 6.481439508497715,
+     "cost_ledger_sha256": "b6ab8d3e2e7376be00ef1f229284a340e67b7acfa98b3ee429246ad0c020b99a",
+     "child_evaluations": 5,
+     "solver_calls": 4,
+     "evaluation_budget": 6,
+     "llm_calls": 0
+    },
+    "unchanged": false,
+    "best_not_worse_than_initial": true
+   },
+   "deltas": {
+    "quality_treatment_minus_control": 1.510569447304988e-12,
+    "objective_treatment_minus_control": 0.9008184999966034,
+    "search_seconds_treatment_minus_control": 4.599734902381897,
+    "total_seconds_treatment_minus_control": -16.0083660976181
+   },
+   "checks": {
+    "same_initial_root": true,
+    "official_records_recomputed": true,
+    "frozen_artifacts_verified": true,
+    "costs_reconciled": true,
+    "both_official_feasible": true,
+    "both_official_true": true,
+    "quality_not_worse": true,
+    "objective_not_worse": true,
+    "search_cost_not_worse": false,
+    "total_cost_not_worse": true,
+    "equal_evaluation_budget": false,
+    "gained_true": false,
+    "lost_true": false,
+    "new_phantom": false
+   }
+  },
+  {
+   "scenario": "all_budgets",
+   "split": "gapcheck",
+   "seed": 20261123,
+   "initial_sha256": "f4c4f5240b5a5da7f3256f52e474e9e1829e41cdfb0f7f4b84226834ee0f181b",
+   "initial_public": {
+    "status": "INFEASIBLE",
+    "objective": 6549.3613582,
+    "violation_count": 3
+   },
+   "control": {
+    "initial_artifact_sha256": "f4c4f5240b5a5da7f3256f52e474e9e1829e41cdfb0f7f4b84226834ee0f181b",
+    "implementation_sha256": "a445cb9f2e9d6ee9f362b00b5bd158a11eb3641fb8469539828aa1a496f5342a",
+    "evaluator_sha256": "98ea397fd96ffabffbf6568e10428ba8fa460a25bb6717134891fb2bd4685ac8",
+    "status": "OK",
+    "true_correct": true,
+    "proxy_correct": true,
+    "candidate_id": "root/g1/c1",
+    "candidate_sha256": "c4f7070fb060e8c0727215645bb6075389f58976c6344df25bbc3c57abc2a115",
+    "operation": "direct_full_reoptimization",
+    "spec_signature": {
+     "mode": "decision_repair",
+     "released_variable_count": 2634,
+     "fixed_variable_count": 0,
+     "released_variables_sha256": "3b78e89d94d68a193b7f15dd8bd0f1181020e6ee1ff0cb2d19086223366e6b06",
+     "violation_keys_sha256": "c792c1054635f0f63d290410af87352c3a81756123039f008f6c903d8af4f580"
+    },
+    "public": {
+     "status": "FEASIBLE",
+     "objective": 6020.689910000001,
+     "violation_count": 0
+    },
+    "official": {
+     "feasible": true,
+     "quality": 1.9999999999987914,
+     "true_correct": true,
+     "objective": 6020.68991,
+     "evaluation_unknown": false,
+     "candidate_sha256": "c4f7070fb060e8c0727215645bb6075389f58976c6344df25bbc3c57abc2a115",
+     "runner_return_code": 0,
+     "runner_timed_out": false,
+     "runner_wall_seconds": 23.651048,
+     "output_dir": "official/all_budgets__direct-full__090b16b2f0/result",
+     "raw_official_evaluation_sha256": "c9a89d177e7d636ca587e2b1033b8ac1eb67c52ff4af65b3ddfbf54c1f274e48"
+    },
+    "cost": {
+     "initial_evaluation_seconds": 0.028120756149291992,
+     "proposal_seconds": 0.28174109756946564,
+     "evaluation_seconds": 1.8880433589220047,
+     "solver_seconds": 1.307519480586052,
+     "search_seconds": 2.1979052126407623,
+     "official_wall_seconds": 23.651048,
+     "total_seconds": 25.84895321264076,
+     "ledger_total_seconds": 2.1979052126407623,
+     "cost_ledger_sha256": "f6bd9cf94f3e1afd39512e52bdd44ea0c0a4bce456a9b987531d704a1be1072c",
+     "child_evaluations": 1,
+     "solver_calls": 1,
+     "evaluation_budget": 1,
+     "llm_calls": 0
+    },
+    "unchanged": false,
+    "best_not_worse_than_initial": true
+   },
+   "treatment": {
+    "initial_artifact_sha256": "f4c4f5240b5a5da7f3256f52e474e9e1829e41cdfb0f7f4b84226834ee0f181b",
+    "implementation_sha256": "186a99772af22ebd4071ef2e6f368872869a847780a7b86b95899c749cbf7ce2",
+    "evaluator_sha256": "98ea397fd96ffabffbf6568e10428ba8fa460a25bb6717134891fb2bd4685ac8",
+    "status": "OK",
+    "true_correct": true,
+    "proxy_correct": true,
+    "candidate_id": "root/g3/c1",
+    "candidate_sha256": "5cc2289ac05e10ba9a70464dcf5a27b8d2b7c3fd6e4b786b0f1285b191de6a7d",
+    "operation": "feasible_parent_objective_optimization",
+    "spec_signature": {
+     "mode": "objective_optimization",
+     "released_variable_count": 1691,
+     "fixed_variable_count": 943,
+     "released_variables_sha256": "a9a70408101b1a25de3e0b3fc25d2c5379ef5cadcfa83669d0f88727958f6702",
+     "violation_keys_sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945"
+    },
+    "public": {
+     "status": "FEASIBLE",
+     "objective": 6021.247619499999,
+     "violation_count": 0
+    },
+    "official": {
+     "feasible": true,
+     "quality": 2.0,
+     "true_correct": true,
+     "objective": 6021.247619499992,
+     "evaluation_unknown": false,
+     "candidate_sha256": "5cc2289ac05e10ba9a70464dcf5a27b8d2b7c3fd6e4b786b0f1285b191de6a7d",
+     "runner_return_code": 0,
+     "runner_timed_out": false,
+     "runner_wall_seconds": 26.215394,
+     "output_dir": "official/all_budgets__single__5446dad55e/result",
+     "raw_official_evaluation_sha256": "595d76d4b0c8d3b02228349583a2e4237e07ba70939ab51b8ae91e6ee852ea7e"
+    },
+    "cost": {
+     "initial_evaluation_seconds": 0.028120756149291992,
+     "proposal_seconds": 1.0781306773424149,
+     "evaluation_seconds": 5.543291620910168,
+     "solver_seconds": 3.9433121159672737,
+     "search_seconds": 6.6495430544018745,
+     "official_wall_seconds": 26.215394,
+     "total_seconds": 32.86493705440188,
+     "ledger_total_seconds": 6.6495430544018745,
+     "cost_ledger_sha256": "44af3205bf77f7510e9174b814f0d3b9763b6770706168f35f1d7a11d8da6a29",
+     "child_evaluations": 5,
+     "solver_calls": 4,
+     "evaluation_budget": 6,
+     "llm_calls": 0
+    },
+    "unchanged": false,
+    "best_not_worse_than_initial": true
+   },
+   "deltas": {
+    "quality_treatment_minus_control": 1.2085887846069454e-12,
+    "objective_treatment_minus_control": 0.5577094999916881,
+    "search_seconds_treatment_minus_control": 4.451637841761112,
+    "total_seconds_treatment_minus_control": 7.015983841761116
+   },
+   "checks": {
+    "same_initial_root": true,
+    "official_records_recomputed": true,
+    "frozen_artifacts_verified": true,
+    "costs_reconciled": true,
+    "both_official_feasible": true,
+    "both_official_true": true,
+    "quality_not_worse": true,
+    "objective_not_worse": true,
+    "search_cost_not_worse": false,
+    "total_cost_not_worse": false,
+    "equal_evaluation_budget": false,
+    "gained_true": false,
+    "lost_true": false,
+    "new_phantom": false
+   }
+  }
+ ],
+ "clean_control": {
+  "scenario": "clean_control",
+  "split": "clean_control",
+  "seed": 20261123,
+  "initial_sha256": "c4f7070fb060e8c0727215645bb6075389f58976c6344df25bbc3c57abc2a115",
+  "initial_public": {
+   "status": "FEASIBLE",
+   "objective": 6020.689910000001,
+   "violation_count": 0
+  },
+  "control": {
+   "initial_artifact_sha256": "c4f7070fb060e8c0727215645bb6075389f58976c6344df25bbc3c57abc2a115",
+   "implementation_sha256": "a445cb9f2e9d6ee9f362b00b5bd158a11eb3641fb8469539828aa1a496f5342a",
+   "evaluator_sha256": "98ea397fd96ffabffbf6568e10428ba8fa460a25bb6717134891fb2bd4685ac8",
+   "status": "OK",
+   "true_correct": true,
+   "proxy_correct": true,
+   "candidate_id": "root",
+   "candidate_sha256": "c4f7070fb060e8c0727215645bb6075389f58976c6344df25bbc3c57abc2a115",
+   "operation": "initial",
+   "spec_signature": null,
+   "public": {
+    "status": "FEASIBLE",
+    "objective": 6020.689910000001,
+    "violation_count": 0
+   },
+   "official": {
+    "feasible": true,
+    "quality": 1.9999999999960725,
+    "true_correct": true,
+    "objective": 6020.689909999992,
+    "evaluation_unknown": false,
+    "candidate_sha256": "c4f7070fb060e8c0727215645bb6075389f58976c6344df25bbc3c57abc2a115",
+    "runner_return_code": 0,
+    "runner_timed_out": false,
+    "runner_wall_seconds": 22.922239,
+    "output_dir": "official/clean_control__direct-full__efea1ea71d/result",
+    "raw_official_evaluation_sha256": "63b734780675edac8d28bbc072dcedbb4370c8cc2d7ab56b8e5897645d3af009"
+   },
+   "cost": {
+    "initial_evaluation_seconds": 0.027630403637886047,
+    "proposal_seconds": 0.16295067220926285,
+    "evaluation_seconds": 1.747642770409584,
+    "solver_seconds": 1.3432562053203583,
+    "search_seconds": 1.938223846256733,
+    "official_wall_seconds": 22.922239,
+    "total_seconds": 24.860462846256734,
+    "ledger_total_seconds": 1.938223846256733,
+    "cost_ledger_sha256": "2e2602fe79c9b9ab62eef50ed737621fc7feb1245aa2c48a14bb8c6e407375cd",
+    "child_evaluations": 1,
+    "solver_calls": 1,
+    "evaluation_budget": 1,
+    "llm_calls": 0
+   },
+   "unchanged": true,
+   "best_not_worse_than_initial": true
+  },
+  "treatment": {
+   "initial_artifact_sha256": "c4f7070fb060e8c0727215645bb6075389f58976c6344df25bbc3c57abc2a115",
+   "implementation_sha256": "186a99772af22ebd4071ef2e6f368872869a847780a7b86b95899c749cbf7ce2",
+   "evaluator_sha256": "98ea397fd96ffabffbf6568e10428ba8fa460a25bb6717134891fb2bd4685ac8",
+   "status": "OK",
+   "true_correct": true,
+   "proxy_correct": true,
+   "candidate_id": "root/g3/c1",
+   "candidate_sha256": "5cc2289ac05e10ba9a70464dcf5a27b8d2b7c3fd6e4b786b0f1285b191de6a7d",
+   "operation": "feasible_parent_objective_optimization",
+   "spec_signature": {
+    "mode": "objective_optimization",
+    "released_variable_count": 1691,
+    "fixed_variable_count": 943,
+    "released_variables_sha256": "a9a70408101b1a25de3e0b3fc25d2c5379ef5cadcfa83669d0f88727958f6702",
+    "violation_keys_sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945"
+   },
+   "public": {
+    "status": "FEASIBLE",
+    "objective": 6021.247619499999,
+    "violation_count": 0
+   },
+   "official": {
+    "feasible": true,
+    "quality": 2.0,
+    "true_correct": true,
+    "objective": 6021.247619499999,
+    "evaluation_unknown": false,
+    "candidate_sha256": "5cc2289ac05e10ba9a70464dcf5a27b8d2b7c3fd6e4b786b0f1285b191de6a7d",
+    "runner_return_code": 0,
+    "runner_timed_out": false,
+    "runner_wall_seconds": 20.202084,
+    "output_dir": "official/clean_control__single__90595c72d8/result",
+    "raw_official_evaluation_sha256": "a458a11aeb1bced54111929470e734ccbaf54e733ee592fada6e03d17d74471b"
+   },
+   "cost": {
+    "initial_evaluation_seconds": 0.027630403637886047,
+    "proposal_seconds": 1.1857140138745308,
+    "evaluation_seconds": 4.502756364643574,
+    "solver_seconds": 3.108135797083378,
+    "search_seconds": 5.716100782155991,
+    "official_wall_seconds": 20.202084,
+    "total_seconds": 25.91818478215599,
+    "ledger_total_seconds": 5.716100782155991,
+    "cost_ledger_sha256": "4bd38b2184b2371da3444b3a2ab3c83c38f40f91b04db29acc170601943a0b8a",
+    "child_evaluations": 5,
+    "solver_calls": 3,
+    "evaluation_budget": 6,
+    "llm_calls": 0
+   },
+   "unchanged": false,
+   "best_not_worse_than_initial": true
+  },
+  "deltas": {
+   "quality_treatment_minus_control": 3.927524971913954e-12,
+   "objective_treatment_minus_control": 0.5577095000071495,
+   "search_seconds_treatment_minus_control": 3.7778769358992577,
+   "total_seconds_treatment_minus_control": 1.0577219358992558
+  },
+  "checks": {
+   "same_initial_root": true,
+   "official_records_recomputed": true,
+   "frozen_artifacts_verified": true,
+   "costs_reconciled": true,
+   "both_official_feasible": true,
+   "both_official_true": true,
+   "quality_not_worse": true,
+   "objective_not_worse": true,
+   "search_cost_not_worse": false,
+   "total_cost_not_worse": false,
+   "equal_evaluation_budget": false,
+   "gained_true": false,
+   "lost_true": false,
+   "new_phantom": false
+  }
+ },
+ "paired_evidence": {
+  "schema_version": 1,
+  "records": [
+   {
+    "split": "dev",
+    "task_id": "duplicate_client",
+    "seed": 20261123,
+    "control": {
+     "initial_artifact_sha256": "491818eeef497c74f4cfee3be8ad9164cb87a97b45a19fea4cdd8ce3d932e284",
+     "implementation_sha256": "a445cb9f2e9d6ee9f362b00b5bd158a11eb3641fb8469539828aa1a496f5342a",
+     "evaluator_sha256": "98ea397fd96ffabffbf6568e10428ba8fa460a25bb6717134891fb2bd4685ac8",
+     "status": "OK",
+     "true_correct": true,
+     "proxy_correct": true,
+     "candidate_id": "root/g1/c1",
+     "candidate_sha256": "c4f7070fb060e8c0727215645bb6075389f58976c6344df25bbc3c57abc2a115",
+     "operation": "direct_full_reoptimization",
+     "spec_signature": {
+      "mode": "decision_repair",
+      "released_variable_count": 2634,
+      "fixed_variable_count": 0,
+      "released_variables_sha256": "3b78e89d94d68a193b7f15dd8bd0f1181020e6ee1ff0cb2d19086223366e6b06",
+      "violation_keys_sha256": "6364d169d4e96d03f729b8f78a3d4a3b3b41c06754ae5ec930cee44c7a5d8bb9"
+     },
+     "public": {
+      "status": "FEASIBLE",
+      "objective": 6020.689910000001,
+      "violation_count": 0
+     },
+     "official": {
+      "feasible": true,
+      "quality": 1.9999999999981872,
+      "true_correct": true,
+      "objective": 6020.689909999998,
+      "evaluation_unknown": false,
+      "candidate_sha256": "c4f7070fb060e8c0727215645bb6075389f58976c6344df25bbc3c57abc2a115",
+      "runner_return_code": 0,
+      "runner_timed_out": false,
+      "runner_wall_seconds": 42.609065,
+      "output_dir": "official/duplicate_client__direct-full__d40b64e7be/result",
+      "raw_official_evaluation_sha256": "fd96fa657911606741260bfef20fb666836d88319ff235b2032df8b5e7db6aa4"
+     },
+     "cost": {
+      "initial_evaluation_seconds": 0.026225052773952484,
+      "proposal_seconds": 0.1645646020770073,
+      "evaluation_seconds": 1.719022810459137,
+      "solver_seconds": 1.3193266838788986,
+      "search_seconds": 1.9098124653100967,
+      "official_wall_seconds": 42.609065,
+      "total_seconds": 44.5188774653101,
+      "ledger_total_seconds": 1.9098124653100967,
+      "cost_ledger_sha256": "a923ccb0914f095950e70ad43484275cb887270d1a2b58ff745cb9a1b7dc4362",
+      "child_evaluations": 1,
+      "solver_calls": 1,
+      "evaluation_budget": 1,
+      "llm_calls": 0
+     },
+     "unchanged": false,
+     "best_not_worse_than_initial": true
+    },
+    "treatment": {
+     "initial_artifact_sha256": "491818eeef497c74f4cfee3be8ad9164cb87a97b45a19fea4cdd8ce3d932e284",
+     "implementation_sha256": "186a99772af22ebd4071ef2e6f368872869a847780a7b86b95899c749cbf7ce2",
+     "evaluator_sha256": "98ea397fd96ffabffbf6568e10428ba8fa460a25bb6717134891fb2bd4685ac8",
+     "status": "OK",
+     "true_correct": true,
+     "proxy_correct": true,
+     "candidate_id": "root/g1/c1",
+     "candidate_sha256": "5cc2289ac05e10ba9a70464dcf5a27b8d2b7c3fd6e4b786b0f1285b191de6a7d",
+     "operation": "default_declarative_neighborhood",
+     "spec_signature": {
+      "mode": "decision_repair",
+      "released_variable_count": 1691,
+      "fixed_variable_count": 943,
+      "released_variables_sha256": "a9a70408101b1a25de3e0b3fc25d2c5379ef5cadcfa83669d0f88727958f6702",
+      "violation_keys_sha256": "6364d169d4e96d03f729b8f78a3d4a3b3b41c06754ae5ec930cee44c7a5d8bb9"
+     },
+     "public": {
+      "status": "FEASIBLE",
+      "objective": 6021.247619499999,
+      "violation_count": 0
+     },
+     "official": {
+      "feasible": true,
+      "quality": 2.0,
+      "true_correct": true,
+      "objective": 6021.2476195,
+      "evaluation_unknown": false,
+      "candidate_sha256": "5cc2289ac05e10ba9a70464dcf5a27b8d2b7c3fd6e4b786b0f1285b191de6a7d",
+      "runner_return_code": 0,
+      "runner_timed_out": false,
+      "runner_wall_seconds": 23.907108,
+      "output_dir": "official/duplicate_client__single__b53245d84c/result",
+      "raw_official_evaluation_sha256": "b551e1d1e2a9ac436120ae5dbaa2a7fc5cf3e38f0f7954b21244b95bfd67ef04"
+     },
+     "cost": {
+      "initial_evaluation_seconds": 0.026225052773952484,
+      "proposal_seconds": 0.787897378206253,
+      "evaluation_seconds": 3.4424930289387703,
+      "solver_seconds": 2.255301244556904,
+      "search_seconds": 4.256615459918976,
+      "official_wall_seconds": 23.907108,
+      "total_seconds": 28.163723459918977,
+      "ledger_total_seconds": 4.256615459918976,
+      "cost_ledger_sha256": "eb3fc40e7095a1c07028ad8ff2d784ad8c95e8934780ebeabc05806491d678aa",
+      "child_evaluations": 4,
+      "solver_calls": 3,
+      "evaluation_budget": 6,
+      "llm_calls": 0
+     },
+     "unchanged": false,
+     "best_not_worse_than_initial": true
+    }
+   },
+   {
+    "split": "dev",
+    "task_id": "stream_minimums",
+    "seed": 20261123,
+    "control": {
+     "initial_artifact_sha256": "f2af43afac7d6e8760ee5313fd01b760ec55c695d936b378ee5ab65f604830f4",
+     "implementation_sha256": "a445cb9f2e9d6ee9f362b00b5bd158a11eb3641fb8469539828aa1a496f5342a",
+     "evaluator_sha256": "98ea397fd96ffabffbf6568e10428ba8fa460a25bb6717134891fb2bd4685ac8",
+     "status": "OK",
+     "true_correct": true,
+     "proxy_correct": true,
+     "candidate_id": "root/g1/c1",
+     "candidate_sha256": "c4f7070fb060e8c0727215645bb6075389f58976c6344df25bbc3c57abc2a115",
+     "operation": "direct_full_reoptimization",
+     "spec_signature": {
+      "mode": "decision_repair",
+      "released_variable_count": 2634,
+      "fixed_variable_count": 0,
+      "released_variables_sha256": "3b78e89d94d68a193b7f15dd8bd0f1181020e6ee1ff0cb2d19086223366e6b06",
+      "violation_keys_sha256": "71b85c68be3749be96636c8003fe1f0ec52550ca63178c9d7e29c41659af86a3"
+     },
+     "public": {
+      "status": "FEASIBLE",
+      "objective": 6020.689910000001,
+      "violation_count": 0
+     },
+     "official": {
+      "feasible": true,
+      "quality": 1.9999999999984894,
+      "true_correct": true,
+      "objective": 6020.689909999999,
+      "evaluation_unknown": false,
+      "candidate_sha256": "c4f7070fb060e8c0727215645bb6075389f58976c6344df25bbc3c57abc2a115",
+      "runner_return_code": 0,
+      "runner_timed_out": false,
+      "runner_wall_seconds": 53.217478,
+      "output_dir": "official/stream_minimums__direct-full__16aae75642/result",
+      "raw_official_evaluation_sha256": "a756a9fcfed7163de54237b3b92c25d3771e3230a9b5eabae1cd1c45d9d7c43e"
+     },
+     "cost": {
+      "initial_evaluation_seconds": 0.02696278691291809,
+      "proposal_seconds": 0.16178152710199356,
+      "evaluation_seconds": 1.6929602921009064,
+      "solver_seconds": 1.3121688291430473,
+      "search_seconds": 1.881704606115818,
+      "official_wall_seconds": 53.217478,
+      "total_seconds": 55.09918260611582,
+      "ledger_total_seconds": 1.881704606115818,
+      "cost_ledger_sha256": "3bf029558bd447bcf2aec7f42c2784012608fcfc82d17be30cacebbbbab12900",
+      "child_evaluations": 1,
+      "solver_calls": 1,
+      "evaluation_budget": 1,
+      "llm_calls": 0
+     },
+     "unchanged": false,
+     "best_not_worse_than_initial": true
+    },
+    "treatment": {
+     "initial_artifact_sha256": "f2af43afac7d6e8760ee5313fd01b760ec55c695d936b378ee5ab65f604830f4",
+     "implementation_sha256": "186a99772af22ebd4071ef2e6f368872869a847780a7b86b95899c749cbf7ce2",
+     "evaluator_sha256": "98ea397fd96ffabffbf6568e10428ba8fa460a25bb6717134891fb2bd4685ac8",
+     "status": "OK",
+     "true_correct": true,
+     "proxy_correct": true,
+     "candidate_id": "root/g1/c1",
+     "candidate_sha256": "dd4ce34a844c8490779c537a1cc5d9dc85ae14e7f03d388e05e33171b5027217",
+     "operation": "default_declarative_neighborhood",
+     "spec_signature": {
+      "mode": "decision_repair",
+      "released_variable_count": 2078,
+      "fixed_variable_count": 556,
+      "released_variables_sha256": "5120d46cf16cf25bc5c7a938fd90f6ec224874569e5edea35c993dfafc1a60a1",
+      "violation_keys_sha256": "71b85c68be3749be96636c8003fe1f0ec52550ca63178c9d7e29c41659af86a3"
+     },
+     "public": {
+      "status": "FEASIBLE",
+      "objective": 6021.590728499999,
+      "violation_count": 0
+     },
+     "official": {
+      "feasible": true,
+      "quality": 2.0,
+      "true_correct": true,
+      "objective": 6021.590728499996,
+      "evaluation_unknown": false,
+      "candidate_sha256": "dd4ce34a844c8490779c537a1cc5d9dc85ae14e7f03d388e05e33171b5027217",
+      "runner_return_code": 0,
+      "runner_timed_out": false,
+      "runner_wall_seconds": 32.609377,
+      "output_dir": "official/stream_minimums__single__0a2b0a2cb4/result",
+      "raw_official_evaluation_sha256": "0e9b7eb73f0c1a595a403b4367bdbd6ca5bb1890291cc4dea73937022fc1641c"
+     },
+     "cost": {
+      "initial_evaluation_seconds": 0.02696278691291809,
+      "proposal_seconds": 0.9497998580336571,
+      "evaluation_seconds": 5.50467686355114,
+      "solver_seconds": 3.935976840555668,
+      "search_seconds": 6.481439508497715,
+      "official_wall_seconds": 32.609377,
+      "total_seconds": 39.09081650849772,
+      "ledger_total_seconds": 6.481439508497715,
+      "cost_ledger_sha256": "b6ab8d3e2e7376be00ef1f229284a340e67b7acfa98b3ee429246ad0c020b99a",
+      "child_evaluations": 5,
+      "solver_calls": 4,
+      "evaluation_budget": 6,
+      "llm_calls": 0
+     },
+     "unchanged": false,
+     "best_not_worse_than_initial": true
+    }
+   },
+   {
+    "split": "gapcheck",
+    "task_id": "all_budgets",
+    "seed": 20261123,
+    "control": {
+     "initial_artifact_sha256": "f4c4f5240b5a5da7f3256f52e474e9e1829e41cdfb0f7f4b84226834ee0f181b",
+     "implementation_sha256": "a445cb9f2e9d6ee9f362b00b5bd158a11eb3641fb8469539828aa1a496f5342a",
+     "evaluator_sha256": "98ea397fd96ffabffbf6568e10428ba8fa460a25bb6717134891fb2bd4685ac8",
+     "status": "OK",
+     "true_correct": true,
+     "proxy_correct": true,
+     "candidate_id": "root/g1/c1",
+     "candidate_sha256": "c4f7070fb060e8c0727215645bb6075389f58976c6344df25bbc3c57abc2a115",
+     "operation": "direct_full_reoptimization",
+     "spec_signature": {
+      "mode": "decision_repair",
+      "released_variable_count": 2634,
+      "fixed_variable_count": 0,
+      "released_variables_sha256": "3b78e89d94d68a193b7f15dd8bd0f1181020e6ee1ff0cb2d19086223366e6b06",
+      "violation_keys_sha256": "c792c1054635f0f63d290410af87352c3a81756123039f008f6c903d8af4f580"
+     },
+     "public": {
+      "status": "FEASIBLE",
+      "objective": 6020.689910000001,
+      "violation_count": 0
+     },
+     "official": {
+      "feasible": true,
+      "quality": 1.9999999999987914,
+      "true_correct": true,
+      "objective": 6020.68991,
+      "evaluation_unknown": false,
+      "candidate_sha256": "c4f7070fb060e8c0727215645bb6075389f58976c6344df25bbc3c57abc2a115",
+      "runner_return_code": 0,
+      "runner_timed_out": false,
+      "runner_wall_seconds": 23.651048,
+      "output_dir": "official/all_budgets__direct-full__090b16b2f0/result",
+      "raw_official_evaluation_sha256": "c9a89d177e7d636ca587e2b1033b8ac1eb67c52ff4af65b3ddfbf54c1f274e48"
+     },
+     "cost": {
+      "initial_evaluation_seconds": 0.028120756149291992,
+      "proposal_seconds": 0.28174109756946564,
+      "evaluation_seconds": 1.8880433589220047,
+      "solver_seconds": 1.307519480586052,
+      "search_seconds": 2.1979052126407623,
+      "official_wall_seconds": 23.651048,
+      "total_seconds": 25.84895321264076,
+      "ledger_total_seconds": 2.1979052126407623,
+      "cost_ledger_sha256": "f6bd9cf94f3e1afd39512e52bdd44ea0c0a4bce456a9b987531d704a1be1072c",
+      "child_evaluations": 1,
+      "solver_calls": 1,
+      "evaluation_budget": 1,
+      "llm_calls": 0
+     },
+     "unchanged": false,
+     "best_not_worse_than_initial": true
+    },
+    "treatment": {
+     "initial_artifact_sha256": "f4c4f5240b5a5da7f3256f52e474e9e1829e41cdfb0f7f4b84226834ee0f181b",
+     "implementation_sha256": "186a99772af22ebd4071ef2e6f368872869a847780a7b86b95899c749cbf7ce2",
+     "evaluator_sha256": "98ea397fd96ffabffbf6568e10428ba8fa460a25bb6717134891fb2bd4685ac8",
+     "status": "OK",
+     "true_correct": true,
+     "proxy_correct": true,
+     "candidate_id": "root/g3/c1",
+     "candidate_sha256": "5cc2289ac05e10ba9a70464dcf5a27b8d2b7c3fd6e4b786b0f1285b191de6a7d",
+     "operation": "feasible_parent_objective_optimization",
+     "spec_signature": {
+      "mode": "objective_optimization",
+      "released_variable_count": 1691,
+      "fixed_variable_count": 943,
+      "released_variables_sha256": "a9a70408101b1a25de3e0b3fc25d2c5379ef5cadcfa83669d0f88727958f6702",
+      "violation_keys_sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945"
+     },
+     "public": {
+      "status": "FEASIBLE",
+      "objective": 6021.247619499999,
+      "violation_count": 0
+     },
+     "official": {
+      "feasible": true,
+      "quality": 2.0,
+      "true_correct": true,
+      "objective": 6021.247619499992,
+      "evaluation_unknown": false,
+      "candidate_sha256": "5cc2289ac05e10ba9a70464dcf5a27b8d2b7c3fd6e4b786b0f1285b191de6a7d",
+      "runner_return_code": 0,
+      "runner_timed_out": false,
+      "runner_wall_seconds": 26.215394,
+      "output_dir": "official/all_budgets__single__5446dad55e/result",
+      "raw_official_evaluation_sha256": "595d76d4b0c8d3b02228349583a2e4237e07ba70939ab51b8ae91e6ee852ea7e"
+     },
+     "cost": {
+      "initial_evaluation_seconds": 0.028120756149291992,
+      "proposal_seconds": 1.0781306773424149,
+      "evaluation_seconds": 5.543291620910168,
+      "solver_seconds": 3.9433121159672737,
+      "search_seconds": 6.6495430544018745,
+      "official_wall_seconds": 26.215394,
+      "total_seconds": 32.86493705440188,
+      "ledger_total_seconds": 6.6495430544018745,
+      "cost_ledger_sha256": "44af3205bf77f7510e9174b814f0d3b9763b6770706168f35f1d7a11d8da6a29",
+      "child_evaluations": 5,
+      "solver_calls": 4,
+      "evaluation_budget": 6,
+      "llm_calls": 0
+     },
+     "unchanged": false,
+     "best_not_worse_than_initial": true
+    }
+   }
+  ]
+ },
+ "registry": {
+  "dev": {
+   "schema_version": 1,
+   "metrics_used": false,
+   "passed": false,
+   "status": "rejected",
+   "reasons": [
+    "no_gained_true:dev requires 1, observed 0"
+   ],
+   "layers": {
+    "dev": {
+     "pairs": 2,
+     "gained_true": 0,
+     "required_gained_true": 1,
+     "lost_true": 0,
+     "new_phantom": 0,
+     "unknown": 0,
+     "passed": false,
+     "reasons": [
+      "no_gained_true:dev requires 1, observed 0"
+     ]
+    }
+   },
+   "records": [
+    {
+     "split": "dev",
+     "task_id": "duplicate_client",
+     "seed": 20261123,
+     "unknown": false,
+     "gained_true": false,
+     "lost_true": false,
+     "new_phantom": false
+    },
+    {
+     "split": "dev",
+     "task_id": "stream_minimums",
+     "seed": 20261123,
+     "unknown": false,
+     "gained_true": false,
+     "lost_true": false,
+     "new_phantom": false
+    }
+   ],
+   "evidence_binding_sha256": "b43eae24f604215011786c9100fb3902f14ad061dc6667bc53e95526447b1be4",
+   "dev_evidence_sha256": "5965d08656bce3e65fde364e9d4fd406fb6c1d33c9fffca064c820bd9afc7bc0",
+   "evidence_sha256": "5965d08656bce3e65fde364e9d4fd406fb6c1d33c9fffca064c820bd9afc7bc0",
+   "gapcheck_failed": false,
+   "asset_id": "federated_sub_milp_v0.1:0.1",
+   "action": "validate",
+   "at": "2026-11-23T10:16:49.616009+00:00"
+  },
+  "full_replay": {
+   "schema_version": 1,
+   "metrics_used": false,
+   "passed": false,
+   "status": "rejected",
+   "reasons": [
+    "no_gained_true:dev requires 1, observed 0",
+    "no_gained_true:gapcheck requires 1, observed 0"
+   ],
+   "layers": {
+    "dev": {
+     "pairs": 2,
+     "gained_true": 0,
+     "required_gained_true": 1,
+     "lost_true": 0,
+     "new_phantom": 0,
+     "unknown": 0,
+     "passed": false,
+     "reasons": [
+      "no_gained_true:dev requires 1, observed 0"
+     ]
+    },
+    "gapcheck": {
+     "pairs": 1,
+     "gained_true": 0,
+     "required_gained_true": 1,
+     "lost_true": 0,
+     "new_phantom": 0,
+     "unknown": 0,
+     "passed": false,
+     "reasons": [
+      "no_gained_true:gapcheck requires 1, observed 0"
+     ]
+    }
+   },
+   "records": [
+    {
+     "split": "dev",
+     "task_id": "duplicate_client",
+     "seed": 20261123,
+     "unknown": false,
+     "gained_true": false,
+     "lost_true": false,
+     "new_phantom": false
+    },
+    {
+     "split": "dev",
+     "task_id": "stream_minimums",
+     "seed": 20261123,
+     "unknown": false,
+     "gained_true": false,
+     "lost_true": false,
+     "new_phantom": false
+    },
+    {
+     "split": "gapcheck",
+     "task_id": "all_budgets",
+     "seed": 20261123,
+     "unknown": false,
+     "gained_true": false,
+     "lost_true": false,
+     "new_phantom": false
+    }
+   ],
+   "evidence_binding_sha256": "b43eae24f604215011786c9100fb3902f14ad061dc6667bc53e95526447b1be4",
+   "dev_evidence_sha256": "5965d08656bce3e65fde364e9d4fd406fb6c1d33c9fffca064c820bd9afc7bc0",
+   "evidence_sha256": "f5ef9856c98fd801b106ec8b4cf25cac4b4e7f01ef98e721df85b3927dcaf943",
+   "gapcheck_failed": true
+  },
+  "promotion_gate_allows_attempt": false,
+  "promotion_attempted": false,
+  "promotion": null,
+  "asset_status": "rejected",
+  "promoted": false,
+  "selectable_asset_ids": []
+ },
+ "scoped_findings": {
+  "claim_scope": "Only the three named predeclared repairs on ORAgentBench/federated_learning_cohort_selection with seed 20261123 and the separate clean control",
+  "scope_limited_quality_and_objective_evidence": true,
+  "all_scenario_arms_official_true": true,
+  "quality_not_worse_in_all_scenarios": true,
+  "objective_not_worse_in_all_scenarios": true,
+  "search_cost_not_worse_in_all_scenarios": false,
+  "total_cost_not_worse_in_all_scenarios": false,
+  "equal_evaluation_budget": false,
+  "clean_control_preserved": true,
+  "clean_control_direct_full_unchanged": true,
+  "clean_control_treatment_unchanged": false,
+  "cross_task_superiority_supported": false,
+  "global_optimality_supported": false,
+  "treatment_attribution_note": "The single arm mixes default, direct-full, and feasible-parent operations; its frozen best is verified sub-MILP, but the arm-level treatment effect is not a pure one-solve ablation."
+ },
+ "decision": {
+  "promoted": false,
+  "status": "rejected",
+  "registry_rejected": true,
+  "reasons": [
+   "no_gained_true:dev requires 1, observed 0",
+   "no_gained_true:gapcheck requires 1, observed 0",
+   "cross_task_evidence_missing:only one problem with predeclared scenarios",
+   "independent_gapcheck_missing:all_budgets belongs to the same development experiment"
+  ],
+  "missing_evidence": [
+   "真实 dev gained_true 证据：当前为 0，要求 1；必须有配对从 control true=false 变为 treatment true=true，不能仅改写记录标签。",
+   "未见任务或 problem 上的独立 gapcheck gained_true 证据：当前为 0，要求 1；all_budgets 不能证明跨任务晋升。",
+   "额外预注册 seed 及冻结配对运行；当前证据只有 seed 20261123。",
+   "预算匹配或预先声明成本目标的 direct-full 对照；当前 child evaluation 上限分别为 1 和 6。",
+   "纯 sub-MILP 消融或候选级重放，把方法收益与 single 臂的混合操作序列分离。",
+   "使用同一冻结评价器的独立留出 problem，并具备显式 scope、clean control 和完整成本账本。"
+  ]
+ },
+ "repository_head": "827b859887e106e2933b4abf4ce3cf91e220d0cf"
+}

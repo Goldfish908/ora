@@ -23,6 +23,17 @@ from scripts.industryor_next_stage import score_solution
 
 SOLUTION_SCHEMA = "industryor.solution.v1"
 ID9_QUESTION_SHA256 = "bc5f7c924a5574dda81b157fef88f1644f22862a2428ec0e76ebc85f95fa87d0"
+ID20_QUESTION_SHA256 = "69176a205a2f4c887ac7f100ab68885f509d2fc82452c251640a0d1ac9e0dcae"
+ID20_VARIABLE_MEANINGS = {
+    "x1": "quantity of robots",
+    "x2": "quantity of model cars",
+    "x3": "quantity of building blocks",
+    "x4": "quantity of dolls",
+    "y1": "whether robots are manufactured",
+    "y2": "whether model cars are manufactured",
+    "y3": "whether building blocks are manufactured",
+    "y4": "whether dolls are manufactured",
+}
 
 
 class NotReadyError(ValueError):
@@ -151,6 +162,55 @@ def _id9_milp(question: str, question_sha256: str) -> PublicMILP:
     )
 
 
+def _id20_milp(question: str, question_sha256: str) -> PublicMILP:
+    plastic_source = (
+        "There are 1200 units of plastic available. Each robot requires 30 units of plastic, "
+        "each model car requires 10 units of plastic, each set of building blocks requires 20 units "
+        "of plastic, and each doll requires 15 units of plastic."
+    )
+    electronics_source = (
+        "There are 800 units of electronic components available. Each robot requires 8 units of "
+        "electronic components, each model car requires 5 units of electronic components, each set "
+        "of building blocks requires 3 units of electronic components, and each doll requires 2 "
+        "units of electronic components."
+    )
+    exclusion_source = "If Bright Future Toys manufactures robots, they will not manufacture dolls."
+    implication_source = (
+        "However, if they manufacture model cars, they will also manufacture building blocks."
+    )
+    quantity_source = "The number of dolls manufactured cannot exceed the number of model cars manufactured."
+    for source in (plastic_source, electronics_source, exclusion_source, implication_source, quantity_source):
+        if source not in question:
+            raise NotReadyError("ID20 public source excerpt is missing")
+    link_source = "registered ORThought quantity/use links and reviewed Big-M values (40, 120, 60, 80)"
+    constraints = [
+        _row("plastic", {"x1": 30, "x2": 10, "x3": 20, "x4": 15}, "<=", 1200, plastic_source),
+        _row("electronics", {"x1": 8, "x2": 5, "x3": 3, "x4": 2}, "<=", 800, electronics_source),
+        _row("first_excludes_fourth", {"y1": 1, "y4": 1}, "<=", 1, exclusion_source),
+        _row("cars_imply_blocks", {"y3": 1, "y2": -1}, ">=", 0, implication_source),
+        _row("dolls_no_greater_than_cars", {"x4": 1, "x2": -1}, "<=", 0, quantity_source),
+    ]
+    big_m = (40, 120, 60, 80)
+    for index, upper in enumerate(big_m, 1):
+        quantity, indicator = f"x{index}", f"y{index}"
+        rule = f"link_{quantity}_{indicator}"
+        constraints.extend((
+            _row(rule, {quantity: 1, indicator: -upper}, "<=", 0, link_source),
+            _row(rule, {quantity: 1, indicator: -1}, ">=", 0, link_source),
+        ))
+    return PublicMILP(
+        problem_id=20,
+        question_sha256=question_sha256,
+        domains={**{f"x{i}": "integer" for i in range(1, 5)},
+                 **{f"y{i}": "binary" for i in range(1, 5)}},
+        bounds={**{f"x{i}": (0, upper) for i, upper in enumerate(big_m, 1)},
+                **{f"y{i}": (0, 1) for i in range(1, 5)}},
+        objective={"x1": 15, "x2": 8, "x3": 12, "x4": 5},
+        objective_sense="maximize",
+        constraints=tuple(constraints),
+    )
+
+
 def solution_from_decisions(decisions: Mapping[str, Any]) -> dict:
     if not isinstance(decisions, Mapping) or not isinstance(decisions.get("variables"), Mapping):
         raise NotReadyError("decision artifact lacks a variables object")
@@ -166,7 +226,7 @@ def solution_from_decisions(decisions: Mapping[str, Any]) -> dict:
 
 
 def artifact_from_bytes(raw: bytes, required_domains: Mapping[str, str],
-                        sha256: str = "") -> DecisionArtifact:
+                        sha256: str = "", exact_domains: bool = False) -> DecisionArtifact:
     try:
         solution = json.loads(raw.decode("utf-8"))
     except (UnicodeDecodeError, json.JSONDecodeError) as exc:
@@ -177,6 +237,8 @@ def artifact_from_bytes(raw: bytes, required_domains: Mapping[str, str],
     types = solution.get("variable_types")
     if not isinstance(variables, dict) or not isinstance(types, dict):
         raise NotReadyError("parent variables or variable_types are unavailable")
+    if exact_domains and (set(variables) != set(required_domains) or set(types) != set(required_domains)):
+        raise NotReadyError("parent does not use the exact reviewed variable set")
     for name, value in variables.items():
         if not isinstance(name, str) or not name or "." in name:
             raise NotReadyError("parent contains an unsupported variable path")
@@ -209,11 +271,14 @@ class SCIPSubMILPSolver:
         self.wall_seconds = 0.0
 
     def __call__(self, spec: NeighborhoodSpec) -> dict:
-        parent = artifact_from_bytes(spec.parent_bytes, self.public.domains, spec.parent_sha256)
+        parent = artifact_from_bytes(
+            spec.parent_bytes, self.public.domains, spec.parent_sha256,
+            exact_domains=self.public.problem_id == 20,
+        )
         released = set(spec.released_variables)
         semantic_paths = {_path(name) for name in self.public.domains}
         if not released.issubset(semantic_paths):
-            raise NotReadyError("an opaque exported variable cannot be released by the ID9 adapter")
+            raise NotReadyError("an opaque exported variable cannot be released by the IndustryOR adapter")
         model = self.pyscipopt.Model(f"industryor_{self.public.problem_id}_sub_milp")
         model.hideOutput()
         model.setRealParam("limits/time", self.time_limit)
@@ -264,6 +329,35 @@ class SCIPSubMILPSolver:
         return {"status": status, "decisions": complete, "parent_sha256": spec.parent_sha256}
 
 
+def validate_variable_mapping(problem_id: int, mapping: Mapping[str, Any],
+                              domains: Mapping[str, str]) -> None:
+    if not isinstance(mapping, Mapping):
+        raise NotReadyError("registered variable mapping is unavailable")
+    for name, domain in domains.items():
+        row = mapping.get(name, {})
+        if row.get("domain") != domain or row.get("required_for_audit") is not True:
+            raise NotReadyError(f"registered variable mapping is not ready: {name}")
+        if problem_id == 20 and row.get("meaning") != ID20_VARIABLE_MEANINGS[name]:
+            raise NotReadyError(f"registered variable semantic is not ready: {name}")
+
+
+def _verify_id20_orthought(root: Path, entry: Mapping[str, Any]) -> None:
+    sources = entry.get("sources", {}).get("orthought", {})
+    for name in ("code.py", "model.txt", "question.txt"):
+        source = sources.get(name, {})
+        relative = source.get("path")
+        if not isinstance(relative, str) or not relative:
+            raise NotReadyError(f"ID20 ORThought source is unavailable: {name}")
+        path = (root / relative).resolve()
+        try:
+            path.relative_to(root.resolve())
+            digest = hashlib.sha256(path.read_bytes()).hexdigest()
+        except (OSError, ValueError) as exc:
+            raise NotReadyError(f"ID20 ORThought source is unreadable: {name}") from exc
+        if digest != source.get("sha256"):
+            raise NotReadyError(f"ID20 ORThought source hash differs: {name}")
+
+
 class IndustryORNeighborhood:
     def __init__(self, root: Path | str, problem_id: int, time_limit: float = 30.0) -> None:
         self.root = Path(root)
@@ -292,20 +386,22 @@ class IndustryORNeighborhood:
         digest = hashlib.sha256(self.question.encode("utf-8")).hexdigest()
         if digest != entry.get("question_sha256"):
             raise NotReadyError("registered question hash does not match the public question")
-        if self.problem_id != 9 or digest != ID9_QUESTION_SHA256:
+        if self.problem_id == 9 and digest == ID9_QUESTION_SHA256:
+            self.public = _id9_milp(self.question, digest)
+        elif self.problem_id == 20 and digest == ID20_QUESTION_SHA256:
+            _verify_id20_orthought(self.root, entry)
+            self.public = _id20_milp(self.question, digest)
+        else:
             raise NotReadyError("no reviewed public MILP adapter for this registered problem")
-        self.public = _id9_milp(self.question, digest)
-        mapping = entry.get("variable_mapping", {})
-        for name, domain in self.public.domains.items():
-            if mapping.get(name, {}).get("domain") != domain \
-                    or mapping.get(name, {}).get("required_for_audit") is not True:
-                raise NotReadyError(f"registered variable mapping is not ready: {name}")
+        validate_variable_mapping(self.problem_id, entry.get("variable_mapping", {}), self.public.domains)
         self.graph = self.public.dependency_graph()
         self.solver: Optional[SCIPSubMILPSolver] = None
         self.business_audit_calls = 0
 
     def artifact(self, raw: bytes, sha256: str = "") -> DecisionArtifact:
-        return artifact_from_bytes(raw, self.public.domains, sha256)
+        return artifact_from_bytes(
+            raw, self.public.domains, sha256, exact_domains=self.problem_id == 20,
+        )
 
     def business_report(self, decisions: Mapping[str, Any]) -> dict:
         self.business_audit_calls += 1

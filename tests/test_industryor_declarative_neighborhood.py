@@ -7,10 +7,12 @@ import pytest
 from ora_agent.declarative_neighborhood import DecisionArtifact, build_neighborhood
 from ora_agent.industryor_neighborhood import (
     ID9_QUESTION_SHA256,
+    ID20_QUESTION_SHA256,
     IndustryORNeighborhood,
     NotReadyError,
     constraint_key,
     solution_from_decisions,
+    validate_variable_mapping,
 )
 from scripts.industryor_declarative_audit import repair_root, run_problem, score_public_answer
 
@@ -30,11 +32,11 @@ def test_only_qualified_registered_problem_with_reviewed_public_semantics_is_rea
     with pytest.raises(NotReadyError, match="qualified independent business audit"):
         IndustryORNeighborhood(ROOT, 48)
     with pytest.raises(NotReadyError, match="no reviewed public MILP adapter"):
-        IndustryORNeighborhood(ROOT, 20)
+        IndustryORNeighborhood(ROOT, 21)
 
 
 def test_not_ready_never_turns_unqualified_or_unadapted_problems_into_business_wins():
-    unadapted = run_problem(ROOT, 20, FAILED_PATH)
+    unadapted = run_problem(ROOT, 21, FAILED_PATH)
     unqualified = run_problem(ROOT, 48, FAILED_PATH)
 
     assert unadapted["status"] == "not_ready"
@@ -177,4 +179,109 @@ def test_real_scip_recovers_failure_preserves_control_and_scores_answer_afterwar
     assert correct["cost"]["scip_sub_milp_runs"] == 0
     assert correct["selected_business"]["business_correct"] is True
     assert correct["selected_sha256"] == correct["parent_sha256"]
+    assert subject.solver.runs == 1
+
+
+ID20_FAILED_PATH = ROOT / "work/industryor_structured_dev_v0.2/prob_020/execution_A/solution.json"
+ID20_CORRECT_PATH = ROOT / "work/industryor_structured_dev_v0.2/prob_020/structured_dag/local/solution.json"
+ID20_MANIFEST_DEFAULT_PATH = ROOT / "work/industryor_next_stage_v0.1/prob_020/solution.json"
+
+
+def id20_adapter():
+    return IndustryORNeighborhood(ROOT, 20)
+
+
+def test_id20_public_milp_is_exact_and_cross_registered():
+    subject = id20_adapter()
+    public = subject.public.to_dict()
+
+    assert public["problem_id"] == 20
+    assert public["question_sha256"] == ID20_QUESTION_SHA256
+    assert public["domains"] == {
+        **{f"x{i}": "integer" for i in range(1, 5)},
+        **{f"y{i}": "binary" for i in range(1, 5)},
+    }
+    assert public["bounds"] == {
+        **{f"x{i}": [0.0, upper] for i, upper in enumerate((40, 120, 60, 80), 1)},
+        **{f"y{i}": [0.0, 1.0] for i in range(1, 5)},
+    }
+    assert public["objective"] == {"x1": 15, "x2": 8, "x3": 12, "x4": 5}
+    assert public["objective_sense"] == "maximize"
+    rows = [(row["rule"], row["coefficients"], row["sense"], row["rhs"]) for row in public["constraints"]]
+    assert rows == [
+        ("plastic", {"x1": 30, "x2": 10, "x3": 20, "x4": 15}, "<=", 1200),
+        ("electronics", {"x1": 8, "x2": 5, "x3": 3, "x4": 2}, "<=", 800),
+        ("first_excludes_fourth", {"y1": 1, "y4": 1}, "<=", 1),
+        ("cars_imply_blocks", {"y3": 1, "y2": -1}, ">=", 0),
+        ("dolls_no_greater_than_cars", {"x4": 1, "x2": -1}, "<=", 0),
+        *[row for i, upper in enumerate((40, 120, 60, 80), 1) for row in (
+            (f"link_x{i}_y{i}", {f"x{i}": 1, f"y{i}": -upper}, "<=", 0),
+            (f"link_x{i}_y{i}", {f"x{i}": 1, f"y{i}": -1}, ">=", 0),
+        )],
+    ]
+
+
+def test_id20_explicit_roots_have_required_parent_verdicts_and_violations():
+    subject = id20_adapter()
+    failed = subject.artifact(ID20_FAILED_PATH.read_bytes())
+    correct = subject.artifact(ID20_CORRECT_PATH.read_bytes())
+
+    failed_report = subject.business_report(failed.decisions)
+    correct_report = subject.business_report(correct.decisions)
+
+    assert failed_report["registered_audit"]["business_correct"] is False
+    assert [row["requirement_id"] for row in failed_report["violations"]] == [
+        "industryor.20.cars_imply_blocks",
+        "industryor.20.link_x3_y3",
+        "industryor.20.link_x4_y4",
+    ]
+    assert correct_report["registered_audit"]["business_correct"] is True
+    assert correct_report["registered_audit"]["optimality"] == "proven_optimal"
+    assert correct.raw_bytes == ID20_CORRECT_PATH.read_bytes()
+
+
+def test_id20_rejects_default_manifest_domains_extra_variables_and_wrong_semantics():
+    subject = id20_adapter()
+    with pytest.raises(NotReadyError, match="required variable or declared domain"):
+        subject.artifact(ID20_MANIFEST_DEFAULT_PATH.read_bytes())
+
+    solution = json.loads(ID20_FAILED_PATH.read_text())
+    solution["variables"]["opaque"] = 0.0
+    solution["variable_types"]["opaque"] = "CONTINUOUS"
+    with pytest.raises(NotReadyError, match="exact reviewed variable set"):
+        subject.artifact(json.dumps(solution).encode())
+
+    entry = next(row for row in subject.manifest["problems"] if row["id"] == 20)
+    mapping = json.loads(json.dumps(entry["variable_mapping"]))
+    mapping["x1"]["meaning"] = "quantity of dolls"
+    with pytest.raises(NotReadyError, match="registered variable semantic is not ready: x1"):
+        validate_variable_mapping(20, mapping, subject.public.domains)
+
+
+def test_real_scip_id20_recovers_three_violations_and_preserves_explicit_control():
+    pytest.importorskip("pyscipopt")
+    subject = id20_adapter()
+    failed = repair_root(subject, ID20_FAILED_PATH.read_bytes(), "narrow_failure")
+    correct = repair_root(subject, ID20_CORRECT_PATH.read_bytes(), "correct_control")
+    score_public_answer(failed, 956.0)
+    score_public_answer(correct, 956.0)
+
+    assert failed["status"] == "ready"
+    assert failed["repair_accepted"] is True
+    assert failed["business_recovered"] is True
+    assert set(failed["fixed_violations"]) == {
+        constraint_key(20, "cars_imply_blocks").stable_key,
+        constraint_key(20, "link_x3_y3").stable_key,
+        constraint_key(20, "link_x4_y4").stable_key,
+    }
+    assert failed["introduced_violations"] == []
+    assert failed["selected_business"]["business_correct"] is True
+    assert failed["selected_business"]["independent_optimality"] == "proven_optimal"
+    assert failed["selected_business"]["business_objective"] == 956.0
+    assert failed["selected_public_answer"]["business_objective_match_abs_0_1"] is True
+
+    assert correct["correct_root_preserved"] is True
+    assert correct["selected"]["raw_bytes_base64"] == correct["parent"]["raw_bytes_base64"]
+    assert correct["selected_business"]["independent_optimality"] == "proven_optimal"
+    assert correct["cost"]["scip_sub_milp_runs"] == 0
     assert subject.solver.runs == 1

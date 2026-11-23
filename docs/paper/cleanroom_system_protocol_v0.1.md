@@ -739,3 +739,16 @@ Pareto-only 的搜索时间为约 6.4–7.4 秒，原单链约 4.3–6.6 秒，�
 自建公开检查、执行成功、目标接近和文字经验都不能单独充当强真值。没有独立业务标签的任务只能用于机制诊断和 hint-only 提示，不得用于业务技能晋升。没有真实 `false → true` 的配对增量，不得写入经验。
 
 IndustryOR 的公开目标匹配与注册题独立业务正确继续分开报告，其余 92 题不得混入业务正确率。历史结果按当时的 8 道注册题记录；当前 `assets/industryor_next_stage/manifest.json` 复核为 7 道合格题（ID19、20、21、25、4、8、9），ID48 被阻断，后续实验以实际 manifest 为准。当前三个联邦学习场景及 ID9 窄根只用于开发验证，不能改称为测试集。
+
+
+## v0.19 IndustryOR ID20 整管线与逐代结果
+
+ID20 的公开 MILP 已加入 `ora_agent/industryor_neighborhood.py`：x1..x4 为非负整数，y1..y4 为 binary，最大化 `15*x1+8*x2+12*x3+5*x4`。适配器同时校验题面、注册 question hash、ORThought 源文件 hash、精确八个变量和 INTEGER/BINARY 声明，manifest 默认根中的连续变量声明不再被误用。
+
+实验采用显式根清单：失败根 `work/industryor_structured_dev_v0.2/prob_020/execution_A/solution.json`，正确控制根 `work/industryor_structured_dev_v0.2/prob_020/structured_dag/local/solution.json`。父审计分别为 `False` 和 `True/proven_optimal`，根 SHA256 均保留。
+
+五个主臂 direct-full、declarative、single、old-population、pareto-only 均把父目标 960 修复为 956，最终违规为 0、独立业务正确为 true、独立最优性为 `proven_optimal`，冻结后 `en_answer=956` 匹配。所有最终制品先冻结并核验 SHA256，再重新执行独立 `score_solution`，最后才使用公开答案评分。正确控制的所有臂保持原始字节和原 SHA256。
+
+实际轨迹表明一次局部修复已足够：direct-full 和 declarative 在 Gen1 接受后停止；其他臂的后续候选主要因 `empty_neighborhood`、不适配或父解不可行而被拒绝，没有把额外候选数量误当作进化收益。Merge attempted/tested/not_tested=12/0/12，原因均为 lineage 不足或无真实兼容对，未声称 Merge 有效。
+
+增量成本为 LLM 调用 0、tokens 0、SCIP sub-MILP 17 次、搜索公开审计 21 次、搜索 ledger 约 4.72 秒；输入根的历史生成成本不计入本次增量。结果属于开发验证，不是 heldout。机器明细见 `work/gepa_industryor_id20_v0.1/audit.json`，整管线与逐代结果图见 `work/gepa_industryor_id20_v0.1/id20_pipeline_generations.png`。

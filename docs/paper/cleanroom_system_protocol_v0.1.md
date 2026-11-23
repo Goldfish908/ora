@@ -668,3 +668,74 @@ cell 复验共三次修复、含直接生成共 7 次 LLM 调用、186,075 token
 因此当前默认策略为：正确根不做无目标修复；适合全模型求解时优先直接重优化；需要保留父解结构时使用声明式邻域；种群仅保留为后续研究工具，不设为默认在线路径。直接重优化同样是限时/gap-limit 求解，不声称全局最优。该结论只适用于当前三个修复场景，不推广为所有任务、预算或基准的普遍排序。
 
 证据：`work/federated_population_audit_v0.1/audit.json`、`report.md`、`population_comparison.png` 和 `implementation_snapshot.json`。
+
+
+## v0.17 GEPA 启发修复判别实验预注册
+
+本节是实验设计冻结，不包含实验结果。参考实现为 `ce5b0d6e3d6af6c6dbec6de2c54536bbb961d309` 的 GEPA 源码。实际复用 `find_dominator_programs`、`select_program_candidate_from_pareto_front` 和 `sample_and_attempt_merge_programs_by_common_predictors`，同时单独实现完整非支配档案，避免把逐键最优者并集误称为完整 Pareto 前沿。
+
+### 比较臂与共同条件
+
+在 duplicate_client、stream_minimums、all_budgets 三个既有修复场景上比较：
+
+1. 一次全变量直接重优化；
+2. 原单链；
+3. 原 k=3、depth=2 种群；
+4. 仅替换为 GEPA 逐键 Pareto 父选择；
+5. 在第四臂基础上增加业务兼容的 System Aware Merge。
+
+所有搜索臂共享逐字节相同的初始 artifact、公开文件、检查器、求解器参数和随机种子。每臂最多 6 次新 child 求解，直接重优化仍为一次；Merge 替换本轮 mutation，不获得额外预算。任何提议、重复提议、诊断、Merge 子样本和完整评价成本都进入独立证据台账，GEPA 调用计数不直接充当统一成本。
+
+候选评价采用多目标向量：业务可行性、公开目标值和负搜索成本。分别保存原生逐键最优集合、完整非支配集合和最终 elite-best；direct-full 产生的暂时目标退化可行候选只进入探索档案，不伪称 elite，但可参与兼容的后续目标优化。
+
+### 关键机制检查
+
+必须先通过无求解器的一致性测试，再运行真实对照。特别记录 all_budgets 的 direct-full exploration 从生成、接受、被选为父到执行 feasible_parent_objective_optimization 的四个事件，未触发时写“机制未触发”，不得通过强制选择伪造覆盖。
+
+Merge 只在共同祖先、非互祖、双方不差于祖先、修改组件互补、共同验证覆盖充分、结果非重复且通过完整公开检查时成立。否则记录 `not_tested`，不能据此声称 Merge 无效，也不能为获得正结果而拼接独立决策变量。
+
+### 停止与扩展规则
+
+出现以下任一情况，不扩展新任务、种子、算子或大语言模型反思：
+
+- 适配层不能复现原单链关键路径；
+- 父池持续只剩单一 aggregate-best，没有兼容分支；
+- 没有真实、非重复、完整检查通过的 Merge；
+- Merge 臂不超过 pareto-only，且 pareto-only 也不能在可比成本下超过原单链；
+- 直接重优化或原单链以更低成本取得不劣结果；
+- 出现 UNKNOWN/新硬错误进入交付、官方反馈泄漏、预算账不平或恢复时静默丢候选。
+
+只有新机制在三个工程场景中表现出明确、可复核且成本合理的改进，才考虑 8–12 道新任务、至少两个任务族的验证。若只是以更多求解时间复现单链结果，则继续采用直接重优化或声明式邻域，不扩大实验。
+
+
+## v0.18 GEPA 五臂实验结果与真值数据要求
+
+`work/gepa_federated_experiment_v0.1/` 记录了同一运行时完成的五臂真实对照。15/15 个场景臂均为官方真正确，另有 5 个 clean-control 臂保持正确。所有 final artifact 在官方评价前冻结并核验哈希，官方反馈未进入候选选择。
+
+### Pareto-only 的实际增量
+
+- duplicate_client：Pareto-only 与原种群/单链目标一致，约 6021.2476195。
+- stream_minimums：Pareto-only 与原种群/单链目标一致，约 6021.5907285。
+- all_budgets：Pareto-only 达到约 6021.2476195，与原种群相比提高约 0.5441719，并与单链最佳目标一致。
+
+两个新增臂在三场景均完成 direct exploration 的生成、以 exploration 接受、选父和执行目标优化四个事件，证明 direct-full exploration → feasible_parent_objective_optimization 的关键路径确实被覆盖。所有搜索臂均使用同一 root、公开文件、评价器和预算，未通过额外求解强行触发机制。
+
+Pareto-only 的搜索时间为约 6.4–7.4 秒，原单链约 4.3–6.6 秒，直接重优化约 1.9–2.2 秒。说明新机制修复了原种群的搜索缺陷，但直接重优化仍是低成本的强基线。原生逐键最优集合与完整非支配集合分别保存，未混用两种定义。
+
+### Merge 未被实际验证
+
+每场景 Merge 均为 `attempted=5, compatible=0, novel=0, valid=0, tested=0, accepted=0, not_tested=5`。原因是没有满足共同祖先、组件互补和共同验证覆盖要求的真实组合。不能把 Merge 的额外搜索成本或 pareto-only 的收益归因于 Merge，也不能据此声称 Merge 无效。后续不扩展 Merge，直到真实兼容分支出现。
+
+这些结果仍属于开发场景，不是 held-out 泛化证据。结果图为 `work/gepa_federated_experiment_v0.1/gepa_federated_comparison.png`。
+
+### 后续真值数据要求
+
+自进化和技能写回前，必须建立独立数据分层：
+
+1. train：具有强业务真值和详细反馈，允许 GEPA 反思使用官方错误、评价轨迹和反例；
+2. val/gapcheck：使用协议允许的评分进行 Pareto 选择和技能晋升，隐藏详细反馈不得进入 proposer；
+3. test：完全不进入 proposer、候选选择或晋升，只在冻结实现后进行一次独立评分。
+
+自建公开检查、执行成功、目标接近和文字经验都不能单独充当强真值。没有独立业务标签的任务只能用于机制诊断和 hint-only 提示，不得用于业务技能晋升。没有真实 `false → true` 的配对增量，不得写入经验。
+
+IndustryOR 的公开目标匹配与 8 道注册题独立业务正确继续分开报告，其余 92 题不得混入业务正确率。当前三个联邦学习场景及 ID9 窄根只用于开发验证，不能改称为测试集。

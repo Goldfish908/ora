@@ -66,6 +66,55 @@ def decision_artifact_path(workspace: Path) -> Path | None:
     return None
 
 
+def _decision_string_values(tree: ast.AST) -> dict[str, str]:
+    values = {}
+    for node in ast.walk(tree):
+        if isinstance(node, ast.Assign) and isinstance(node.value, ast.Constant) \
+                and isinstance(node.value.value, str):
+            for target in node.targets:
+                if isinstance(target, ast.Name):
+                    values[target.id] = node.value.value
+        elif isinstance(node, ast.AnnAssign) and isinstance(node.target, ast.Name) \
+                and isinstance(node.value, ast.Constant) and isinstance(node.value.value, str):
+            values[node.target.id] = node.value.value
+    return values
+
+
+def _decision_path(node: ast.AST, values: dict[str, str]) -> str | None:
+    if isinstance(node, ast.Constant) and isinstance(node.value, str):
+        return node.value
+    if isinstance(node, ast.Name):
+        return values.get(node.id)
+    if isinstance(node, ast.Call) and isinstance(node.func, ast.Name) and node.func.id == "Path" \
+            and node.args:
+        return _decision_path(node.args[0], values)
+    return None
+
+
+def _decision_io(tree: ast.AST) -> tuple[bool, bool]:
+    values = _decision_string_values(tree)
+    reads_incumbent = False
+    writes_solution = False
+    for node in ast.walk(tree):
+        if not isinstance(node, ast.Call):
+            continue
+        if isinstance(node.func, ast.Name) and node.func.id == "open" and node.args:
+            path = _decision_path(node.args[0], values)
+            mode = _decision_path(node.args[1], values) if len(node.args) > 1 else "r"
+            name = path.rsplit("/", 1)[-1] if path else None
+            if name in {"solution_original.csv", "solution_original.json"} \
+                    and mode is not None and not any(flag in mode for flag in "wax+"):
+                reads_incumbent = True
+            if name in {"solution.csv", "solution.json"} and mode is not None \
+                    and any(flag in mode for flag in "wax+"):
+                writes_solution = True
+        if isinstance(node.func, ast.Attribute) and node.func.attr == "write_text":
+            path = _decision_path(node.func.value, values)
+            if path and path.rsplit("/", 1)[-1] in {"solution.csv", "solution.json"}:
+                writes_solution = True
+    return reads_incumbent, writes_solution
+
+
 def validate_decision_repair_code(code: str) -> None:
     if len(code.strip()) < 300:
         raise ValueError("incomplete_artifact: decision repair is too short")
@@ -75,16 +124,26 @@ def validate_decision_repair_code(code: str) -> None:
         tree = ast.parse(code)
     except SyntaxError as exc:
         raise ValueError("incomplete_artifact: decision repair is not valid Python") from exc
-    if "solution_original" not in code or not any(name in code for name in ("solution.csv", "solution.json")):
+    reads_incumbent, writes_solution = _decision_io(tree)
+    if not reads_incumbent or not writes_solution:
         raise ValueError("incomplete_artifact: decision repair must read the incumbent and write the required solution")
-    if not any(marker in code for marker in ("open(", ".write_text(", "json.dump", "csv.writer")):
-        raise ValueError("incomplete_artifact: no decision output write")
+    dynamic_calls = {"eval", "exec", "compile", "__import__", "import_module",
+                     "getattr", "setattr", "delattr", "globals", "locals", "vars"}
+    process_calls = {"system", "popen", "create_subprocess_exec", "create_subprocess_shell",
+                     "spawnl", "spawnlp", "spawnv", "spawnvp", "posix_spawn", "posix_spawnp"}
     for node in ast.walk(tree):
         if isinstance(node, (ast.FunctionDef, ast.AsyncFunctionDef)) and all(
                 isinstance(statement, (ast.Pass, ast.Ellipsis)) for statement in node.body):
             raise ValueError("incomplete_artifact: empty function body found")
-        if isinstance(node, ast.Call) and isinstance(node.func, ast.Name) and node.func.id in {"eval", "exec", "compile", "__import__"}:
-            raise ValueError("incomplete_artifact: dynamic code execution is not allowed")
+        if isinstance(node, ast.Call):
+            if isinstance(node.func, ast.Name) and node.func.id in dynamic_calls:
+                raise ValueError("incomplete_artifact: dynamic code execution is not allowed")
+            if isinstance(node.func, ast.Attribute) and node.func.attr in dynamic_calls:
+                raise ValueError("incomplete_artifact: dynamic code execution is not allowed")
+            if isinstance(node.func, ast.Name) and node.func.id in process_calls:
+                raise ValueError("incomplete_artifact: external processes are not allowed")
+            if isinstance(node.func, ast.Attribute) and node.func.attr in process_calls:
+                raise ValueError("incomplete_artifact: external processes are not allowed")
         if isinstance(node, ast.Import):
             roots = {alias.name.split(".")[0] for alias in node.names}
             if _nonstandard_imports(roots):
@@ -162,6 +221,14 @@ def localized_failure_context(code: str, stderr: str) -> dict | None:
             "function_source": function_source}
 
 
+def apply_decision_runtime_patch(code: str, edits: list[dict], failure_context: dict | None = None) -> str:
+    function_source = (failure_context or {}).get("function_source")
+    if function_source is not None:
+        if len(edits) != 1 or edits[0].get("old_string") != function_source:
+            raise ValueError("decision runtime patch must replace only the reported function")
+    return apply_runtime_patch(code, edits, validator=validate_decision_repair_code)
+
+
 def generate_decision_code_patch(packet: TaskPacket, specification: str, config: llm_mod.LLMConfig,
                                  outdir: Path, run_seed: int, repair: dict) -> dict:
     max_tokens = min(int(os.environ.get("ORA_CLEANROOM_MAX_TOKENS", "32768")), 8192)
@@ -186,8 +253,8 @@ def generate_decision_code_patch(packet: TaskPacket, specification: str, config:
         response, patch = _call_artifact_tool("runtime_patch", messages, config, max_tokens,
                                              reasoning, run_seed ^ int(prompt_hash[:8], 16), disable)
         artifacts = {**repair["artifacts"],
-                     "repair_solution_py": apply_runtime_patch(
-                         code, patch.get("edits"), validator=validate_decision_repair_code)}
+                     "repair_solution_py": apply_decision_runtime_patch(
+                         code, patch.get("edits"), context)}
         write_json(outdir / "runtime_patch_generation.json", {
             "messages": messages, "response": response, "request": request})
         error = None
@@ -208,7 +275,10 @@ def generate_decision_code_patch(packet: TaskPacket, specification: str, config:
 
 def prepare_decision_repair_workspace(packet: TaskPacket, workspace: Path, artifacts: dict,
                                       original_workspace: Path, api_guard: bool = False) -> None:
-    prepare_workspace(packet, workspace, artifacts, api_guard=api_guard, validate=False)
+    prepare_workspace(packet, workspace, artifacts, api_guard=False, validate=False)
+    parent_solver = original_workspace / "submissions/solve.py"
+    if parent_solver.exists():
+        shutil.copy2(parent_solver, workspace / "submissions/solve.py")
     original = decision_artifact_path(original_workspace)
     if original is None:
         for name in ("solution_original.csv", "solution_original.json"):

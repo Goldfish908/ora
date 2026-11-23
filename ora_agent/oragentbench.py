@@ -3,6 +3,7 @@ from __future__ import annotations
 
 import ast
 import builtins
+import math
 import hashlib
 import json
 import os
@@ -138,7 +139,15 @@ class TaskPacket:
         if specification.strip():
             system += "\n\nSHARED MODELING SPECIFICATION:\n" + specification.strip()
         if repair is not None:
-            evidence = repair["evidence"]
+            def public_evidence(value):
+                if isinstance(value, dict):
+                    return {key: public_evidence(item) for key, item in value.items()
+                            if key not in {"proxy_match", "phantom_proxy"}}
+                if isinstance(value, list):
+                    return [public_evidence(item) for item in value]
+                return value
+
+            evidence = public_evidence(repair["evidence"])
             regenerate = evidence.get("search_guidance", {}).get("regenerate_from_evidence", False)
             decision_code_patch = tool_name == "submit_runtime_patch" and \
                 evidence.get("search_guidance", {}).get("repair_kind") == "decision_runtime_patch"
@@ -174,11 +183,11 @@ class TaskPacket:
                     "\n\nREQUIRED ACTIVATION CONTRACT:\n"
                     "The following required activation variables are missing or omitted: "
                     + ", ".join(variables)
-                    + ". Define each as a binary decision variable. For every lane, link positive shipment "
-                      "to its activation variable with BOTH flow <= capacity * activation AND "
-                      "flow >= min_shipment * activation. Write every activation variable to the decision "
-                      "artifact. Do not merely rename existing flows. Address all reported business errors, "
-                      "including CO2 budget violations."
+                    + ". Define each as a binary decision variable when required by the public task. Apply the "
+                      "public capacity and minimum-shipment contracts, including flow <= capacity * activation "
+                      "and flow >= min_shipment * activation only when those exact requirements are stated. "
+                      "Write every required activation variable to the decision artifact. Do not merely rename "
+                      "existing flows or invent bounds; address all reported business errors."
                 )
             packet += "\n\n### OBSERVED EVIDENCE\n" + json.dumps(evidence, ensure_ascii=False)
             if tool_name == "submit_decision_repair" or decision_code_patch:
@@ -338,6 +347,20 @@ def apply_runtime_patch(code: str, edits: list[dict], *, validator=validate_solv
                               if any(token in name.lower() for token in ("cost", "objective", "obj")))
     if dropped_semantic:
         raise ValueError("runtime patch removes objective or cost bindings: " + ", ".join(dropped_semantic))
+
+    def semantic_calls(tree):
+        counts = {name: 0 for name in ("addCons", "setMinimize", "setMaximize")}
+        for node in ast.walk(tree):
+            if isinstance(node, ast.Call) and isinstance(node.func, ast.Attribute) \
+                    and node.func.attr in counts:
+                counts[node.func.attr] += 1
+        return counts
+
+    before_calls, after_calls = semantic_calls(before_tree), semantic_calls(after_tree)
+    if after_calls["addCons"] < before_calls["addCons"]:
+        raise ValueError("runtime patch removes model constraints")
+    if any(after_calls[name] != before_calls[name] for name in ("setMinimize", "setMaximize")):
+        raise ValueError("runtime patch changes the objective sense")
     return patched
 
 
@@ -508,55 +531,124 @@ def execute_solver(workspace: Path, outdir: Path, timeout: int = 330) -> dict:
 
 def official_evaluate(packet: TaskPacket, workspace: Path, outdir: Path, timeout: int = 400) -> dict:
     outdir.mkdir(parents=True, exist_ok=True)
+
+    def decision_hashes() -> dict[str, str]:
+        submissions = workspace / "submissions"
+        return {name: hashlib.sha256((submissions / name).read_bytes()).hexdigest()
+                for name in ("solution.csv", "solution.json") if (submissions / name).exists()}
+
+    run_nonce = uuid.uuid4().hex
+    before_decisions = decision_hashes()
+    inputs = {"run_nonce": run_nonce, "decision_sha256": before_decisions}
     logs = outdir / "logs"
+    if logs.exists() and any(logs.iterdir()):
+        payload = {"evaluation": {"feasible": False,
+                                  "errors": ["official evaluation log directory was not empty"]},
+                   "reward": {}, "reward_details": {},
+                   "runner": {"return_code": -1, "timed_out": False, "wall_seconds": 0.0},
+                   "evaluation_inputs": inputs}
+        write_json(outdir / "official_evaluation.json", payload)
+        return payload
     logs.mkdir(parents=True, exist_ok=True)
-    result = _docker("verify", [(workspace, "/app", False), (packet.root / "tests", "/tests", True),
+    result = _docker("verify", [(workspace, "/app", True), (packet.root / "tests", "/tests", True),
                                 (logs, "/logs", False)], ["bash", "/tests/test.sh"], timeout)
+    if decision_hashes() != before_decisions:
+        payload = {"evaluation": {"feasible": False,
+                                  "errors": ["official evaluator modified the decision artifact"]},
+                   "reward": {}, "reward_details": {},
+                   "runner": {"return_code": -1, "timed_out": False,
+                              "wall_seconds": result.get("wall_seconds")},
+                   "evaluation_inputs": inputs}
+        write_json(outdir / "official_evaluation.json", payload)
+        return payload
     verifier = logs / "verifier"
     evaluation = read_json(verifier / "evaluation.json") if (verifier / "evaluation.json").exists() else {
         "feasible": False, "errors": ["official evaluator did not produce evaluation.json"]}
-    reward = read_json(verifier / "reward.json") if (verifier / "reward.json").exists() else {
-        "feasibility": 0.0, "quality": 0.0}
+    reward = read_json(verifier / "reward.json") if (verifier / "reward.json").exists() else {}
     details = read_json(verifier / "reward_details.json") if (verifier / "reward_details.json").exists() else {}
     payload = {"evaluation": evaluation, "reward": reward, "reward_details": details,
-               "runner": {key: result[key] for key in ("return_code", "timed_out", "wall_seconds")}}
+               "runner": {key: result[key] for key in ("return_code", "timed_out", "wall_seconds")},
+               "evaluation_inputs": inputs}
     write_json(outdir / "official_evaluation.json", payload)
     return payload
 
 
+def _finite_number(value) -> bool:
+    return isinstance(value, (int, float)) and not isinstance(value, bool) and math.isfinite(value)
+
+
 def official_objective(evaluation: dict) -> float | None:
-    payload = evaluation["evaluation"]
+    payload = evaluation.get("evaluation") or {}
     for key in ("objective", "profit", "score", "total_cost"):
         value = payload.get(key)
-        if isinstance(value, (int, float)):
+        if _finite_number(value):
             return float(value)
     return None
 
 
 def evaluation_unknown(evaluation: dict) -> bool:
-    if not evaluation or (evaluation.get("runner") or {}).get("return_code") not in {0, None}:
+    if not isinstance(evaluation, dict) or not evaluation:
         return True
-    errors = (evaluation.get("evaluation") or {}).get("errors") or []
-    return any("official evaluator did not produce" in str(error) for error in errors)
+    runner = evaluation.get("runner")
+    if not isinstance(runner, dict) or runner.get("return_code") != 0 or runner.get("timed_out"):
+        return True
+    payload = evaluation.get("evaluation")
+    reward = evaluation.get("reward")
+    if not isinstance(payload, dict) or not isinstance(reward, dict):
+        return True
+    errors = payload.get("errors") or []
+    if not isinstance(errors, list):
+        return True
+    if any("official evaluator did not produce" in str(error) for error in errors):
+        return True
+    feasibility = reward.get("feasibility")
+    quality = reward.get("quality")
+    if not _finite_number(feasibility) or float(feasibility) not in {0.0, 1.0}:
+        return True
+    if not _finite_number(quality) or float(quality) < 0:
+        return True
+    if "feasible" in payload:
+        if not isinstance(payload["feasible"], bool) \
+                or payload["feasible"] != (float(feasibility) == 1.0):
+            return True
+    if float(feasibility) == 1.0 and errors:
+        return True
+    for key in ("objective", "profit", "score", "total_cost"):
+        if key in payload and payload[key] is not None and not _finite_number(payload[key]):
+            return True
+    details = evaluation.get("reward_details") or {}
+    if not isinstance(details, dict):
+        return True
+    for key in ("feasibility", "quality"):
+        if key in details and details[key] != reward[key]:
+            return True
+    return False
 
 
 def official_metrics(evaluation: dict) -> dict:
+    unknown = evaluation_unknown(evaluation)
+    if unknown:
+        return {"feasible": False, "quality": 0.0, "true_correct": False,
+                "objective": None, "evaluation_unknown": True}
     reward = evaluation["reward"]
-    feasible = bool(reward.get("feasibility", 0.0))
-    quality = float(reward.get("quality", 0.0) or 0.0)
+    feasible = float(reward["feasibility"]) == 1.0
+    quality = float(reward["quality"])
     return {"feasible": feasible, "quality": quality,
             "true_correct": feasible and quality > 0.4,
             "objective": official_objective(evaluation),
-            "evaluation_unknown": evaluation_unknown(evaluation)}
+            "evaluation_unknown": False}
 
 
 def proxy_match(packet: TaskPacket, evaluation: dict) -> bool | None:
     reference_path = packet.root / "tests/reference_metrics.json"
     if not reference_path.exists():
         return None
+    metrics = official_metrics(evaluation)
+    if metrics["evaluation_unknown"]:
+        return None
     reference = read_json(reference_path)
     target = reference.get("reference_objective")
-    objective = official_metrics(evaluation)["objective"]
+    objective = metrics["objective"]
     if target is None or objective is None:
         return False
     tolerance = abs(float(target)) * 0.001

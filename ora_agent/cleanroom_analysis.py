@@ -15,9 +15,13 @@ def generation_cost(record: dict) -> dict:
         path = generation / f"{phase}_generation.json"
         if path.exists():
             responses.append(read_json(path).get("response") or {})
-    cost = {"llm_calls": len(responses), "missing_usage_calls": 0,
+    cost = {"llm_calls": len(responses), "api_requests": 0, "missing_usage_calls": 0,
             "llm_latency_seconds": 0.0, **{key: 0 for key in USAGE_KEYS}}
     for response in responses:
+        attempts = response.get("request_attempts")
+        cost["api_requests"] += len(attempts) if isinstance(attempts, list) else 1
+        cost["llm_latency_seconds"] += float(
+            response.get("request_wall_s", response.get("latency_s", 0.0)) or 0.0)
         usage = response.get("usage")
         if not usage:
             cost["missing_usage_calls"] += 1
@@ -28,20 +32,18 @@ def generation_cost(record: dict) -> dict:
             else:
                 value = usage.get(key) or 0
             cost[key] += int(value)
-        cost["llm_latency_seconds"] += float(
-            response.get("request_wall_s", response.get("latency_s", 0.0)) or 0.0)
     cost["llm_latency_seconds"] = round(cost["llm_latency_seconds"], 6)
     return cost
 
 
 def failure_class(record: dict) -> str:
+    official = record.get("official") or {}
+    if record.get("unknown") or record.get("evaluation_unknown") or evaluation_unknown(official):
+        return "evaluation_unknown"
     if record.get("true_correct"):
         return "true_correct"
     if record.get("phantom_proxy"):
         return "phantom_proxy"
-    official = record.get("official") or {}
-    if evaluation_unknown(official):
-        return "evaluation_unknown"
     if record.get("generation_error"):
         return "incomplete_artifact" if "incomplete_artifact" in record["generation_error"] \
             else "generation_failure"
@@ -82,6 +84,7 @@ def summarize_records(records: list[dict], expected_tasks: int | None = None) ->
     n = len(records)
     expected = n if expected_tasks is None else expected_tasks
     cost = {"llm_calls": sum(row["cost"]["llm_calls"] for row in diagnostics),
+            "api_requests": sum(row["cost"]["api_requests"] for row in diagnostics),
             "missing_usage_calls": sum(row["cost"]["missing_usage_calls"] for row in diagnostics),
             "llm_latency_seconds": round(sum(row["cost"]["llm_latency_seconds"] for row in diagnostics), 6)}
     cost.update({key: sum(row["cost"][key] for row in diagnostics) for key in USAGE_KEYS})
@@ -91,9 +94,11 @@ def summarize_records(records: list[dict], expected_tasks: int | None = None) ->
         cost[label] = {"recorded_calls": len(timings), "missing_calls": n - len(timings),
                        "seconds": round(sum(timings), 6) if timings else None}
     return {"n": n, "expected_tasks": expected, "coverage": n / expected if expected else 0.0,
-            "feasible": sum(bool(row["feasible"]) for row in diagnostics),
-            "proxy_match": sum(bool(row["proxy_match"]) for row in diagnostics),
-            "true_correct": sum(bool(row["true_correct"]) for row in diagnostics),
+            "feasible": sum(bool(row["feasible"]) and row["failure_class"] != "evaluation_unknown"
+                            for row in diagnostics),
+            "proxy_match": sum(bool(row["proxy_match"]) and row["failure_class"] != "evaluation_unknown"
+                               for row in diagnostics),
+            "true_correct": sum(row["failure_class"] == "true_correct" for row in diagnostics),
             "phantom_proxy": sum(row["failure_class"] == "phantom_proxy" for row in diagnostics),
             "unknown": sum(row["failure_class"] == "evaluation_unknown" for row in diagnostics),
             "unresolved_non_phantom": sum(row["failure_class"] not in {"true_correct", "phantom_proxy"}
@@ -112,18 +117,33 @@ def pair_win_safe(before: list[dict], after: list[dict]) -> dict:
         raise ValueError("task ids must be unique within each arm")
     common = sorted(before_by_task.keys() & after_by_task.keys())
     gained, lost, phantom_gained, phantom_removed = [], [], [], []
+    unknown_gained, unknown_removed = [], []
     for task in common:
         old, new = before_by_task[task], after_by_task[task]
-        if not old["true_correct"] and new["true_correct"]:
+        old_class = old.get("failure_class") if not old.get("official") else None
+        new_class = new.get("failure_class") if not new.get("official") else None
+        old_class = old_class or failure_class(old)
+        new_class = new_class or failure_class(new)
+        old_true, new_true = old_class == "true_correct", new_class == "true_correct"
+        old_phantom, new_phantom = old_class == "phantom_proxy", new_class == "phantom_proxy"
+        old_unknown, new_unknown = old_class == "evaluation_unknown", new_class == "evaluation_unknown"
+        if not old_true and new_true:
             gained.append(task)
-        if old["true_correct"] and not new["true_correct"]:
+        if old_true and not new_true:
             lost.append(task)
-        if not old["phantom_proxy"] and new["phantom_proxy"]:
+        if not old_phantom and new_phantom:
             phantom_gained.append(task)
-        if old["phantom_proxy"] and not new["phantom_proxy"]:
+        if old_phantom and not new_phantom:
             phantom_removed.append(task)
+        if not old_unknown and new_unknown:
+            unknown_gained.append(task)
+        if old_unknown and not new_unknown:
+            unknown_removed.append(task)
     missing = sorted(before_by_task.keys() ^ after_by_task.keys())
+    win_safe = not lost and not missing
     return {"paired_tasks": len(common), "missing_tasks": missing,
             "gained_true_correct": gained, "lost_true_correct": lost,
             "gained_phantom": phantom_gained, "removed_phantom": phantom_removed,
-            "win_safe": not lost and not missing}
+            "gained_unknown": unknown_gained, "removed_unknown": unknown_removed,
+            "win_safe": win_safe,
+            "strict_safe": win_safe and not phantom_gained and not unknown_gained}

@@ -65,10 +65,10 @@ def test_external_memory_requires_real_promotion_evidence(tmp_path):
     path.write_text(json.dumps(memory.public_state(include_spec_text=True)))
     summary = {"independent_replay": True, "specification_status": "promoted",
                "audit": {"changed_features_covered": True, "scope_confirmed": True}}
-    (tmp_path / "promotion_summary.json").write_text(json.dumps(summary))
+    bind_promotion_evidence(tmp_path, path, summary)
     assert verified_promotion(path)["specification_status"] == "promoted"
     summary["independent_replay"] = False
-    (tmp_path / "promotion_summary.json").write_text(json.dumps(summary))
+    bind_promotion_evidence(tmp_path, path, summary)
     with pytest.raises(ValueError, match="independent replay"):
         verified_promotion(path)
 
@@ -102,9 +102,9 @@ def test_suite_uses_external_memory_for_b3_without_repromotion(tmp_path, monkeyp
     memory.freeze()
     memory_path = tmp_path / "memory_promoted.json"
     memory_path.write_text(json.dumps(memory.public_state(include_spec_text=True)))
-    (tmp_path / "promotion_summary.json").write_text(json.dumps({
+    bind_promotion_evidence(tmp_path, memory_path, {
         "independent_replay": True, "specification_status": "promoted",
-        "audit": {"changed_features_covered": True, "scope_confirmed": True}}))
+        "audit": {"changed_features_covered": True, "scope_confirmed": True}})
 
     replays = []
     def fake_replay(args, arm, source=None, candidate=None, compare_to=None, packets=None):
@@ -204,3 +204,120 @@ def test_suite_skip_memory_review_does_not_repromote_or_run_b3(tmp_path, monkeyp
     implementation = json.loads((out / "suite_implementation.json").read_text())
     assert implementation["witness_tasks_sha256"] == hashlib.sha256(witness_config.read_bytes()).hexdigest()
     assert "witness_packets" not in implementation["arguments"]
+
+
+def test_suite_resume_requires_matching_complete_fingerprint(tmp_path):
+    previous = tmp_path / "suite_implementation.json"
+    expected = {
+        "source_files": {"solver.py": "hash"}, "gepa_result_sha256": "result",
+        "gepa_analysis_sha256": "analysis", "seed": 0, "max_attempts": 3,
+        "audit_packet_sha256": {"task": "packet"},
+    }
+    previous.write_text(json.dumps(expected))
+    cleanroom_suite.validate_suite_resume(previous, expected)
+    for key in expected:
+        changed = dict(expected)
+        changed[key] = "different"
+        with pytest.raises(ValueError, match=key):
+            cleanroom_suite.validate_suite_resume(previous, changed)
+    previous.unlink()
+    with pytest.raises(ValueError, match="unbound"):
+        cleanroom_suite.validate_suite_resume(previous, expected)
+
+
+def test_packet_fingerprint_binds_public_data_and_evaluator(tmp_path):
+    root = tmp_path / "task"
+    (root / "tests").mkdir(parents=True)
+    (root / "tests/test.sh").write_text("first evaluator")
+    packet = SimpleNamespace(
+        instruction="instruction", problem_statement="problem",
+        public_files={"data.csv": "a,b\n1,2\n"}, root=root,
+    )
+    initial = cleanroom_suite.packet_sha256(packet)
+    packet.public_files["data.csv"] = "a,b\n9,9\n"
+    assert cleanroom_suite.packet_sha256(packet) != initial
+    packet.public_files["data.csv"] = "a,b\n1,2\n"
+    assert cleanroom_suite.packet_sha256(packet) == initial
+    (root / "tests/test.sh").write_text("changed evaluator")
+    assert cleanroom_suite.packet_sha256(packet) != initial
+
+
+def test_replay_resume_binds_generation_arguments(tmp_path):
+    from ora_agent.llm import LLMConfig
+    from scripts.cleanroom_experiment import record_implementation
+
+    tasks = tmp_path / "tasks.json"
+    tasks.write_text('{"tasks": []}')
+    args = SimpleNamespace(tasks=str(tasks), seed=0, max_attempts=3, api_guard=True, resume=False)
+    config = LLMConfig("http://localhost", "key", "model")
+    record_implementation(tmp_path, args, config, resume=False)
+    args.resume = True
+    record_implementation(tmp_path, args, config, resume=True)
+    args.seed = 1
+    with pytest.raises(ValueError, match="arguments"):
+        record_implementation(tmp_path, args, config, resume=True)
+
+
+def bind_promotion_evidence(tmp_path, memory_path, summary):
+    import hashlib
+
+    manifests = {}
+    for side in ("candidate", "baseline"):
+        path = tmp_path / f"{side}_run.json"
+        path.write_text(json.dumps({"evaluation": {"task_ids": ["audit_task"]}}))
+        manifests[side] = (path, hashlib.sha256(path.read_bytes()).hexdigest())
+    evidence = {
+        "passed": True,
+        "paired_comparison": {"win_safe": True, "gained_phantom": []},
+        "task_ids": ["audit_task"],
+    }
+    for side, (path, content_hash) in manifests.items():
+        evidence[f"{side}_manifest_path"] = str(path)
+        evidence[f"{side}_manifest_sha256"] = content_hash
+    evidence_path = tmp_path / "independent_replay_evidence.json"
+    evidence_path.write_text(json.dumps(evidence))
+    summary.update(
+        memory_sha256=hashlib.sha256(memory_path.read_bytes()).hexdigest(),
+        independent_replay_evidence_sha256=hashlib.sha256(evidence_path.read_bytes()).hexdigest(),
+        independent_replay_manifest_sha256=manifests["candidate"][1],
+        independent_baseline_manifest_sha256=manifests["baseline"][1],
+    )
+    (tmp_path / "promotion_summary.json").write_text(json.dumps(summary))
+
+
+@pytest.mark.parametrize("mutation", ["memory_text", "replay_manifest", "replay_tasks"])
+def test_external_memory_rejects_broken_promotion_binding(tmp_path, mutation):
+    import hashlib
+    from ora_agent.cleanroom import EvidenceMemory, SpecificationAsset
+
+    memory = EvidenceMemory()
+    memory.register_specification(SpecificationAsset(
+        "spec", "text", {"dataset": "oragentbench", "domain": "manufacturing"},
+    ))
+    memory.promote_specification("spec", {
+        "independent_replay": True, "changed_features_covered": True, "scope_confirmed": True,
+    })
+    memory.freeze()
+    memory_path = tmp_path / "memory_promoted.json"
+    memory_path.write_text(json.dumps(memory.public_state(include_spec_text=True)))
+    summary = {
+        "independent_replay": True, "specification_status": "promoted",
+        "audit": {"changed_features_covered": True, "scope_confirmed": True},
+    }
+    bind_promotion_evidence(tmp_path, memory_path, summary)
+    if mutation == "memory_text":
+        payload = json.loads(memory_path.read_text())
+        payload["specifications"][0]["text"] = "modified"
+        memory_path.write_text(json.dumps(payload))
+    elif mutation == "replay_manifest":
+        (tmp_path / "candidate_run.json").write_text('{"evaluation": {"task_ids": ["audit_task"]}, "changed": true}')
+    else:
+        evidence_path = tmp_path / "independent_replay_evidence.json"
+        evidence = json.loads(evidence_path.read_text())
+        evidence["task_ids"] = ["different_task"]
+        evidence_path.write_text(json.dumps(evidence))
+        summary["independent_replay_evidence_sha256"] = hashlib.sha256(
+            evidence_path.read_bytes()).hexdigest()
+        (tmp_path / "promotion_summary.json").write_text(json.dumps(summary))
+    with pytest.raises(ValueError):
+        cleanroom_suite.verified_promotion(memory_path)

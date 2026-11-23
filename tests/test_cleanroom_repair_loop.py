@@ -9,7 +9,10 @@ def setup_loop(monkeypatch, outcomes):
     packet = SimpleNamespace(name="task", domain="manufacturing", split="dev",
                              scope={"dataset": "oragentbench", "domain": "manufacturing"})
     record = {"task": "task", "true_correct": False, "phantom_proxy": False,
-              "execution": {"return_code": 1}, "official": {"evaluation": {"errors": ["bad"]}},
+              "execution": {"return_code": 1},
+              "official": {"evaluation": {"errors": ["bad"]},
+                           "reward": {"feasibility": 0.0, "quality": 0.0}, "reward_details": {},
+                           "runner": {"return_code": 0, "timed_out": False}},
               "artifacts": {"solve_py": "old"}, "workspace": "original/app",
               "feasible": False, "quality": 0.0, "objective": None, "candidate_sha256": "spec"}
     monkeypatch.setattr(cleanroom_witness, "evaluate_witness",
@@ -248,6 +251,7 @@ def test_second_semantic_regeneration_uses_empty_specification_branch(tmp_path, 
 def test_feasible_nonphantom_is_best_effort_not_accepted(tmp_path, monkeypatch):
     memory, packet, record, _ = setup_loop(monkeypatch, outcomes=99)
     record.update(phantom_proxy=True, feasible=False, quality=0.0, objective=100.0)
+    record["official"]["reward_details"] = {"objective_sense": "minimize"}
 
     def better(*args, **kwargs):
         child = dict(record)
@@ -311,3 +315,93 @@ def test_decision_business_failure_gets_one_followup_before_model_rebuild(tmp_pa
     assert cleanroom_witness._decision_repair_mode(record, 1) == "decision_repair"
     assert cleanroom_witness._decision_repair_mode(record, 2) == "decision_repair"
     assert cleanroom_witness._decision_repair_mode(record, 3) is None
+
+
+def test_objective_improvement_is_progress_and_best_effort_rejects_degradation():
+    current = {
+        "true_correct": False, "feasible": True, "phantom_proxy": False,
+        "quality": 0.0, "objective": 100.0, "execution": {"return_code": 0},
+        "official": {"evaluation": {"errors": []},
+                     "reward_details": {"objective_sense": "minimize"}},
+    }
+    child = dict(current, objective=80.0)
+    assert cleanroom_witness._evidence_transition(current, child) == "progress"
+    baseline = dict(current, feasible=False, phantom_proxy=True)
+    degraded = dict(current, objective=10000.0)
+    assert not cleanroom_witness._best_effort_fallback(baseline, degraded)
+    assert cleanroom_witness._best_effort_fallback(baseline, child)
+
+
+def test_objective_change_without_sense_is_not_verified_progress():
+    current = {
+        "true_correct": False, "feasible": True, "phantom_proxy": False,
+        "quality": 0.0, "objective": 100.0, "execution": {"return_code": 0},
+        "official": {"evaluation": {"errors": []}, "reward_details": {}},
+    }
+    child = dict(current, objective=80.0)
+    assert cleanroom_witness._evidence_transition(current, child) == "unchanged"
+    baseline = dict(current, feasible=False, phantom_proxy=True)
+    assert not cleanroom_witness._best_effort_fallback(baseline, child)
+
+
+def test_all_unmet_fallback_routes_to_model_diagnosis_not_decision_repair(tmp_path):
+    workspace = tmp_path / "app"
+    (workspace / "submissions").mkdir(parents=True)
+    solution = workspace / "submissions/solution.csv"
+    solution.write_text("row_type,locker_id,zone_id,value\nunmet,,z1,10\nunmet,,z2,20\n")
+    record = {
+        "workspace": str(workspace), "true_correct": False, "feasible": False,
+        "execution": {"return_code": 0}, "official": {"evaluation": {"errors": ["service floor"]}},
+    }
+    assert not cleanroom_witness.has_genuine_incumbent(record)
+    assert cleanroom_witness.repair_route(record) == "model_diagnosis"
+    assert cleanroom_witness._decision_repair_mode(record, 1) is None
+    solution.write_text(
+        "row_type,locker_id,zone_id,value\nassignment,l1,z1,5\nunmet,,z1,5\nunmet,,z2,20\n",
+    )
+    assert cleanroom_witness.has_genuine_incumbent(record)
+    assert cleanroom_witness.repair_route(record) == "decision_repair"
+    assert cleanroom_witness._decision_repair_mode(record, 1) == "decision_repair"
+
+
+def test_feasible_quality_shortfall_routes_to_objective_optimization():
+    record = {
+        "true_correct": False, "feasible": True, "quality": 0.0,
+        "execution": {"return_code": 0}, "workspace": "unused",
+    }
+    assert cleanroom_witness.repair_route(record) == "objective_optimization"
+
+
+def test_feasible_checkpoint_survives_later_runtime_regression(tmp_path, monkeypatch):
+    memory, packet, record, _ = setup_loop(monkeypatch, outcomes=99)
+
+    def branch(memory, packet, current, specification, config, outdir, run_seed, **kwargs):
+        attempt = kwargs["attempt"]
+        child = dict(current)
+        child["workspace"] = f"checkpoint{attempt}/app"
+        if attempt == 1:
+            child.update(execution={"return_code": 0}, feasible=False,
+                         official={"evaluation": {"errors": ["one"]}})
+            after = {"execution_contract": "pass"}
+        elif attempt == 2:
+            child.update(execution={"return_code": 0}, feasible=True, quality=0.0, objective=477.0,
+                         official={"evaluation": {"errors": []},
+                                   "reward_details": {"objective_sense": "minimize"}})
+            after = {"execution_contract": "pass"}
+        else:
+            child.update(execution={"return_code": 1, "stderr": "quicksum received list"},
+                         feasible=False, objective=None,
+                         official={"evaluation": {"errors": ["No solution file found."]}})
+            after = {"execution_contract": "fail"}
+        return {"status": "rejected", "record": child, "node_id": f"checkpoint{attempt}",
+                "before": {"execution_contract": "pass"}, "after": after,
+                "edge_accepted": False, "final_accept": False}
+
+    monkeypatch.setattr(cleanroom_witness, "repair_once", branch)
+    result = cleanroom_witness.repair_bounded(memory, packet, record, "spec", None, tmp_path)
+    assert result["attempts_used"] == 3
+    assert result["record"] is record
+    assert result["checkpoint_record"]["workspace"] == "checkpoint2/app"
+    assert result["checkpoint_record"]["feasible"]
+    assert result["checkpoint_route"] == "objective_optimization"
+    assert result["checkpoint_record_path"] == "checkpoint2/record.json"

@@ -38,7 +38,8 @@ def test_reflection_feedback_has_public_error_but_not_official_business_details(
         "return_code": 1, "timed_out": False, "stderr": "AttributeError: Model has no quicksum"})
     monkeypatch.setattr("scripts.cleanroom_experiment.official_evaluate", lambda *args: {
         "evaluation": {"feasible": False, "errors": ["OFFICIAL_BUSINESS_DETAIL"]},
-        "reward": {"feasibility": 0.0, "quality": 0.0}, "reward_details": {}})
+        "reward": {"feasibility": 0.0, "quality": 0.0}, "reward_details": {},
+        "runner": {"return_code": 0, "timed_out": False}})
     adapter = CleanroomAdapter(tmp_path, 1, 0, None)
     record = adapter._rollout(packet, {"conventions": ""})
     assert "AttributeError: Model has no quicksum" in record["feedback"]

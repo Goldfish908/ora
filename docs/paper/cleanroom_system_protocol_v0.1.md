@@ -577,3 +577,34 @@ cell 复验共三次修复、含直接生成共 7 次 LLM 调用、186,075 token
 全部七次修复的增量为 344,288 tokens：cycling 82,344，cold-chain 111,348，nurse 150,596，federated 为 0。成本仍高，且不同错误所需预算明显不同，统一三轮仍只是上限而非最优策略。
 
 证据入口：`report/report.md`、`batch_summary.json`、`b0_b2_comparison.png`、`repair_cost_analysis.json`、`evaluation_outcome.json`、`implementation_snapshot.json` 和 `driver.log`。全量回归为 **593 passed、3 skipped**，m2gen 为 `REGRESSION OK`，日志见 `work/verification_decision_repair_v0.13/`。Witness 与官方评价器同源，仍不是独立业务真值。
+
+
+## v0.14 证据链、Requirement IR 与离线路由修订
+
+本节记录工程实现边界，不是一轮新的独立 B0/B1/B2 准确率实验。v0.13 的独立结果仍按原实现和原报告解释，不回溯改写。
+
+### 评价与恢复边界
+
+- 官方 reward 的 feasibility 只接受有限的 0/1 数值，quality 和目标只接受有限数值；缺 runner、缺 reward、runner 失败/超时、reward 与评价冲突均为 UNKNOWN。UNKNOWN 优先于 true/phantom，且在修复生成前短路，不再消耗修复预算。
+- transfer 修复提示移除 `proxy_match` 和 `phantom_proxy` 等隐藏参考派生位。开发侧 GEPA 代理优化与 transfer 修复反馈继续分开记录。
+- 官方评价要求新的空日志目录，输入 decision 以只读方式挂载，并比较评价前后的 decision 哈希。旧 verifier 文件或评价器修改 decision 均只能产生 UNKNOWN。
+- suite 恢复绑定核心代码、GEPA result/analysis、seed、预算、Witness 缓存、公开任务数据和评价器内容。独立 replay 同时绑定除 `resume` 外的运行参数。Witness 初始化与评价任务名不得相交。
+- memory 恢复重新计算规范文本哈希；外部晋升必须绑定 memory、promotion summary、独立 replay 证据以及候选/基线 manifest 和任务集合。
+
+### 修复和指标边界
+
+- 决策修复静态检查拒绝动态导入、外部进程和只在注释/字符串中伪称读写 incumbent 的脚本。决策分支直接继承父工作区的 solver 字节，API guard 不再改写该分支 solver。
+- 运行时补丁不得减少模型约束或改变 objective sense。决策脚本报错定位到函数时，只允许整体替换该函数。
+- 成本同时记录逻辑生成数 `llm_calls` 和实际 HTTP 请求数 `api_requests`；usage 缺失不再丢弃已经测得的 latency。
+- `pair_win_safe.win_safe` 保留“未丢真实 win 且覆盖不变”的窄含义；`strict_safe` 额外要求无新增 phantom 和 UNKNOWN。目标改善/退化必须依据公开的 `objective_sense`。
+- 全 unmet 或全零且业务失败的输出不视为 genuine incumbent，路由到 `model_diagnosis`；非空业务错误解进入 `decision_repair`；可行但质量不足的解进入 `objective_optimization`。修复结果显式保存 `checkpoint_record`，后续代码回归不会抹掉此前可行 checkpoint。
+
+### Requirement IR 垂直切片
+
+`ora_agent/requirement_ir.py` 实现公开出处、稳定 requirement id、候选代码绑定和冻结的 `PublicDecisionChecker`。当前模板包括需求守恒/服务下限、条件容量、人口去重覆盖、时间序列、输出 omission 重建和 emitted-decision 目标重算。违规键使用 `(requirement_id, canonical_index_tuple, rule_part)`，修复比较只在相同 IR/checker 哈希下进行。
+
+该组件当前为 `veto_enabled=false` 的 hint-only 实现。文本 anchor 只证明绑定覆盖，不证明任意 Python 与 IR 语义等价；IR 自报完整也不证明自然语言要求没有遗漏。跨任务否决权仍须按 clean/wrong 审计重新授权，当前没有声明独立业务真值或跨族泛化收益。
+
+### 零 LLM 旧制品审计
+
+`scripts/cleanroom_saved_artifact_audit.py` 只读取保存制品，不调用 LLM、求解器或官方评价器。`work/verification_saved_artifact_audit_v0.1/` 中，cold-chain 全 unmet 根解被路由为 `model_diagnosis`，非空但含 75 项业务错误的解为 `decision_repair`，nurse/cell 的可行低质量解为 `objective_optimization`。nurse 的旧修复结果可重建第二次可行 checkpoint，而不会被第三次 quicksum 代码错误覆盖。这些结果验证路由和证据保留，不是新的业务正确率。

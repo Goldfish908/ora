@@ -14,8 +14,11 @@ def write_record(run, spec, task, correct):
                   "completion_tokens_details": {"reasoning_tokens": 0}}, "request_wall_s": 1.0}}))
     record = {"task": task, "split": "dev" if task == "dev" else "transfer",
               "candidate_sha256": candidate_hash, "attempt": 0, "workspace": str(workspace),
-              "execution": {"return_code": 0}, "official": {"runner": {"return_code": 0},
-              "evaluation": {"errors": [] if correct else ["bad"]}, "reward_details": {}},
+              "execution": {"return_code": 0}, "official": {
+                  "runner": {"return_code": 0, "timed_out": False},
+                  "evaluation": {"errors": [] if correct else ["bad"]},
+                  "reward": {"feasibility": 1.0 if correct else 0.0,
+                             "quality": 0.8 if correct else 0.0}, "reward_details": {}},
               "feasible": correct, "quality": 0.8 if correct else 0.0, "true_correct": correct,
               "objective": None, "proxy_match": correct, "phantom_proxy": False, "generation_error": None}
     (workspace.parent / "record.json").write_text(json.dumps(record))

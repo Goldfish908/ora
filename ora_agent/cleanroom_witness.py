@@ -4,6 +4,7 @@ from __future__ import annotations
 import csv
 import hashlib
 import json
+import math
 import shutil
 from pathlib import Path
 
@@ -65,6 +66,8 @@ class OfficialTaskPass:
             workspace = artifact["workspace"]
             official = official_evaluate(packet, workspace, artifact["audit_out"])
         metrics = official_metrics(official)
+        if metrics["evaluation_unknown"]:
+            return Verdict(UNKNOWN, "official evaluation is missing, invalid or contradictory")
         if metrics["true_correct"]:
             return Verdict(PASS, "official feasibility and quality threshold passed")
         if metrics["objective"] is None and not metrics["feasible"]:
@@ -94,10 +97,11 @@ def _wrong_workspace(source: Path, destination: Path, mutation: str) -> Path:
         for candidate in (solution, submissions / "solution.json"):
             if candidate.exists():
                 candidate.unlink()
-    elif mutation == "invalid_schema":
-        solution.write_text("wrong,columns\n1,2,3\n")
-    elif mutation == "empty_solution":
-        solution.write_text("")
+    elif mutation in {"invalid_schema", "empty_solution"}:
+        for candidate in (solution, submissions / "solution.json"):
+            if candidate.exists():
+                candidate.unlink()
+        solution.write_text("wrong,columns\n1,2,3\n" if mutation == "invalid_schema" else "")
     else:
         raise ValueError(mutation)
     return destination
@@ -179,14 +183,18 @@ def semantic_findings(record: dict, workspace: Path) -> list[dict]:
     errors = record.get("official", {}).get("evaluation", {}).get("errors") or []
     if "activation violated" not in " ".join(errors):
         return []
+    required_variables = ("use_plant_dc", "use_dc_customer")
+    public_documents = "\n".join((record.get("problem") or {}).get("public_files", {}).values())
+    if any(variable not in public_documents for variable in required_variables):
+        return []
     variables = set()
     solution_path = workspace / "submissions/solution.csv"
     if solution_path.exists():
         with solution_path.open(newline="") as handle:
-            variables = {row["variable"] for row in csv.DictReader(handle)}
+            variables = {row.get("variable") for row in csv.DictReader(handle)}
     code = record["artifacts"]["solve_py"]
     findings = []
-    for variable in ("use_plant_dc", "use_dc_customer"):
+    for variable in required_variables:
         if variable not in code:
             findings.append({"type": "missing_activation_variable_in_model_and_output",
                              "variable": variable})
@@ -195,13 +203,76 @@ def semantic_findings(record: dict, workspace: Path) -> list[dict]:
     return findings
 
 
+def has_genuine_incumbent(record: dict) -> bool:
+    if record.get("true_correct") or record.get("feasible"):
+        return True
+    path = decision_artifact_path(Path(record["workspace"]))
+    if path is None:
+        return False
+    try:
+        if path.suffix == ".csv":
+            with path.open(newline="") as handle:
+                rows = list(csv.DictReader(handle))
+            if not rows:
+                return False
+            if all((row.get("row_type") or "").strip().lower() == "unmet" for row in rows):
+                return False
+            markers = ("value", "quantity", "amount", "flow", "served", "unmet", "module", "open", "count")
+            values = []
+            for row in rows:
+                for name, raw in row.items():
+                    if raw is None or not any(marker in (name or "").lower() for marker in markers):
+                        continue
+                    try:
+                        value = float(raw)
+                    except (TypeError, ValueError):
+                        continue
+                    if math.isfinite(value):
+                        values.append(value)
+            return not values or any(abs(value) > 1e-12 for value in values)
+        payload = json.loads(path.read_text())
+        if payload in ({}, []):
+            return False
+
+        def numbers(value):
+            if isinstance(value, bool):
+                return []
+            if isinstance(value, (int, float)) and math.isfinite(value):
+                return [float(value)]
+            if isinstance(value, dict):
+                return [number for item in value.values() for number in numbers(item)]
+            if isinstance(value, list):
+                return [number for item in value for number in numbers(item)]
+            return []
+
+        values = numbers(payload)
+        return not values or any(abs(value) > 1e-12 for value in values)
+    except (OSError, ValueError, TypeError, csv.Error, json.JSONDecodeError):
+        return False
+
+
+def repair_route(record: dict) -> str:
+    if _record_unknown(record):
+        return "evaluation_unknown"
+    if record.get("true_correct"):
+        return "preserved_win"
+    if (record.get("execution") or {}).get("return_code") != 0:
+        return "model_runtime_repair"
+    if record.get("feasible"):
+        return "objective_optimization"
+    if not has_genuine_incumbent(record):
+        return "model_diagnosis"
+    errors = record.get("official", {}).get("evaluation", {}).get("errors") or []
+    return "decision_repair" if errors else "model_diagnosis"
+
+
 def _decision_repair_eligible(record: dict) -> bool:
     if record.get("true_correct") or record.get("feasible"):
         return False
     if (record.get("execution") or {}).get("return_code") != 0:
         return False
     errors = (record.get("official", {}).get("evaluation", {}).get("errors") or [])
-    return bool(errors) and decision_artifact_path(Path(record["workspace"])) is not None
+    return bool(errors) and has_genuine_incumbent(record)
 
 
 def _decision_repair_code_eligible(record: dict) -> bool:
@@ -219,7 +290,7 @@ def _decision_repair_result_eligible(record: dict) -> bool:
     if "repair_solution_py" not in (record.get("artifacts") or {}):
         return False
     errors = record.get("official", {}).get("evaluation", {}).get("errors") or []
-    return bool(errors) and decision_artifact_path(Path(record["workspace"])) is not None
+    return bool(errors) and has_genuine_incumbent(record)
 
 
 def _decision_repair_mode(record: dict, attempt: int) -> str | None:
@@ -242,11 +313,27 @@ def _regenerate_from_evidence(record: dict, attempt: int,
     return bool(record.get("generation_error") and previous_generation_failure)
 
 
+def _record_unknown(record: dict) -> bool:
+    if record.get("unknown") or record.get("evaluation_unknown"):
+        return True
+    official = record.get("official")
+    return bool(isinstance(official, dict) and "runner" in official
+                and official_metrics(official)["evaluation_unknown"])
+
+
+def _without_unknown_business_claims(record: dict) -> dict:
+    if not _record_unknown(record):
+        return record
+    return {**record, "feasible": False, "quality": 0.0, "true_correct": False,
+            "objective": None, "phantom_proxy": False, "unknown": True}
+
+
 def repair_once(memory: EvidenceMemory, packet: TaskPacket, record: dict, specification: str,
                 config: llm_mod.LLMConfig, outdir: Path, run_seed: int = 0,
                 api_guard: bool = False, dag: RepairDAG | None = None,
                 parent_id: str = "root", attempt: int = 1,
                 previous_generation_failure: str | None = None) -> dict:
+    record = _without_unknown_business_claims(record)
     if record["true_correct"]:
         return {"status": "preserved_win", "record": record}
     if packet.split not in {"dev", "audit", "transfer"}:
@@ -259,6 +346,9 @@ def repair_once(memory: EvidenceMemory, packet: TaskPacket, record: dict, specif
                               record.get("official"), outdir / "before")
     if not before:
         return {"status": "no_authorized_check", "before": before}
+    if _record_unknown(record) or UNKNOWN in before.values():
+        return {"status": "evaluation_unknown", "record": record, "before": before,
+                "final_accept": False}
     target = "execution_contract" if before.get("execution_contract") == FAIL \
         else f"{packet.domain}_official_task_pass"
     if target not in before:
@@ -395,6 +485,28 @@ def _quality_guidance(record: dict) -> dict | None:
             "instruction": "The solution is feasible but below the official quality threshold. Preserve every hard constraint and the exact output schema while improving the modeled objective. Recompute the objective from the emitted decisions and check its consistency with the solver objective; do not sacrifice feasibility or fabricate a reference objective."}
 
 
+def _finite_objective(record: dict) -> float | None:
+    value = record.get("objective")
+    return float(value) if isinstance(value, (int, float)) and not isinstance(value, bool) \
+        and math.isfinite(value) else None
+
+
+def _objective_transition(current: dict, child: dict) -> str | None:
+    old, new = _finite_objective(current), _finite_objective(child)
+    if old is None or new is None:
+        return None
+    if old == new:
+        return "same"
+    current_details = (current.get("official") or {}).get("reward_details") or {}
+    child_details = (child.get("official") or {}).get("reward_details") or {}
+    sense = child_details.get("objective_sense") or current_details.get("objective_sense")
+    if sense == "minimize":
+        return "better" if new < old else "worse"
+    if sense == "maximize":
+        return "better" if new > old else "worse"
+    return None
+
+
 def _evidence_transition(current: dict, child: dict) -> str:
     def errors(record):
         return (record.get("official", {}).get("evaluation", {}).get("errors") or [])
@@ -412,16 +524,17 @@ def _evidence_transition(current: dict, child: dict) -> str:
         return "regression"
     old_errors, new_errors = len(errors(current)), len(errors(child))
     old_quality, new_quality = current.get("quality") or 0.0, child.get("quality") or 0.0
+    objective_transition = _objective_transition(current, child)
     execution_recovered = ((current.get("execution", {}).get("return_code") != 0)
                            and (child.get("execution", {}).get("return_code") == 0)
                            and not current.get("feasible") and current.get("objective") is None
                            and new_quality >= old_quality)
     if execution_recovered:
         return "progress"
-    if new_errors > old_errors or new_quality < old_quality:
+    if new_errors > old_errors or new_quality < old_quality or objective_transition == "worse":
         return "regression"
     if any(new and not old for old, new in comparisons) \
-            or new_errors < old_errors or new_quality > old_quality:
+            or new_errors < old_errors or new_quality > old_quality or objective_transition == "better":
         return "progress"
     return "unchanged"
 
@@ -435,6 +548,12 @@ def _best_effort_fallback(baseline: dict, candidate: dict) -> bool:
         return False
     if (candidate.get("execution") or {}).get("return_code") != 0:
         return False
+    old_objective, new_objective = _finite_objective(baseline), _finite_objective(candidate)
+    if old_objective is not None and new_objective is None:
+        return False
+    if old_objective is not None and new_objective is not None \
+            and _objective_transition(baseline, candidate) not in {"same", "better"}:
+        return False
     return (candidate.get("quality") or 0.0) >= (baseline.get("quality") or 0.0)
 
 
@@ -445,6 +564,8 @@ def repair_bounded(memory: EvidenceMemory, packet: TaskPacket, record: dict, spe
 
     if not 1 <= max_attempts <= 3:
         raise ValueError("repair budget must be between one and three attempts")
+    record = _without_unknown_business_claims(record)
+    root_unknown = _record_unknown(record)
     if record["true_correct"]:
         result = {"status": "preserved_win", "record": record, "attempts_used": 0,
                   "win_safe": True, "final_accept": True}
@@ -457,6 +578,7 @@ def repair_bounded(memory: EvidenceMemory, packet: TaskPacket, record: dict, spe
     current = record
     before = evaluate_witness(memory, packet, Path(record["workspace"]), record["execution"],
                               record.get("official"), outdir / "root")
+    root_unknown = root_unknown or UNKNOWN in before.values()
     dag = RepairDAG(TrustController(memory))
     if record.get("artifacts"):
         dag.add_root(record["artifacts"]["solve_py"], before)
@@ -466,10 +588,10 @@ def repair_bounded(memory: EvidenceMemory, packet: TaskPacket, record: dict, spe
     final_record = baseline
     final_verdicts = before
     current_verdicts = before
-    stop_reason = "bounded_failure"
+    stop_reason = "evaluation_unknown" if root_unknown else "bounded_failure"
     unchanged_streak = 0
     previous_generation_failure = None
-    for attempt in range(1, max_attempts + 1):
+    for attempt in range(1, max_attempts + 1) if not root_unknown else []:
         branch_specification = specification
         if attempt == 2 and _regenerate_from_evidence(current, attempt, previous_generation_failure):
             branch_specification = ""
@@ -540,10 +662,12 @@ def repair_bounded(memory: EvidenceMemory, packet: TaskPacket, record: dict, spe
     generation_costs += [generation_cost({"workspace": outdir / f"attempt_{index}/repair_1/app"})
                          for index in range(1, len(history) + 1)]
     cost = summarize_records([baseline, *attempt_records])["cost"]
-    for key in ("llm_calls", "missing_usage_calls", "llm_latency_seconds", *USAGE_KEYS):
+    for key in ("llm_calls", "api_requests", "missing_usage_calls", "llm_latency_seconds", *USAGE_KEYS):
         cost[key] = sum(part[key] for part in generation_costs)
     cost["llm_latency_seconds"] = round(cost["llm_latency_seconds"], 6)
     comparison = pair_win_safe([baseline], [final_record])
+    checkpoint = final_record if accepted else current
+    checkpoint_verdicts = final_verdicts if accepted else current_verdicts
     result = {"status": stop_reason, "record": final_record, "before": before, "after": final_verdicts,
               "final_accept": accepted, "edge_accepted": history[-1].get("edge_accepted", False)
               if history else False,
@@ -551,7 +675,11 @@ def repair_bounded(memory: EvidenceMemory, packet: TaskPacket, record: dict, spe
               "history": history,
               "attempt_record_paths": [str(Path(path["workspace"]).parent / "record.json")
                                        for path in attempt_records],
-              "pair_win_safe": comparison, "win_safe": comparison["win_safe"], "cost": cost,
+              "pair_win_safe": comparison, "win_safe": comparison["win_safe"],
+              "strict_safe": comparison["strict_safe"], "cost": cost,
+              "checkpoint_record": checkpoint, "checkpoint_verdicts": checkpoint_verdicts,
+              "checkpoint_route": repair_route(checkpoint),
+              "checkpoint_record_path": str(Path(checkpoint["workspace"]).parent / "record.json"),
               "memory_frozen": memory.frozen, "dag": dag.to_dict()}
     write_json(outdir / "repair_result.json", result)
     return result

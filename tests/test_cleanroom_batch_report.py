@@ -12,7 +12,10 @@ def replay(root, name, spec, outcomes):
         workspace.mkdir(parents=True)
         record = {"task": task, "split": "audit", "candidate_sha256": digest(spec), "attempt": 0,
                   "workspace": str(workspace), "execution": {"return_code": 0},
-                  "official": {"runner": {"return_code": 0}, "evaluation": {"errors": [] if correct else ["bad"]},
+                  "official": {"runner": {"return_code": 0, "timed_out": False},
+                               "evaluation": {"errors": [] if correct else ["bad"]},
+                               "reward": {"feasibility": 1.0 if correct else 0.0,
+                                          "quality": 0.8 if correct else 0.0},
                                "reward_details": {}}, "feasible": correct, "quality": 0.8 if correct else 0.0,
                   "true_correct": correct, "objective": None, "proxy_match": correct,
                   "phantom_proxy": False, "generation_error": None}

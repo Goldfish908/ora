@@ -23,7 +23,9 @@ def test_replay_manifest_records_no_evolution_and_disjoint_batch(tmp_path, monke
         record = {"task": packet.name, "split": packet.split,
                   "candidate_sha256": digest(candidate["conventions"]), "attempt": 0,
                   "workspace": str(workspace), "execution": {"return_code": 0},
-                  "official": {"runner": {"return_code": 0}, "evaluation": {"errors": []},
+                  "official": {"runner": {"return_code": 0, "timed_out": False},
+                               "evaluation": {"errors": []},
+                               "reward": {"feasibility": 1.0, "quality": 0.8},
                                "reward_details": {}}, "feasible": True, "quality": 0.8,
                   "true_correct": True, "objective": 1.0, "proxy_match": True, "phantom_proxy": False,
                   "generation_error": None}

@@ -315,6 +315,8 @@ def restore_specifications(payload: dict) -> EvidenceMemory:
             parent_id=record.get("parent_id"), source_refs=record.get("source_refs", []),
             text_sha256=record["text_sha256"], audits=record.get("audits", []),
             created_at=record["created_at"])
+        if asset.text_sha256 != text_hash(asset.text):
+            raise ValueError(f"specification text hash mismatch: {asset.spec_id}")
         status = record["status"]
         if status == "promoted" and not any(audit.get("passed") for audit in asset.audits):
             raise ValueError("promoted specification lacks a passing audit")

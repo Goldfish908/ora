@@ -8,8 +8,11 @@ def record(task="task", true=False, phantom=False, generation_error=None, return
     return {"task": task, "true_correct": true, "phantom_proxy": phantom,
             "generation_error": generation_error, "execution": {"return_code": return_code},
             "feasible": feasible, "quality": quality, "objective": None, "proxy_match": phantom,
-            "official": {"runner": {"return_code": runner_code},
-                         "evaluation": {"errors": official_errors or []}, "reward_details": {}}}
+            "official": {"runner": {"return_code": runner_code, "timed_out": False},
+                         "evaluation": {"errors": official_errors or []},
+                         "reward": {"feasibility": 1.0 if feasible or true else 0.0,
+                                    "quality": quality if quality else (1.0 if true else 0.0)},
+                         "reward_details": {}}}
 
 
 def test_failure_classes_do_not_treat_failed_execution_as_unknown():
@@ -84,3 +87,32 @@ def test_generation_cost_includes_decision_repair(tmp_path):
     assert summary["cost"]["llm_calls"] == 1
     assert summary["cost"]["total_tokens"] == 25
     assert summary["cost"]["llm_latency_seconds"] == 0.5
+
+
+def test_generation_cost_keeps_latency_and_counts_actual_api_requests(tmp_path):
+    workspace = tmp_path / "attempt_0/app"
+    generation = workspace.parent / "generation"
+    generation.mkdir(parents=True)
+    responses = [
+        {"usage": {}, "request_wall_s": 12.0, "request_attempts": [{}, {}, {}]},
+        {"usage": {}, "request_wall_s": 0.0, "request_attempts": []},
+    ]
+    for phase, response in zip(("model", "solver"), responses):
+        (generation / f"{phase}_generation.json").write_text(json.dumps({"response": response}))
+    row = record()
+    row["workspace"] = str(workspace)
+    cost = summarize_records([row])["cost"]
+    assert cost["llm_calls"] == 2
+    assert cost["api_requests"] == 3
+    assert cost["missing_usage_calls"] == 2
+    assert cost["llm_latency_seconds"] == 12.0
+
+
+def test_strict_pair_safety_includes_new_phantom_and_unknown():
+    before = [record("phantom"), record("unknown", official_errors=["bad"])]
+    after = [record("phantom", phantom=True), record("unknown", runner_code=1)]
+    comparison = pair_win_safe(before, after)
+    assert comparison["win_safe"]
+    assert comparison["gained_phantom"] == ["phantom"]
+    assert comparison["gained_unknown"] == ["unknown"]
+    assert not comparison["strict_safe"]

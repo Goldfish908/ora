@@ -121,6 +121,9 @@ def independent_replay(gepa_path: Path, specification: str, candidate_idx: int,
     evidence = {"candidate_idx": candidate_idx, "implementation_matches": same_implementation,
                 "paired_comparison": comparison, "empty_specification": before,
                 "gepa_specification": after, "passed": passed,
+                "candidate_manifest_path": str(candidate["manifest_path"]),
+                "baseline_manifest_path": str(baseline["manifest_path"]),
+                "task_ids": sorted(candidate["manifest"]["evaluation"]["task_ids"]),
                 "selection_tasks_reused": False}
     return passed, evidence
 
@@ -157,7 +160,13 @@ def main() -> None:
         (ROOT / args.independent_replay).resolve() if args.independent_replay else None,
         (ROOT / args.independent_baseline).resolve() if args.independent_baseline else None)
     evidence["candidate_selection"] = best
-    write_json(outdir / "independent_replay_evidence.json", evidence)
+    for side in ("candidate", "baseline"):
+        manifest_path = evidence.get(f"{side}_manifest_path")
+        if manifest_path:
+            evidence[f"{side}_manifest_sha256"] = hashlib.sha256(
+                Path(manifest_path).read_bytes()).hexdigest()
+    evidence_path = outdir / "independent_replay_evidence.json"
+    write_json(evidence_path, evidence)
 
     scope = {"dataset": "oragentbench", "domain": dev_packets[0].domain}
     memory = EvidenceMemory()
@@ -180,11 +189,16 @@ def main() -> None:
         "scope_confirmed": audit["scope_confirmed"],
         "audit_scope": "disjoint_official_replay_and_public_sources_with_verified_api_probe"})
     memory.freeze()
-    write_json(outdir / "memory_promoted.json", memory.public_state(include_spec_text=True))
+    memory_path = outdir / "memory_promoted.json"
+    write_json(memory_path, memory.public_state(include_spec_text=True))
     summary = {"best_candidate_idx": candidate_idx,
                "independent_replay": independent,
                "specification_status": memory.specifications[f"spec_{candidate_idx}"].status,
-               "specification_scope": scope, "audit": audit}
+               "specification_scope": scope, "audit": audit,
+               "memory_sha256": hashlib.sha256(memory_path.read_bytes()).hexdigest(),
+               "independent_replay_evidence_sha256": hashlib.sha256(evidence_path.read_bytes()).hexdigest(),
+               "independent_replay_manifest_sha256": evidence.get("candidate_manifest_sha256"),
+               "independent_baseline_manifest_sha256": evidence.get("baseline_manifest_sha256")}
     write_json(outdir / "promotion_summary.json", summary)
     print(json.dumps(summary, ensure_ascii=False, indent=1))
 

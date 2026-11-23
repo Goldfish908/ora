@@ -110,10 +110,78 @@ def verified_promotion(memory_path: Path) -> dict:
     if not summary.get("independent_replay") or summary.get("specification_status") != "promoted" \
             or not audit.get("changed_features_covered") or not audit.get("scope_confirmed"):
         raise ValueError("memory source has not passed independent replay and provenance audit")
+    if summary.get("memory_sha256") != hashlib.sha256(memory_path.read_bytes()).hexdigest():
+        raise ValueError("promotion summary does not match the memory artifact")
+    evidence_path = memory_path.parent / "independent_replay_evidence.json"
+    if not evidence_path.exists() or summary.get("independent_replay_evidence_sha256") != \
+            hashlib.sha256(evidence_path.read_bytes()).hexdigest():
+        raise ValueError("promotion summary is not bound to independent replay evidence")
+    evidence = read_json(evidence_path)
+    comparison = evidence.get("paired_comparison") or {}
+    if not evidence.get("passed") or not comparison.get("win_safe") or comparison.get("gained_phantom"):
+        raise ValueError("independent replay evidence does not authorize promotion")
+    for side, summary_key in (("candidate", "independent_replay_manifest_sha256"),
+                              ("baseline", "independent_baseline_manifest_sha256")):
+        manifest_path = Path(evidence.get(f"{side}_manifest_path", ""))
+        expected_hash = evidence.get(f"{side}_manifest_sha256")
+        if not manifest_path.is_file() or not expected_hash \
+                or hashlib.sha256(manifest_path.read_bytes()).hexdigest() != expected_hash \
+                or summary.get(summary_key) != expected_hash:
+            raise ValueError(f"promotion evidence is not bound to the {side} manifest")
+        manifest = read_json(manifest_path)
+        if sorted(manifest.get("evaluation", {}).get("task_ids") or []) != evidence.get("task_ids"):
+            raise ValueError(f"{side} replay tasks differ from the promotion evidence")
     memory = restore_specifications(read_json(memory_path))
     if not any(asset.status == "promoted" for asset in memory.specifications.values()):
         raise ValueError("memory source contains no promoted specification")
     return summary
+
+
+def path_sha256(path: Path | None) -> str | None:
+    if path is None or not path.exists():
+        return None
+    if path.is_file():
+        return hashlib.sha256(path.read_bytes()).hexdigest()
+    digest = hashlib.sha256()
+    for item in sorted(path.rglob("*")):
+        relative = str(item.relative_to(path))
+        digest.update(relative.encode() + b"\0")
+        if item.is_symlink():
+            digest.update(b"symlink\0" + str(item.readlink()).encode() + b"\0")
+        elif item.is_file():
+            digest.update(item.read_bytes())
+        digest.update(b"\0")
+    return digest.hexdigest()
+
+
+def packet_sha256(packet) -> str:
+    digest = hashlib.sha256()
+    digest.update(packet.instruction.encode() + b"\0" + packet.problem_statement.encode() + b"\0")
+    for name, content in sorted(packet.public_files.items()):
+        digest.update(name.encode() + b"\0" + content.encode() + b"\0")
+    digest.update((path_sha256(packet.root / "tests") or "").encode())
+    return digest.hexdigest()
+
+
+def suite_source_hashes() -> dict[str, str]:
+    names = [
+        "ora_agent/llm.py", "ora_agent/cleanroom.py", "ora_agent/cleanroom_witness.py",
+        "ora_agent/cleanroom_analysis.py", "ora_agent/oragentbench.py",
+        "ora_agent/decision_repair.py", "ora_agent/api_guard.py",
+        "scripts/cleanroom_suite.py", "scripts/cleanroom_replay.py",
+        "scripts/cleanroom_experiment.py", "scripts/cleanroom_memory.py",
+        "scripts/cleanroom_batch_report.py",
+    ]
+    return {name: hashlib.sha256((ROOT / name).read_bytes()).hexdigest() for name in names}
+
+
+def validate_suite_resume(previous_path: Path, expected: dict) -> None:
+    if not previous_path.exists():
+        raise ValueError("cannot resume an unbound suite directory")
+    previous = read_json(previous_path)
+    changed = sorted(key for key, value in expected.items() if previous.get(key) != value)
+    if changed:
+        raise ValueError("suite inputs changed while resuming: " + ", ".join(changed))
 
 
 def main() -> None:
@@ -159,27 +227,40 @@ def main() -> None:
         if args.witness_tasks else None
     if implementation["tasks_sha256"] != dev_sha256:
         raise ValueError("development task config differs from the GEPA implementation")
-    expected = {"gepa_implementation_sha256": hashlib.sha256(implementation_path.read_bytes()).hexdigest(),
-                "dev_tasks_sha256": dev_sha256, "audit_tasks_sha256": audit_sha256,
-                "witness_tasks_sha256": witness_sha256,
-                "memory_source_sha256": hashlib.sha256(args.memory_source.read_bytes()).hexdigest()
-                if args.memory_source else None}
-    previous_path = args.out / "suite_implementation.json"
-    if args.resume and previous_path.exists():
-        previous = read_json(previous_path)
-        if any(previous.get(key) != value for key, value in expected.items()):
-            raise ValueError("suite inputs changed while resuming")
     candidate = select_candidate(result_path, result, analysis)
     args.dev_packets = [packet for packet in load_tasks(args.dev_tasks) if packet.split == "dev"]
     args.witness_packets = load_tasks(args.witness_tasks) if args.witness_tasks else args.dev_packets
     audit_packets = load_tasks(args.audit_tasks)
     if not audit_packets or any(packet.split not in {"audit", "transfer"} for packet in audit_packets):
         raise ValueError("independent suite requires only audit/transfer tasks")
+    overlap = sorted({packet.name for packet in args.witness_packets} & {packet.name for packet in audit_packets})
+    if overlap:
+        raise ValueError(f"Witness initialization and evaluation tasks overlap: {overlap}")
     selected_text = result["candidates"][candidate["candidate_idx"]]["conventions"]
     candidate["candidate_sha256"] = digest(selected_text)
+    expected = {
+        "script_sha256": hashlib.sha256((ROOT / "scripts/cleanroom_suite.py").read_bytes()).hexdigest(),
+        "source_files": suite_source_hashes(),
+        "gepa_implementation_sha256": hashlib.sha256(implementation_path.read_bytes()).hexdigest(),
+        "gepa_result_sha256": hashlib.sha256(result_path.read_bytes()).hexdigest(),
+        "gepa_analysis_sha256": hashlib.sha256(analysis_path.read_bytes()).hexdigest(),
+        "candidate_idx": candidate["candidate_idx"], "candidate_sha256": candidate["candidate_sha256"],
+        "dev_tasks_sha256": dev_sha256, "audit_tasks_sha256": audit_sha256,
+        "witness_tasks_sha256": witness_sha256,
+        "dev_packet_sha256": {packet.name: packet_sha256(packet) for packet in args.dev_packets},
+        "witness_packet_sha256": {packet.name: packet_sha256(packet) for packet in args.witness_packets},
+        "audit_packet_sha256": {packet.name: packet_sha256(packet) for packet in audit_packets},
+        "witness_source_sha256": path_sha256(args.witness_source),
+        "memory_source_sha256": hashlib.sha256(args.memory_source.read_bytes()).hexdigest()
+        if args.memory_source else None,
+        "skip_memory_review": args.skip_memory_review, "workers": args.workers,
+        "seed": args.seed, "max_attempts": args.max_attempts, "llm_timeout": args.llm_timeout,
+    }
+    previous_path = args.out / "suite_implementation.json"
+    if args.resume:
+        validate_suite_resume(previous_path, expected)
     write_json(args.out / "candidate_selection.json", candidate)
     write_json(previous_path, {
-        "script_sha256": hashlib.sha256((ROOT / "scripts/cleanroom_suite.py").read_bytes()).hexdigest(),
         **expected,
         "arguments": {key: str(value) if isinstance(value, Path) else value
                       for key, value in vars(args).items()

@@ -35,9 +35,12 @@ def replay_manifest(tmp_path, name, specification, true, source=None, unknown=Fa
     workspace.mkdir(parents=True)
     record = {"task": "audit_task", "split": "audit", "candidate_sha256": digest(specification),
               "attempt": 0, "workspace": str(workspace), "execution": {"return_code": 0, "wall_seconds": 1.0},
-              "official": {"runner": {"return_code": 0, "wall_seconds": 0.1},
+              "official": {"runner": {"return_code": 0, "timed_out": False, "wall_seconds": 0.1},
                            "evaluation": {"errors": ["official evaluator did not produce evaluation.json"]
-                                          if unknown else []}, "reward_details": {}},
+                                          if unknown else []},
+                           "reward": {"feasibility": 1.0 if true else 0.0,
+                                      "quality": 0.8 if true else 0.0},
+                           "reward_details": {}},
               "feasible": true, "quality": 0.8 if true else 0.0, "true_correct": true,
               "objective": 1.0, "proxy_match": true, "phantom_proxy": False, "generation_error": None}
     record_path = workspace.parent / "record.json"

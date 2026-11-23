@@ -95,12 +95,12 @@ def record_implementation(outdir: Path, args: argparse.Namespace, config: llm_mo
                               "model_max_words": int(os.environ.get("ORA_CLEANROOM_MODEL_WORDS", "1800")),
                               "temperature": 0.6, "protocol": "two_phase_model_then_solver_v1",
                               "stream": False},
-               "arguments": vars(args)}
+               "arguments": {key: value for key, value in vars(args).items() if key != "resume"}}
     path = outdir / "implementation.json"
     if resume and path.exists():
         previous = read_json(path)
-        for key in ("files", "tasks_sha256", "model", "generation"):
-            if previous[key] != payload[key]:
+        for key in ("files", "tasks_sha256", "model", "generation", "arguments"):
+            if previous.get(key) != payload[key]:
                 raise ValueError(f"implementation changed while resuming: {key}")
     write_json(path, payload)
 

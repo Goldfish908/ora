@@ -87,6 +87,8 @@ def test_unregistered_problem_keeps_execution_feedback_without_business_acceptan
     assert "business_unverified" in prompt
     assert "TypeError: bad API" in prompt
     assert "counterexample only" in prompt
+    assert "[MEMORY ASSETS AND COUNTEREXAMPLES]" in prompt
+    assert "[VALIDATED MEMORY" not in prompt
     assert "en_answer" not in prompt
 
 

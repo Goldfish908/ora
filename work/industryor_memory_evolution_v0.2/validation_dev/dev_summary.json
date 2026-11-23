@@ -1,0 +1,66 @@
+{
+ "tier": "dev",
+ "tasks": [
+  "prob_003_C",
+  "prob_030_B",
+  "prob_033_A",
+  "prob_051_B",
+  "prob_052_B",
+  "prob_054_A",
+  "prob_083_A"
+ ],
+ "assets": {
+  "prompt_pyscipopt_addvar_v_001": {
+   "status": "rejected",
+   "metrics": {
+    "n_problems": 7,
+    "n_pairs": 21,
+    "execution_gain": 0.0,
+    "execution_harm": 0,
+    "runner_errors": 0,
+    "false_business_accepts": 0,
+    "control_execution_successes": 21,
+    "treatment_execution_successes": 21,
+    "control_logical_llm_calls": 21,
+    "treatment_logical_llm_calls": 21,
+    "llm_call_reduction": 0.0,
+    "control_new_llm_calls": 21,
+    "control_completion_tokens": 22772,
+    "control_total_tokens": 48758,
+    "control_llm_latency_s": 730.2360000000001,
+    "treatment_new_llm_calls": 21,
+    "treatment_completion_tokens": 20716,
+    "treatment_total_tokens": 49348,
+    "treatment_llm_latency_s": 818.6519999999999,
+    "guard_contract_passed": null,
+    "business_labels_complete": true
+   }
+  },
+  "guard_pyscipopt_addvar_v_002": {
+   "status": "dev_passed",
+   "metrics": {
+    "n_problems": 7,
+    "n_pairs": 21,
+    "execution_gain": 0.0,
+    "execution_harm": 0,
+    "runner_errors": 0,
+    "false_business_accepts": 0,
+    "control_execution_successes": 21,
+    "treatment_execution_successes": 21,
+    "control_logical_llm_calls": 21,
+    "treatment_logical_llm_calls": 0,
+    "llm_call_reduction": 1.0,
+    "control_new_llm_calls": 21,
+    "control_completion_tokens": 22772,
+    "control_total_tokens": 48758,
+    "control_llm_latency_s": 730.2360000000001,
+    "treatment_new_llm_calls": 0,
+    "treatment_completion_tokens": 0,
+    "treatment_total_tokens": 0,
+    "treatment_llm_latency_s": 0,
+    "guard_contract_passed": true,
+    "business_labels_complete": true
+   }
+  }
+ }
+}

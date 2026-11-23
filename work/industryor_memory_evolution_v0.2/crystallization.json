@@ -1,0 +1,27 @@
+{
+ "parent_id": "prompt_pyscipopt_addvar_v_001",
+ "guard": "addvar_v_to_name",
+ "source_ids": [
+  "prob_003_C",
+  "prob_030_B",
+  "prob_033_A",
+  "prob_051_B",
+  "prob_052_B",
+  "prob_054_A",
+  "prob_083_A"
+ ],
+ "attempts": [],
+ "reused_existing_asset": true,
+ "asset_id": "guard_pyscipopt_addvar_v_002",
+ "contract": {
+  "passed": true,
+  "guard": "addvar_v_to_name",
+  "checks": {
+   "must_fire": true,
+   "must_pass_clean": true,
+   "unrelated_unchanged": true,
+   "ambiguous_rejected": true
+  },
+  "independent_from_source_traces": true
+ }
+}

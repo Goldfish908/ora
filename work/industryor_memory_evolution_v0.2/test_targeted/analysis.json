@@ -1,0 +1,50 @@
+{
+ "scope": "targeted",
+ "n_tasks": 5,
+ "seeds": [
+  101,
+  202,
+  303
+ ],
+ "task_ids": [
+  "prob_022_A",
+  "prob_023_B",
+  "prob_045_A",
+  "prob_056_B",
+  "prob_069_B"
+ ],
+ "promoted_asset_ids": [
+  "guard_pyscipopt_addvar_v_002"
+ ],
+ "summary": {
+  "n_problems": 5,
+  "n_pairs": 15,
+  "execution_gain": 0.0,
+  "execution_harm": 0,
+  "runner_errors": 0,
+  "false_business_accepts": 0,
+  "control_execution_successes": 15,
+  "treatment_execution_successes": 15,
+  "control_logical_llm_calls": 15,
+  "treatment_logical_llm_calls": 0,
+  "llm_call_reduction": 1.0,
+  "control_new_llm_calls": 15,
+  "control_completion_tokens": 20485,
+  "control_total_tokens": 40858,
+  "control_llm_latency_s": 705.9269999999999,
+  "treatment_new_llm_calls": 0,
+  "treatment_completion_tokens": 0,
+  "treatment_total_tokens": 0,
+  "treatment_llm_latency_s": 0,
+  "guard_contract_passed": null,
+  "business_labels_complete": true,
+  "control_objective_matches": 6,
+  "treatment_objective_matches": 6,
+  "objective_gain": 0.0,
+  "objective_harm": 0,
+  "objective_gained_ids": [],
+  "objective_harmed_ids": []
+ },
+ "public_answer_used_for_selection": false,
+ "exposure": "retrospective_frozen_repair_test_not_sealed"
+}

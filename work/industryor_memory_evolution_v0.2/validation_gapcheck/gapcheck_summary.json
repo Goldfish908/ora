@@ -1,0 +1,39 @@
+{
+ "tier": "gapcheck",
+ "tasks": [
+  "prob_012_A",
+  "prob_026_B",
+  "prob_050_C",
+  "prob_057_A",
+  "prob_077_C",
+  "prob_096_B"
+ ],
+ "assets": {
+  "guard_pyscipopt_addvar_v_002": {
+   "status": "promoted",
+   "metrics": {
+    "n_problems": 6,
+    "n_pairs": 18,
+    "execution_gain": 0.0,
+    "execution_harm": 0,
+    "runner_errors": 0,
+    "false_business_accepts": 0,
+    "control_execution_successes": 15,
+    "treatment_execution_successes": 15,
+    "control_logical_llm_calls": 18,
+    "treatment_logical_llm_calls": 0,
+    "llm_call_reduction": 1.0,
+    "control_new_llm_calls": 18,
+    "control_completion_tokens": 45052,
+    "control_total_tokens": 69421,
+    "control_llm_latency_s": 1495.905,
+    "treatment_new_llm_calls": 0,
+    "treatment_completion_tokens": 0,
+    "treatment_total_tokens": 0,
+    "treatment_llm_latency_s": 0,
+    "guard_contract_passed": true,
+    "business_labels_complete": true
+   }
+  }
+ }
+}

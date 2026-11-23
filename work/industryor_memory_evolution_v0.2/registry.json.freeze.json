@@ -1,0 +1,26 @@
+{
+ "schema_version": "evolving_memory.freeze.v0.1",
+ "registry_sha256": "38ef015bff7758ef9f207fd64fcea958972e7ea1460aa3a04a664fd4bdaf607b",
+ "protocol_path": "/home/hewj13/wm/ora/docs/paper/industryor_memory_evolution_protocol_v0.1.md",
+ "protocol_sha256": "00658d96b5b8760429561a6d5734d26839e9afdb0126881cef22db9b95642563",
+ "implementation_sha256": {
+  "/home/hewj13/wm/ora/ora_agent/evolving_memory.py": "746be2260e414c1c5615aa847437550cbf8d08d08921f1564147dc113c46f6ba",
+  "/home/hewj13/wm/ora/ora_agent/memory_guards.py": "7d94cbc5819e74430a5e3b51840cb13d12f517e7d1e166d6d4924d3848aaa2c5",
+  "/home/hewj13/wm/ora/ora_agent/evidence_dag.py": "2dc36dd3b07703fe50212daf96412f9add723294ab722ee5d06c6edc63c5867a",
+  "/home/hewj13/wm/ora/ora_agent/semantic_dag.py": "831a0f1e5e3cead974a78ad4d2bc66c81319ad113b39bf1d7f38cd9b1c590256",
+  "/home/hewj13/wm/ora/ora_agent/semantic_binding.py": "a48286c347662e7ce09389d0b284d9d9270e7f5fe27e9f32296785d06fc22687",
+  "/home/hewj13/wm/ora/ora_agent/repair_controller.py": "af265fcb4c4eadfc6146492b8bef0083b4693462bde68c6abafc81c8e5ee6e34",
+  "/home/hewj13/wm/ora/ora_agent/llm.py": "eb2b6f6ebc36813149d52ea1a109addd51cb02419c53f7427de7c7a712d7aa18",
+  "/home/hewj13/wm/ora/scripts/industryor_structured_pipeline.py": "d5fbfd1b596fbac2377f3be0dee752b7d682037fe7db394ebdbb0c57bd070d4c",
+  "/home/hewj13/wm/ora/scripts/industryor_semantic_dag.py": "8df7ee4960a6d7b67dac3ce53849c38df21ad63e47f2fe0bf21fa17ccf784fa3",
+  "/home/hewj13/wm/ora/scripts/industryor_k3_pipeline.py": "7eef88681f1aa649991fa34fdde7ec5dc8f23872f4ae095b7990274487a5d746",
+  "/home/hewj13/wm/ora/scripts/industryor_next_stage.py": "8daba1b593668d890978337f7215a520c363e3027eb2e34587ef4738fa20d7b7",
+  "/home/hewj13/wm/ora/scripts/industryor_memory_evolution.py": "5cb8bca8126d668d1ef387a79b429b3593b21aa1b9cea5bba79e8b0dc5f6d8e1",
+  "/home/hewj13/wm/ora/scripts/m1_pilot.py": "f687c8f2daa2c55eb22a22a91dba169c1440acab9b6a23f8d0f079cbb8c7509a",
+  "/home/hewj13/wm/ora/scripts/m3_industryor.py": "f6b7e6a81942c5f5c920a35807db6ac6df738f35f91069a90f8c7bc8fcc79d13"
+ },
+ "promoted_asset_ids": [
+  "guard_pyscipopt_addvar_v_002"
+ ],
+ "frozen_at": "2026-11-18T02:45:22.376925+00:00"
+}

@@ -42,6 +42,11 @@ def shared_cost_audit(records: list[dict], saved: dict) -> dict:
             "reused_new_llm_latency_s": round(artifact["new_llm_latency_s"] - saved["new_llm_latency_s"], 3)}
 
 
+def configured_protocol_sha256(config: dict, name: str) -> str:
+    hashes = config["protocol_sha256"]
+    return hashes[name] if isinstance(hashes, dict) else hashes
+
+
 def validate(run: Path, require_complete: bool = True) -> dict:
     analysis = json.loads((run / "analysis.json").read_text())
     config = analysis["run_config"]
@@ -58,8 +63,9 @@ def validate(run: Path, require_complete: bool = True) -> dict:
         assert path.is_file()
         assert hashlib.sha256(path.read_bytes()).hexdigest() == expected
         snapshots += 1
-    protocol = run / "source/docs/paper/industryor_full_chain_protocol_v0.1.md"
-    assert hashlib.sha256(protocol.read_bytes()).hexdigest() == config["protocol_sha256"]
+    protocol_name = "docs/paper/industryor_full_chain_protocol_v0.1.md"
+    protocol = run / "source" / protocol_name
+    assert hashlib.sha256(protocol.read_bytes()).hexdigest() == configured_protocol_sha256(config, protocol_name)
     memory_records = []
     for path in (run / "shared_generations").rglob("*.json"):
         record = json.loads(path.read_text())

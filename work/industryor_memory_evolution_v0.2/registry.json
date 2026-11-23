@@ -1,0 +1,211 @@
+{
+ "schema_version": "evolving_memory.registry.v0.1",
+ "assets": [
+  {
+   "asset_id": "prompt_pyscipopt_addvar_v_001",
+   "version": 1,
+   "kind": "execution",
+   "form": "prompt",
+   "signature": "pyscipopt_addvar_v",
+   "text": "When calling pyscipopt's Model.addVar() with both a variable name and a vtype already specified, the name must be passed via the 'name' keyword argument, not 'v'; using 'v' as a keyword triggers a TypeError because the API does not recognize it. If vtype is present and the value assigned to 'v' is a string label (not a domain type), replace 'v=' with 'name=' to correctly register the variable's identifier.",
+   "guard": null,
+   "origin": {
+    "dataset": "IndustryOR",
+    "split": "dev",
+    "source_ids": [
+     "prob_003_C",
+     "prob_030_B",
+     "prob_033_A",
+     "prob_051_B",
+     "prob_052_B",
+     "prob_054_A",
+     "prob_083_A"
+    ],
+    "trace_sha256": "da6e99fcb8c465cf7983966699e61dda6ebbf7061c5cc3b1d976fa8126ee8da6",
+    "proposer": "Qwen3.8-27B",
+    "rationale": "All five failures show addVar(v=<string_name>, ..., vtype=<type>) where vtype is already set and v holds a name, matching the addvar_v_to_name guard condition exactly."
+   },
+   "parent_id": null,
+   "content_sha256": "a8f1ec5e1aecccf8785bd7f9878371475e0c6cadfe860e39da6a7399d3979b6f",
+   "status": "rejected",
+   "created_at": "2026-11-18T02:20:17.807992+00:00",
+   "validations": {
+    "dev": {
+     "metrics": {
+      "n_problems": 7,
+      "n_pairs": 21,
+      "execution_gain": 0.0,
+      "execution_harm": 0,
+      "runner_errors": 0,
+      "false_business_accepts": 0,
+      "control_execution_successes": 21,
+      "treatment_execution_successes": 21,
+      "control_logical_llm_calls": 21,
+      "treatment_logical_llm_calls": 21,
+      "llm_call_reduction": 0.0,
+      "control_new_llm_calls": 21,
+      "control_completion_tokens": 22772,
+      "control_total_tokens": 48758,
+      "control_llm_latency_s": 730.2360000000001,
+      "treatment_new_llm_calls": 21,
+      "treatment_completion_tokens": 20716,
+      "treatment_total_tokens": 49348,
+      "treatment_llm_latency_s": 818.6519999999999,
+      "guard_contract_passed": null,
+      "business_labels_complete": true
+     },
+     "quality_path": false,
+     "cost_path": false,
+     "passed": false,
+     "reasons": [
+      "neither_quality_nor_cost_path_passed"
+     ],
+     "at": "2026-11-18T02:33:04.385174+00:00"
+    }
+   }
+  },
+  {
+   "asset_id": "guard_pyscipopt_addvar_v_002",
+   "version": 1,
+   "kind": "execution",
+   "form": "guard",
+   "signature": "pyscipopt_addvar_v",
+   "text": "When calling pyscipopt's Model.addVar() with both a variable name and a vtype already specified, the name must be passed via the 'name' keyword argument, not 'v'; using 'v' as a keyword triggers a TypeError because the API does not recognize it. If vtype is present and the value assigned to 'v' is a string label (not a domain type), replace 'v=' with 'name=' to correctly register the variable's identifier.",
+   "guard": "addvar_v_to_name",
+   "origin": {
+    "dataset": "IndustryOR",
+    "split": "dev",
+    "source_ids": [
+     "prob_003_C",
+     "prob_030_B",
+     "prob_033_A",
+     "prob_051_B",
+     "prob_052_B",
+     "prob_054_A",
+     "prob_083_A"
+    ],
+    "trace_sha256": "da6e99fcb8c465cf7983966699e61dda6ebbf7061c5cc3b1d976fa8126ee8da6",
+    "proposer": "Qwen3.8-27B",
+    "rationale": "All five failures show addVar(v=<string_name>, ..., vtype=<type>) where vtype is already set and v holds a name, matching the addvar_v_to_name guard condition exactly."
+   },
+   "parent_id": "prompt_pyscipopt_addvar_v_001",
+   "content_sha256": "092bbdf438ee93ef3cfd9d6e87a71d715ca0cf96896ad854eeb52869968e2ca7",
+   "status": "promoted",
+   "created_at": "2026-11-18T02:20:17.809211+00:00",
+   "validations": {
+    "dev": {
+     "metrics": {
+      "n_problems": 7,
+      "n_pairs": 21,
+      "execution_gain": 0.0,
+      "execution_harm": 0,
+      "runner_errors": 0,
+      "false_business_accepts": 0,
+      "control_execution_successes": 21,
+      "treatment_execution_successes": 21,
+      "control_logical_llm_calls": 21,
+      "treatment_logical_llm_calls": 0,
+      "llm_call_reduction": 1.0,
+      "control_new_llm_calls": 21,
+      "control_completion_tokens": 22772,
+      "control_total_tokens": 48758,
+      "control_llm_latency_s": 730.2360000000001,
+      "treatment_new_llm_calls": 0,
+      "treatment_completion_tokens": 0,
+      "treatment_total_tokens": 0,
+      "treatment_llm_latency_s": 0,
+      "guard_contract_passed": true,
+      "business_labels_complete": true
+     },
+     "quality_path": false,
+     "cost_path": true,
+     "passed": true,
+     "reasons": [],
+     "at": "2026-11-18T02:33:06.681829+00:00"
+    },
+    "gapcheck": {
+     "metrics": {
+      "n_problems": 6,
+      "n_pairs": 18,
+      "execution_gain": 0.0,
+      "execution_harm": 0,
+      "runner_errors": 0,
+      "false_business_accepts": 0,
+      "control_execution_successes": 15,
+      "treatment_execution_successes": 15,
+      "control_logical_llm_calls": 18,
+      "treatment_logical_llm_calls": 0,
+      "llm_call_reduction": 1.0,
+      "control_new_llm_calls": 18,
+      "control_completion_tokens": 45052,
+      "control_total_tokens": 69421,
+      "control_llm_latency_s": 1495.905,
+      "treatment_new_llm_calls": 0,
+      "treatment_completion_tokens": 0,
+      "treatment_total_tokens": 0,
+      "treatment_llm_latency_s": 0,
+      "guard_contract_passed": true,
+      "business_labels_complete": true
+     },
+     "quality_path": false,
+     "cost_path": true,
+     "passed": true,
+     "reasons": [],
+     "at": "2026-11-18T02:44:33.809888+00:00"
+    }
+   }
+  }
+ ],
+ "events": [
+  {
+   "event_index": 0,
+   "action": "proposed",
+   "asset_id": "prompt_pyscipopt_addvar_v_001",
+   "at": "2026-11-18T02:20:17.808012+00:00",
+   "detail": {
+    "content_sha256": "a8f1ec5e1aecccf8785bd7f9878371475e0c6cadfe860e39da6a7399d3979b6f"
+   }
+  },
+  {
+   "event_index": 1,
+   "action": "proposed",
+   "asset_id": "guard_pyscipopt_addvar_v_002",
+   "at": "2026-11-18T02:20:17.809224+00:00",
+   "detail": {
+    "content_sha256": "092bbdf438ee93ef3cfd9d6e87a71d715ca0cf96896ad854eeb52869968e2ca7"
+   }
+  },
+  {
+   "event_index": 2,
+   "action": "dev_validated",
+   "asset_id": "prompt_pyscipopt_addvar_v_001",
+   "at": "2026-11-18T02:33:04.385207+00:00",
+   "detail": {
+    "passed": false,
+    "reasons": [
+     "neither_quality_nor_cost_path_passed"
+    ]
+   }
+  },
+  {
+   "event_index": 3,
+   "action": "dev_validated",
+   "asset_id": "guard_pyscipopt_addvar_v_002",
+   "at": "2026-11-18T02:33:06.681858+00:00",
+   "detail": {
+    "passed": true,
+    "reasons": []
+   }
+  },
+  {
+   "event_index": 4,
+   "action": "gapcheck_validated",
+   "asset_id": "guard_pyscipopt_addvar_v_002",
+   "at": "2026-11-18T02:44:33.809926+00:00",
+   "detail": {
+    "passed": true,
+    "reasons": []
+   }
+  }
+ ]
+}

@@ -76,6 +76,11 @@ def execute_candidate(problem_id: int, code: str, aliases: dict, directory: Path
         (directory / "gen.py").write_text(code)
     solution_path = directory / "solution.json"
     solution = json.loads(solution_path.read_text()) if solution_path.exists() else None
+    if isinstance(solution, dict):
+        if record.get("solver_status") is None:
+            record["solver_status"] = solution.get("solver_status")
+        if record.get("objective") is None:
+            record["objective"] = solution.get("objective")
     score = independent_score(problem_id, solution)
     if problem_id not in REGISTERED_AUDIT_IDS:
         runtime_gate = {"status": "business_unverified", "accepted_for_execution": False,
@@ -93,24 +98,35 @@ def execute_candidate(problem_id: int, code: str, aliases: dict, directory: Path
     return record, solution, score
 
 
-def generation(messages: list[dict], path: Path, config) -> dict:
+def generation(messages: list[dict], path: Path, config, seed: int | None = None) -> dict:
+    request = {"temperature": 0.6, "max_tokens": 32768,
+               "reasoning_effort": "medium", "seed": seed}
     if path.exists():
         record = json.loads(path.read_text())
         if record["messages"] != messages:
             raise ValueError("shared regeneration cache has different messages")
-        record["new_llm_calls"] = 0
-        record["reused"] = True
-        return record
+        if "request" in record and record["request"] != request:
+            raise ValueError("shared regeneration cache has a different request")
+        if seed is not None and record.get("request", {}).get("seed") != seed:
+            raise ValueError("shared regeneration cache has no matching generation seed")
+        if not record.get("error"):
+            record["new_llm_calls"] = 0
+            record["reused"] = True
+            return record
+    extra = {"reasoning_effort": "medium"}
+    if seed is not None:
+        extra["seed"] = seed
     try:
         response = llm_mod.chat(messages, max_tokens=32768, temperature=0.6,
-                                extra={"reasoning_effort": "medium"}, config=config)
+                                extra=extra, config=config)
         if response.get("model") != config.model:
             raise ValueError(f"returned model differs from requested model: {response.get('model')}")
-        record = {"messages": messages, "response": response, "new_llm_calls": 1, "reused": False}
+        record = {"messages": messages, "request": request, "response": response,
+                  "new_llm_calls": 1, "reused": False}
     except Exception as exc:
         response = {"request_attempts": getattr(exc, "request_attempts", [])}
-        record = {"messages": messages, "response": response, "new_llm_calls": 1, "reused": False,
-                  "error": f"{type(exc).__name__}: {exc}"}
+        record = {"messages": messages, "request": request, "response": response,
+                  "new_llm_calls": 1, "reused": False, "error": f"{type(exc).__name__}: {exc}"}
     write_json(path, record)
     return record
 
@@ -127,7 +143,7 @@ def repair_prompt(question: str, code: str, gate: dict, score: dict, problem_id:
                                  ("exec_status", "solver_status", "export_error", "stderr_tail")}
     contract = (semantic_contract(problem_id) if problem_id in REGISTERED_AUDIT_IDS
                 else {"status": "business_unverified"})
-    memory = f"\n\n[VALIDATED MEMORY AND COUNTEREXAMPLES]\n{memory_text}" if memory_text else ""
+    memory = f"\n\n[MEMORY ASSETS AND COUNTEREXAMPLES]\n{memory_text}" if memory_text else ""
     return ("Repair a PySCIPOpt optimization model using independent semantic evidence.\n"
             "Do not use or guess a reference objective. Preserve existing solver variable names when their "
             "business role is unchanged. If a required role is absent, add the corresponding model variable "
@@ -167,10 +183,12 @@ def local_proposal(problem_id: int, question: str, code: str, gate: dict,
 
 def regenerated_proposal(problem_id: int, question: str, code: str, gate: dict, score: dict,
                          directory: Path, shared: Path, config, done: bool,
-                         record: dict | None = None, memory_text: str | None = None) -> tuple[Proposal, list[dict]]:
+                         record: dict | None = None, memory_text: str | None = None,
+                         seed: int | None = None) -> tuple[Proposal, list[dict]]:
     messages = [{"role": "user", "content": repair_prompt(question, code, gate, score, problem_id,
                                                            record, memory_text)}]
-    response_record = generation(messages, shared / f"{digest(json.dumps(messages, sort_keys=True))}.json", config)
+    response_record = generation(messages, shared / f"{digest(json.dumps(messages, sort_keys=True))}.json",
+                                 config, seed=seed)
     records = [response_record]
     response = response_record["response"]
     candidate = extract_code(response.get("content") or "") if not response_record.get("error") else ""

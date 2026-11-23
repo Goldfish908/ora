@@ -73,3 +73,10 @@ def test_shared_cost_audit_separates_unique_and_reused_calls():
     assert audit["reused_new_llm_latency_s"] == 2.005
     with pytest.raises(AssertionError):
         shared_cost_audit(records, {**saved, "new_llm_calls": 3})
+
+
+def test_protocol_hash_supports_legacy_and_multi_protocol_configs():
+    from scripts.industryor_structured_report import configured_protocol_sha256
+    name = "docs/paper/industryor_full_chain_protocol_v0.1.md"
+    assert configured_protocol_sha256({"protocol_sha256": "legacy"}, name) == "legacy"
+    assert configured_protocol_sha256({"protocol_sha256": {name: "current", "other": "other"}}, name) == "current"

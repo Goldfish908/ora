@@ -39,6 +39,8 @@ from scripts.industryor_semantic_dag import (
     regenerated_proposal,
 )
 from ora_agent.evidence_dag import DagBudget, Proposal
+from ora_agent.evolving_memory import EvolvingMemoryRegistry, memory_view
+from ora_agent.memory_guards import apply_memory_guard
 from ora_agent.repair_controller import ProgressController, repair_scip_sense
 from ora_agent.semantic_dag import SemanticDAGExecutor
 from ora_agent.trigger_memory import memory_for, registry_digest
@@ -133,8 +135,11 @@ def node_objective(node) -> float | None:
 
 def execution_complete(node) -> bool:
     solution = node.execution.get("solution")
+    solver_status = node.execution.get("solver_status")
+    if solver_status is None and isinstance(solution, dict):
+        solver_status = solution.get("solver_status")
     return bool(node.execution.get("exec_status") == "ok"
-                and node.execution.get("solver_status") == "optimal"
+                and solver_status == "optimal"
                 and isinstance(solution, dict) and solution.get("solution_count", 0) >= 1
                 and (solution.get("export") or {}).get("complete") is True
                 and node_objective(node) is not None)
@@ -155,12 +160,13 @@ def choose_integrated_node(executor: SemanticDAGExecutor, root_id: str, problem_
 
 
 def run_dag(problem_id: int, question: str, result: dict, case: Path, shared: Path,
-            config, memory_text: str | None = None) -> dict:
+            config, memory_text: str | None = None, memory_provider=None,
+            max_rounds: int = MAX_ROUNDS, generation_seed: int | None = None) -> dict:
     record = result["record"]
     audit = result["audit"]
     score = audit["score"] or independent_score(problem_id, audit["solution"])
-    executor = SemanticDAGExecutor(DagBudget(max_nodes=6, max_depth=MAX_ROUNDS - 1, max_solver_runs=4,
-                                             max_llm_calls=2 * (MAX_ROUNDS - 1)),
+    executor = SemanticDAGExecutor(DagBudget(max_nodes=6, max_depth=max_rounds - 1, max_solver_runs=4,
+                                             max_llm_calls=2 * (max_rounds - 1)),
                                    stop_on_accept=False)
     root = executor.root(result["code"], "pyscipopt_code",
                          {**record, "solution": audit["solution"], "binding_gate": audit["gate"]}, score,
@@ -168,6 +174,7 @@ def run_dag(problem_id: int, question: str, result: dict, case: Path, shared: Pa
                          digest(json.dumps(audit["gate"]["aliases"], sort_keys=True)))
     root.solver_runs = 0
     repair_records = []
+    memory_trace = []
     controller = ProgressController()
     controller_trace = []
     current = root
@@ -183,7 +190,7 @@ def run_dag(problem_id: int, question: str, result: dict, case: Path, shared: Pa
         if not needs_repair(problem_id, probe):
             executor.dag.mark_done(current.node_id, "business_unverified")
             break
-        remaining = MAX_ROUNDS - 1 - current.depth
+        remaining = max_rounds - 1 - current.depth
         if remaining <= 0:
             executor.dag.mark_done(current.node_id, "budget_exhausted")
             break
@@ -197,15 +204,38 @@ def run_dag(problem_id: int, question: str, result: dict, case: Path, shared: Pa
             break
         action = decision.action
         gate = current.execution.get("binding_gate") or audit["gate"]
+        active_memory = (memory_provider(current.execution, current_score, gate)
+                         if memory_provider else {"text": memory_text or "", "asset_ids": [], "guards": []})
+        memory_entry = {"node_id": current.node_id, "asset_ids": active_memory.get("asset_ids") or [],
+                        "guards": list(active_memory.get("guards") or []),
+                        "prompt_used": False, "guard_used": None}
         proposal = None
         records = []
         directory = case / f"depth_{current.depth + 1}"
-        if action == "local_patch" and problem_id in LOCAL_IDS:
+        if action in {"local_patch", "regenerate"}:
+            for guard_name in active_memory.get("guards") or []:
+                try:
+                    patched = apply_memory_guard(guard_name, current.snapshot)
+                    proposal = Proposal(
+                        f"memory_guard:{guard_name}", patched, "pyscipopt_code",
+                        lambda patched=patched: execute_semantic_candidate(
+                            problem_id, patched, gate["aliases"], directory / "memory_guard")[:2],
+                        lambda value: independent_score(problem_id, value),
+                        binding_audit=lambda value: audit_record(independent_score(problem_id, value)),
+                        binding_sha256=digest(json.dumps(gate["aliases"], sort_keys=True)),
+                        solver_runs=1, llm_calls=0, done=False)
+                    action = "local_patch"
+                    memory_entry["guard_used"] = guard_name
+                    break
+                except (ValueError, TypeError, SyntaxError) as exc:
+                    memory_entry.setdefault("guard_errors", []).append(
+                        {"guard": guard_name, "error": f"{type(exc).__name__}: {exc}"})
+        if proposal is None and action == "local_patch" and problem_id in LOCAL_IDS:
             proposal = local_proposal(problem_id, question, current.snapshot, gate,
                                       directory / "local", done=False)
             if proposal is None:
                 action = "regenerate"
-        elif action == "specialized_api_repair":
+        elif proposal is None and action == "specialized_api_repair":
             try:
                 patched = repair_scip_sense(current.snapshot, decision.failure_signature.rsplit(":", 1)[-1])
                 proposal = Proposal(
@@ -221,10 +251,14 @@ def run_dag(problem_id: int, question: str, result: dict, case: Path, shared: Pa
                 action = "regenerate"
         if proposal is None:
             action = "regenerate"
+            memory_entry["prompt_used"] = bool(active_memory.get("text"))
             proposal, records = regenerated_proposal(
                 problem_id, question, current.snapshot, gate, current_score,
                 directory / "regenerate", shared, config, False,
-                record=current.execution, memory_text=memory_text)
+                record=current.execution, memory_text=active_memory.get("text") or None,
+                seed=generation_seed)
+        if memory_entry["asset_ids"] or memory_entry["prompt_used"] or memory_entry["guard_used"]:
+            memory_trace.append(memory_entry)
         repair_records.extend(records)
         effective_decision = replace(decision, action=action)
         trace_entry["effective_action"] = action
@@ -243,7 +277,8 @@ def run_dag(problem_id: int, question: str, result: dict, case: Path, shared: Pa
             "accepted": selected in executor.dag.accepted(), "selected_node_id": selected.node_id,
             "selection_reason": selection_reason, "dag": executor.dag.to_dict(),
             "repair_records": repair_records, "controller_trace": controller.trace(),
-            "repair_decisions": controller_trace, "stop_reason": current.stop_reason,
+            "repair_decisions": controller_trace, "memory_trace": memory_trace,
+            "stop_reason": current.stop_reason,
             "candidate_rounds": max(node.depth for node in executor.nodes.values()) + 1}
 
 
@@ -251,16 +286,17 @@ def run_problem(row: dict, outdir: Path, config: dict, resume: bool) -> list[dic
     problem_id = row["id"]
     case = outdir / f"prob_{problem_id:03d}"
     case.mkdir(parents=True, exist_ok=True)
+    arms = config["public"].get("arms", ARMS)
     if resume:
         cached = []
-        for arm in ARMS:
+        for arm in arms:
             path = case / f"{arm}_result.json"
             if path.exists():
                 previous = json.loads(path.read_text())
                 if previous["run_config"] != config["public"]:
                     raise ValueError("cached result has a different configuration")
                 cached.append(previous)
-        if len(cached) == len(ARMS):
+        if len(cached) == len(arms):
             return cached
     question = row["en_question"]
     candidates, history = generate_formations(question, case, config["llm_config"])
@@ -276,7 +312,7 @@ def run_problem(row: dict, outdir: Path, config: dict, resume: bool) -> list[dic
     shared_records = [record for record in shared_records if record]
     reference = float(row["en_answer"])
     results = []
-    for arm in ARMS:
+    for arm in arms:
         if arm == "structured":
             final = selected
             repair_records = []
@@ -284,16 +320,27 @@ def run_problem(row: dict, outdir: Path, config: dict, resume: bool) -> list[dic
             selection_reason = selection_method
             memory = {"text": "", "asset_ids": [], "memory_sha256": None}
         else:
-            mode = {"structured_dag": None, "structured_dag_trigger": "trigger",
-                    "structured_dag_full": "full"}[arm]
-            memory = memory_for(problem_id, selected["audit"]["gate"], selected["audit"]["score"] or {},
-                                mode) if mode else {"text": "", "asset_ids": [], "memory_sha256": None}
-            final = run_dag(problem_id, question, selected, case / arm,
-                            outdir / "shared_generations", config["llm_config"], memory["text"] or None)
+            registry = config.get("evolving_registry") if arm == "structured_dag_evolved" else None
+            if registry is not None:
+                def provider(record, current_score, gate):
+                    return memory_view(registry.select(record, current_score))
+                memory = provider(selected["record"], selected["audit"]["score"] or {},
+                                  selected["audit"]["gate"])
+                final = run_dag(problem_id, question, selected, case / arm,
+                                outdir / "shared_generations", config["llm_config"],
+                                memory_provider=provider)
+            else:
+                mode = {"structured_dag": None, "structured_dag_trigger": "trigger",
+                        "structured_dag_full": "full"}[arm]
+                memory = memory_for(problem_id, selected["audit"]["gate"], selected["audit"]["score"] or {},
+                                    mode) if mode else {"text": "", "asset_ids": [], "memory_sha256": None}
+                final = run_dag(problem_id, question, selected, case / arm,
+                                outdir / "shared_generations", config["llm_config"], memory["text"] or None)
             repair_records = final.pop("repair_records")
             dag = final.pop("dag")
             selection_reason = final["selection_reason"]
         objective = final["objective"]
+        memory_trace = final.get("memory_trace", [])
         result = {"id": problem_id, "arm": arm, "run_config": config["public"],
                   "status": "completed", "selected_index": selected_index,
                   "selection_method": selection_reason, "min_confidence": minima,
@@ -302,7 +349,8 @@ def run_problem(row: dict, outdir: Path, config: dict, resume: bool) -> list[dic
                   "candidate_rounds": final.get("candidate_rounds", 1),
                   "controller_trace": final.get("controller_trace", []),
                   "repair_decisions": final.get("repair_decisions", []),
-                  "memory": memory, "memory_applied": bool(memory["text"] and repair_records),
+                  "memory": memory, "memory_trace": memory_trace,
+                  "memory_applied": bool(memory_trace or (memory["text"] and repair_records)),
                   "first_objective": first["objective"],
                   "first_match": first["objective"] is not None and abs(first["objective"] - reference) <= 0.1,
                   "objective": objective, "reference": reference,
@@ -341,7 +389,7 @@ def safe_problem(row: dict, outdir: Path, config: dict, resume: bool) -> list[di
                        for message in record.get("messages", [])):
                     records.append(record)
         results = []
-        for arm in ARMS:
+        for arm in config["public"].get("arms", ARMS):
             result = {"id": row["id"], "arm": arm, "run_config": config["public"],
                       "status": "runner_error", "error": f"{type(exc).__name__}: {exc}",
                       "reference": float(row["en_answer"]), "match": False, "first_match": False,
@@ -360,6 +408,7 @@ def main() -> None:
     parser.add_argument("--workers", type=int, default=2)
     parser.add_argument("--out", default="work/industryor_structured_dev_v0.2")
     parser.add_argument("--resume", action="store_true")
+    parser.add_argument("--evolving-registry")
     args = parser.parse_args()
     rows = json.loads(DATA.read_text())
     if args.ids:
@@ -371,20 +420,35 @@ def main() -> None:
         raise ValueError("nonempty output directory; use --resume or a new directory")
     outdir.mkdir(parents=True, exist_ok=True)
     llm_config = llm_mod.load_config()
-    public = {"ids": [row["id"] for row in rows], "arms": list(ARMS), "model": llm_config.model,
+    evolving_registry = None
+    arms = list(ARMS)
+    implementation = list(IMPLEMENTATION)
+    protocols = ["docs/paper/industryor_full_chain_protocol_v0.1.md"]
+    if args.evolving_registry:
+        evolving_registry = EvolvingMemoryRegistry(ROOT / args.evolving_registry)
+        if not evolving_registry.frozen:
+            raise ValueError("full-pipeline evaluation requires a frozen evolving registry")
+        arms.append("structured_dag_evolved")
+        implementation.extend(["ora_agent/evolving_memory.py", "ora_agent/memory_guards.py"])
+        protocols.append("docs/paper/industryor_memory_evolution_protocol_v0.1.md")
+    public = {"ids": [row["id"] for row in rows], "arms": arms, "model": llm_config.model,
               "base_url": llm_config.base_url, "exposure": "development_new_samples_not_heldout",
               "method": "COOPA-inspired structured iterative formulation; not an official COOPA run",
               "max_candidate_rounds": MAX_ROUNDS, "max_repair_generations": MAX_ROUNDS - 1,
               "repair_controller": "ProgressController",
               "execution_fallback": "unregistered_only_when_root_incomplete",
-              "memory_mode": "static_read_only", "memory_registry_sha256": registry_digest(),
+              "memory_mode": "frozen_evolved_read_only" if evolving_registry else "static_read_only",
+              "memory_registry_sha256": registry_digest(),
+              "evolving_registry_sha256": hashlib.sha256(evolving_registry.path.read_bytes()).hexdigest()
+              if evolving_registry else None,
               "dataset_sha256": hashlib.sha256(DATA.read_bytes()).hexdigest(),
-              "protocol_sha256": hashlib.sha256(PROTOCOL.read_bytes()).hexdigest(),
+              "protocol_sha256": {name: hashlib.sha256((ROOT / name).read_bytes()).hexdigest()
+                                  for name in protocols},
               "implementation_sha256": {name: hashlib.sha256((ROOT / name).read_bytes()).hexdigest()
-                                        for name in IMPLEMENTATION}}
-    config = {"llm_config": llm_config, "public": public}
+                                        for name in implementation}}
+    config = {"llm_config": llm_config, "public": public, "evolving_registry": evolving_registry}
     write_json(outdir / "run_config.json", public)
-    for name in (*IMPLEMENTATION, "docs/paper/industryor_full_chain_protocol_v0.1.md"):
+    for name in (*implementation, *protocols):
         destination = outdir / "source" / name
         destination.parent.mkdir(parents=True, exist_ok=True)
         destination.write_bytes((ROOT / name).read_bytes())
@@ -393,7 +457,7 @@ def main() -> None:
         nested = list(pool.map(lambda row: safe_problem(row, outdir, config, args.resume), rows))
     results = [result for group in nested for result in group]
     summary = {"n_problems": len(rows), "wall_seconds": round(time.monotonic() - started, 3), "arms": {}}
-    for arm in ARMS:
+    for arm in arms:
         arm_rows = [row for row in results if row["arm"] == arm]
         cost_keys = ("logical_llm_calls", "new_llm_calls", "api_attempts", "completion_tokens",
                      "total_tokens", "llm_latency_s", "new_llm_latency_s")

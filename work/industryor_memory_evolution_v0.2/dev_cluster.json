@@ -1,0 +1,69 @@
+{
+ "signature": "pyscipopt_addvar_v",
+ "n_problems": 7,
+ "task_ids": [
+  "prob_003_C",
+  "prob_030_B",
+  "prob_033_A",
+  "prob_051_B",
+  "prob_052_B",
+  "prob_054_A",
+  "prob_083_A"
+ ],
+ "eligible_cluster_counts": {
+  "pyscipopt_addvar_v": 7,
+  "crash_other": 3
+ },
+ "tasks": [
+  {
+   "task_id": "prob_003_C",
+   "problem_id": 3,
+   "candidate_id": "C",
+   "signature": "pyscipopt_addvar_v",
+   "code_sha256": "cfadeab2a0d913df37ec03dd3f132e90c7c01b1326b881ad446bdd62c000acba"
+  },
+  {
+   "task_id": "prob_030_B",
+   "problem_id": 30,
+   "candidate_id": "B",
+   "signature": "pyscipopt_addvar_v",
+   "code_sha256": "8a79d75f26de7f67ab7fd2abd696b5d02ac4eaabe358a8848a21a22b50857157"
+  },
+  {
+   "task_id": "prob_033_A",
+   "problem_id": 33,
+   "candidate_id": "A",
+   "signature": "pyscipopt_addvar_v",
+   "code_sha256": "1432996b28b5880116b116e2a8c085d7b07d974676d12a6ce6641d0e51c97d8c"
+  },
+  {
+   "task_id": "prob_051_B",
+   "problem_id": 51,
+   "candidate_id": "B",
+   "signature": "pyscipopt_addvar_v",
+   "code_sha256": "4e9ab5f6683ebe5e3e749b3ca5b3942c394a6b6893e8ef3273d099c15f6e43c2"
+  },
+  {
+   "task_id": "prob_052_B",
+   "problem_id": 52,
+   "candidate_id": "B",
+   "signature": "pyscipopt_addvar_v",
+   "code_sha256": "aec61b02a4c568b52b4fcd77a490161922543add18444ad5bd9c3326460d10b9"
+  },
+  {
+   "task_id": "prob_054_A",
+   "problem_id": 54,
+   "candidate_id": "A",
+   "signature": "pyscipopt_addvar_v",
+   "code_sha256": "07da2a13dad9726107a5119e4dcdd546a47e2e6124582eab7097b0ae4d0c6e91"
+  },
+  {
+   "task_id": "prob_083_A",
+   "problem_id": 83,
+   "candidate_id": "A",
+   "signature": "pyscipopt_addvar_v",
+   "code_sha256": "d2938ff854c52a8b76c521d977682be10f3747e30d488dcecd022e412a1224ac"
+  }
+ ],
+ "trace_sha256": "da6e99fcb8c465cf7983966699e61dda6ebbf7061c5cc3b1d976fa8126ee8da6"
+}

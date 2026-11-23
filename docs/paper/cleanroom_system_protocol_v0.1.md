@@ -752,3 +752,19 @@ ID20 的公开 MILP 已加入 `ora_agent/industryor_neighborhood.py`：x1..x4 �
 实际轨迹表明一次局部修复已足够：direct-full 和 declarative 在 Gen1 接受后停止；其他臂的后续候选主要因 `empty_neighborhood`、不适配或父解不可行而被拒绝，没有把额外候选数量误当作进化收益。Merge attempted/tested/not_tested=12/0/12，原因均为 lineage 不足或无真实兼容对，未声称 Merge 有效。
 
 增量成本为 LLM 调用 0、tokens 0、SCIP sub-MILP 17 次、搜索公开审计 21 次、搜索 ledger 约 4.72 秒；输入根的历史生成成本不计入本次增量。结果属于开发验证，不是 heldout。机器明细见 `work/gepa_industryor_id20_v0.1/audit.json`，整管线与逐代结果图见 `work/gepa_industryor_id20_v0.1/id20_pipeline_generations.png`。
+
+
+## v0.20 IndustryOR ID19/21 目标公式与次优联合修复
+
+`ora_agent/supplier_neighborhood.py` 新增两题供应商订单公开 MILP，严格使用“每件成本 × 每单件数 × 订单数”，而不是把每单名义成本误当每件成本。ID19 每单目标系数为 `(750,450,400)`，ID21 为 `(2400,1650,1500)`。两题各选择一个既有失败根和一个正确控制根，输入原始字节及 SHA256 均冻结。
+
+| ID | 失败根报告目标 / 独立成本 | 修复后独立成本 | direct-full | declarative | pareto | 正确控制原字节保留 |
+|---|---:|---:|---|---|---|---|
+| 19 | 365 / 4650 | 4000 | false → true | false → true | false → true | 3/3 |
+| 21 | 980 / 16500 | 15000 | false → true | false → true | false → true | 3/3 |
+
+两个失败根的执行、定义域和公开约束均通过，失败来自目标不一致与独立次优；这不是任意约束错误的窄修复。Pareto 臂另外构造的两个“只改账面目标”候选虽然消除目标不一致，却仍为次优，均被拒绝，说明 Pareto 身份和目标字段一致不能代替业务正确。
+
+本轮三臂失败恢复合计 6/6，正确控制原字节保留 6/6；真实 SCIP 6 次，LLM 调用和 tokens 均为 0。选择与制品 SHA256 冻结后重新执行独立 `score_solution`，再读取公开 `en_answer`。这里的“独立”指独立于候选搜索的评价实现，不意味着它拥有不同来源的外部业务真值。
+
+ID19/21 的目标和总采购量都是全局耦合，因此 direct-full 与 declarative 均释放全部五个变量；本结果不证明声明式邻域比直接重优化更局部或更有效，也不支持跨题恢复率。机器明细与报告为 `work/supplier_neighborhood_audit_v0.1/audit.json` 和 `report.md`。

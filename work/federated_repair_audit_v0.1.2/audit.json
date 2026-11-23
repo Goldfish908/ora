@@ -1,0 +1,141 @@
+{
+ "schema_version": "federated_repair_audit_v0.1",
+ "llm_calls": 0,
+ "official_feedback_used_for_candidate_selection": false,
+ "clean_sha256": "c4f7070fb060e8c0727215645bb6075389f58976c6344df25bbc3c57abc2a115",
+ "clean_selected_objective": 6020.689910000006,
+ "implementation_sha256": {
+  "ora_agent/declarative_neighborhood.py": "7a3930125e6078ecbdff70df85ae25b25930763cdcd00fa1483a0400ef936d2c",
+  "ora_agent/federated_public_ir.py": "bd87633fc1f4efc5e393e922fc87f4214bd11fd5b9744ce7d72054f6312b6853",
+  "ora_agent/federated_neighborhood.py": "186a99772af22ebd4071ef2e6f368872869a847780a7b86b95899c749cbf7ce2",
+  "scripts/federated_repair_audit.py": "fcfbdc79007486563db5b6794cac443a00d1739a00faea385b43a32e9021a900"
+ },
+ "public_file_sha256": {
+  "PROBLEM_STATEMENT.md": "e40605b5718a0301ed68f1540d0ddbd6e084554b70f1816062388395dc4a8ec7",
+  "data/client_stream_scores.csv": "3a921a78a4b4a7536134855914712e02f12e5b87323af87b01126b6388952377",
+  "data/clients.csv": "e35f39379308470c6ddaa1744f86d026f044e4a6a971b48b06c7d89e933f024d",
+  "data/config.json": "3c2f2600d4b74e0c1b4f0793bfb4683d09e83ca318f0fd37f4550fc46edf6e39",
+  "data/training_streams.csv": "3215f52d0c5aef0338b42fdaed7993e78bf38b93d3ec6e7708f13170c7c4c65a",
+  "submissions/solution_template.csv": "6ef75f682e17912e52f535b17d1c2c0a62e882903c42f92469ec0720b30c06a9"
+ },
+ "clean_control": {
+  "scenario": "clean_control",
+  "accepted": false,
+  "reason": "empty_neighborhood",
+  "selected_sha256": "c4f7070fb060e8c0727215645bb6075389f58976c6344df25bbc3c57abc2a115",
+  "unchanged": true,
+  "official": {
+   "feasible": true,
+   "quality": 1.999999999997583,
+   "true_correct": true,
+   "objective": 6020.689909999996,
+   "evaluation_unknown": false
+  }
+ },
+ "scenarios": [
+  {
+   "scenario": "duplicate_client",
+   "accepted": true,
+   "reason": "accepted",
+   "parent_public_status": "fail",
+   "selected_public_status": "pass",
+   "parent_public_objective": 6029.078750300004,
+   "selected_public_objective": 6021.271242700007,
+   "parent_violations": 3,
+   "fixed_violations": 3,
+   "introduced_violations": 0,
+   "remaining_violations": 0,
+   "released_variables": 1691,
+   "fixed_variables": 943,
+   "scip_status": "gaplimit",
+   "scip_nodes": 1,
+   "scip_seconds": 0.6279395967721939,
+   "selected_sha256": "0c80da4992f693ae8e0e16a9e0aac03a40fcfe4741fb6265eadc801c8f3a35c7",
+   "official_before": {
+    "feasible": false,
+    "quality": 0.0,
+    "true_correct": false,
+    "objective": 6029.078750300001,
+    "evaluation_unknown": false
+   },
+   "official_after": {
+    "feasible": true,
+    "quality": 2.0,
+    "true_correct": true,
+    "objective": 6021.271242699997,
+    "evaluation_unknown": false
+   }
+  },
+  {
+   "scenario": "stream_minimums",
+   "accepted": true,
+   "reason": "accepted",
+   "parent_public_status": "fail",
+   "selected_public_status": "pass",
+   "parent_public_objective": 4695.6286194999975,
+   "selected_public_objective": 6021.590728500005,
+   "parent_violations": 3,
+   "fixed_violations": 3,
+   "introduced_violations": 0,
+   "remaining_violations": 0,
+   "released_variables": 2078,
+   "fixed_variables": 556,
+   "scip_status": "gaplimit",
+   "scip_nodes": 1,
+   "scip_seconds": 0.8549436032772064,
+   "selected_sha256": "dd4ce34a844c8490779c537a1cc5d9dc85ae14e7f03d388e05e33171b5027217",
+   "official_before": {
+    "feasible": false,
+    "quality": 0.0,
+    "true_correct": false,
+    "objective": 4695.6286194999975,
+    "evaluation_unknown": false
+   },
+   "official_after": {
+    "feasible": true,
+    "quality": 2.0,
+    "true_correct": true,
+    "objective": 6021.590728499995,
+    "evaluation_unknown": false
+   }
+  },
+  {
+   "scenario": "all_budgets",
+   "accepted": true,
+   "reason": "accepted",
+   "parent_public_status": "fail",
+   "selected_public_status": "pass",
+   "parent_public_objective": 6549.361358200016,
+   "selected_public_objective": 6020.703447600004,
+   "parent_violations": 3,
+   "fixed_violations": 3,
+   "introduced_violations": 0,
+   "remaining_violations": 0,
+   "released_variables": 2195,
+   "fixed_variables": 439,
+   "scip_status": "gaplimit",
+   "scip_nodes": 1,
+   "scip_seconds": 0.8404634669423103,
+   "selected_sha256": "d1112a659bebd7e495fc10fc71c77e53542d05b577810461cc0769912b1d67b4",
+   "official_before": {
+    "feasible": false,
+    "quality": 0.0,
+    "true_correct": false,
+    "objective": 6549.3613582,
+    "evaluation_unknown": false
+   },
+   "official_after": {
+    "feasible": true,
+    "quality": 2.0,
+    "true_correct": true,
+    "objective": 6020.703447599998,
+    "evaluation_unknown": false
+   }
+  }
+ ],
+ "accepted_repairs": 3,
+ "introduced_violations": 0,
+ "official_true_correct_after": 3,
+ "official_true_correct_before": 0,
+ "note": "Predeclared repair-only scenarios. Public checks are not official business truth; no global optimality or cross-benchmark claim."
+}

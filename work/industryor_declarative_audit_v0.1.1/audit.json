@@ -1,0 +1,1163 @@
+{
+ "schema_version": "industryor.declarative_neighborhood_audit.v0.1",
+ "status": "ready",
+ "scope": "qualified registered audits only; reviewed public semantics only; decision repair only",
+ "config": {
+  "ids": [
+   9
+  ],
+  "failed_root": "work/industryor_structured_dev_v0.2/prob_009/execution_A/solution.json",
+  "correct_root": "manifest artifact",
+  "scip_time_limit_seconds": 30.0,
+  "dataset_sha256": "5b889e49d9aa64ae5b368bc80a05ee71a1daf20d126f54efc6207c98f9095f36",
+  "manifest_sha256": "a513925bf9b1bd75586266195b63caee2c7d8fa098bc7669e93d4adacbacf27c",
+  "implementation_sha256": {
+   "ora_agent/industryor_neighborhood.py": "b13c96081e85f18748ad818bd297a7a3828e3177e0d46000f78b53ddee063f2e",
+   "ora_agent/declarative_neighborhood.py": "7a3930125e6078ecbdff70df85ae25b25930763cdcd00fa1483a0400ef936d2c",
+   "scripts/industryor_declarative_audit.py": "ad42e1629a4a3b96c9a0990613382fea7cab2352ab4f1ffc89cff263140e1347",
+   "scripts/industryor_next_stage.py": "8daba1b593668d890978337f7215a520c363e3027eb2e34587ef4738fa20d7b7"
+  }
+ },
+ "policy": {
+  "business_unverified_counts_as_correct": false,
+  "public_answer_used_for_repair_or_selection": false,
+  "public_answer_match_abs_tolerance": 0.1,
+  "business_audit": "registered score_solution only",
+  "solver": "PySCIPOpt SCIP sub-MILP; no Gurobi",
+  "llm_calls": 0,
+  "gepa_or_memory_assets_read": false
+ },
+ "summary": {
+  "registered_qualified_problems": 1,
+  "ready_problems": 1,
+  "not_ready_problems": 0,
+  "narrow_failure_roots": 1,
+  "recovered_failure_roots": 1,
+  "correct_control_roots": 1,
+  "preserved_correct_roots": 1,
+  "business_unverified_roots": 0,
+  "llm_calls": 0,
+  "llm_tokens": 0,
+  "business_audit_calls": 3,
+  "scip_sub_milp_runs": 1,
+  "scip_wall_seconds": 0.004441,
+  "wall_seconds": 0.22281
+ },
+ "problems": [
+  {
+   "id": 9,
+   "status": "ready",
+   "registered_qualified": true,
+   "question_sha256": "bc5f7c924a5574dda81b157fef88f1644f22862a2428ec0e76ebc85f95fa87d0",
+   "public_semantics": {
+    "problem_id": 9,
+    "question_sha256": "bc5f7c924a5574dda81b157fef88f1644f22862a2428ec0e76ebc85f95fa87d0",
+    "domains": {
+     "x1": "integer",
+     "x2": "integer",
+     "x3": "integer",
+     "x4": "integer",
+     "y1": "binary",
+     "y2": "binary"
+    },
+    "bounds": {
+     "x1": [
+      0,
+      74
+     ],
+     "x2": [
+      0,
+      44
+     ],
+     "x3": [
+      0,
+      59
+     ],
+     "x4": [
+      0,
+      89
+     ],
+     "y1": [
+      0,
+      1
+     ],
+     "y2": [
+      0,
+      1
+     ]
+    },
+    "objective": {
+     "x1": 5,
+     "x2": 10,
+     "x3": 8,
+     "x4": 7
+    },
+    "objective_sense": "maximize",
+    "constraints": [
+     {
+      "rule": "wood",
+      "coefficients": {
+       "x1": 12,
+       "x2": 20,
+       "x3": 15,
+       "x4": 10
+      },
+      "sense": "<=",
+      "rhs": 890.0,
+      "source": "There are 890 units of wood available. Each truck requires 12 units, each airplane 20 units, each boat 15 units, and each train 10 units."
+     },
+     {
+      "rule": "steel",
+      "coefficients": {
+       "x1": 6,
+       "x2": 3,
+       "x3": 5,
+       "x4": 4
+      },
+      "sense": "<=",
+      "rhs": 500.0,
+      "source": "There are 500 units of steel available. Each airplane requires 3 units, each boat 5 units, each train 4 units, and each truck 6 units."
+     },
+     {
+      "rule": "first_excludes_fourth",
+      "coefficients": {
+       "x4": 1,
+       "y1": 89
+      },
+      "sense": "<=",
+      "rhs": 89.0,
+      "source": "If Haus Toys manufactures trucks, they will not manufacture trains."
+     },
+     {
+      "rule": "boats_imply_airplanes",
+      "coefficients": {
+       "x2": 1,
+       "y2": -1
+      },
+      "sense": ">=",
+      "rhs": 0.0,
+      "source": "However, if they manufacture boats, they will also manufacture airplanes."
+     },
+     {
+      "rule": "boats_no_greater_than_trains",
+      "coefficients": {
+       "x3": 1,
+       "x4": -1
+      },
+      "sense": "<=",
+      "rhs": 0.0,
+      "source": "The number of toy boats manufactured cannot exceed the number of toy trains manufactured."
+     },
+     {
+      "rule": "link_x1_y1",
+      "coefficients": {
+       "x1": 1,
+       "y1": -74
+      },
+      "sense": "<=",
+      "rhs": 0.0,
+      "source": "registered audit link_x1_y1 and manifest meanings for x1/y1"
+     },
+     {
+      "rule": "link_x1_y1",
+      "coefficients": {
+       "x1": 1,
+       "y1": -1
+      },
+      "sense": ">=",
+      "rhs": 0.0,
+      "source": "registered audit link_x1_y1 and manifest meanings for x1/y1"
+     },
+     {
+      "rule": "link_x3_y2",
+      "coefficients": {
+       "x3": 1,
+       "y2": -59
+      },
+      "sense": "<=",
+      "rhs": 0.0,
+      "source": "registered audit link_x3_y2 and manifest meanings for x3/y2"
+     },
+     {
+      "rule": "link_x3_y2",
+      "coefficients": {
+       "x3": 1,
+       "y2": -1
+      },
+      "sense": ">=",
+      "rhs": 0.0,
+      "source": "registered audit link_x3_y2 and manifest meanings for x3/y2"
+     }
+    ]
+   },
+   "roots": [
+    {
+     "role": "narrow_failure",
+     "status": "ready",
+     "parent_sha256": "a74861dd897a2248219bda9cbae9afa18710c5259e9d359bbda5298909436ca2",
+     "selected_sha256": "08655a3548687364aa6e49702e5524a3e53300c590ef925aecb6d5829677cf22",
+     "parent": {
+      "decisions": {
+       "variables": {
+        "x1": 0.0,
+        "x2": 0.0,
+        "x3": 0.0,
+        "x4": 89.0,
+        "y1": 0.0,
+        "y2": 1.0,
+        "y_A": 1.0,
+        "y_R": 1.0
+       },
+       "objective": 623.0,
+       "state": {
+        "export": {
+         "complete": true,
+         "error": null
+        },
+        "schema_version": "industryor.solution.v1",
+        "solution_count": 7,
+        "solver_status": "optimal",
+        "variable_types": {
+         "x1": "INTEGER",
+         "x2": "INTEGER",
+         "x3": "INTEGER",
+         "x4": "INTEGER",
+         "y1": "BINARY",
+         "y2": "BINARY",
+         "y_A": "BINARY",
+         "y_R": "BINARY"
+        }
+       }
+      },
+      "raw_bytes_base64": "ewogICJleHBvcnQiOiB7CiAgICAiY29tcGxldGUiOiB0cnVlLAogICAgImVycm9yIjogbnVsbAogIH0sCiAgIm9iamVjdGl2ZSI6IDYyMy4wLAogICJzY2hlbWFfdmVyc2lvbiI6ICJpbmR1c3RyeW9yLnNvbHV0aW9uLnYxIiwKICAic29sdXRpb25fY291bnQiOiA3LAogICJzb2x2ZXJfc3RhdHVzIjogIm9wdGltYWwiLAogICJ2YXJpYWJsZV90eXBlcyI6IHsKICAgICJ4MSI6ICJJTlRFR0VSIiwKICAgICJ4MiI6ICJJTlRFR0VSIiwKICAgICJ4MyI6ICJJTlRFR0VSIiwKICAgICJ4NCI6ICJJTlRFR0VSIiwKICAgICJ5MSI6ICJCSU5BUlkiLAogICAgInkyIjogIkJJTkFSWSIsCiAgICAieV9BIjogIkJJTkFSWSIsCiAgICAieV9SIjogIkJJTkFSWSIKICB9LAogICJ2YXJpYWJsZXMiOiB7CiAgICAieDEiOiAwLjAsCiAgICAieDIiOiAwLjAsCiAgICAieDMiOiAwLjAsCiAgICAieDQiOiA4OS4wLAogICAgInkxIjogMC4wLAogICAgInkyIjogMS4wLAogICAgInlfQSI6IDEuMCwKICAgICJ5X1IiOiAxLjAKICB9Cn0K",
+      "sha256": "a74861dd897a2248219bda9cbae9afa18710c5259e9d359bbda5298909436ca2"
+     },
+     "selected": {
+      "decisions": {
+       "variables": {
+        "x1": 0.0,
+        "x2": 0.0,
+        "x3": 0.0,
+        "x4": 89.0,
+        "y1": 0.0,
+        "y2": 0.0,
+        "y_A": 1.0,
+        "y_R": 1.0
+       },
+       "objective": 623.0,
+       "state": {
+        "export": {
+         "complete": true,
+         "error": null
+        },
+        "schema_version": "industryor.solution.v1",
+        "solution_count": 2,
+        "solver_status": "optimal",
+        "variable_types": {
+         "x1": "INTEGER",
+         "x2": "INTEGER",
+         "x3": "INTEGER",
+         "x4": "INTEGER",
+         "y1": "BINARY",
+         "y2": "BINARY",
+         "y_A": "BINARY",
+         "y_R": "BINARY"
+        }
+       }
+      },
+      "raw_bytes_base64": "eyJvYmplY3RpdmUiOjYyMy4wLCJzdGF0ZSI6eyJleHBvcnQiOnsiY29tcGxldGUiOnRydWUsImVycm9yIjpudWxsfSwic2NoZW1hX3ZlcnNpb24iOiJpbmR1c3RyeW9yLnNvbHV0aW9uLnYxIiwic29sdXRpb25fY291bnQiOjIsInNvbHZlcl9zdGF0dXMiOiJvcHRpbWFsIiwidmFyaWFibGVfdHlwZXMiOnsieDEiOiJJTlRFR0VSIiwieDIiOiJJTlRFR0VSIiwieDMiOiJJTlRFR0VSIiwieDQiOiJJTlRFR0VSIiwieTEiOiJCSU5BUlkiLCJ5MiI6IkJJTkFSWSIsInlfQSI6IkJJTkFSWSIsInlfUiI6IkJJTkFSWSJ9fSwidmFyaWFibGVzIjp7IngxIjowLjAsIngyIjowLjAsIngzIjowLjAsIng0Ijo4OS4wLCJ5MSI6MC4wLCJ5MiI6MC4wLCJ5X0EiOjEuMCwieV9SIjoxLjB9fQ==",
+      "sha256": "08655a3548687364aa6e49702e5524a3e53300c590ef925aecb6d5829677cf22"
+     },
+     "candidate": {
+      "decisions": {
+       "variables": {
+        "x1": 0.0,
+        "x2": 0.0,
+        "x3": 0.0,
+        "x4": 89.0,
+        "y1": 0.0,
+        "y2": 0.0,
+        "y_A": 1.0,
+        "y_R": 1.0
+       },
+       "objective": 623.0,
+       "state": {
+        "export": {
+         "complete": true,
+         "error": null
+        },
+        "schema_version": "industryor.solution.v1",
+        "solution_count": 2,
+        "solver_status": "optimal",
+        "variable_types": {
+         "x1": "INTEGER",
+         "x2": "INTEGER",
+         "x3": "INTEGER",
+         "x4": "INTEGER",
+         "y1": "BINARY",
+         "y2": "BINARY",
+         "y_A": "BINARY",
+         "y_R": "BINARY"
+        }
+       }
+      },
+      "raw_bytes_base64": "eyJvYmplY3RpdmUiOjYyMy4wLCJzdGF0ZSI6eyJleHBvcnQiOnsiY29tcGxldGUiOnRydWUsImVycm9yIjpudWxsfSwic2NoZW1hX3ZlcnNpb24iOiJpbmR1c3RyeW9yLnNvbHV0aW9uLnYxIiwic29sdXRpb25fY291bnQiOjIsInNvbHZlcl9zdGF0dXMiOiJvcHRpbWFsIiwidmFyaWFibGVfdHlwZXMiOnsieDEiOiJJTlRFR0VSIiwieDIiOiJJTlRFR0VSIiwieDMiOiJJTlRFR0VSIiwieDQiOiJJTlRFR0VSIiwieTEiOiJCSU5BUlkiLCJ5MiI6IkJJTkFSWSIsInlfQSI6IkJJTkFSWSIsInlfUiI6IkJJTkFSWSJ9fSwidmFyaWFibGVzIjp7IngxIjowLjAsIngyIjowLjAsIngzIjowLjAsIng0Ijo4OS4wLCJ5MSI6MC4wLCJ5MiI6MC4wLCJ5X0EiOjEuMCwieV9SIjoxLjB9fQ==",
+      "sha256": "08655a3548687364aa6e49702e5524a3e53300c590ef925aecb6d5829677cf22"
+     },
+     "parent_report": {
+      "business_status": "fail",
+      "violations": [
+       {
+        "key": "[\"industryor.9.link_x3_y2\", [\"public\"], \"constraint\"]",
+        "requirement_id": "industryor.9.link_x3_y2",
+        "index": [
+         "public"
+        ],
+        "rule_part": "constraint"
+       }
+      ],
+      "objective": 623.0,
+      "verdicts": {
+       "execution_and_public_constraints": "fail",
+       "independent_optimality": "not_applicable_infeasible",
+       "model_objective_consistency": "pass",
+       "registered_business_correct": "fail"
+      },
+      "registered_audit": {
+       "schema_version": "industryor.business_audit.v1",
+       "problem_id": 9,
+       "audit_status": "complete",
+       "business_correct": false,
+       "variable_audit": {
+        "x1": {
+         "present": true,
+         "value": 0.0,
+         "domain": "integer",
+         "passed": true
+        },
+        "x2": {
+         "present": true,
+         "value": 0.0,
+         "domain": "integer",
+         "passed": true
+        },
+        "x3": {
+         "present": true,
+         "value": 0.0,
+         "domain": "integer",
+         "passed": true
+        },
+        "x4": {
+         "present": true,
+         "value": 89.0,
+         "domain": "integer",
+         "passed": true
+        },
+        "y1": {
+         "present": true,
+         "value": 0.0,
+         "domain": "binary",
+         "passed": true
+        },
+        "y2": {
+         "present": true,
+         "value": 1.0,
+         "domain": "binary",
+         "passed": true
+        }
+       },
+       "constraint_checks": [
+        {
+         "rule": "nonnegative_x1",
+         "passed": true,
+         "observed": 0.0,
+         "expected": ">= 0"
+        },
+        {
+         "rule": "nonnegative_x2",
+         "passed": true,
+         "observed": 0.0,
+         "expected": ">= 0"
+        },
+        {
+         "rule": "nonnegative_x3",
+         "passed": true,
+         "observed": 0.0,
+         "expected": ">= 0"
+        },
+        {
+         "rule": "nonnegative_x4",
+         "passed": true,
+         "observed": 89.0,
+         "expected": ">= 0"
+        },
+        {
+         "rule": "wood",
+         "passed": true,
+         "observed": 890.0,
+         "expected": "<= 890"
+        },
+        {
+         "rule": "steel",
+         "passed": true,
+         "observed": 356.0,
+         "expected": "<= 500"
+        },
+        {
+         "rule": "first_excludes_fourth",
+         "passed": true,
+         "observed": {
+          "x1": 0.0,
+          "x4": 89.0
+         },
+         "expected": "x4 = 0 when x1 > 0"
+        },
+        {
+         "rule": "boats_imply_airplanes",
+         "passed": true,
+         "observed": {
+          "x2": 0.0,
+          "x3": 0.0
+         },
+         "expected": "x2 >= 1 when x3 > 0"
+        },
+        {
+         "rule": "boats_no_greater_than_trains",
+         "passed": true,
+         "observed": {
+          "x3": 0.0,
+          "x4": 89.0
+         },
+         "expected": "x3 <= x4"
+        },
+        {
+         "rule": "link_x1_y1",
+         "passed": true,
+         "observed": {
+          "x1": 0.0,
+          "y1": 0.0
+         },
+         "expected": "indicator is 1 exactly when quantity is positive"
+        },
+        {
+         "rule": "link_x3_y2",
+         "passed": false,
+         "observed": {
+          "x3": 0.0,
+          "y2": 1.0
+         },
+         "expected": "indicator is 1 exactly when quantity is positive"
+        }
+       ],
+       "violations": [
+        "business constraint failed: link_x3_y2"
+       ],
+       "execution_checks": {
+        "export_complete": true,
+        "solver_optimal": true,
+        "has_solution": true,
+        "model_objective_finite": true
+       },
+       "business_objective": 623.0,
+       "model_objective_consistent": true,
+       "optimality": "not_applicable_infeasible",
+       "blocking_reasons": []
+      }
+     },
+     "candidate_report": {
+      "business_status": "pass",
+      "violations": [],
+      "objective": 623.0,
+      "verdicts": {
+       "execution_and_public_constraints": "pass",
+       "independent_optimality": "proven_optimal",
+       "model_objective_consistency": "pass",
+       "registered_business_correct": "pass"
+      },
+      "registered_audit": {
+       "schema_version": "industryor.business_audit.v1",
+       "problem_id": 9,
+       "audit_status": "complete",
+       "business_correct": true,
+       "variable_audit": {
+        "x1": {
+         "present": true,
+         "value": 0.0,
+         "domain": "integer",
+         "passed": true
+        },
+        "x2": {
+         "present": true,
+         "value": 0.0,
+         "domain": "integer",
+         "passed": true
+        },
+        "x3": {
+         "present": true,
+         "value": 0.0,
+         "domain": "integer",
+         "passed": true
+        },
+        "x4": {
+         "present": true,
+         "value": 89.0,
+         "domain": "integer",
+         "passed": true
+        },
+        "y1": {
+         "present": true,
+         "value": 0.0,
+         "domain": "binary",
+         "passed": true
+        },
+        "y2": {
+         "present": true,
+         "value": 0.0,
+         "domain": "binary",
+         "passed": true
+        }
+       },
+       "constraint_checks": [
+        {
+         "rule": "nonnegative_x1",
+         "passed": true,
+         "observed": 0.0,
+         "expected": ">= 0"
+        },
+        {
+         "rule": "nonnegative_x2",
+         "passed": true,
+         "observed": 0.0,
+         "expected": ">= 0"
+        },
+        {
+         "rule": "nonnegative_x3",
+         "passed": true,
+         "observed": 0.0,
+         "expected": ">= 0"
+        },
+        {
+         "rule": "nonnegative_x4",
+         "passed": true,
+         "observed": 89.0,
+         "expected": ">= 0"
+        },
+        {
+         "rule": "wood",
+         "passed": true,
+         "observed": 890.0,
+         "expected": "<= 890"
+        },
+        {
+         "rule": "steel",
+         "passed": true,
+         "observed": 356.0,
+         "expected": "<= 500"
+        },
+        {
+         "rule": "first_excludes_fourth",
+         "passed": true,
+         "observed": {
+          "x1": 0.0,
+          "x4": 89.0
+         },
+         "expected": "x4 = 0 when x1 > 0"
+        },
+        {
+         "rule": "boats_imply_airplanes",
+         "passed": true,
+         "observed": {
+          "x2": 0.0,
+          "x3": 0.0
+         },
+         "expected": "x2 >= 1 when x3 > 0"
+        },
+        {
+         "rule": "boats_no_greater_than_trains",
+         "passed": true,
+         "observed": {
+          "x3": 0.0,
+          "x4": 89.0
+         },
+         "expected": "x3 <= x4"
+        },
+        {
+         "rule": "link_x1_y1",
+         "passed": true,
+         "observed": {
+          "x1": 0.0,
+          "y1": 0.0
+         },
+         "expected": "indicator is 1 exactly when quantity is positive"
+        },
+        {
+         "rule": "link_x3_y2",
+         "passed": true,
+         "observed": {
+          "x3": 0.0,
+          "y2": 0.0
+         },
+         "expected": "indicator is 1 exactly when quantity is positive"
+        }
+       ],
+       "violations": [],
+       "execution_checks": {
+        "export_complete": true,
+        "solver_optimal": true,
+        "has_solution": true,
+        "model_objective_finite": true
+       },
+       "business_objective": 623.0,
+       "model_objective_consistent": true,
+       "optimality": "proven_optimal",
+       "blocking_reasons": []
+      }
+     },
+     "parent_business": {
+      "audit_status": "complete",
+      "business_correct": false,
+      "business_feasible": false,
+      "business_objective": 623.0,
+      "independent_optimality": "not_applicable_infeasible",
+      "model_objective_consistent": true,
+      "violations": [
+       "business constraint failed: link_x3_y2"
+      ]
+     },
+     "selected_business": {
+      "audit_status": "complete",
+      "business_correct": true,
+      "business_feasible": true,
+      "business_objective": 623.0,
+      "independent_optimality": "proven_optimal",
+      "model_objective_consistent": true,
+      "violations": []
+     },
+     "parent_model_objective": 623.0,
+     "selected_model_objective": 623.0,
+     "repair_accepted": true,
+     "repair_reason": "accepted",
+     "solve_status": "optimal",
+     "fixed_violations": [
+      "[\"industryor.9.link_x3_y2\", [\"public\"], \"constraint\"]"
+     ],
+     "introduced_violations": [],
+     "remaining_violations": [],
+     "business_recovered": true,
+     "correct_root_preserved": false,
+     "neighborhood": {
+      "schema_version": "declarative_neighborhood_v0.1",
+      "mode": "decision_repair",
+      "objective_sense": null,
+      "parent_sha256": "a74861dd897a2248219bda9cbae9afa18710c5259e9d359bbda5298909436ca2",
+      "parent_bytes_base64": "ewogICJleHBvcnQiOiB7CiAgICAiY29tcGxldGUiOiB0cnVlLAogICAgImVycm9yIjogbnVsbAogIH0sCiAgIm9iamVjdGl2ZSI6IDYyMy4wLAogICJzY2hlbWFfdmVyc2lvbiI6ICJpbmR1c3RyeW9yLnNvbHV0aW9uLnYxIiwKICAic29sdXRpb25fY291bnQiOiA3LAogICJzb2x2ZXJfc3RhdHVzIjogIm9wdGltYWwiLAogICJ2YXJpYWJsZV90eXBlcyI6IHsKICAgICJ4MSI6ICJJTlRFR0VSIiwKICAgICJ4MiI6ICJJTlRFR0VSIiwKICAgICJ4MyI6ICJJTlRFR0VSIiwKICAgICJ4NCI6ICJJTlRFR0VSIiwKICAgICJ5MSI6ICJCSU5BUlkiLAogICAgInkyIjogIkJJTkFSWSIsCiAgICAieV9BIjogIkJJTkFSWSIsCiAgICAieV9SIjogIkJJTkFSWSIKICB9LAogICJ2YXJpYWJsZXMiOiB7CiAgICAieDEiOiAwLjAsCiAgICAieDIiOiAwLjAsCiAgICAieDMiOiAwLjAsCiAgICAieDQiOiA4OS4wLAogICAgInkxIjogMC4wLAogICAgInkyIjogMS4wLAogICAgInlfQSI6IDEuMCwKICAgICJ5X1IiOiAxLjAKICB9Cn0K",
+      "dependency_graph_sha256": "ff72450e60f9c8bd714bee4a84f293a0874603108356e72ce7e1cad11fa0130a",
+      "violation_keys": [
+       "[\"industryor.9.link_x3_y2\", [\"public\"], \"constraint\"]"
+      ],
+      "seed_variables": [
+       "variables.x3",
+       "variables.y2"
+      ],
+      "released_variables": [
+       "variables.x1",
+       "variables.x2",
+       "variables.x3",
+       "variables.x4",
+       "variables.y2"
+      ],
+      "fixed_variables": [
+       "variables.y1",
+       "variables.y_A",
+       "variables.y_R"
+      ],
+      "fixed_values": {
+       "variables.y1": 0.0,
+       "variables.y_A": 1.0,
+       "variables.y_R": 1.0
+      }
+     },
+     "dependency_graph": {
+      "violation_variables": {
+       "[\"industryor.9.boats_imply_airplanes\", [\"public\"], \"constraint\"]": [
+        "variables.x2",
+        "variables.y2"
+       ],
+       "[\"industryor.9.boats_no_greater_than_trains\", [\"public\"], \"constraint\"]": [
+        "variables.x3",
+        "variables.x4"
+       ],
+       "[\"industryor.9.domain\", [\"x1\"], \"domain\"]": [
+        "variables.x1"
+       ],
+       "[\"industryor.9.domain\", [\"x2\"], \"domain\"]": [
+        "variables.x2"
+       ],
+       "[\"industryor.9.domain\", [\"x3\"], \"domain\"]": [
+        "variables.x3"
+       ],
+       "[\"industryor.9.domain\", [\"x4\"], \"domain\"]": [
+        "variables.x4"
+       ],
+       "[\"industryor.9.domain\", [\"y1\"], \"domain\"]": [
+        "variables.y1"
+       ],
+       "[\"industryor.9.domain\", [\"y2\"], \"domain\"]": [
+        "variables.y2"
+       ],
+       "[\"industryor.9.first_excludes_fourth\", [\"public\"], \"constraint\"]": [
+        "variables.x4",
+        "variables.y1"
+       ],
+       "[\"industryor.9.link_x1_y1\", [\"public\"], \"constraint\"]": [
+        "variables.x1",
+        "variables.y1"
+       ],
+       "[\"industryor.9.link_x3_y2\", [\"public\"], \"constraint\"]": [
+        "variables.x3",
+        "variables.y2"
+       ],
+       "[\"industryor.9.steel\", [\"public\"], \"constraint\"]": [
+        "variables.x1",
+        "variables.x2",
+        "variables.x3",
+        "variables.x4"
+       ],
+       "[\"industryor.9.wood\", [\"public\"], \"constraint\"]": [
+        "variables.x1",
+        "variables.x2",
+        "variables.x3",
+        "variables.x4"
+       ]
+      },
+      "adjacency": {
+       "variables.x1": [
+        "variables.x2",
+        "variables.x3",
+        "variables.x4",
+        "variables.y1"
+       ],
+       "variables.x2": [
+        "variables.x1",
+        "variables.x3",
+        "variables.x4",
+        "variables.y2"
+       ],
+       "variables.x3": [
+        "variables.x1",
+        "variables.x2",
+        "variables.x4",
+        "variables.y2"
+       ],
+       "variables.x4": [
+        "variables.x1",
+        "variables.x2",
+        "variables.x3",
+        "variables.y1"
+       ],
+       "variables.y1": [
+        "variables.x1",
+        "variables.x4"
+       ],
+       "variables.y2": [
+        "variables.x2",
+        "variables.x3"
+       ]
+      }
+     },
+     "dependency_graph_sha256": "ff72450e60f9c8bd714bee4a84f293a0874603108356e72ce7e1cad11fa0130a",
+     "public_answer_used_for_repair": false,
+     "public_answer_used_for_selection": false,
+     "cost": {
+      "llm_calls": 0,
+      "llm_tokens": 0,
+      "business_audit_calls": 2,
+      "scip_sub_milp_runs": 1,
+      "scip_wall_seconds": 0.004441,
+      "wall_seconds": 0.173961
+     },
+     "artifact_path": "work/industryor_structured_dev_v0.2/prob_009/execution_A/solution.json",
+     "artifact_sha256": "a74861dd897a2248219bda9cbae9afa18710c5259e9d359bbda5298909436ca2",
+     "parent_public_answer": {
+      "en_answer": 623.0,
+      "reported_model_objective_match_abs_0_1": true,
+      "business_objective_match_abs_0_1": true
+     },
+     "selected_public_answer": {
+      "en_answer": 623.0,
+      "reported_model_objective_match_abs_0_1": true,
+      "business_objective_match_abs_0_1": true
+     },
+     "public_answer_scored": true
+    },
+    {
+     "role": "correct_control",
+     "status": "ready",
+     "parent_sha256": "144400db7aa8c2f1e2844cf49ce6863b514dfb6efdc2c8b3b2b5295f7159a594",
+     "selected_sha256": "144400db7aa8c2f1e2844cf49ce6863b514dfb6efdc2c8b3b2b5295f7159a594",
+     "parent": {
+      "decisions": {
+       "variables": {
+        "x1": 0.0,
+        "x2": 0.0,
+        "x3": 0.0,
+        "x4": 89.0,
+        "y1": 0.0,
+        "y2": 0.0
+       },
+       "objective": 623.0,
+       "state": {
+        "export": {
+         "complete": true,
+         "error": null
+        },
+        "schema_version": "industryor.solution.v1",
+        "solution_count": 4,
+        "solver_status": "optimal",
+        "variable_types": {
+         "x1": "INTEGER",
+         "x2": "INTEGER",
+         "x3": "INTEGER",
+         "x4": "INTEGER",
+         "y1": "BINARY",
+         "y2": "BINARY"
+        }
+       }
+      },
+      "raw_bytes_base64": "ewogICJleHBvcnQiOiB7CiAgICAiY29tcGxldGUiOiB0cnVlLAogICAgImVycm9yIjogbnVsbAogIH0sCiAgIm9iamVjdGl2ZSI6IDYyMy4wLAogICJzY2hlbWFfdmVyc2lvbiI6ICJpbmR1c3RyeW9yLnNvbHV0aW9uLnYxIiwKICAic29sdXRpb25fY291bnQiOiA0LAogICJzb2x2ZXJfc3RhdHVzIjogIm9wdGltYWwiLAogICJ2YXJpYWJsZV90eXBlcyI6IHsKICAgICJ4MSI6ICJJTlRFR0VSIiwKICAgICJ4MiI6ICJJTlRFR0VSIiwKICAgICJ4MyI6ICJJTlRFR0VSIiwKICAgICJ4NCI6ICJJTlRFR0VSIiwKICAgICJ5MSI6ICJCSU5BUlkiLAogICAgInkyIjogIkJJTkFSWSIKICB9LAogICJ2YXJpYWJsZXMiOiB7CiAgICAieDEiOiAwLjAsCiAgICAieDIiOiAwLjAsCiAgICAieDMiOiAwLjAsCiAgICAieDQiOiA4OS4wLAogICAgInkxIjogMC4wLAogICAgInkyIjogMC4wCiAgfQp9Cg==",
+      "sha256": "144400db7aa8c2f1e2844cf49ce6863b514dfb6efdc2c8b3b2b5295f7159a594"
+     },
+     "selected": {
+      "decisions": {
+       "variables": {
+        "x1": 0.0,
+        "x2": 0.0,
+        "x3": 0.0,
+        "x4": 89.0,
+        "y1": 0.0,
+        "y2": 0.0
+       },
+       "objective": 623.0,
+       "state": {
+        "export": {
+         "complete": true,
+         "error": null
+        },
+        "schema_version": "industryor.solution.v1",
+        "solution_count": 4,
+        "solver_status": "optimal",
+        "variable_types": {
+         "x1": "INTEGER",
+         "x2": "INTEGER",
+         "x3": "INTEGER",
+         "x4": "INTEGER",
+         "y1": "BINARY",
+         "y2": "BINARY"
+        }
+       }
+      },
+      "raw_bytes_base64": "ewogICJleHBvcnQiOiB7CiAgICAiY29tcGxldGUiOiB0cnVlLAogICAgImVycm9yIjogbnVsbAogIH0sCiAgIm9iamVjdGl2ZSI6IDYyMy4wLAogICJzY2hlbWFfdmVyc2lvbiI6ICJpbmR1c3RyeW9yLnNvbHV0aW9uLnYxIiwKICAic29sdXRpb25fY291bnQiOiA0LAogICJzb2x2ZXJfc3RhdHVzIjogIm9wdGltYWwiLAogICJ2YXJpYWJsZV90eXBlcyI6IHsKICAgICJ4MSI6ICJJTlRFR0VSIiwKICAgICJ4MiI6ICJJTlRFR0VSIiwKICAgICJ4MyI6ICJJTlRFR0VSIiwKICAgICJ4NCI6ICJJTlRFR0VSIiwKICAgICJ5MSI6ICJCSU5BUlkiLAogICAgInkyIjogIkJJTkFSWSIKICB9LAogICJ2YXJpYWJsZXMiOiB7CiAgICAieDEiOiAwLjAsCiAgICAieDIiOiAwLjAsCiAgICAieDMiOiAwLjAsCiAgICAieDQiOiA4OS4wLAogICAgInkxIjogMC4wLAogICAgInkyIjogMC4wCiAgfQp9Cg==",
+      "sha256": "144400db7aa8c2f1e2844cf49ce6863b514dfb6efdc2c8b3b2b5295f7159a594"
+     },
+     "candidate": null,
+     "parent_report": {
+      "business_status": "pass",
+      "violations": [],
+      "objective": 623.0,
+      "verdicts": {
+       "execution_and_public_constraints": "pass",
+       "independent_optimality": "proven_optimal",
+       "model_objective_consistency": "pass",
+       "registered_business_correct": "pass"
+      },
+      "registered_audit": {
+       "schema_version": "industryor.business_audit.v1",
+       "problem_id": 9,
+       "audit_status": "complete",
+       "business_correct": true,
+       "variable_audit": {
+        "x1": {
+         "present": true,
+         "value": 0.0,
+         "domain": "integer",
+         "passed": true
+        },
+        "x2": {
+         "present": true,
+         "value": 0.0,
+         "domain": "integer",
+         "passed": true
+        },
+        "x3": {
+         "present": true,
+         "value": 0.0,
+         "domain": "integer",
+         "passed": true
+        },
+        "x4": {
+         "present": true,
+         "value": 89.0,
+         "domain": "integer",
+         "passed": true
+        },
+        "y1": {
+         "present": true,
+         "value": 0.0,
+         "domain": "binary",
+         "passed": true
+        },
+        "y2": {
+         "present": true,
+         "value": 0.0,
+         "domain": "binary",
+         "passed": true
+        }
+       },
+       "constraint_checks": [
+        {
+         "rule": "nonnegative_x1",
+         "passed": true,
+         "observed": 0.0,
+         "expected": ">= 0"
+        },
+        {
+         "rule": "nonnegative_x2",
+         "passed": true,
+         "observed": 0.0,
+         "expected": ">= 0"
+        },
+        {
+         "rule": "nonnegative_x3",
+         "passed": true,
+         "observed": 0.0,
+         "expected": ">= 0"
+        },
+        {
+         "rule": "nonnegative_x4",
+         "passed": true,
+         "observed": 89.0,
+         "expected": ">= 0"
+        },
+        {
+         "rule": "wood",
+         "passed": true,
+         "observed": 890.0,
+         "expected": "<= 890"
+        },
+        {
+         "rule": "steel",
+         "passed": true,
+         "observed": 356.0,
+         "expected": "<= 500"
+        },
+        {
+         "rule": "first_excludes_fourth",
+         "passed": true,
+         "observed": {
+          "x1": 0.0,
+          "x4": 89.0
+         },
+         "expected": "x4 = 0 when x1 > 0"
+        },
+        {
+         "rule": "boats_imply_airplanes",
+         "passed": true,
+         "observed": {
+          "x2": 0.0,
+          "x3": 0.0
+         },
+         "expected": "x2 >= 1 when x3 > 0"
+        },
+        {
+         "rule": "boats_no_greater_than_trains",
+         "passed": true,
+         "observed": {
+          "x3": 0.0,
+          "x4": 89.0
+         },
+         "expected": "x3 <= x4"
+        },
+        {
+         "rule": "link_x1_y1",
+         "passed": true,
+         "observed": {
+          "x1": 0.0,
+          "y1": 0.0
+         },
+         "expected": "indicator is 1 exactly when quantity is positive"
+        },
+        {
+         "rule": "link_x3_y2",
+         "passed": true,
+         "observed": {
+          "x3": 0.0,
+          "y2": 0.0
+         },
+         "expected": "indicator is 1 exactly when quantity is positive"
+        }
+       ],
+       "violations": [],
+       "execution_checks": {
+        "export_complete": true,
+        "solver_optimal": true,
+        "has_solution": true,
+        "model_objective_finite": true
+       },
+       "business_objective": 623.0,
+       "model_objective_consistent": true,
+       "optimality": "proven_optimal",
+       "blocking_reasons": []
+      }
+     },
+     "candidate_report": null,
+     "parent_business": {
+      "audit_status": "complete",
+      "business_correct": true,
+      "business_feasible": true,
+      "business_objective": 623.0,
+      "independent_optimality": "proven_optimal",
+      "model_objective_consistent": true,
+      "violations": []
+     },
+     "selected_business": {
+      "audit_status": "complete",
+      "business_correct": true,
+      "business_feasible": true,
+      "business_objective": 623.0,
+      "independent_optimality": "proven_optimal",
+      "model_objective_consistent": true,
+      "violations": []
+     },
+     "parent_model_objective": 623.0,
+     "selected_model_objective": 623.0,
+     "repair_accepted": false,
+     "repair_reason": "empty_neighborhood",
+     "solve_status": null,
+     "fixed_violations": [],
+     "introduced_violations": [],
+     "remaining_violations": [],
+     "business_recovered": false,
+     "correct_root_preserved": true,
+     "neighborhood": null,
+     "dependency_graph": {
+      "violation_variables": {
+       "[\"industryor.9.boats_imply_airplanes\", [\"public\"], \"constraint\"]": [
+        "variables.x2",
+        "variables.y2"
+       ],
+       "[\"industryor.9.boats_no_greater_than_trains\", [\"public\"], \"constraint\"]": [
+        "variables.x3",
+        "variables.x4"
+       ],
+       "[\"industryor.9.domain\", [\"x1\"], \"domain\"]": [
+        "variables.x1"
+       ],
+       "[\"industryor.9.domain\", [\"x2\"], \"domain\"]": [
+        "variables.x2"
+       ],
+       "[\"industryor.9.domain\", [\"x3\"], \"domain\"]": [
+        "variables.x3"
+       ],
+       "[\"industryor.9.domain\", [\"x4\"], \"domain\"]": [
+        "variables.x4"
+       ],
+       "[\"industryor.9.domain\", [\"y1\"], \"domain\"]": [
+        "variables.y1"
+       ],
+       "[\"industryor.9.domain\", [\"y2\"], \"domain\"]": [
+        "variables.y2"
+       ],
+       "[\"industryor.9.first_excludes_fourth\", [\"public\"], \"constraint\"]": [
+        "variables.x4",
+        "variables.y1"
+       ],
+       "[\"industryor.9.link_x1_y1\", [\"public\"], \"constraint\"]": [
+        "variables.x1",
+        "variables.y1"
+       ],
+       "[\"industryor.9.link_x3_y2\", [\"public\"], \"constraint\"]": [
+        "variables.x3",
+        "variables.y2"
+       ],
+       "[\"industryor.9.steel\", [\"public\"], \"constraint\"]": [
+        "variables.x1",
+        "variables.x2",
+        "variables.x3",
+        "variables.x4"
+       ],
+       "[\"industryor.9.wood\", [\"public\"], \"constraint\"]": [
+        "variables.x1",
+        "variables.x2",
+        "variables.x3",
+        "variables.x4"
+       ]
+      },
+      "adjacency": {
+       "variables.x1": [
+        "variables.x2",
+        "variables.x3",
+        "variables.x4",
+        "variables.y1"
+       ],
+       "variables.x2": [
+        "variables.x1",
+        "variables.x3",
+        "variables.x4",
+        "variables.y2"
+       ],
+       "variables.x3": [
+        "variables.x1",
+        "variables.x2",
+        "variables.x4",
+        "variables.y2"
+       ],
+       "variables.x4": [
+        "variables.x1",
+        "variables.x2",
+        "variables.x3",
+        "variables.y1"
+       ],
+       "variables.y1": [
+        "variables.x1",
+        "variables.x4"
+       ],
+       "variables.y2": [
+        "variables.x2",
+        "variables.x3"
+       ]
+      }
+     },
+     "dependency_graph_sha256": "ff72450e60f9c8bd714bee4a84f293a0874603108356e72ce7e1cad11fa0130a",
+     "public_answer_used_for_repair": false,
+     "public_answer_used_for_selection": false,
+     "cost": {
+      "llm_calls": 0,
+      "llm_tokens": 0,
+      "business_audit_calls": 1,
+      "scip_sub_milp_runs": 0,
+      "scip_wall_seconds": 0.0,
+      "wall_seconds": 0.041941
+     },
+     "artifact_path": "work/industryor_next_stage_v0.1/prob_009/solution.json",
+     "artifact_sha256": "144400db7aa8c2f1e2844cf49ce6863b514dfb6efdc2c8b3b2b5295f7159a594",
+     "parent_public_answer": {
+      "en_answer": 623.0,
+      "reported_model_objective_match_abs_0_1": true,
+      "business_objective_match_abs_0_1": true
+     },
+     "selected_public_answer": {
+      "en_answer": 623.0,
+      "reported_model_objective_match_abs_0_1": true,
+      "business_objective_match_abs_0_1": true
+     },
+     "public_answer_scored": true
+    }
+   ],
+   "wall_seconds": 0.222691
+  }
+ ],
+ "oragentbench": {
+  "directly_comparable": false,
+  "reason": "single-problem decision-artifact repair has different roots, task, budget and cost from from-scratch benchmark generation"
+ }
+}

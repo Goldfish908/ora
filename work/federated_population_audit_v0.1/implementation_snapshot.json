@@ -1,0 +1,16 @@
+{
+ "audit_sha256": "330dcd56f55790b7ed0a522eef9b4b57f943f1e7850e7d1970134733d42b3923",
+ "implementation_sha256": {
+  "ora_agent/population_repair.py": "841cdfc2fc7c74cb2d34f1f99385de4e97ec0aa14ccf6e231b520e7a5ddfa576",
+  "ora_agent/declarative_neighborhood.py": "7a3930125e6078ecbdff70df85ae25b25930763cdcd00fa1483a0400ef936d2c",
+  "ora_agent/federated_public_ir.py": "bd87633fc1f4efc5e393e922fc87f4214bd11fd5b9744ce7d72054f6312b6853",
+  "ora_agent/federated_neighborhood.py": "186a99772af22ebd4071ef2e6f368872869a847780a7b86b95899c749cbf7ce2",
+  "scripts/federated_population_audit.py": "a445cb9f2e9d6ee9f362b00b5bd158a11eb3641fb8469539828aa1a496f5342a",
+  "scripts/federated_repair_audit.py": "fcfbdc79007486563db5b6794cac443a00d1739a00faea385b43a32e9021a900"
+ },
+ "verified_strategy_outcomes": 9,
+ "official_true_correct": 9,
+ "population_vs_single": "2 ties, 1 negative",
+ "llm_calls": 0,
+ "fixture_path_change_preserves_clean_sha256": true
+}

@@ -1,0 +1,19 @@
+{
+ "gepa_source_commit": "ce5b0d6e3d6af6c6dbec6de2c54536bbb961d309",
+ "audit_sha256": "944c157f37c32b7217369690ae53840b4553448f6f8afb74e84902998a4fa0fb",
+ "implementation_sha256": {
+  "ora_agent/gepa_repair.py": "3c0c69822c242233b68539fda4dc5dcb064ad0520ac0e1d1b4259458dc32aad5",
+  "ora_agent/declarative_neighborhood.py": "7a3930125e6078ecbdff70df85ae25b25930763cdcd00fa1483a0400ef936d2c",
+  "ora_agent/population_repair.py": "841cdfc2fc7c74cb2d34f1f99385de4e97ec0aa14ccf6e231b520e7a5ddfa576",
+  "ora_agent/federated_neighborhood.py": "186a99772af22ebd4071ef2e6f368872869a847780a7b86b95899c749cbf7ce2",
+  "ora_agent/federated_public_ir.py": "bd87633fc1f4efc5e393e922fc87f4214bd11fd5b9744ce7d72054f6312b6853",
+  "scripts/gepa_federated_experiment.py": "76046b426107b90bd4c88019a4c14b3edbc27a99d50ce2235cb0095925417b63",
+  "scripts/gepa_federated_figure.py": "73244314e42978afe7850cd8efd71682cd0f462dfaf5b22bf1c92a4f0122777f"
+ },
+ "official_true_correct_runs": 15,
+ "clean_controls_preserved": 5,
+ "pareto_only_vs_old_population_all_budgets_delta": 0.5441719000040596,
+ "merge_tested": 0,
+ "merge_not_tested": 15,
+ "development_only": true
+}

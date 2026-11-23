@@ -1,0 +1,82 @@
+{
+ "evaluation": {
+  "environment": "federated_learning_cohort_selection",
+  "error_count": 0,
+  "errors": [],
+  "feasible": true,
+  "profit": 6021.247619499997,
+  "selected_pairs": 445,
+  "total_gpu_minutes": 15397.605000000001,
+  "total_privacy": 3159.5319999999974,
+  "total_upload_mb": 48484.99000000001
+ },
+ "reward": {
+  "feasibility": 1.0,
+  "quality": 2.0
+ },
+ "reward_details": {
+  "agent_objective": 6021.247619499997,
+  "agent_objective_source": "profit",
+  "best_bound": 6023.152001003186,
+  "bound_improvement": 2.4620910031826497,
+  "bound_sense": "upper",
+  "evaluation_diagnostics": {
+   "error_count": 0,
+   "objective": null,
+   "profit": 6021.247619499997,
+   "score": null,
+   "total_cost": null
+  },
+  "fallback_mip_gap": 0.0005,
+  "fallback_reference_scale": 6020.689910000004,
+  "feasibility": 1.0,
+  "formula": "clip(2 + d if d >= -1 else 1.5 + 0.5*d, 0, 2), d = (O - R) / (max(abs(R), 1e-8) * mip_gap)",
+  "objective_sense": "maximize",
+  "quality": 2.0,
+  "quality_scale_width": 3.010344955000002,
+  "quality_status": "bound_gap_below_mip_gap",
+  "reference_metrics": {
+   "best_bound": 6023.152001003186,
+   "best_bound_source": "best_bound",
+   "bound_sense": "upper",
+   "evaluation_summary": {
+    "error_count": 0,
+    "feasible": true,
+    "profit": 6020.689910000004
+   },
+   "generated_at": "2026-05-19T09:13:00.126895+00:00",
+   "mip_gap": 0.0005,
+   "objective_sense": "maximize",
+   "quality_formula": "clip(1 + (O - R) / (B - R), 0, 2) if B exists and B - R >= max(abs(R), 1e-8) * mip_gap; otherwise let d=(O - R)/(max(abs(R), 1e-8)*mip_gap), quality=clip(2+d if d>=-1 else 1.5+0.5*d, 0, 2); if no R, quality = 2",
+   "reference_objective": 6020.689910000004,
+   "reference_objective_source": "profit",
+   "solution_path": "reference_solutions/federated_learning_cohort_selection_reference_solution.csv",
+   "solver_summary": {
+    "best_bound": 6023.152001003186,
+    "evaluation_profit": 6020.689910000005,
+    "mip_gap": 0.00040893835091837305,
+    "objective": 6020.68991,
+    "selected_pairs": 445,
+    "solution": "reference_solutions/federated_learning_cohort_selection_reference_solution.csv",
+    "status": "gaplimit"
+   },
+   "task_name": "federated_learning_cohort_selection",
+   "time_limit_seconds": 120.0
+  },
+  "reference_objective": 6020.689910000004,
+  "scalar_reward": 1.0,
+  "scalar_reward_formula": "(feasibility + quality) / 3.0",
+  "signed_improvement": 0.557709499993507
+ },
+ "runner": {
+  "return_code": 0,
+  "timed_out": false,
+  "wall_seconds": 29.133475
+ },
+ "evaluation_inputs": {
+  "run_nonce": "88c06f8a28854d0da6cbba28afb5da0f",
+  "decision_sha256": {
+   "solution.csv": "5cc2289ac05e10ba9a70464dcf5a27b8d2b7c3fd6e4b786b0f1285b191de6a7d"
+  }
+ }
+}

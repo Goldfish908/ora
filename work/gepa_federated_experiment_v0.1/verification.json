@@ -1,0 +1,28 @@
+{
+  "commit": "6e240baea0c6eec13dfdba339f7b07b2eb40de78",
+  "branch": "research/consensus-trap",
+  "remote_verified": true,
+  "pytest": {"passed": 758, "skipped": 5, "failed": 0, "log": "work/gepa_federated_experiment_v0.1/pytest.log"},
+  "m2gen_regression": "REGRESSION OK",
+  "official_true_correct_runs": 15,
+  "clean_controls_preserved": 5,
+  "pareto_only": {
+    "all_budgets_delta_vs_old_population": 0.5441719000040596,
+    "other_scenarios": "ties",
+    "direct_path_covered_in_all_three_scenarios": true
+  },
+  "merge": {
+    "attempted_per_scenario": 5,
+    "compatible": 0,
+    "novel": 0,
+    "valid": 0,
+    "tested": 0,
+    "accepted": 0,
+    "not_tested_per_scenario": 5,
+    "decision": "Do not expand merge until a real compatible lineage exists."
+  },
+  "scope": "Development scenarios only; not a held-out generalization claim. A labeled train/val/test protocol is required before experience write-back.",
+  "report": "work/gepa_federated_experiment_v0.1/report.md",
+  "figure": "work/gepa_federated_experiment_v0.1/gepa_federated_comparison.png",
+  "implementation_snapshot": "work/gepa_federated_experiment_v0.1/implementation_snapshot.json"
+}

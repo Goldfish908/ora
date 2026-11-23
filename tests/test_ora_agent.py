@@ -327,10 +327,13 @@ class TestPrediction(LoopTestBase):
 
 class _FakeHTTPResponse:
     def __init__(self, body: str):
-        self._body = body.encode()
+        self._buffer = io.BytesIO(body.encode())
 
     def read(self):
-        return self._body
+        return self._buffer.read()
+
+    def readline(self):
+        return self._buffer.readline()
 
     def __enter__(self):
         return self
@@ -432,6 +435,40 @@ class TestLLMClient(unittest.TestCase):
                            sleep_fn=lambda s: None)
         self.assertEqual(out["content"], "")
         self.assertEqual(out["finish_reason"], "length")
+
+    def test_stream_accumulates_content_tool_calls_and_usage(self):
+        events = [
+            {"model": "m", "choices": [{"delta": {
+                "content": "OK",
+                "tool_calls": [{"index": 0, "id": "c1", "type": "function",
+                                "function": {"name": "bash", "arguments": "{\"comm"}}],
+            }}]},
+            {"model": "m", "choices": [{"delta": {
+                "tool_calls": [{"index": 0, "function": {"arguments": "and\": \"ls\"}"}}],
+            }, "finish_reason": "tool_calls"}]},
+            {"model": "m", "choices": [], "usage": {
+                "prompt_tokens": 3, "completion_tokens": 2, "total_tokens": 5}},
+        ]
+        body = "".join("data: " + json.dumps(event) + "\n\n" for event in events) + "data: [DONE]\n\n"
+        out = llm_mod.chat([{"role": "user", "content": "hi"}],
+                           extra={"stream": True, "stream_options": {"include_usage": True}},
+                           config=self.config, opener=_FakeOpener([body]), sleep_fn=lambda s: None)
+        self.assertEqual(out["content"], "OK")
+        self.assertEqual(out["finish_reason"], "tool_calls")
+        self.assertEqual(out["tool_calls"][0]["function"]["arguments"], '{"command": "ls"}')
+        self.assertEqual(out["usage"]["total_tokens"], 5)
+        self.assertTrue(out["streamed"])
+        self.assertEqual(out["stream_chunks"], 3)
+        self.assertIsNotNone(out["time_to_first_chunk_s"])
+
+    def test_stream_does_not_retry_after_receiving_a_chunk(self):
+        first = {"model": "m", "choices": [{"delta": {"content": "partial"}}]}
+        body = "data: " + json.dumps(first) + "\n\ndata: {invalid json}\n\n"
+        opener = _FakeOpener([body])
+        with self.assertRaises(llm_mod.LLMRequestError):
+            llm_mod.chat([{"role": "user", "content": "hi"}], extra={"stream": True},
+                         config=self.config, opener=opener, sleep_fn=lambda s: None)
+        self.assertEqual(opener.n_calls, 1)
 
 
 if __name__ == "__main__":
